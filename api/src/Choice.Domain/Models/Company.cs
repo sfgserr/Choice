@@ -9,6 +9,7 @@ namespace Choice.Domain.Models
 
     public class Company : User
     {
+        public string Title { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public string SiteAddress { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
