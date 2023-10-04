@@ -33,7 +33,7 @@ namespace Choice.Application.UseCases.Reviews.SendReview
                 Text = text
             };
 
-            Review newReview = await _reviewRepository.Create(review);
+            Review newReview = await _reviewRepository.Create(review); 
 
             await _unitOfWork.Save();
 
