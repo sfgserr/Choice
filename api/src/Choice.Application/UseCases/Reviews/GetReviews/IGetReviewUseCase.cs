@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.Application.UseCases.Reviews.GetReview
+namespace Choice.Application.UseCases.Reviews.GetReviews
 {
     public enum GetReviewBy
     {

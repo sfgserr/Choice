@@ -1,19 +1,19 @@
 ﻿using Choice.Domain;
 using Choice.Domain.Models;
 
-namespace Choice.Application.UseCases.Reviews.GetReview
+namespace Choice.Application.UseCases.Reviews.GetReviews
 {
-    public class GetReviewUseCase : IGetReviewUseCase
+    public class GetReviewsUseCase : IGetReviewUseCase
     {
         private readonly IRepository<Review> _reviewRepository;
 
         private IOutputPort _outputPort;
 
-        public GetReviewUseCase(IRepository<Review> reviewRepository)
+        public GetReviewsUseCase(IRepository<Review> reviewRepository)
         {
             _reviewRepository = reviewRepository;
 
-            _outputPort = new GetReviewUseCasePresenter();
+            _outputPort = new GetReviewsUseCasePresenter();
         }
 
         public async Task Execute(GetReviewBy getReviewBy, int id)
@@ -25,15 +25,11 @@ namespace Choice.Application.UseCases.Reviews.GetReview
                 _ => throw new ArgumentException()
             };
 
-            Review? review = await _reviewRepository.GetBy(func);
+            IList<Review> reviews = await _reviewRepository.Get();
 
-            if (review != null)
-            {
-                _outputPort.Ok(review);
-                return;
-            }
+            List<Review> sortedReviews = reviews.Where(func).ToList();
 
-            _outputPort.NotFound();
+            _outputPort.Ok(sortedReviews);
         }
 
         public void SetOutputPort(IOutputPort outputPort)
