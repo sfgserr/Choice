@@ -27,7 +27,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 _outputPort.Invalid();
             }
 
-            User? user = await _userRepository.GetUserBy(c => c.Email == email);
+            User? user = await _userRepository.GetBy(c => c.Email == email);
 
             if (user != null)
             {

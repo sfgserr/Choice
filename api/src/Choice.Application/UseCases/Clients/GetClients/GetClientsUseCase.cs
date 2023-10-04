@@ -28,7 +28,7 @@ namespace Choice.Application.UseCases.Clients.GetClients
 
         private async Task GetClients()
         {
-            IList<Client> clients = await _clientRepository.GetUsers();
+            IList<Client> clients = await _clientRepository.Get();
 
             _outputPort.Ok(clients);
         }

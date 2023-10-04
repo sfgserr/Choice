@@ -32,7 +32,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 Email = email,
             };
 
-            Client newClient = await _clientRepository.CreateUser(client);
+            Client newClient = await _clientRepository.Create(client);
 
             await _unitOfWork.Save();
 

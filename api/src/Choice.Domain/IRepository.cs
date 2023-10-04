@@ -4,14 +4,14 @@ namespace Choice.Domain
 {
     public interface IRepository<TEntity> where TEntity : DomainObject
     {
-        Task<TEntity> CreateUser(TEntity user);
+        Task<TEntity> Create(TEntity entity);
 
-        Task<IList<TEntity>> GetUsers();
+        Task<IList<TEntity>> Get();
 
-        Task<TEntity> GetUserBy(Func<TEntity, bool> func);
+        Task<TEntity> GetBy(Func<TEntity, bool> func);
 
-        Task<TEntity> Update(TEntity user);
+        Task<TEntity> Update(TEntity entity);
 
-        Task<TEntity> Delete(TEntity user);
+        Task<TEntity> Delete(TEntity entity);
     }
 }
