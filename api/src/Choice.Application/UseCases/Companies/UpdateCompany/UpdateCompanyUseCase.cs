@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.Companies.UpdateCompany
             _companyRepository = companyRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new UpdateCompanyUseCasePresenter();
+            _outputPort = new UpdateCompanyPresenter();
         }
 
         public async Task Execute(Company company)

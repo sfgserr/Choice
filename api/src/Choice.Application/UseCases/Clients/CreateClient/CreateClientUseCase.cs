@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
             _clientRepository = clientRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new CreateClientUseCasePresenter();
+            _outputPort = new CreateClientPresenter();
         }
 
         public async Task Execute(string name, string surname, string password, string email, string photoUri) =>

@@ -2,7 +2,7 @@
 
 namespace Choice.Application.UseCases.Clients.GetClients
 {
-    public class GetClientsUseCasePresenter : IOutputPort
+    public class GetClientPresenter : IOutputPort
     {
         public IList<Client> Clients { get; set; } = new List<Client>();
 

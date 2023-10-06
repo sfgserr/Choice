@@ -15,7 +15,7 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
             _companyRepository = companyRepository;
             _useCase = useCase;
 
-            _outputPort = new CreateCompanyUseCasePresenter();
+            _outputPort = new CreateCompanyPresenter();
         }
 
         public async Task Execute(string email, string password, string title, string phoneNumber, string address, string siteUri, List<SocialMedia> socialMedias, List<string> photoUris, PrepaymentAvailability prepaymentAvailability)

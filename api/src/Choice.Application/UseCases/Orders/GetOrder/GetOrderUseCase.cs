@@ -13,7 +13,7 @@ namespace Choice.Application.UseCases.Orders.GetOrder
         {
             _orderRepository = orderRepository;
 
-            _outputPort = new GetOrderUseCasePresenter();
+            _outputPort = new GetOrderPresenter();
         }
 
         public async Task Execute(Func<Order, bool> func) => 

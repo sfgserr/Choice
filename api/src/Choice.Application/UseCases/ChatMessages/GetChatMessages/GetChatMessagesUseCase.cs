@@ -15,7 +15,7 @@ namespace Choice.Application.UseCases.ChatMessages.GetChatMessages
             _chatMessageRepository = chatMessageRepository;
             _orderMessageRepository = orderMessageRepository;
 
-            _outputPort = new GetChatMessagesUseCasePresenter();
+            _outputPort = new GetChatMessagesPresenter();
         }
 
         public async Task Execute(int user1Id, int user2Id) =>

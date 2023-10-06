@@ -13,7 +13,7 @@ namespace Choice.Application.UseCases.Clients.GetClients
         {
             _clientRepository = clientRepository;
 
-            _outputPort = new GetClientsUseCasePresenter();
+            _outputPort = new GetClientPresenter();
         }
 
         public async Task Execute()

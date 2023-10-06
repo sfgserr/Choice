@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.Clients.UpdateClient
             _clientRepository = clientRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new UpdateClientUseCasePresenter();
+            _outputPort = new UpdateClientPresenter();
         }
 
         public async Task Execute(Client client) => 

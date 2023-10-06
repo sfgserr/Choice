@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.OrderMessages.UpdateOrderMessage
             _orderMessageRepository = orderMessageRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new UpdateOrderMessageUseCasePresenter();
+            _outputPort = new UpdateOrderMessagePresenter();
         }
 
         public async Task Execute(OrderMessage orderMessage)

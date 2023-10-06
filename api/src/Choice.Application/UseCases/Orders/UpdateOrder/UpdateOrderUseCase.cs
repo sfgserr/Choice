@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.Orders.UpdateOrder
             _orderRepository = orderRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new UpdateOrderUseCasePresenter();
+            _outputPort = new UpdateOrderPresenter();
         }
 
         public async Task Execute(Order order) =>

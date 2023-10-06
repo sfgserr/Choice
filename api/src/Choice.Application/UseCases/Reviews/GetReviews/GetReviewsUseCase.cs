@@ -13,7 +13,7 @@ namespace Choice.Application.UseCases.Reviews.GetReviews
         {
             _reviewRepository = reviewRepository;
 
-            _outputPort = new GetReviewsUseCasePresenter();
+            _outputPort = new GetReviewsPresenter();
         }
 
         public async Task Execute(GetReviewBy getReviewBy, int id)

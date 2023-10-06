@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.OrderMessages.SendOrderMessage
             _orderMessageRepository = orderMessageRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new SendOrderMessageUseCasePresenter();
+            _outputPort = new SendOrderMessagePresenter();
         }
 
         public async Task Execute(User sender, User receiver, double price, DateTime appointmentTime, int duration, Order order) =>

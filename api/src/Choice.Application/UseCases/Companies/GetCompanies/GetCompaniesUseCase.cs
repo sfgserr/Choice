@@ -13,7 +13,7 @@ namespace Choice.Application.UseCases.Companies.GetCompanies
         {
             _companyRepository = companyRepository;
 
-            _outputPort = new GetCompaniesUseCasePresenter();
+            _outputPort = new GetCompaniesPresenter();
         }
 
         public async Task Execute() =>

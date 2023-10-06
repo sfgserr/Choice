@@ -12,7 +12,7 @@ namespace Choice.Application.UseCases.Orders.CreateOrder
         {
             _useCase = useCase;
 
-            _outputPort = new CreateOrderUseCasePresenter();
+            _outputPort = new CreateOrderPresenter();
         }
 
         public async Task Execute(List<Category> categories, string description, bool toKnowPrice, bool toKnowAppointmentTime, bool toKnowDeadLine, List<string> photoUris, int searchingRadius)

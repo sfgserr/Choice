@@ -13,7 +13,7 @@ namespace Choice.Application.UseCases.OrderMessages.GetOrderMessages
         {
             _orderMessageRepository = orderMessageRepository;
 
-            _outputPort = new GetOrderMessagesUseCasePresenter();
+            _outputPort = new GetOrderMessagesPresenter();
         }
 
         public async Task Execute(int user1Id, int user2Id) =>
