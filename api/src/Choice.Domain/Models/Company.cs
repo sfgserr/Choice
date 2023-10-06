@@ -17,5 +17,6 @@ namespace Choice.Domain.Models
         public List<string> PhotoUris { get; set; } = new List<string>();
         public PrepaymentAvailability PrepaymentAvailability { get; set; }
         public bool ShowOnMap { get; set; } = true;
+        public List<Category> Categories { get; set; } = new List<Category>();
     }
 }
