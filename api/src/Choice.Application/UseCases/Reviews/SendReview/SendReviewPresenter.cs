@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.Reviews.SendReview
 {
-    public class SendReviewUseCasePresenter : IOutputPort
+    public class SendReviewPresenter : IOutputPort
     {
-        public Review Review { get; set; }
+        public Review? Review { get; set; }
 
         public void Ok(Review review)
         {

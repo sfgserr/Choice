@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.Clients.CreateClient
 {
-    public class CreateClientUseCasePresenter : IOutputPort
+    public class CreateClientPresenter : IOutputPort
     {
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
         public bool IsInvalid { get; set; } = false;
 
         public void Invalid()

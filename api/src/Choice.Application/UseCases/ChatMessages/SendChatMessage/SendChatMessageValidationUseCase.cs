@@ -12,7 +12,7 @@ namespace Choice.Application.UseCases.Messages.SendChatMessage
         {
             _useCase = useCase;
 
-            _outputPort = new SendChatMessageUseCasePresenter();
+            _outputPort = new SendChatMessagePresenter();
         }
 
         public async Task Execute(User sender, User receiver, string text)

@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.Orders.UpdateOrder
 {
-    public class UpdateOrderUseCasePresenter : IOutputPort
+    public class UpdateOrderPresenter : IOutputPort
     {
-        public Order Order { get; set; }
+        public Order? Order { get; set; }
 
         public void Ok(Order order)
         {

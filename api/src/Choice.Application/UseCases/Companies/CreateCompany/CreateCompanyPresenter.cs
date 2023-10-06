@@ -2,10 +2,10 @@
 
 namespace Choice.Application.UseCases.Companies.CreateCompany
 {
-    public class CreateCompanyUseCasePresenter : IOutputPort
+    public class CreateCompanyPresenter : IOutputPort
     {
         public bool IsInvalid { get; set; } = false;
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
 
         public void Invalid()
         {

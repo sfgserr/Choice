@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.ChatMessages.GetChatMessages
 {
-    public class GetChatMessagesUseCasePresenter : IOutputPort
+    public class GetChatMessagesPresenter : IOutputPort
     {
-        public IList<ChatMessage> Chat { get; set; }
+        public IList<ChatMessage> Chat { get; set; } = new List<ChatMessage>();
 
         public void Ok(IList<ChatMessage> chat)
         {

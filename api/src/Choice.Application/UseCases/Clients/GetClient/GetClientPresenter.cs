@@ -2,10 +2,10 @@
 
 namespace Choice.Application.UseCases.Clients.GetClient
 {
-    public class GetClientUseCasePresenter : IOutputPort
+    public class GetClientPresenter : IOutputPort
     {
         public bool IsNotFound { get; set; } = false;
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
 
         public void NotFound()
         {

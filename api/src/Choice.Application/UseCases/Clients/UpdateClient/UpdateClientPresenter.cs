@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.Clients.UpdateClient
 {
-    public class UpdateClientUseCasePresenter : IOutputPort
+    public class UpdateClientPresenter : IOutputPort
     {
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
 
         public void Ok(Client client)
         {

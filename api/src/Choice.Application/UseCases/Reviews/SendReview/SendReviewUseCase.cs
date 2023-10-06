@@ -16,7 +16,7 @@ namespace Choice.Application.UseCases.Reviews.SendReview
             _reviewRepository = reviewRepository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new SendReviewUseCasePresenter();
+            _outputPort = new SendReviewPresenter();
         }
 
         public async Task Execute(Client client, Company company, int grade, List<string> photoUris, string text) =>

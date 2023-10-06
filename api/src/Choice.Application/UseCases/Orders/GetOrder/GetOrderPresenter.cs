@@ -2,10 +2,10 @@
 
 namespace Choice.Application.UseCases.Orders.GetOrder
 {
-    public class GetOrderUseCasePresenter : IOutputPort
+    public class GetOrderPresenter : IOutputPort
     {
         public bool IsNotFound { get; set; } = false;
-        public Order Order { get; set; }
+        public Order? Order { get; set; }
 
         public void NotFound()
         {

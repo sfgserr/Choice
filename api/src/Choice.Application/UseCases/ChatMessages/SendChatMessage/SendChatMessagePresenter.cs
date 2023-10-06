@@ -2,10 +2,10 @@
 
 namespace Choice.Application.UseCases.Messages.SendChatMessage
 {
-    public class SendChatMessageUseCasePresenter : IOutputPort
+    public class SendChatMessagePresenter : IOutputPort
     {
         public bool IsInvalid { get; set; } = false;
-        public ChatMessage Message { get; set; }
+        public ChatMessage? Message { get; set; }
 
         public void Invalid()
         {

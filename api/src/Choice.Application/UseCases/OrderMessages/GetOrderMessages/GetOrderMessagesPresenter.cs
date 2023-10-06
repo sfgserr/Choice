@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.OrderMessages.GetOrderMessages
 {
-    public class GetOrderMessagesUseCasePresenter : IOutputPort
+    public class GetOrderMessagesPresenter : IOutputPort
     {
-        public IList<OrderMessage> OrderMessages { get; set; }
+        public IList<OrderMessage> OrderMessages { get; set; } = new List<OrderMessage>();
 
         public void Ok(IList<OrderMessage> orderMessages)
         {

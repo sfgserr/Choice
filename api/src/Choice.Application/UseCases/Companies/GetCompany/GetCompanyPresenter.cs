@@ -2,10 +2,10 @@
 
 namespace Choice.Application.UseCases.Companies.GetCompany
 {
-    public class GetCompanyUseCasePresenter : IOutputPort
+    public class GetCompanyPresenter : IOutputPort
     {
         public bool IsNotFound { get; set; } = false;
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
 
         public void NotFound()
         {

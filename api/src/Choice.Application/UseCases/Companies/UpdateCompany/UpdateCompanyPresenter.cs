@@ -2,9 +2,9 @@
 
 namespace Choice.Application.UseCases.Companies.UpdateCompany
 {
-    public class UpdateCompanyUseCasePresenter : IOutputPort
+    public class UpdateCompanyPresenter : IOutputPort
     {
-        public Company Company { get; set; }
+        public Company? Company { get; set; }
 
         public void Ok(Company company)
         {
