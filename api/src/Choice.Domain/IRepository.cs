@@ -12,6 +12,6 @@ namespace Choice.Domain
 
         Task<TEntity> Update(TEntity entity);
 
-        Task<TEntity> Delete(TEntity entity);
+        Task Delete(TEntity entity);
     }
 }
