@@ -11,7 +11,7 @@ namespace Choice.Domain.Models
     {
         public string Title { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-        public string SiteAddress { get; set; } = string.Empty;
+        public string SiteUri { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public List<SocialMedia> SocialMedias { get; set; } = new List<SocialMedia>();
         public List<string> PhotoUris { get; set; } = new List<string>();

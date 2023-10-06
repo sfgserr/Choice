@@ -4,7 +4,7 @@ namespace Choice.Application.UseCases.OrderMessages.SendOrderMessage
 {
     public class SendOrderMessageUseCasePresenter : IOutputPort
     {
-        public bool IsInvalid { get; set; } 
+        public bool IsInvalid { get; set; } = false;
         public OrderMessage OrderMessage { get; set; }
 
         public void Invalid()
