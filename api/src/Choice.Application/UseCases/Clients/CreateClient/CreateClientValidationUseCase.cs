@@ -3,14 +3,14 @@ using Choice.Domain.Models;
 
 namespace Choice.Application.UseCases.Clients.CreateClient
 {
-    public class CreateClientUseCaseValidation : ICreateClientUseCase
+    public class CreateClientValidationUseCase : ICreateClientUseCase
     {
         private readonly ICreateClientUseCase _clientUseCase;
         private readonly IRepository<User> _userRepository;
 
         private IOutputPort _outputPort;
 
-        public CreateClientUseCaseValidation(ICreateClientUseCase clientUseCase, IRepository<User> userRepository)
+        public CreateClientValidationUseCase(ICreateClientUseCase clientUseCase, IRepository<User> userRepository)
         {
             _clientUseCase = clientUseCase;
             _userRepository = userRepository;

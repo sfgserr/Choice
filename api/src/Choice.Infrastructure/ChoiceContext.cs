@@ -10,6 +10,15 @@ namespace Choice.Infrastructure
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                        .HasMany(c => c.Companies)
+                        .WithMany(c => c.Categories);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<Client> Clients { get; set; }

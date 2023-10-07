@@ -7,7 +7,7 @@ namespace Choice.Application.UseCases.Reviews.GetReviews
         Client = 1
     }
 
-    public interface IGetReviewUseCase
+    public interface IGetReviewsUseCase
     {
         Task Execute(GetReviewBy getReviewBy, int id);
 
