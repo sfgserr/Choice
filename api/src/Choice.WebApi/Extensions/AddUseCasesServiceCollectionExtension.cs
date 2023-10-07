@@ -18,7 +18,6 @@ using Choice.Application.UseCases.Orders.GetOrder;
 using Choice.Application.UseCases.Orders.UpdateOrder;
 using Choice.Application.UseCases.Reviews.GetReviews;
 using Choice.Application.UseCases.Reviews.SendReview;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Choice.WebApi.Extensions
 {

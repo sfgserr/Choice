@@ -7,7 +7,7 @@ namespace Choice.Infrastructure
     {
         public ChoiceContext(DbContextOptions options) : base(options) 
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
