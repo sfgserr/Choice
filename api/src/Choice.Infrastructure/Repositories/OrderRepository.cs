@@ -22,7 +22,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task Delete(Order entity)
         {
-            await _context.Database.ExecuteSqlRawAsync($"DELETE FROM Orders WHERE OrderId={entity.Id}");
+            await _context
+                .Database
+                .ExecuteSqlRawAsync($"DELETE FROM Orders WHERE OrderId={entity.Id}");
         }
 
         public async Task<IList<Order>> Get()
