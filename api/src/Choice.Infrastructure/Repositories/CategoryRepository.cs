@@ -16,6 +16,8 @@ namespace Choice.Infrastructure.Repositories
         public async Task<Category> Create(Category entity)
         {
             await _context.Categories.AddAsync(entity);
+
+            return entity;
         }
 
         public async Task Delete(Category entity)

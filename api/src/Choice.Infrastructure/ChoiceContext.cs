@@ -12,6 +12,26 @@ namespace Choice.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Company>()
+                        .Property(c => c.PhotoUris)
+                        .HasConversion(c => string.Join("|", c),
+                                       c => c.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
+
+            modelBuilder.Entity<Order>()
+                        .Property(c => c.PhotoUris)
+                        .HasConversion(c => string.Join("|", c),
+                                       c => c.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
+
+            modelBuilder.Entity<OrderMessage>()
+                        .Property(c => c.PhotoUris)
+                        .HasConversion(c => string.Join("|", c),
+                                       c => c.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
+
+            modelBuilder.Entity<Review>()
+                        .Property(c => c.PhotoUris)
+                        .HasConversion(c => string.Join("|", c),
+                                       c => c.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
+
             modelBuilder.Entity<Category>()
                         .HasMany(c => c.Companies)
                         .WithMany(c => c.Categories);

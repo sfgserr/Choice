@@ -1,4 +1,5 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Choice.Domain.Models
 {
     public enum MessageStatus
@@ -10,7 +11,7 @@ namespace Choice.Domain.Models
     public class Message : DomainObject 
     {
         public User Sender { get; set; }
-        public User Receiver { get; set; }
+        public Room Room { get; set; }
         public DateTime UploadDate { get; set; }
         public MessageStatus Status { get; set; } = MessageStatus.Unread;
     }

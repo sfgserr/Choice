@@ -3,7 +3,7 @@ using Choice.Domain.Models;
 
 namespace Choice.Application.UseCases.Reviews.GetReviews
 {
-    public class GetReviewsUseCase : IGetReviewUseCase
+    public class GetReviewsUseCase : IGetReviewsUseCase
     {
         private readonly IRepository<Review> _reviewRepository;
 

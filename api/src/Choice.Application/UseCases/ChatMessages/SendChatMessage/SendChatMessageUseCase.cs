@@ -19,16 +19,16 @@ namespace Choice.Application.UseCases.Messages.SendChatMessage
             _outputPort = new SendChatMessagePresenter();
         }
 
-        public async Task Execute(User sender, User receiver, string text) =>
-            await SendChatMessage(sender, receiver, text);
+        public async Task Execute(User sender, Room room, string text) =>
+            await SendChatMessage(sender, room, text);
 
-        private async Task SendChatMessage(User sender, User receiver, string text)
+        private async Task SendChatMessage(User sender, Room room, string text)
         {
             ChatMessage message = new ChatMessage()
             {
                 Sender = sender,
                 Text = text,
-                Receiver = receiver
+                Room = room
             };
 
             ChatMessage sentMessage = await _chatMessageRepository.Create(message);

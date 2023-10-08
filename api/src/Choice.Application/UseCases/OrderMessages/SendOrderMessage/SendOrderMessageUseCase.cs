@@ -19,15 +19,15 @@ namespace Choice.Application.UseCases.OrderMessages.SendOrderMessage
             _outputPort = new SendOrderMessagePresenter();
         }
 
-        public async Task Execute(User sender, User receiver, double price, DateTime appointmentTime, int duration, Order order) =>
-            await SendOrder(sender, receiver, price, appointmentTime, duration, order);
+        public async Task Execute(User sender, Room room, double price, DateTime appointmentTime, int duration, Order order) =>
+            await SendOrder(sender, room, price, appointmentTime, duration, order);
 
-        private async Task SendOrder(User sender, User receiver, double price, DateTime appointmentTime, int duration, Order order)
+        private async Task SendOrder(User sender, Room room, double price, DateTime appointmentTime, int duration, Order order)
         {
             OrderMessage orderMessage = new OrderMessage()
             {
                 Sender = sender,
-                Receiver = receiver,
+                Room = room,
                 Price = price,
                 AppointmentTime = appointmentTime,
                 Duration = duration,

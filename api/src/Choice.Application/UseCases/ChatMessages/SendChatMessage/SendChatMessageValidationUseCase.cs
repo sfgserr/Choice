@@ -15,15 +15,15 @@ namespace Choice.Application.UseCases.Messages.SendChatMessage
             _outputPort = new SendChatMessagePresenter();
         }
 
-        public async Task Execute(User sender, User receiver, string text)
+        public async Task Execute(User sender, Room room, string text)
         {
-            if (Equals(sender, receiver) || string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
                 _outputPort.Invalid();
                 return;
             }
 
-            await _useCase.Execute(sender, receiver, text);
+            await _useCase.Execute(sender, room, text);
         }
 
         public void SetOutputPort(IOutputPort outputPort)

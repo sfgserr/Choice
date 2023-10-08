@@ -24,8 +24,8 @@ namespace Choice.Application.UseCases.ChatMessages.GetChatMessages
         private async Task GetChat(int user1Id, int user2Id)
         {
             IList<ChatMessage> chatMessages = await _chatMessageRepository.Get();
-            chatMessages = chatMessages.Where(c => c.Receiver.Id == user1Id || c.Sender.Id == user1Id &&
-                                              c.Sender.Id == user2Id || c.Receiver.Id == user2Id).ToList();
+            chatMessages = chatMessages.Where(c => c.Room.Id == user1Id || c.Sender.Id == user1Id &&
+                                              c.Sender.Id == user2Id || c.Room.Id == user2Id).ToList();
 
             _outputPort.Ok(chatMessages);
         }

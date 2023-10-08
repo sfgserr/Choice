@@ -1,5 +1,4 @@
-﻿
-using Choice.Domain.Models;
+﻿using Choice.Domain.Models;
 
 namespace Choice.Application.UseCases.Companies.CreateCompany
 {

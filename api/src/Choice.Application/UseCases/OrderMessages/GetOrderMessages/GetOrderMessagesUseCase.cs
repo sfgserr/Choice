@@ -22,8 +22,8 @@ namespace Choice.Application.UseCases.OrderMessages.GetOrderMessages
         private async Task GetOrderMessages(int user1Id, int user2Id)
         {
             IList<OrderMessage> orderMessages = await _orderMessageRepository.Get();
-            orderMessages = orderMessages.Where(o => o.Sender.Id == user1Id || o.Receiver.Id == user1Id &&
-                                                o.Sender.Id == user2Id || o.Receiver.Id == user2Id).ToList();
+            orderMessages = orderMessages.Where(o => o.Sender.Id == user1Id || o.Room.Id == user1Id &&
+                                                o.Sender.Id == user2Id || o.Room.Id == user2Id).ToList();
 
             _outputPort.Ok(orderMessages);
         }

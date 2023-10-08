@@ -4,7 +4,7 @@ namespace Choice.Application.UseCases.Messages.SendChatMessage
 {
     public interface ISendChatMessageUseCase
     {
-        Task Execute(User sender, User receiver, string text);
+        Task Execute(User sender, Room room, string text);
 
         void SetOutputPort(IOutputPort outputPort);
     }

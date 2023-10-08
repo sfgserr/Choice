@@ -10,7 +10,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Choice.Application\Choice.Application.csproj" />
+    <ProjectReference Include="..\Choice.Domain\Choice.Domain.csproj" />
+    <ProjectReference Include="..\Choice.Infrastructure\Choice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
