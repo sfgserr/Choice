@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Choice.Infrastructure\Choice.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\ChatMessages\" />
+  </ItemGroup>
+
 </Project>
