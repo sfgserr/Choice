@@ -39,9 +39,12 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<ChatMessage> Update(ChatMessage entity)
         {
-            await Delete(entity);
+            await Task.Run(() =>
+            {
+                _context.ChatMessages.Update(entity);
+            });
 
-            return await Create(entity);
+            return entity;
         }
     }
 }

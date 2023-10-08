@@ -39,9 +39,12 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Review> Update(Review entity)
         {
-            await Delete(entity);
+            await Task.Run(() =>
+            {
+                _context.Reviews.Update(entity);
+            });
 
-            return await Create(entity);
+            return entity;
         }
     }
 }

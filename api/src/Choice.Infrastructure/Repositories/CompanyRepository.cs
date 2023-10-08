@@ -39,9 +39,12 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Company> Update(Company entity)
         {
-            await Delete(entity);
+            await Task.Run(() =>
+            {
+                _context.Companies.Update(entity);
+            });
 
-            return await Create(entity);
+            return entity;
         }
     }
 }

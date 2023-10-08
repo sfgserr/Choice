@@ -39,9 +39,12 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<OrderMessage> Update(OrderMessage entity)
         {
-            await Delete(entity);
+            await Task.Run(() =>
+            {
+                _context.OrderMessages.Update(entity);
+            });
 
-            return await Create(entity);
+            return entity;
         }
     }
 }

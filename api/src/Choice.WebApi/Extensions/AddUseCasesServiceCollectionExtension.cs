@@ -1,4 +1,5 @@
-﻿using Choice.Application.UseCases.Categories.GetCategories;
+﻿using Choice.Application.UseCases.Categories.CreateCategory;
+using Choice.Application.UseCases.Categories.GetCategories;
 using Choice.Application.UseCases.Categories.UpdateCategory;
 using Choice.Application.UseCases.ChatMessages.GetChatMessages;
 using Choice.Application.UseCases.Clients.CreateClient;
@@ -69,6 +70,9 @@ namespace Choice.WebApi.Extensions
             services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
 
             services.AddScoped<IGetCategoriesUseCase, GetCategoriesUseCase>();
+
+            services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
+            services.Decorate<ICreateCategoryUseCase, CreateCategoryValidationUseCase>();
 
             return services;
         }

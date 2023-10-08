@@ -22,9 +22,8 @@ namespace Choice.WebApi.UseCases.Categories.GetCategories
             _viewModel = Ok(categories);
         }
 
-        [Route("Get")]
-        [HttpGet()]
-        public async Task<IActionResult> GetCategories()
+        [HttpGet("Get")]
+        public async Task<IActionResult> Get()
         {
             _useCase.SetOutputPort(this);
 

@@ -24,7 +24,7 @@ namespace Choice.Infrastructure.Repositories
         {
             await _context
                 .Database
-                .ExecuteSqlRawAsync($"DELETE FROM Categories WHERE CategoryId={entity.Id}");
+                .ExecuteSqlRawAsync($"DELETE FROM Categories WHERE Id={entity.Id}");
         }
 
         public async Task<IList<Category>> Get()
@@ -39,9 +39,12 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Category> Update(Category entity)
         {
-            await Delete(entity);
+            await Task.Run(() =>
+            {
+                _context.Categories.Update(entity);
+            });
 
-            return await Create(entity);
+            return entity;
         }
     }
 }
