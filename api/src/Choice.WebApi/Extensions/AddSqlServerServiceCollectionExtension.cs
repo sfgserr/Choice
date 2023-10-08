@@ -22,6 +22,7 @@ namespace Choice.WebApi.Extensions
             services.AddScoped<IRepository<OrderMessage>, OrderMessageRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
+            services.AddScoped<IRepository<Room>, RoomRepository>();
 
             return services;
         }

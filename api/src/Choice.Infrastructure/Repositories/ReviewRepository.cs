@@ -24,7 +24,7 @@ namespace Choice.Infrastructure.Repositories
         {
             await _context
                 .Database
-                .ExecuteSqlRawAsync($"DELETE FROM Reviews WHERE ReviewId={entity.Id}");
+                .ExecuteSqlRawAsync($"DELETE FROM Reviews WHERE Id={entity.Id}");
         }
 
         public async Task<IList<Review>> Get()

@@ -24,7 +24,7 @@ namespace Choice.Infrastructure.Repositories
         {
             await _context
                 .Database
-                .ExecuteSqlRawAsync($"DELETE FROM ChatMessages WHERE ChatMessageId={entity.Id}");
+                .ExecuteSqlRawAsync($"DELETE FROM ChatMessages WHERE Id={entity.Id}");
         }
 
         public async Task<IList<ChatMessage>> Get()

@@ -19,6 +19,7 @@ using Choice.Application.UseCases.Orders.GetOrder;
 using Choice.Application.UseCases.Orders.UpdateOrder;
 using Choice.Application.UseCases.Reviews.GetReviews;
 using Choice.Application.UseCases.Reviews.SendReview;
+using Choice.Application.UseCases.Rooms.CreateRoom;
 
 namespace Choice.WebApi.Extensions
 {
@@ -73,6 +74,9 @@ namespace Choice.WebApi.Extensions
 
             services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
             services.Decorate<ICreateCategoryUseCase, CreateCategoryValidationUseCase>();
+
+            services.AddScoped<ICreateRoomUseCase, CreateRoomUseCase>();
+            services.Decorate<ICreateRoomUseCase, CreateRoomValidationUseCase>();
 
             return services;
         }

@@ -24,7 +24,7 @@ namespace Choice.Infrastructure.Repositories
         {
             await _context
                 .Database
-                .ExecuteSqlRawAsync($"DELETE FROM OrderMessages WHERE OrderMessageId={entity.Id}");
+                .ExecuteSqlRawAsync($"DELETE FROM OrderMessages WHERE Id={entity.Id}");
         }
 
         public async Task<IList<OrderMessage>> Get()

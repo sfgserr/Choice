@@ -39,6 +39,7 @@ namespace Choice.Infrastructure
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Room> Rooms { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<Client> Clients { get; set; }

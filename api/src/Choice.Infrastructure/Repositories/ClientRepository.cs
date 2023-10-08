@@ -24,7 +24,7 @@ namespace Choice.Infrastructure.Repositories
         {
             await _context
                 .Database
-                .ExecuteSqlRawAsync($"DELETE FROM Clients WHERE ClientId={entity.Id}");
+                .ExecuteSqlRawAsync($"DELETE FROM Clients WHERE Id={entity.Id}");
         }
 
         public async Task<IList<Client>> Get()
