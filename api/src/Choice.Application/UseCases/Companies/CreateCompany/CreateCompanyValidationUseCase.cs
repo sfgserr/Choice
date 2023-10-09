@@ -50,7 +50,7 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
                 return;
             }
 
-            await _useCase.Execute(email, password, title, phoneNumber, address, siteUri, socialMedias, photoUris, prepaymentAvailability);
+            await _useCase.Execute(email, password, title, phoneNumber, address, siteUri, socialMedias, photoUris, categories, prepaymentAvailability);
         }
 
         public void SetOutputPort(IOutputPort outputPort)
