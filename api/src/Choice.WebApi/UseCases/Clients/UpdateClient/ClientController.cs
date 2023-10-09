@@ -1,17 +1,18 @@
-﻿using Choice.Application.UseCases.Clients.GetClient;
+﻿using Choice.Application.UseCases.Clients.UpdateClient;
 using Choice.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.WebApi.UseCases.Clients.GetClient
+namespace Choice.WebApi.UseCases.Clients.UpdateClient
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class ClientController : Controller, IOutputPort
     {
-        private readonly IGetClientUseCase _useCase;
+        private readonly IUpdateClientUseCase _useCase;
 
         private IActionResult _viewModel;
 
-        public ClientController(IGetClientUseCase useCase)
+        public ClientController(IUpdateClientUseCase useCase)
         {
             _useCase = useCase;
         }
@@ -21,17 +22,12 @@ namespace Choice.WebApi.UseCases.Clients.GetClient
             _viewModel = Ok(client);
         }
 
-        void IOutputPort.NotFound()
-        {
-            _viewModel = NotFound();
-        }
-
-        [HttpGet("{id}/Get")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(Client client)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(id);
+            await _useCase.Execute(client);
 
             return _viewModel;
         }
