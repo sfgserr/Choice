@@ -28,11 +28,11 @@ namespace Choice.WebApi.UseCases.Clients.CreateClient
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(string name, string surname, string password, string email, string photoUri)
+        public async Task<IActionResult> Create(Client client)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(name, surname, password, email, photoUri);
+            await _useCase.Execute(client.Name, client.Surname, client.Password, client.Email, client.PhotoUri);
 
             return _viewModel;
         }
