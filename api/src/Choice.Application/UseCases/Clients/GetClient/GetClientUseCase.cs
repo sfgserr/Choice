@@ -16,10 +16,9 @@ namespace Choice.Application.UseCases.Clients.GetClient
             _outputPort = new GetClientPresenter();
         }
 
-        public async Task Execute(Func<Client, bool> func)
+        public async Task Execute(int id)
         {
-            Client? client = await _clientRepository.GetBy(func);
-
+            Client? client = await _clientRepository.GetBy(c => c.Id == id);
             if (client != null)
             {
                 _outputPort.Ok(client);

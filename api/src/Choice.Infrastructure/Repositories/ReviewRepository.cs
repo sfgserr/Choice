@@ -34,7 +34,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Review> GetBy(Func<Review, bool> func)
         {
-            return await _context.Reviews.FirstOrDefaultAsync(r => func(r));
+            List<Review> reviews = await _context.Reviews.ToListAsync();
+
+            return reviews.FirstOrDefault(c => func(c));
         }
 
         public async Task<Review> Update(Review entity)

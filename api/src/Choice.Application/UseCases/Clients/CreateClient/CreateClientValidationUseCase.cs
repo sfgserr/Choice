@@ -6,14 +6,14 @@ namespace Choice.Application.UseCases.Clients.CreateClient
     public class CreateClientValidationUseCase : ICreateClientUseCase
     {
         private readonly ICreateClientUseCase _clientUseCase;
-        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Client> _clientRepository;
 
         private IOutputPort _outputPort;
 
-        public CreateClientValidationUseCase(ICreateClientUseCase clientUseCase, IRepository<User> userRepository)
+        public CreateClientValidationUseCase(ICreateClientUseCase clientUseCase, IRepository<Client> clientRepository)
         {
             _clientUseCase = clientUseCase;
-            _userRepository = userRepository;
+            _clientRepository = clientRepository;
 
             _outputPort = new CreateClientPresenter();
         }
@@ -27,9 +27,9 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 _outputPort.Invalid();
             }
 
-            User? user = await _userRepository.GetBy(c => c.Email == email);
+            Client? client = await _clientRepository.GetBy(c => c.Email == email);
 
-            if (user != null)
+            if (client != null)
             {
                 _outputPort.Invalid();
             }

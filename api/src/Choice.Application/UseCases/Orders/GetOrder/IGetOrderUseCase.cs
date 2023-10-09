@@ -4,7 +4,7 @@ namespace Choice.Application.UseCases.Orders.GetOrder
 {
     public interface IGetOrderUseCase
     {
-        Task Execute(Func<Order, bool> func);
+        Task Execute(int id);
 
         void SetOutputPort(IOutputPort outputPort);
     }

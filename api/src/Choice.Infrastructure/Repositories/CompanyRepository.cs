@@ -34,7 +34,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Company> GetBy(Func<Company, bool> func)
         {
-            return await _context.Companies.FirstOrDefaultAsync(c => func(c));
+            List<Company> companies = await _context.Companies.ToListAsync();
+
+            return companies.FirstOrDefault(c => func(c));
         }
 
         public async Task<Company> Update(Company entity)

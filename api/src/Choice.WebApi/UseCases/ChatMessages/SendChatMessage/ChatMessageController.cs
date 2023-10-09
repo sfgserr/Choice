@@ -27,8 +27,8 @@ namespace Choice.WebApi.UseCases.ChatMessages.SendChatMessage
             _viewModel = BadRequest();
         }
 
-        [HttpPost("Send")]
-        public async Task<IActionResult> SendChatMessage(User sender, Room room, string text)
+        [HttpPost("Send/{room}")]
+        public async Task<IActionResult> SendChatMessage(User sender,[FromRoute] Room room, string text)
         {
             _useCase.SetOutputPort(this);
 

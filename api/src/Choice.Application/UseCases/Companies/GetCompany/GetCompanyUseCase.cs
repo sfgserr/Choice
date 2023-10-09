@@ -16,9 +16,9 @@ namespace Choice.Application.UseCases.Companies.GetCompany
             _outputPort = new GetCompanyPresenter();
         }
 
-        public async Task Execute(Func<Company, bool> func)
+        public async Task Execute(int id)
         {
-            Company? company = await _companyRepository.GetBy(func);
+            Company? company = await _companyRepository.GetBy(c => c.Id == id);
 
             if (company != null)
             {

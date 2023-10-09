@@ -16,12 +16,12 @@ namespace Choice.Application.UseCases.Orders.GetOrder
             _outputPort = new GetOrderPresenter();
         }
 
-        public async Task Execute(Func<Order, bool> func) => 
-            await GetOrder(func);
+        public async Task Execute(int id) => 
+            await GetOrder(id);
 
-        private async Task GetOrder(Func<Order, bool> func)
+        private async Task GetOrder(int id)
         {
-            Order? order = await _orderRepository.GetBy(func);
+            Order? order = await _orderRepository.GetBy(o => o.Id == id);
 
             if (order != null)
             {

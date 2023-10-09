@@ -34,7 +34,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Order> GetBy(Func<Order, bool> func)
         {
-            return await _context.Orders.FirstOrDefaultAsync(o => func(o));
+            List<Order> orders = await _context.Orders.ToListAsync();
+
+            return orders.FirstOrDefault(c => func(c));
         }
 
         public async Task<Order> Update(Order entity)

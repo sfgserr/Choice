@@ -1,8 +1,8 @@
 ﻿using Choice.Domain.Models;
 
-namespace Choice.Application.UseCases.Reviews.GetReviews
+namespace Choice.Application.UseCases.Reviews.GetClientReviews
 {
-    public class GetReviewsPresenter : IOutputPort
+    public class GetClientReviewsPresenter : IOutputPort
     {
         public IList<Review>? Review { get; set; }
 

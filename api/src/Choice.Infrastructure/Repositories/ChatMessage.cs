@@ -34,7 +34,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<ChatMessage> GetBy(Func<ChatMessage, bool> func)
         {
-            return await _context.ChatMessages.FirstOrDefaultAsync(c => func(c));
+            List<ChatMessage> chatMessages = await _context.ChatMessages.ToListAsync();
+
+            return chatMessages.FirstOrDefault(c => func(c));
         }
 
         public async Task<ChatMessage> Update(ChatMessage entity)

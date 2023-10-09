@@ -17,7 +17,7 @@ using Choice.Application.UseCases.OrderMessages.UpdateOrderMessage;
 using Choice.Application.UseCases.Orders.CreateOrder;
 using Choice.Application.UseCases.Orders.GetOrder;
 using Choice.Application.UseCases.Orders.UpdateOrder;
-using Choice.Application.UseCases.Reviews.GetReviews;
+using Choice.Application.UseCases.Reviews.GetClientReviews;
 using Choice.Application.UseCases.Reviews.SendReview;
 using Choice.Application.UseCases.Rooms.CreateRoom;
 
@@ -29,7 +29,7 @@ namespace Choice.WebApi.Extensions
         {
             services.AddScoped<ISendReviewUseCase, SendReviewUseCase>();
 
-            services.AddScoped<IGetReviewsUseCase, GetReviewsUseCase>();
+            services.AddScoped<IGetClientReviewsUseCase, GetClientReviewsUseCase>();
 
             services.AddScoped<IUpdateOrderUseCase, UpdateOrderUseCase>();
 

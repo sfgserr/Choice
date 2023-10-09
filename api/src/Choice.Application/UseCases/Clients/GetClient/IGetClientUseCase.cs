@@ -4,7 +4,7 @@ namespace Choice.Application.UseCases.Clients.GetClient
 {
     public interface IGetClientUseCase
     {
-        Task Execute(Func<Client, bool> func);
+        Task Execute(int id);
 
         void SetOutputPort(IOutputPort outputPort);
     }

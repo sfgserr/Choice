@@ -1,6 +1,6 @@
 ﻿using Choice.Domain.Models;
 
-namespace Choice.Application.UseCases.Reviews.GetReviews
+namespace Choice.Application.UseCases.Reviews.GetClientReviews
 {
     public interface IOutputPort
     {
