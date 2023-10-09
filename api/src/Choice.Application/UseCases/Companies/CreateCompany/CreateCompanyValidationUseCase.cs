@@ -18,11 +18,11 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
             _outputPort = new CreateCompanyPresenter();
         }
 
-        public async Task Execute(string email, string password, string title, string phoneNumber, string address, string siteUri, List<SocialMedia> socialMedias, List<string> photoUris, PrepaymentAvailability prepaymentAvailability)
+        public async Task Execute(string email, string password, string title, string phoneNumber, string address, string siteUri, List<SocialMedia> socialMedias, List<string> photoUris, List<Category> categories, PrepaymentAvailability prepaymentAvailability)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(address) ||
                 string.IsNullOrEmpty(title) || string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(siteUri) ||
-                photoUris.Count == 0)
+                photoUris.Count == 0 || categories.Count == 0)
             {
                 _outputPort.Invalid();
                 return;
@@ -38,7 +38,8 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
                 SocialMedias = socialMedias,
                 PhotoUris = photoUris,
                 PrepaymentAvailability = prepaymentAvailability,
-                Title = title
+                Title = title,
+                Categories = categories
             };
 
             Company? gotCompanyByEmail = await _companyRepository.GetBy(c => c.Email == company.Email);

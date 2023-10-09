@@ -19,7 +19,7 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
             _outputPort = new CreateCompanyPresenter();
         }
 
-        public async Task Execute(string email, string password, string title, string phoneNumber, string address, string siteUri, List<SocialMedia> socialMedias, List<string> photoUris, PrepaymentAvailability prepaymentAvailability)
+        public async Task Execute(string email, string password, string title, string phoneNumber, string address, string siteUri, List<SocialMedia> socialMedias, List<string> photoUris, List<Category> categories, PrepaymentAvailability prepaymentAvailability)
         {
             Company company = new Company()
             {
@@ -31,7 +31,8 @@ namespace Choice.Application.UseCases.Companies.CreateCompany
                 SiteUri = siteUri,
                 SocialMedias = socialMedias,
                 PhotoUris = photoUris,
-                PrepaymentAvailability = prepaymentAvailability
+                PrepaymentAvailability = prepaymentAvailability,
+                Categories = categories
             };
 
             Company createdCompany = await _companyRepository.Create(company);
