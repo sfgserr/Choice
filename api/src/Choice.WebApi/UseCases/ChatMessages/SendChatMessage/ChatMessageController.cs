@@ -28,11 +28,11 @@ namespace Choice.WebApi.UseCases.ChatMessages.SendChatMessage
         }
 
         [HttpPost("Send/{room}")]
-        public async Task<IActionResult> SendChatMessage(User sender,[FromRoute] Room room, string text)
+        public async Task<IActionResult> SendChatMessage(ChatMessage chatMessage)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(sender, room, text);
+            await _useCase.Execute(chatMessage.Sender, chatMessage.Room, chatMessage.Text);
 
             return _viewModel;
         }
