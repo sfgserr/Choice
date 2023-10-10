@@ -22,7 +22,7 @@ namespace Choice.WebApi.UseCases.Orders.UpdateOrder
             _viewModel = Ok(order);
         }
 
-        [Route("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(Order order)
         {
             _useCase.SetOutputPort(this);
