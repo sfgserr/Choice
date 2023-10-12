@@ -20,7 +20,7 @@ WORKDIR "/src/src/Choice.WebApi"
 RUN dotnet build "Choice.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Choice.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Choice.WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
