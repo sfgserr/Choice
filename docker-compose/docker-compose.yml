@@ -4,7 +4,7 @@ services:
   choice.webapi:
     image: ${DOCKER_REGISTRY-}choicewebapi
     build:
-      context: .
-      dockerfile: ../api/src/Choice.WebApi/Dockerfile
+      context: ../api/
+      dockerfile: Dockerfile
      
  

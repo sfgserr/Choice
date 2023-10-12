@@ -10,10 +10,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Choice.WebApi/Choice.WebApi.csproj", "Choice.WebApi/"]
-RUN dotnet restore "Choice.WebApi/Choice.WebApi.csproj"
+COPY ["src/Choice.WebApi/Choice.WebApi.csproj", "src/Choice.WebApi/"]
+COPY ["src/Choice.Domain/Choice.Domain.csproj", "src/Choice.Domain/"]
+COPY ["src/Choice.Application/Choice.Application.csproj", "src/Choice.Application/"]
+COPY ["src/Choice.Infrastructure/Choice.Infrastructure.csproj", "src/Choice.Infrastructure/"]
+RUN dotnet restore "src/Choice.WebApi/Choice.WebApi.csproj"
 COPY . .
-WORKDIR "/src/Choice.WebApi"
+WORKDIR "/src/src/Choice.WebApi"
 RUN dotnet build "Choice.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
