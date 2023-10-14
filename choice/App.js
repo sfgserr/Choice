@@ -12,7 +12,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import Login from './components/LoginPage';
+import LoginScreen from './screens/LoginScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,11 +26,9 @@ function App() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.container}>
-          <Login>
+        <LoginScreen>
 
-          </Login>
-        </View>
+        </LoginScreen>
       </ScrollView>
     </SafeAreaView>
   );
