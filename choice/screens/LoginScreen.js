@@ -38,12 +38,17 @@ const styles = StyleSheet.create({
 const LoginScreen = () => {
     const value = React.useState(new Animated.ValueXY({ x: 0, y: 0 }))[0];
 
+    const [emailTextColor, setEmailTextColor] = React.useState('#818C99');
+    const [phoneTextColor, setPhoneTextColor] = React.useState('#818C99');
+
     function onPhonePressed() {
       Animated.timing(value, {
         toValue: { x: 130, y: 0},
         duration: 250,
         useNativeDriver: false
       }).start();
+      setEmailTextColor('#818C99');
+      setPhoneTextColor('#000');
     }
 
     function onEmailPressed() {
@@ -52,6 +57,8 @@ const LoginScreen = () => {
         duration: 250,
         useNativeDriver: false
       }).start();
+      setEmailTextColor('#000');
+      setPhoneTextColor('#818C99');
     }  
 
     return (
@@ -84,14 +91,14 @@ const LoginScreen = () => {
             <TouchableOpacity style={{borderColor: 'black', width: 100, justifyContent: 'center',
                                       paddingLeft: 50}}
                               onPress={onEmailPressed}>
-              <Text style={{fontSize: 16, color: '#000000'}}>
+              <Text style={{fontSize: 16, color: emailTextColor}}>
                 E-mail
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={{borderColor: 'black', width: 100, justifyContent: 'center',
                                       paddingLeft: 80, width: 'auto'}}
                               onPress={onPhonePressed}>
-              <Text style={{fontSize: 16, color: '#000000'}}>
+              <Text style={{fontSize: 16, color: phoneTextColor}}>
                 Телефон
               </Text>
             </TouchableOpacity>

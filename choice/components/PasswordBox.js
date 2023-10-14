@@ -12,8 +12,6 @@ const PasswordBox = () => {
 
     return (
         <TextBox placeholder={"Введите пароль"}
-                 width={250}
-                 height={40}
                  isPassword={isVisible}
                  child={
                     <TouchableOpacity style={{width: 15, height: 15}}
