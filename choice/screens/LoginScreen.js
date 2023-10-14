@@ -5,9 +5,11 @@ import {
     Image,
     StyleSheet,
     SafeAreaView,
-    Border,
     TouchableOpacity,
-  } from 'react-native';
+    Animated,
+} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
+import TextBox from '../components/TextBox';
 
 const styles = StyleSheet.create({
   logo: {
@@ -31,7 +33,25 @@ const styles = StyleSheet.create({
   },
 });
 
-function LoginScreen() {
+const LoginScreen = () => {
+    const value = React.useState(new Animated.ValueXY({ x: 0, y: 0 }))[0];
+
+    function onPhonePressed() {
+      Animated.timing(value, {
+        toValue: { x: 130, y: 0},
+        duration: 250,
+        useNativeDriver: false
+      }).start();
+    }
+
+    function onEmailPressed() {
+      Animated.timing(value, {
+        toValue: { x: 0, y: 0},
+        duration: 250,
+        useNativeDriver: false
+      }).start();
+    }  
+
     return (
         <SafeAreaView>
           <View style={styles.container}>
@@ -60,18 +80,35 @@ function LoginScreen() {
           </View>
           <View style={{flexDirection: 'row', paddingLeft: 16, paddingTop: 20}}>
             <TouchableOpacity style={{borderColor: 'black', width: 100, justifyContent: 'center',
-                                      paddingLeft: 50}}>
+                                      paddingLeft: 50}}
+                              onPress={onEmailPressed}>
               <Text style={{fontSize: 16, color: '#000000'}}>
                 E-mail
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={{borderColor: 'black', width: 100, justifyContent: 'center',
-                                      paddingLeft: 80, width: 'auto'}}>
+                                      paddingLeft: 80, width: 'auto'}}
+                              onPress={onPhonePressed}>
               <Text style={{fontSize: 16, color: '#000000'}}>
                 Телефон
               </Text>
             </TouchableOpacity>
           </View>
+          <Animated.View style={value.getLayout()}>
+            <View style={{
+                width: 140,
+                height: 2,
+                backgroundColor: '#3F8AE0',
+                borderRadius: 5,
+                marginLeft: 20,
+                marginTop: 5,
+            }}/>
+          </Animated.View>
+          <View style={[styles.container, tw`pt-5`]}>
+              <TextBox placeholder={"Введите E-mail"}
+                       height={40}
+                       width={250}/>
+            </View>
         </SafeAreaView>
     );
 }
