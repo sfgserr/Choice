@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import {
     TextInput,
     StyleSheet,
     View,
+    TouchableOpacity,
+    Image,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -10,20 +13,32 @@ const styles = StyleSheet.create({
         borderColor: '#d5d5d7',
         backgroundColor: '#f2f3f5',
         borderRadius: 10,
+        paddingLeft: 10,
+        flexDirection: 'row',
+        paddingLeft: 20,
+    },
+    text: {
         fontSize: 16,
         color: '#818c99',
-        paddingLeft: 10,
+    },
+    child: {
+        paddingLeft: 50,
+        justifyContent: 'center',
     },
 });
 
-const TextBox = ({placeholder, width, height}) => {
+const TextBox = ({placeholder, width, height, isPassword, child}) => {
     return (
-        <View>
+        <View style={styles.textBox}
+              width={width}
+              height={height}>
             <TextInput placeholder={placeholder}
-                       width={width}
-                       height={height}
-                       style={styles.textBox}
+                       style={styles.text}
+                       secureTextEntry={isPassword}
                        placeholderTextColor="#818c99"/>
+            <View style={styles.child}>
+                {child}
+            </View>
         </View>
     );
 }

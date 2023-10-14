@@ -26,9 +26,7 @@ function App() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <LoginScreen>
-
-        </LoginScreen>
+        <LoginScreen/>
       </ScrollView>
     </SafeAreaView>
   );

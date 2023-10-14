@@ -7,9 +7,11 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Animated,
+    ScrollView,
 } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import TextBox from '../components/TextBox';
+import LoginByEmail from '../components/LoginByEmail';
 
 const styles = StyleSheet.create({
   logo: {
@@ -104,11 +106,7 @@ const LoginScreen = () => {
                 marginTop: 5,
             }}/>
           </Animated.View>
-          <View style={[styles.container, tw`pt-5`]}>
-              <TextBox placeholder={"Введите E-mail"}
-                       height={40}
-                       width={250}/>
-            </View>
+          <LoginByEmail/>
         </SafeAreaView>
     );
 }
