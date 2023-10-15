@@ -1,29 +1,15 @@
 import { 
-    StyleSheet,
     TouchableOpacity,
     Text, 
 } from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
-const Button = ({text}) => {
-    const styles = StyleSheet.create({
-        button: {
-            width: 270,
-            height: 45,
-            backgroundColor: '#2D81E0',
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 10,
-        },
-        text: {
-            fontSize: 17,
-            color: '#FFF'
-        },
-    });
+const Button = ({text, isDisabled, backgroundColor}) => {
 
     return (
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.text}>
+        <TouchableOpacity style={[{backgroundColor: backgroundColor,}, tw`flex-1 justify-center items-center rounded-xl w-80 h-12`]}
+                          disabled={isDisabled}>
+            <Text style={tw`text-white text-lg`}>
                 {text}
             </Text>
         </TouchableOpacity>
