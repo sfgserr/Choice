@@ -1,7 +1,12 @@
 ﻿using Choice.Application.UseCases.Categories.CreateCategory;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace Choice.UnitTests.CreateCategory
+namespace Choice.Tests.CreateCategory
 {
     public sealed class CreateCategoryTests : IClassFixture<StandardFixture>
     {
@@ -13,7 +18,8 @@ namespace Choice.UnitTests.CreateCategory
         }
 
         [Theory]
-        public async Task CreateCategory_Returns_Ok()
+        [ClassData(typeof(ValidDataSetup))]
+        public async Task CreateCategory_Returns_Ok(string title, string iconUri)
         {
             CreateCategoryPresenter presenter = new CreateCategoryPresenter();
 
@@ -21,7 +27,7 @@ namespace Choice.UnitTests.CreateCategory
 
             sut.SetOutputPort(presenter);
 
-            await sut.Execute("Category", "/photo");
+            await sut.Execute(title, iconUri);
 
             Assert.NotNull(presenter.Category);
         }

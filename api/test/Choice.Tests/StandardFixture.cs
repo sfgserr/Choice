@@ -1,11 +1,11 @@
 ﻿using Choice.Infrastructure;
 using Choice.Infrastructure.Repositories.Fakes;
 
-namespace Choice.UnitTests
+namespace Choice.Tests
 {
     public sealed class StandardFixture
     {
-        public StandardFixture() 
+        public StandardFixture()
         {
             Context = new ChoiceContextFake();
 
