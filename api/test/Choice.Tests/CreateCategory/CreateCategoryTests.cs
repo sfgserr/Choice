@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Choice.Tests.CreateCategory
+namespace Choice.UnitTests.CreateCategory
 {
     public sealed class CreateCategoryTests : IClassFixture<StandardFixture>
     {

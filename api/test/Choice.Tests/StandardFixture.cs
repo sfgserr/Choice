@@ -1,7 +1,7 @@
 ﻿using Choice.Infrastructure;
 using Choice.Infrastructure.Repositories.Fakes;
 
-namespace Choice.Tests
+namespace Choice.UnitTests
 {
     public sealed class StandardFixture
     {

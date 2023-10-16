@@ -15,7 +15,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "identity-server\IdentityServer.csproj", "{3C7E65D4-D79D-46CB-AC71-5B0FBA814321}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Choice.Tests", "api\test\Choice.Tests\Choice.Tests.csproj", "{36E9F59D-F1EC-4150-B4EA-7F03D9A193BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Choice.UnitTests", "api\test\Choice.Tests\Choice.UnitTests.csproj", "{36E9F59D-F1EC-4150-B4EA-7F03D9A193BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

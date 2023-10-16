@@ -1,7 +1,7 @@
 ﻿using Choice.Domain.Models;
 using Xunit;
 
-namespace Choice.Tests.SendChatMessage
+namespace Choice.UnitTests.SendChatMessage
 {
     internal sealed class ValidDataSetup : TheoryData<User, Room, string>
     {

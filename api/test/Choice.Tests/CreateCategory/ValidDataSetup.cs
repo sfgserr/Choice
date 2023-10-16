@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Choice.Tests.CreateCategory
+namespace Choice.UnitTests.CreateCategory
 {
     internal sealed class ValidDataSetup : TheoryData<string, string>
     {

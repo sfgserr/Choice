@@ -2,7 +2,7 @@
 using Choice.Domain.Models;
 using Xunit;
 
-namespace Choice.Tests.SendChatMessage
+namespace Choice.UnitTests.SendChatMessage
 {
     public sealed class SendChatMessageTests : IClassFixture<StandardFixture>
     {
