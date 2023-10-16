@@ -1,13 +1,16 @@
 version: '3.4'
 
 services:
+  nginx:
+    ports:
+      - "80:80"
   choice.webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5050:80"
+      - "8080:80"
   identity-server:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5050:80"
+      - "5051:80"

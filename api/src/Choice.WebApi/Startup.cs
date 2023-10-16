@@ -37,6 +37,8 @@ namespace Choice.WebApi
 
             app.UseAuthorization();
             app.UseAuthentication();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseEndpoints(endpoints =>
             {

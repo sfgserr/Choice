@@ -1,15 +1,19 @@
 version: '3.4'
 
 services:
+  nginx:
+    build:
+      context: "../nginx/"
   choice.webapi:
+    container_name: "choice.webapi"
     image: ${DOCKER_REGISTRY-}choicewebapi
     build:
       context: ../api/
       dockerfile: src/Choice.WebApi/Dockerfile
   identity-server:
+    container_name: "identity-server"
     image: ${DOCKER_REGISTRY}identityserver
     build:
       context: ../
       dockerfile: identity-server/Dockerfile
-     
  
