@@ -10,7 +10,7 @@ namespace Choice.WebApi.Extensions
     public static class AddSqlServerServiceCollectionExtension
     {
         public static IServiceCollection AddSqlServer(this IServiceCollection services, IConfiguration configuration)
-        {
+        { 
             services.AddDbContext<ChoiceContext>(o => o.UseSqlServer(configuration["Database:ConnectionString"]));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
