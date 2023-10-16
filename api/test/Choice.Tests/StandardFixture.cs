@@ -8,13 +8,14 @@ namespace Choice.Tests
         public StandardFixture()
         {
             Context = new ChoiceContextFake();
+            UnitOfWorkFake = new UnitOfWorkFake();
 
             CategoryRepositoryFake = new CategoryRepositoryFake(Context);
-
-            UnitOfWorkFake = new UnitOfWorkFake();
+            ChatMessageRepositoryFake = new ChatMessageRepositoryFake(Context);
         }
 
         public CategoryRepositoryFake CategoryRepositoryFake { get; }
+        public ChatMessageRepositoryFake ChatMessageRepositoryFake { get; }
         public ChoiceContextFake Context { get; }
         public UnitOfWorkFake UnitOfWorkFake { get; }
     }
