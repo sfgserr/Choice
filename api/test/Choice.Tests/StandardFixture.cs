@@ -16,6 +16,7 @@ namespace Choice.UnitTests
             OrderMessageRepositoryFake = new OrderMessageRepositoryFake(Context);
             ClientRepositoryFake = new ClientRepositoryFake(Context);
             OrderRepositoryFake = new OrderRepositoryFake(Context);
+            RoomRepositoryFake = new RoomRepositoryFake(Context);
         }
 
         public CategoryRepositoryFake CategoryRepositoryFake { get; }
@@ -24,6 +25,7 @@ namespace Choice.UnitTests
         public ClientRepositoryFake ClientRepositoryFake { get; }
         public OrderMessageRepositoryFake OrderMessageRepositoryFake { get; }
         public OrderRepositoryFake OrderRepositoryFake { get; }
+        public RoomRepositoryFake RoomRepositoryFake { get; }
         public ChoiceContextFake Context { get; }
         public UnitOfWorkFake UnitOfWorkFake { get; }
     }
