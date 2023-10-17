@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace Choice.Domain.Models
 {
     public enum MessageStatus
