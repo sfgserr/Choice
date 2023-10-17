@@ -30,6 +30,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 Surname = surname,
                 Password = password,
                 Email = email,
+                PhotoUri = photoUri
             };
 
             Client newClient = await _clientRepository.Create(client);
