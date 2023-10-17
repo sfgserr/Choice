@@ -25,6 +25,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 string.IsNullOrEmpty(photoUri))
             {
                 _outputPort.Invalid();
+                return;
             }
 
             Client? client = await _clientRepository.GetBy(c => c.Email == email);
@@ -32,6 +33,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
             if (client != null)
             {
                 _outputPort.Invalid();
+                return;
             }
 
             await _clientUseCase.Execute(name, surname, password, email, photoUri);
