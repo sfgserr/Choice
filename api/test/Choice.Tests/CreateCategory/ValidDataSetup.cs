@@ -7,6 +7,8 @@ namespace Choice.UnitTests.CreateCategory
         public ValidDataSetup() 
         {
             Add("Category", "/photo");
+            Add("Services", "/photo-url");
+            Add("RepairServics", "/url");
         }
     }
 }

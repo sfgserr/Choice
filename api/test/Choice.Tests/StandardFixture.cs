@@ -12,10 +12,12 @@ namespace Choice.UnitTests
 
             CategoryRepositoryFake = new CategoryRepositoryFake(Context);
             ChatMessageRepositoryFake = new ChatMessageRepositoryFake(Context);
+            CompanyRepositoryFake = new CompanyRepositoryFake(Context);
         }
 
         public CategoryRepositoryFake CategoryRepositoryFake { get; }
         public ChatMessageRepositoryFake ChatMessageRepositoryFake { get; }
+        public CompanyRepositoryFake CompanyRepositoryFake { get; }
         public ChoiceContextFake Context { get; }
         public UnitOfWorkFake UnitOfWorkFake { get; }
     }

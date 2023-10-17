@@ -1,9 +1,4 @@
 ﻿using Choice.Application.UseCases.Categories.CreateCategory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Choice.UnitTests.CreateCategory
@@ -30,6 +25,23 @@ namespace Choice.UnitTests.CreateCategory
             await sut.Execute(title, iconUri);
 
             Assert.NotNull(presenter.Category);
+        }
+
+        [Theory]
+        [ClassData(typeof(InvalidDataSetup))]
+        public async Task CreateCategory_Returns_Invalid(string title, string iconUri)
+        {
+            CreateCategoryPresenter presenter = new CreateCategoryPresenter();
+
+            CreateCategoryUseCase createCategoryUseCase = new CreateCategoryUseCase(_fixture.CategoryRepositoryFake, _fixture.UnitOfWorkFake);
+
+            CreateCategoryValidationUseCase sut = new CreateCategoryValidationUseCase(createCategoryUseCase);
+
+            sut.SetOutputPort(presenter);
+
+            await sut.Execute(title, iconUri);
+
+            Assert.Null(presenter.Category);
         }
     }
 }
