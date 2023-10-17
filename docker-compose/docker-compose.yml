@@ -10,10 +10,4 @@ services:
     build:
       context: ../api/
       dockerfile: src/Choice.WebApi/Dockerfile
-  identity-server:
-    container_name: "identity-server"
-    image: ${DOCKER_REGISTRY}identityserver
-    build:
-      context: ../
-      dockerfile: identity-server/Dockerfile
  

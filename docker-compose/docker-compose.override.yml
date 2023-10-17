@@ -9,8 +9,3 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8080:80"
-  identity-server:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "5051:80"

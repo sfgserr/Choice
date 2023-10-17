@@ -1,4 +1,5 @@
 ﻿using Choice.WebApi.Extensions;
+using Choice.WebApi.Hubs;
 
 namespace Choice.WebApi
 {
@@ -13,6 +14,7 @@ namespace Choice.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             services.AddAuthentication();
             services.AddAuthorization();
             services.AddControllers();
@@ -43,6 +45,7 @@ namespace Choice.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
