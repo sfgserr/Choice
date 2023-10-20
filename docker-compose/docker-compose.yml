@@ -2,11 +2,13 @@ version: '3.4'
 
 services:
   nginx:
+    container_name: "nginx"
+    image: choice.azurecr.io/nginx
     build:
       context: "../nginx/"
   choice.webapi:
     container_name: "choice.webapi"
-    image: ${DOCKER_REGISTRY-}choicewebapi
+    image: choice.azurecr.io/choicewebapi
     build:
       context: ../api/
       dockerfile: src/Choice.WebApi/Dockerfile
