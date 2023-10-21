@@ -1,8 +1,8 @@
 ﻿using Choice.Domain.Models;
 
-namespace Choice.Application.UseCases.Companies.GetCompanyByEmail
+namespace Choice.Application.UseCases.Companies.GetCompanyByPhoneNumber
 {
-    public class GetCompanyByEmailPresenter : IOutputPort
+    public class GetCompanyByPhoneNumberPresenter : IOutputPort
     {
         public bool IsNotFound { get; set; } = false;
         public Company? Company { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Choice.Domain;
 using Choice.Domain.Models;
 
-namespace Choice.Application.UseCases.Companies.GetCompanyByEmail
+namespace Choice.Application.UseCases.Companies.GetCompanyByPhoneNumber
 {
     public class GetCompanyByEmailUseCase : IGetCompanyByEmailUseCase
     {
