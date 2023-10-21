@@ -28,7 +28,7 @@ namespace Choice.WebApi.UseCases.Clients.GetClientByEmail
         }
 
         [HttpGet("GetByEmail")]
-        public async Task<IActionResult> GetClientByEmail(string email)
+        public async Task<IActionResult> GetByEmail(string email)
         {
             _useCase.SetOutputPort(this);
 
