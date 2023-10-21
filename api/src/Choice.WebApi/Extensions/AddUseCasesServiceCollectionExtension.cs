@@ -82,7 +82,7 @@ namespace Choice.WebApi.Extensions
 
             services.AddScoped<IGetClientByEmailUseCase, GetClientByEmailUseCase>();
 
-            services.AddScoped<IGetCompanyByEmailUseCase, GetCompanyByEmailUseCase>();
+            services.AddScoped<IGetCompanyByPhoneNumberUseCase, GetCompanyByPhoneNumberUseCase>();
 
             return services;
         }

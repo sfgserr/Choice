@@ -3,17 +3,17 @@ using Choice.Domain.Models;
 
 namespace Choice.Application.UseCases.Companies.GetCompanyByPhoneNumber
 {
-    public class GetCompanyByEmailUseCase : IGetCompanyByEmailUseCase
+    public class GetCompanyByPhoneNumberUseCase : IGetCompanyByPhoneNumberUseCase
     {
         private readonly IRepository<Company> _companyRepository;
 
         private IOutputPort _outputPort;
 
-        public GetCompanyByEmailUseCase(IRepository<Company> companyRepository)
+        public GetCompanyByPhoneNumberUseCase(IRepository<Company> companyRepository)
         {
             _companyRepository = companyRepository;
 
-            _outputPort = new GetCompanyByEmailPresenter();
+            _outputPort = new GetCompanyByPhoneNumberPresenter();
         }
 
         public async Task Execute(string phoneNumber)
