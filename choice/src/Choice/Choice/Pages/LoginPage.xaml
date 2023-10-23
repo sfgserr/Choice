@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Choice.Pages.LoginPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Padding="0,50,0,0">
+                <Image Source="{ext:ImageResource Choice.Resources.logo.png}"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Padding="0,40,0,0">
+                <Label Text="В Ы Б О Р"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="#313131"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="16"
+                       TextColor="#9C9C9C"
+                       HorizontalOptions="Center"
+                       Text="Приложение для выбора"/>
+                
+                <Label FontSize="16"
+                       TextColor="#9C9C9C"
+                       HorizontalOptions="Center"
+                       Text="лучших условий"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         Padding="30,40">
+                <Label FontSize="24"
+                       Text="Авторизация"
+                       TextColor="#313131"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+
+                <Button Background="Transparent"
+                        TextColor="#2D81E0"
+                        Text="Создать аккаунт"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        TextTransform="None"/>
+            </StackLayout>
+            <StackLayout>
+                <xct:TabView TabStripPlacement="Top"
+                             TabStripBackgroundColor="Transparent"
+                             TabIndicatorColor="#3F8AE0"
+                             Padding="40,0"
+                             IsSwipeEnabled="True">
+                    <xct:TabViewItem Text="E-mail"
+                                     TextColor="#818C99"
+                                     TextColorSelected="black"
+                                     FontSize="16">
+                        <Grid 
+                        BackgroundColor="Gray">
+                            <Label
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Text="TabContent1" />
+                        </Grid>
+                    </xct:TabViewItem>
+                    <xct:TabViewItem Text="Телефон"
+                                     TextColor="#818C99"
+                                     TextColorSelected="black"
+                                     FontSize="16">
+                        <Grid 
+                        BackgroundColor="Gray">
+                            <Label
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Text="TabContent1" />
+                        </Grid>
+                    </xct:TabViewItem>
+                </xct:TabView>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
