@@ -6,7 +6,7 @@
              xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
              Shell.NavBarIsVisible="False">
 
-    <ScrollView>
+    <ScrollView VerticalScrollBarVisibility="Always">
         <StackLayout>
             <StackLayout Padding="0,50,0,0">
                 <Image Source="{ext:ImageResource Choice.Resources.logo.png}"
@@ -26,7 +26,7 @@
                        TextColor="#9C9C9C"
                        HorizontalOptions="Center"
                        Text="Приложение для выбора"/>
-                
+
                 <Label FontSize="16"
                        TextColor="#9C9C9C"
                        HorizontalOptions="Center"
@@ -48,40 +48,140 @@
                         FontSize="16"
                         VerticalOptions="Center"
                         HorizontalOptions="EndAndExpand"
-                        TextTransform="None"/>
+                        TextTransform="None"
+                        xct:TouchEffect.PressedOpacity="0.5"/>
             </StackLayout>
-            <StackLayout>
-                <xct:TabView TabStripPlacement="Top"
-                             TabStripBackgroundColor="Transparent"
-                             TabIndicatorColor="#3F8AE0"
-                             Padding="40,0"
-                             IsSwipeEnabled="True">
-                    <xct:TabViewItem Text="E-mail"
-                                     TextColor="#818C99"
-                                     TextColorSelected="black"
-                                     FontSize="16">
-                        <Grid 
-                        BackgroundColor="Gray">
-                            <Label
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            Text="TabContent1" />
-                        </Grid>
-                    </xct:TabViewItem>
-                    <xct:TabViewItem Text="Телефон"
-                                     TextColor="#818C99"
-                                     TextColorSelected="black"
-                                     FontSize="16">
-                        <Grid 
-                        BackgroundColor="Gray">
-                            <Label
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            Text="TabContent1" />
-                        </Grid>
-                    </xct:TabViewItem>
-                </xct:TabView>
-            </StackLayout>
+
+            <xct:TabView TabStripPlacement="Top"
+                         TabStripBackgroundColor="Transparent"
+                         TabIndicatorColor="#3F8AE0"
+                         Padding="40,0"
+                         IsSwipeEnabled="True"
+                         HeightRequest="400">
+                <xct:TabViewItem Text="E-mail"
+                                 TextColor="#818C99"
+                                 TextColorSelected="black"
+                                 FontSize="16"
+                                 FontAttributesSelected="Bold">
+                    <StackLayout>
+                        <StackLayout Padding="0,20,0,0">
+                            <Label FontSize="14"
+                                   TextColor="#6D7885"
+                                   Text="E-mail"/>
+                            <Frame Background="#F2F3F5"
+                                   CornerRadius="10"
+                                   BorderColor="#d5d5d7"
+                                   Padding="20,0"
+                                   HasShadow="False"
+                                   x:Name="emailFrame">
+                                <Entry BackgroundColor="Transparent"
+                                       PlaceholderColor="#818C99"
+                                       TextColor="#000"
+                                       Focused="EmailEntryFocused"
+                                       Unfocused="EmailEntryUnfocused"
+                                       Placeholder="E-mail"
+                                       Keyboard="Email"
+                                       FontSize="16"
+                                       Text="{Binding Email}">
+                                    <Entry.Effects>
+                                        <xct:RemoveBorderEffect/>
+                                    </Entry.Effects>
+                                </Entry>
+                            </Frame>
+                        </StackLayout>
+                        <StackLayout Padding="0,20,0,0">
+                            <Label FontSize="14"
+                                   TextColor="#6D7885"
+                                   Text="Пароль"/>
+                            <Frame Background="#F2F3F5"
+                                   CornerRadius="10"
+                                   BorderColor="#d5d5d7"
+                                   Padding="20,0"
+                                   HasShadow="False"
+                                   x:Name="passwordFrame">
+                                <Entry BackgroundColor="Transparent"
+                                       PlaceholderColor="#818C99"
+                                       IsPassword="True"
+                                       Focused="PasswordEntryFocused"
+                                       Unfocused="PasswordEntryUnfocused"
+                                       Placeholder="Пароль"
+                                       TextColor="#000"
+                                       FontSize="16"
+                                       Text="{Binding Password}">
+                                    <Entry.Effects>
+                                        <xct:RemoveBorderEffect/>
+                                    </Entry.Effects>
+                                </Entry>
+                            </Frame>
+                        </StackLayout>
+                        <StackLayout Padding="0,20,0,0">
+                            <Button Background="#2D81E0"
+                                    Text="Войти"
+                                    FontSize="17"
+                                    CornerRadius="10"
+                                    TextTransform="None"
+                                    TextColor="#fff"
+                                    xct:TouchEffect.NativeAnimation="True"
+                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
+                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"
+                                    IsEnabled="{Binding IsSignInButtonByEmailEnabled}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </xct:TabViewItem>
+                <xct:TabViewItem Text="Телефон"
+                                 TextColor="#818C99"
+                                 TextColorSelected="black"
+                                 FontSize="16"
+                                 FontAttributesSelected="Bold">
+                    <StackLayout>
+                        <StackLayout Padding="10,20,0,0">
+                            <Label FontSize="14"
+                                   TextColor="#6D7885"
+                                   Text="Телефон"/>
+                            <Frame Background="#F2F3F5"
+                                   CornerRadius="10"
+                                   BorderColor="#d5d5d7"
+                                   Padding="20,0"
+                                   HasShadow="False"
+                                   x:Name="phoneFrame">
+                                <Entry BackgroundColor="Transparent"
+                                       PlaceholderColor="#818C99"
+                                       Focused="PhoneEntryFocused"
+                                       Unfocused="PhoneEntryUnfocused"
+                                       Placeholder="Телефон"
+                                       FontSize="16"
+                                       TextColor="#000"
+                                       Keyboard="Telephone"
+                                       Text="{Binding PhoneNumber}">
+                                    <Entry.Effects>
+                                        <xct:RemoveBorderEffect/>
+                                    </Entry.Effects>
+                                </Entry>
+                            </Frame>
+                        </StackLayout>
+                        <StackLayout Padding="10,20,0,0">
+                            <Button Background="#2D81E0"
+                                    Text="Войти"
+                                    FontSize="17"
+                                    CornerRadius="10"
+                                    TextTransform="None"
+                                    TextColor="#fff"
+                                    IsEnabled="{Binding IsSignInButtonByPhoneEnabled}"
+                                    xct:TouchEffect.NativeAnimation="True"
+                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
+                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
+                        </StackLayout>
+                    </StackLayout>
+                </xct:TabViewItem>
+            </xct:TabView>
+            <Button Background="Transparent"
+                    TextColor="#2D81E0"
+                    Text="Я забыл пароль"
+                    FontSize="16"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    TextTransform="None"
+                    xct:TouchEffect.PressedOpacity="0.5"/>
         </StackLayout>
     </ScrollView>
     
