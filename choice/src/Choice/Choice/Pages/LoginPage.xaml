@@ -124,7 +124,7 @@
                                     xct:TouchEffect.NativeAnimation="True"
                                     xct:TouchEffect.NativeAnimationColor="#5396E1"
                                     xct:TouchEffect.NormalBackgroundColor="#2D81E0"
-                                    IsEnabled="{Binding IsSignInButtonByEmailEnabled}"/>
+                                    Command="{Binding LoginByEmailCommand}"/>
                         </StackLayout>
                     </StackLayout>
                 </xct:TabViewItem>

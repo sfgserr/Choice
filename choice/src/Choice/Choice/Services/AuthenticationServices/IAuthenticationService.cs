@@ -1,14 +1,14 @@
 ﻿using Choice.Domain.Models;
-using Choice.Services.AuthenticationServices;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Choice.Stores.Authenticators
+namespace Choice.Services.AuthenticationServices
 {
-    public interface IAuthenticator : IStore<User> 
+    public interface IAuthenticationService
     {
-        Task LoginByEmail(string email, string password);
+        Task<Client> LoginByEmail(string email, string password);
 
-        Task LoginByPhone(string phoneNumber);
+        Task<Company> LoginByPhone(string phoneNumber);
 
         Task RegisterClient(string name, string surname, string email, string password, string passwordConfirmtion);
 

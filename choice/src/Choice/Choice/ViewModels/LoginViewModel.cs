@@ -1,10 +1,19 @@
-﻿
+﻿using Choice.Commands;
+using Choice.Stores.Authenticators;
+using System.Windows.Input;
+
 namespace Choice.ViewModels
 {
     public class LoginViewModel : ViewModeBase
     {
+        public LoginViewModel(IAuthenticator authenticator)
+        {
+            LoginByEmailCommand = new LoginByEmailCommand(authenticator, this);
+        }
+
+        public ICommand LoginByEmailCommand { get; }
         public bool CanSignInByEmail => !string.IsNullOrEmpty(Email) && 
-                                                    !string.IsNullOrEmpty(Password);
+                                        !string.IsNullOrEmpty(Password);
 
         public bool IsSignInButtonByPhoneEnabled => !string.IsNullOrEmpty(PhoneNumber);
 

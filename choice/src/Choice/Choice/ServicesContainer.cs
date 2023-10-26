@@ -40,19 +40,19 @@ namespace Choice
                     services.AddScoped<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
                     services.AddScoped<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
 
-                    services.AddScoped<IAuthentictionService, AuthenticationService>();
+                    services.AddScoped<IAuthenticationService, AuthenticationService>();
                 });
 
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
-                                          "https://choice.webapi.azurewebsites.net/api");
+                                          "https://choiceweb.azurewebsites.net/api");
         }
 
         private static ApiService<Company> CreateCompanyApiService(IServiceProvider services)
         {
             return new ApiService<Company>(services.GetRequiredService<IHttpClientService<Company>>(),
-                                          "https://choice.webapi.azurewebsites.net/api");
+                                          "https://choiceweb.azurewebsites.net/api");
         }
     }
 }
