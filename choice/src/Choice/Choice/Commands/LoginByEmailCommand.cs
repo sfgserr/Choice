@@ -3,6 +3,7 @@ using Choice.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Choice.Commands
 {
@@ -28,7 +29,14 @@ namespace Choice.Commands
 
         public async void Execute(object parameter)
         {
-            await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
+            try
+            {
+                await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Внимание", ex.Message, "OK");
+            }
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)

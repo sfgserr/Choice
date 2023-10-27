@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
+using Twilio;
 
 namespace Choice
 {
@@ -27,6 +28,8 @@ namespace Choice
             Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
+                    TwilioClient.Init("ACdf6bfdcacd0f2f8c967a755e67a685a8", "37b8460e2ce3ea57b4bb5e75e0798688");
+
                     services.AddSingleton<IAuthenticator, Authenticator>();
 
                     services.AddScoped<MainViewModel>();

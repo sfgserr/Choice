@@ -1,5 +1,7 @@
 ﻿using Choice.Commands;
+using Choice.Extensions;
 using Choice.Stores.Authenticators;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Choice.ViewModels
@@ -9,13 +11,23 @@ namespace Choice.ViewModels
         public LoginViewModel(IAuthenticator authenticator)
         {
             LoginByEmailCommand = new LoginByEmailCommand(authenticator, this);
+            ShowPasswordCommand = new RelayCommand((par) => IsPassword = !IsPassword);
         }
 
         public ICommand LoginByEmailCommand { get; }
+        public ICommand ShowPasswordCommand { get; }
         public bool CanSignInByEmail => !string.IsNullOrEmpty(Email) && 
                                         !string.IsNullOrEmpty(Password);
 
-        public bool IsSignInButtonByPhoneEnabled => !string.IsNullOrEmpty(PhoneNumber);
+        public bool CanSignInByPhone => !string.IsNullOrEmpty(PhoneNumber) && PhoneNumber.Length == 15;
+
+        private bool _isPassword = true;
+
+        public bool IsPassword
+        {
+            get => _isPassword;
+            set => Set(ref _isPassword, value);
+        }
 
         private string _email = string.Empty;
 
@@ -45,11 +57,15 @@ namespace Choice.ViewModels
 
         public string PhoneNumber
         {
-            get => _phoneNumber;
+            get
+            {
+                string formattedPhone = _phoneNumber.FormatPhoneNumber();
+                return formattedPhone;
+            }
             set
             {
-                Set(ref _phoneNumber, value);
-                OnPropertyChanged(nameof(IsSignInButtonByPhoneEnabled));
+                Set(ref _phoneNumber, new string(value.Where(c => char.IsDigit(c)).ToArray()));
+                OnPropertyChanged(nameof(CanSignInByPhone));
             }
         }
     }

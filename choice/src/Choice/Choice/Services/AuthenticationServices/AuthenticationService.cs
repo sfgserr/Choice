@@ -1,9 +1,12 @@
 ﻿using Choice.Domain.Models;
+using Choice.Exceptions;
 using Choice.Services.ApiServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Twilio;
+using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Services.AuthenticationServices
 {
@@ -23,10 +26,10 @@ namespace Choice.Services.AuthenticationServices
             Client client = await _clientApiService.Get($"Client/GetByEmail?email={email}");
 
             if (client is null)
-                throw new ArgumentException();
+                throw new UserNotFoundException();
 
             if (client.Password != password)
-                throw new ArgumentException();
+                throw new UserNotFoundException();
 
             return client;
         }
@@ -36,7 +39,9 @@ namespace Choice.Services.AuthenticationServices
             Company company = await _companyApiService.Get($"Company/GetByPhone?phone={phoneNumber}");
 
             if (company is null)
-                throw new ArgumentException();
+                throw new UserNotFoundException();
+
+            VerificationResource.Create(to: $"+7{phoneNumber}", channel: "sms", pathServiceSid: "VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
             return company;
         }
@@ -53,11 +58,11 @@ namespace Choice.Services.AuthenticationServices
 
             Client clientGotByEmail = await _clientApiService.Get($"Client/GetByEmail?email={email}");
 
-            if (client != null)
-                throw new ArgumentException();
+            if (clientGotByEmail != null)
+                throw new EmailAlreadyRegisteredException();
 
-            if (client.Password != passwordConfirmtion)
-                throw new ArgumentException();
+            if (password != passwordConfirmtion)
+                throw new PasswordDoesNotEqualToConfirmtionException();
 
             await _clientApiService.Post("Client/Create", client);
         }
@@ -69,7 +74,7 @@ namespace Choice.Services.AuthenticationServices
             Company companyGotByPhone = companies.FirstOrDefault(c => c.PhoneNumber == input.PhoneNumber);
 
             if (companyGotByPhone != null)
-                throw new ArgumentException();
+                throw new PhoneNumberAlreadyRegisteredException();
 
             Company companyGotByEmail = companies.FirstOrDefault(c => c.Email == input.Email);
 

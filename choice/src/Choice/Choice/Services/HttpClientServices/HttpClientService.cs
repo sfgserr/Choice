@@ -31,6 +31,9 @@ namespace Choice.Services.HttpClientServices
 
             HttpResponseMessage response = await _client.SendAsync(request);
 
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return null;
+
             string json = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<T>(json);
