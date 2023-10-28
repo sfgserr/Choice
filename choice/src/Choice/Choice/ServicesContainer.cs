@@ -34,6 +34,8 @@ namespace Choice
 
                     services.AddScoped<MainViewModel>();
                     services.AddScoped<LoginViewModel>();
+                    services.AddScoped<RegisterClientViewModel>();
+                    services.AddScoped<RegisterCompanyViewModel>();
 
                     services.AddSingleton<HttpClient>(s => new HttpClient());
 

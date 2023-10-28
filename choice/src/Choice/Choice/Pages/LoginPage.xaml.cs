@@ -43,5 +43,15 @@ namespace Choice.Pages
         {
             phoneFrame.BorderColor = Color.FromHex("#d5d5d7");
         }
+
+        private void CodeEntryFocused(object sender, FocusEventArgs e)
+        {
+            codeFrame.BorderColor = Color.FromHex("#3F8AE0");
+        }
+
+        private void CodeEntryUnfocused(object sender, FocusEventArgs e)
+        {
+            codeFrame.BorderColor = Color.FromHex("#d5d5d7");
+        }
     }
 }

@@ -36,10 +36,10 @@ namespace Choice.Services.AuthenticationServices
 
         public async Task<Company> LoginByPhone(string phoneNumber)
         {
-            Company company = await _companyApiService.Get($"Company/GetByPhone?phone={phoneNumber}");
+            Company company = await _companyApiService.Get($"Company/GetByPhoneNumber?phoneNumber={phoneNumber}");
 
             if (company is null)
-                throw new UserNotFoundException();
+                throw new UserNotFoundByPhoneNumberException();
 
             VerificationResource.Create(to: $"+7{phoneNumber}", channel: "sms", pathServiceSid: "VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 

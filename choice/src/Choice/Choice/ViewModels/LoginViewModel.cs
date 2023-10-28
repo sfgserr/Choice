@@ -11,15 +11,23 @@ namespace Choice.ViewModels
         public LoginViewModel(IAuthenticator authenticator)
         {
             LoginByEmailCommand = new LoginByEmailCommand(authenticator, this);
+            LoginByPhoneCommand = new LoginByPhoneCommand(this, authenticator);
+            CheckCodeCommand = new CheckCodeCommand(this);
             ShowPasswordCommand = new RelayCommand((par) => IsPassword = !IsPassword);
+            DisplayActionSheetCommand = new DisplayAccountCreationActionSheet();
         }
 
         public ICommand LoginByEmailCommand { get; }
+        public ICommand LoginByPhoneCommand { get; }
         public ICommand ShowPasswordCommand { get; }
+        public ICommand CheckCodeCommand { get; }
+        public ICommand DisplayActionSheetCommand { get; }
         public bool CanSignInByEmail => !string.IsNullOrEmpty(Email) && 
                                         !string.IsNullOrEmpty(Password);
 
         public bool CanSignInByPhone => !string.IsNullOrEmpty(PhoneNumber) && PhoneNumber.Length == 15;
+        public bool CanSignInByCode => !string.IsNullOrEmpty(Code);
+        public bool IsPhoneNumberTextBoxVisible => !IsCodeSent;
 
         private bool _isPassword = true;
 
@@ -27,6 +35,30 @@ namespace Choice.ViewModels
         {
             get => _isPassword;
             set => Set(ref _isPassword, value);
+        }
+
+        private bool _isCodeSent = false;
+
+        public bool IsCodeSent
+        {
+            get => _isCodeSent;
+            set
+            {
+                Set(ref _isCodeSent, value);
+                OnPropertyChanged(nameof(IsPhoneNumberTextBoxVisible));
+            }
+        }
+
+        private string _code = string.Empty;
+
+        public string Code
+        {
+            get => _code;
+            set
+            {
+                Set(ref _code, value);
+                OnPropertyChanged(nameof(CanSignInByCode));
+            }
         }
 
         private string _email = string.Empty;
@@ -57,11 +89,7 @@ namespace Choice.ViewModels
 
         public string PhoneNumber
         {
-            get
-            {
-                string formattedPhone = _phoneNumber.FormatPhoneNumber();
-                return formattedPhone;
-            }
+            get => _phoneNumber.FormatPhoneNumber();
             set
             {
                 Set(ref _phoneNumber, new string(value.Where(c => char.IsDigit(c)).ToArray()));

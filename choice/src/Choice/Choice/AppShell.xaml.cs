@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Choice.Pages;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Choice
@@ -9,6 +10,9 @@ namespace Choice
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(RegisterCompanyPage), typeof(RegisterCompanyPage));
+            Routing.RegisterRoute(nameof(RegisterClientPage), typeof(RegisterClientPage));
         }
     }
 }

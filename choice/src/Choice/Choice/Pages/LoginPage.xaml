@@ -49,6 +49,7 @@
                         VerticalOptions="Center"
                         HorizontalOptions="EndAndExpand"
                         TextTransform="None"
+                        Command="{Binding DisplayActionSheetCommand}"
                         xct:TouchEffect.PressedOpacity="0.5"/>
             </StackLayout>
 
@@ -142,7 +143,8 @@
                                  FontSize="16"
                                  FontAttributesSelected="Bold">
                     <StackLayout>
-                        <StackLayout Padding="10,20,0,0">
+                        <StackLayout Padding="10,20,0,0"
+                                     IsVisible="{Binding IsPhoneNumberTextBoxVisible}">
                             <Label FontSize="14"
                                    TextColor="#6D7885"
                                    Text="Телефон"/>
@@ -181,14 +183,58 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <StackLayout Padding="10,20,0,0">
+                        <StackLayout Padding="10,20,0,0"
+                                     IsVisible="{Binding IsPhoneNumberTextBoxVisible}">
                             <Button Background="#2D81E0"
                                     Text="Отправить код"
                                     FontSize="17"
                                     CornerRadius="10"
                                     TextTransform="None"
                                     TextColor="#fff"
-                                    IsEnabled="{Binding CanSignInByPhone}"
+                                    xct:TouchEffect.NativeAnimation="True"
+                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
+                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"
+                                    Command="{Binding LoginByPhoneCommand}"/>
+                        </StackLayout>
+                        <StackLayout Padding="10,20,0,0"
+                                     IsVisible="{Binding IsCodeSent}">
+                            <Label FontSize="14"
+                                   TextColor="#6D7885"
+                                   Text="Код"/>
+                            <Frame Background="#F2F3F5"
+                                   CornerRadius="10"
+                                   BorderColor="#d5d5d7"
+                                   Padding="20,0"
+                                   HasShadow="False"
+                                   x:Name="codeFrame">
+                                <StackLayout Orientation="Horizontal">
+                                    <Entry BackgroundColor="Transparent"
+                                           PlaceholderColor="#818C99"
+                                           Focused="PhoneEntryFocused"
+                                           Unfocused="PhoneEntryUnfocused"
+                                           Placeholder="Код"
+                                           FontSize="16"
+                                           TextColor="#000"
+                                           Keyboard="Numeric"
+                                           Text="{Binding Code}"
+                                           MaxLength="6"
+                                           HorizontalOptions="FillAndExpand">
+                                        <Entry.Effects>
+                                            <xct:RemoveBorderEffect/>
+                                        </Entry.Effects>
+                                    </Entry>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <StackLayout Padding="10,20,0,0"
+                                     IsVisible="{Binding IsCodeSent}">
+                            <Button Background="#2D81E0"
+                                    Text="Войти"
+                                    FontSize="17"
+                                    CornerRadius="10"
+                                    TextTransform="None"
+                                    TextColor="#fff"
+                                    IsEnabled="{Binding CanSignInByCode}"
                                     xct:TouchEffect.NativeAnimation="True"
                                     xct:TouchEffect.NativeAnimationColor="#5396E1"
                                     xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
