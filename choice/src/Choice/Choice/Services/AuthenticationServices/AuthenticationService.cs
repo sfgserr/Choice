@@ -48,21 +48,22 @@ namespace Choice.Services.AuthenticationServices
 
         public async Task RegisterClient(string name, string surname, string email, string password, string passwordConfirmtion)
         {
-            Client client = new Client()
-            {
-                Name = name,
-                Surname = surname,
-                Email = email,
-                Password = password,
-            };
+            if (password != passwordConfirmtion)
+                throw new PasswordDoesNotEqualToConfirmtionException();
 
             Client clientGotByEmail = await _clientApiService.Get($"Client/GetByEmail?email={email}");
 
             if (clientGotByEmail != null)
                 throw new EmailAlreadyRegisteredException();
 
-            if (password != passwordConfirmtion)
-                throw new PasswordDoesNotEqualToConfirmtionException();
+            Client client = new Client()
+            {
+                Name = name,
+                Surname = surname,
+                Email = email,
+                Password = password,
+                PhotoUri = "/"
+            };
 
             await _clientApiService.Post("Client/Create", client);
         }

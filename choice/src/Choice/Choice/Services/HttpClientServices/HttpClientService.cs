@@ -52,9 +52,15 @@ namespace Choice.Services.HttpClientServices
 
         public async Task<T> Post(string uri, T body)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create(body)
+            };
 
             HttpResponseMessage response = await _client.SendAsync(request);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                return null;
 
             string json = await response.Content.ReadAsStringAsync();
 
@@ -63,7 +69,10 @@ namespace Choice.Services.HttpClientServices
 
         public async Task<T> Put(string uri, T body)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, uri);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, uri)
+            {
+                Content = JsonContent.Create(body)
+            };
 
             HttpResponseMessage response = await _client.SendAsync(request);
 

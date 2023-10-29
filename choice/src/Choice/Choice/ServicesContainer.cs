@@ -1,4 +1,5 @@
-﻿using Choice.Domain.Models;
+﻿using Choice.Dialogs;
+using Choice.Domain.Models;
 using Choice.Pages;
 using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
@@ -29,6 +30,7 @@ namespace Choice
                 .ConfigureServices((context, services) =>
                 {
                     TwilioClient.Init("ACdf6bfdcacd0f2f8c967a755e67a685a8", "37b8460e2ce3ea57b4bb5e75e0798688");
+                    
 
                     services.AddSingleton<IAuthenticator, Authenticator>();
 
@@ -44,6 +46,8 @@ namespace Choice
 
                     services.AddScoped<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
                     services.AddScoped<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
+
+                    services.AddScoped<IAlertDialogService, AlertDialogService>();
 
                     services.AddScoped<IAuthenticationService, AuthenticationService>();
                 });

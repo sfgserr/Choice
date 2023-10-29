@@ -1,4 +1,5 @@
 ﻿using Choice.Commands;
+using Choice.Dialogs;
 using Choice.Stores.Authenticators;
 using System;
 using System.Windows.Input;
@@ -8,9 +9,9 @@ namespace Choice.ViewModels
 {
     public class RegisterClientViewModel : ViewModeBase
     {
-        public RegisterClientViewModel(IAuthenticator authenticator) 
+        public RegisterClientViewModel(IAuthenticator authenticator, IAlertDialogService dialogService) 
         {
-            RegisterClientCommand = new RegisterClientCommand(this, authenticator);
+            RegisterClientCommand = new RegisterClientCommand(this, authenticator, dialogService);
             NavigateBackCommand = new RelayCommand(async par => await Shell.Current.GoToAsync("../"));
             ShowPasswordCommand = new RelayCommand((par) =>
             {
