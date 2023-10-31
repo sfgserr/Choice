@@ -4,6 +4,7 @@
              x:Class="Choice.Pages.LoginPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
+             xmlns:views="clr-namespace:Choice.Views"
              Shell.NavBarIsVisible="False">
 
     <ScrollView VerticalScrollBarVisibility="Always">
@@ -64,182 +65,14 @@
                                  TextColorSelected="black"
                                  FontSize="16"
                                  FontAttributesSelected="Bold">
-                    <StackLayout>
-                        <StackLayout Padding="0,20,0,0">
-                            <Label FontSize="14"
-                                   TextColor="#6D7885"
-                                   Text="E-mail"/>
-                            <Frame Background="#F2F3F5"
-                                   CornerRadius="10"
-                                   BorderColor="#d5d5d7"
-                                   Padding="20,0"
-                                   HasShadow="False"
-                                   x:Name="emailFrame">
-                                <Entry BackgroundColor="Transparent"
-                                       PlaceholderColor="#818C99"
-                                       TextColor="#000"
-                                       Focused="EmailEntryFocused"
-                                       Unfocused="EmailEntryUnfocused"
-                                       Placeholder="E-mail"
-                                       Keyboard="Email"
-                                       FontSize="16"
-                                       Text="{Binding Email}">
-                                    <Entry.Effects>
-                                        <xct:RemoveBorderEffect/>
-                                    </Entry.Effects>
-                                </Entry>
-                            </Frame>
-                        </StackLayout>
-                        <StackLayout Padding="0,20,0,0">
-                            <Label FontSize="14"
-                                   TextColor="#6D7885"
-                                   Text="Пароль"/>
-                            <Frame Background="#F2F3F5"
-                                   CornerRadius="10"
-                                   BorderColor="#d5d5d7"
-                                   Padding="20,0"
-                                   HasShadow="False"
-                                   x:Name="passwordFrame">
-                                <StackLayout Orientation="Horizontal">
-                                    <Entry BackgroundColor="Transparent"
-                                           PlaceholderColor="#818C99"
-                                           IsPassword="{Binding IsPassword}"
-                                           Focused="PasswordEntryFocused"
-                                           Unfocused="PasswordEntryUnfocused"
-                                           Placeholder="Пароль"
-                                           TextColor="#000"
-                                           FontSize="16"
-                                           Text="{Binding Password}"
-                                           HorizontalOptions="FillAndExpand">
-                                        <Entry.Effects>
-                                            <xct:RemoveBorderEffect/>
-                                        </Entry.Effects>
-                                    </Entry>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
-                                                 BackgroundColor="Transparent"
-                                                 WidthRequest="20"
-                                                 HeightRequest="20"
-                                                 Command="{Binding ShowPasswordCommand}"/>
-                                </StackLayout>
-                            </Frame>
-                        </StackLayout>
-                        <StackLayout Padding="0,20,0,0">
-                            <Button Background="#2D81E0"
-                                    Text="Войти"
-                                    FontSize="17"
-                                    CornerRadius="10"
-                                    TextTransform="None"
-                                    TextColor="#fff"
-                                    xct:TouchEffect.NativeAnimation="True"
-                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
-                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"
-                                    Command="{Binding LoginByEmailCommand}"/>
-                        </StackLayout>
-                    </StackLayout>
+                    <views:LoginByEmailView/>
                 </xct:TabViewItem>
                 <xct:TabViewItem Text="Телефон"
                                  TextColor="#818C99"
                                  TextColorSelected="black"
                                  FontSize="16"
                                  FontAttributesSelected="Bold">
-                    <StackLayout>
-                        <StackLayout Padding="10,20,0,0"
-                                     IsVisible="{Binding IsPhoneNumberTextBoxVisible}">
-                            <Label FontSize="14"
-                                   TextColor="#6D7885"
-                                   Text="Телефон"/>
-                            <Frame Background="#F2F3F5"
-                                   CornerRadius="10"
-                                   BorderColor="#d5d5d7"
-                                   Padding="20,0"
-                                   HasShadow="False"
-                                   x:Name="phoneFrame">
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="+7"
-                                           TextColor="Black"
-                                           VerticalOptions="Center"
-                                           FontSize="16"/>
-
-                                    <BoxView WidthRequest="1"
-                                            HeightRequest="1"
-                                            BackgroundColor="#d5d5d7"
-                                            IsEnabled="False"/>
-
-                                    <Entry BackgroundColor="Transparent"
-                                           PlaceholderColor="#818C99"
-                                           Focused="PhoneEntryFocused"
-                                           Unfocused="PhoneEntryUnfocused"
-                                           Placeholder="(000) 000-00-00"
-                                           FontSize="16"
-                                           TextColor="#000"
-                                           Keyboard="Numeric"
-                                           Text="{Binding PhoneNumber}"
-                                           MaxLength="15"
-                                           HorizontalOptions="FillAndExpand">
-                                        <Entry.Effects>
-                                            <xct:RemoveBorderEffect/>
-                                        </Entry.Effects>
-                                    </Entry>
-                                </StackLayout>
-                            </Frame>
-                        </StackLayout>
-                        <StackLayout Padding="10,20,0,0"
-                                     IsVisible="{Binding IsPhoneNumberTextBoxVisible}">
-                            <Button Background="#2D81E0"
-                                    Text="Отправить код"
-                                    FontSize="17"
-                                    CornerRadius="10"
-                                    TextTransform="None"
-                                    TextColor="#fff"
-                                    xct:TouchEffect.NativeAnimation="True"
-                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
-                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"
-                                    Command="{Binding LoginByPhoneCommand}"/>
-                        </StackLayout>
-                        <StackLayout Padding="10,20,0,0"
-                                     IsVisible="{Binding IsCodeSent}">
-                            <Label FontSize="14"
-                                   TextColor="#6D7885"
-                                   Text="Код"/>
-                            <Frame Background="#F2F3F5"
-                                   CornerRadius="10"
-                                   BorderColor="#d5d5d7"
-                                   Padding="20,0"
-                                   HasShadow="False"
-                                   x:Name="codeFrame">
-                                <StackLayout Orientation="Horizontal">
-                                    <Entry BackgroundColor="Transparent"
-                                           PlaceholderColor="#818C99"
-                                           Focused="PhoneEntryFocused"
-                                           Unfocused="PhoneEntryUnfocused"
-                                           Placeholder="Код"
-                                           FontSize="16"
-                                           TextColor="#000"
-                                           Keyboard="Numeric"
-                                           Text="{Binding Code}"
-                                           MaxLength="6"
-                                           HorizontalOptions="FillAndExpand">
-                                        <Entry.Effects>
-                                            <xct:RemoveBorderEffect/>
-                                        </Entry.Effects>
-                                    </Entry>
-                                </StackLayout>
-                            </Frame>
-                        </StackLayout>
-                        <StackLayout Padding="10,20,0,0"
-                                     IsVisible="{Binding IsCodeSent}">
-                            <Button Background="#2D81E0"
-                                    Text="Войти"
-                                    FontSize="17"
-                                    CornerRadius="10"
-                                    TextTransform="None"
-                                    TextColor="#fff"
-                                    IsEnabled="{Binding CanSignInByCode}"
-                                    xct:TouchEffect.NativeAnimation="True"
-                                    xct:TouchEffect.NativeAnimationColor="#5396E1"
-                                    xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
-                        </StackLayout>
-                    </StackLayout>
+                    <views:LoginByPhoneView/>
                 </xct:TabViewItem>
             </xct:TabView>
             <Button Background="Transparent"

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Choice.ViewModels
 {
-    public class ViewModeBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

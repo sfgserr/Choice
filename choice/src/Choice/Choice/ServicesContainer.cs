@@ -38,6 +38,9 @@ namespace Choice
                     services.AddScoped<LoginViewModel>();
                     services.AddScoped<RegisterClientViewModel>();
                     services.AddScoped<RegisterCompanyViewModel>();
+                    services.AddScoped<LoginByEmailViewModel>();
+                    services.AddScoped<LoginByPhoneViewModel>();
+                    services.AddScoped<CompanyCardViewModel>();
 
                     services.AddSingleton<HttpClient>(s => new HttpClient());
 

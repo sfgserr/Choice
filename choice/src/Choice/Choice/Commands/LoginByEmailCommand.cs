@@ -12,9 +12,9 @@ namespace Choice.Commands
         public event EventHandler CanExecuteChanged;
 
         private readonly IAuthenticator _authenticator;
-        private readonly LoginViewModel _viewModel;
+        private readonly LoginByEmailViewModel _viewModel;
 
-        public LoginByEmailCommand(IAuthenticator authenticator, LoginViewModel viewModel)
+        public LoginByEmailCommand(IAuthenticator authenticator, LoginByEmailViewModel viewModel)
         {
             _authenticator = authenticator;
             _viewModel = viewModel;
@@ -24,7 +24,7 @@ namespace Choice.Commands
 
         public bool CanExecute(object parameter)
         {
-            return _viewModel.CanSignInByEmail;
+            return _viewModel.CanLogin;
         }
 
         public async void Execute(object parameter)
@@ -32,6 +32,7 @@ namespace Choice.Commands
             try
             {
                 await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
+                await Shell.Current.GoToAsync("//MainPage");
             }
             catch (Exception ex)
             {
@@ -41,7 +42,7 @@ namespace Choice.Commands
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_viewModel.CanSignInByEmail)) CanExecuteChanged?.Invoke(sender, e);
+            if (e.PropertyName == nameof(_viewModel.CanLogin)) CanExecuteChanged?.Invoke(sender, e);
         }
     }
 }

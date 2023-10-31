@@ -1,27 +1,24 @@
-﻿using Choice.Dialogs;
-using Choice.Stores.Authenticators;
+﻿using Choice.Pages;
+using Choice.Services.AuthenticationServices;
 using Choice.ViewModels;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Choice.Commands
 {
-    public class RegisterClientCommand : ICommand
+    public class RegisterCompanyCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
 
-        private readonly RegisterClientViewModel _viewModel;
-        private readonly IAlertDialogService _dialogService;
-        private readonly IAuthenticator _authenticator;
+        private readonly RegisterCompanyViewModel _viewModel;
 
-        public RegisterClientCommand(RegisterClientViewModel viewModel, IAuthenticator authenticator, IAlertDialogService dialogService)
+        public RegisterCompanyCommand(RegisterCompanyViewModel viewModel)
         {
-            _authenticator = authenticator;
-            _dialogService = dialogService;
             _viewModel = viewModel;
-
             _viewModel.PropertyChanged += OnCanExecuteChanged;
         }
 
@@ -34,9 +31,17 @@ namespace Choice.Commands
         {
             try
             {
-                await _authenticator.RegisterClient(_viewModel.Name, _viewModel.Surname, _viewModel.Email, _viewModel.Password,
-                                                _viewModel.PasswordConfirmtion);
-                await _dialogService.ShowDialogAsync("Аккаунт создан", "Теперь вы можете создавать заказы", "Ок");
+                RegisterCompanyInput input = new RegisterCompanyInput()
+                {
+                    Title = _viewModel.Title,
+                    Email = _viewModel.Email,
+                    Password = _viewModel.Password,
+                    PasswordConfirmtion = _viewModel.PasswordConfirmtion,
+                };
+
+                string json = JsonConvert.SerializeObject(input);
+
+                await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}");
             }
             catch (Exception ex)
             {

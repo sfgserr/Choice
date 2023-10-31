@@ -12,10 +12,10 @@ namespace Choice.Commands
     {
         public event EventHandler CanExecuteChanged;
 
-        private readonly LoginViewModel _viewModel;
+        private readonly LoginByPhoneViewModel _viewModel;
         private readonly IAuthenticator _authenticator;
 
-        public LoginByPhoneCommand(LoginViewModel viewModel, IAuthenticator authenticator)
+        public LoginByPhoneCommand(LoginByPhoneViewModel viewModel, IAuthenticator authenticator)
         {   
             _authenticator = authenticator;
             _viewModel = viewModel;
@@ -25,7 +25,7 @@ namespace Choice.Commands
 
         public bool CanExecute(object parameter)
         {
-            return _viewModel.CanSignInByPhone;
+            return _viewModel.CanSendCode;
         }
 
         public async void Execute(object parameter)
@@ -44,7 +44,7 @@ namespace Choice.Commands
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_viewModel.CanSignInByPhone)) CanExecuteChanged?.Invoke(this, e);
+            if (e.PropertyName == nameof(_viewModel.CanSendCode)) CanExecuteChanged?.Invoke(this, e);
         }
     }
 }

@@ -1,12 +1,161 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Choice.Pages.RegisterCompanyPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+             x:Class="Choice.Pages.RegisterCompanyPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
+             Shell.NavBarIsVisible="False">
+    <ScrollView VerticalScrollBarVisibility="Never">
+        <StackLayout Padding="40,40">
+            <Label Text="Регистрация компании"
+           TextColor="#313131"
+           FontSize="24"
+           FontAttributes="Bold"/>
+
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+               TextColor="#6D7885"
+               Text="Название"/>
+                <Frame Background="#F2F3F5"
+               CornerRadius="10"
+               BorderColor="#d5d5d7"
+               Padding="20,0"
+               HasShadow="False"
+               x:Name="nameFrame">
+                    <Entry BackgroundColor="Transparent"
+                   PlaceholderColor="#818C99"
+                   TextColor="#000"
+                   Focused="NameEntryFocused"
+                   Unfocused="NameEntryUnfocused"
+                   Placeholder="Введите название компании"
+                   Keyboard="Email"
+                   FontSize="16"
+                   Text="{Binding Title}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect/>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+               TextColor="#6D7885"
+               Text="E-mail"/>
+                <Frame Background="#F2F3F5"
+               CornerRadius="10"
+                BorderColor="#d5d5d7"
+                Padding="20,0"
+                HasShadow="False"
+                x:Name="emailFrame">
+                    <Entry BackgroundColor="Transparent"
+                   PlaceholderColor="#818C99"
+                    TextColor="#000"
+                    Focused="EmailEntryFocused"
+                    Unfocused="EmailEntryUnfocused"
+                    Placeholder="Введите E-mail"
+                    Keyboard="Email"
+                    FontSize="16"
+                    Text="{Binding Email}">
+                        <Entry.Effects>
+                            <xct:RemoveBorderEffect/>
+                        </Entry.Effects>
+                    </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+               TextColor="#6D7885"
+               Text="Пароль"/>
+                <Frame Background="#F2F3F5"
+               CornerRadius="10"
+               BorderColor="#d5d5d7"
+               Padding="20,0"
+               HasShadow="False"
+               x:Name="passwordFrame">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry BackgroundColor="Transparent"
+                       PlaceholderColor="#818C99"
+                       IsPassword="{Binding IsPassword}"
+                       Focused="PasswordEntryFocused"
+                       Unfocused="PasswordEntryUnfocused"
+                       Placeholder="Введите пароль"
+                       TextColor="#000"
+                       FontSize="16"
+                       Text="{Binding Password}"
+                       HorizontalOptions="FillAndExpand">
+                            <Entry.Effects>
+                                <xct:RemoveBorderEffect/>
+                            </Entry.Effects>
+                        </Entry>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                             BackgroundColor="Transparent"
+                             WidthRequest="20"
+                             HeightRequest="20"
+                             Command="{Binding ShowPasswordCommand}"
+                             CommandParameter="Password"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+               TextColor="#6D7885"
+               Text="Повторите пароль"/>
+                <Frame Background="#F2F3F5"
+               CornerRadius="10"
+               BorderColor="#d5d5d7"
+               Padding="20,0"
+               HasShadow="False"
+               x:Name="passwordConfirmtionFrame">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry BackgroundColor="Transparent"
+                       PlaceholderColor="#818C99"
+                       IsPassword="{Binding IsPasswordConfirmtion}"
+                       Focused="PasswordConfirmtionEntryFocused"
+                       Unfocused="PasswordConfirmtionEntryUnfocused"
+                       Placeholder="Введите пароль"
+                       TextColor="#000"
+                       FontSize="16"
+                       Text="{Binding PasswordConfirmtion}"
+                       HorizontalOptions="FillAndExpand">
+                            <Entry.Effects>
+                                <xct:RemoveBorderEffect/>
+                            </Entry.Effects>
+                        </Entry>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                             BackgroundColor="Transparent"
+                             WidthRequest="20"
+                             HeightRequest="20"
+                             Command="{Binding ShowPasswordCommand}"
+                             CommandParameter="Confirmtion"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Button Background="#2D81E0"
+                Text="Создать аккаунт"
+                FontSize="16"
+                CornerRadius="10"
+                TextTransform="None"
+                TextColor="#fff"
+                xct:TouchEffect.NativeAnimation="True"
+                xct:TouchEffect.NativeAnimationColor="#5396E1"
+                xct:TouchEffect.NormalBackgroundColor="#2D81E0"
+                Command="{Binding RegisterCompanyCommand}"/>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label Text="У меня есть аккаунт"
+               FontSize="16"
+               TextColor="#9C9C9C"
+               HorizontalOptions="Center"/>
+                <Button Background="Transparent"
+                    TextColor="#2D81E0"
+                    Text="Войти"
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    TextTransform="None"
+                    Command="{Binding NavigateBackCommand}"
+                    xct:TouchEffect.PressedOpacity="0.5"/>
+            </StackLayout>
         </StackLayout>
-    </ContentPage.Content>
+    </ScrollView>
 </ContentPage>

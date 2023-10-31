@@ -1,7 +1,7 @@
 ﻿
 namespace Choice.ViewModels
 {
-    public class MainViewModel : ViewModeBase
+    public class MainViewModel : ViewModelBase
     {
 
     }

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 using Twilio.Rest.Verify.V2.Service;
+using Xamarin.Forms;
 
 namespace Choice.Commands
 {
@@ -10,9 +11,9 @@ namespace Choice.Commands
     {
         public event EventHandler CanExecuteChanged;
 
-        private readonly LoginViewModel _viewModel;
+        private readonly LoginByPhoneViewModel _viewModel;
 
-        public CheckCodeCommand(LoginViewModel viewModel)
+        public CheckCodeCommand(LoginByPhoneViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -22,13 +23,13 @@ namespace Choice.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             string phoneNumber = new string(_viewModel.PhoneNumber.Where(c => char.IsDigit(c)).ToArray());
 
             var verificationCheck = VerificationCheckResource.Create(to: phoneNumber, code: _viewModel.Code, pathServiceSid: "VAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
-            //TODO: if status approved navigate to main page
+            await Shell.Current.GoToAsync("//MainPage");
         }
     }
 }

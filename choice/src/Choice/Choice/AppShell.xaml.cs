@@ -13,6 +13,7 @@ namespace Choice
 
             Routing.RegisterRoute(nameof(RegisterCompanyPage), typeof(RegisterCompanyPage));
             Routing.RegisterRoute(nameof(RegisterClientPage), typeof(RegisterClientPage));
+            Routing.RegisterRoute(nameof(CompanyCardPage), typeof(CompanyCardPage));
         }
     }
 }

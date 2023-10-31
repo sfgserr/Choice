@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace Choice.ViewModels
 {
-    public class RegisterClientViewModel : ViewModeBase
+    public class RegisterClientViewModel : ViewModelBase
     {
         public RegisterClientViewModel(IAuthenticator authenticator, IAlertDialogService dialogService) 
         {
