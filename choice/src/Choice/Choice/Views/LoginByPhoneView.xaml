@@ -5,7 +5,8 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
   <ContentView.Content>
-        <StackLayout>
+        <Grid>
+          <StackLayout>
             <StackLayout Padding="10,20,0,0"
                  IsVisible="{Binding IsPhoneNumberTextBoxVisible}">
                 <Label FontSize="14"
@@ -101,7 +102,13 @@
                 xct:TouchEffect.NativeAnimation="True"
                 xct:TouchEffect.NativeAnimationColor="#5396E1"
                 xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
-            </StackLayout>
-        </StackLayout>
+              </StackLayout>
+          </StackLayout>
+            <ActivityIndicator Color="#2D81E0"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"
+                               IsRunning="True"
+                               IsVisible="{Binding IsLoading}"/>
+        </Grid>
     </ContentView.Content>
 </ContentView>

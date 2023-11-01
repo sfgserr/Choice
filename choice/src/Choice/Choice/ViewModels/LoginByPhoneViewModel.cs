@@ -1,6 +1,7 @@
 ﻿using Choice.Commands;
 using Choice.Extensions;
 using Choice.Stores.Authenticators;
+using Choice.Stores.Loaders;
 using System.Linq;
 using System.Windows.Input;
 
@@ -8,14 +9,20 @@ namespace Choice.ViewModels
 {
     public class LoginByPhoneViewModel : ViewModelBase
     {
-        public LoginByPhoneViewModel(IAuthenticator authenticator)
+        private readonly ILoader _loader;
+
+        public LoginByPhoneViewModel(IAuthenticator authenticator, ILoader loader)
         {
-            LoginByPhoneCommand = new LoginByPhoneCommand(this, authenticator);
+            _loader = loader;
+            _loader.StateChanged += OnIsLoadingChanged;
+
+            LoginByPhoneCommand = new LoginByPhoneCommand(this, authenticator, _loader);
             CheckCodeCommand = new CheckCodeCommand(this);
         }
 
         public ICommand LoginByPhoneCommand { get; }
         public ICommand CheckCodeCommand { get; }
+        public bool IsLoading => _loader.State;
         public bool CanSendCode => !string.IsNullOrEmpty(PhoneNumber) && PhoneNumber.Length == 15;
         public bool CanCheckCode => !string.IsNullOrEmpty(Code);
         public bool IsPhoneNumberTextBoxVisible => !IsCodeSent;
@@ -54,6 +61,11 @@ namespace Choice.ViewModels
                 Set(ref _phoneNumber, new string(value.Where(c => char.IsDigit(c)).ToArray()));
                 OnPropertyChanged(nameof(CanSendCode));
             }
+        }
+
+        private void OnIsLoadingChanged()
+        {
+            OnPropertyChanged(nameof(IsLoading));
         }
     }
 }
