@@ -1,6 +1,7 @@
 ﻿using Choice.Commands;
 using Choice.Dialogs;
 using Choice.Stores.Authenticators;
+using Choice.Stores.Loaders;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -9,9 +10,14 @@ namespace Choice.ViewModels
 {
     public class RegisterClientViewModel : ViewModelBase
     {
-        public RegisterClientViewModel(IAuthenticator authenticator, IAlertDialogService dialogService) 
+        private readonly ILoader _loader;
+
+        public RegisterClientViewModel(IAuthenticator authenticator, IAlertDialogService dialogService, ILoader loader) 
         {
-            RegisterClientCommand = new RegisterClientCommand(this, authenticator, dialogService);
+            _loader = loader;
+            _loader.StateChanged += OnIsLoadingChanged;
+
+            RegisterClientCommand = new RegisterClientCommand(this, authenticator, dialogService, loader);
             NavigateBackCommand = new RelayCommand(async par => await Shell.Current.GoToAsync("../"));
             ShowPasswordCommand = new RelayCommand((par) =>
             {
@@ -34,6 +40,7 @@ namespace Choice.ViewModels
         public ICommand RegisterClientCommand { get; }
         public ICommand ShowPasswordCommand { get; }
         public ICommand NavigateBackCommand { get; }
+        public bool IsLoading => _loader.State;
         public bool CanRegister => !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(PasswordConfirmtion)
                                          && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Name)
                                          && !string.IsNullOrEmpty(Surname);
@@ -112,6 +119,11 @@ namespace Choice.ViewModels
                 Set(ref _passwordConfirmtion, value);
                 OnPropertyChanged(nameof(CanRegister));
             }
+        }
+
+        private void OnIsLoadingChanged()
+        {
+            OnPropertyChanged(nameof(IsLoading));
         }
     }
 }

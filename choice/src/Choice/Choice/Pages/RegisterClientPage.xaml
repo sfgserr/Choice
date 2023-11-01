@@ -7,7 +7,8 @@
              Shell.NavBarIsVisible="False"
              xmlns:viewModels="clr-namespace:Choice.ViewModels">
     <ScrollView VerticalScrollBarVisibility="Never">
-        <StackLayout Padding="40,40">
+        <Grid>
+            <StackLayout Padding="40,40">
             <Label Text="Регистрация клиента"
                TextColor="#313131"
                FontSize="24"
@@ -186,5 +187,11 @@
                         xct:TouchEffect.PressedOpacity="0.5"/>
             </StackLayout>
         </StackLayout>
+            <ActivityIndicator Color="#2D81E0"
+                               IsVisible="{Binding IsLoading}"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"
+                               IsRunning="True"/>
+      </Grid>
     </ScrollView>
 </ContentPage>
