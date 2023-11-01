@@ -1,7 +1,9 @@
 ﻿using Choice.Stores.Authenticators;
+using Choice.Stores.Loaders;
 using Choice.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -12,11 +14,13 @@ namespace Choice.Commands
         public event EventHandler CanExecuteChanged;
 
         private readonly IAuthenticator _authenticator;
+        private readonly ILoader _loader;
         private readonly LoginByEmailViewModel _viewModel;
 
-        public LoginByEmailCommand(IAuthenticator authenticator, LoginByEmailViewModel viewModel)
+        public LoginByEmailCommand(IAuthenticator authenticator, LoginByEmailViewModel viewModel, ILoader loader)
         {
             _authenticator = authenticator;
+            _loader = loader;
             _viewModel = viewModel;
 
             _viewModel.PropertyChanged += OnCanExecuteChanged;
@@ -31,13 +35,19 @@ namespace Choice.Commands
         {
             try
             {
-                await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
-                await Shell.Current.GoToAsync("//MainPage");
+                await _loader.Load(Login);
             }
             catch (Exception ex)
             {
+                _loader.State = false;
                 await Application.Current.MainPage.DisplayAlert("Внимание", ex.Message, "OK");
             }
+        }
+
+        private async Task Login()
+        {
+            await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
+            await Shell.Current.GoToAsync("//MainPage");
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)

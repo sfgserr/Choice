@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Choice.Dialogs
 {
     public interface IAlertDialogService
     {
-        Task ShowDialogAsync(string title, string message, string buttonText);
+        Task ShowDialogAsync(string title, string message, string buttonText, Action action);
     }
 }

@@ -1,19 +1,26 @@
 ﻿using Choice.Commands;
 using Choice.Stores.Authenticators;
+using Choice.Stores.Loaders;
 using System.Windows.Input;
 
 namespace Choice.ViewModels
 {
     public class LoginByEmailViewModel : ViewModelBase
     {
-        public LoginByEmailViewModel(IAuthenticator authenticator)
+        private readonly ILoader _loader;
+
+        public LoginByEmailViewModel(IAuthenticator authenticator, ILoader loader)
         {
-            LoginCommand = new LoginByEmailCommand(authenticator, this);
+            _loader = loader;
+            _loader.StateChanged += OnIsLoadingChanged;
+
+            LoginCommand = new LoginByEmailCommand(authenticator, this, loader);
             ShowPasswordCommand = new RelayCommand(par => IsPassword = !IsPassword);
         }
 
         public ICommand LoginCommand { get; }
         public ICommand ShowPasswordCommand { get; }
+        public bool IsLoading => _loader.State;
         public bool CanLogin => !string.IsNullOrEmpty(Email) &&
                                 !string.IsNullOrEmpty(Password);
 
@@ -47,6 +54,11 @@ namespace Choice.ViewModels
                 Set(ref _password, value);
                 OnPropertyChanged(nameof(CanLogin));
             }
+        }
+
+        private void OnIsLoadingChanged()
+        {
+            OnPropertyChanged(nameof(IsLoading));
         }
     }
 }

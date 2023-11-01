@@ -1,4 +1,7 @@
 ﻿using Choice.Commands;
+using Choice.Dialogs;
+using Choice.Domain.Models;
+using Choice.Services.ApiServices;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -7,10 +10,10 @@ namespace Choice.ViewModels
 {
     public class RegisterCompanyViewModel : ViewModelBase
     {
-        public RegisterCompanyViewModel()
+        public RegisterCompanyViewModel(IAlertDialogService alertDialogService, IApiService<Company> companyService)
         {
             NavigateBackCommand = new RelayCommand(async par => await Shell.Current.GoToAsync("../"));
-            RegisterCompanyCommand = new RegisterCompanyCommand(this);
+            RegisterCompanyCommand = new RegisterCompanyCommand(this, alertDialogService, companyService);
             ShowPasswordCommand = new RelayCommand((par) =>
             {
                 string entry = (string)par;

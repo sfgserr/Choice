@@ -5,18 +5,19 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
   <ContentView.Content>
-        <StackLayout>
-            <StackLayout Padding="0,20,0,0">
-                <Label FontSize="14"
+        <Grid>
+            <StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Label FontSize="14"
                 TextColor="#6D7885"
                Text="E-mail"/>
-                <Frame Background="#F2F3F5"
+                    <Frame Background="#F2F3F5"
                 CornerRadius="10"
                 BorderColor="#d5d5d7"
                 Padding="20,0"
                 HasShadow="False"
                 x:Name="emailFrame">
-                    <Entry BackgroundColor="Transparent"
+                        <Entry BackgroundColor="Transparent"
                     PlaceholderColor="#818C99"
                    Placeholder="Введите E-mail"
                     TextColor="#000"
@@ -26,57 +27,64 @@
                     FontSize="16"
                     x:Name="TextBox"
                     Text="{Binding Email}">
-                        <Entry.Effects>
-                            <xct:RemoveBorderEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-            </StackLayout>
-            <StackLayout Padding="0,20,0,0">
-                <Label FontSize="14"
+                            <Entry.Effects>
+                                <xct:RemoveBorderEffect/>
+                            </Entry.Effects>
+                        </Entry>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Label FontSize="14"
                         TextColor="#6D7885"
                         Text="Пароль"/>
-                <Frame Background="#F2F3F5"
+                    <Frame Background="#F2F3F5"
                         CornerRadius="10"
                         BorderColor="#d5d5d7"
                         Padding="20,0"
                         HasShadow="False"
                         x:Name="passwordFrame">
-                    <StackLayout Orientation="Horizontal">
-                        <Entry BackgroundColor="Transparent"
-                       PlaceholderColor="#818C99"
-                       IsPassword="{Binding IsPassword}"
-                       Focused="PasswordEntryFocused"
-                       Unfocused="PasswordEntryUnfocused"
-                       Placeholder="Пароль"
-                       TextColor="#000"
-                       FontSize="16"
-                       Text="{Binding Password}"
-                       HorizontalOptions="FillAndExpand">
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
-                        </Entry>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
-                             BackgroundColor="Transparent"
-                             WidthRequest="20"
-                             HeightRequest="20"
-                             Command="{Binding ShowPasswordCommand}"/>
-                    </StackLayout>
-                </Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Entry BackgroundColor="Transparent"
+                                PlaceholderColor="#818C99"
+                                IsPassword="{Binding IsPassword}"
+                                Focused="PasswordEntryFocused"
+                                Unfocused="PasswordEntryUnfocused"
+                                Placeholder="Пароль"
+                                TextColor="#000"
+                                FontSize="16"
+                                Text="{Binding Password}"
+                                HorizontalOptions="FillAndExpand">
+                                <Entry.Effects>
+                                    <xct:RemoveBorderEffect/>
+                                </Entry.Effects>
+                            </Entry>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                                         BackgroundColor="Transparent"
+                                         WidthRequest="20"
+                                         HeightRequest="20"
+                                         Command="{Binding ShowPasswordCommand}"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Button Background="#2D81E0"
+                        Text="Войти"
+                        FontSize="17"
+                        CornerRadius="10"
+                        TextTransform="None"
+                        TextColor="#fff"
+                        xct:TouchEffect.NativeAnimation="True"
+                        xct:TouchEffect.NativeAnimationColor="#5396E1"
+                        xct:TouchEffect.NormalBackgroundColor="#2D81E0"
+                        Command="{Binding LoginCommand}"/>
+                </StackLayout>
+
             </StackLayout>
-            <StackLayout Padding="0,20,0,0">
-                <Button Background="#2D81E0"
-                Text="Войти"
-                FontSize="17"
-                CornerRadius="10"
-                TextTransform="None"
-                TextColor="#fff"
-                xct:TouchEffect.NativeAnimation="True"
-                xct:TouchEffect.NativeAnimationColor="#5396E1"
-                xct:TouchEffect.NormalBackgroundColor="#2D81E0"
-                Command="{Binding LoginCommand}"/>
-            </StackLayout>
-        </StackLayout>
+            <ActivityIndicator Color="#2D81E0"
+                               IsVisible="{Binding IsLoading}"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"
+                               IsRunning="True"/>
+        </Grid>
     </ContentView.Content>
 </ContentView>

@@ -36,7 +36,7 @@ namespace Choice.Commands
             {
                 await _authenticator.RegisterClient(_viewModel.Name, _viewModel.Surname, _viewModel.Email, _viewModel.Password,
                                                 _viewModel.PasswordConfirmtion);
-                await _dialogService.ShowDialogAsync("Аккаунт создан", "Теперь вы можете создавать заказы", "Ок");
+                await _dialogService.ShowDialogAsync("Аккаунт создан", "Теперь вы можете создавать заказы", "Ок", async () => await Shell.Current.GoToAsync("../"));
             }
             catch (Exception ex)
             {

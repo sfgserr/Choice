@@ -1,10 +1,15 @@
-﻿using Choice.Pages;
+﻿using Choice.Dialogs;
+using Choice.Domain.Models;
+using Choice.Pages;
+using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
+using Choice.Validators;
 using Choice.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,11 +20,16 @@ namespace Choice.Commands
         public event EventHandler CanExecuteChanged;
 
         private readonly RegisterCompanyViewModel _viewModel;
+        private readonly IAlertDialogService _dialogService;
+        private readonly IApiService<Company> _companyService;
 
-        public RegisterCompanyCommand(RegisterCompanyViewModel viewModel)
+        public RegisterCompanyCommand(RegisterCompanyViewModel viewModel, IAlertDialogService dialogService, IApiService<Company> companyService)
         {
             _viewModel = viewModel;
             _viewModel.PropertyChanged += OnCanExecuteChanged;
+
+            _dialogService = dialogService;
+            _companyService = companyService;
         }
 
         public bool CanExecute(object parameter)
@@ -39,9 +49,21 @@ namespace Choice.Commands
                     PasswordConfirmtion = _viewModel.PasswordConfirmtion,
                 };
 
+                IValidator validator = new RegisterCompanyInputValidator(input, _companyService);
+
+                bool validationResult = await validator.Validate();
+
+                if (!validationResult)
+                {
+                    var firstError = validator.Fails.First();
+                    await Application.Current.MainPage.DisplayAlert(firstError.Key, firstError.Value, "Ок");
+                    return;
+                }
+
                 string json = JsonConvert.SerializeObject(input);
 
-                await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}");
+                await _dialogService.ShowDialogAsync("Аккаунт комании создан", "Заполните информацию о вашей компании", "Заполнить информацию",
+                    async () => await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}"));
             }
             catch (Exception ex)
             {
