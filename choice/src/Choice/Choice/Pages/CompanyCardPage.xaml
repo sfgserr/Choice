@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Choice.Pages.CompanyCardPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:views="clr-namespace:Choice.Views"
              Shell.NavBarIsVisible="False">
   <ScrollView>
      <StackLayout>
@@ -17,16 +18,16 @@
                      Padding="20,20"
                      HeightRequest="4">
             <Frame CornerRadius="10"
-                   BackgroundColor="#DFDFDF"
+                   BackgroundColor="{Binding PageOneColor}"
                    HorizontalOptions="FillAndExpand"/>
 
             <Frame CornerRadius="10"
-                   BackgroundColor="#DFDFDF"
+                   BackgroundColor="{Binding PageTwoColor}"
                    HorizontalOptions="FillAndExpand"
                    HeightRequest="5"/>
 
             <Frame CornerRadius="10"
-                   BackgroundColor="#DFDFDF"
+                   BackgroundColor="{Binding PageThreeColor}"
                    HorizontalOptions="FillAndExpand"/>
         </StackLayout>
         <StackLayout Padding="20,0"
@@ -36,159 +37,9 @@
                      BackgroundColor="#D7D8D9"
                      Opacity="0.5"/>
         </StackLayout>
-      <StackLayout>
-            <StackLayout Padding="20,10">
-            <Label FontSize="17"
-                   FontAttributes="Bold"
-                   TextColor="#000"
-                   Text="Контактные данные"/>
-
-            <Label FontSize="16"
-                   TextColor="#181818"
-                   Text="Укажите информацию, которая будет отображаться в карточке вашей компании, &#10;ее увидят тысячи наших пользователей"/>
+            <StackLayout IsVisible="{Binding IsPageOneVisible}">
+                <views:CompanyContactDataView BindingContext="{Binding CompanyContactDataViewModel}"/>
+            </StackLayout>
         </StackLayout>
-        <StackLayout Padding="20,0">
-                <Label FontSize="14"
-                        TextColor="#6D7885"
-                        Text="Название"/>
-                <Frame Background="#F2F3F5"
-                       CornerRadius="10"
-                        BorderColor="#d5d5d7"
-                        Padding="20,0"
-                        HasShadow="False"
-                        x:Name="titleFrame">
-                    <Entry BackgroundColor="Transparent"
-                           PlaceholderColor="#818C99"
-                           Placeholder="Введите название"
-                            TextColor="#000"
-                            Focused="TitleEntryFocused"
-                            Unfocused="TitleEntryUnfocused"
-                            Keyboard="Email"
-                            FontSize="16"
-                            Text="{Binding Title}">
-                        <Entry.Effects>
-                            <xct:RemoveBorderEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-        </StackLayout>
-            <StackLayout Padding="20">
-                <Label FontSize="14"
-                       TextColor="#6D7885"
-                       Text="E-mail"/>
-                <Frame Background="#F2F3F5"
-                       CornerRadius="10"
-                       BorderColor="#d5d5d7"
-                       Padding="20,0"
-                       HasShadow="False"
-                       x:Name="emailFrame">
-                    <Entry BackgroundColor="Transparent"
-                           PlaceholderColor="#818C99"
-                           Placeholder="Введите E-mail"
-                           TextColor="#000"
-                           Focused="EmailEntryFocused"
-                           Unfocused="EmailEntryUnfocused"
-                           Keyboard="Email"
-                           FontSize="16"
-                           Text="{Binding Email}">
-                        <Entry.Effects>
-                            <xct:RemoveBorderEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-            </StackLayout>
-
-            <StackLayout Padding="20,0">
-                <Label FontSize="14"
-                        TextColor="#6D7885"
-                        Text="Телефон"/>
-                <Frame Background="#F2F3F5"
-                        CornerRadius="10"
-                        BorderColor="#d5d5d7"
-                        Padding="20,0"
-                        HasShadow="False"
-                        x:Name="phoneFrame">
-                    <Entry BackgroundColor="Transparent"
-                            PlaceholderColor="#818C99"
-                            Placeholder="+7 (999) 999-99-99"
-                            TextColor="#000"
-                            Focused="PhoneEntryFocused"
-                            Unfocused="PhoneEntryUnfocused"
-                            Keyboard="Telephone"
-                            FontSize="16"
-                            Text="{Binding PhoneNumber}"
-                            MaxLength="15">
-                        <Entry.Effects>
-                            <xct:RemoveBorderEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-            </StackLayout>
-            <StackLayout Padding="20">
-                <Label FontSize="14"
-                        TextColor="#6D7885"
-                        Text="Сайт"/>
-                <Frame Background="#F2F3F5"
-                        CornerRadius="10"
-                        BorderColor="#d5d5d7"
-                        Padding="20,0"
-                        HasShadow="False"
-                        x:Name="siteFrame">
-                    <Entry BackgroundColor="Transparent"
-                            PlaceholderColor="#818C99"
-                            Placeholder="Введите адрес сайта"
-                            TextColor="#000"
-                            Focused="SiteEntryFocused"
-                            Unfocused="SiteEntryUnfocused"
-                            Keyboard="Email"
-                            FontSize="16"
-                            Text="{Binding SiteUri}">
-                        <Entry.Effects>
-                            <xct:RemoveBorderEffect/>
-                        </Entry.Effects>
-                    </Entry>
-                </Frame>
-            </StackLayout>
-                <StackLayout Padding="20,0">
-                    <Label FontSize="14"
-                            TextColor="#6D7885"
-                            Text="Адрес компании"/>
-                    <Frame Background="#F2F3F5"
-                            CornerRadius="10"
-                            BorderColor="#d5d5d7"
-                            Padding="20,0"
-                            HasShadow="False"
-                            x:Name="addressFrame"
-                           VerticalOptions="FillAndExpand">
-                        <Entry BackgroundColor="Transparent"
-                                PlaceholderColor="#818C99"
-                                Placeholder="Введите адрес"
-                                TextColor="#000"
-                                Focused="AddressEntryFocused"
-                                Unfocused="AddressEntryUnfocused"
-                                Keyboard="Email"
-                                FontSize="16"
-                                Text="{Binding Address}">
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
-                        </Entry>
-                    </Frame>
-                </StackLayout>
-                <StackLayout Padding="20"
-                             IsVisible="{Binding IsCodeSent}">
-                    <Button Background="#2D81E0"
-                            Text="Далее"
-                            FontSize="17"
-                            CornerRadius="10"
-                            TextTransform="None"
-                            TextColor="#fff"
-                            IsEnabled="{Binding CanSignInByCode}"
-                            xct:TouchEffect.NativeAnimation="True"
-                            xct:TouchEffect.NativeAnimationColor="#5396E1"
-                            xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
-                </StackLayout>
-            </StackLayout>
-    </StackLayout>
   </ScrollView>
 </ContentPage>

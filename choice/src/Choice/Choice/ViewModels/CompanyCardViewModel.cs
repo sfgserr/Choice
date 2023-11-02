@@ -1,85 +1,59 @@
-﻿using Choice.Extensions;
+﻿using Choice.Commands;
+using Choice.Extensions;
 using Choice.Services.AuthenticationServices;
+using Choice.Stores.IndexStores;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Choice.ViewModels
 {
     public class CompanyCardViewModel : ViewModelBase, IQueryAttributable
     {
-		private RegisterCompanyInput _registerCompanyInput;
+        private readonly IIndexStore _indexStore;
 
-        public string Title
+        public CompanyCardViewModel(IIndexStore indexStore)
         {
-            get => _registerCompanyInput?.Title;
-            set
-            {
-                _registerCompanyInput.Title = value;
-                OnPropertyChanged(nameof(Title));
-            }
+            _indexStore = indexStore;
+            _indexStore.StateChanged += OnIndexChanged;
         }
+        public string PageThreeColor => Index == 3 ? "#2688EB" : "#DFDFDF";
+        public string PageTwoColor => Index >= 2 ? "#2688EB" : "#DFDFDF";
+        public string PageOneColor => Index >= 1 ? "#2688EB" : "#DFDFDF";
+        public bool IsPageOneVisible => Index == 1;
+        public bool IsPageTwoVisible => Index == 2;
+        public bool IsPageThreeVisible => Index == 3;
 
-        public string Email
+        public int Index => _indexStore.State;
+
+        private CompanyContactDataViewModel _companyContactDataViewModel;
+
+        public CompanyContactDataViewModel CompanyContactDataViewModel
         {
-            get => _registerCompanyInput?.Email;
-            set
-            {
-                _registerCompanyInput.Email = value;
-                OnPropertyChanged(nameof(Email));
-            }
-        }
-
-        public string PhoneNumber
-        {
-            get => _registerCompanyInput is null ? string.Empty : _registerCompanyInput.PhoneNumber.FormatPhoneNumber();
-            set
-            {
-                if (_registerCompanyInput is null)
-                    return;
-
-                _registerCompanyInput.PhoneNumber = new string(value.Where(c => char.IsDigit(c)).ToArray());
-                OnPropertyChanged(nameof(PhoneNumber));
-            }
-        }
-
-        public string SiteUri
-        {
-            get => _registerCompanyInput?.SiteUri;
-            set
-            {
-                _registerCompanyInput.SiteUri = value;
-                OnPropertyChanged(nameof(SiteUri));
-            }
-        }
-
-        public string Address
-        {
-            get => _registerCompanyInput?.Address;
-            set
-            {
-                _registerCompanyInput.Address = value;
-                OnPropertyChanged(nameof(Address));
-            }
+            get => _companyContactDataViewModel;
+            set => Set(ref _companyContactDataViewModel, value);
         }
 
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
             string json = HttpUtility.UrlDecode(query["Input"]);
-            _registerCompanyInput = JsonConvert.DeserializeObject<RegisterCompanyInput>(json);
+            RegisterCompanyInput input = JsonConvert.DeserializeObject<RegisterCompanyInput>(json);
 
-            UpdateProperties();
+            CompanyContactDataViewModel = new CompanyContactDataViewModel(_indexStore, input);
         }
 
-        private void UpdateProperties()
+        private void OnIndexChanged()
         {
-            OnPropertyChanged(nameof(Email));
-            OnPropertyChanged(nameof(Title));
-            OnPropertyChanged(nameof(PhoneNumber));
-            OnPropertyChanged(nameof(Address));
-            OnPropertyChanged(nameof(SiteUri));
+            OnPropertyChanged(nameof(Index));
+            OnPropertyChanged(nameof(PageOneColor));
+            OnPropertyChanged(nameof(PageTwoColor));
+            OnPropertyChanged(nameof(PageThreeColor));
+            OnPropertyChanged(nameof(IsPageOneVisible));
+            OnPropertyChanged(nameof(IsPageTwoVisible));
+            OnPropertyChanged(nameof(IsPageThreeVisible));
         }
     }
 }

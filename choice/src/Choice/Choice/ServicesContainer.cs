@@ -5,6 +5,7 @@ using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
 using Choice.Services.HttpClientServices;
 using Choice.Stores.Authenticators;
+using Choice.Stores.IndexStores;
 using Choice.Stores.Loaders;
 using Choice.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace Choice
                     
 
                     services.AddSingleton<IAuthenticator, Authenticator>();
+                    services.AddSingleton<IIndexStore, IndexStore>();
                     services.AddScoped<ILoader, Loader>();
 
                     services.AddScoped<MainViewModel>();
