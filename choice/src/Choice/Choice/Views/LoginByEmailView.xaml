@@ -9,24 +9,24 @@
             <StackLayout>
                 <StackLayout Padding="0,20,0,0">
                     <Label FontSize="14"
-                TextColor="#6D7885"
-               Text="E-mail"/>
+                           TextColor="#6D7885"
+                           Text="E-mail"/>
                     <Frame Background="#F2F3F5"
-                CornerRadius="10"
-                BorderColor="#d5d5d7"
-                Padding="20,0"
-                HasShadow="False"
-                x:Name="emailFrame">
+                           CornerRadius="10"
+                           BorderColor="#d5d5d7"
+                           Padding="20,0"
+                           HasShadow="False"
+                           x:Name="emailFrame">
                         <Entry BackgroundColor="Transparent"
-                    PlaceholderColor="#818C99"
-                   Placeholder="Введите E-mail"
-                    TextColor="#000"
-                    Focused="EmailEntryFocused"
-                    Unfocused="EmailEntryUnfocused"
-                    Keyboard="Email"
-                    FontSize="16"
-                    x:Name="TextBox"
-                    Text="{Binding Email}">
+                               PlaceholderColor="#818C99"
+                                Placeholder="Введите E-mail"
+                                TextColor="#000"
+                                Focused="EmailEntryFocused"
+                                Unfocused="EmailEntryUnfocused"
+                                Keyboard="Email"
+                                FontSize="16"
+                                x:Name="TextBox"
+                                Text="{Binding Email}">
                             <Entry.Effects>
                                 <xct:RemoveBorderEffect/>
                             </Entry.Effects>
