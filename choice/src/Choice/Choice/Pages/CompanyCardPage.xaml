@@ -40,6 +40,9 @@
             <StackLayout IsVisible="{Binding IsPageOneVisible}">
                 <views:CompanyContactDataView BindingContext="{Binding CompanyContactDataViewModel}"/>
             </StackLayout>
+            <StackLayout IsVisible="{Binding IsPageTwoVisible}">
+                <views:CompanySocialMediasView BindingContext="{Binding CompanySocialMediasViewModel}"/>
+            </StackLayout>
         </StackLayout>
   </ScrollView>
 </ContentPage>

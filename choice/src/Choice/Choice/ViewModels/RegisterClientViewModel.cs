@@ -1,5 +1,5 @@
 ﻿using Choice.Commands;
-using Choice.Dialogs;
+using Choice.Dialogs.AccountCreatedDialogs;
 using Choice.Stores.Authenticators;
 using Choice.Stores.Loaders;
 using System;

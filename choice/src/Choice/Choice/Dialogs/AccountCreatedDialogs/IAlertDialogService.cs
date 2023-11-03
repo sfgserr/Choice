@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Choice.Dialogs
+namespace Choice.Dialogs.AccountCreatedDialogs
 {
     public interface IAlertDialogService
     {

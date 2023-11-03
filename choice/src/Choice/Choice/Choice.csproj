@@ -12,20 +12,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\facebook.png" />
     <None Remove="Resources\hidepassword.png" />
     <None Remove="Resources\icondialog.png" />
+    <None Remove="Resources\instagram.png" />
     <None Remove="Resources\logo.png" />
     <None Remove="Resources\showpassword.png" />
+    <None Remove="Resources\telegram.png" />
+    <None Remove="Resources\vk.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\hidepassword.png" />
     <EmbeddedResource Include="Resources\icondialog.png" />
+    <EmbeddedResource Include="Resources\instagram.png" />
     <EmbeddedResource Include="Resources\logo.png" />
     <EmbeddedResource Include="Resources\showpassword.png" />
+    <EmbeddedResource Include="Resources\telegram.png" />
+    <EmbeddedResource Include="Resources\vk.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -41,7 +49,10 @@
     <EmbeddedResource Update="AppShell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Dialogs\AccountCreatedDialog.xaml">
+    <EmbeddedResource Update="Dialogs\AccountCreatedDialogs\AccountCreatedDialog.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\LinkSocialMediaDialogs\LinkSocialMediaDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\CompanyCardPage.xaml">
@@ -74,5 +85,9 @@
     <Reference Include="Choice.Domain">
       <HintPath>..\..\..\..\api\src\Choice.Domain\bin\Release\net6.0\Choice.Domain.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\facebook.png" />
   </ItemGroup>
 </Project>

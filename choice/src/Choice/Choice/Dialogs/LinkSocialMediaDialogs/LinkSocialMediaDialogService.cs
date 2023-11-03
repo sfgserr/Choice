@@ -1,25 +1,28 @@
-﻿using Rg.Plugins.Popup.Extensions;
-using System;
+﻿
+using Choice.Dialogs.AccountCreatedDialogs;
 using System.Threading.Tasks;
+using System;
 using Xamarin.Forms;
+using Rg.Plugins.Popup.Extensions;
 
-namespace Choice.Dialogs
+namespace Choice.Dialogs.LinkSocialMediaDialogs
 {
-    public class AlertDialogService : IAlertDialogService
+    public class LinkSocialMediaDialogService : ILinkSocialMediaDialogService
     {
         private TaskCompletionSource<bool> taskCompletionSource;
         private Task<bool> task;
 
-        public async Task ShowDialogAsync(string title, string message, string buttonText, Action action)
+        public async Task ShowDialogAsync(string text, Action<string> action)
         {
             taskCompletionSource = new TaskCompletionSource<bool>();
             task = taskCompletionSource.Task;
 
-            AccountCreatedDialog alertDialog = new AccountCreatedDialog(title, message, buttonText, async r => 
+            LinkSocialMediaDialog alertDialog = new LinkSocialMediaDialog(text, async (r, uri) =>
             {
                 await Callback(r);
-                action();
+                action(uri);
             });
+
             await Application.Current.MainPage.Navigation.PushPopupAsync(alertDialog);
             await task;
         }

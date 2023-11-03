@@ -27,10 +27,10 @@ namespace Choice.Validators
         {
             Fails.Clear();
 
-            IList<Company> companies = await _apiService.GetAll("Company/Get");
-
             if (!Equals(_input.Password, _input.PasswordConfirmtion))
                 Fails.Add("Ошибка", "Ваши пароли не совпадают");
+
+            IList<Company> companies = await _apiService.GetAll("Company/Get");
 
             Company companyGotByEmail = companies.FirstOrDefault(c => c.Email == _input.Email);
 

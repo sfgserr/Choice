@@ -1,10 +1,137 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Choice.Views.CompanySocialMediasView">
+             x:Class="Choice.Views.CompanySocialMediasView"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
   <ContentView.Content>
         <StackLayout>
-            
+            <StackLayout Padding="20,10">
+                <Label FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="#000"
+                       Text="Социальные сети"/>
+            </StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Frame BackgroundColor="#fff"
+                       BorderColor="#DFDFDF"
+                       HasShadow="False"
+                       Padding="20,10"
+                       Grid.Row="0">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{ext:ImageResource Choice.Resources.instagram.png}"
+                                    HeightRequest="20"
+                                    WidthRequest="20"
+                                    BackgroundColor="Transparent"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="CenterAndExpand"/>
+
+                            <StackLayout Padding="10,0">
+                                <Label Text="Instagram"
+                                        FontSize="15"
+                                        TextColor="#000"
+                                        VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+
+                            <Switch OnColor="#2688EB"
+                                    ThumbColor="#fff"
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnInstagramToggled"/>
+                        </StackLayout>
+                    </StackLayout>    
+                </Frame>
+                <Frame BackgroundColor="#fff"
+                       BorderColor="#DFDFDF"
+                       HasShadow="False"
+                       Padding="20,10"
+                       Grid.Row="1">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{ext:ImageResource Choice.Resources.facebook.png}"
+                                    HeightRequest="20"
+                                    WidthRequest="20"
+                                    BackgroundColor="Transparent"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="CenterAndExpand"/>
+
+                            <StackLayout Padding="10,0">
+                                <Label Text="Facebook"
+                                        FontSize="15"
+                                        TextColor="#000"
+                                        VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+
+                            <Switch OnColor="#2688EB"
+                                    ThumbColor="#fff"
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnFacebookToggled"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="#fff"
+                        BorderColor="#DFDFDF"
+                        HasShadow="False"
+                        Padding="20,10"
+                        Grid.Row="2">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{ext:ImageResource Choice.Resources.vk.png}"
+                                    HeightRequest="20"
+                                    WidthRequest="20"
+                                    BackgroundColor="Transparent"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="CenterAndExpand"/>
+
+                            <StackLayout Padding="10,0">
+                                <Label Text="ВК"
+                                        FontSize="15"
+                                        TextColor="#000"
+                                        VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+
+                            <Switch OnColor="#2688EB"
+                                    ThumbColor="#fff"
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnVkToggled"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="#fff"
+                        BorderColor="#DFDFDF"
+                        HasShadow="False"
+                        Padding="20,10"
+                        Grid.Row="3">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{ext:ImageResource Choice.Resources.telegram.png}"
+                                    HeightRequest="20"
+                                    WidthRequest="20"
+                                    BackgroundColor="Transparent"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="CenterAndExpand"/>
+
+                            <StackLayout Padding="10,0">
+                                <Label Text="Telegram"
+                                        FontSize="15"
+                                        TextColor="#000"
+                                        VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+
+                            <Switch OnColor="#2688EB"
+                                    ThumbColor="#fff"
+                                    HorizontalOptions="EndAndExpand"
+                                    Toggled="OnTelegramToggled"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </Grid>
         </StackLayout>
   </ContentView.Content>
 </ContentView>

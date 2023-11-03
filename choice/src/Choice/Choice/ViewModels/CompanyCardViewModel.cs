@@ -1,12 +1,9 @@
-﻿using Choice.Commands;
-using Choice.Extensions;
+﻿using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.Services.AuthenticationServices;
 using Choice.Stores.IndexStores;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Choice.ViewModels
@@ -20,6 +17,7 @@ namespace Choice.ViewModels
             _indexStore = indexStore;
             _indexStore.StateChanged += OnIndexChanged;
         }
+
         public string PageThreeColor => Index == 3 ? "#2688EB" : "#DFDFDF";
         public string PageTwoColor => Index >= 2 ? "#2688EB" : "#DFDFDF";
         public string PageOneColor => Index >= 1 ? "#2688EB" : "#DFDFDF";
@@ -37,12 +35,21 @@ namespace Choice.ViewModels
             set => Set(ref _companyContactDataViewModel, value);
         }
 
+        private CompanySocialMediasViewModel _companySocialMediasViewModel;
+
+        public CompanySocialMediasViewModel CompanySocialMediasViewModel
+        {
+            get => _companySocialMediasViewModel;
+            set => Set(ref _companySocialMediasViewModel, value);
+        }
+
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
             string json = HttpUtility.UrlDecode(query["Input"]);
             RegisterCompanyInput input = JsonConvert.DeserializeObject<RegisterCompanyInput>(json);
 
             CompanyContactDataViewModel = new CompanyContactDataViewModel(_indexStore, input);
+            CompanySocialMediasViewModel = new CompanySocialMediasViewModel(input, _indexStore, new LinkSocialMediaDialogService());
         }
 
         private void OnIndexChanged()

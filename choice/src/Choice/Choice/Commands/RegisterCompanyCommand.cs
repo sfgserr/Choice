@@ -1,4 +1,4 @@
-﻿using Choice.Dialogs;
+﻿using Choice.Dialogs.AccountCreatedDialogs;
 using Choice.Domain.Models;
 using Choice.Pages;
 using Choice.Services.ApiServices;

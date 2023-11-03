@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xamarin.Forms.Xaml;
 
-namespace Choice.Dialogs
+namespace Choice.Dialogs.AccountCreatedDialogs
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AccountCreatedDialog

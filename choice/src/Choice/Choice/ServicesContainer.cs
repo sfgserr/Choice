@@ -1,4 +1,5 @@
-﻿using Choice.Dialogs;
+﻿using Choice.Dialogs.AccountCreatedDialogs;
+using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.Domain.Models;
 using Choice.Pages;
 using Choice.Services.ApiServices;

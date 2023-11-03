@@ -1,5 +1,5 @@
 ﻿using Choice.Commands;
-using Choice.Dialogs;
+using Choice.Dialogs.AccountCreatedDialogs;
 using Choice.Domain.Models;
 using Choice.Services.ApiServices;
 using Choice.Stores.Loaders;
