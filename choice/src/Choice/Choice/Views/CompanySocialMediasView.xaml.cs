@@ -15,25 +15,41 @@ namespace Choice.Views
         private void OnInstagramToggled(object sender, ToggledEventArgs e)
         {
             CompanySocialMediasViewModel viewModel = (CompanySocialMediasViewModel)BindingContext;
-            viewModel.LinkSocialMediaCommand.Execute("Instagram");
+
+            if (e.Value)
+                viewModel.LinkSocialMediaCommand.Execute("Instagram");
+            else
+                viewModel.InstagramUri = string.Empty;
         }
 
         private void OnFacebookToggled(object sender, ToggledEventArgs e)
         {
             CompanySocialMediasViewModel viewModel = (CompanySocialMediasViewModel)BindingContext;
-            viewModel.LinkSocialMediaCommand.Execute("Facebook");
+
+            if (e.Value)
+                viewModel.LinkSocialMediaCommand.Execute("Facebook");
+            else
+                viewModel.FacebookUri = string.Empty;
         }
 
         private void OnVkToggled(object sender, ToggledEventArgs e)
         {
             CompanySocialMediasViewModel viewModel = (CompanySocialMediasViewModel)BindingContext;
-            viewModel.LinkSocialMediaCommand.Execute("Vk");
+
+            if (e.Value)
+                viewModel.LinkSocialMediaCommand.Execute("Vk");
+            else
+                viewModel.VkUri = string.Empty;
         }
 
         private void OnTelegramToggled(object sender, ToggledEventArgs e)
         {
             CompanySocialMediasViewModel viewModel = (CompanySocialMediasViewModel)BindingContext;
-            viewModel.LinkSocialMediaCommand.Execute("Telegram");
+
+            if (e.Value)
+                viewModel.LinkSocialMediaCommand.Execute("Telegram");
+            else
+                viewModel.TelegramUri = string.Empty;
         }
     }
 }

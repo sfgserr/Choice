@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\close.png" />
     <None Remove="Resources\facebook.png" />
     <None Remove="Resources\hidepassword.png" />
     <None Remove="Resources\icondialog.png" />
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\close.png" />
     <EmbeddedResource Include="Resources\hidepassword.png" />
     <EmbeddedResource Include="Resources\icondialog.png" />
     <EmbeddedResource Include="Resources\instagram.png" />

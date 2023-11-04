@@ -32,5 +32,10 @@ namespace Choice.Dialogs.LinkSocialMediaDialogs
         {
             _clicked(true, Uri.Text);
         }
+
+        private void CloseButton_Clicked(object sender, System.EventArgs e)
+        {
+            _clicked(true, "");
+        }
     }
 }
