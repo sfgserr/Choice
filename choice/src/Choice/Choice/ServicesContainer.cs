@@ -4,7 +4,9 @@ using Choice.Domain.Models;
 using Choice.Pages;
 using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
+using Choice.Services.CategoryApiServices;
 using Choice.Services.ClientApiServices;
+using Choice.Services.CompanyApiService;
 using Choice.Services.HttpClientServices;
 using Choice.Stores.Authenticators;
 using Choice.Stores.IndexStores;
@@ -57,6 +59,8 @@ namespace Choice
                     services.AddScoped<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
 
                     services.AddScoped<IClientApiService, ClientApiService>();
+                    services.AddScoped<ICompanyApiService, CompanyApiService>();
+                    services.AddScoped<ICategoryApiService, CategoryApiService>();
 
                     services.AddScoped<IAlertDialogService, AlertDialogService>();
 

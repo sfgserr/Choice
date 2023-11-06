@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Choice.Services.CompanyApiService
 {
-    public class CompanyApiService
+    public class CompanyApiService : ICompanyApiService
     {
         private readonly IApiService<Company> _companyService;
 

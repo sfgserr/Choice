@@ -1,19 +1,21 @@
 ﻿using Choice.Domain.Models;
-using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
+using Choice.Services.CategoryApiServices;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Choice.ViewModels
 {
     public class CompanyDescriptionViewModel : ViewModelBase
     {
-        private readonly IApiService<Category> _categoryService;
+        private readonly ICategoryApiService _categoryApiService;
 
-        public CompanyDescriptionViewModel(RegisterCompanyInput input, IApiService<Category> categoryService)
+        public CompanyDescriptionViewModel(RegisterCompanyInput input, ICategoryApiService categoryApiService)
         {
+            _categoryApiService = categoryApiService;
+
             Input = input;
-            _categoryService = categoryService;
         }
 
         public RegisterCompanyInput Input { get; set; }
@@ -28,7 +30,8 @@ namespace Choice.ViewModels
 
         private async Task GetCategories()
         {
-            Categories = await _categoryService.GetAll();
+            IList<Category> categories = await _categoryApiService.GetAll();
+            Categories = categories.ToList();
         }
     }
 }
