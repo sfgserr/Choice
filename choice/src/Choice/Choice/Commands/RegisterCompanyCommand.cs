@@ -77,12 +77,17 @@ namespace Choice.Commands
             string json = JsonConvert.SerializeObject(input);
 
             await _dialogService.ShowDialogAsync("Аккаунт комании создан", "Заполните информацию о вашей компании", "Заполнить информацию",
-                async () => await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}"));
+                async () => await NavigateToCompanyCardPage(json));
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_viewModel.CanRegister)) CanExecuteChanged?.Invoke(this, e);
+        }
+
+        private async Task NavigateToCompanyCardPage(string json)
+        {
+            await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}");
         }
     }
 }

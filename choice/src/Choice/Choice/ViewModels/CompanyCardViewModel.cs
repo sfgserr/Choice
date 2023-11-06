@@ -1,6 +1,8 @@
 ﻿using Choice.Commands;
+using Choice.Dialogs.CategoriesDialogs;
 using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.Services.AuthenticationServices;
+using Choice.Services.CategoryApiServices;
 using Choice.Stores.IndexStores;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -13,11 +15,14 @@ namespace Choice.ViewModels
     public class CompanyCardViewModel : ViewModelBase, IQueryAttributable
     {
         private readonly IIndexStore _indexStore;
+        private readonly ICategoryApiService _categoryApiService;
 
-        public CompanyCardViewModel(IIndexStore indexStore)
+        public CompanyCardViewModel(IIndexStore indexStore, ICategoryApiService categoryApiService)
         {
             _indexStore = indexStore;
             _indexStore.StateChanged += OnIndexChanged;
+
+            _categoryApiService = categoryApiService;
 
             NavigateBackCommand = new RelayCommand(par => { if (_indexStore.State != 1) _indexStore.State--; });
         }
@@ -63,7 +68,7 @@ namespace Choice.ViewModels
 
             CompanyContactDataViewModel = new CompanyContactDataViewModel(_indexStore, input);
             CompanySocialMediasViewModel = new CompanySocialMediasViewModel(input, _indexStore, new LinkSocialMediaDialogService());
-            CompanyDescriptionViewModel = new CompanyDescriptionViewModel(input);
+            CompanyDescriptionViewModel = new CompanyDescriptionViewModel(input, _categoryApiService, new CategoriesDialogService());
         }
 
         private void OnIndexChanged()

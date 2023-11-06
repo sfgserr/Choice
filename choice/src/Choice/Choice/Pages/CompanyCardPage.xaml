@@ -59,6 +59,6 @@
             <StackLayout IsVisible="{Binding IsPageThreeVisible}">
                 <views:CompanyDescriptionView BindingContext="{Binding CompanyDescriptionViewModel}"/>
             </StackLayout>
-     </StackLayout>
+        </StackLayout>
   </ScrollView>
 </ContentPage>

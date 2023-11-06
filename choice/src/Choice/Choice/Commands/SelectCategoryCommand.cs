@@ -1,6 +1,9 @@
 ﻿using Choice.Dialogs.CategoriesDialogs;
+using Choice.Domain.Models;
 using Choice.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace Choice.Commands
@@ -23,9 +26,30 @@ namespace Choice.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
+            if (_viewModel.Categories is null)
+                await _viewModel.GetCategories();
             
+            await _dialogService.ShowDialog(AddCategory, _viewModel.CategoryViewModels);
+        }
+
+        private void AddCategory(CategoryViewModel category)
+        {
+            Category categoryToRemove = _viewModel.Input.Categories.FirstOrDefault(c => c.Title == category.Category.Title);
+
+            if (categoryToRemove != null)
+            {
+                _viewModel.Input.Categories.Remove(categoryToRemove);
+                _viewModel.UpdateTitles();
+                category.IsChecked = false;
+
+                return;
+            }
+
+            _viewModel.Input.Categories.Add(category.Category);
+            _viewModel.UpdateTitles();
+            category.IsChecked = true;
         }
     }
 }

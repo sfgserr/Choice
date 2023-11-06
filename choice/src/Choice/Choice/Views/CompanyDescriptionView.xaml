@@ -1,14 +1,42 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Choice.Views.CompanyDescriptionView">
+             x:Class="Choice.Views.CompanyDescriptionView"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
   <ContentView.Content>
       <StackLayout>
-            <StackLayout Padding="20,10">
-                <Label FontSize="17"
-                       FontAttributes="Bold"
-                       TextColor="#000"
-                       Text="О работе"/>
+            <StackLayout Padding="20">
+                <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Виды деятельности"/>
+                <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry BackgroundColor="Transparent"
+                               PlaceholderColor="#818C99"
+                               Placeholder="Выбрать деятельность"
+                               TextColor="#000"
+                               Keyboard="Email"
+                               FontSize="16"
+                               x:Name="TextBox"
+                               Text="{Binding SelectedCommandsTitles}"
+                               IsReadOnly="True"
+                               HorizontalOptions="FillAndExpand">
+                            <Entry.Effects>
+                                <xct:RemoveBorderEffect/>
+                            </Entry.Effects>
+                        </Entry>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.dropdown.png}"
+                                     BackgroundColor="Transparent"
+                                     HeightRequest="15"
+                                     WidthRequest="15"
+                                     Command="{Binding SelectCategoryCommand}"/>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
         </StackLayout>
   </ContentView.Content>

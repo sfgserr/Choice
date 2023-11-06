@@ -1,4 +1,5 @@
 ﻿using Choice.Domain.Models;
+using Choice.ViewModels;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Choice.Dialogs.CategoriesDialogs
         private TaskCompletionSource<bool> taskCompletionSource;
         private Task<bool> task;
 
-        public async Task ShowDialog(Action<Category> select, List<Category> categories)
+        public async Task ShowDialog(Action<CategoryViewModel> select, List<CategoryViewModel> categories)
         {
             taskCompletionSource = new TaskCompletionSource<bool>();
             task = taskCompletionSource.Task;

@@ -1,7 +1,6 @@
 ﻿using Choice.Dialogs.AccountCreatedDialogs;
-using Choice.Dialogs.LinkSocialMediaDialogs;
+using Choice.Dialogs.CategoriesDialogs;
 using Choice.Domain.Models;
-using Choice.Pages;
 using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
 using Choice.Services.CategoryApiServices;
@@ -54,15 +53,18 @@ namespace Choice
 
                     services.AddScoped<IHttpClientService<Client>, HttpClientService<Client>>();
                     services.AddScoped<IHttpClientService<Company>, HttpClientService<Company>>();
+                    services.AddScoped<IHttpClientService<Category>, HttpClientService<Category>>();
 
                     services.AddScoped<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
                     services.AddScoped<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
+                    services.AddScoped<IApiService<Category>, ApiService<Category>>(s => CreateCategoryApiService(s));
 
                     services.AddScoped<IClientApiService, ClientApiService>();
                     services.AddScoped<ICompanyApiService, CompanyApiService>();
                     services.AddScoped<ICategoryApiService, CategoryApiService>();
 
                     services.AddScoped<IAlertDialogService, AlertDialogService>();
+                    services.AddScoped<ICategoriesDialogService, CategoriesDialogService>();
 
                     services.AddScoped<IAuthenticationService, AuthenticationService>();
                 });
@@ -70,6 +72,12 @@ namespace Choice
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
+                                          "https://choiceweb.azurewebsites.net/api");
+        }
+
+        private static ApiService<Category> CreateCategoryApiService(IServiceProvider services)
+        {
+            return new ApiService<Category>(services.GetRequiredService<IHttpClientService<Category>>(),
                                           "https://choiceweb.azurewebsites.net/api");
         }
 
