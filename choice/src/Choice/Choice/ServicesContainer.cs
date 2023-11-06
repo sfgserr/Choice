@@ -72,19 +72,19 @@ namespace Choice
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
-                                          "https://choiceweb.azurewebsites.net/api");
+                                          "http://172.201.118.24/api");
         }
 
         private static ApiService<Category> CreateCategoryApiService(IServiceProvider services)
         {
             return new ApiService<Category>(services.GetRequiredService<IHttpClientService<Category>>(),
-                                          "https://choiceweb.azurewebsites.net/api");
+                                          "http://172.201.118.24/api");
         }
 
         private static ApiService<Company> CreateCompanyApiService(IServiceProvider services)
         {
             return new ApiService<Company>(services.GetRequiredService<IHttpClientService<Company>>(),
-                                          "https://choiceweb.azurewebsites.net/api");
+                                          "http://172.201.118.24/api");
         }
     }
 }

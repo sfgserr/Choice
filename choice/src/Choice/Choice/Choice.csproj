@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\addimage.png" />
     <None Remove="Resources\close.png" />
     <None Remove="Resources\dropdown.png" />
     <None Remove="Resources\facebook.png" />
@@ -104,5 +105,9 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\facebook.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\addimage.png" />
   </ItemGroup>
 </Project>

@@ -14,9 +14,9 @@ namespace Choice.Dialogs.CategoriesDialogs
 	{
 		private readonly List<CategoryViewModel> _categories;
 		private readonly Func<bool, Task> _clicked;
-		private readonly Action<CategoryViewModel> _select;
+		private readonly Func<CategoryViewModel, int> _select;
 
-		public CategoriesDialog(Func<bool, Task> clicked, Action<CategoryViewModel> select, List<CategoryViewModel> categories)
+		public CategoriesDialog(Func<bool, Task> clicked, Func<CategoryViewModel, int> select, List<CategoryViewModel> categories, int count)
 		{
 			InitializeComponent();
 
@@ -27,6 +27,7 @@ namespace Choice.Dialogs.CategoriesDialogs
 			_select = select;
 
 			Data.ItemsSource = categories;
+			selectBtn.Text = count == 0 ? "Выбор" : $"Выбор ({count})";
 		}
 
         private void ImageButton_Clicked(object sender, EventArgs e)
@@ -38,7 +39,10 @@ namespace Choice.Dialogs.CategoriesDialogs
 
 			string categoryTitle = button.CommandParameter.ToString();
 			CategoryViewModel category = _categories.FirstOrDefault(c => c.Category.Title == categoryTitle);
-			_select(category);
+
+			int count = _select(category);
+
+            selectBtn.Text = count == 0 ? "Выбрать" : $"Выбрать ({count})";
         }
 
         private void Close_Clicked(object sender, EventArgs e)

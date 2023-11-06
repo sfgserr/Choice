@@ -31,10 +31,10 @@ namespace Choice.Commands
             if (_viewModel.Categories is null)
                 await _viewModel.GetCategories();
             
-            await _dialogService.ShowDialog(AddCategory, _viewModel.CategoryViewModels);
+            await _dialogService.ShowDialog(AddCategory, _viewModel.CategoryViewModels, _viewModel.Input.Categories.Count);
         }
 
-        private void AddCategory(CategoryViewModel category)
+        private int AddCategory(CategoryViewModel category)
         {
             Category categoryToRemove = _viewModel.Input.Categories.FirstOrDefault(c => c.Title == category.Category.Title);
 
@@ -44,12 +44,14 @@ namespace Choice.Commands
                 _viewModel.UpdateTitles();
                 category.IsChecked = false;
 
-                return;
+                return _viewModel.Input.Categories.Count;
             }
 
             _viewModel.Input.Categories.Add(category.Category);
             _viewModel.UpdateTitles();
             category.IsChecked = true;
+
+            return _viewModel.Input.Categories.Count;
         }
     }
 }

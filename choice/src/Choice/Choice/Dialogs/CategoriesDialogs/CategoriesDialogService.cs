@@ -13,12 +13,12 @@ namespace Choice.Dialogs.CategoriesDialogs
         private TaskCompletionSource<bool> taskCompletionSource;
         private Task<bool> task;
 
-        public async Task ShowDialog(Action<CategoryViewModel> select, List<CategoryViewModel> categories)
+        public async Task ShowDialog(Func<CategoryViewModel, int> select, List<CategoryViewModel> categories, int count)
         {
             taskCompletionSource = new TaskCompletionSource<bool>();
             task = taskCompletionSource.Task;
 
-            CategoriesDialog dialog = new CategoriesDialog(Callback, select, categories);
+            CategoriesDialog dialog = new CategoriesDialog(Callback, select, categories, count);
 
             await Application.Current.MainPage.Navigation.PushPopupAsync(dialog);
             await task;

@@ -38,6 +38,73 @@
                     </StackLayout>
                 </Frame>
             </StackLayout>
+            <StackLayout Padding="20">
+                <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Добавьте фотографии"/>
+                <Grid Padding="0,10"
+                      ColumnSpacing="20"
+                      RowSpacing="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="110"/>
+                        <RowDefinition Height="110"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="110"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           HasShadow="False"
+                           CornerRadius="10">
+                          
+                    </Frame>
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           HasShadow="False"
+                           CornerRadius="10">
+
+                    </Frame>
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="0"
+                           Grid.Column="2"
+                           HasShadow="False"
+                           CornerRadius="10">
+
+                    </Frame>
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           HasShadow="False"
+                           CornerRadius="10">
+
+                    </Frame>
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           HasShadow="False"
+                           CornerRadius="10">
+
+                    </Frame>
+                    <Frame BorderColor="#C8C8C8"
+                           BackgroundColor="#F9F9F9"
+                           Grid.Row="1"
+                           Grid.Column="2"
+                           HasShadow="False"
+                           CornerRadius="10">
+
+                    </Frame>
+                </Grid>
+            </StackLayout>
         </StackLayout>
   </ContentView.Content>
 </ContentView>
