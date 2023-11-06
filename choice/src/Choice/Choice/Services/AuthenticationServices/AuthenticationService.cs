@@ -1,12 +1,10 @@
 ﻿using Choice.Domain.Models;
 using Choice.Exceptions;
-using Choice.Services.ApiServices;
 using Choice.Services.ClientApiServices;
-using System;
+using Choice.Services.CompanyApiService;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Twilio;
 using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Services.AuthenticationServices
@@ -14,9 +12,9 @@ namespace Choice.Services.AuthenticationServices
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IClientApiService _clientApiService;
-        private readonly IApiService<Company> _companyApiService;
+        private readonly ICompanyApiService _companyApiService;
 
-        public AuthenticationService(IClientApiService clientApiService, IApiService<Company> companyApiService)
+        public AuthenticationService(IClientApiService clientApiService, ICompanyApiService companyApiService)
         {
             _clientApiService = clientApiService;
             _companyApiService = companyApiService;
@@ -37,7 +35,7 @@ namespace Choice.Services.AuthenticationServices
 
         public async Task<Company> LoginByPhone(string phoneNumber)
         {
-            Company company = await _companyApiService.Get($"Company/GetByPhoneNumber?phoneNumber={phoneNumber}");
+            Company company = await _companyApiService.GetByPhone(phoneNumber);
 
             if (company is null)
                 throw new UserNotFoundByPhoneNumberException();
@@ -71,7 +69,7 @@ namespace Choice.Services.AuthenticationServices
 
         public async Task RegisterCompany(RegisterCompanyInput input)
         {
-            IList<Company> companies = await _companyApiService.GetAll("Company/Get");
+            IList<Company> companies = await _companyApiService.GetAll();
 
             Company companyGotByPhone = companies.FirstOrDefault(c => c.PhoneNumber == input.PhoneNumber);
 
@@ -94,7 +92,7 @@ namespace Choice.Services.AuthenticationServices
                 Title = input.Title
             };
 
-            await _companyApiService.Post("Company/Create", company);
+            await _companyApiService.Post(company);
         }
     }
 }
