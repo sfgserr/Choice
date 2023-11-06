@@ -18,6 +18,8 @@
     <None Remove="Resources\icondialog.png" />
     <None Remove="Resources\instagram.png" />
     <None Remove="Resources\logo.png" />
+    <None Remove="Resources\navigateback.png" />
+    <None Remove="Resources\selected.png" />
     <None Remove="Resources\showpassword.png" />
     <None Remove="Resources\telegram.png" />
     <None Remove="Resources\vk.png" />
@@ -29,6 +31,8 @@
     <EmbeddedResource Include="Resources\icondialog.png" />
     <EmbeddedResource Include="Resources\instagram.png" />
     <EmbeddedResource Include="Resources\logo.png" />
+    <EmbeddedResource Include="Resources\navigateback.png" />
+    <EmbeddedResource Include="Resources\selected.png" />
     <EmbeddedResource Include="Resources\showpassword.png" />
     <EmbeddedResource Include="Resources\telegram.png" />
     <EmbeddedResource Include="Resources\vk.png" />
@@ -45,6 +49,7 @@
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.6" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2612" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +57,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Dialogs\AccountCreatedDialogs\AccountCreatedDialog.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\CategoriesDialogs\CategoriesDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Dialogs\LinkSocialMediaDialogs\LinkSocialMediaDialog.xaml">
@@ -70,6 +78,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CompanyContactDataView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CompanyDescriptionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CompanySocialMediasView.xaml">

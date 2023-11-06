@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rx:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              x:Class="Choice.Dialogs.CategoriesDialogs.CategoriesDialog"
+              xmlns:rx="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+              xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+              xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
+              xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
+    <StackLayout>
+        <pancake:PancakeView CornerRadius="10,10,0,0"
+                             VerticalOptions="CenterAndExpand"
+                             Background="#fff">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label FontSize="21"
+                            Text="Виды деятельности"
+                            FontAttributes="Bold"
+                            TextColor="#000"
+                            HorizontalOptions="CenterAndExpand"/>
+
+                    <ImageButton x:Name="Close"
+                                 Source="{ext:ImageResource Choice.Resources.close.png}"
+                                 Clicked="Close"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="30"
+                                 HeightRequest="30"
+                                 HorizontalOptions="EndAndExpand"
+                                 VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+                <StackLayout>
+                    <ListView x:Name="Data">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <StackLayout Orientation="Horizontal"
+                                                     Padding="10,0">
+                                            <Label Text="{Binding Title}"
+                                                   FontSize="17"
+                                                   TextColor="#000"
+                                                   HorizontalOptions="Start"/>
+                                            <ImageButton BackgroundColor="Transparent"
+                                                         WidthRequest="30"
+                                                         HeightRequest="30"
+                                                         Source="{ext:ImageResource Choice.Resources.selected.png}"
+                                                         HorizontalOptions="Center"
+                                                         VerticalOptions="Center"
+                                                         Clicked="ImageButton_Clicked"
+                                                         CommandParameter="{Binding Title}"/>
+                                        </StackLayout>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+                <StackLayout>
+                    <Button Background="#2D81E0"
+                            Text="Выбрать"
+                            FontSize="17"
+                            CornerRadius="10"
+                            TextTransform="None"
+                            TextColor="#fff"
+                            xct:TouchEffect.NativeAnimation="True"
+                            xct:TouchEffect.NativeAnimationColor="#5396E1"
+                            xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
+                </StackLayout>
+            </StackLayout>
+        </pancake:PancakeView>
+    </StackLayout>
+</rx:PopupPage>

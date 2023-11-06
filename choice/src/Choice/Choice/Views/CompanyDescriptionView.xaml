@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Choice.Views.CompanyDescriptionView">
+  <ContentView.Content>
+      <StackLayout>
+            <StackLayout Padding="20,10">
+                <Label FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="#000"
+                       Text="О работе"/>
+            </StackLayout>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

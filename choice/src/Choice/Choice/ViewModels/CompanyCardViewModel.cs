@@ -1,9 +1,11 @@
-﻿using Choice.Dialogs.LinkSocialMediaDialogs;
+﻿using Choice.Commands;
+using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.Services.AuthenticationServices;
 using Choice.Stores.IndexStores;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Choice.ViewModels
@@ -16,6 +18,8 @@ namespace Choice.ViewModels
         {
             _indexStore = indexStore;
             _indexStore.StateChanged += OnIndexChanged;
+
+            NavigateBackCommand = new RelayCommand(par => { if (_indexStore.State != 1) _indexStore.State--; });
         }
 
         public string PageThreeColor => Index == 3 ? "#2688EB" : "#DFDFDF";
@@ -25,6 +29,7 @@ namespace Choice.ViewModels
         public bool IsPageTwoVisible => Index == 2;
         public bool IsPageThreeVisible => Index == 3;
 
+        public ICommand NavigateBackCommand { get; }
         public int Index => _indexStore.State;
 
         private CompanyContactDataViewModel _companyContactDataViewModel;
@@ -43,6 +48,14 @@ namespace Choice.ViewModels
             set => Set(ref _companySocialMediasViewModel, value);
         }
 
+        private CompanyDescriptionViewModel _companyDescriptionViewModel;
+
+        public CompanyDescriptionViewModel CompanyDescriptionViewModel
+        {
+            get => _companyDescriptionViewModel;
+            set => Set(ref _companyDescriptionViewModel, value);
+        }
+
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
             string json = HttpUtility.UrlDecode(query["Input"]);
@@ -50,6 +63,7 @@ namespace Choice.ViewModels
 
             CompanyContactDataViewModel = new CompanyContactDataViewModel(_indexStore, input);
             CompanySocialMediasViewModel = new CompanySocialMediasViewModel(input, _indexStore, new LinkSocialMediaDialogService());
+            CompanyDescriptionViewModel = new CompanyDescriptionViewModel(input);
         }
 
         private void OnIndexChanged()

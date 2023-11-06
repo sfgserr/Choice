@@ -1,6 +1,7 @@
 ﻿using Choice.Domain.Models;
 using Choice.Exceptions;
 using Choice.Services.ApiServices;
+using Choice.Services.ClientApiServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace Choice.Services.AuthenticationServices
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IApiService<Client> _clientApiService;
+        private readonly IClientApiService _clientApiService;
         private readonly IApiService<Company> _companyApiService;
 
-        public AuthenticationService(IApiService<Client> clientApiService, IApiService<Company> companyApiService)
+        public AuthenticationService(IClientApiService clientApiService, IApiService<Company> companyApiService)
         {
             _clientApiService = clientApiService;
             _companyApiService = companyApiService;
@@ -23,7 +24,7 @@ namespace Choice.Services.AuthenticationServices
 
         public async Task<Client> LoginByEmail(string email, string password)
         {
-            Client client = await _clientApiService.Get($"Client/GetByEmail?email={email}");
+            Client client = await _clientApiService.GetByEmail(email);
 
             if (client is null)
                 throw new UserNotFoundException();
@@ -51,7 +52,7 @@ namespace Choice.Services.AuthenticationServices
             if (password != passwordConfirmtion)
                 throw new PasswordDoesNotEqualToConfirmtionException();
 
-            Client clientGotByEmail = await _clientApiService.Get($"Client/GetByEmail?email={email}");
+            Client clientGotByEmail = await _clientApiService.GetByEmail(email);
 
             if (clientGotByEmail != null)
                 throw new EmailAlreadyRegisteredException();
@@ -65,7 +66,7 @@ namespace Choice.Services.AuthenticationServices
                 PhotoUri = "/"
             };
 
-            await _clientApiService.Post("Client/Create", client);
+            await _clientApiService.Post(client);
         }
 
         public async Task RegisterCompany(RegisterCompanyInput input)

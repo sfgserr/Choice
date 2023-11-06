@@ -4,15 +4,28 @@
              x:Class="Choice.Pages.CompanyCardPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:views="clr-namespace:Choice.Views"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
              Shell.NavBarIsVisible="False">
   <ScrollView>
      <StackLayout>
-        <StackLayout Padding="0,40,0,0">
+        <StackLayout Padding="20,40"
+                     Orientation="Horizontal">
+            
+            <ImageButton Source="{ext:ImageResource Choice.Resources.navigateback.png}"
+                         HeightRequest="20"
+                         WidthRequest="20"
+                         HorizontalOptions="Start"
+                         Command="{Binding NavigateBackCommand}"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="CenterAndExpand"/>
+            
             <Label Text="Карточка компании"
                    FontSize="21"
                    TextColor="Black"
-                   HorizontalTextAlignment="Center"
-                   FontAttributes="Bold"/>
+                   HorizontalOptions="CenterAndExpand"
+                   FontAttributes="Bold"
+                   VerticalOptions="CenterAndExpand"/>
+
         </StackLayout>
         <StackLayout Orientation="Horizontal"
                      Padding="20,20"
@@ -37,12 +50,15 @@
                      BackgroundColor="#D7D8D9"
                      Opacity="0.5"/>
         </StackLayout>
-            <StackLayout IsVisible="{Binding IsPageOneVisible}">
-                <views:CompanyContactDataView BindingContext="{Binding CompanyContactDataViewModel}"/>
-            </StackLayout>
-            <StackLayout IsVisible="{Binding IsPageTwoVisible}">
-                <views:CompanySocialMediasView BindingContext="{Binding CompanySocialMediasViewModel}"/>
-            </StackLayout>
+         <StackLayout IsVisible="{Binding IsPageTwoVisible}">
+            <views:CompanySocialMediasView BindingContext="{Binding CompanySocialMediasViewModel}"/>
         </StackLayout>
+        <StackLayout IsVisible="{Binding IsPageOneVisible}">
+            <views:CompanyContactDataView BindingContext="{Binding CompanyContactDataViewModel}"/>
+        </StackLayout>
+            <StackLayout IsVisible="{Binding IsPageThreeVisible}">
+                <views:CompanyDescriptionView BindingContext="{Binding CompanyDescriptionViewModel}"/>
+            </StackLayout>
+     </StackLayout>
   </ScrollView>
 </ContentPage>

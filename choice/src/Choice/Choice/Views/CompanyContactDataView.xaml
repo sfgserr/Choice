@@ -7,33 +7,34 @@
         <StackLayout>
             <StackLayout Padding="20,10">
                 <Label FontSize="17"
-             FontAttributes="Bold"
-             TextColor="#000"
-             Text="Контактные данные"/>
+                       FontAttributes="Bold"
+                       TextColor="#000"
+                       Text="Контактные данные"/>
 
                 <Label FontSize="16"
-             TextColor="#181818"
-             Text="Укажите информацию, которая будет отображаться в карточке вашей компании, &#10;ее увидят тысячи наших пользователей"/>
+                       TextColor="#181818"
+                       Text="Укажите информацию, которая будет отображаться в карточке вашей компании, &#10;ее увидят тысячи наших пользователей"/>
             </StackLayout>
             <StackLayout Padding="20,0">
                 <Label FontSize="14"
-                  TextColor="#6D7885"
-                  Text="Название"/>
+                       TextColor="#6D7885"
+                       Text="Название"/>
+                
                 <Frame Background="#F2F3F5"
-                 CornerRadius="10"
-                  BorderColor="#d5d5d7"
-                  Padding="20,0"
-                  HasShadow="False"
-                  x:Name="titleFrame">
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="titleFrame">
                     <Entry BackgroundColor="Transparent"
-                     PlaceholderColor="#818C99"
-                     Placeholder="Введите название"
-                      TextColor="#000"
-                      Focused="TitleEntryFocused"
-                      Unfocused="TitleEntryUnfocused"
-                      Keyboard="Email"
-                      FontSize="16"
-                      Text="{Binding Title}">
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите название"
+                           TextColor="#000"
+                           Focused="TitleEntryFocused"
+                           Unfocused="TitleEntryUnfocused"
+                           Keyboard="Email"
+                           FontSize="16"
+                           Text="{Binding Title}">
                         <Entry.Effects>
                             <xct:RemoveBorderEffect/>
                         </Entry.Effects>
@@ -42,23 +43,23 @@
             </StackLayout>
             <StackLayout Padding="20">
                 <Label FontSize="14"
-                 TextColor="#6D7885"
-                 Text="E-mail"/>
+                       TextColor="#6D7885"
+                       Text="E-mail"/>
                 <Frame Background="#F2F3F5"
-                 CornerRadius="10"
-                 BorderColor="#d5d5d7"
-                 Padding="20,0"
-                 HasShadow="False"
-                 x:Name="emailFrame">
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="emailFrame">
                     <Entry BackgroundColor="Transparent"
-                     PlaceholderColor="#818C99"
-                     Placeholder="Введите E-mail"
-                     TextColor="#000"
-                     Focused="EmailEntryFocused"
-                     Unfocused="EmailEntryUnfocused"
-                     Keyboard="Email"
-                     FontSize="16"
-                     Text="{Binding Email}">
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите E-mail"
+                           TextColor="#000"
+                           Focused="EmailEntryFocused"
+                           Unfocused="EmailEntryUnfocused"
+                           Keyboard="Email"
+                           FontSize="16"
+                           Text="{Binding Email}">
                         <Entry.Effects>
                             <xct:RemoveBorderEffect/>
                         </Entry.Effects>
@@ -97,11 +98,11 @@
                   TextColor="#6D7885"
                   Text="Сайт"/>
                 <Frame Background="#F2F3F5"
-                  CornerRadius="10"
-                  BorderColor="#d5d5d7"
-                  Padding="20,0"
-                  HasShadow="False"
-                  x:Name="siteFrame">
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="siteFrame">
                     <Entry BackgroundColor="Transparent"
                       PlaceholderColor="#818C99"
                       Placeholder="Введите адрес сайта"
@@ -127,7 +128,7 @@
                       Padding="20,0"
                       HasShadow="False"
                       x:Name="addressFrame"
-                     VerticalOptions="FillAndExpand">
+                      VerticalOptions="FillAndExpand">
                     <Entry BackgroundColor="Transparent"
                           PlaceholderColor="#818C99"
                           Placeholder="Введите адрес"
@@ -143,15 +144,13 @@
                     </Entry>
                 </Frame>
             </StackLayout>
-            <StackLayout Padding="20, 20"
-                       IsVisible="{Binding IsCodeSent}">
+            <StackLayout Padding="20, 20">
                 <Button Background="#2D81E0"
                       Text="Далее"
                       FontSize="17"
                       CornerRadius="10"
                       TextTransform="None"
                       TextColor="#fff"
-                      IsEnabled="{Binding CanSignInByCode}"
                       xct:TouchEffect.NativeAnimation="True"
                       xct:TouchEffect.NativeAnimationColor="#5396E1"
                       xct:TouchEffect.NormalBackgroundColor="#2D81E0"
