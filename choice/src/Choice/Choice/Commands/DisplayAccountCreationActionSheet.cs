@@ -29,8 +29,8 @@ namespace Choice.Commands
                 case "Создать аккаунт компании":
                     await Shell.Current.GoToAsync(nameof(RegisterCompanyPage));
                     break;
-                default:
-                    throw new ArgumentException();
+                case "Отмена":
+                    return;
             }
         }
     }

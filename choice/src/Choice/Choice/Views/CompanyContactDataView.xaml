@@ -69,24 +69,24 @@
 
             <StackLayout Padding="20,0">
                 <Label FontSize="14"
-                  TextColor="#6D7885"
-                  Text="Телефон"/>
+                       TextColor="#6D7885"
+                       Text="Телефон"/>
                 <Frame Background="#F2F3F5"
-                  CornerRadius="10"
-                  BorderColor="#d5d5d7"
-                  Padding="20,0"
-                  HasShadow="False"
-                  x:Name="phoneFrame">
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="phoneFrame">
                     <Entry BackgroundColor="Transparent"
-                      PlaceholderColor="#818C99"
-                      Placeholder="+7 (999) 999-99-99"
-                      TextColor="#000"
-                      Focused="PhoneEntryFocused"
-                      Unfocused="PhoneEntryUnfocused"
-                      Keyboard="Telephone"
-                      FontSize="16"
-                      Text="{Binding PhoneNumber}"
-                      MaxLength="15">
+                           PlaceholderColor="#818C99"
+                           Placeholder="+7 (999) 999-99-99"
+                           TextColor="#000"
+                           Focused="PhoneEntryFocused"
+                           Unfocused="PhoneEntryUnfocused"
+                           Keyboard="Telephone"
+                           FontSize="16"
+                           Text="{Binding PhoneNumber}"
+                           MaxLength="15">
                         <Entry.Effects>
                             <xct:RemoveBorderEffect/>
                         </Entry.Effects>
@@ -104,10 +104,10 @@
                        HasShadow="False"
                        x:Name="siteFrame">
                     <Entry BackgroundColor="Transparent"
-                      PlaceholderColor="#818C99"
-                      Placeholder="Введите адрес сайта"
-                      TextColor="#000"
-                      Focused="SiteEntryFocused"
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите адрес сайта"
+                           TextColor="#000"
+                           Focused="SiteEntryFocused"
                       Unfocused="SiteEntryUnfocused"
                       Keyboard="Email"
                       FontSize="16"

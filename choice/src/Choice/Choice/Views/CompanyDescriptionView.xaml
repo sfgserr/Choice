@@ -45,6 +45,7 @@
                 <Grid Padding="0,10"
                       ColumnSpacing="20"
                       RowSpacing="20">
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="110"/>
                         <RowDefinition Height="110"/>
@@ -60,48 +61,120 @@
                            Grid.Row="0"
                            Grid.Column="0"
                            HasShadow="False"
-                           CornerRadius="10">
-                          
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        BackgroundColor="Transparent"
+                                        CommandParameter="0"
+                                        IsVisible="{Binding PhotoViewModels[0].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                            <Image Source="{Binding PhotoViewModels[0].Source}"
+                                   IsVisible="{Binding PhotoViewModels[0].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                     <Frame BorderColor="#C8C8C8"
                            BackgroundColor="#F9F9F9"
                            Grid.Row="0"
                            Grid.Column="1"
                            HasShadow="False"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         CommandParameter="1"
+                                         IsVisible="{Binding PhotoViewModels[1].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
+                            <Image Source="{Binding PhotoViewModels[1].Source}"
+                                   IsVisible="{Binding PhotoViewModels[1].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                     <Frame BorderColor="#C8C8C8"
                            BackgroundColor="#F9F9F9"
                            Grid.Row="0"
                            Grid.Column="2"
                            HasShadow="False"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         CommandParameter="2"
+                                         IsVisible="{Binding PhotoViewModels[2].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
+                            <Image Source="{Binding PhotoViewModels[2].Source}"
+                                   IsVisible="{Binding PhotoViewModels[2].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                     <Frame BorderColor="#C8C8C8"
                            BackgroundColor="#F9F9F9"
                            Grid.Row="1"
                            Grid.Column="0"
                            HasShadow="False"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         CommandParameter="3"
+                                         IsVisible="{Binding PhotoViewModels[3].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
+                            <Image Source="{Binding PhotoViewModels[3].Source}"
+                                   IsVisible="{Binding PhotoViewModels[3].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                     <Frame BorderColor="#C8C8C8"
                            BackgroundColor="#F9F9F9"
                            Grid.Row="1"
                            Grid.Column="1"
                            HasShadow="False"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         CommandParameter="4"
+                                         IsVisible="{Binding PhotoViewModels[4].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
+                            <Image Source="{Binding PhotoViewModels[4].Source}"
+                                   IsVisible="{Binding PhotoViewModels[4].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                     <Frame BorderColor="#C8C8C8"
                            BackgroundColor="#F9F9F9"
                            Grid.Row="1"
                            Grid.Column="2"
                            HasShadow="False"
-                           CornerRadius="10">
+                           CornerRadius="10"
+                           Padding="35">
+                        <StackLayout>
+                            <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         CommandParameter="5"
+                                         IsVisible="{Binding PhotoViewModels[5].IsEmpty}"
+                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
+                            <Image Source="{Binding PhotoViewModels[5].Source}"
+                                   IsVisible="{Binding PhotoViewModels[5].IsUpload}"/>
+                        </StackLayout>
                     </Frame>
                 </Grid>
             </StackLayout>

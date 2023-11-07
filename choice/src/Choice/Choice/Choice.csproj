@@ -108,6 +108,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\addimage.png" />
+    <EmbeddedResource Include="Resources\addimage.png" />
   </ItemGroup>
 </Project>

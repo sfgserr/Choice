@@ -19,12 +19,16 @@ namespace Choice.ViewModels
             _categoryApiService = categoryApiService;
 
             Input = input;
+            SetUpPhotos();
 
             SelectCategoryCommand = new SelectCategoryCommand(this, dialogService);
+            DisplayUploadPhotoActionSheetCommand = new DisplayUploadPhotoActionSheetCommand(this);
         }
 
         public ICommand SelectCategoryCommand { get; }
-        public List<CategoryViewModel> CategoryViewModels { get; set; } 
+        public ICommand DisplayUploadPhotoActionSheetCommand { get; }
+        public List<CategoryViewModel> CategoryViewModels { get; set; }
+        public List<PhotoViewModel> PhotoViewModels { get; set; }
         public RegisterCompanyInput Input { get; set; }
         public string SelectedCommandsTitles => string.Join(", ", Input.Categories.Select(c => c.Title));
 
@@ -49,6 +53,14 @@ namespace Choice.ViewModels
         public void UpdateTitles()
         {
             OnPropertyChanged(nameof(SelectedCommandsTitles));
+        }
+
+        private void SetUpPhotos()
+        {
+            PhotoViewModels = new List<PhotoViewModel>();
+
+            for (int i = 0; i < 6; i++)
+                PhotoViewModels.Add(new PhotoViewModel());
         }
     }
 }
