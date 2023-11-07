@@ -36,16 +36,28 @@ namespace Choice.Commands
                 case "Отмена":
                     return;
                 case "Сделать фото":
+                    await CapturePhoto(index);
+                    break;
+                case "Выбрать из галлереи":
                     await PickPhoto(index);
                     break;
-
             }
+        }
+
+        private async Task CapturePhoto(int index)
+        {
+            FileResult photo = await MediaPicker.CapturePhotoAsync();
+
+            if (photo != null) 
+                _viewModel.PhotoViewModels[index].Source = ImageSource.FromFile(photo.FullPath);
         }
 
         private async Task PickPhoto(int index)
         {
             FileResult photo = await MediaPicker.PickPhotoAsync();
-            _viewModel.PhotoViewModels[index].Source = ImageSource.FromFile(photo.FullPath);
+
+            if (photo != null)
+                _viewModel.PhotoViewModels[index].Source = ImageSource.FromFile(photo.FullPath);
         }
     }
 }

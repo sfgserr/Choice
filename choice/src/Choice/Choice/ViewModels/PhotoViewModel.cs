@@ -4,6 +4,7 @@ namespace Choice.ViewModels
 {
     public class PhotoViewModel : ViewModelBase
     {
+		public int Padding => IsEmpty ? 35 : 0;
 		public bool IsEmpty => Source.IsEmpty;
 		public bool IsUpload => !Source.IsEmpty;
 
@@ -15,8 +16,10 @@ namespace Choice.ViewModels
 			set 
 			{
 				Set(ref _source, value);
+
 				OnPropertyChanged(nameof(IsUpload));
                 OnPropertyChanged(nameof(IsEmpty));
+				OnPropertyChanged(nameof(Padding));
             }
 		}
 	}
