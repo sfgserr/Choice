@@ -43,6 +43,7 @@ namespace Choice.Commands
                 _viewModel.Input.Categories.Remove(categoryToRemove);
                 _viewModel.UpdateTitles();
                 category.IsChecked = false;
+                _viewModel.UpdateCanSaveCompanyData();
 
                 return _viewModel.Input.Categories.Count;
             }
@@ -50,6 +51,7 @@ namespace Choice.Commands
             _viewModel.Input.Categories.Add(category.Category);
             _viewModel.UpdateTitles();
             category.IsChecked = true;
+            _viewModel.UpdateCanSaveCompanyData();
 
             return _viewModel.Input.Categories.Count;
         }
