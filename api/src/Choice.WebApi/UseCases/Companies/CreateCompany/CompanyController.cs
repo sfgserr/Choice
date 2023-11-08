@@ -28,7 +28,7 @@ namespace Choice.WebApi.UseCases.Companies.CreateCompany
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(Company company)
+        public async Task<IActionResult> Create([FromBody] Company company)
         {
             _useCase.SetOutputPort(this);
 
