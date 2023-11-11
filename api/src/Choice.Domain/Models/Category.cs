@@ -5,6 +5,5 @@ namespace Choice.Domain.Models
     {
         public string Title { get; set; } = string.Empty;
         public string IconUri { get; set; } = string.Empty;
-        public List<Company> Companies { get; set; } = new List<Company>();  
     }
 }

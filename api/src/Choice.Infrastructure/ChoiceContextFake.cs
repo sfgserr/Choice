@@ -79,7 +79,6 @@ namespace Choice.Infrastructure
 
             company.SocialMedias.Add(socialMedia);
             company.Categories.Add(category);
-            category.Companies.Add(company);
 
             Companies.Add(company);
             SocialMedias.Add(socialMedia);

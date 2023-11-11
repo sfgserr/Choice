@@ -32,10 +32,6 @@ namespace Choice.Infrastructure
                         .HasConversion(c => string.Join("|", c),
                                        c => c.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
 
-            modelBuilder.Entity<Category>()
-                        .HasMany(c => c.Companies)
-                        .WithMany(c => c.Categories);
-
             base.OnModelCreating(modelBuilder);
         }
 

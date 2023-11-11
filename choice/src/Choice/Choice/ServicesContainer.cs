@@ -72,19 +72,19 @@ namespace Choice
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
-                                          "http://localhost/api");
+                                          "http://5.35.13.9/api");
         }
 
         private static ApiService<Category> CreateCategoryApiService(IServiceProvider services)
         {
             return new ApiService<Category>(services.GetRequiredService<IHttpClientService<Category>>(),
-                                          "http://localhost/api");
+                                          "http://5.35.13.9/api");
         }
 
         private static ApiService<Company> CreateCompanyApiService(IServiceProvider services)
         {
             return new ApiService<Company>(services.GetRequiredService<IHttpClientService<Company>>(),
-                                          "http://localhost/api");
+                                          "http://5.35.13.9/api");
         }
     }
 }
