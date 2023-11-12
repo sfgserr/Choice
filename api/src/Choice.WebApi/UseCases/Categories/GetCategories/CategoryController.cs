@@ -1,5 +1,6 @@
 ﻿using Choice.Application.UseCases.Categories.GetCategories;
 using Choice.Domain.Models;
+using Choice.WebApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Categories.GetCategories
@@ -19,7 +20,7 @@ namespace Choice.WebApi.UseCases.Categories.GetCategories
 
         void IOutputPort.Ok(IList<Category> categories)
         {
-            _viewModel = Ok(categories);
+            _viewModel = Ok(categories.Select(c => new CategoryViewModel(c)));
         }
 
         [HttpGet("Get")]

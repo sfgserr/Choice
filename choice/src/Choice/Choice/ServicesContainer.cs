@@ -36,7 +36,6 @@ namespace Choice
                 {
                     TwilioClient.Init("ACdf6bfdcacd0f2f8c967a755e67a685a8", "37b8460e2ce3ea57b4bb5e75e0798688");
                     
-
                     services.AddSingleton<IAuthenticator, Authenticator>();
                     services.AddSingleton<IIndexStore, IndexStore>();
                     services.AddScoped<ILoader, Loader>();
@@ -72,19 +71,19 @@ namespace Choice
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
-                                          "http://5.35.13.9/api");
+                                          "http://5.35.13.28/api");
         }
 
         private static ApiService<Category> CreateCategoryApiService(IServiceProvider services)
         {
             return new ApiService<Category>(services.GetRequiredService<IHttpClientService<Category>>(),
-                                          "http://5.35.13.9/api");
+                                          "http://5.35.13.28/api");
         }
 
         private static ApiService<Company> CreateCompanyApiService(IServiceProvider services)
         {
             return new ApiService<Company>(services.GetRequiredService<IHttpClientService<Company>>(),
-                                          "http://5.35.13.9/api");
+                                          "http://5.35.13.28/api");
         }
     }
 }
