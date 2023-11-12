@@ -49,7 +49,7 @@ namespace Choice.Commands
             _viewModel.Input.PhotoUris = _viewModel.PhotoViewModels.Select(p => ((FileImageSource)p.Source).File).ToList();
             //_viewModel.Input.PhotoUris.ForEach(async p => await _blobService.UploadPhoto(p));
             await _authenticationService.RegisterCompany(_viewModel.Input);
-            await _alertDialogService.ShowDialogAsync("Отлично!", "Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы", "Понятно", async () => await Shell.Current.GoToAsync("../"));
+            await _alertDialogService.ShowDialogAsync("Отлично!", "Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы", "Понятно", async () => await Shell.Current.GoToAsync("../../"));
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)

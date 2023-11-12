@@ -15,6 +15,8 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<Company> Create(Company entity)
         {
+            entity.Categories.ForEach(e => _context.Categories.Attach(e));
+
             await _context.Companies.AddAsync(entity);
 
             return entity;

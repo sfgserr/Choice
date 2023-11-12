@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Choice.Domain.Models
 {
     public class SocialMedia : DomainObject
