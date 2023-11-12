@@ -29,7 +29,10 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<IList<OrderMessage>> Get()
         {
-            return await _context.OrderMessages.ToListAsync();
+            return await _context.OrderMessages
+                                 .Include(c => c.Order)
+                                 .Include(c => c.Sender)
+                                 .ToListAsync();
         }
 
         public async Task<OrderMessage> GetBy(Func<OrderMessage, bool> func)

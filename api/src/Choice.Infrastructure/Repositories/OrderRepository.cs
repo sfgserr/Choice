@@ -29,7 +29,9 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<IList<Order>> Get()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders
+                                 .Include(e => e.Categories)
+                                 .ToListAsync();
         }
 
         public async Task<Order> GetBy(Func<Order, bool> func)

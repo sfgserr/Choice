@@ -31,7 +31,10 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<IList<Company>> Get()
         {
-            return await _context.Companies.ToListAsync();
+            return await _context.Companies
+                                 .Include(e => e.Categories)
+                                 .Include(e => e.SocialMedias)
+                                 .ToListAsync();
         }
 
         public async Task<Company> GetBy(Func<Company, bool> func)

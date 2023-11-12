@@ -29,7 +29,10 @@ namespace Choice.Infrastructure.Repositories
 
         public async Task<IList<Review>> Get()
         {
-            return await _context.Reviews.ToListAsync();
+            return await _context.Reviews
+                                 .Include(c => c.Client)
+                                 .Include(c => c.Company)
+                                 .ToListAsync();
         }
 
         public async Task<Review> GetBy(Func<Review, bool> func)
