@@ -7,6 +7,7 @@ using Choice.Stores.IndexStores;
 using Choice.Stores.Loaders;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Web;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -19,8 +20,9 @@ namespace Choice.ViewModels
         private readonly ICategoryApiService _categoryApiService;
         private readonly ILoader _loader;
         private readonly IAuthenticationService _authenticationService;
+        private readonly HttpClient _client;
 
-        public CompanyCardViewModel(IIndexStore indexStore, ICategoryApiService categoryApiService, ILoader loader, IAuthenticationService service)
+        public CompanyCardViewModel(IIndexStore indexStore, ICategoryApiService categoryApiService, ILoader loader, IAuthenticationService service, HttpClient client)
         {
             _indexStore = indexStore;
             _indexStore.StateChanged += OnIndexChanged;
@@ -28,6 +30,7 @@ namespace Choice.ViewModels
             _loader = loader;
             _authenticationService = service;
             _categoryApiService = categoryApiService;
+            _client = client;
 
             NavigateBackCommand = new RelayCommand(par => { if (_indexStore.State != 1) _indexStore.State--; });
         }
@@ -73,7 +76,7 @@ namespace Choice.ViewModels
 
             CompanyContactDataViewModel = new CompanyContactDataViewModel(_indexStore, input);
             CompanySocialMediasViewModel = new CompanySocialMediasViewModel(input, _indexStore, new LinkSocialMediaDialogService());
-            CompanyDescriptionViewModel = new CompanyDescriptionViewModel(input, _categoryApiService, new CategoriesDialogService(), _loader, _authenticationService);
+            CompanyDescriptionViewModel = new CompanyDescriptionViewModel(input, _categoryApiService, new CategoriesDialogService(), _loader, _authenticationService, _client);
         }
 
         private void OnIndexChanged()

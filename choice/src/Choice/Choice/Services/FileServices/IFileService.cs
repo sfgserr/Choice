@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Choice.Services.BlobServices
+namespace Choice.Services.FileServices
 {
-    public interface IBlobService
+    public interface IFileService
     {
         Task UploadPhoto(string fullPath);
     }

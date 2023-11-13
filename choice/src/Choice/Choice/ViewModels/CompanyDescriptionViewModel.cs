@@ -3,13 +3,14 @@ using Choice.Dialogs.AccountCreatedDialogs;
 using Choice.Dialogs.CategoriesDialogs;
 using Choice.Domain.Models;
 using Choice.Services.AuthenticationServices;
-using Choice.Services.BlobServices;
+using Choice.Services.FileServices;
 using Choice.Services.CategoryApiServices;
 using Choice.Stores.Loaders;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Net.Http;
 
 namespace Choice.ViewModels
 {
@@ -18,7 +19,7 @@ namespace Choice.ViewModels
         private readonly ICategoryApiService _categoryApiService;
         private readonly ILoader _loader;
 
-        public CompanyDescriptionViewModel(RegisterCompanyInput input, ICategoryApiService categoryApiService, ICategoriesDialogService dialogService, ILoader loader, IAuthenticationService service)
+        public CompanyDescriptionViewModel(RegisterCompanyInput input, ICategoryApiService categoryApiService, ICategoriesDialogService dialogService, ILoader loader, IAuthenticationService service, HttpClient client)
         {
             _loader = loader;
             _loader.StateChanged += OnIsLoadingChanged;
@@ -30,7 +31,7 @@ namespace Choice.ViewModels
 
             SelectCategoryCommand = new SelectCategoryCommand(this, dialogService);
             DisplayUploadPhotoActionSheetCommand = new DisplayUploadPhotoActionSheetCommand(this);
-            SaveCompanyDataCommand = new SaveCompanyDataCommand(this, service, new AlertDialogService(), new BlobService(), _loader);
+            SaveCompanyDataCommand = new SaveCompanyDataCommand(this, service, new AlertDialogService(), new FileService(client), _loader);
         }
 
         public ICommand SelectCategoryCommand { get; }
