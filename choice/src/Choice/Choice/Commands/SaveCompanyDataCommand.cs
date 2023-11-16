@@ -47,7 +47,7 @@ namespace Choice.Commands
         private async Task SaveCompanyData()
         {
             _viewModel.Input.PhotoUris = _viewModel.PhotoViewModels.Select(p => ((FileImageSource)p.Source).File).ToList();
-            _viewModel.Input.PhotoUris.ForEach(async p => await _fileService.UploadPhoto(p));
+            _viewModel.Input.PhotoUris.ForEach(async p => { if (!string.IsNullOrEmpty(p)) await _fileService.UploadPhoto(p); });
             await _authenticationService.RegisterCompany(_viewModel.Input);
             await _alertDialogService.ShowDialogAsync("Отлично!", "Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы", "Понятно", async () => await Shell.Current.GoToAsync("../../"));
         }

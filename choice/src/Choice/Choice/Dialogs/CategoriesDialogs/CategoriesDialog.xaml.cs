@@ -12,11 +12,11 @@ namespace Choice.Dialogs.CategoriesDialogs
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CategoriesDialog
 	{
-		private readonly List<CategoryViewModel> _categories;
+		private readonly List<CategoryDialogViewModel> _categories;
 		private readonly Func<bool, Task> _clicked;
-		private readonly Func<CategoryViewModel, int> _select;
+		private readonly Func<CategoryDialogViewModel, int> _select;
 
-		public CategoriesDialog(Func<bool, Task> clicked, Func<CategoryViewModel, int> select, List<CategoryViewModel> categories, int count)
+		public CategoriesDialog(Func<bool, Task> clicked, Func<CategoryDialogViewModel, int> select, List<CategoryDialogViewModel> categories, int count)
 		{
 			InitializeComponent();
 
@@ -38,7 +38,7 @@ namespace Choice.Dialogs.CategoriesDialogs
                 button.BackgroundColor.ToHex() == "#FF3F8AE0" ? Color.FromHex("#FFD5D5D7") : button.BackgroundColor;
 
 			string categoryTitle = button.CommandParameter.ToString();
-			CategoryViewModel category = _categories.FirstOrDefault(c => c.Category.Title == categoryTitle);
+			CategoryDialogViewModel category = _categories.FirstOrDefault(c => c.Category.Title == categoryTitle);
 
 			int count = _select(category);
 

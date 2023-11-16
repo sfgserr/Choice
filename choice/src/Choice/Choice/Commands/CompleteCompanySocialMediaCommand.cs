@@ -36,8 +36,8 @@ namespace Choice.Commands
             {
                 new SocialMedia() { Title = "Instagram", Uri = _viewModel.InstagramUri },
                 new SocialMedia() { Title = "Facebook", Uri = _viewModel.FacebookUri },
-                new SocialMedia() { Title = "Instagram", Uri = _viewModel.InstagramUri },
-                new SocialMedia() { Title = "Instagram", Uri = _viewModel.InstagramUri },
+                new SocialMedia() { Title = "Vk", Uri = _viewModel.VkUri },
+                new SocialMedia() { Title = "Telegram", Uri = _viewModel.TelegramUri },
             };
 
             _viewModel.Input.SocialMedias = socialMedias;

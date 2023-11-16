@@ -10,7 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Net.Http;
+using Choice.Factories;
+using Choice.Services.HttpClientServices;
 
 namespace Choice.ViewModels
 {
@@ -19,7 +20,7 @@ namespace Choice.ViewModels
         private readonly ICategoryApiService _categoryApiService;
         private readonly ILoader _loader;
 
-        public CompanyDescriptionViewModel(RegisterCompanyInput input, ICategoryApiService categoryApiService, ICategoriesDialogService dialogService, ILoader loader, IAuthenticationService service, HttpClient client)
+        public CompanyDescriptionViewModel(RegisterCompanyInput input, ICategoryApiService categoryApiService, ICategoriesDialogService dialogService, ILoader loader, IAuthenticationService service, IFileService fileService)
         {
             _loader = loader;
             _loader.StateChanged += OnIsLoadingChanged;
@@ -31,7 +32,7 @@ namespace Choice.ViewModels
 
             SelectCategoryCommand = new SelectCategoryCommand(this, dialogService);
             DisplayUploadPhotoActionSheetCommand = new DisplayUploadPhotoActionSheetCommand(this);
-            SaveCompanyDataCommand = new SaveCompanyDataCommand(this, service, new AlertDialogService(), new FileService(client), _loader);
+            SaveCompanyDataCommand = new SaveCompanyDataCommand(this, service, new AlertDialogService(), fileService, _loader);
         }
 
         public ICommand SelectCategoryCommand { get; }
@@ -39,7 +40,7 @@ namespace Choice.ViewModels
         public ICommand DisplayUploadPhotoActionSheetCommand { get; }
         public bool IsLoading => _loader.State;
         public bool CanSaveCompanyData => Input.Categories.Count > 0 && PhotoViewModels.Any(p => !p.Source.IsEmpty); 
-        public List<CategoryViewModel> CategoryViewModels { get; set; }
+        public List<CategoryDialogViewModel> CategoryViewModels { get; set; }
         public List<PhotoViewModel> PhotoViewModels { get; set; }
         public RegisterCompanyInput Input { get; set; }
         public string SelectedCommandsTitles => string.Join(", ", Input.Categories.Select(c => c.Title));
@@ -52,7 +53,7 @@ namespace Choice.ViewModels
             set
             {
                 Set(ref _categories, value);
-                CategoryViewModels = _categories.Select(c => new CategoryViewModel(c)).ToList();
+                CategoryViewModels = _categories.Select(c => new CategoryDialogViewModel(c)).ToList();
             }
         }
 

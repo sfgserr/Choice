@@ -1,11 +1,13 @@
 ﻿using Choice.Dialogs.AccountCreatedDialogs;
 using Choice.Dialogs.CategoriesDialogs;
 using Choice.Domain.Models;
+using Choice.Factories;
 using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
 using Choice.Services.CategoryApiServices;
 using Choice.Services.ClientApiServices;
 using Choice.Services.CompanyApiService;
+using Choice.Services.FileServices;
 using Choice.Services.HttpClientServices;
 using Choice.Stores.Authenticators;
 using Choice.Stores.IndexStores;
@@ -47,20 +49,21 @@ namespace Choice
                     services.AddScoped<LoginByEmailViewModel>();
                     services.AddScoped<LoginByPhoneViewModel>();
                     services.AddScoped<CompanyCardViewModel>();
+                    
+                    services.AddSingleton<IHttpClientsFactory, HttpClientsFactory>();
+                    services.AddSingleton<IHttpClientService<Client>, HttpClientService<Client>>();
+                    services.AddSingleton<IHttpClientService<Company>, HttpClientService<Company>>();
+                    services.AddSingleton<IHttpClientService<Category>, HttpClientService<Category>>();
+                    services.AddSingleton<IHttpClientService<byte[]>, HttpClientService<byte[]>>();
+                    services.AddSingleton<IFileService, FileService>();
 
-                    services.AddSingleton<HttpClient>(s => new HttpClient());
+                    services.AddSingleton<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
+                    services.AddSingleton<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
+                    services.AddSingleton<IApiService<Category>, ApiService<Category>>(s => CreateCategoryApiService(s));
 
-                    services.AddScoped<IHttpClientService<Client>, HttpClientService<Client>>();
-                    services.AddScoped<IHttpClientService<Company>, HttpClientService<Company>>();
-                    services.AddScoped<IHttpClientService<Category>, HttpClientService<Category>>();
-
-                    services.AddScoped<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
-                    services.AddScoped<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
-                    services.AddScoped<IApiService<Category>, ApiService<Category>>(s => CreateCategoryApiService(s));
-
-                    services.AddScoped<IClientApiService, ClientApiService>();
-                    services.AddScoped<ICompanyApiService, CompanyApiService>();
-                    services.AddScoped<ICategoryApiService, CategoryApiService>();
+                    services.AddSingleton<IClientApiService, ClientApiService>();
+                    services.AddSingleton<ICompanyApiService, CompanyApiService>();
+                    services.AddSingleton<ICategoryApiService, CategoryApiService>();
 
                     services.AddScoped<IAlertDialogService, AlertDialogService>();
                     services.AddScoped<ICategoriesDialogService, CategoriesDialogService>();

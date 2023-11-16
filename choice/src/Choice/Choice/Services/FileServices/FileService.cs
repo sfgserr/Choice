@@ -1,52 +1,30 @@
-﻿using System.IO;
+﻿using SelectelSwiftApiClient;
+using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Choice.Services.FileServices
 {
     public class FileService : IFileService
     {
-        private readonly string _baseUri = "https://swift.ru-1.storage.selcloud.ru/v1/76a36decdef041c684850fdf4ae2258a/choicecontainer/";
-        private readonly string _authToken = "gAAAAABlUi5Xn0uKD_8Pb8VMhAnr3741LNB9mY0APhEzHsQgn1qaM-ao0pJK7BM58wtBEXFC5cgb9DuoRV5UzncAcGHDj5ODqFdfVn0c01osr2thA07Tv3p-o3FyAYm_hd_e6-QcLoEjtabKPVWt6_BLnAGh2UmCBEhAw2-oeVIZDNBQN2K0QDk";
+        private readonly string _token = "gAAAAABlVgWu8h9UfIl_z7QdBuSjjowiw0HkclKB6FCqHyuNrGIZwU4EPIh44286St7or02UeMqwjrC6JBA5uupp8RMloyH6Xbatt4S-3jUP-O7a6Vvoaxlj2j6kOPtbCniKvDLflpdxpXpjeuT9McTlE_Rw9Af0PjNdqHg2WdQn19mWb434Soo";
+        private readonly string _projectId = "76a36decdef041c684850fdf4ae2258a";
 
-        private readonly HttpClient _client;
-
-        public FileService(HttpClient client)
+        private readonly ContainerClient _client;
+        
+        public FileService()
         {
-            _client = client;
+            _client = new ContainerClient(_token, _projectId, "choicecontainer");
         }
 
         public async Task UploadPhoto(string fullPath)
         {
-            string[] directories = fullPath.Split(new[] { '/', '.' });
-
-            string requestUri = $"{_baseUri}{directories[directories.Length - 2]}";
-
-            string json = string.Join("", File.ReadAllBytes(fullPath));
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUri)
-            {
-                Content = new StringContent(json)
-            };
-            request.Headers.Add("X-Auth-Token", _authToken);
-
-            await _client.SendAsync(request);
+            await _client.Upload(fullPath);
         }
 
         public async Task DownloadPhoto(string fileName)
         {
-            string requestUri = $"{_baseUri}{fileName}";
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-            request.Headers.Add("X-Auth-Token", _authToken);
-
-            HttpResponseMessage response = await _client.SendAsync(request);
-            string json = await response.Content.ReadAsStringAsync();
-
-            byte[] data = json.Select(c => byte.Parse(c.ToString())).ToArray();
-
-            File.WriteAllBytes(fileName, data);
+            await _client.Download(Path.GetFileName(fileName).Split('.').First(), fileName);
         }
     }
 }

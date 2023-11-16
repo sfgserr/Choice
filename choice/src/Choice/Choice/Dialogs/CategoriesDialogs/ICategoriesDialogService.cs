@@ -8,6 +8,6 @@ namespace Choice.Dialogs.CategoriesDialogs
 {
     public interface ICategoriesDialogService
     {
-        Task ShowDialog(Func<CategoryViewModel, int> select, List<CategoryViewModel> categories, int count);
+        Task ShowDialog(Func<CategoryDialogViewModel, int> select, List<CategoryDialogViewModel> categories, int count);
     }
 }

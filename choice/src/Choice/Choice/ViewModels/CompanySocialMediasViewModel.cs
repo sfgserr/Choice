@@ -2,7 +2,6 @@
 using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.Services.AuthenticationServices;
 using Choice.Stores.IndexStores;
-using System.Threading;
 using System.Windows.Input;
 
 namespace Choice.ViewModels
@@ -52,7 +51,7 @@ namespace Choice.ViewModels
             }
         }
 
-        private string _vkUri;
+        private string _vkUri = string.Empty;
 
         public string VkUri
         {

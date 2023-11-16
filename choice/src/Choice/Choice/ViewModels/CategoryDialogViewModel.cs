@@ -3,9 +3,9 @@ using Xamarin.Forms;
 
 namespace Choice.ViewModels
 {
-    public class CategoryViewModel : ViewModelBase
+    public class CategoryDialogViewModel : ViewModelBase
     {
-        public CategoryViewModel(Category category)
+        public CategoryDialogViewModel(Category category)
         {
             Category = category;
         }

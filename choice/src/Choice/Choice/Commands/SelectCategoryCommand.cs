@@ -34,7 +34,7 @@ namespace Choice.Commands
             await _dialogService.ShowDialog(AddCategory, _viewModel.CategoryViewModels, _viewModel.Input.Categories.Count);
         }
 
-        private int AddCategory(CategoryViewModel category)
+        private int AddCategory(CategoryDialogViewModel category)
         {
             Category categoryToRemove = _viewModel.Input.Categories.FirstOrDefault(c => c.Title == category.Category.Title);
 

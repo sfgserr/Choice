@@ -47,7 +47,7 @@ namespace Choice.Commands
         private async Task Login()
         {
             await _authenticator.LoginByEmail(_viewModel.Email, _viewModel.Password);
-            await Shell.Current.GoToAsync("//MainPage");
+            await Shell.Current.GoToAsync("//CategoryPage");
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)
