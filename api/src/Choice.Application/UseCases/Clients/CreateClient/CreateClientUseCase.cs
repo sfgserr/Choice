@@ -22,7 +22,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
         public async Task Execute(string name, string surname, string password, string email, string photoUri) =>
             await CreateClient(name, surname, password, email, photoUri);
 
-        private async Task CreateClient(string name, string surname, string password, string email, string photoUri)
+        private async Task CreateClient(string name, string surname, string password, string email, string iconUri)
         {
             Client client = new Client()
             {
@@ -30,7 +30,7 @@ namespace Choice.Application.UseCases.Clients.CreateClient
                 Surname = surname,
                 Password = password,
                 Email = email,
-                PhotoUri = photoUri
+                IconUri = iconUri
             };
 
             Client newClient = await _clientRepository.Create(client);

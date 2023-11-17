@@ -32,7 +32,7 @@ namespace Choice.WebApi.UseCases.Clients.CreateClient
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(client.Name, client.Surname, client.Password, client.Email, client.PhotoUri);
+            await _useCase.Execute(client.Name, client.Surname, client.Password, client.Email, client.IconUri);
 
             return _viewModel;
         }

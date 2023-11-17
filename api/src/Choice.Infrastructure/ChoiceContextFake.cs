@@ -35,7 +35,7 @@ namespace Choice.Infrastructure
                 Email = "client@mail.ru",
                 Name = "Name",
                 Password = "Password",
-                PhotoUri = "uri",
+                IconUri = "uri",
                 ShowReviews = true,
                 Surname = "Surname"
             };
