@@ -49,7 +49,8 @@ namespace Choice
                     services.AddScoped<LoginByEmailViewModel>();
                     services.AddScoped<LoginByPhoneViewModel>();
                     services.AddScoped<CompanyCardViewModel>();
-                    
+                    services.AddScoped<CategoryViewModel>();
+
                     services.AddSingleton<IHttpClientsFactory, HttpClientsFactory>();
                     services.AddSingleton<IHttpClientService<Client>, HttpClientService<Client>>();
                     services.AddSingleton<IHttpClientService<Company>, HttpClientService<Company>>();

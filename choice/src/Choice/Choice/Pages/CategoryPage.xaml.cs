@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Choice.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +10,13 @@ namespace Choice.Pages
         public CategoryPage()
         {
             InitializeComponent();
+            BindingContext = ServicesContainer.GetService<CategoryViewModel>();
+        }
+
+        private void ViewCell_Tapped(object sender, System.EventArgs e)
+        {
+            ViewCell cell = (ViewCell)sender;
+            cell.View.BackgroundColor = Color.White;
         }
     }
 }
