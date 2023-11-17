@@ -10,6 +10,7 @@ namespace Choice.Domain.Models
     public class Company : User
     {
         public string Title { get; set; } = string.Empty;
+        public string IconUri { get; set; } = "defaulticon";
         public string PhoneNumber { get; set; } = string.Empty;
         public string SiteUri { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;

@@ -7,6 +7,7 @@ namespace Choice.Infrastructure
     {
         public ChoiceContext(DbContextOptions options) : base(options) 
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
