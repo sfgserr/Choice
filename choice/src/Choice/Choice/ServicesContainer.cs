@@ -37,7 +37,9 @@ namespace Choice
                 .ConfigureServices((context, services) =>
                 {
                     TwilioClient.Init("ACdf6bfdcacd0f2f8c967a755e67a685a8", "37b8460e2ce3ea57b4bb5e75e0798688");
-                    
+
+                    Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "AAPK30dd6b1d7168422da964d85fe40b8d47eiFScqDEGux44C-46YPRf8Mj_2hm_gOKDPlDmWgHvGqqXRNKeZF8IAEJDeyq303t";
+
                     services.AddSingleton<IAuthenticator, Authenticator>();
                     services.AddSingleton<IIndexStore, IndexStore>();
                     services.AddScoped<ILoader, Loader>();

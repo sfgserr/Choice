@@ -46,12 +46,12 @@
                                                    TextColor="#000"/>
                                         </StackLayout>
                                         <StackLayout VerticalOptions="Center"
-                                                     HorizontalOptions="EndAndExpand"
-                                                     Padding="1">
+                                                     HorizontalOptions="EndAndExpand">
                                             <ImageButton Source="{ext:ImageResource Choice.Resources.categorybtn.png}"
                                                          BackgroundColor="Transparent"
                                                          HeightRequest="15"
-                                                         WidthRequest="15"/>
+                                                         WidthRequest="15"
+                                                         Command="{Binding NavigateToCategoryMapPageCommand}"/>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell.View>
