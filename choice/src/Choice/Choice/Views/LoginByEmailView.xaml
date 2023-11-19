@@ -80,11 +80,15 @@
                 </StackLayout>
 
             </StackLayout>
-            <ActivityIndicator Color="#2D81E0"
-                               IsVisible="{Binding IsLoading}"
-                               VerticalOptions="CenterAndExpand"
-                               HorizontalOptions="CenterAndExpand"
-                               IsRunning="True"/>
+            <Frame VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand"
+                   IsVisible="{Binding IsLoading}"
+                   BackgroundColor="Transparent">
+                <ActivityIndicator Color="#2D81E0"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
+                                   IsRunning="True"/>
+            </Frame>
         </Grid>
     </ContentView.Content>
 </ContentView>

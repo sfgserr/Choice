@@ -15,7 +15,7 @@ namespace Choice.Factories
         public void Initialize()
         {
             CreateClient("Api");
-            CreateClient("Selectel");
+            CreateClient("Address");
         }
 
         public void CreateClient(string name)

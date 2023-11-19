@@ -1,9 +1,4 @@
-﻿using Choice.Pages;
-using Choice.Stores.Authenticators;
-using Choice.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Choice
 {

@@ -9,7 +9,7 @@ namespace Choice.Services.FileServices
 {
     public class FileService : IFileService
     {
-        private readonly string _token = "gAAAAABlV4xpPLgpIcSHZmK4bckkG0aGO_zJX2qJr9pI55VpO-zYG42_LaFNMDm2zEmJvNH2CvATgczlWhNQpvrH_JUZDIqyJ6HdIKAgbt2JhA7Ot-3Bu7Lx095R_cejMKx0_vMrm5pXVeux_Dw9Onqcim6xK_dADZX3OfowlZiAPu7YeKEygoQ";
+        private readonly string _token = "gAAAAABlWcYfYSPfBmyeCKhpW5tBHuaLSZYM-VSpLTe00hEOX6x6OZear1V-WFYzD-iTmYqrIDXYfT1qA-129D9IKk5oUeEfr7Ez0TsSTkFuON9T2vrLNfCZMKL6lMNywznJTdPe_plFX9B1ye09RL5IxIZQ2LwgnU2rtmPbE0aQo6cmYFhquH8";
         private readonly string _projectId = "76a36decdef041c684850fdf4ae2258a";
 
         private readonly ContainerClient _client;

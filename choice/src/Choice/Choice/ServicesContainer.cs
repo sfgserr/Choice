@@ -2,6 +2,7 @@
 using Choice.Dialogs.CategoriesDialogs;
 using Choice.Domain.Models;
 using Choice.Factories;
+using Choice.Services.AddressServices;
 using Choice.Services.ApiServices;
 using Choice.Services.AuthenticationServices;
 using Choice.Services.CategoryApiServices;
@@ -16,7 +17,7 @@ using Choice.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Net.Http;
+using System.Collections.Generic;
 using Twilio;
 
 namespace Choice
@@ -38,8 +39,6 @@ namespace Choice
                 {
                     TwilioClient.Init("ACdf6bfdcacd0f2f8c967a755e67a685a8", "37b8460e2ce3ea57b4bb5e75e0798688");
 
-                    Esri.ArcGISRuntime.ArcGISRuntimeEnvironment.ApiKey = "AAPK30dd6b1d7168422da964d85fe40b8d47eiFScqDEGux44C-46YPRf8Mj_2hm_gOKDPlDmWgHvGqqXRNKeZF8IAEJDeyq303t";
-
                     services.AddSingleton<IAuthenticator, Authenticator>();
                     services.AddSingleton<IIndexStore, IndexStore>();
                     services.AddScoped<ILoader, Loader>();
@@ -52,13 +51,16 @@ namespace Choice
                     services.AddScoped<LoginByPhoneViewModel>();
                     services.AddScoped<CompanyCardViewModel>();
                     services.AddScoped<CategoryViewModel>();
+                    services.AddScoped<CategoryMapViewModel>();
 
                     services.AddSingleton<IHttpClientsFactory, HttpClientsFactory>();
                     services.AddSingleton<IHttpClientService<Client>, HttpClientService<Client>>();
                     services.AddSingleton<IHttpClientService<Company>, HttpClientService<Company>>();
                     services.AddSingleton<IHttpClientService<Category>, HttpClientService<Category>>();
                     services.AddSingleton<IHttpClientService<byte[]>, HttpClientService<byte[]>>();
+                    services.AddSingleton<IHttpClientService<Dictionary<string, string>>, HttpClientService<Dictionary<string, string>>>();
                     services.AddSingleton<IFileService, FileService>();
+                    services.AddSingleton<IAddressService, AddressService>();
 
                     services.AddSingleton<IApiService<Client>, ApiService<Client>>(s => CreateClientApiService(s));
                     services.AddSingleton<IApiService<Company>, ApiService<Company>>(s => CreateCompanyApiService(s));
