@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms.Maps;
+﻿using Xamarin.Forms.GoogleMaps;
 
 namespace Choice.CustomControls
 {

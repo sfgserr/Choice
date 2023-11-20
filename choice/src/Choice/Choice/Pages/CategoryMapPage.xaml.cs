@@ -1,6 +1,8 @@
 ﻿using Choice.ViewModels;
+using System.Reflection;
+using Twilio.Rest.Api.V2010.Account.Usage.Record;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
+using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.Xaml;
 
 namespace Choice.Pages
@@ -8,10 +10,15 @@ namespace Choice.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CategoryMapPage : ContentPage
     {
+        private readonly CategoryMapViewModel _viewModel;
+
         public CategoryMapPage()
         {
             InitializeComponent();
-            BindingContext = ServicesContainer.GetService<CategoryMapViewModel>();
+
+            _viewModel = ServicesContainer.GetService<CategoryMapViewModel>();
+
+            BindingContext = _viewModel;
 
             SetupMap();
         }
@@ -21,8 +28,12 @@ namespace Choice.Pages
             Position position = new Position(39, 39);
             Distance distance = Distance.FromMeters(3000);
 
+            Pin pin = new Pin()
+            {
+                Icon = BitmapDescriptorFactory.From
+            };
+
             map.MoveToRegion(MapSpan.FromCenterAndRadius(position, distance));
-            map.HasScrollEnabled = false;
         }
     }
 }

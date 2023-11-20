@@ -1,5 +1,6 @@
 ﻿using Choice.Domain.Models;
 using Choice.Services.AuthenticationServices;
+using Choice.Services.FileServices;
 using System;
 using System.Threading.Tasks;
 
@@ -10,10 +11,12 @@ namespace Choice.Stores.Authenticators
         public event Action StateChanged;
 
         private readonly IAuthenticationService _authenticationService;
+        private readonly IFileService _fileService;
 
-        public Authenticator(IAuthenticationService authentictionService)
+        public Authenticator(IAuthenticationService authentictionService, IFileService fileService)
         {
             _authenticationService = authentictionService;
+            _fileService = fileService;
         }
 
         private User _user;
@@ -31,6 +34,7 @@ namespace Choice.Stores.Authenticators
         public async Task LoginByEmail(string email, string password)
         {
             State = await _authenticationService.LoginByEmail(email, password);
+            await _fileService.DownloadPhoto(((Client)State).PhotoUri);
         }
 
         public async Task LoginByPhone(string phoneNumber)

@@ -1,4 +1,5 @@
 ﻿using Android.Gms.Maps;
+using Android.Gms.Maps.Model;
 using Choice.CustomControls;
 using Choice.Droid;
 using Xamarin.Forms;
@@ -15,6 +16,7 @@ namespace Choice.Droid
             map.UiSettings.ZoomControlsEnabled = false;
             map.UiSettings.MyLocationButtonEnabled = false;
             map.UiSettings.ZoomGesturesEnabled = false;
+            map.UiSettings.ScrollGesturesEnabled = false;
         }
     }
 }

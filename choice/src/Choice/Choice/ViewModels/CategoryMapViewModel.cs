@@ -1,6 +1,5 @@
 ﻿using Choice.Domain.Models;
-using Esri.ArcGISRuntime.Mapping;
-using Esri.ArcGISRuntime.Xamarin.Forms;
+using Choice.Stores.Authenticators;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -9,10 +8,15 @@ namespace Choice.ViewModels
 {
     public class CategoryMapViewModel : ViewModelBase, IQueryAttributable
     {
-        public CategoryMapViewModel()
+        private readonly IAuthenticator _authenticator;
+
+        public CategoryMapViewModel(IAuthenticator authenticator)
         {
-            Map = new Map(BasemapStyle.ArcGISNavigation);
+            _authenticator = authenticator;
+            _authenticator.StateChanged += OnStateChanged;
         }
+
+        public User User => _authenticator.State;
 
         private List<Company> _companies = new List<Company>();
 
@@ -22,17 +26,14 @@ namespace Choice.ViewModels
             set => Set(ref _companies, value);
         }
 
-        private Map _map;
-
-        public Map Map
-        {
-            get => _map;
-            set => Set(ref _map, value);
-        }
-
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
             Companies = JsonConvert.DeserializeObject<List<Company>>(query["Companies"]);
+        }
+
+        private void OnStateChanged()
+        {
+            OnPropertyChanged(nameof(User));
         }
     }
 }
