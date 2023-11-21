@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Choice"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Choice.Pages.LoginPage">
+
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <StackLayout>
+            <StackLayout Padding="0,50,0,0">
+                <Image Source="logo.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Padding="0,40,0,0">
+                <Label Text="В Ы Б О Р"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="#313131"
+                       HorizontalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="16"
+                       TextColor="#9C9C9C"
+                       HorizontalOptions="Center"
+                       Text="Приложение для выбора"/>
+
+                <Label FontSize="16"
+                       TextColor="#9C9C9C"
+                       HorizontalOptions="Center"
+                       Text="лучших условий"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+                         Padding="30,40">
+                <Label FontSize="24"
+                       Text="Авторизация"
+                       TextColor="#313131"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+
+                <Button Background="Transparent"
+                        TextColor="#2D81E0"
+                        Text="Создать аккаунт"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        TextTransform="None"
+                        Command="{Binding DisplayActionSheetCommand}"/>
+            </StackLayout>
+
+            <xct:TabView TabStripPlacement="Top"
+                         TabStripBackgroundColor="Transparent"
+                         TabIndicatorColor="#3F8AE0"
+                         Padding="40,0"
+                         IsSwipeEnabled="True"
+                         HeightRequest="400">
+                <xct:TabViewItem Text="E-mail"
+                                 TextColor="#818C99"
+                                 TextColorSelected="black"
+                                 FontSize="16"
+                                 FontAttributesSelected="Bold">
+                    <views:LoginByEmailView/>
+                </xct:TabViewItem>
+                <xct:TabViewItem Text="Телефон"
+                                 TextColor="#818C99"
+                                 TextColorSelected="black"
+                                 FontSize="16"
+                                 FontAttributesSelected="Bold">
+                    <views:LoginByPhoneView/>
+                </xct:TabViewItem>
+            </xct:TabView>
+            <Button Background="Transparent"
+                    TextColor="#2D81E0"
+                    Text="Я забыл пароль"
+                    FontSize="16"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    TextTransform="None"
+                    xct:TouchEffect.PressedOpacity="0.5"/>
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
