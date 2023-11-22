@@ -1,12 +1,8 @@
 ﻿using Choice.Stores.Authenticators;
 using Choice.Stores.Loaders;
 using Choice.ViewModels;
-using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

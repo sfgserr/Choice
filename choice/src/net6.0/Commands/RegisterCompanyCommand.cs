@@ -6,12 +6,8 @@ using Choice.Stores.Loaders;
 using Choice.Validators;
 using Choice.ViewModels;
 using Newtonsoft.Json;
-using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

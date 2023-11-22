@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Choice.Views.LoginByEmailView"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
   <ContentView.Content>
         <Grid>
             <StackLayout>
@@ -27,9 +26,6 @@
                                 FontSize="16"
                                 x:Name="TextBox"
                                 Text="{Binding Email}">
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
                         </Entry>
                     </Frame>
                 </StackLayout>
@@ -54,11 +50,8 @@
                                 FontSize="16"
                                 Text="{Binding Password}"
                                 HorizontalOptions="FillAndExpand">
-                                <Entry.Effects>
-                                    <xct:RemoveBorderEffect/>
-                                </Entry.Effects>
                             </Entry>
-                            <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                            <ImageButton Source="showpassword.png"
                                          BackgroundColor="Transparent"
                                          WidthRequest="20"
                                          HeightRequest="20"
@@ -73,9 +66,6 @@
                         CornerRadius="10"
                         TextTransform="None"
                         TextColor="#fff"
-                        xct:TouchEffect.NativeAnimation="True"
-                        xct:TouchEffect.NativeAnimationColor="#5396E1"
-                        xct:TouchEffect.NormalBackgroundColor="#2D81E0"
                         Command="{Binding LoginCommand}"/>
                 </StackLayout>
 

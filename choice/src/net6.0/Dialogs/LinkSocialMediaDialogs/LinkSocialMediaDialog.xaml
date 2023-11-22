@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<rx:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+<rx:PopupPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Choice.Dialogs.LinkSocialMediaDialogs.LinkSocialMediaDialog"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:rx="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
+             xmlns:rx="clr-namespace:Mopups.Pages;assembly=Mopups">
     <StackLayout Padding="10,0"
                  VerticalOptions="FillAndExpand">
         <Frame CornerRadius="20"
@@ -19,7 +17,7 @@
                             x:Name="Text"/>
                     
                     <ImageButton x:Name="Close"
-                                 Source="{ext:ImageResource Choice.Resources.close.png}"
+                                 Source="close.png"
                                  Clicked="CloseButton_Clicked"
                                  BackgroundColor="Transparent"
                                  WidthRequest="30"
@@ -42,10 +40,6 @@
                                 Keyboard="Email"
                                 FontSize="16"
                                x:Name="Uri">
-                            
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
                         </Entry>
                     </Frame>
                 </StackLayout>
@@ -56,10 +50,7 @@
                             CornerRadius="10"
                             TextTransform="None"
                             TextColor="#fff"
-                            Clicked="Button_Clicked"
-                            xct:TouchEffect.NativeAnimation="True"
-                            xct:TouchEffect.NativeAnimationColor="#5396E1"
-                            xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
+                            Clicked="Button_Clicked"/>
                 </StackLayout>
             </StackLayout>
         </Frame>

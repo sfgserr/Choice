@@ -3,13 +3,8 @@ using Choice.Services.AuthenticationServices;
 using Choice.Services.FileServices;
 using Choice.Stores.Loaders;
 using Choice.ViewModels;
-using System;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

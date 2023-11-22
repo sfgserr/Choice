@@ -28,7 +28,7 @@
                                IsReadOnly="True"
                                HorizontalOptions="FillAndExpand">
                                 </Entry>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.dropdown.png}"
+                        <ImageButton Source="dropdown.png"
                                      BackgroundColor="Transparent"
                                      HeightRequest="15"
                                      WidthRequest="15"
@@ -63,7 +63,7 @@
                                     VerticalOptions="FillAndExpand"
                                     Padding="{Binding PhotoViewModels[0].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
@@ -78,7 +78,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
@@ -96,7 +96,7 @@
                                    VerticalOptions="FillAndExpand"
                                     Padding="{Binding PhotoViewModels[1].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
@@ -111,7 +111,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
@@ -129,7 +129,7 @@
                                     VerticalOptions="FillAndExpand"
                                     Padding="{Binding PhotoViewModels[2].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
@@ -144,7 +144,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
@@ -162,7 +162,7 @@
                                     CornerRadius="10"
                                     Padding="{Binding PhotoViewModels[3].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="png"
                                                  VerticalOptions="Center"
                                                  HorizontalOptions="Center"
                                                  BackgroundColor="Transparent"
@@ -177,7 +177,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
@@ -195,7 +195,7 @@
                                     VerticalOptions="FillAndExpand"
                                     Padding="{Binding PhotoViewModels[4].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
@@ -210,7 +210,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
@@ -228,7 +228,7 @@
                                     VerticalOptions="FillAndExpand"
                                     Padding="{Binding PhotoViewModels[5].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                    <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
@@ -243,7 +243,7 @@
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                        <ImageButton Source="close.png"
                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"

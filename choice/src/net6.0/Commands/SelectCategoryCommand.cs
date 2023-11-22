@@ -1,9 +1,6 @@
 ﻿using Choice.Dialogs.CategoriesDialogs;
 using Choice.Domain.Models;
 using Choice.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 
 namespace Choice.Commands

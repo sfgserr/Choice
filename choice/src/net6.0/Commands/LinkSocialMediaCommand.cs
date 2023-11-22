@@ -1,6 +1,5 @@
 ﻿using Choice.Dialogs.LinkSocialMediaDialogs;
 using Choice.ViewModels;
-using System;
 using System.Reflection;
 using System.Windows.Input;
 

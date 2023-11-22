@@ -1,4 +1,6 @@
 ﻿
+using Choice.ViewModels;
+
 namespace Choice.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]

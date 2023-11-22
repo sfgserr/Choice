@@ -1,6 +1,4 @@
 ﻿using Choice.ViewModels;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Choice.Views
 {
@@ -10,10 +8,7 @@ namespace Choice.Views
         public LoginByPhoneView()
         {
             InitializeComponent();
-            BindingContext = ServicesContainer.GetService<LoginByPhoneViewModel>();
         }
-
-
 
         private void PhoneEntryFocused(object sender, FocusEventArgs e)
         {

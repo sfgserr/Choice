@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Choice.Dialogs.AccountCreatedDialogs.AccountCreatedDialog"
              xmlns:rx="clr-namespace:Mopups.Pages;assembly=Mopups"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
     <StackLayout Padding="10,50"
                  VerticalOptions="FillAndExpand">

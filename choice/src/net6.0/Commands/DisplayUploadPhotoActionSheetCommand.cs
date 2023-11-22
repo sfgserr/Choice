@@ -1,9 +1,5 @@
 ﻿using Choice.ViewModels;
-using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

@@ -3,11 +3,7 @@ using Choice.Pages;
 using Choice.Services.CompanyApiService;
 using Choice.ViewModels;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

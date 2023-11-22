@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Choice"
              x:Class="Choice.Pages.RegisterClientPage"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions"
              Shell.NavBarIsVisible="False"
              xmlns:viewModels="clr-namespace:Choice.ViewModels">
     <ScrollView VerticalScrollBarVisibility="Never">
@@ -106,7 +104,7 @@
                            Text="{Binding Password}"
                            HorizontalOptions="FillAndExpand">
                             </Entry>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                        <ImageButton Source="showpassword.png"
                                  BackgroundColor="Transparent"
                                  WidthRequest="20"
                                  HeightRequest="20"
@@ -137,7 +135,7 @@
                            Text="{Binding PasswordConfirmtion}"
                            HorizontalOptions="FillAndExpand">
                             </Entry>
-                        <ImageButton Source="{ext:ImageResource Choice.Resources.showpassword.png}"
+                        <ImageButton Source="showpassword.png"
                                  BackgroundColor="Transparent"
                                  WidthRequest="20"
                                  HeightRequest="20"

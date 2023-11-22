@@ -1,8 +1,5 @@
 ﻿using Choice.ViewModels;
 
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
 namespace Choice.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -11,7 +8,6 @@ namespace Choice.Views
         public LoginByEmailView()
         {
             InitializeComponent();
-            BindingContext = ServicesContainer.GetService<LoginByEmailViewModel>();
         }
 
         private void EmailEntryFocused(object sender, FocusEventArgs e)

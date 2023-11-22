@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 using Twilio.Rest.Verify.V2.Service;
-using Xamarin.Forms;
 
 namespace Choice.Commands
 {

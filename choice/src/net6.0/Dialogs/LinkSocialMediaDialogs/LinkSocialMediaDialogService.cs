@@ -1,9 +1,4 @@
-﻿
-using Choice.Dialogs.AccountCreatedDialogs;
-using System.Threading.Tasks;
-using System;
-using Xamarin.Forms;
-using Rg.Plugins.Popup.Extensions;
+﻿using Mopups.Services;
 
 namespace Choice.Dialogs.LinkSocialMediaDialogs
 {
@@ -23,13 +18,13 @@ namespace Choice.Dialogs.LinkSocialMediaDialogs
                 action(uri);
             });
 
-            await Application.Current.MainPage.Navigation.PushPopupAsync(alertDialog);
+            await MopupService.Instance.PushAsync(alertDialog);
             await task;
         }
 
         private async Task Callback(bool result)
         {
-            await Application.Current.MainPage.Navigation.PopPopupAsync();
+            await MopupService.Instance.PopAsync();
             if (!taskCompletionSource.Task.IsCanceled &&
                 !taskCompletionSource.Task.IsCompleted &&
                 !taskCompletionSource.Task.IsFaulted)

@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Choice.Views.LoginByPhoneView"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
+             x:Class="Choice.Views.LoginByPhoneView">
   <ContentView.Content>
         <Grid>
           <StackLayout>
@@ -29,7 +27,7 @@
                         BackgroundColor="#d5d5d7"
                         IsEnabled="False"/>
 
-                        <Entry BackgroundColor="Transparent"
+                            <Entry BackgroundColor="Transparent"
                        PlaceholderColor="#818C99"
                        Focused="PhoneEntryFocused"
                        Unfocused="PhoneEntryUnfocused"
@@ -40,10 +38,7 @@
                        Text="{Binding PhoneNumber}"
                        MaxLength="15"
                        HorizontalOptions="FillAndExpand">
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
-                        </Entry>
+                            </Entry>
                     </StackLayout>
                 </Frame>
             </StackLayout>
@@ -55,9 +50,6 @@
                 CornerRadius="10"
                 TextTransform="None"
                 TextColor="#fff"
-                xct:TouchEffect.NativeAnimation="True"
-                xct:TouchEffect.NativeAnimationColor="#5396E1"
-                xct:TouchEffect.NormalBackgroundColor="#2D81E0"
                 Command="{Binding LoginByPhoneCommand}"/>
             </StackLayout>
             <StackLayout Padding="10,20,0,0"
@@ -72,7 +64,7 @@
                HasShadow="False"
                x:Name="codeFrame">
                     <StackLayout Orientation="Horizontal">
-                        <Entry BackgroundColor="Transparent"
+                            <Entry BackgroundColor="Transparent"
                        PlaceholderColor="#818C99"
                        Focused="PhoneEntryFocused"
                        Unfocused="PhoneEntryUnfocused"
@@ -83,10 +75,7 @@
                        Text="{Binding Code}"
                        MaxLength="6"
                        HorizontalOptions="FillAndExpand">
-                            <Entry.Effects>
-                                <xct:RemoveBorderEffect/>
-                            </Entry.Effects>
-                        </Entry>
+                            </Entry>
                     </StackLayout>
                 </Frame>
             </StackLayout>
@@ -98,10 +87,7 @@
                 CornerRadius="10"
                 TextTransform="None"
                 TextColor="#fff"
-                IsEnabled="{Binding CanSignInByCode}"
-                xct:TouchEffect.NativeAnimation="True"
-                xct:TouchEffect.NativeAnimationColor="#5396E1"
-                xct:TouchEffect.NormalBackgroundColor="#2D81E0"/>
+                IsEnabled="{Binding CanSignInByCode}"/>
               </StackLayout>
           </StackLayout>
             <ActivityIndicator Color="#2D81E0"

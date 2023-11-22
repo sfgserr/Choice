@@ -1,8 +1,6 @@
 ﻿using Choice.Domain.Models;
 using Choice.Stores.IndexStores;
 using Choice.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 

@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Choice.Views.CompanySocialMediasView"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
+             x:Class="Choice.Views.CompanySocialMediasView">
   <ContentView.Content>
         <StackLayout>
             <StackLayout Padding="20,10">
@@ -26,7 +24,7 @@
                        Grid.Row="0">
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Image Source="{ext:ImageResource Choice.Resources.instagram.png}"
+                            <Image Source="instagram.png"
                                     HeightRequest="20"
                                     WidthRequest="20"
                                     BackgroundColor="Transparent"
@@ -59,7 +57,7 @@
                        Grid.Row="1">
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Image Source="{ext:ImageResource Choice.Resources.facebook.png}"
+                            <Image Source="facebook.png"
                                     HeightRequest="20"
                                     WidthRequest="20"
                                     BackgroundColor="Transparent"
@@ -92,7 +90,7 @@
                         Grid.Row="2">
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Image Source="{ext:ImageResource Choice.Resources.vk.png}"
+                            <Image Source="vk.png"
                                     HeightRequest="20"
                                     WidthRequest="20"
                                     BackgroundColor="Transparent"
@@ -125,7 +123,7 @@
                         Grid.Row="3">
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Image Source="{ext:ImageResource Choice.Resources.telegram.png}"
+                            <Image Source="telegram.png"
                                     HeightRequest="20"
                                     WidthRequest="20"
                                     BackgroundColor="Transparent"
@@ -159,9 +157,6 @@
                         CornerRadius="10"
                         TextTransform="None"
                         TextColor="#fff"
-                        xct:TouchEffect.NativeAnimation="True"
-                        xct:TouchEffect.NativeAnimationColor="#5396E1"
-                        xct:TouchEffect.NormalBackgroundColor="#2D81E0"
                         Command="{Binding CompleteSocialMediasCommand}"/>
             </StackLayout>
         </StackLayout>
