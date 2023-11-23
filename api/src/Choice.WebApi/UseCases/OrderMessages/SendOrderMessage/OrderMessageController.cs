@@ -32,7 +32,7 @@ namespace Choice.WebApi.UseCases.OrderMessages.SendOrderMessage
             _viewModel = BadRequest();
         }  
 
-        [Route("Send")]
+        [HttpPost("Send")]
         public async Task<IActionResult> Send(OrderMessage orderMessage)
         {
             _useCase.SetOutputPort(this);

@@ -10,13 +10,13 @@ namespace Choice.ViewModels
     {
         private readonly IIndexStore _indexStore;
 
-        public LoginViewModel(IIndexStore indexStore, IAuthenticator authenticator, ILoader loader)
+        public LoginViewModel(IIndexStore indexStore, LoginByEmailViewModel loginByEmail, LoginByPhoneViewModel loginByPhone)
         {
             _indexStore = indexStore;
             _indexStore.StateChanged += OnIndexChanged;
 
-            LoginByEmailViewModel = new LoginByEmailViewModel(authenticator, loader);
-            LoginByPhoneViewModel = new LoginByPhoneViewModel(authenticator, loader);
+            LoginByEmailViewModel = loginByEmail;
+            LoginByPhoneViewModel = loginByPhone;
 
             DisplayActionSheetCommand = new DisplayAccountCreationActionSheet();
             TabViewCommand = new TabViewCommand(_indexStore);

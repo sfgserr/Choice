@@ -33,23 +33,27 @@
                        Text="лучших условий"/>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal"
-                         Padding="30,40">
-                <Label FontSize="24"
-                       Text="Авторизация"
-                       TextColor="#313131"
-                       FontAttributes="Bold"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"/>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             Padding="20,40">
+                    <Label FontSize="24"
+                           Text="Авторизация"
+                           TextColor="#313131"
+                           FontAttributes="Bold"/>
+                </StackLayout>
 
-                <Button Background="Transparent"
-                        TextColor="#2D81E0"
-                        Text="Создать аккаунт"
-                        FontSize="16"
-                        VerticalOptions="Center"
-                        HorizontalOptions="EndAndExpand"
-                        TextTransform="None"
-                        Command="{Binding DisplayActionSheetCommand}"/>
+                <StackLayout HorizontalOptions="EndAndExpand"
+                             VerticalOptions="Center"
+                             Padding="0,0,20,0">
+                    <Button Background="Transparent"
+                            TextColor="#2D81E0"
+                            Text="Создать аккаунт"
+                            FontSize="16"
+                            HorizontalOptions="End"
+                            TextTransform="None"
+                            Command="{Binding DisplayActionSheetCommand}"/>
+                </StackLayout>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
@@ -60,11 +64,13 @@
                             TextColor="{Binding EmailButtonColor}"
                             HorizontalOptions="Center"
                             CommandParameter="1"
-                            Command="{Binding TabViewCommand}"/>
-                    <StackLayout>
-                        <Frame CornerRadius="10"
-                               BackgroundColor="{Binding PageOneColor}"
-                               HorizontalOptions="FillAndExpand"/>
+                            Command="{Binding TabViewCommand}"
+                            BorderWidth="0"/>
+                    <StackLayout HeightRequest="4">
+                        <BoxView CornerRadius="10"
+                                 BackgroundColor="{Binding PageOneColor}"
+                                 HorizontalOptions="FillAndExpand"
+                                 HeightRequest="4"/>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
@@ -74,27 +80,33 @@
                             TextColor="{Binding PhoneButtonColor}"
                             HorizontalOptions="Center"
                             CommandParameter="2"
-                            Command="{Binding TabViewCommand}"/>
-                    <StackLayout>
-                        <Frame CornerRadius="10"
-                               BackgroundColor="{Binding PageTwoColor}"
-                               HorizontalOptions="FillAndExpand"/>
+                            Command="{Binding TabViewCommand}"
+                            BorderWidth="0"/>
+                    <StackLayout HeightRequest="4">
+                        <BoxView CornerRadius="10"
+                                 BackgroundColor="{Binding PageTwoColor}"
+                                 HorizontalOptions="FillAndExpand"
+                                 HeightRequest="4"/>
                     </StackLayout>
                 </StackLayout>
             </StackLayout>
             <StackLayout IsVisible="{Binding LoginByEmailIsVisible}">
-                <views:LoginByEmailView BindingContext="{Binding LoginByEmailView}"/>
+                <views:LoginByEmailView BindingContext="{Binding LoginByEmailViewModel}"
+                                        Padding="20,0"/>
             </StackLayout>
             <StackLayout IsVisible="{Binding LoginByPhoneIsVisible}">
-                <views:LoginByPhoneView BindingContext="{Binding LoginByPhoneView}"/>
+                <views:LoginByPhoneView BindingContext="{Binding LoginByPhoneViewModel}"
+                                        Padding="20,0"/>
             </StackLayout>
-            <Button Background="Transparent"
-                    TextColor="#2D81E0"
-                    Text="Я забыл пароль"
-                    FontSize="16"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    TextTransform="None"/>
+            <StackLayout Padding="0,20">
+                <Button Background="Transparent"
+                        TextColor="#2D81E0"
+                        Text="Я забыл пароль"
+                        FontSize="16"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        TextTransform="None"/>
+            </StackLayout>
         </StackLayout>
     </ScrollView>
     
