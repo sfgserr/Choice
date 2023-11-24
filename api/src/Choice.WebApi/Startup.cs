@@ -1,5 +1,6 @@
 ﻿using Choice.WebApi.Extensions;
 using Choice.WebApi.Hubs;
+using Microsoft.OpenApi.Models;
 
 namespace Choice.WebApi
 {
