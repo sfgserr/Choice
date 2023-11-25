@@ -23,21 +23,22 @@
                        FontSize="16"/>
 
                         <BoxView WidthRequest="1"
-                        HeightRequest="1"
-                        BackgroundColor="#d5d5d7"
-                        IsEnabled="False"/>
+                                 HeightRequest="1"
+                                 BackgroundColor="#d5d5d7"
+                                 IsEnabled="False"
+                                 HorizontalOptions="Start"/>
 
                             <Entry BackgroundColor="Transparent"
-                       PlaceholderColor="#818C99"
-                       Focused="PhoneEntryFocused"
-                       Unfocused="PhoneEntryUnfocused"
-                       Placeholder="(000) 000-00-00"
-                       FontSize="16"
-                       TextColor="#000"
-                       Keyboard="Numeric"
-                       Text="{Binding PhoneNumber}"
-                       MaxLength="15"
-                       HorizontalOptions="FillAndExpand">
+                                   PlaceholderColor="#818C99"
+                                   Focused="PhoneEntryFocused"
+                                   Unfocused="PhoneEntryUnfocused"
+                                   Placeholder="(000) 000-00-00"
+                                   FontSize="16"
+                                   TextColor="#000"
+                                   Keyboard="Numeric"
+                                   Text="{Binding PhoneNumber}"
+                                   MaxLength="15"
+                                   HorizontalOptions="FillAndExpand">
                             </Entry>
                     </StackLayout>
                 </Frame>

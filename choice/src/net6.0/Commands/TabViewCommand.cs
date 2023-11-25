@@ -21,8 +21,7 @@ namespace Choice.Commands
 
         public void Execute(object parameter)
         {
-            if (parameter is int index)
-                _indexStore.State = index;
+            _indexStore.State = int.Parse(parameter.ToString());
         }
     }
 }

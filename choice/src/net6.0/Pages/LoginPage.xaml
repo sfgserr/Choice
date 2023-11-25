@@ -56,8 +56,14 @@
                 </StackLayout>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal">
-                <StackLayout>
+            <Grid Padding="20,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackLayout Grid.Column="0">
                     <Button Background="Transparent"
                             Text="E-mail"
                             FontSize="16"
@@ -68,12 +74,12 @@
                             BorderWidth="0"/>
                     <StackLayout HeightRequest="4">
                         <BoxView CornerRadius="10"
-                                 BackgroundColor="{Binding PageOneColor}"
+                                 Color="{Binding PageOneColor}"
                                  HorizontalOptions="FillAndExpand"
                                  HeightRequest="4"/>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout>
+                <StackLayout Grid.Column="1">
                     <Button Background="Transparent"
                             Text="Телефон"
                             FontSize="16"
@@ -84,12 +90,12 @@
                             BorderWidth="0"/>
                     <StackLayout HeightRequest="4">
                         <BoxView CornerRadius="10"
-                                 BackgroundColor="{Binding PageTwoColor}"
                                  HorizontalOptions="FillAndExpand"
-                                 HeightRequest="4"/>
+                                 HeightRequest="4"
+                                 Color="{Binding PageTwoColor}"/>
                     </StackLayout>
                 </StackLayout>
-            </StackLayout>
+            </Grid>
             <StackLayout IsVisible="{Binding LoginByEmailIsVisible}">
                 <views:LoginByEmailView BindingContext="{Binding LoginByEmailViewModel}"
                                         Padding="20,0"/>

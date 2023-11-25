@@ -15,6 +15,10 @@ namespace Choice.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin();
+            }));
             services.AddSignalR();
             services.AddAuthentication();
             services.AddAuthorization();
@@ -42,6 +46,7 @@ namespace Choice.WebApi
             app.UseAuthentication();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

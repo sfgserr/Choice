@@ -24,10 +24,10 @@ namespace Choice.ViewModels
 
         public bool LoginByEmailIsVisible => Index == 1;
         public bool LoginByPhoneIsVisible => Index == 2;
-        public string PageTwoColor => Index == 2 ? "#2688EB" : "#DFDFDF";
-        public string PageOneColor => Index == 1 ? "#2688EB" : "#DFDFDF";
-        public string EmailButtonColor => Index == 1 ? "#000" : "#818C99";
-        public string PhoneButtonColor => Index == 2 ? "#000" : "#818C99";
+        public Color PageTwoColor => Index == 2 ? Color.FromHex("#2688EB") : Color.FromHex("#fff");
+        public Color PageOneColor => Index == 1 ? Color.FromHex("#2688EB") : Color.FromHex("#fff");
+        public Color EmailButtonColor => Index == 1 ? Color.FromHex("#000") : Color.FromHex("#818C99");
+        public Color PhoneButtonColor => Index == 2 ? Color.FromHex("#000") : Color.FromHex("#818C99");
         public int Index => _indexStore.State;
         public ICommand DisplayActionSheetCommand { get; }
         public ICommand TabViewCommand { get; }
