@@ -16,15 +16,18 @@
                 <ListView ItemsSource="{Binding Categories}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
+                            <ViewCell Tapped="ViewCell_Tapped">
                                 <ViewCell.View>
                                     <StackLayout Orientation="Horizontal"
                                                  Padding="15,0">
-                                        <StackLayout VerticalOptions="Center">
+                                        <StackLayout VerticalOptions="Center"
+                                                     Padding="10,0">
                                             <Frame CornerRadius="10"
                                                    HorizontalOptions="Center"
                                                    VerticalOptions="Center"
-                                                   Padding="10">
+                                                   Padding="10"
+                                                   HeightRequest="40"
+                                                   WidthRequest="40">
 
                                                 <Frame.Background>
                                                     <LinearGradientBrush EndPoint="0,1">
@@ -45,7 +48,8 @@
                                                    TextColor="#000"/>
                                         </StackLayout>
                                         <StackLayout VerticalOptions="Center"
-                                                     HorizontalOptions="EndAndExpand">
+                                                     HorizontalOptions="EndAndExpand"
+                                                     Padding="10,0">
                                             <ImageButton Source="categorybtn.png"
                                                          BackgroundColor="Transparent"
                                                          HeightRequest="15"

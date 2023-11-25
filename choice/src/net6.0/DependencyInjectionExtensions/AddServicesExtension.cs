@@ -12,6 +12,8 @@ using Choice.Services.HttpClientServices;
 using Choice.Stores.Authenticators;
 using Choice.Stores.IndexStores;
 using Choice.Stores.Loaders;
+using SelectelClient.Clients;
+using SelectelClient.Models;
 
 namespace Choice.DependencyInjectionExtensions
 {
@@ -19,6 +21,8 @@ namespace Choice.DependencyInjectionExtensions
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            SelectelObjectClient.CredentialModel = new CredentialModel("ServiceUser", "129598Ec!", "283689", "My First Project");
+
             services.AddSingleton<IAuthenticator, Authenticator>();
             services.AddSingleton<IIndexStore, IndexStore>();
             services.AddScoped<ILoader, Loader>();
