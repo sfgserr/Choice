@@ -69,10 +69,8 @@ namespace Choice.Commands
                 return;
             }
 
-            string json = JsonConvert.SerializeObject(input);
-
             await _dialogService.ShowDialogAsync("Аккаунт комании создан", "Заполните информацию о вашей компании", "Заполнить информацию",
-                async () => await NavigateToCompanyCardPage(json));
+                async () => await NavigateToCompanyCardPage(input));
         }
 
         private void OnCanExecuteChanged(object sender, PropertyChangedEventArgs e)
@@ -80,9 +78,12 @@ namespace Choice.Commands
             if (e.PropertyName == nameof(_viewModel.CanRegister)) CanExecuteChanged?.Invoke(this, e);
         }
 
-        private async Task NavigateToCompanyCardPage(string json)
+        private async Task NavigateToCompanyCardPage(RegisterCompanyInput input)
         {
-            await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}?Input={json}");
+            await Shell.Current.GoToAsync($"{nameof(CompanyCardPage)}", new Dictionary<string, object>
+            {
+                ["Input"] = input
+            });
         }
     }
 }

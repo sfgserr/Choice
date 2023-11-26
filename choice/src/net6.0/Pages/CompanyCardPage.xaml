@@ -3,49 +3,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Choice"
              xmlns:views="clr-namespace:Choice.Views"
-             x:Class="Choice.Pages.CompanyCardPage">
+             x:Class="Choice.Pages.CompanyCardPage"
+             Shell.NavBarIsVisible="False">
   <ScrollView>
-     <StackLayout>
-        <StackLayout Padding="20,40"
-                     Orientation="Horizontal">
-            
-            <ImageButton Source="navigateback.png"
-                         HeightRequest="20"
-                         WidthRequest="20"
-                         HorizontalOptions="Start"
-                         Command="{Binding NavigateBackCommand}"
-                         BackgroundColor="Transparent"
-                         VerticalOptions="CenterAndExpand"/>
-            
-            <Label Text="Карточка компании"
-                   FontSize="21"
-                   TextColor="Black"
-                   HorizontalOptions="CenterAndExpand"
-                   FontAttributes="Bold"
-                   VerticalOptions="CenterAndExpand"/>
+     <StackLayout Padding="0,40"
+                  Orientation="Vertical">
+            <StackLayout Padding="20,0">
+                <StackLayout Orientation="Horizontal">
+                    <ImageButton Source="navigateback.png"
+                                 HeightRequest="20"
+                                 WidthRequest="20"
+                                 HorizontalOptions="Start"
+                                 Command="{Binding NavigateBackCommand}"
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="CenterAndExpand"/>
 
-        </StackLayout>
-        <StackLayout Orientation="Horizontal"
-                     Padding="20,20"
-                     HeightRequest="4">
-            <Frame CornerRadius="10"
-                   BackgroundColor="{Binding PageOneColor}"
-                   HorizontalOptions="FillAndExpand"/>
+                    <Label Text="Карточка компании"
+                            FontSize="21"
+                            TextColor="Black"
+                            HorizontalOptions="CenterAndExpand"
+                            FontAttributes="Bold"
+                            VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+            </StackLayout>
+        <StackLayout Padding="0,20">
+                <Grid Padding="10,30"
+                      HeightRequest="4"
+                      ColumnSpacing="5">
 
-            <Frame CornerRadius="10"
-                   BackgroundColor="{Binding PageTwoColor}"
-                   HorizontalOptions="FillAndExpand"
-                   HeightRequest="5"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <BoxView CornerRadius="10"
+                             Color="{Binding PageOneColor}"
+                             HorizontalOptions="FillAndExpand"
+                             HeightRequest="4"
+                             Grid.Column="0"/>
 
-            <Frame CornerRadius="10"
-                   BackgroundColor="{Binding PageThreeColor}"
-                   HorizontalOptions="FillAndExpand"/>
+                    <BoxView CornerRadius="10"
+                             Color="{Binding PageTwoColor}"
+                             HorizontalOptions="FillAndExpand"
+                             HeightRequest="4"
+                             Grid.Column="1"/>
+
+                    <BoxView CornerRadius="10"
+                             Color="{Binding PageThreeColor}"
+                             HorizontalOptions="FillAndExpand"
+                             HeightRequest="4"
+                             Grid.Column="2"/>
+                </Grid>
         </StackLayout>
         <StackLayout Padding="20,0"
                      Orientation="Horizontal"
                      HeightRequest="1">
             <BoxView HorizontalOptions="FillAndExpand"
                      BackgroundColor="#D7D8D9"
+                     HeightRequest="1"
                      Opacity="0.5"/>
         </StackLayout>
          <StackLayout IsVisible="{Binding IsPageTwoVisible}">

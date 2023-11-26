@@ -43,7 +43,7 @@
                         </Entry>
                     </Frame>
                 </StackLayout>
-                <StackLayout>
+                <StackLayout Padding="0,10">
                     <Button Background="#2D81E0"
                             Text="Сохранить"
                             FontSize="17"

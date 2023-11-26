@@ -66,6 +66,8 @@
                                     <ImageButton Source="addimage.png"
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
+                                                HeightRequest="50"
+                                                WidthRequest="50"
                                                 BackgroundColor="Transparent"
                                                 CommandParameter="0"
                                                 IsVisible="{Binding PhotoViewModels[0].IsEmpty}"
@@ -100,6 +102,8 @@
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
+                                                 HeightRequest="50"
+                                                WidthRequest="50"
                                                 CommandParameter="1"
                                                 IsVisible="{Binding PhotoViewModels[1].IsEmpty}"
                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
@@ -133,6 +137,8 @@
                                                 VerticalOptions="Center"
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
+                                                HeightRequest="50"
+                                                WidthRequest="50"
                                                 CommandParameter="2"
                                                 IsVisible="{Binding PhotoViewModels[2].IsEmpty}"
                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
@@ -162,13 +168,15 @@
                                     CornerRadius="10"
                                     Padding="{Binding PhotoViewModels[3].Padding}">
                                 <StackLayout>
-                                    <ImageButton Source="png"
-                                                 VerticalOptions="Center"
-                                                 HorizontalOptions="Center"
-                                                 BackgroundColor="Transparent"
-                                                 CommandParameter="3"
-                                                 IsVisible="{Binding PhotoViewModels[3].IsEmpty}"
-                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+                                            <ImageButton Source="addimage.png"
+                                                         VerticalOptions="Center"
+                                                         HorizontalOptions="Center"
+                                                         BackgroundColor="Transparent"
+                                                         HeightRequest="50"
+                                                         WidthRequest="50"
+                                                         CommandParameter="3"
+                                                         IsVisible="{Binding PhotoViewModels[3].IsEmpty}"
+                                                         Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
                                     <Image Source="{Binding PhotoViewModels[3].Source}"
                                             IsVisible="{Binding PhotoViewModels[3].IsUpload}"
@@ -200,6 +208,8 @@
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
                                                 CommandParameter="4"
+                                                HeightRequest="50"
+                                                WidthRequest="50"
                                                 IsVisible="{Binding PhotoViewModels[4].IsEmpty}"
                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 
@@ -233,6 +243,8 @@
                                                 HorizontalOptions="Center"
                                                 BackgroundColor="Transparent"
                                                 CommandParameter="5"
+                                                 HeightRequest="50"
+                                                 WidthRequest="50"
                                                 IsVisible="{Binding PhotoViewModels[5].IsEmpty}"
                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
 

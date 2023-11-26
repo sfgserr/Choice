@@ -7,7 +7,7 @@
              xmlns:viewModels="clr-namespace:Choice.ViewModels">
     <ScrollView VerticalScrollBarVisibility="Never">
         <Grid>
-            <StackLayout Padding="40,40">
+            <StackLayout Padding="20,40">
             <Label Text="Регистрация клиента"
                TextColor="#313131"
                FontSize="24"

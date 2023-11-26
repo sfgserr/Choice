@@ -1,16 +1,11 @@
 ﻿using Choice.Commands;
 using Choice.Dialogs.CategoriesDialogs;
 using Choice.Dialogs.LinkSocialMediaDialogs;
-using Choice.Factories;
 using Choice.Services.AuthenticationServices;
 using Choice.Services.CategoryApiServices;
 using Choice.Services.FileServices;
-using Choice.Services.HttpClientServices;
 using Choice.Stores.IndexStores;
 using Choice.Stores.Loaders;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Web;
 using System.Windows.Input;
 
 namespace Choice.ViewModels
@@ -36,9 +31,9 @@ namespace Choice.ViewModels
             NavigateBackCommand = new RelayCommand(par => { if (_indexStore.State != 1) _indexStore.State--; });
         }
 
-        public string PageThreeColor => Index == 3 ? "#2688EB" : "#DFDFDF";
-        public string PageTwoColor => Index >= 2 ? "#2688EB" : "#DFDFDF";
-        public string PageOneColor => Index >= 1 ? "#2688EB" : "#DFDFDF";
+        public Color PageThreeColor => Index == 3 ? Color.FromHex("#2688EB") : Color.FromHex("#DFDFDF");
+        public Color PageTwoColor => Index >= 2 ? Color.FromHex("#2688EB") : Color.FromHex("#DFDFDF");
+        public Color PageOneColor => Index >= 1 ? Color.FromHex("#2688EB") : Color.FromHex("#DFDFDF");
         public bool IsPageOneVisible => Index == 1;
         public bool IsPageTwoVisible => Index == 2;
         public bool IsPageThreeVisible => Index == 3;

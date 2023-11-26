@@ -33,12 +33,14 @@
 
                             <StackLayout Padding="10,0">
                                 <Label Text="Instagram"
-                                        FontSize="15"
-                                        TextColor="#000"
-                                        VerticalOptions="CenterAndExpand"/>
+                                       FontSize="15"
+                                       Padding="10,0"
+                                       TextColor="#000"
+                                       VerticalOptions="CenterAndExpand"/>
                                 <Label Text="{Binding InstagramUri}"
                                        FontSize="13"
                                        TextColor="#979797"
+                                       Padding="10,0"
                                        IsVisible="{Binding IsInstagramLinked}"/>
                             </StackLayout>
 
@@ -64,12 +66,14 @@
                                     HorizontalOptions="Start"
                                     VerticalOptions="CenterAndExpand"/>
 
-                            <StackLayout Padding="10,0">
+                            <StackLayout>
                                 <Label Text="Facebook"
                                         FontSize="15"
+                                       Padding="10,0"
                                         TextColor="#000"
                                         VerticalOptions="CenterAndExpand"/>
                                 <Label Text="{Binding FacebookUri}"
+                                       Padding="10,0"
                                         FontSize="13"
                                         TextColor="#979797"
                                         IsVisible="{Binding IsFacebookLinked}"/>
@@ -101,11 +105,13 @@
                                 <Label Text="ВК"
                                         FontSize="15"
                                         TextColor="#000"
-                                        VerticalOptions="CenterAndExpand"/>
+                                        VerticalOptions="CenterAndExpand"
+                                       Padding="10,0"/>
                                 <Label Text="{Binding VkUri}"
                                        FontSize="13"
                                        TextColor="#979797"
-                                       IsVisible="{Binding IsVkLinked}"/>
+                                       IsVisible="{Binding IsVkLinked}"
+                                       Padding="10,0"/>
                             </StackLayout>
 
                             <Switch OnColor="#2688EB"
@@ -134,10 +140,12 @@
                                 <Label Text="Telegram"
                                         FontSize="15"
                                         TextColor="#000"
-                                        VerticalOptions="CenterAndExpand"/>
+                                        VerticalOptions="CenterAndExpand"
+                                       Padding="10,0"/>
                                 <Label Text="{Binding TelegramUri}"
                                        FontSize="13"
                                        TextColor="#979797"
+                                       Padding="10,0"
                                        IsVisible="{Binding IsTelegramLinked}"/>
                             </StackLayout>
 

@@ -22,7 +22,7 @@ namespace Choice.Services.FileServices
 
         public async Task DownloadPhoto(string fileName)
         {
-            await _client.Download(Path.GetFileName(fileName).Split('.').First(), $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/{fileName}");
+            await _client.Download(fileName.Split('.').First(), $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/{fileName}");
         }
     }
 }

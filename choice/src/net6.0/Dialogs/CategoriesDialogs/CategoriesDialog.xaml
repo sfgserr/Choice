@@ -38,15 +38,15 @@
                                                    HorizontalOptions="Start"
                                                    VerticalOptions="Center"/>
                                             <ImageButton BackgroundColor="{Binding Color}"
-                                                         CornerRadius="360"
-                                                         WidthRequest="20"
-                                                         HeightRequest="20"
+                                                         WidthRequest="30"
+                                                         HeightRequest="30"
                                                          Source="selected.png"
                                                          HorizontalOptions="EndAndExpand"
-                                                         VerticalOptions="Center"
                                                          Clicked="ImageButton_Clicked"
-                                                         CommandParameter="{Binding Category.Title}"
-                                                         Padding="5"/>
+                                                         CornerRadius="10"
+                                                         Padding="5"
+                                                         CommandParameter="{Binding Category.Title}"/>
+                                            
                                         </StackLayout>
                                     </ViewCell.View>
                                 </ViewCell>

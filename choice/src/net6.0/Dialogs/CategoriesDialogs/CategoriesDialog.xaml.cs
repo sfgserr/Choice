@@ -27,8 +27,10 @@ namespace Choice.Dialogs.CategoriesDialogs
         {
 			ImageButton button = (ImageButton)sender;
 
-			button.BackgroundColor = button.BackgroundColor.ToHex() == "#FFD5D5D7" ? Color.FromHex("#3F8AE0") :
-                button.BackgroundColor.ToHex() == "#FF3F8AE0" ? Color.FromHex("#FFD5D5D7") : button.BackgroundColor;
+			var btn = button.BackgroundColor.ToHex();
+
+			button.BackgroundColor = button.BackgroundColor.ToHex() == "#D5D5D7" ? Color.FromHex("#3F8AE0") :
+                button.BackgroundColor.ToHex() == "#3F8AE0" ? Color.FromHex("#D5D5D7") : button.BackgroundColor;
 
 			string categoryTitle = button.CommandParameter.ToString();
 			CategoryDialogViewModel category = _categories.FirstOrDefault(c => c.Category.Title == categoryTitle);
