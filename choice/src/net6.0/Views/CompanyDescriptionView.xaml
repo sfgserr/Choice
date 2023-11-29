@@ -81,7 +81,7 @@
                             </Frame>
                         </StackLayout>
                         <ImageButton Source="close.png"
-                                     VerticalOptions="Start"
+                                      VerticalOptions="Start"
                                      HorizontalOptions="End"
                                      HeightRequest="30"
                                      BackgroundColor="Transparent"
@@ -187,7 +187,7 @@
                         </StackLayout>
                         <ImageButton Source="close.png"
                                      VerticalOptions="Start"
-                                     HorizontalOptions="End"
+                                     HorizontalOptions="EndAndExpand"
                                      HeightRequest="30"
                                      BackgroundColor="Transparent"
                                      IsVisible="{Binding PhotoViewModels[3].IsUpload}"

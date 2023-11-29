@@ -34,7 +34,7 @@ namespace Choice.Stores.Authenticators
         public async Task LoginByEmail(string email, string password)
         {
             State = await _authenticationService.LoginByEmail(email, password);
-            await _fileService.DownloadPhoto(((Client)State).IconUri);
+            await _fileService.DownloadPhoto($"{State.IconUri}.png");
         }
 
         public async Task LoginByPhone(string phoneNumber)

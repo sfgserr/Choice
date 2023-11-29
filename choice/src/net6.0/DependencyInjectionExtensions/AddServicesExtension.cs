@@ -54,19 +54,19 @@ namespace Choice.DependencyInjectionExtensions
         private static ApiService<Client> CreateClientApiService(IServiceProvider services)
         {
             return new ApiService<Client>(services.GetRequiredService<IHttpClientService<Client>>(),
-                                          "http://5.35.13.28/api");
+                                          "http://10.0.2.2/api");
         }
 
         private static ApiService<Category> CreateCategoryApiService(IServiceProvider services)
         {
             return new ApiService<Category>(services.GetRequiredService<IHttpClientService<Category>>(),
-                                          "http://5.35.13.28/api");
+                                          "http://10.0.2.2/api");
         }
 
         private static ApiService<Company> CreateCompanyApiService(IServiceProvider services)
         {
             return new ApiService<Company>(services.GetRequiredService<IHttpClientService<Company>>(),
-                                          "http://5.35.13.28/api");
+                                          "http://10.0.2.2/api");
         }
     }
 }

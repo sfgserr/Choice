@@ -8,7 +8,12 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		var builder = MauiApp.CreateBuilder();
+		#if ANDROID && DEBUG
+			Platforms.Android.DangerousTrustProvider.Register();
+			Platforms.Android.DangerousAndroidMessageHandlerEmitter.Register();
+		#endif
+
+        var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()

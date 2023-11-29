@@ -1,23 +1,25 @@
-﻿using SelectelClient.Clients;
+﻿using FileObjectClient;
 
 namespace Choice.Services.FileServices
 {
     public class FileService : IFileService
     {
-        private readonly string _projectId = "76a36decdef041c684850fdf4ae2258a";
+        //private readonly string _projectId = "76a36decdef041c684850fdf4ae2258a";
 
-        private readonly SelectelObjectClient _objectClient;
-        private readonly ContainerClient _client;
-        
+        //private readonly SelectelObjectClient _objectClient;
+        //private readonly ContainerClient _client;
+
+        private readonly ObjectClient _client;
+
         public FileService()
         {
-            _objectClient = new SelectelObjectClient();
-            _client = _objectClient.CreateContainerClient(_projectId, "choicecontainer");
+            _client = new ObjectClient();
         }
 
         public async Task UploadPhoto(string fullPath)
         {
-            await _client.Upload(fullPath);
+            string fileName = Path.GetFileName(fullPath).Split(".").First();
+            await _client.Upload(fileName, fullPath);
         }
 
         public async Task DownloadPhoto(string fileName)
