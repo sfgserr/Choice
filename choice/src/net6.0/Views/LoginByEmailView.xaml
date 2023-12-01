@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Choice.Views.LoginByEmailView"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit">
+  <ContentView.Content>
+        <Grid>
+            <StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Label FontSize="14"
+                           TextColor="#6D7885"
+                           Text="E-mail"/>
+                    <Frame Background="#F2F3F5"
+                           CornerRadius="10"
+                           BorderColor="#d5d5d7"
+                           Padding="20,0"
+                           HasShadow="False"
+                           x:Name="emailFrame">
+                        <Entry BackgroundColor="Transparent"
+                               PlaceholderColor="#818C99"
+                                Placeholder="Введите E-mail"
+                                TextColor="#000"
+                                Focused="EmailEntryFocused"
+                                Unfocused="EmailEntryUnfocused"
+                                Keyboard="Email"
+                                FontSize="16"
+                                x:Name="TextBox"
+                                Text="{Binding Email}">
+                        </Entry>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Label FontSize="14"
+                        TextColor="#6D7885"
+                        Text="Пароль"/>
+                    <Frame Background="#F2F3F5"
+                        CornerRadius="10"
+                        BorderColor="#d5d5d7"
+                        Padding="20,0"
+                        HasShadow="False"
+                        x:Name="passwordFrame">
+                        <StackLayout Orientation="Horizontal">
+                            <Entry BackgroundColor="Transparent"
+                                PlaceholderColor="#818C99"
+                                IsPassword="{Binding IsPassword}"
+                                Focused="PasswordEntryFocused"
+                                Unfocused="PasswordEntryUnfocused"
+                                Placeholder="Пароль"
+                                TextColor="#000"
+                                FontSize="16"
+                                Text="{Binding Password}"
+                                HorizontalOptions="FillAndExpand">
+                            </Entry>
+                            <ImageButton Source="showpassword.png"
+                                         BackgroundColor="Transparent"
+                                         WidthRequest="20"
+                                         HeightRequest="20"
+                                         Command="{Binding ShowPasswordCommand}"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+                <StackLayout Padding="0,20,0,0">
+                    <Button Background="#2D81E0"
+                        Text="Войти"
+                        FontSize="17"
+                        CornerRadius="10"
+                        TextTransform="None"
+                        TextColor="#fff"
+                        Command="{Binding LoginCommand}"/>
+                </StackLayout>
+
+            </StackLayout>
+            <Frame VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand"
+                   IsVisible="{Binding IsLoading}"
+                   BackgroundColor="Transparent">
+                <ActivityIndicator Color="#2D81E0"
+                                   VerticalOptions="CenterAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
+                                   IsRunning="True"/>
+            </Frame>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

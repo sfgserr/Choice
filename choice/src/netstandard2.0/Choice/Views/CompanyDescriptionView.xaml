@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Choice.Views.CompanyDescriptionView"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ext="clr-namespace:Choice.Extensions.MarkupExtensions">
+  <ContentView.Content>
+    <ScrollView>
+      <Grid>    
+        <StackLayout>
+            <StackLayout Padding="20">
+                <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Виды деятельности"/>
+                <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False">
+                    <StackLayout Orientation="Horizontal">
+                        <Entry BackgroundColor="Transparent"
+                               PlaceholderColor="#818C99"
+                               Placeholder="Выбрать деятельность"
+                               TextColor="#000"
+                               Keyboard="Email"
+                               FontSize="16"
+                               x:Name="TextBox"
+                               Text="{Binding SelectedCommandsTitles}"
+                               IsReadOnly="True"
+                               HorizontalOptions="FillAndExpand">
+                            <Entry.Effects>
+                                <xct:RemoveBorderEffect/>
+                            </Entry.Effects>
+                        </Entry>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.dropdown.png}"
+                                     BackgroundColor="Transparent"
+                                     HeightRequest="15"
+                                     WidthRequest="15"
+                                     Command="{Binding SelectCategoryCommand}"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="10,20">
+                <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Добавьте фотографии"/>
+                <Grid Padding="0,10"
+                      ColumnSpacing="0"
+                      RowSpacing="0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="120"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0"
+                          Grid.Column="0">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                    CornerRadius="10"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="{Binding PhotoViewModels[0].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="Transparent"
+                                                CommandParameter="0"
+                                                IsVisible="{Binding PhotoViewModels[0].IsEmpty}"
+                                                Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[0].Source}"
+                                            IsVisible="{Binding PhotoViewModels[0].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[0].IsUpload}"
+                                     Command="{Binding PhotoViewModels[0].ClearSourceCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="0"
+                          Grid.Column="1">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                    CornerRadius="10"
+                                   VerticalOptions="FillAndExpand"
+                                    Padding="{Binding PhotoViewModels[1].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="Transparent"
+                                                CommandParameter="1"
+                                                IsVisible="{Binding PhotoViewModels[1].IsEmpty}"
+                                                Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[1].Source}"
+                                            IsVisible="{Binding PhotoViewModels[1].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[1].IsUpload}"
+                                     Command="{Binding PhotoViewModels[1].ClearSourceCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="0"
+                          Grid.Column="2">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                    CornerRadius="10"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="{Binding PhotoViewModels[2].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="Transparent"
+                                                CommandParameter="2"
+                                                IsVisible="{Binding PhotoViewModels[2].IsEmpty}"
+                                                Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[2].Source}"
+                                            IsVisible="{Binding PhotoViewModels[2].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[2].IsUpload}"
+                                     Command="{Binding PhotoViewModels[2].ClearSourceCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Grid.Column="0">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                   VerticalOptions="FillAndExpand"
+                                    CornerRadius="10"
+                                    Padding="{Binding PhotoViewModels[3].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                 VerticalOptions="Center"
+                                                 HorizontalOptions="Center"
+                                                 BackgroundColor="Transparent"
+                                                 CommandParameter="3"
+                                                 IsVisible="{Binding PhotoViewModels[3].IsEmpty}"
+                                                 Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[3].Source}"
+                                            IsVisible="{Binding PhotoViewModels[3].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[3].IsUpload}"
+                                     Command="{Binding PhotoViewModels[3].ClearSourceCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Grid.Column="1">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                    CornerRadius="10"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="{Binding PhotoViewModels[4].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="Transparent"
+                                                CommandParameter="4"
+                                                IsVisible="{Binding PhotoViewModels[4].IsEmpty}"
+                                                Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[4].Source}"
+                                            IsVisible="{Binding PhotoViewModels[4].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[4].IsUpload}"
+                                     Command="{Binding PhotoViewModels[4].ClearSourceCommand}"/>
+                    </Grid>
+                    <Grid Grid.Row="1"
+                          Grid.Column="2">
+                        <StackLayout Padding="10">
+                            <Frame BorderColor="#C8C8C8"
+                                    BackgroundColor="#F9F9F9"
+                                    HasShadow="False"
+                                    CornerRadius="10"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="{Binding PhotoViewModels[5].Padding}">
+                                <StackLayout>
+                                    <ImageButton Source="{ext:ImageResource Choice.Resources.addimage.png}"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"
+                                                BackgroundColor="Transparent"
+                                                CommandParameter="5"
+                                                IsVisible="{Binding PhotoViewModels[5].IsEmpty}"
+                                                Command="{Binding DisplayUploadPhotoActionSheetCommand}"/>
+
+                                    <Image Source="{Binding PhotoViewModels[5].Source}"
+                                            IsVisible="{Binding PhotoViewModels[5].IsUpload}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                        <ImageButton Source="{ext:ImageResource Choice.Resources.close.png}"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="End"
+                                     HeightRequest="30"
+                                     BackgroundColor="Transparent"
+                                     IsVisible="{Binding PhotoViewModels[5].IsUpload}"
+                                     Command="{Binding PhotoViewModels[5].ClearSourceCommand}"/>
+                    </Grid>
+                </Grid>
+            </StackLayout>
+                <StackLayout Padding="20,0">
+                    <Label FontSize="14"
+                           TextColor="#6D7885"
+                           Text="Опции"/>
+                    <RadioButton Content="Работа с предоплатой"
+                                 FontSize="15"
+                                 x:Name="available"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                    <RadioButton Content="Работа без предоплаты"
+                                 FontSize="15"
+                                 x:Name="unavailable"
+                                 CheckedChanged="RadioButton_CheckedChanged"/>
+                </StackLayout>
+                <StackLayout Padding="20,30">
+                    <Button Background="#2D81E0"
+                            Text="Сохранить"
+                            FontSize="17"
+                            CornerRadius="10"
+                            TextTransform="None"
+                            TextColor="#fff"
+                            xct:TouchEffect.NativeAnimation="True"
+                            xct:TouchEffect.NativeAnimationColor="#5396E1"
+                            xct:TouchEffect.NormalBackgroundColor="#2D81E0"
+                            Command="{Binding SaveCompanyDataCommand}"/>
+                </StackLayout>
+            </StackLayout>
+            <ActivityIndicator Color="#2D81E0"
+                                IsVisible="{Binding IsLoading}"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="CenterAndExpand"
+                                IsRunning="True"/>
+        </Grid>
+    </ScrollView>
+  </ContentView.Content>
+</ContentView>

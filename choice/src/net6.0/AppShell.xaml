@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Choice.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Choice"
+    xmlns:pages="clr-namespace:Choice.Pages"
+    Shell.FlyoutBehavior="Disabled">
+
+    <ShellContent Route="LoginPage"
+                  ContentTemplate="{DataTemplate pages:LoginPage}"/>
+
+    <TabBar>
+        <Tab Icon="services.png"
+             Title="Услуги">
+            <ShellContent Route="CategoryPage"
+                          ContentTemplate="{DataTemplate pages:CategoryPage}"/>
+        </Tab>
+        <Tab Icon="orders.png"
+             Title="Заказы">
+            <ShellContent Route="OrderPage"
+                         ContentTemplate="{DataTemplate pages:OrderPage}"/>
+        </Tab>
+        <Tab Icon="chats.png"
+             Title="Чаты">
+            <ShellContent Route="ChatPage"
+                          ContentTemplate="{DataTemplate pages:ChatPage}"/>
+        </Tab>
+        <Tab Icon="account.png"
+             Title="Аккаунт">
+            <ShellContent Route="AccountPage"
+                          ContentTemplate="{DataTemplate pages:AccountPage}"/>
+        </Tab>
+    </TabBar>
+</Shell>

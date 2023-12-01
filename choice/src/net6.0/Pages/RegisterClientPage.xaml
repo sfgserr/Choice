@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Choice"
+             x:Class="Choice.Pages.RegisterClientPage"
+             Shell.NavBarIsVisible="False"
+             xmlns:viewModels="clr-namespace:Choice.ViewModels">
+    <ScrollView VerticalScrollBarVisibility="Never">
+        <Grid>
+            <StackLayout Padding="20,40">
+            <Label Text="Регистрация клиента"
+               TextColor="#313131"
+               FontSize="24"
+               FontAttributes="Bold"/>
+
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Имя"/>
+                <Frame Background="#F2F3F5"
+                        CornerRadius="10"
+                        BorderColor="#d5d5d7"
+                        Padding="20,0"
+                        HasShadow="False"
+                        x:Name="nameFrame">
+                        <Entry BackgroundColor="Transparent"
+                            PlaceholderColor="#818C99"
+                            Placeholder="Введите имя"
+                            TextColor="#000"
+                            Focused="NameEntryFocused"
+                            Unfocused="NameEntryUnfocused"
+                            Keyboard="Email"
+                            FontSize="16"
+                            Text="{Binding Name}">
+                        </Entry>
+                </Frame>
+            </StackLayout>
+
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+                        TextColor="#6D7885"
+                        Text="Фамилия"/>
+                <Frame Background="#F2F3F5"
+                        CornerRadius="10"
+                        BorderColor="#d5d5d7"
+                        Padding="20,0"
+                        HasShadow="False"
+                        x:Name="surnameFrame">
+                        <Entry BackgroundColor="Transparent"
+                            PlaceholderColor="#818C99"
+                            Placeholder="Введите фамилию"
+                            TextColor="#000"
+                            Focused="SurnameEntryFocused"
+                            Unfocused="SurnameEntryUnfocused"
+                            Keyboard="Email"
+                            FontSize="16"
+                            x:Name="TextBox"
+                            Text="{Binding Surname}">
+                        </Entry>
+                </Frame>
+            </StackLayout>
+
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+                   TextColor="#6D7885"
+                   Text="E-mail"/>
+                <Frame Background="#F2F3F5"
+                   CornerRadius="10"
+                    BorderColor="#d5d5d7"
+                    Padding="20,0"
+                    HasShadow="False"
+                    x:Name="emailFrame">
+                        <Entry BackgroundColor="Transparent"
+                       PlaceholderColor="#818C99"
+                        TextColor="#000"
+                        Focused="EmailEntryFocused"
+                        Unfocused="EmailEntryUnfocused"
+                        Placeholder="Введите E-mail"
+                        Keyboard="Email"
+                        FontSize="16"
+                        Text="{Binding Email}">
+                        </Entry>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+                   TextColor="#6D7885"
+                   Text="Пароль"/>
+                <Frame Background="#F2F3F5"
+                   CornerRadius="10"
+                   BorderColor="#d5d5d7"
+                   Padding="20,0"
+                   HasShadow="False"
+                   x:Name="passwordFrame">
+                    <StackLayout Orientation="Horizontal">
+                            <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           IsPassword="{Binding IsPassword}"
+                           Focused="PasswordEntryFocused"
+                           Unfocused="PasswordEntryUnfocused"
+                           Placeholder="Введите пароль"
+                           TextColor="#000"
+                           FontSize="16"
+                           Text="{Binding Password}"
+                           HorizontalOptions="FillAndExpand">
+                            </Entry>
+                        <ImageButton Source="showpassword.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="20"
+                                 HeightRequest="20"
+                                 Command="{Binding ShowPasswordCommand}"
+                                 CommandParameter="Password"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label FontSize="14"
+                   TextColor="#6D7885"
+                   Text="Повторите пароль"/>
+                <Frame Background="#F2F3F5"
+                   CornerRadius="10"
+                   BorderColor="#d5d5d7"
+                   Padding="20,0"
+                   HasShadow="False"
+                   x:Name="passwordConfirmtionFrame">
+                    <StackLayout Orientation="Horizontal">
+                            <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           IsPassword="{Binding IsPasswordConfirmtion}"
+                           Focused="PasswordConfirmtionEntryFocused"
+                           Unfocused="PasswordConfirmtionEntryUnfocused"
+                           Placeholder="Введите пароль"
+                           TextColor="#000"
+                           FontSize="16"
+                           Text="{Binding PasswordConfirmtion}"
+                           HorizontalOptions="FillAndExpand">
+                            </Entry>
+                        <ImageButton Source="showpassword.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="20"
+                                 HeightRequest="20"
+                                 Command="{Binding ShowPasswordCommand}"
+                                 CommandParameter="Confirmtion"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Button Background="#2D81E0"
+                    Text="Создать аккаунт"
+                    FontSize="16"
+                    CornerRadius="10"
+                    TextTransform="None"
+                    TextColor="#fff"
+                    Command="{Binding RegisterClientCommand}"/>
+            </StackLayout>
+            <StackLayout Padding="0,20,0,0">
+                <Label Text="У меня есть аккаунт"
+                   FontSize="16"
+                   TextColor="#9C9C9C"
+                   HorizontalOptions="Center"/>
+                <Button Background="Transparent"
+                        TextColor="#2D81E0"
+                        Text="Войти"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        TextTransform="None"
+                        Command="{Binding NavigateBackCommand}"/>
+            </StackLayout>
+        </StackLayout>
+            <ActivityIndicator Color="#2D81E0"
+                               IsVisible="{Binding IsLoading}"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"
+                               IsRunning="True"/>
+      </Grid>
+    </ScrollView>
+</ContentPage>

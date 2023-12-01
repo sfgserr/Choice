@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  nginx:
+    container_name: "nginx"
+    image: nginx
+    build:
+      context: "../nginx/"
+  choice.webapi:
+    container_name: "choice.webapi"
+    image: choicewebapi
+    build:
+      context: ../api/
+      dockerfile: src/Choice.WebApi/Dockerfile
+ 

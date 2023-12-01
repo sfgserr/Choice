@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Choice"
+             x:Class="Choice.Views.CompanyContactDataView">
+
+    <StackLayout Padding="20,20">
+        <StackLayout Padding="0,0">
+            <Label FontSize="17"
+                       FontAttributes="Bold"
+                       TextColor="#000"
+                       Text="Контактные данные"/>
+
+            <Label FontSize="16"
+                       TextColor="#181818"
+                       Text="Укажите информацию, которая будет отображаться в карточке вашей компании, &#10;ее увидят тысячи наших пользователей"/>
+        </StackLayout>
+        <StackLayout Padding="0,20">
+            <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Название"/>
+
+            <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="titleFrame">
+                <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите название"
+                           TextColor="#000"
+                           Focused="TitleEntryFocused"
+                           Unfocused="TitleEntryUnfocused"
+                           Keyboard="Email"
+                           FontSize="16"
+                           Text="{Binding Title}">
+                </Entry>
+            </Frame>
+        </StackLayout>
+        <StackLayout Padding="0,0">
+            <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="E-mail"/>
+            <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="emailFrame">
+                <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите E-mail"
+                           TextColor="#000"
+                           Focused="EmailEntryFocused"
+                           Unfocused="EmailEntryUnfocused"
+                           Keyboard="Email"
+                           FontSize="16"
+                           Text="{Binding Email}">
+                </Entry>
+            </Frame>
+        </StackLayout>
+
+        <StackLayout Padding="0,20">
+            <Label FontSize="14"
+                       TextColor="#6D7885"
+                       Text="Телефон"/>
+            <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="phoneFrame">
+                <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           Placeholder="+7 (999) 999-99-99"
+                           TextColor="#000"
+                           Focused="PhoneEntryFocused"
+                           Unfocused="PhoneEntryUnfocused"
+                           Keyboard="Telephone"
+                           FontSize="16"
+                           Text="{Binding PhoneNumber}"
+                           MaxLength="15">
+                </Entry>
+            </Frame>
+        </StackLayout>
+        <StackLayout Padding="0,0,0,20">
+            <Label FontSize="14"
+                  TextColor="#6D7885"
+                  Text="Сайт"/>
+            <Frame Background="#F2F3F5"
+                       CornerRadius="10"
+                       BorderColor="#d5d5d7"
+                       Padding="20,0"
+                       HasShadow="False"
+                       x:Name="siteFrame">
+                <Entry BackgroundColor="Transparent"
+                           PlaceholderColor="#818C99"
+                           Placeholder="Введите адрес сайта"
+                           TextColor="#000"
+                           Focused="SiteEntryFocused"
+                      Unfocused="SiteEntryUnfocused"
+                      Keyboard="Email"
+                      FontSize="16"
+                      Text="{Binding SiteUri}">
+                </Entry>
+            </Frame>
+        </StackLayout>
+        <StackLayout Padding="0,0">
+            <Label FontSize="14"
+                      TextColor="#6D7885"
+                      Text="Адрес компании"/>
+            <Frame Background="#F2F3F5"
+                      CornerRadius="10"
+                      BorderColor="#d5d5d7"
+                      Padding="20,0"
+                      HasShadow="False"
+                      x:Name="addressFrame"
+                      VerticalOptions="FillAndExpand">
+                <Entry BackgroundColor="Transparent"
+                          PlaceholderColor="#818C99"
+                          Placeholder="Введите адрес"
+                          TextColor="#000"
+                          Focused="AddressEntryFocused"
+                          Unfocused="AddressEntryUnfocused"
+                          Keyboard="Email"
+                          FontSize="16"
+                          Text="{Binding Address}">
+                </Entry>
+            </Frame>
+        </StackLayout>
+        <StackLayout Padding="0, 20">
+            <Button Background="#2D81E0"
+                      Text="Далее"
+                      FontSize="17"
+                      CornerRadius="10"
+                      TextTransform="None"
+                      TextColor="#fff"
+                      Command="{Binding CompleteCompanyContactDataCommand}"/>
+        </StackLayout>
+    </StackLayout>
+</ContentView>
