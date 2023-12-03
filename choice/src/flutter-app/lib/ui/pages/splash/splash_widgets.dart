@@ -1,1 +1,1 @@
-export 'widgets/app_main_info_widget.dart';
+export '../../components/app_main_info_widget.dart';
