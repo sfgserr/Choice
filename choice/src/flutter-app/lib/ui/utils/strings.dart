@@ -25,7 +25,7 @@ class AppStrings {
   static const String _phonePrefix = '+7 ';
   static String get phonePrefix => _phonePrefix;
 
-  static const String _phoneNumberHintText = '(000) 000-00-00';
+  static const String _phoneNumberHintText = ' (000) 000-00-00';
   static String get phoneNumberHintText => _phoneNumberHintText;
 
   static const String _sendCodeText = 'Отправить код';

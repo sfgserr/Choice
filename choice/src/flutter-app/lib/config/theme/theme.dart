@@ -14,7 +14,7 @@ class AppTheme {
       linearMinHeight: 1.3,
     ),
     tabBarTheme: TabBarTheme(
-      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorSize: TabBarIndicatorSize.label,
       indicatorColor: AppColors.primaryColor,
       labelPadding: EdgeInsets.zero,
       labelColor: Colors.black,
@@ -23,6 +23,7 @@ class AppTheme {
       unselectedLabelStyle: AppTextStyles.unselectedTabTextStyle,
     ),
     inputDecorationTheme: InputDecorationTheme(
+      prefixStyle: AppTextStyles.hintTextStyle.copyWith(color: Colors.black),
       contentPadding: const EdgeInsets.all(12),
       hintStyle: AppTextStyles.hintTextStyle,
       filled: true,

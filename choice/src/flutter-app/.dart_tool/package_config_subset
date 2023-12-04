@@ -62,6 +62,10 @@ flutter_lints
 2.19
 file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-2.0.3/
 file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-2.0.3/lib/
+get_it
+3.0
+file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/get_it-7.6.4/
+file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/get_it-7.6.4/lib/
 lints
 3.0
 file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1/
@@ -144,6 +148,6 @@ file:///C:/src/flutter/packages/flutter_web_plugins/
 file:///C:/src/flutter/packages/flutter_web_plugins/lib/
 choice
 3.1
-file:///D:/apps/choice/
-file:///D:/apps/choice/lib/
+file:///D:/_/choice/src/flutter-app/
+file:///D:/_/choice/src/flutter-app/lib/
 2

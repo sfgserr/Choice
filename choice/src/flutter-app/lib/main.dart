@@ -1,3 +1,4 @@
+import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'config/theme/theme.dart';
@@ -15,14 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [],
+      providers: [
+        BlocProvider(create: (_) => LoginBloc()),
+      ],
       child: MaterialApp(
         title: 'Choice',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: LocalStorage.isDarkMode ? ThemeMode.dark : ThemeMode.light,
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: const LoginScreen(),
       ),
     );
   }

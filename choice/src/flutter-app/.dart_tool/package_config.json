@@ -116,6 +116,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "get_it",
+      "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/get_it-7.6.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
@@ -224,7 +230,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-12-02T21:37:49.334913Z",
+  "generated": "2023-12-04T21:39:59.583120Z",
   "generator": "pub",
   "generatorVersion": "3.1.5"
 }
