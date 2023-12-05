@@ -19,18 +19,21 @@ class MainButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Opacity(
         opacity: isEnabled ? 1.0 : 0.4,
-        child: Container(
-          height: 44,
-          decoration: ShapeDecoration(
-            color: const Color(0xFF2D81E0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            height: 44,
+            decoration: ShapeDecoration(
+              color: const Color(0xFF2D81E0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-          child: Center(
-            child: Text(
-              text,
-              style: AppTextStyles.mainBtnTextStyle,
+            child: Center(
+              child: Text(
+                text,
+                style: AppTextStyles.mainBtnTextStyle,
+              ),
             ),
           ),
         ),

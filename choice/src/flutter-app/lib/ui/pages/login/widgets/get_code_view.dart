@@ -1,33 +1,46 @@
 import 'package:choice/domain/blocs/login_bloc/export_login_bloc.dart';
-import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
 import 'package:choice/ui/components/main_button.dart';
 import 'package:choice/ui/pages/login/models/input_widget_model.dart';
+import 'package:choice/ui/pages/splash/splash_screen.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'input_widget.dart';
 
-class PhoneView extends StatefulWidget {
-  const PhoneView({super.key});
+class GetCodeView extends StatefulWidget {
+  const GetCodeView({super.key});
 
   @override
-  State<PhoneView> createState() => _PhoneViewState();
+  State<GetCodeView> createState() => _GetCodeViewState();
 }
 
-class _PhoneViewState extends State<PhoneView> {
-  late TextEditingController phoneController;
+class _GetCodeViewState extends State<GetCodeView> {
+  late TextEditingController codeController;
+  late FocusNode codeFocus;
 
   @override
   void initState() {
     super.initState();
-    phoneController = TextEditingController();
+    codeController = TextEditingController();
+    codeFocus = FocusNode();
   }
 
   @override
   void dispose() {
-    phoneController.dispose();
+    codeController.dispose();
+    codeFocus.dispose();
     super.dispose();
+  }
+
+  void loginTap() {
+    FocusScope.of(context).unfocus();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SplashScreen(),
+      ),
+    );
   }
 
   @override
@@ -37,32 +50,28 @@ class _PhoneViewState extends State<PhoneView> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // phone
+            // code
             InputWidget(
               inpwModel: InputWidgetModel(
-                label: AppStrings.phoneNumberText,
-                hintText: AppStrings.phoneNumberHintText,
-                showPrefix: true,
+                label: AppStrings.codeText,
+                hintText: AppStrings.inputCode,
                 onChangeTextField: (value) {
                   BlocProvider.of<LoginBloc>(context).add(EnableLoginBtn(
                     isLoginBtnEnabled: value.isNotEmpty,
                   ));
                 },
-                onFieldSubmitted: (value) {
-                  BlocProvider.of<LoginBloc>(context).add(GetCode());
-                },
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
+                onFieldSubmitted: (value) => loginTap(),
+                controller: codeController,
+                focusNode: codeFocus,
+                keyboardType: TextInputType.number,
+                maxLength: 4, // sms code length
               ),
             ),
 
             MainButton(
-              isEnabled:
-                  BlocProvider.of<LoginBloc>(context).state.isLoginBtnEnabled,
-              text: AppStrings.sendCodeText,
-              onTap: () {
-                BlocProvider.of<LoginBloc>(context).add(GetCode());
-              },
+              isEnabled: state.isLoginBtnEnabled,
+              text: AppStrings.loginText,
+              onTap: loginTap,
             ),
           ],
         );

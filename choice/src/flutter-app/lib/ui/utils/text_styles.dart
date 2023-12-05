@@ -28,7 +28,7 @@ class AppTextStyles {
         letterSpacing: -0.30,
       );
 
-  static TextStyle get createAccountBtnTextStyle => const TextStyle(
+  static TextStyle get textBtnTextStyle => const TextStyle(
         color: Color(0xFF2D81E0),
         fontSize: 16,
         fontFamily: 'Inter',
@@ -73,4 +73,21 @@ class AppTextStyles {
         fontWeight: FontWeight.w500,
         letterSpacing: -0.41,
       );
+
+  static TextStyle get appBarTextStyle => const TextStyle(
+      color: Colors.black,
+      fontSize: 21,
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w600,
+      height: 0.06,
+    );
+
+  static TextStyle get bodySmallTextStyle => const TextStyle(
+    color: Color(0xFF181818),
+    fontSize: 16,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.30,
+  );
+
 }
