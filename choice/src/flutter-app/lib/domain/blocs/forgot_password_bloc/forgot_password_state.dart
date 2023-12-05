@@ -2,7 +2,7 @@ class ForgotPasswordState {
   final bool isEnabledMainBtn;
 
   ForgotPasswordState({
-    required this.isEnabledMainBtn,
+    this.isEnabledMainBtn = false,
   });
 }
 

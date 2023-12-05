@@ -35,12 +35,12 @@ class _GetCodeViewState extends State<GetCodeView> {
 
   void loginTap() {
     FocusScope.of(context).unfocus();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SplashScreen(),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const SplashScreen(),
+    //   ),
+    // );
   }
 
   @override
