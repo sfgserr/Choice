@@ -1,14 +1,13 @@
-import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
-import 'package:choice/domain/blocs/login_bloc/login_event.dart';
-import 'package:choice/domain/blocs/login_bloc/login_state.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:choice/domain/blocs/login_bloc/export_login_bloc.dart';
 import 'package:choice/ui/utils/text_styles.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'login_widgets.dart';
 
+@RoutePage()
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -28,14 +27,14 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: KeyboardVisibilityBuilder(
-            builder: (context, isKeyboardVisible) {
-              return Provider.value(
-                value: isKeyboardVisible,
-                child: CustomScrollView(
+    return Scaffold(
+      body: KeyboardVisibilityBuilder(
+        builder: (context, isKeyboardVisible) {
+          return Provider.value(
+            value: isKeyboardVisible,
+            child: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                return CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
@@ -76,8 +75,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   child: Text(
                                     AppStrings.createAccountText,
                                     textAlign: TextAlign.center,
-                                    style:
-                                        AppTextStyles.createAccountBtnTextStyle,
+                                    style: AppTextStyles.textBtnTextStyle,
                                   ),
                                 ),
                               ],
@@ -93,9 +91,14 @@ class _LoginScreenState extends State<LoginScreen>
                             child: TabBar(
                               controller: _tabController,
                               onTap: (value) {
-                                BlocProvider.of<LoginBloc>(context).add(
-                                  ChangeTab(tabIndex: value),
-                                );
+                                if (value != state.currentTabIndex) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                    EnableLoginBtn(isLoginBtnEnabled: false),
+                                  );
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                    ChangeTab(tabIndex: value),
+                                  );
+                                }
                               },
                               tabs: [
                                 SizedBox(
@@ -114,22 +117,21 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
 
-                          BlocProvider.of<LoginBloc>(context)
-                                      .state
-                                      .currentTabIndex ==
-                                  0
-                              ? EmailView()
-                              : PhoneView(),
+                          state.currentTabIndex == 0
+                              ? const EmailView()
+                              : state.isGettingCode
+                                  ? const GetCodeView()
+                                  : const PhoneView(),
                         ],
                       ),
                     ),
                   ],
-                ),
-              );
-            },
-          ),
-        );
-      },
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

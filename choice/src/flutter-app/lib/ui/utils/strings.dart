@@ -1,4 +1,3 @@
-
 class AppStrings {
 
   static const String _appName = 'ВЫБОР';
@@ -18,6 +17,9 @@ class AppStrings {
 
   static const String _phoneText = 'Телефон';
   static String get phoneText => _phoneText;
+
+  static const String _codeText = 'Код';
+  static String get codeText => _codeText;
 
   static const String _phoneNumberText = 'Номер телефона';
   static String get phoneNumberText => _phoneNumberText;
@@ -40,7 +42,21 @@ class AppStrings {
   static const String _inputPassword = 'Введите пароль';
   static String get inputPassword => _inputPassword;
 
+  static const String _inputCode = 'Введите код из смс';
+  static String get inputCode => _inputCode;
+
   static const String _loginText = 'Войти';
   static String get loginText => _loginText;
+
+  static const String _forgotPassword = 'Я забыл пароль';
+  static String get forgotPassword => _forgotPassword;
+
+  static const String _restorePassword = 'Восстановить пароль';
+  static String get restorePassword => _restorePassword;
+
+  static const String _weWillSendCodeText =
+      'Введите ваш e-mail, мы отправим на него код для сброса пароля';
+  static String get weWillSendCodeText => _weWillSendCodeText;
+
 
 }

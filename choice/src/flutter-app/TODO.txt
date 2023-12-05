@@ -1,0 +1,2 @@
+- validate textfields
+- change suffix in the phone textfield
