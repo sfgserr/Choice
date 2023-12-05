@@ -1,29 +1,19 @@
+import 'package:choice/ui/pages/login/models/input_widget_model.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:choice/config/theme/colors.dart';
 import 'package:choice/ui/utils/text_styles.dart';
+import 'package:provider/provider.dart';
 
 import 'obscure_text_icon.dart';
 
 class InputWidget extends StatelessWidget {
   const InputWidget({
     super.key,
-    required this.label,
-    required this.hintText,
-    this.showPrefix = false,
-    this.showSuffix = false,
-    this.obscureText = false,
-    this.onSuffixIconTap,
-    this.onChangeTextField,
+    required this.inpwModel,
   });
 
-  final String label;
-  final String hintText;
-  final Function()? onSuffixIconTap;
-  final Function(String)? onChangeTextField;
-  final bool showPrefix;
-  final bool showSuffix;
-  final bool obscureText;
+  final InputWidgetModel inpwModel;
 
   @override
   Widget build(BuildContext context) {
@@ -33,27 +23,26 @@ class InputWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label,
+            inpwModel.label,
             style: AppTextStyles.bodyMediumTextStyle,
           ),
           const SizedBox(
             height: 8,
           ),
           TextFormField(
-            onChanged: onChangeTextField,
-            obscureText: obscureText,
+            autofocus: Provider.of<bool>(context),
+            keyboardType: inpwModel.keyboardType,
+            controller: inpwModel.controller,
+            onChanged: inpwModel.onChangeTextField,
+            obscureText: inpwModel.obscureText,
             decoration: InputDecoration(
-              isDense: true,
-              hintText: hintText,
-              prefixText: showPrefix ? AppStrings.phonePrefix : '',
-              prefixStyle: AppTextStyles.hintTextStyle.copyWith(
-                color: Colors.black,
-              ),
-              suffixIcon: showSuffix
+              hintText: inpwModel.hintText,
+              prefixText: inpwModel.showPrefix ? AppStrings.phonePrefix : '',
+              suffixIcon: inpwModel.showSuffix
                   ? GestureDetector(
-                      onTap: onSuffixIconTap,
+                      onTap: inpwModel.onSuffixIconTap,
                       child: ObscureTextIcon(
-                        obscureText: obscureText,
+                        obscureText: inpwModel.obscureText,
                       ),
                     )
                   : const SizedBox(),

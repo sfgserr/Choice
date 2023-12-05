@@ -1,11 +1,17 @@
 import 'package:choice/ui/components/main_button.dart';
+import 'package:choice/ui/pages/login/models/input_widget_model.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
 
 import 'input_widget.dart';
 
 class EmailView extends StatelessWidget {
-  const EmailView({super.key});
+  EmailView({
+    super.key,
+  });
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,24 +20,30 @@ class EmailView extends StatelessWidget {
       children: [
         // email
         InputWidget(
-          label: AppStrings.emailText,
-          hintText: AppStrings.inputEmail,
+          inpwModel: InputWidgetModel(
+            label: AppStrings.emailText,
+            hintText: AppStrings.inputEmail,
+            controller: emailController,
+          ),
         ),
 
         // password
         InputWidget(
-          label: AppStrings.passwordText,
-          hintText: AppStrings.inputPassword,
-          onSuffixIconTap: () {
-            // change obscureText value
-          },
-          onChangeTextField: (value) {
-            if (value.isNotEmpty) {
-              // change isButtonEnabled value
-            }
-          },
-          obscureText: false,
-          showSuffix: true,
+          inpwModel: InputWidgetModel(
+            label: AppStrings.passwordText,
+            hintText: AppStrings.inputPassword,
+            onSuffixIconTap: () {
+              // change obscureText value
+            },
+            onChangeTextField: (value) {
+              if (value.isNotEmpty) {
+                // change isButtonEnabled value
+              }
+            },
+            obscureText: false,
+            showSuffix: true,
+            controller: passwordController,
+          ),
         ),
 
         MainButton(
