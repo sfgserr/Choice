@@ -7,6 +7,7 @@ class InputWidgetModel {
     this.showPrefix = false,
     this.showSuffix = false,
     this.autofocus = false,
+    this.obscureText = false,
     this.onChangeTextField,
     this.onFieldSubmitted,
     this.keyboardType = TextInputType.text,
@@ -23,6 +24,7 @@ class InputWidgetModel {
   final bool showPrefix;
   final bool showSuffix;
   final bool autofocus;
+  final bool obscureText;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final TextEditingController controller;

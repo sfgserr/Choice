@@ -58,5 +58,44 @@ class AppStrings {
       'Введите ваш e-mail, мы отправим на него код для сброса пароля';
   static String get weWillSendCodeText => _weWillSendCodeText;
 
+  static const String _weSentCodeText =
+      'Мы отправили код для сброса пароля на электронную почту: ';
+  static String get weSentCodeText => _weSentCodeText;
+
+  static const String _fpCodeText = 'Код для сброса пароля';
+  static String get fpCodeText => _fpCodeText;
+
+  static const String _inputFpCode = '000-000';
+  static String get inputFpCode => _inputFpCode;
+
+  static const String _resetPassword = 'Сбросить пароль';
+  static String get resetPassword => _resetPassword;
+
+  static const String _setNewPasswordText = 'Установить новый пароль';
+  static String get setNewPasswordText => _setNewPasswordText;
+
+  static const String _repeatPassword = 'Повторить пароль';
+  static String get repeatPassword => _repeatPassword;
+
+  static const String _changeText = 'Изменить';
+  static String get changeText => _changeText;
+
+  static const String _sendCodeOneMoreTimeText = 'Отправить код еще раз';
+  static String get sendCodeOneMoreTimeText => _sendCodeOneMoreTimeText;
+
+  static String resendCodeViaText(int seconds) =>
+      'Повторная отправка кода через $seconds сек';
+
+  static const String _saveNewPassword = 'Сохранить новый пароль';
+  static String get saveNewPassword => _saveNewPassword;
+
+  static const String _createCompanyAccountText = 'Создать аккаунт компании';
+  static String get createCompanyAccountText => _createCompanyAccountText;
+
+  static const String _createClientAccountText = 'Создать аккаунт клиента';
+  static String get createClientAccountText => _createClientAccountText;
+
+  static const String _cancelText = 'Отменить';
+  static String get cancelText => _cancelText;
 
 }

@@ -1,6 +1,6 @@
 import 'package:choice/domain/blocs/forgot_password_bloc/export_forgot_password_bloc.dart';
-import 'package:choice/domain/blocs/input_widget_bloc/export_input_widget_bloc.dart';
 import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
+import 'package:choice/domain/blocs/set_new_password_bloc/export_set_new_password_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'config/router/router.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => LoginBloc()),
         BlocProvider(create: (_) => ForgotPasswordBloc()),
-        BlocProvider(create: (_) => InputWidgetBloc()),
+        BlocProvider(create: (_) => SetNewPasswordBloc()),
       ],
       child: MaterialApp.router(
         title: 'Choice',

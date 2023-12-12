@@ -1,16 +1,18 @@
 
-abstract class LoginEvent {}
+sealed class LoginEvent {}
 
-class ChangeTab extends LoginEvent {
+final class ChangeTab extends LoginEvent {
   final int tabIndex;
 
   ChangeTab({required this.tabIndex});
 }
 
-class EnableLoginBtn extends LoginEvent {
+final class EnableLoginBtn extends LoginEvent {
   final bool isLoginBtnEnabled;
 
   EnableLoginBtn({required this.isLoginBtnEnabled});
 }
 
-class GetCode extends LoginEvent {}
+final class ObscurePasswordText extends LoginEvent {}
+
+final class GetCode extends LoginEvent {}
