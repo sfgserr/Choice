@@ -1,12 +1,10 @@
 import 'package:choice/domain/blocs/login_bloc/export_login_bloc.dart';
-import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
 import 'package:choice/ui/components/main_button.dart';
-import 'package:choice/ui/pages/login/models/input_widget_model.dart';
+import 'package:choice/domain/models/ui_models/input_widget_model.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'input_widget.dart';
+import '../../../components/input_widget.dart';
 
 class PhoneView extends StatefulWidget {
   const PhoneView({super.key});

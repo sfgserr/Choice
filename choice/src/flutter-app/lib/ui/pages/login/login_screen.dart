@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:choice/domain/blocs/login_bloc/export_login_bloc.dart';
 import 'package:choice/ui/utils/text_styles.dart';
 import 'package:choice/ui/utils/strings.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,15 @@ class _LoginScreenState extends State<LoginScreen>
                                 InkWell(
                                   splashColor: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
-                                  onTap: () {},
+                                  onTap: () {
+                                    showCupertinoModalPopup(
+                                      barrierColor: Colors.black45,
+                                      context: context,
+                                      builder: (_) {
+                                        return const CreateAccountSheet();
+                                      },
+                                    );
+                                  },
                                   child: Text(
                                     AppStrings.createAccountText,
                                     textAlign: TextAlign.center,

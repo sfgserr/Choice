@@ -9,6 +9,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         currentTabIndex: event.tabIndex,
         isLoginBtnEnabled: state.isLoginBtnEnabled,
         isGettingCode: state.isGettingCode,
+        isObscurePassword: state.isObscurePassword,
       ));
     });
 
@@ -17,6 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         currentTabIndex: state.currentTabIndex,
         isLoginBtnEnabled: event.isLoginBtnEnabled,
         isGettingCode: state.isGettingCode,
+        isObscurePassword: state.isObscurePassword,
       ));
     });
 
@@ -25,6 +27,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         currentTabIndex: 1, // phone tab
         isLoginBtnEnabled: false,
         isGettingCode: true,
+        isObscurePassword: state.isObscurePassword,
+      ));
+    });
+
+    on<ObscurePasswordText>((event, emit) {
+      emit(LoginState(
+        currentTabIndex: state.currentTabIndex, // phone tab
+        isLoginBtnEnabled: state.isLoginBtnEnabled,
+        isGettingCode: state.isLoginBtnEnabled,
+        isObscurePassword: !state.isObscurePassword,
       ));
     });
   }

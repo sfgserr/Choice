@@ -75,19 +75,34 @@ class AppTextStyles {
       );
 
   static TextStyle get appBarTextStyle => const TextStyle(
-      color: Colors.black,
-      fontSize: 21,
-      fontFamily: 'Inter',
-      fontWeight: FontWeight.w600,
-      height: 0.06,
-    );
+        color: Colors.black,
+        fontSize: 21,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w600,
+        height: 0.06,
+      );
+
+  static TextStyle get appBarSecondTextStyle => const TextStyle(
+        color: Color(0xFF303030),
+        fontSize: 24,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w700,
+        height: 0,
+      );
 
   static TextStyle get bodySmallTextStyle => const TextStyle(
-    color: Color(0xFF181818),
-    fontSize: 16,
-    fontFamily: 'Inter',
-    fontWeight: FontWeight.w400,
-    letterSpacing: -0.30,
-  );
+        color: Color(0xFF181818),
+        fontSize: 16,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        letterSpacing: -0.30,
+      );
 
+  static TextStyle get actionSheetTextStyle => const TextStyle(
+        color: Color(0xFF2688EB),
+        fontSize: 20,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.38,
+      );
 }

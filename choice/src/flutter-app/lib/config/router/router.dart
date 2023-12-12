@@ -13,6 +13,7 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: SplashRoute.page, path: '/'),
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: ForgotPasswordRoute.page),
+    AutoRoute(page: SetNewPasswordRoute.page),
   ];
 }
 

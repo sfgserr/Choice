@@ -1,2 +1,5 @@
 - validate textfields
 - change suffix in the phone textfield
+- fix the bug with setNewPasswordScreen
+    (both suffix btns do the same thing at the same time)
+- fix the bug with StreamBuilder (i guess it s necessary to store the value of remainSeconds)
