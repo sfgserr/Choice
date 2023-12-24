@@ -1,10 +1,10 @@
-import 'package:choice/domain/models/ui_models/input_widget_model.dart';
+import 'package:choice/features/login/widgets/obscure_text_icon.dart';
+import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
 import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:choice/config/theme/colors.dart';
 import 'package:choice/ui/utils/text_styles.dart';
 
-import '../pages/login/widgets/obscure_text_icon.dart';
 
 class InputWidget extends StatelessWidget {
   const InputWidget({
@@ -30,31 +30,70 @@ class InputWidget extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          TextFormField(
-            autofocus: inpwModel.autofocus,
-            keyboardType: inpwModel.keyboardType,
-            textInputAction: inpwModel.textInputAction,
-            focusNode: inpwModel.focusNode,
-            controller: inpwModel.controller,
-            onChanged: inpwModel.onChangeTextField,
-            obscureText: inpwModel.showSuffix ? inpwModel.obscureText : false,
-            onFieldSubmitted: inpwModel.onFieldSubmitted,
-            onEditingComplete: () {},
-            // maxLength: inpwModel.maxLength,
-            decoration: InputDecoration(
-              hintText: inpwModel.hintText,
-              prefixText: inpwModel.showPrefix ? AppStrings.phonePrefix : '',
-              suffixIcon: inpwModel.showSuffix
-                  ? GestureDetector(
-                      onTap: onSuffixTap,
-                      child: ObscureTextIcon(
-                        obscureText: inpwModel.obscureText,
+          Stack(
+            children: [
+              TextFormField(
+                validator: inpwModel.validator,
+                autofocus: inpwModel.autofocus,
+                keyboardType: inpwModel.keyboardType,
+                textInputAction: inpwModel.textInputAction,
+                focusNode: inpwModel.focusNode,
+                controller: inpwModel.controller,
+                onChanged: inpwModel.onChangeTextField,
+                obscureText:
+                    inpwModel.showSuffix ? inpwModel.obscureText : false,
+                onFieldSubmitted: inpwModel.onFieldSubmitted,
+                onEditingComplete: () {},
+                // maxLength: inpwModel.maxLength,
+                decoration: InputDecoration(
+                  contentPadding: inpwModel.showPrefix
+                      ? const EdgeInsets.only(left: 68, right: 12)
+                      : const EdgeInsets.symmetric(horizontal: 12),
+                  hintText: inpwModel.hintText,
+                  suffixIcon: inpwModel.showSuffix
+                      ? GestureDetector(
+                          onTap: onSuffixTap,
+                          child: ObscureTextIcon(
+                            obscureText: inpwModel.obscureText,
+                          ),
+                        )
+                      : const SizedBox(),
+                  suffixIconColor: AppColors.suffixIconColor,
+                ),
+              ),
+              if (inpwModel.showPrefix)
+                Positioned(
+                  top: 13,
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 8,
                       ),
-                    )
-                  : const SizedBox(),
-              suffixIconColor: AppColors.suffixIconColor,
-            ),
-          ),
+                      SizedBox(
+                        width: 40,
+                        child: Text(
+                          AppStrings.phonePrefix,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.hintTextStyle.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: 0.50,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          )
         ],
       ),
     );
