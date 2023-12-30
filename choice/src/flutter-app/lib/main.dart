@@ -1,11 +1,14 @@
-import 'package:choice/domain/blocs/forgot_password_bloc/export_forgot_password_bloc.dart';
-import 'package:choice/domain/blocs/login_bloc/login_bloc.dart';
-import 'package:choice/domain/blocs/set_new_password_bloc/export_set_new_password_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'config/router/router.dart';
 import 'config/theme/theme.dart';
-import 'domain/storage/local_storage.dart';
+import 'features/forgot_password/bloc/export_forgot_password_bloc.dart';
+import 'features/login/bloc/export_login_bloc.dart';
+import 'features/set_new_password/bloc/export_set_new_password_bloc.dart';
+import 'repositories/storage/local_storage.dart';
+
+final logger = Logger();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

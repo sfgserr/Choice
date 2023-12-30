@@ -98,4 +98,46 @@ class AppStrings {
   static const String _cancelText = 'Отменить';
   static String get cancelText => _cancelText;
 
+  static const String _incorrectEmailText = 'Некорректный Email';
+  static String get incorrectEmailText => _incorrectEmailText;
+
+  static const String _emailIsRequiredText = 'Email необходим';
+  static String get emailIsRequiredText => _emailIsRequiredText;
+
+  static const String _incorrectCodeText = 'Неверный код';
+  static String get incorrectCodeText => _incorrectCodeText;
+
+  static String incorrectCodeCountText(int cnt) =>
+      'Код должен состоять из $cnt цифр';
+
+  static const String _codeIsRequiredText = 'Код обязателен';
+  static String get codeIsRequiredText => _codeIsRequiredText;
+
+  static const String _passwordIsRequiredText = 'Пароль обязателен';
+  static String get passwordIsRequiredText => _passwordIsRequiredText;
+
+  static const String _passwordMinLengthText =
+      'Пароль должен иметь не менее 8 символов';
+  static String get passwordMinLengthText => _passwordMinLengthText;
+
+  static const String _passwordMaxLengthText =
+      'Пароль должен иметь не более 16 символов';
+  static String get passwordMaxLengthText => _passwordMaxLengthText;
+
+  static const String _phoneIsRequiredText = 'Номер телефона обязателен';
+  static String get phoneIsRequiredText => _phoneIsRequiredText;
+
+  static const String _incorrectPasswordText = 'Некорректный пароль';
+  static String get incorrectPasswordText => _incorrectPasswordText;
+
+  static const String _incorrectPhoneText = 'Некорректный номер телефона';
+  static String get incorrectPhoneText => _incorrectPhoneText;
+
+  static const String _phoneIncorrectLengthText =
+      'В номере телефона должно быть 10 цифр';
+  static String get phoneIncorrectLengthText => _phoneIncorrectLengthText;
+
+
+
+
 }
