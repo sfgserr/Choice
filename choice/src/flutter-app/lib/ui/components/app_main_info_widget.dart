@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:choice/ui/components/app_logo_widget.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/ui/ui.dart';
 
 class AppMainInfoWidget extends StatelessWidget {
   const AppMainInfoWidget({

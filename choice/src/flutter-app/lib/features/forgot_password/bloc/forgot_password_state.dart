@@ -1,3 +1,5 @@
+part of 'forgot_password_bloc.dart';
+
 class ForgotPasswordState {
   final bool isEnabledMainBtn;
   final bool isEmailView;

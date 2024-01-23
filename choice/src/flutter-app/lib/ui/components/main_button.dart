@@ -1,4 +1,4 @@
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {

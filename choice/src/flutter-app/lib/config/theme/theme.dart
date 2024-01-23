@@ -1,6 +1,4 @@
-
-import 'package:choice/config/theme/colors.dart';
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -38,11 +36,11 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: AppColors.errorColor),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: AppColors.errorColor),
       ),
     ),
   );

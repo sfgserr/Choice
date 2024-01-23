@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:choice/config/theme/colors.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
-
-import 'bloc/export_forgot_password_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/forgot_password_bloc.dart';
 import 'forgot_password_widgets.dart';
 
 @RoutePage()

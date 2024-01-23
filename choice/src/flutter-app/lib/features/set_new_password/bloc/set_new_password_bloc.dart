@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'set_new_password_event.dart';
-import 'set_new_password_state.dart';
+part 'set_new_password_event.dart';
+part 'set_new_password_state.dart';
 
 class SetNewPasswordBloc
     extends Bloc<SetNewPasswordEvent, SetNewPasswordState> {

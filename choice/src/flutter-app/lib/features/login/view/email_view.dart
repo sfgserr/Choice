@@ -1,15 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:choice/config/router/router.dart';
-import 'package:choice/features/login/bloc/export_login_bloc.dart';
+import 'package:choice/features/login/bloc/login_bloc.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
-import 'package:choice/ui/components/input_widget.dart';
-import 'package:choice/ui/components/main_button.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
-import 'package:choice/ui/utils/validators.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmailView extends StatefulWidget {
   const EmailView({super.key});
@@ -45,12 +41,30 @@ class _EmailViewState extends State<EmailView> {
     super.dispose();
   }
 
-  void loginTap() {
+  void loginTap(String email, String password) {
     if (_formKey.currentState!.validate() &&
         _formKey2.currentState!.validate()) {
-      FocusScope.of(context).unfocus();
-      AutoRouter.of(context).push(const SplashRoute());
+      // TODO
+      BlocProvider.of<LoginBloc>(context).add(LoginTap(
+        email: email,
+        password: password,
+      ));
+      if (BlocProvider.of<LoginBloc>(context).state is LoginFailure) {
+        snackbar();
+      }
     }
+  }
+
+  void snackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.red,
+        content: Text(
+          'Неверный пароль!',
+        ),
+      ),
+    );
   }
 
   @override
@@ -95,7 +109,10 @@ class _EmailViewState extends State<EmailView> {
                       isLoginBtnEnabled: value.isNotEmpty,
                     ));
                   },
-                  onFieldSubmitted: (value) => loginTap(),
+                  onFieldSubmitted: (value) => loginTap(
+                    emailController.text,
+                    passwordController.text,
+                  ),
                   showSuffix: true,
                   obscureText: state.isObscurePassword,
                   controller: passwordController,
@@ -112,27 +129,19 @@ class _EmailViewState extends State<EmailView> {
             MainButton(
               isEnabled: state.isLoginBtnEnabled,
               text: AppStrings.loginText,
-              onTap: loginTap,
+              onTap: () => loginTap(
+                emailController.text,
+                passwordController.text,
+              ),
             ),
 
             if (isKeyboardVisible)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      AutoRouter.of(context).push(const ForgotPasswordRoute());
-                    },
-                    child: Text(
-                      AppStrings.forgotPassword,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.textBtnTextStyle,
-                    ),
-                  ),
-                ),
+              MyTextButton(
+                text: AppStrings.forgotPassword,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  AutoRouter.of(context).push(const ForgotPasswordRoute());
+                },
               ),
           ],
         );

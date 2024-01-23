@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/config/router/router.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/cupertino.dart';
 
 class CreateAccountSheet extends StatelessWidget {
@@ -15,7 +15,10 @@ class CreateAccountSheet extends StatelessWidget {
         CupertinoActionSheetAction(
           isDefaultAction: true,
           onPressed: () {
-            // sign up as client
+            // sign up as a client
+            AutoRouter.of(context).popAndPush(
+              RegisterRoute(isCompanyRegister: false),
+            );
           },
           child: Text(
             AppStrings.createClientAccountText,
@@ -25,7 +28,10 @@ class CreateAccountSheet extends StatelessWidget {
         CupertinoActionSheetAction(
           isDefaultAction: true,
           onPressed: () {
-            // sign up as company
+            // sign up as a company
+            AutoRouter.of(context).popAndPush(
+              RegisterRoute(isCompanyRegister: true),
+            );
           },
           child: Text(
             AppStrings.createCompanyAccountText,
@@ -35,7 +41,7 @@ class CreateAccountSheet extends StatelessWidget {
       ],
       cancelButton: CupertinoActionSheetAction(
         isDefaultAction: true,
-        onPressed: () => AutoRouter.of(context).pop(),
+        onPressed: () => Navigator.of(context).pop(),
         child: Text(
           AppStrings.cancelText,
           style: AppTextStyles.actionSheetTextStyle.copyWith(

@@ -1,14 +1,9 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:choice/config/router/all_pages.dart';
-import 'package:choice/config/router/router.dart';
-import 'package:choice/features/login/bloc/export_login_bloc.dart';
+import 'package:choice/features/login/bloc/login_bloc.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
-import 'package:choice/ui/components/input_widget.dart';
-import 'package:choice/ui/components/main_button.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/validators.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class GetCodeView extends StatefulWidget {
@@ -40,7 +35,8 @@ class _GetCodeViewState extends State<GetCodeView> {
 
   void loginTap() {
     if (_formKey.currentState!.validate()) {
-      AutoRouter.of(context).popAndPush(const SplashRoute());
+      // TODO
+      // AutoRouter.of(context).popAndPush(const SplashRoute());
       FocusScope.of(context).unfocus();
       BlocProvider.of<LoginBloc>(context).add(
         GetCode(isGettingCode: false),

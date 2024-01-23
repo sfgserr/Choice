@@ -101,7 +101,7 @@ class AppStrings {
   static const String _incorrectEmailText = 'Некорректный Email';
   static String get incorrectEmailText => _incorrectEmailText;
 
-  static const String _emailIsRequiredText = 'Email необходим';
+  static const String _emailIsRequiredText = 'Email обязателен';
   static String get emailIsRequiredText => _emailIsRequiredText;
 
   static const String _incorrectCodeText = 'Неверный код';
@@ -136,6 +136,27 @@ class AppStrings {
   static const String _phoneIncorrectLengthText =
       'В номере телефона должно быть 10 цифр';
   static String get phoneIncorrectLengthText => _phoneIncorrectLengthText;
+
+  static const String _registerCompany = 'Регистрация компании';
+  static String get registerCompany => _registerCompany;
+
+  static const String _registerClient = 'Регистрация клиента';
+  static String get registerClient => _registerClient;
+
+  static const String _nameText = 'Имя';
+  static String get nameText => _nameText;
+
+  static const String _inputName = 'Введите имя';
+  static String get inputName => _inputName;
+
+  static const String _surnameText = 'Фамилия';
+  static String get surnameText => _surnameText;
+
+  static const String _inputSurname = 'Введите фамилию';
+  static String get inputSurname => _inputSurname;
+
+  static const String _alreadyLoggedIn = 'У меня есть аккаунт';
+  static String get alreadyLoggedIn => _alreadyLoggedIn;
 
 
 

@@ -14,6 +14,6 @@ class AppColors {
   // other colors
   static Color textFieldBackgroundColor = const Color(0xFFF2F3F5);
   static Color suffixIconColor = const Color(0xFF99A2AD);
-
+  static Color errorColor = const Color(0xFFE64646);
 
 }

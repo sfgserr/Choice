@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    EntryPointRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const EntryPointScreen(),
+      );
+    },
     ForgotPasswordRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -27,19 +33,37 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginScreen(),
       );
     },
+    RegisterRoute.name: (routeData) {
+      final args = routeData.argsAs<RegisterRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RegisterScreen(
+          key: args.key,
+          isCompanyRegister: args.isCompanyRegister,
+        ),
+      );
+    },
     SetNewPasswordRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SetNewPasswordScreen(),
       );
     },
-    SplashRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SplashScreen(),
-      );
-    },
   };
+}
+
+/// generated route for
+/// [EntryPointScreen]
+class EntryPointRoute extends PageRouteInfo<void> {
+  const EntryPointRoute({List<PageRouteInfo>? children})
+      : super(
+          EntryPointRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'EntryPointRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -71,6 +95,44 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [RegisterScreen]
+class RegisterRoute extends PageRouteInfo<RegisterRouteArgs> {
+  RegisterRoute({
+    Key? key,
+    required bool isCompanyRegister,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RegisterRoute.name,
+          args: RegisterRouteArgs(
+            key: key,
+            isCompanyRegister: isCompanyRegister,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'RegisterRoute';
+
+  static const PageInfo<RegisterRouteArgs> page =
+      PageInfo<RegisterRouteArgs>(name);
+}
+
+class RegisterRouteArgs {
+  const RegisterRouteArgs({
+    this.key,
+    required this.isCompanyRegister,
+  });
+
+  final Key? key;
+
+  final bool isCompanyRegister;
+
+  @override
+  String toString() {
+    return 'RegisterRouteArgs{key: $key, isCompanyRegister: $isCompanyRegister}';
+  }
+}
+
+/// generated route for
 /// [SetNewPasswordScreen]
 class SetNewPasswordRoute extends PageRouteInfo<void> {
   const SetNewPasswordRoute({List<PageRouteInfo>? children})
@@ -80,20 +142,6 @@ class SetNewPasswordRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SetNewPasswordRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [SplashScreen]
-class SplashRoute extends PageRouteInfo<void> {
-  const SplashRoute({List<PageRouteInfo>? children})
-      : super(
-          SplashRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SplashRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -1,2 +1,3 @@
 - validate textfields
 - fix the bug with StreamBuilder (i guess it s necessary to store the value of remainSeconds)
+- finish signing up

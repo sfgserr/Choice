@@ -1,3 +1,5 @@
+part of 'set_new_password_bloc.dart';
+
 class SetNewPasswordState {
   final bool isMainBtnEnabled;
   final bool isObscurePassword;

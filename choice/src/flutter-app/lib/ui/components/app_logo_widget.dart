@@ -1,4 +1,4 @@
-import 'package:choice/ui/utils/images.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 class AppLogoWidget extends StatelessWidget {
