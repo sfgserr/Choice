@@ -1,24 +1,33 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:choice/config/router/all_pages.dart';
-import 'package:choice/config/router/router.dart';
-import 'package:choice/features/splash/splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:choice/features/entry_point/bloc/auth_bloc.dart';
+import 'package:choice/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
-class EntryPointScreen extends StatefulWidget {
+@RoutePage()
+class EntryPointScreen extends StatelessWidget {
   const EntryPointScreen({super.key});
-
-  @override
-  State<EntryPointScreen> createState() => _EntryPointScreenState();
-}
-
-class _EntryPointScreenState extends State<EntryPointScreen> {
-
 
   @override
   Widget build(BuildContext context) {
     // auth logic
-    return const SplashScreen();
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        print(state);
+        if (state is AuthUninitialized) {
+          return const SplashScreen();
+        }
+        if (state is AuthUnauthenticated) {
+          return const LoginScreen();
+        }
+        if (state is AuthAuthenticated) {
+          return const HomeScreen();
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 }

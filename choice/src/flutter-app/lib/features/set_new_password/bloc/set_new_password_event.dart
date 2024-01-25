@@ -1,3 +1,5 @@
+part of 'set_new_password_bloc.dart';
+
 sealed class SetNewPasswordEvent {}
 
 final class EnableMainBtn extends SetNewPasswordEvent {

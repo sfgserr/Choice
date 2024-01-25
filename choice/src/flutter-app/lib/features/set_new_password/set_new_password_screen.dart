@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
 
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
-import 'package:choice/ui/utils/validators.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
-import 'bloc/export_set_new_password_bloc.dart';
-import 'set_new_password_widgets.dart';
+import 'bloc/set_new_password_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 @RoutePage()
 class SetNewPasswordScreen extends StatefulWidget {

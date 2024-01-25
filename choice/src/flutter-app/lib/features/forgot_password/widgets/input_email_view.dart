@@ -1,10 +1,7 @@
-import 'package:choice/features/forgot_password/bloc/export_forgot_password_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:choice/features/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
-import 'package:choice/ui/components/main_button.dart';
-import 'package:choice/ui/components/input_widget.dart';
-import 'package:choice/ui/utils/strings.dart';
-import 'package:choice/ui/utils/text_styles.dart';
-import 'package:choice/ui/utils/validators.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 

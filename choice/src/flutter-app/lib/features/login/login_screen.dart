@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:choice/ui/components/app_main_info_widget.dart';
-import 'package:choice/ui/utils/text_styles.dart';
-import 'package:choice/ui/utils/strings.dart';
+import 'package:choice/ui/ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
-import 'bloc/export_login_bloc.dart';
-import 'login_widgets.dart';
+import 'bloc/login_bloc.dart';
+import 'view/export_login_view.dart';
+import 'widgets/export_login_widgets.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
@@ -36,6 +36,14 @@ class _LoginScreenState extends State<LoginScreen>
             value: isKeyboardVisible,
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
+                if (state is LoginFailure) {}
+
+                if (state is LoginLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
                 return CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
@@ -77,9 +85,8 @@ class _LoginScreenState extends State<LoginScreen>
                                     showCupertinoModalPopup(
                                       barrierColor: Colors.black45,
                                       context: context,
-                                      builder: (_) {
-                                        return const CreateAccountSheet();
-                                      },
+                                      builder: (_) =>
+                                          const CreateAccountSheet(),
                                     );
                                   },
                                   child: Text(
@@ -127,11 +134,11 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
 
-                          state.currentTabIndex == 0
-                              ? const EmailView()
-                              : state.isGettingCode
+                          state.currentTabIndex != 0
+                              ? state.isGettingCode
                                   ? const GetCodeView()
-                                  : const PhoneView(),
+                                  : const PhoneView()
+                              : const EmailView(),
                         ],
                       ),
                     ),

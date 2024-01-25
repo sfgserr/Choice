@@ -1,9 +1,7 @@
 import 'package:choice/features/login/widgets/obscure_text_icon.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
-import 'package:choice/ui/utils/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:choice/config/theme/colors.dart';
-import 'package:choice/ui/utils/text_styles.dart';
+import 'package:choice/ui/ui.dart';
 
 
 class InputWidget extends StatelessWidget {

@@ -1,12 +1,9 @@
 import 'dart:async';
-
-import 'package:auto_route/auto_route.dart';
-import 'package:choice/config/router/router.dart';
-
+import 'package:choice/features/entry_point/bloc/auth_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'splash_widgets.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -19,9 +16,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    // make a 3-seconds pause before the app start
     Timer(
       const Duration(seconds: 3),
-          () => AutoRouter.of(context).popAndPush(const LoginRoute()),
+          () => BlocProvider.of<AuthBloc>(context).add(AppStarted()),
     );
   }
 
