@@ -116,6 +116,9 @@ class AppStrings {
   static const String _passwordIsRequiredText = 'Пароль обязателен';
   static String get passwordIsRequiredText => _passwordIsRequiredText;
 
+  static const String _passwordsAreNotEqualText = 'Ваши пароли не совпадают';
+  static String get passwordsAreNotEqualText => _passwordsAreNotEqualText;
+
   static const String _passwordMinLengthText =
       'Пароль должен иметь не менее 8 символов';
   static String get passwordMinLengthText => _passwordMinLengthText;
@@ -157,6 +160,13 @@ class AppStrings {
 
   static const String _alreadyLoggedIn = 'У меня есть аккаунт';
   static String get alreadyLoggedIn => _alreadyLoggedIn;
+
+  static const String _accountIsCreated = 'Аккаунт создан';
+  static String get accountIsCreated => _accountIsCreated;
+
+  static const String _nowYouCanCreateAccounts =
+      'Теперь вы можете создавать заказы';
+  static String get nowYouCanCreateAccounts => _nowYouCanCreateAccounts;
 
 
 

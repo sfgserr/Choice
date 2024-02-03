@@ -7,7 +7,6 @@ class AppValidators {
         RequiredValidator(errorText: AppStrings.emailIsRequiredText),
         EmailValidator(errorText: AppStrings.incorrectEmailText),
 
-        // TODO: check if the email is found
       ]);
 
   static String? Function(String?)? get resetPasswordCodeValidator =>
@@ -31,7 +30,6 @@ class AppValidators {
         MaxLengthValidator(16, errorText: AppStrings.passwordMaxLengthText),
 
         // TODO: add some regExp
-        // TODO: compare this password with server for the current email
       ]);
 
   static String? Function(String?)? get newPasswordValidator => MultiValidator([
@@ -47,7 +45,6 @@ class AppValidators {
         RequiredValidator(errorText: AppStrings.passwordIsRequiredText),
         MinLengthValidator(8, errorText: AppStrings.passwordMinLengthText),
         MaxLengthValidator(16, errorText: AppStrings.passwordMaxLengthText),
-
         // TODO: match it with the first one
         // TODO: add some regExp
       ]);
