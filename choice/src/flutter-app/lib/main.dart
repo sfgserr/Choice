@@ -1,15 +1,15 @@
-import 'package:choice/repositories/repositories/user_repository.dart';
+import 'package:choice/config/router/all_pages.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'config/router/router.dart';
 import 'config/theme/theme.dart';
-import 'package:choice/features/entry_point/bloc/auth_bloc.dart';
-import 'package:choice/features/register/bloc/register_bloc.dart';
-import 'features/forgot_password/bloc/forgot_password_bloc.dart';
-import 'features/login/bloc/login_bloc.dart';
-import 'features/set_new_password/bloc/set_new_password_bloc.dart';
+import 'features/entry_point/bloc/auth_bloc.dart';
+import 'features/auth/register/bloc/register_bloc.dart';
+import 'features/auth/forgot_password/bloc/forgot_password_bloc.dart';
+import 'features/auth/login/bloc/login_bloc.dart';
+import 'features/auth/set_new_password/bloc/set_new_password_bloc.dart';
 import 'repositories/storage/local_storage.dart';
 
 final logger = Logger();
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         themeMode: LocalStorage.isDarkMode ? ThemeMode.dark : ThemeMode.light,
         debugShowCheckedModeBanner: false,
         routerConfig: router.config(),
-        // home: EntryPointScreen(),
+        // home: RegisterScreen(),
       ),
     );
   }

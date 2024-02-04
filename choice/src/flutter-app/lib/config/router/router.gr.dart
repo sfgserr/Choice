@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CompanyCardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CompanyCardScreen(),
+      );
+    },
     EntryPointRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -34,13 +40,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     RegisterRoute.name: (routeData) {
-      final args = routeData.argsAs<RegisterRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: RegisterScreen(
-          key: args.key,
-          isCompanyRegister: args.isCompanyRegister,
-        ),
+        child: const RegisterScreen(),
       );
     },
     SetNewPasswordRoute.name: (routeData) {
@@ -50,6 +52,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [CompanyCardScreen]
+class CompanyCardRoute extends PageRouteInfo<void> {
+  const CompanyCardRoute({List<PageRouteInfo>? children})
+      : super(
+          CompanyCardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CompanyCardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -96,40 +112,16 @@ class LoginRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [RegisterScreen]
-class RegisterRoute extends PageRouteInfo<RegisterRouteArgs> {
-  RegisterRoute({
-    Key? key,
-    required bool isCompanyRegister,
-    List<PageRouteInfo>? children,
-  }) : super(
+class RegisterRoute extends PageRouteInfo<void> {
+  const RegisterRoute({List<PageRouteInfo>? children})
+      : super(
           RegisterRoute.name,
-          args: RegisterRouteArgs(
-            key: key,
-            isCompanyRegister: isCompanyRegister,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'RegisterRoute';
 
-  static const PageInfo<RegisterRouteArgs> page =
-      PageInfo<RegisterRouteArgs>(name);
-}
-
-class RegisterRouteArgs {
-  const RegisterRouteArgs({
-    this.key,
-    required this.isCompanyRegister,
-  });
-
-  final Key? key;
-
-  final bool isCompanyRegister;
-
-  @override
-  String toString() {
-    return 'RegisterRouteArgs{key: $key, isCompanyRegister: $isCompanyRegister}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

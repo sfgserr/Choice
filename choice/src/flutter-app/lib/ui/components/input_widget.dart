@@ -1,8 +1,19 @@
-import 'package:choice/features/login/widgets/obscure_text_icon.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
 import 'package:flutter/material.dart';
 import 'package:choice/ui/ui.dart';
 
+class ObscureTextIcon extends StatelessWidget {
+  const ObscureTextIcon({super.key, required this.obscureText});
+
+  final bool obscureText;
+
+  @override
+  Widget build(BuildContext context) {
+    return obscureText
+        ? const Icon(Icons.visibility_rounded)
+        : const Icon(Icons.visibility_off_rounded);
+  }
+}
 
 class InputWidget extends StatelessWidget {
   const InputWidget({
