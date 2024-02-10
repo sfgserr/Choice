@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Choice.UnitTests", "api\tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Choice.Authentication", "authentication\Choice.Authentication.csproj", "{61CCEE81-DDF4-4128-BFD3-F1ED8C490068}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Messages", "eventbus-messages\EventBus.Messages\EventBus.Messages.csproj", "{1028ED10-C2EB-4884-ABB6-6D66CDEAAD50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{61CCEE81-DDF4-4128-BFD3-F1ED8C490068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61CCEE81-DDF4-4128-BFD3-F1ED8C490068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61CCEE81-DDF4-4128-BFD3-F1ED8C490068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1028ED10-C2EB-4884-ABB6-6D66CDEAAD50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1028ED10-C2EB-4884-ABB6-6D66CDEAAD50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1028ED10-C2EB-4884-ABB6-6D66CDEAAD50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1028ED10-C2EB-4884-ABB6-6D66CDEAAD50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

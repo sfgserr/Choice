@@ -11,7 +11,7 @@ namespace Choice.WebApi.Extensions
     {
         public static IServiceCollection AddSqlServer(this IServiceCollection services, IConfiguration configuration)
         { 
-            services.AddDbContext<ChoiceContext>(o => o.UseSqlite(configuration["Database:ConnectionString"]));
+            services.AddDbContext<ChoiceContext>(o => o.UseSqlServer(configuration["Database:ConnectionString"]));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

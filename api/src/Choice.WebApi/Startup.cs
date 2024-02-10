@@ -20,7 +20,8 @@ namespace Choice.WebApi
                 builder.AllowAnyOrigin();
             }));
             services.AddSignalR();
-            services.AddAuthentication();
+            services.AddAuthentication(_configuration);
+            services.AddRabbitMq(_configuration);
             services.AddAuthorization();
             services.AddControllers();
             services.AddEndpointsApiExplorer();

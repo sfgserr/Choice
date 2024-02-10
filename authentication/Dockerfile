@@ -7,10 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["authentication/Choice.Authentication/Choice.Authentication.csproj", "authentication/Choice.Authentication/"]
-RUN dotnet restore "authentication/Choice.Authentication/Choice.Authentication.csproj"
+COPY ["authentication/Choice.Authentication.csproj", "authentication/"]
+COPY ["eventbus-messages/EventBus.Messages/EventBus.Messages.csproj", "eventbus-messages/EventBus.Messages/"]
+RUN dotnet restore "authentication/Choice.Authentication.csproj"
 COPY . .
-WORKDIR "/src/authentication/Choice.Authentication"
+WORKDIR "/src/authentication"
 RUN dotnet build "Choice.Authentication.csproj" -c Release -o /app/build
 
 FROM build AS publish

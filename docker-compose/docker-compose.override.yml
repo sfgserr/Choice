@@ -9,3 +9,26 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "8080:80"
+    depends_on:
+      - db
+  choice.authentication:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8081:80"
+    depends_on:
+      - rabbitmq
+      - postgres
+  rabbitmq:
+    restart: always
+    ports:
+      - "5672:5672"
+  db:
+    environment:
+      SA_PASSWORD: "S3cur3P@ssW0rd!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: Pass129598
