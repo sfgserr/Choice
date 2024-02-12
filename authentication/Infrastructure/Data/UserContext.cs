@@ -7,7 +7,7 @@ namespace Choice.Authentication.Infrastructure.Data
     {
         public UserContext(DbContextOptions options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         public DbSet<User> Users { get; set; }   

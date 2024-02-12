@@ -1,5 +1,6 @@
 using Choice.Authentication.EventBusConsumer;
 using Choice.Authentication.Infrastructure.Data;
+using Choice.Authentication.Infrastructure.Data.Repositories;
 using EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +15,18 @@ namespace Choice.Authentication
 
             // Add services to the container.
             builder.Services.AddDbContext<UserContext>(o =>
-                o.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
-            builder.Services.AddRazorPages();
+                o.UseNpgsql(builder.Configuration["PostgreSql:ConnectionString"]));
+            builder.Services.AddControllers();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<UnitOfWork>();
+            builder.Services.AddSwaggerGen();
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<UserCreatedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    cfg.Host("amqp://guest:guest@host.docker.internal:5672");
+                    cfg.Host(builder.Configuration["EventBus:Host"]);
                     cfg.ReceiveEndpoint(EventBusConstants.UserCreatedQueue, c =>
                     {
                         c.ConfigureConsumer<UserCreatedConsumer>(ctx);
@@ -40,14 +44,18 @@ namespace Choice.Authentication
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.MapRazorPages();
+            app.UseAuthentication();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
 
             app.Run();
         }

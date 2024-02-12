@@ -10,8 +10,8 @@ services:
     container_name: "choice.webapi"
     image: choicewebapi
     build:
-      context: ../api/
-      dockerfile: src/Choice.WebApi/Dockerfile
+      context: ../
+      dockerfile: api/src/Choice.WebApi/Dockerfile
   choice.authentication:
     container_name: "choice.authentication"
     image: choiceauthentication

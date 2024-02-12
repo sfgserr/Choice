@@ -1,4 +1,5 @@
 ﻿using Choice.Authentication.Entities;
+using Choice.Authentication.Infrastructure.Data;
 using Choice.Authentication.Infrastructure.Data.Repositories;
 using EventBus.Messages.Events;
 using MassTransit;
@@ -8,10 +9,12 @@ namespace Choice.Authentication.EventBusConsumer
     public class UserCreatedConsumer : IConsumer<UserCreatedEvent>
     {
         private readonly IUserRepository _userRepository;
+        private readonly UnitOfWork _unitOfWork;
 
-        public UserCreatedConsumer(IUserRepository userRepository)
+        public UserCreatedConsumer(IUserRepository userRepository, UnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Consume(ConsumeContext<UserCreatedEvent> context)
@@ -25,6 +28,7 @@ namespace Choice.Authentication.EventBusConsumer
             };
 
             await _userRepository.Create(user);
+            await _unitOfWork.Save();
         }
     }
 }
