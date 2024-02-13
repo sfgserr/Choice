@@ -24,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
       try {
         if (state.isCompanyRegister) {
-          // sign up as a company
+          /// sign up as a company
           final int? code = await userRepository.createNewCompany(
             event.email,
             event.password,
@@ -36,15 +36,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             throw Exception('Ошибка при регистрации компании!');
           }
           authBloc.add(LoggedIn());
-          emit(RegisterState(
+          emit(RegisterLoaded(
+            email: event.email,
+            name: event.name,
             isObscureConfirmPassword: state.isObscureConfirmPassword,
             isObscurePassword: state.isObscurePassword,
             isMainBtnEnabled: state.isMainBtnEnabled,
             firstPassword: state.firstPassword,
             isCompanyRegister: state.isCompanyRegister,
           ));
+
+
         } else {
-          // sign up as a client
+          /// sign up as a client
           final int? code = await userRepository.createNewClient(
             event.email,
             event.password,
@@ -52,8 +56,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             event.surname!,
           );
 
-          if (code != 200) {
+          if (code == null || code != 200) {
             // TODO: recognise error using 'code'
+            // TODO: and give to Exception some text
             throw Exception('Ошибка при регистрации клиента!');
           }
           authBloc.add(LoggedIn());
@@ -86,6 +91,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         isCompanyRegister: true,
       ));
     });
+
     on<ClientRegister>((event, emit) {
       emit(RegisterState(
         isObscureConfirmPassword: state.isObscureConfirmPassword,

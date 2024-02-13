@@ -16,6 +16,7 @@ class InputWidgetModel {
     required this.controller,
     this.focusNode,
     this.maxLength,
+    this.maxLines = 1,
   });
 
   final String label;
@@ -32,4 +33,5 @@ class InputWidgetModel {
   final TextEditingController controller;
   final FocusNode? focusNode;
   final int? maxLength;
+  final int maxLines;
 }

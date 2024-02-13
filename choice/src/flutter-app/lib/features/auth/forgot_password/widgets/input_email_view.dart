@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../bloc/forgot_password_bloc.dart';
 
-
 class FpEmailView extends StatefulWidget {
   const FpEmailView({super.key});
 
@@ -22,10 +21,7 @@ class _FpEmailViewState extends State<FpEmailView> {
     if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
       BlocProvider.of<ForgotPasswordBloc>(context).add(
-        ChangeView(
-          isEmailView: false,
-          currentEmail: emailController.text,
-        ),
+        SendCodeTap(isEmailView: false, email: emailController.text),
       );
     }
   }

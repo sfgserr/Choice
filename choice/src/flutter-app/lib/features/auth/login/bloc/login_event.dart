@@ -31,3 +31,5 @@ final class LoginTap extends LoginEvent {
     required this.password,
   });
 }
+
+final class ResetOptions extends LoginEvent {}

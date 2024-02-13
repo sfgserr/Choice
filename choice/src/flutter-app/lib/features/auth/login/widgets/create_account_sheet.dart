@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:choice/config/router/router.dart';
+import 'package:choice/features/auth/login/bloc/login_bloc.dart';
 import '../../register/bloc/register_bloc.dart';
 import 'package:choice/ui/ui.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class CreateAccountSheet extends StatelessWidget {
           isDefaultAction: true,
           onPressed: () {
             // sign up as a client
+            BlocProvider.of<LoginBloc>(context).add(ResetOptions());
             AutoRouter.of(context).popAndPush(const RegisterRoute());
             BlocProvider.of<RegisterBloc>(context).add(ClientRegister());
           },
@@ -28,6 +30,7 @@ class CreateAccountSheet extends StatelessWidget {
           isDefaultAction: true,
           onPressed: () {
             // sign up as a company
+            BlocProvider.of<LoginBloc>(context).add(ResetOptions());
             AutoRouter.of(context).popAndPush(const RegisterRoute());
             BlocProvider.of<RegisterBloc>(context).add(CompanyRegister());
           },

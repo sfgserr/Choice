@@ -30,6 +30,9 @@ class AppStrings {
   static const String _phoneNumberHintText = ' (000) 000-00-00';
   static String get phoneNumberHintText => _phoneNumberHintText;
 
+  static const String _phoneNumberHintText2 = '+7 (999) 999-99-99';
+  static String get phoneNumberHintText2 => _phoneNumberHintText2;
+
   static const String _sendCodeText = 'Отправить код';
   static String get sendCodeText => _sendCodeText;
 
@@ -41,6 +44,18 @@ class AppStrings {
 
   static const String _inputPassword = 'Введите пароль';
   static String get inputPassword => _inputPassword;
+
+  static const String _siteText = 'Сайт';
+  static String get siteText => _siteText;
+
+  static const String _inputSite = 'Введите адрес сайта';
+  static String get inputSite => _inputSite;
+
+  static const String _addressText = 'Адрес компании';
+  static String get addressText => _addressText;
+
+  static const String _inputAddress = 'Введите адрес';
+  static String get inputAddress => _inputAddress;
 
   static const String _inputCode = 'Введите код из смс';
   static String get inputCode => _inputCode;
@@ -149,8 +164,14 @@ class AppStrings {
   static const String _nameText = 'Имя';
   static String get nameText => _nameText;
 
+  static const String _titleText = 'Название';
+  static String get titleText => _titleText;
+
   static const String _inputName = 'Введите имя';
   static String get inputName => _inputName;
+
+  static const String _inputCompanyName = 'Введите название компании';
+  static String get inputCompanyName => _inputCompanyName;
 
   static const String _surnameText = 'Фамилия';
   static String get surnameText => _surnameText;
@@ -168,6 +189,35 @@ class AppStrings {
       'Теперь вы можете создавать заказы';
   static String get nowYouCanCreateAccounts => _nowYouCanCreateAccounts;
 
+  static const String _somethingWentWrong =
+      'Кажется, что-то пошло не так...';
+  static String get somethingWentWrong => _somethingWentWrong;
+
+  static const String _ok = 'ОК';
+  static String get ok => _ok;
+
+  static const String _next = 'Далее';
+  static String get next => _next;
+
+  static const String _authError = 'Ошибка авторизации..';
+  static String get authError => _authError;
+
+  static const String _tryAgain = 'Попробуйте еще раз..';
+  static String get tryAgain => _tryAgain;
+
+  static const String _companyCard = 'Карточка компании';
+  static String get companyCard => _companyCard;
+
+  static const String _contactData = 'Контактные данные';
+  static String get contactData => _contactData;
+
+  static const String _yourInfoText = 'Укажите информацию, которая будет '
+      'отображаться в карточке вашей компании, ее увидят тысячи наших '
+      'пользователей';
+  static String get yourInfoText => _yourInfoText;
+
+  static const String _socialNetworks = 'Социальные сети';
+  static String get socialNetworks => _socialNetworks;
 
 
 

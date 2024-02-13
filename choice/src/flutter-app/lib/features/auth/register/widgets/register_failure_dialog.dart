@@ -8,45 +8,13 @@ class RegisterFailureDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 254,
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.only(bottom: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 8),
-
-          // icon
-          const SizedBox(
-              height: 60,
-              width: 60,
-              child: Icon(
-                Icons.close,
-                color: Colors.red,
-                size: 60,
-              )),
-          const SizedBox(height: 8),
-
-          Text(
-            'Кажется, что-то пошло не так...',
-            style: AppTextStyles.bodyLargeTextStyle,
-          ),
-
-          const SizedBox(height: 32),
-
-          // btn
-          MainButton(
-            isEnabled: true,
-            text: 'Ok',
-            onTap: onTap,
-          ),
-        ],
+    return MyBottomDialog(
+      onTap: onTap,
+      title: AppStrings.somethingWentWrong,
+      iconWidget: const Icon(
+        Icons.close,
+        color: Colors.red,
+        size: 60,
       ),
     );
   }

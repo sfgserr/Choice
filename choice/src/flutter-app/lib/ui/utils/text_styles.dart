@@ -72,6 +72,15 @@ class AppTextStyles {
         letterSpacing: -0.32,
       );
 
+  static TextStyle get bodySmallTextStyle =>
+      const TextStyle(
+        color: Color(0xFF181818),
+        fontSize: 16,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.w400,
+        letterSpacing: -0.30,
+      );
+
   static TextStyle get hintTextStyle =>
       const TextStyle(
         color: Color(0xFF818C99),
@@ -107,14 +116,7 @@ class AppTextStyles {
         height: 0,
       );
 
-  static TextStyle get bodySmallTextStyle =>
-      const TextStyle(
-        color: Color(0xFF181818),
-        fontSize: 16,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w400,
-        letterSpacing: -0.30,
-      );
+
 
   static TextStyle get actionSheetTextStyle =>
       const TextStyle(

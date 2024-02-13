@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
@@ -7,6 +8,18 @@ part 'forgot_password_state.dart';
 class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc() : super(ForgotPasswordInitial()) {
+
+    on<SendCodeTap>((event, emit) {
+      emit(
+        ForgotPasswordState(
+          isEnabledMainBtn: false,
+          isEmailView: event.isEmailView,
+          currentEmail: event.email,
+          remainSeconds: 0,
+        ),
+      );
+    });
+
     on<EnableMainBtn>((event, emit) {
       emit(
         ForgotPasswordState(
@@ -23,7 +36,7 @@ class ForgotPasswordBloc
         ForgotPasswordState(
           isEnabledMainBtn: false,
           isEmailView: event.isEmailView,
-          currentEmail: event.currentEmail,
+          currentEmail: event.email,
           remainSeconds: 0,
         ),
       );
