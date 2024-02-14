@@ -20,6 +20,7 @@ namespace Choice.Authentication
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<UnitOfWork>();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAuthorization();
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<UserCreatedConsumer>();
@@ -48,8 +49,8 @@ namespace Choice.Authentication
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseEndpoints(endpoints =>

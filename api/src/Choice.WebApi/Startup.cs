@@ -20,6 +20,7 @@ namespace Choice.WebApi
                 builder.AllowAnyOrigin();
             }));
             services.AddSignalR();
+            services.AddAuthorization();
             services.AddAuthentication(_configuration);
             services.AddRabbitMq(_configuration);
             services.AddAuthorization();
@@ -43,8 +44,9 @@ namespace Choice.WebApi
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseCors();

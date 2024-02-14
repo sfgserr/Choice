@@ -1,8 +1,9 @@
 ﻿using Choice.Authentication.Entities;
 using Choice.Authentication.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using System.Text;
 
 namespace Choice.Authentication.Controllers
 {
@@ -28,16 +29,21 @@ namespace Choice.Authentication.Controllers
             if (user.Password != password)
                 return Unauthorized();
 
-            List<Claim> claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Id.ToString()) };
-            var jwt = new JwtSecurityToken(
-                issuer: "http://host.docker.internal:8081",
-                audience: "http://host.docker.internal:8080",
-                claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)));
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            byte[] tokenKey = Encoding.UTF8.GetBytes("DamnThatSecretKeyWithMinimumLengthOfOneTwentyEightBytes");
 
-            string token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var securityTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Expires = DateTime.UtcNow.AddDays(2),
+                Issuer = "http://172.21.112.1",
+                Audience = "http://localhost",
+                Claims = new Dictionary<string,object>() { ["userid"] = user.Id.ToString() },
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+            };
 
-            return Ok(token); 
+            var token = tokenHandler.CreateToken(securityTokenDescriptor);
+
+            return Ok(tokenHandler.WriteToken(token)); 
         }
     }
 }

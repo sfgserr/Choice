@@ -1,10 +1,13 @@
 ﻿using Choice.Application.UseCases.Clients.GetClient;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Clients.GetClient
 {
     [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public class ClientController : Controller, IOutputPort
     {
         private readonly IGetClientUseCase _useCase;
