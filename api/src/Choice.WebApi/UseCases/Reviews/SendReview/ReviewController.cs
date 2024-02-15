@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Reviews.SendReview;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Reviews.SendReview
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : Controller, IOutputPort
     {
         private readonly ISendReviewUseCase _useCase;

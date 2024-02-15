@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.OrderMessages.GetOrderMessages;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.OrderMessages.GetOrderMessages
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderMessageController : Controller, IOutputPort
     {
         private readonly IGetOrderMessagesUseCase _useCase;

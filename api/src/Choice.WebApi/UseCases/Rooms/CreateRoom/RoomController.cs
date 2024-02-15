@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Rooms.CreateRoom;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Rooms.CreateRoom
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RoomController : Controller, IOutputPort
     {
         private readonly ICreateRoomUseCase _useCase;

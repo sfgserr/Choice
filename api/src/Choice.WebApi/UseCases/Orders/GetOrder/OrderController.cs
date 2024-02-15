@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Orders.GetOrder;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Orders.GetOrder
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderController : Controller, IOutputPort
     {
         private readonly IGetOrderUseCase _useCase;

@@ -1,9 +1,13 @@
 using Choice.Authentication.EventBusConsumer;
 using Choice.Authentication.Infrastructure.Data;
 using Choice.Authentication.Infrastructure.Data.Repositories;
+using Choice.Authentication.Infrastructure.Verification;
+using Choice.Authentication.Infrastructure.Verification.Interfaces;
+using Choice.Authentication.Services;
 using EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Twilio;
 
 namespace Choice.Authentication
 {
@@ -19,6 +23,9 @@ namespace Choice.Authentication
             builder.Services.AddControllers();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<UnitOfWork>();
+            builder.Services.AddScoped<ISmsService, SmsService>(s =>
+                new SmsService(builder.Configuration["Twilio:ServiceSID"]));
+            builder.Services.AddScoped<TokenService>();
             builder.Services.AddSwaggerGen();
             builder.Services.AddAuthorization();
             builder.Services.AddMassTransit(config =>
@@ -57,6 +64,8 @@ namespace Choice.Authentication
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+            TwilioClient.Init(builder.Configuration["Twilio:AccountSID"], builder.Configuration["Twilio:Token"]);
 
             app.Run();
         }

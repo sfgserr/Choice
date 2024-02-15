@@ -1,10 +1,12 @@
 ﻿using Choice.Application.UseCases.Categories.CreateCategory;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Categories.CreateCategory
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class CategoryController : Controller, IOutputPort
     {
         private readonly ICreateCategoryUseCase _useCase;

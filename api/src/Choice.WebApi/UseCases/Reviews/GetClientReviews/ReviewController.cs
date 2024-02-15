@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Reviews.GetClientReviews;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Reviews.GetClientReviews
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReviewController : Controller, IOutputPort
     {
         private readonly IGetClientReviewsUseCase _useCase;

@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Categories.UpdateCategory;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Categories.UpdateCategory
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoryController : Controller, IOutputPort
     {
         private readonly IUpdateCategoryUseCase _useCase;

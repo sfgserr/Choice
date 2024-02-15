@@ -1,6 +1,7 @@
 ﻿using Choice.Application.UseCases.OrderMessages.SendOrderMessage;
 using Choice.Domain.Models;
 using Choice.WebApi.Hubs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -8,6 +9,7 @@ namespace Choice.WebApi.UseCases.OrderMessages.SendOrderMessage
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderMessageController : Controller, IOutputPort
     {
         private readonly ISendOrderMessageUseCase _useCase;

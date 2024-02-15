@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Companies.GetCompany;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Companies.GetCompany
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompanyController : Controller, IOutputPort
     {
         private readonly IGetCompanyUseCase _useCase;

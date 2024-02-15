@@ -4,13 +4,11 @@ using Choice.Application.UseCases.Categories.UpdateCategory;
 using Choice.Application.UseCases.ChatMessages.GetChatMessages;
 using Choice.Application.UseCases.Clients.CreateClient;
 using Choice.Application.UseCases.Clients.GetClient;
-using Choice.Application.UseCases.Clients.GetClientByEmail;
 using Choice.Application.UseCases.Clients.GetClients;
 using Choice.Application.UseCases.Clients.UpdateClient;
 using Choice.Application.UseCases.Companies.CreateCompany;
 using Choice.Application.UseCases.Companies.GetCompanies;
 using Choice.Application.UseCases.Companies.GetCompany;
-using Choice.Application.UseCases.Companies.GetCompanyByPhoneNumber;
 using Choice.Application.UseCases.Companies.UpdateCompany;
 using Choice.Application.UseCases.Messages.SendChatMessage;
 using Choice.Application.UseCases.OrderMessages.GetOrderMessages;
@@ -79,10 +77,6 @@ namespace Choice.WebApi.Extensions
 
             services.AddScoped<ICreateRoomUseCase, CreateRoomUseCase>();
             services.Decorate<ICreateRoomUseCase, CreateRoomValidationUseCase>();
-
-            services.AddScoped<IGetClientByEmailUseCase, GetClientByEmailUseCase>();
-
-            services.AddScoped<IGetCompanyByPhoneNumberUseCase, GetCompanyByPhoneNumberUseCase>();
 
             return services;
         }

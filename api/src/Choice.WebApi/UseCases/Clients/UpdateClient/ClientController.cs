@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Clients.UpdateClient;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Clients.UpdateClient
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClientController : Controller, IOutputPort
     {
         private readonly IUpdateClientUseCase _useCase;

@@ -1,11 +1,13 @@
 ﻿using Choice.Application.UseCases.Orders.UpdateOrder;
 using Choice.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.WebApi.UseCases.Orders.UpdateOrder
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderController : Controller, IOutputPort
     {
         private readonly IUpdateOrderUseCase _useCase;
