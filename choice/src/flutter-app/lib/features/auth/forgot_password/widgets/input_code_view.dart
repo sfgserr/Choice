@@ -64,10 +64,7 @@ class _FpCodeViewState extends State<FpCodeView> {
               child: InkWell(
                 onTap: () {
                   BlocProvider.of<ForgotPasswordBloc>(context).add(
-                    ChangeView(
-                      isEmailView: true,
-                      currentEmail: '',
-                    ),
+                    ChangeView(isEmailView: true, email: ''),
                   );
                 },
                 child: Text(

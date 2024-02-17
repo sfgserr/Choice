@@ -27,23 +27,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final Map<String, dynamic>? data =
             await userRepository.getUserByEmail(event.email);
         logger.i("Data = $data");
-        if (data!['password'] == event.password) {
-          authBloc.add(LoggedIn());
-        } else {
-          emit(LoginFailure(
-            error: 'Неверный пароль!',
-            isObscurePassword: state.isObscurePassword,
-            isGettingCode: state.isGettingCode,
-            currentTabIndex: state.currentTabIndex,
-            isLoginBtnEnabled: state.isLoginBtnEnabled,
-          ));
+        if (data == null || data['password'] != event.password) {
+          throw Exception('Неверный пароль!');
         }
-        emit(LoginState(
-          isObscurePassword: state.isObscurePassword,
-          isGettingCode: state.isGettingCode,
-          currentTabIndex: state.currentTabIndex,
-          isLoginBtnEnabled: state.isLoginBtnEnabled,
-        ));
+        emit(const LoginInitial());
+        authBloc.add(LoggedIn());
       } catch (error) {
         emit(LoginFailure(
           error: error.toString(),
@@ -53,6 +41,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           isLoginBtnEnabled: state.isLoginBtnEnabled,
         ));
       }
+    });
+
+    on<ResetOptions>((event, emit) {
+      emit(const LoginInitial());
     });
 
     on<ChangeTab>((event, emit) {

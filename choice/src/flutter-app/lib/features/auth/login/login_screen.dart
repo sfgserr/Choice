@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:choice/main.dart';
 import 'package:choice/ui/ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,55 @@ class _LoginScreenState extends State<LoginScreen>
             value: isKeyboardVisible,
             child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
-                if (state is LoginFailure) {}
+                logger.i('Login State - ${state.toString()}');
+                if (state is LoginFailure) {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 300,),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // authorization failed
+                                  Text(
+                                    AppStrings.authError,
+                                    style: AppTextStyles.authHeaderTextStyle,
+                                  ),
+
+                                  const SizedBox(height: 16,),
+
+                                  // try again
+                                  InkWell(
+                                    onTap: () {
+                                      BlocProvider.of<LoginBloc>(context).add(ResetOptions());
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          AppStrings.tryAgain,
+                                          style: AppTextStyles.textBtnTextStyle,
+                                        ),
+                                        const SizedBox(height: 16,),
+
+                                        Icon(Icons.restart_alt_rounded,),
+                                      ],
+                                    )
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
 
                 if (state is LoginLoading) {
                   return const Center(

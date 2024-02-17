@@ -1,4 +1,5 @@
 import 'package:choice/config/router/all_pages.dart';
+import 'package:choice/features/auth/company_card/bloc/card_company_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
@@ -35,15 +36,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ForgotPasswordBloc()),
         BlocProvider(create: (_) => SetNewPasswordBloc()),
         BlocProvider(create: (_) => RegisterBloc()),
+        BlocProvider(create: (_) => CardCompanyBloc()),
       ],
-      child: MaterialApp.router(
+      child: MaterialApp(
         title: 'Choice',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: LocalStorage.isDarkMode ? ThemeMode.dark : ThemeMode.light,
         debugShowCheckedModeBanner: false,
-        routerConfig: router.config(),
-        // home: RegisterScreen(),
+        // routerConfig: router.config(),
+        home: CompanyCardScreen(),
       ),
     );
   }
