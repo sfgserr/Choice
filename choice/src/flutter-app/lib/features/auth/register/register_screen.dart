@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:choice/config/router/router.dart';
-import 'package:choice/features/entry_point/bloc/auth_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:choice/repositories/models/ui_models/input_widget_model.dart';
 import 'package:choice/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:get_it/get_it.dart';
 
 import 'bloc/register_bloc.dart';
 import 'widgets/register_widgets.dart';
@@ -21,6 +19,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late ScrollController scrollController;
   late TextEditingController nameController;
   late TextEditingController surnameController;
   late TextEditingController emailController;
@@ -42,6 +41,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     // init controllers and focusNodes
+    scrollController = ScrollController();
+
     surnameController = TextEditingController();
     surnameFocus = FocusNode();
 
@@ -57,6 +58,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
+    scrollController.dispose();
+
     nameController.dispose();
     emailController.dispose();
     emailFocus.dispose();
@@ -78,6 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               state.isCompanyRegister ? 120 : 22;
 
           return CustomScrollView(
+            controller: scrollController,
             slivers: [
               SliverAppBar(
                 automaticallyImplyLeading: false,
@@ -105,7 +109,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           validator: (str) => null,
                           autofocus: true,
                           label: AppStrings.nameText,
-                          hintText: AppStrings.inputName,
+                          hintText: state.isCompanyRegister
+                              ? AppStrings.inputName
+                              : AppStrings.inputCompanyName,
                           controller: nameController,
                           onFieldSubmitted: (value) {
                             if (_formNameKey.currentState!.validate()) {
@@ -156,6 +162,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (_formEmailKey.currentState!.validate()) {
                               FocusScope.of(context)
                                   .requestFocus(passwordFocus);
+                              scrollController.animateTo(
+                                scrollController.position.maxScrollExtent,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut,
+                              );
                             }
                           },
                           textInputAction: TextInputAction.next,
@@ -267,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       FocusScope.of(context).unfocus();
 
       if (!state.isCompanyRegister) {
-        // client register
+        /// client register
         BlocProvider.of<RegisterBloc>(context).add(
           SignUpTap(
             password: passwordController.text,
@@ -290,7 +301,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         );
       } else {
-        // company register
+        /// company register
         // go to company card screen
         AutoRouter.of(context).push(const CompanyCardRoute());
       }

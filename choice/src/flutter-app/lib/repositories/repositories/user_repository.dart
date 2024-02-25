@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:choice/main.dart';
 import 'package:choice/repositories/storage/local_storage.dart';
 import 'package:dio/dio.dart';
@@ -14,8 +12,10 @@ class UserRepository {
   String createNewClientUrl = 'http://192.168.56.1:8080/api/Client/Create';
   String createNewCompanyUrl = 'http://192.168.56.1:8080/api/Company/Create';
 
-  // final FlutterSecureStorage storage = const FlutterSecureStorage();
+
   final Dio _dio = Dio();
+
+  // final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   // Future<bool> hasToken() async {
   //   var value = await storage.read(key: 'token');
@@ -45,11 +45,7 @@ class UserRepository {
   }
 
   Future<int?> createNewClient(
-    String email,
-    String password,
-    String name,
-    String surname,
-  ) async {
+      String email, String password, String name, String surname) async {
     try {
       Response response = await _dio.post(
         createNewClientUrl,
@@ -67,10 +63,7 @@ class UserRepository {
   }
 
   Future<int?> createNewCompany(
-    String email,
-    String password,
-    String title,
-  ) async {
+      String email, String password, String title) async {
     try {
       Response response = await _dio.post(
         createNewCompanyUrl,
@@ -85,4 +78,19 @@ class UserRepository {
       logger.e(e.toString());
     }
   }
+
+  // Future<int?> sendCodeToResetPassword(String email) async {
+  //   try {
+  //     Response response = await _dio.post(
+  //       // TODO:
+  //       createNewCompanyUrl,
+  //       data: {
+  //         "email": email,
+  //       },
+  //     );
+  //     return response.statusCode;
+  //   } catch (e) {
+  //     logger.e(e.toString());
+  //   }
+  // }
 }

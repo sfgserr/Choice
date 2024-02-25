@@ -20,15 +20,18 @@ class InputWidget extends StatelessWidget {
     super.key,
     required this.inpwModel,
     this.onSuffixTap,
+    this.needPadding = true,
   });
 
   final InputWidgetModel inpwModel;
   final Function()? onSuffixTap;
+  final bool needPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding:
+          EdgeInsets.symmetric(horizontal: needPadding ? 16 : 0, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,11 +56,13 @@ class InputWidget extends StatelessWidget {
                     inpwModel.showSuffix ? inpwModel.obscureText : false,
                 onFieldSubmitted: inpwModel.onFieldSubmitted,
                 onEditingComplete: () {},
+                maxLines: inpwModel.maxLines,
                 // maxLength: inpwModel.maxLength,
                 decoration: InputDecoration(
                   contentPadding: inpwModel.showPrefix
-                      ? const EdgeInsets.only(left: 68, right: 12)
-                      : const EdgeInsets.symmetric(horizontal: 12),
+                      ? const EdgeInsets.fromLTRB(68, 12, 12, 12)
+                      : const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 12),
                   hintText: inpwModel.hintText,
                   suffixIcon: inpwModel.showSuffix
                       ? GestureDetector(

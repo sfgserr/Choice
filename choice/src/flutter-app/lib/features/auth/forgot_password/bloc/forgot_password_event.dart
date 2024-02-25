@@ -1,21 +1,44 @@
 part of 'forgot_password_bloc.dart';
 
-sealed class ForgotPasswordEvent {}
+sealed class ForgotPasswordEvent extends Equatable {
+
+  @override
+  List<Object> get props => [];
+}
 
 final class EnableMainBtn extends ForgotPasswordEvent {
   final bool isEnabledMainBtn;
 
   EnableMainBtn({this.isEnabledMainBtn = false});
+
+  @override
+  List<Object> get props => [isEnabledMainBtn];
 }
 
 final class ChangeView extends ForgotPasswordEvent {
   final bool isEmailView;
-  final String currentEmail;
+  final String email;
 
   ChangeView({
     this.isEmailView = true,
-    required this.currentEmail,
+    required this.email,
   });
+
+  @override
+  List<Object> get props => [isEmailView, email];
+}
+
+final class SendCodeTap extends ForgotPasswordEvent {
+  final String email;
+  final bool isEmailView;
+
+  SendCodeTap({
+    required this.email,
+    required this.isEmailView,
+  });
+
+  @override
+  List<Object> get props => [isEmailView, email];
 }
 
 final class UpdateTimer extends ForgotPasswordEvent {
@@ -32,4 +55,7 @@ final class ResetPassword extends ForgotPasswordEvent {
   ResetPassword({
     required this.isResetPasswordView,
   });
+
+  @override
+  List<Object> get props => [isResetPasswordView];
 }

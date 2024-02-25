@@ -40,6 +40,7 @@ class _EmailViewState extends State<EmailView> {
     passwordFocus.dispose();
     super.dispose();
   }
+  
 
   void loginTap(String email, String password) {
     if (_formKey.currentState!.validate() &&

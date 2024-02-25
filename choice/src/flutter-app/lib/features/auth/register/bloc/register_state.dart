@@ -17,12 +17,12 @@ class RegisterState extends Equatable {
 
   @override
   List<Object> get props => [
-    isObscurePassword,
-    isObscureConfirmPassword,
-    isMainBtnEnabled,
-    firstPassword,
-    isCompanyRegister,
-  ];
+        isObscurePassword,
+        isObscureConfirmPassword,
+        isMainBtnEnabled,
+        firstPassword,
+        isCompanyRegister,
+      ];
 }
 
 class RegisterInitial extends RegisterState {
@@ -58,17 +58,42 @@ final class RegisterFailure extends RegisterState {
     required super.isCompanyRegister,
   });
 
+  @override
+  List<Object> get props => [
+        error,
+        isObscurePassword,
+        isObscureConfirmPassword,
+        isMainBtnEnabled,
+        firstPassword,
+        isCompanyRegister,
+      ];
+
+  @override
+  String toString() => 'RegisterFailure { error: $error }';
+}
+
+class RegisterLoaded extends RegisterState {
+  final String name;
+  final String email;
+
+  const RegisterLoaded({
+    required this.name,
+    required this.email,
+    required super.isObscurePassword,
+    required super.isObscureConfirmPassword,
+    required super.isMainBtnEnabled,
+    required super.firstPassword,
+    required super.isCompanyRegister,
+  });
 
   @override
   List<Object> get props => [
-    error,
+    name,
+    email,
     isObscurePassword,
     isObscureConfirmPassword,
     isMainBtnEnabled,
     firstPassword,
     isCompanyRegister,
   ];
-
-  @override
-  String toString() => 'RegisterFailure { error: $error }';
 }

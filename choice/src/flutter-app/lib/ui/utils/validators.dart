@@ -52,7 +52,7 @@ class AppValidators {
   static String? Function(String?)? get phoneValidator => MultiValidator([
         RequiredValidator(errorText: AppStrings.phoneIsRequiredText),
         PatternValidator('^[(+7)8]*', errorText: AppStrings.incorrectPhoneText),
-        LengthRangeValidator(min: 10, max: 10, errorText: AppStrings.phoneIncorrectLengthText),
+        // LengthRangeValidator(min: 10, max: 10, errorText: AppStrings.phoneIncorrectLengthText),
 
         // TODO: add some regExp
       ]);
