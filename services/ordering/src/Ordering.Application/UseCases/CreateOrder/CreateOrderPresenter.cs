@@ -1,4 +1,4 @@
-﻿using Choice.Ordering.Domain.OrderAggregate;
+﻿using Choice.Ordering.Domain.OrderEntity;
 
 namespace Choice.Ordering.Application.UseCases.CreateOrder
 {

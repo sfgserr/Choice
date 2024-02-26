@@ -1,5 +1,5 @@
 ﻿using Choice.Ordering.Application.Services;
-using Choice.Ordering.Domain.OrderAggregate;
+using Choice.Ordering.Domain.OrderEntity;
 
 namespace Choice.Ordering.Application.UseCases.CreateOrder
 {
@@ -37,9 +37,9 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         }
 
         private async Task<Order> CreateOrder(string userId, string receiverId, int orderRequestId, double price,
-            double prepayment, int deadline, DateTime enrollmentTime)
+            double prepayment, int deadline, DateTime enrollmentDate)
         {
-            Order order = new(orderRequestId, userId, receiverId, price, prepayment, deadline, enrollmentTime);
+            Order order = new(orderRequestId, userId, receiverId, price, prepayment, deadline, enrollmentDate);
 
             await _repository.Add(order);
             await _unitOfWork.SaveChanges();

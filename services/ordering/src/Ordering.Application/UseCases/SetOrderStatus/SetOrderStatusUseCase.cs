@@ -1,24 +1,24 @@
 ﻿using Choice.Ordering.Application.Services;
-using Choice.Ordering.Domain.OrderAggregate;
+using Choice.Ordering.Domain.OrderEntity;
 using Ordering.Application.Services;
 
-namespace Choice.Ordering.Application.UseCases.ChangeEnrollmentStatus
+namespace Choice.Ordering.Application.UseCases.SetOrderStatus
 {
-    public sealed class ChangeEnrollmentStatusUseCase : IChangeEnrollmentStatusUseCase
+    public sealed class SetOrderStatusUseCase : ISetOrderStatusUseCase
     {
+        private readonly Notification _notification;
         private readonly IOrderRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Notification _notification;
 
         private IOutputPort _outputPort;
 
-        public ChangeEnrollmentStatusUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
+        public SetOrderStatusUseCase(Notification notification, IOrderRepository repository, IUnitOfWork unitOfWork)
         {
+            _notification = notification;
             _repository = repository;
             _unitOfWork = unitOfWork;
-            _notification = notification;
 
-            _outputPort = new ChangeEnrollmentStatusPresenter();
+            _outputPort = new SetOrderStatusPresenter();
         }
 
         public async Task Execute(int orderId)
@@ -31,7 +31,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeEnrollmentStatus
                 return;
             }
 
-            if (order.IsCanceled)
+            if (order.Status == OrderStatus.Canceled)
             {
                 _notification.Add(nameof(order), "Order is canceled");
             }
@@ -42,14 +42,14 @@ namespace Choice.Ordering.Application.UseCases.ChangeEnrollmentStatus
                 return;
             }
 
-            await ChangeEnrollmentStatus(order);
+            await FinishOrder(order);
 
             _outputPort.Ok(order);
         }
 
-        private async Task ChangeEnrollmentStatus(Order order)
+        private async Task FinishOrder(Order order)
         {
-            order.ChangeEnrollmentStaus();
+            order.SetOrderStatus(OrderStatus.Finished);
 
             _repository.Update(order);
 

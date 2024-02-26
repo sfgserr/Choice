@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.Ordering.Domain.OrderAggregate
+namespace Choice.Ordering.Domain.OrderEntity
 {
     public interface IOrderRepository
     {

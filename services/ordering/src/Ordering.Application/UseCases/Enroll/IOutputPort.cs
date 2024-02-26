@@ -1,6 +1,6 @@
-﻿using Choice.Ordering.Domain.OrderAggregate;
+﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.ChangeEnrollmentStatus
+namespace Choice.Ordering.Application.UseCases.Enroll
 {
     public interface IOutputPort
     {

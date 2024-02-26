@@ -1,5 +1,5 @@
 ﻿
-namespace EventBus.Messages.Events
+namespace Choice.EventBust.Messages.Events
 {
     public class IntegrationEvent
     {
@@ -16,7 +16,6 @@ namespace EventBus.Messages.Events
         }
 
         public Guid Id { get; private set; }
-
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get; private set; }   
     }
 }

@@ -1,6 +1,6 @@
-﻿using Choice.Ordering.Domain.OrderAggregate;
+﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentTime
+namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 {
     public interface IOutputPort
     {

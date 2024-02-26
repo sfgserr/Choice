@@ -1,10 +1,10 @@
 ﻿using Choice.Ordering.Application.Services;
-using Choice.Ordering.Domain.OrderAggregate;
+using Choice.Ordering.Domain.OrderEntity;
 using Ordering.Application.Services;
 
-namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentTime
+namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 {
-    public sealed class ChangeOrderEnrollmentTimeUseCase : IChangeOrderEnrollmentTimeUseCase
+    public sealed class ChangeOrderEnrollmentDateUseCase : IChangeOrderEnrollmentDateUseCase
     {
         private readonly IOrderRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
@@ -12,13 +12,13 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentTime
 
         private IOutputPort _outputPort;
 
-        public ChangeOrderEnrollmentTimeUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
+        public ChangeOrderEnrollmentDateUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _notification = notification;
 
-            _outputPort = new ChangeOrderEnrollmentTimePresenter();
+            _outputPort = new ChangeOrderEnrollmentDatePresenter();
         }
 
         public async Task Execute(int orderId, DateTime newDate)
@@ -31,7 +31,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentTime
                 return;
             }
 
-            if (order.IsCanceled)
+            if (order.Status == OrderStatus.Canceled)
             {
                 _notification.Add(nameof(order), "Order is canceled");
             }
@@ -42,14 +42,14 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentTime
                 return;
             }
 
-            await ChangeOrderDeadline(order, newDate);
+            await ChangeOrderEnrollmentDate(order, newDate);
 
             _outputPort.Ok(order);
         }
 
-        private async Task ChangeOrderDeadline(Order order, DateTime newDate)
+        private async Task ChangeOrderEnrollmentDate(Order order, DateTime newDate)
         {
-            order.ChangeEnrollmentTime(newDate);
+            order.SetEnrollmentDate(newDate);
 
             _repository.Update(order);
 

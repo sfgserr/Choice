@@ -24,7 +24,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         }
 
         public async Task Execute(string receiverId, int orderRequestId, double price, double prepayment,
-            int deadline, DateTime enrollmentTime)
+            int deadline, DateTime enrollmentDate)
         {
             if (price == 0 && deadline == 0)
             {
@@ -37,7 +37,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
                 return;
             }
 
-            await _useCase.Execute(receiverId, orderRequestId, price, prepayment, deadline, enrollmentTime);
+            await _useCase.Execute(receiverId, orderRequestId, price, prepayment, deadline, enrollmentDate);
         }
     }
 }

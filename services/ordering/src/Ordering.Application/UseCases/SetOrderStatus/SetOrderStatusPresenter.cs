@@ -1,8 +1,8 @@
-﻿using Choice.Ordering.Domain.OrderAggregate;
+﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.ChangeEnrollmentStatus
+namespace Choice.Ordering.Application.UseCases.SetOrderStatus
 {
-    public sealed class ChangeEnrollmentStatusPresenter : IOutputPort
+    public sealed class SetOrderStatusPresenter : IOutputPort
     {
         public bool IsInvalid { get; set; }
         public bool IsNotFound { get; set; }
