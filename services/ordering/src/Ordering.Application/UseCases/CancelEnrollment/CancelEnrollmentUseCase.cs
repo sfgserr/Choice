@@ -1,10 +1,11 @@
 ﻿using Choice.Ordering.Application.Services;
+using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
 using Ordering.Application.Services;
 
-namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
+namespace Ordering.Application.UseCases.CancelEnrollment
 {
-    public sealed class ChangeOrderEnrollmentDateUseCase : IChangeOrderEnrollmentDateUseCase
+    public class CancelEnrollmentUseCase : ICancelEnrollmentUseCase
     {
         private readonly IOrderRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
@@ -12,16 +13,16 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 
         private IOutputPort _outputPort;
 
-        public ChangeOrderEnrollmentDateUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
+        public CancelEnrollmentUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _notification = notification;
 
-            _outputPort = new ChangeOrderEnrollmentDatePresenter();
+            _outputPort = new CancelEnrollmentPresenter();
         }
 
-        public async Task Execute(int orderId, DateTime newDate)
+        public async Task Execute(int orderId)
         {
             Order order = await _repository.GetOrder(orderId);
 
@@ -33,28 +34,27 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 
             if (order.Status != OrderStatus.Active)
             {
-                _notification.Add(nameof(order), $"Order is not active");
+                _notification.Add(nameof(order), "Order is not active");
             }
 
-            if (_notification.IsInvalid)
+            if (!order.IsEnrolled)
             {
-                _outputPort.Invalid();
-                return;
+                _notification.Add(nameof(order), "You are not enrolled yet");
             }
 
-            await ChangeOrderEnrollmentDate(order, newDate);
+            await CancelEnrollment(order);
 
             _outputPort.Ok(order);
         }
 
-        private async Task ChangeOrderEnrollmentDate(Order order, DateTime newDate)
+        private async Task CancelEnrollment(Order order)
         {
-            order.SetEnrollmentDate(newDate);
+            order.CancelEnrollment();
 
             _repository.Update(order);
 
             await _unitOfWork.SaveChanges();
-        } 
+        }
 
         public void SetOutputPort(IOutputPort outputPort)
         {

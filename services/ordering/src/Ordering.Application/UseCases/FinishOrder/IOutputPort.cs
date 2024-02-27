@@ -1,6 +1,6 @@
 ﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.SetOrderStatus
+namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
     public interface IOutputPort
     {

@@ -15,7 +15,7 @@ namespace Choice.Ordering.Domain.Common
 
         public bool IsTransient()
         {
-            return this.Id == default;
+            return Id == default;
         }
 
         public override bool Equals(object? obj)
@@ -26,15 +26,15 @@ namespace Choice.Ordering.Domain.Common
             if (Object.ReferenceEquals(this, obj))
                 return true;
 
-            if (this.GetType() != obj.GetType())
+            if (GetType() != obj.GetType())
                 return false;
 
             Entity item = (Entity)obj;
 
-            if (item.IsTransient() || this.IsTransient())
+            if (item.IsTransient() || IsTransient())
                 return false;
             else
-                return item.Id == this.Id;
+                return item.Id == Id;
         }
 
         public override int GetHashCode()
@@ -42,7 +42,7 @@ namespace Choice.Ordering.Domain.Common
             if (!IsTransient())
             {
                 if (!_requestedHashCode.HasValue)
-                    _requestedHashCode = this.Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
+                    _requestedHashCode = Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
 
                 return _requestedHashCode.Value;
             }
@@ -50,6 +50,7 @@ namespace Choice.Ordering.Domain.Common
                 return base.GetHashCode();
 
         }
+
         public static bool operator ==(Entity left, Entity right)
         {
             if (Object.Equals(left, null))

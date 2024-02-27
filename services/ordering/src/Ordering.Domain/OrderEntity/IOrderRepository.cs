@@ -5,12 +5,10 @@ namespace Choice.Ordering.Domain.OrderEntity
     {
         Task Add(Order order);
 
-        Task<Order> GetOrders();
+        Task<IList<Order>> GetOrders();
 
         Task<Order> GetOrder(int id);
 
         void Update(Order order);
-
-        Task Delete(int id);
     }
 }

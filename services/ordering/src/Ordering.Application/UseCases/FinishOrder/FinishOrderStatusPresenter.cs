@@ -1,8 +1,8 @@
 ﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.SetOrderStatus
+namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
-    public sealed class SetOrderStatusPresenter : IOutputPort
+    public sealed class FinishOrderStatusPresenter : IOutputPort
     {
         public bool IsInvalid { get; set; }
         public bool IsNotFound { get; set; }

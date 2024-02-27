@@ -2,9 +2,9 @@
 using Choice.Ordering.Domain.OrderEntity;
 using Ordering.Application.Services;
 
-namespace Choice.Ordering.Application.UseCases.SetOrderStatus
+namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
-    public sealed class SetOrderStatusUseCase : ISetOrderStatusUseCase
+    public sealed class FinishOrderStatusUseCase : IFinishOrderStatusUseCase
     {
         private readonly Notification _notification;
         private readonly IOrderRepository _repository;
@@ -12,13 +12,13 @@ namespace Choice.Ordering.Application.UseCases.SetOrderStatus
 
         private IOutputPort _outputPort;
 
-        public SetOrderStatusUseCase(Notification notification, IOrderRepository repository, IUnitOfWork unitOfWork)
+        public FinishOrderStatusUseCase(Notification notification, IOrderRepository repository, IUnitOfWork unitOfWork)
         {
             _notification = notification;
             _repository = repository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new SetOrderStatusPresenter();
+            _outputPort = new FinishOrderStatusPresenter();
         }
 
         public async Task Execute(int orderId)
@@ -31,9 +31,14 @@ namespace Choice.Ordering.Application.UseCases.SetOrderStatus
                 return;
             }
 
-            if (order.Status == OrderStatus.Canceled)
+            if (order.Status != OrderStatus.Active)
             {
-                _notification.Add(nameof(order), "Order is canceled");
+                _notification.Add(nameof(order), "Order is not active");
+            }
+
+            if (!order.IsEnrolled)
+            {
+                _notification.Add(nameof(order), "You need to be enrolled to finish the order");
             }
 
             if (_notification.IsInvalid)
@@ -49,7 +54,7 @@ namespace Choice.Ordering.Application.UseCases.SetOrderStatus
 
         private async Task FinishOrder(Order order)
         {
-            order.SetOrderStatus(OrderStatus.Finished);
+            order.FinishOrder();
 
             _repository.Update(order);
 

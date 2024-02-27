@@ -29,8 +29,8 @@ namespace Choice.Ordering.Domain.OrderEntity
         public void SetEnrollmentDate(DateTime newDate) =>
             EnrollmentDate = newDate;
 
-        public void SetOrderStatus(OrderStatus status) =>
-            Status = status;
+        public void FinishOrder() =>
+            Status = OrderStatus.Finished;
 
         public void Enroll() =>
             IsEnrolled = true;

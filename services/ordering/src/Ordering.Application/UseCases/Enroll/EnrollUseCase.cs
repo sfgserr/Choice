@@ -31,9 +31,9 @@ namespace Choice.Ordering.Application.UseCases.Enroll
                 return;
             }
 
-            if (order.Status == OrderStatus.Canceled)
+            if (order.Status != OrderStatus.Active)
             {
-                _notification.Add(nameof(order), "Order is canceled");
+                _notification.Add(nameof(order), "Order is not active");
             }
 
             if (order.IsEnrolled)
