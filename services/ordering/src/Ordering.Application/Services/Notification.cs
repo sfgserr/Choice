@@ -1,5 +1,5 @@
 ﻿
-namespace Ordering.Application.Services
+namespace Choice.Ordering.Application.Services
 {
     public sealed class Notification
     {

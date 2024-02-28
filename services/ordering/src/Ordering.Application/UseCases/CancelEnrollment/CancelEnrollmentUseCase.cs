@@ -1,7 +1,6 @@
 ﻿using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
-using Ordering.Application.Services;
 
 namespace Ordering.Application.UseCases.CancelEnrollment
 {

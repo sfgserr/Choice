@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Application", "ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBust.Messages", "services\event-bus-messaging\EventBust.Messaging\EventBust.Messages.csproj", "{7CE95CA0-944F-4B51-9E4D-E615267117DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Infrastructure", "services\ordering\src\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{BF275AB3-0052-4C89-94A5-C4B858729F12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "services\ordering\src\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{BF275AB3-0052-4C89-94A5-C4B858729F12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.UnitTests", "services\ordering\test\Ordering.UnitTests.csproj", "{33759228-A784-4225-BC7F-89A248942E6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BF275AB3-0052-4C89-94A5-C4B858729F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF275AB3-0052-4C89-94A5-C4B858729F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF275AB3-0052-4C89-94A5-C4B858729F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33759228-A784-4225-BC7F-89A248942E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33759228-A784-4225-BC7F-89A248942E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33759228-A784-4225-BC7F-89A248942E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33759228-A784-4225-BC7F-89A248942E6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

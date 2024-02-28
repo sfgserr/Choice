@@ -2,7 +2,7 @@
 
 namespace Choice.Ordering.Infrastructure.Authentication
 {
-    public sealed class UserServiceFake : IUserService
+    public sealed class TestUserService : IUserService
     {
         public string GetUserId() => "1";
     }

@@ -1,6 +1,5 @@
 ﻿using Choice.Ordering.Application.Services;
 using Choice.Ordering.Domain.OrderEntity;
-using Ordering.Application.Services;
 
 namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 {
