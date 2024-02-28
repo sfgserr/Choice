@@ -2,7 +2,7 @@
 
 namespace Choice.Ordering.Infrastructure.Data
 {
-    public class UnitOfWork : IUnitOfWork
+    public sealed class UnitOfWork : IUnitOfWork
     {
         private readonly OrderingContext _context;
 
