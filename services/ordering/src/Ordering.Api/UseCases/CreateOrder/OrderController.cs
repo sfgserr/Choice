@@ -2,10 +2,8 @@
 using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.CreateOrder;
 using Choice.Ordering.Domain.OrderEntity;
-using EventBust.Messages.Common;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Choice.Ordering.Api.UseCases.CreateOrder
 {
