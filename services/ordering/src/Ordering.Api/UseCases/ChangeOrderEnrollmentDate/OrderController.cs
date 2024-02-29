@@ -27,7 +27,7 @@ namespace Choice.Ordering.Api.UseCases.ChangeOrderEnrollmentDate
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId));
+            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "EnrollmentDateChanged"));
         }
 
         void IOutputPort.Invalid()
