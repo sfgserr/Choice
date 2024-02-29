@@ -9,6 +9,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["services/ordering/src/Ordering.Api/Ordering.Api.csproj", "services/ordering/src/Ordering.Api/"]
+COPY ["services/event-bus-messages/EventBus.Messages.csproj", "services/event-bus-messages/"]
+COPY ["services/ordering/src/Ordering.Application/Ordering.Application.csproj", "services/ordering/src/Ordering.Application/"]
+COPY ["services/ordering/src/Ordering.Domain/Ordering.Domain.csproj", "services/ordering/src/Ordering.Domain/"]
+COPY ["services/ordering/src/Ordering.Infrastructure/Ordering.Infrastructure.csproj", "services/ordering/src/Ordering.Infrastructure/"]
 RUN dotnet restore "services/ordering/src/Ordering.Api/Ordering.Api.csproj"
 COPY . .
 WORKDIR "/src/services/ordering/src/Ordering.Api"

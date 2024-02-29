@@ -5,38 +5,37 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - choice.webapi
-      - choice.authentication
-  choice.webapi:
+      - chat
+      - ordering
+  chat:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "EventBus:Host=amqp://guest:guest@rabbitmq:5672"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    ports:
+      - "8081:81"
+    depends_on:
+      - chat-db
+      - rabbitmq
+  ordering:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     ports:
       - "8080:80"
     depends_on:
-      - db
+      - ordering-db
       - rabbitmq
-  choice.authentication:
-    environment:
-      - ASPNETCORE_URLS=http://+:8081
-      - ASPNETCORE_ENVIRONMENT=Development
-      - "EventBus:Host=amqp://guest:guest@rabbitmq:5672"
-    ports:
-      - "8081:8081"
-    depends_on:
-      - rabbitmq
-      - postgres
   rabbitmq:
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
-  db:
+  ordering-db:
     environment:
       SA_PASSWORD: "S3cur3P@ssW0rd!"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
-  postgres:
+  chat-db:
     environment:
       POSTGRES_PASSWORD: Pass129598

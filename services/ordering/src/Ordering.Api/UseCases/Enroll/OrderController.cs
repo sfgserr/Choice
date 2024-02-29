@@ -1,4 +1,4 @@
-﻿using Choice.EventBust.Messages.Events;
+﻿using Choice.EventBus.Messages.Events;
 using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.Enroll;
 using Choice.Ordering.Domain.OrderEntity;
@@ -27,7 +27,7 @@ namespace Choice.Ordering.Api.UseCases.Enroll
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Enroll"));
+            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Enroll", order.SenderId));
         }
 
         void IOutputPort.Invalid()

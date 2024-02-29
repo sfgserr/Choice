@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.EventBust.Messages.Events
+namespace Choice.EventBus.Messages.Events
 {
     public class IntegrationEvent
     {

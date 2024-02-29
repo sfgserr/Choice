@@ -1,4 +1,4 @@
-﻿using Choice.EventBust.Messages.Events;
+﻿using Choice.EventBus.Messages.Events;
 using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
@@ -39,7 +39,7 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Cancel"));
+            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Cancel", order.SenderId));
         }
 
         [HttpPut("CancelEnrollment")]

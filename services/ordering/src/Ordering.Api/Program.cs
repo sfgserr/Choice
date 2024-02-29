@@ -1,5 +1,17 @@
+using Choice.Ordering.Application.Services;
+using Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate;
+using Choice.Ordering.Application.UseCases.CreateOrder;
+using Choice.Ordering.Application.UseCases.Enroll;
+using Choice.Ordering.Application.UseCases.FinishOrder;
+using Choice.Ordering.Domain.OrderEntity;
+using Choice.Ordering.Infrastructure.Authentication;
+using Choice.Ordering.Infrastructure.Data;
+using Choice.Ordering.Infrastructure.Data.Repositories;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Ordering.Application.UseCases.CancelEnrollment;
 
-namespace Ordering.Api
+namespace Choice.Ordering.Api
 {
     public class Program
     {
@@ -10,6 +22,27 @@ namespace Ordering.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<ICancelEnrollmentUseCase, CancelEnrollmentUseCase>();
+            builder.Services.AddScoped<IChangeOrderEnrollmentDateUseCase, ChangeOrderEnrollmentDateUseCase>();
+            builder.Services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
+            builder.Services.Decorate<ICreateOrderUseCase, CreateOrderValidationUseCase>();
+            builder.Services.AddScoped<IEnrollUseCase, EnrollUseCase>();
+            builder.Services.AddScoped<IFinishOrderStatusUseCase, FinishOrderStatusUseCase>();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<Notification>();
+            builder.Services.AddDbContext<OrderingContext>(o =>
+                o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
+
+            builder.Services.AddMassTransit(config => {
+                config.UsingRabbitMq((ctx, cfg) => {
+                    cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+                });
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -26,7 +59,7 @@ namespace Ordering.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseRouting();
             app.MapControllers();
 
             app.Run();

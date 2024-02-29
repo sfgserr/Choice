@@ -6,23 +6,23 @@ services:
     image: nginx
     build:
       context: "../nginx/"
-  choice.webapi:
-    container_name: "choice.webapi"
-    image: choicewebapi
+  chat:
+    container_name: "chat"
+    image: chat
     build:
       context: ../
-      dockerfile: api/src/Choice.WebApi/Dockerfile
-  choice.authentication:
-    container_name: "choice.authentication"
-    image: choiceauthentication
+      dockerfile: services/chat/Dockerfile
+  ordering:
+    container_name: "ordering"
+    image: ordering
     build:
       context: ../
-      dockerfile: authentication/Dockerfile
+      dockerfile: services/ordering/src/Ordering.Api/Dockerfile
   rabbitmq:
     image: rabbitmq:3-management-alpine
-  db:
+  ordering-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
-  postgres:
+  chat-db:
     container_name: postgres
     image: postgres
  

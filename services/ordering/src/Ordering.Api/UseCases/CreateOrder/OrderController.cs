@@ -1,4 +1,4 @@
-﻿using Choice.EventBust.Messages.Events;
+﻿using Choice.EventBus.Messages.Events;
 using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.CreateOrder;
 using Choice.Ordering.Domain.OrderEntity;
@@ -32,7 +32,7 @@ namespace Choice.Ordering.Api.UseCases.CreateOrder
             _endPoint.Publish(new OrderCreatedEvent(
                 order.Id,
                 order.OrderRequestId,
-                order.SenderGuid, 
+                order.SenderId, 
                 order.ReceiverId, 
                 order.Price, 
                 order.Prepayment, 

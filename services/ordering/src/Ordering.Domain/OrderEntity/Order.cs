@@ -8,7 +8,7 @@ namespace Choice.Ordering.Domain.OrderEntity
             int deadline, DateTime enrollmentTime)
         {
             OrderRequestId = orderRequestId;
-            SenderGuid = senderGuid;
+            SenderId = senderGuid;
             ReceiverId = receiverId;
             Price = price;
             Prepayment = prepayment;
@@ -17,7 +17,7 @@ namespace Choice.Ordering.Domain.OrderEntity
         }
 
         public int OrderRequestId { get; private set; }
-        public string SenderGuid { get; private set; }
+        public string SenderId { get; private set; }
         public string ReceiverId { get; private set; }
         public double Price { get; private set; }
         public double Prepayment { get; private set; }
