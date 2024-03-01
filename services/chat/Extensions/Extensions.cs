@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using Polly;
 
 namespace Chat.Extensions
 {
@@ -10,6 +11,18 @@ namespace Chat.Extensions
             var services = scope.ServiceProvider;
             var configuration = services.GetRequiredService<IConfiguration>();
 
+            var retry = Policy.Handle<NpgsqlException>()
+                          .WaitAndRetry(
+                            retryCount: 5,
+                            sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+            retry.Execute(() => ExecuteMigration(configuration));
+
+            return host;
+        }
+
+        private static void ExecuteMigration(IConfiguration configuration)
+        {
             using var connection = new NpgsqlConnection(configuration["PostgreSqlSettings:ConnectionString"]);
             connection.Open();
 
@@ -23,8 +36,6 @@ namespace Chat.Extensions
                                                                 ReceiverId VARCHAR(24) NOT NULL,
                                                                 Text VARCHAR(24) NOT NULL)";
             command.ExecuteNonQuery();
-
-            return host;
         }
     }
 }

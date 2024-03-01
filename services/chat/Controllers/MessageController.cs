@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Choice.Chat.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Choice.Chat.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MessageController : Controller
     {
         private readonly IHubContext<ChatHub> _hubContext;
@@ -23,7 +25,7 @@ namespace Choice.Chat.Controllers
         [HttpPost("SendMessage")]
         public async Task<IActionResult> SendMessage(string text, string receiverId)
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string id = User.FindFirstValue("id")!;
 
             Message message = new(text, id, receiverId);
 
@@ -37,7 +39,7 @@ namespace Choice.Chat.Controllers
         [HttpGet("GetMessages")]
         public async Task<IActionResult> GetMessages(string receiverId)
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string id = User.FindFirstValue("id")!;
 
             IList<Message> messages = await _repository.GetAll(id, receiverId);
 
@@ -47,7 +49,7 @@ namespace Choice.Chat.Controllers
         [HttpPut("EditMessage")]
         public async Task<IActionResult> EditMessage(int messageId, string text)
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string id = User.FindFirstValue("id")!;
 
             Message message = await _repository.Get(messageId, id);
 

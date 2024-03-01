@@ -4,7 +4,11 @@ using Choice.Chat.Hubs;
 using Choice.Chat.Repositories;
 using Choice.EventBus.Messages.Common;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Choice.Chat
 {
@@ -40,6 +44,42 @@ namespace Choice.Chat
                 });
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("_allowsAny",
+                    builder =>
+                    {
+                        // Not a permanent solution, but just trying to isolate the problem
+                        builder
+                                .AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
+
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
+            string issuerKey = builder.Configuration["JwtSettings:Key"]!;
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
+                    };
+                });
+
             var app = builder.Build();
             app.MigrateDatabase();
 
@@ -50,11 +90,18 @@ namespace Choice.Chat
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
+            app.UseRouting();
+            app.UseForwardedHeaders();
+            app.UseCors();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.MapHub<ChatHub>("/chat");
-            app.MapControllers();
 
             app.Run();
         }

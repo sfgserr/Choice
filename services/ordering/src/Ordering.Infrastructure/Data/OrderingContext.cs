@@ -7,7 +7,7 @@ namespace Choice.Ordering.Infrastructure.Data
     {
         public OrderingContext(DbContextOptions options) : base(options) 
         {
-
+            Database.EnsureCreated();
         }
 
         public DbSet<Order> Orders { get; set; }

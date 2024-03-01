@@ -3,6 +3,7 @@ using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.UseCases.CancelEnrollment;
 
@@ -10,6 +11,7 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class OrderController : Controller, IOutputPort
     {
         private readonly ICancelEnrollmentUseCase _useCase;

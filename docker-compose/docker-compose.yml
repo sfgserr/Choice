@@ -18,11 +18,19 @@ services:
     build:
       context: ../
       dockerfile: services/ordering/src/Ordering.Api/Dockerfile
+  authentication:
+    container_name: "authentication"
+    image: authentication
+    build:
+      context: ../
+      dockerfile: services/authentication/Dockerfile
   rabbitmq:
     image: rabbitmq:3-management-alpine
   ordering-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
   chat-db:
-    container_name: postgres
+    container_name: chat-db
     image: postgres
+  authentication-db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
  

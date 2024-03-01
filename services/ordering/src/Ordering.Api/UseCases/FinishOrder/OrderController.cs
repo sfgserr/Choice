@@ -3,12 +3,14 @@ using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.FinishOrder;
 using Choice.Ordering.Domain.OrderEntity;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.Ordering.Api.UseCases.FinishOrder
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class OrderController : Controller, IOutputPort
     {
         private readonly IFinishOrderStatusUseCase _useCase;

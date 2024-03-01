@@ -4,16 +4,16 @@ namespace Choice.Ordering.Domain.OrderEntity
 {
     public class Order : Entity
     {
-        public Order(int orderRequestId, string senderGuid, string receiverId, double price, double prepayment,
-            int deadline, DateTime enrollmentTime)
+        public Order(int orderRequestId, string senderId, string receiverId, double price, double prepayment,
+            int deadline, DateTime enrollmentDate)
         {
             OrderRequestId = orderRequestId;
-            SenderId = senderGuid;
+            SenderId = senderId;
             ReceiverId = receiverId;
             Price = price;
             Prepayment = prepayment;
             Deadline = deadline;
-            EnrollmentDate = enrollmentTime;
+            EnrollmentDate = enrollmentDate;
         }
 
         public int OrderRequestId { get; private set; }

@@ -8,8 +8,12 @@ using Choice.Ordering.Infrastructure.Authentication;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Application.UseCases.CancelEnrollment;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Choice.Ordering.Api
 {
@@ -37,11 +41,47 @@ namespace Choice.Ordering.Api
             builder.Services.AddDbContext<OrderingContext>(o =>
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("_allowsAny",
+                    builder =>
+                    {
+                        // Not a permanent solution, but just trying to isolate the problem
+                        builder
+                                .AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
+            
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             builder.Services.AddMassTransit(config => {
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
                 });
             });
+
+            string issuerKey = builder.Configuration["JwtSettings:Key"]!;
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
+                    };
+                });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -56,11 +96,17 @@ namespace Choice.Ordering.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
-            app.UseAuthorization();
             app.UseRouting();
-            app.MapControllers();
+            app.UseForwardedHeaders();
+            app.UseCors("_allowsAny");
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.Run();
         }
