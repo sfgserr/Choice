@@ -1,6 +1,6 @@
 ﻿namespace Choice.Ordering.Api.UseCases.CreateOrder
 {
-    public class CreateOrderRequest
+    public record CreateOrderRequest
     {
         public CreateOrderRequest(string receiverId, int orderRequestId, int price, int prepayment, int deadline,
             DateTime enrollmentTime)

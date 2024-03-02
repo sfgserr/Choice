@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.Ordering.Domain.Common
+namespace Choice.ClientService.Domain.Common
 {
     public abstract class ValueObject
     {
