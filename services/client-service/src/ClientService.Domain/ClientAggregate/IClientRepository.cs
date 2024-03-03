@@ -8,6 +8,8 @@ namespace Choice.ClientService.Domain.ClientAggregate
 
         Task<Client> Get(int id);
 
+        Task<Client> Get(string id);
+
         Task<IList<Client>> GetAll();
 
         Task<IList<OrderRequest>> GetRequests();

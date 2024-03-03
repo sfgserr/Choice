@@ -5,16 +5,16 @@ namespace Choice.ClientService.Domain.ClientAggregate
 {
     public class Client : Entity
     {
+        private readonly List<OrderRequest> _requests = new();
+
         public Client(string guid, string name, string surname, string email,
-            Address address, List<OrderRequest> requests, double averageGrade)
+            Address address)
         {
             Guid = guid;
             Name = name;
             Surname = surname;
             Email = email;
             Address = address;
-            Requests = requests;
-            AverageGrade = averageGrade;
         }
 
         public string Guid { get; private set; }
@@ -22,11 +22,10 @@ namespace Choice.ClientService.Domain.ClientAggregate
         public string Surname { get; private set; }
         public string Email { get; private set; }
         public Address Address { get; private set; }
-        public List<OrderRequest> Requests { get; private set; }
-        public double AverageGrade { get; private set; }
+        public IReadOnlyCollection<OrderRequest> Requests => _requests.AsReadOnly();
         
         public void SendRequest(OrderRequest request) =>
-            Requests.Add(request);
+            _requests.Add(request);
 
         public void ChangeData(string name, string surname)
         {
