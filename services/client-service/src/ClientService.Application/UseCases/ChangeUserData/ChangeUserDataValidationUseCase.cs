@@ -17,7 +17,7 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
             _outputPort = new ChangeUserDataPresenter();
         }
 
-        public async Task Execute(int clientId, string name, string surname)
+        public async Task Execute(string name, string surname)
         {
             if (name == string.Empty || surname == string.Empty)
             {
@@ -30,7 +30,7 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
                 return;
             }
 
-            await _useCase.Execute(clientId, name, surname);
+            await _useCase.Execute(name, surname);
         }
 
         public void SetOutputPort(IOutputPort outputPort)

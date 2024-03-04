@@ -6,21 +6,25 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
     public sealed class ChangeUserDataUseCase : IChangeUserDataUseCase
     {
         private readonly IClientRepository _repository;
+        private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
 
         private IOutputPort _outputPort;
 
-        public ChangeUserDataUseCase(IClientRepository repository, IUnitOfWork unitOfWork)
+        public ChangeUserDataUseCase(IClientRepository repository, IUnitOfWork unitOfWork, IUserService userService)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _userService = userService;
 
             _outputPort = new ChangeUserDataPresenter();
         }
 
-        public async Task Execute(int clientId, string name, string surname)
+        public async Task Execute(string name, string surname)
         {
-            Client client = await _repository.Get(clientId);
+            string id = _userService.GetUserId();
+
+            Client client = await _repository.Get(id);
 
             if (client is null)
             {

@@ -1,5 +1,4 @@
-﻿using Choice.ClientService.Application.UseCases.CreateClient;
-using Choice.ClientService.Domain.ClientAggregate;
+﻿using Choice.ClientService.Domain.ClientAggregate;
 
 namespace Choice.ClientService.Application.UseCases.GetClients
 {

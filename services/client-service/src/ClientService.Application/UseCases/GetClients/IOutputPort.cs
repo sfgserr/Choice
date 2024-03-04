@@ -1,6 +1,6 @@
 ﻿using Choice.ClientService.Domain.ClientAggregate;
 
-namespace Choice.ClientService.Application.UseCases.CreateClient
+namespace Choice.ClientService.Application.UseCases.GetClients
 {
     public interface IOutputPort
     {
