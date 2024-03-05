@@ -7,5 +7,7 @@ namespace Choice.EventBus.Messages.Common
         public const string OrderChangedQueue = "orderchanged-queue";
         public const string UserDataChangedQueue = "userdatachanged-queue";
         public const string OrderStatusChangedQueue = "orderstatuschanged-queue";
+        public const string UserCreatedQueue = "usercreated-queue";
+        public const string ReviewLeftQueue = "reviewleft-queue";
     }
 }

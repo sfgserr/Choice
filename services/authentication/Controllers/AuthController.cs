@@ -1,6 +1,8 @@
 ﻿using Choice.Authentication.Models;
 using Choice.Authentication.Repositories;
 using Choice.Authentication.Services;
+using Choice.EventBus.Messages.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.Authentication.Controllers
@@ -11,13 +13,15 @@ namespace Choice.Authentication.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IUserRepository _repository;
+        private readonly IPublishEndpoint _endPoint;
         private readonly IConfiguration _configuration;
 
-        public AuthController(ITokenService tokenService, IConfiguration configuration, IUserRepository repository)
+        public AuthController(ITokenService tokenService, IConfiguration configuration, IUserRepository repository, IPublishEndpoint endPoint)
         {
             _tokenService = tokenService;
             _configuration = configuration;
             _repository = repository;
+            _endPoint = endPoint;
         }
 
         [HttpPost("Login")]
@@ -42,6 +46,23 @@ namespace Choice.Authentication.Controllers
                 _configuration["JwtSettings:Audience"]!);
 
             return Ok(token);
+        }
+
+        [HttpPost("RegisterAsClient")]
+        public async Task<IActionResult> RegisterClient(string email, string name, string surname, string password,
+            string street, string city)
+        {
+            User user = new(Guid.NewGuid(), email, password, $"{surname} {name}", string.Empty, city, street);
+
+            await _repository.Add(user);
+
+            await _endPoint.Publish<UserCreatedEvent>(new
+                (user.Id.ToString(),
+                 user.Name,
+                 user.Email,
+                 user.City,
+                 user.Street,
+                 user.PhoneNumber));
         }
     }
 }
