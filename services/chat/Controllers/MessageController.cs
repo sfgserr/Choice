@@ -11,7 +11,7 @@ namespace Choice.Chat.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class MessageController : Controller
+    public sealed class MessageController : Controller
     {
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IMessageRepository _repository;

@@ -31,7 +31,7 @@ namespace Choice.Ordering.Api
             builder.Services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
             builder.Services.Decorate<ICreateOrderUseCase, CreateOrderValidationUseCase>();
             builder.Services.AddScoped<IEnrollUseCase, EnrollUseCase>();
-            builder.Services.AddScoped<IFinishOrderStatusUseCase, FinishOrderStatusUseCase>();
+            builder.Services.AddScoped<IFinishOrderUseCase, FinishOrderUseCase>();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserService, UserService>();

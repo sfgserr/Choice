@@ -1,7 +1,7 @@
 ﻿
 namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
-    public interface IFinishOrderStatusUseCase
+    public interface IFinishOrderUseCase
     {
         Task Execute(int orderId);
 

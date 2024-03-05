@@ -12,7 +12,7 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : Controller, IOutputPort
+    public sealed class OrderController : Controller, IOutputPort
     {
         private readonly ICancelEnrollmentUseCase _useCase;
         private readonly Notification _notification;
@@ -41,7 +41,10 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Cancel", order.SenderId));
+            _endPoint.Publish(new OrderStatusChangedEvent
+                (order.OrderRequestId, 
+                 (int)order.Status,
+                 order.ReceiverId));
         }
 
         [HttpPut("CancelEnrollment")]

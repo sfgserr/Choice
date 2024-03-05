@@ -6,7 +6,7 @@ namespace Choice.ClientService.Domain.OrderRequests
     public class OrderRequest : Entity
     {
         public OrderRequest(int clientId, List<string> categories, string description,
-            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
+            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius)
         {
             ClientId = clientId;
             Categories = categories;
@@ -14,6 +14,7 @@ namespace Choice.ClientService.Domain.OrderRequests
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
+            SearchRadius = searchRadius;
         }
 
         public int ClientId { get; }
@@ -23,18 +24,17 @@ namespace Choice.ClientService.Domain.OrderRequests
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }
         public bool ToKnowEnrollmentDate { get; private set; }
-        public int SearchRadius { get; private set; }
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
 
-        public void SetRadius(int radius)
+        private int _searchRadius;
+
+        public int SearchRadius
         {
-            if (radius < 5000)
-                SearchRadius = 5000;
-
-            if (radius > 25000)
-                SearchRadius = 25000;
-
-            SearchRadius = radius;
+            get => _searchRadius;
+            private set => _searchRadius = value < 5000 ? 5000 : value > 25000 ? 25000 : value;
         }
+
+        public void SetStatus(OrderStatus status) =>
+            Status = status;
     }
 }

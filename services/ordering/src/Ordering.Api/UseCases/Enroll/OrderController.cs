@@ -11,7 +11,7 @@ namespace Choice.Ordering.Api.UseCases.Enroll
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : Controller, IOutputPort
+    public sealed class OrderController : Controller, IOutputPort
     {
         private readonly IEnrollUseCase _useCase;
         private readonly Notification _notification;

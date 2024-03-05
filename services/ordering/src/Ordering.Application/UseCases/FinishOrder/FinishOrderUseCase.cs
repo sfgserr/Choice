@@ -3,7 +3,7 @@ using Choice.Ordering.Domain.OrderEntity;
 
 namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
-    public sealed class FinishOrderStatusUseCase : IFinishOrderStatusUseCase
+    public sealed class FinishOrderUseCase : IFinishOrderUseCase
     {
         private readonly Notification _notification;
         private readonly IOrderRepository _repository;
@@ -11,13 +11,13 @@ namespace Choice.Ordering.Application.UseCases.FinishOrder
 
         private IOutputPort _outputPort;
 
-        public FinishOrderStatusUseCase(Notification notification, IOrderRepository repository, IUnitOfWork unitOfWork)
+        public FinishOrderUseCase(Notification notification, IOrderRepository repository, IUnitOfWork unitOfWork)
         {
             _notification = notification;
             _repository = repository;
             _unitOfWork = unitOfWork;
 
-            _outputPort = new FinishOrderStatusPresenter();
+            _outputPort = new FinishOrderPresenter();
         }
 
         public async Task Execute(int orderId)

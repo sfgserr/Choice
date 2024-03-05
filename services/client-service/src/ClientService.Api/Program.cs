@@ -27,7 +27,6 @@ namespace Choice.ClientService.Api
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();

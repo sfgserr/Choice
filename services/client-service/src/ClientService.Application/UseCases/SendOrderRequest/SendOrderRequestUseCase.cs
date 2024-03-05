@@ -40,7 +40,8 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
                  description,
                  toKnowPrice,
                  toKnowDeadline,
-                 toKnowEnrollmentDate);
+                 toKnowEnrollmentDate,
+                 searchRadius);
 
             client.SendRequest(request);
 

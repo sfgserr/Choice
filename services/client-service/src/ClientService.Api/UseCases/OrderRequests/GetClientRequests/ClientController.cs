@@ -2,15 +2,20 @@
 using Choice.ClientService.Domain.OrderRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.ClientService.Api.UseCases.GetClientRequests
+namespace Choice.ClientService.Api.UseCases.OrderRequests.GetClientRequests
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientController : Controller, IOutputPort
+    public sealed class ClientController : Controller, IOutputPort
     {
         private readonly IGetClientRequestsUseCase _useCase;
 
         private IActionResult _viewModel;
+
+        public ClientController(IGetClientRequestsUseCase useCase)
+        {
+            _useCase = useCase;
+        }
 
         void IOutputPort.NotFound()
         {
@@ -25,7 +30,11 @@ namespace Choice.ClientService.Api.UseCases.GetClientRequests
         [HttpGet("GetClientRequests")]
         public async Task<IActionResult> GetClientRequests()
         {
+            _useCase.SetOutputPort(this);
 
+            await _useCase.Execute();
+
+            return _viewModel;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Choice.Ordering.Application.UseCases.FinishOrder
 {
-    public sealed class FinishOrderStatusPresenter : IOutputPort
+    public sealed class FinishOrderPresenter : IOutputPort
     {
         public bool IsInvalid { get; set; }
         public bool IsNotFound { get; set; }

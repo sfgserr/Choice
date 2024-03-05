@@ -11,15 +11,15 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class OrderController : Controller, IOutputPort
+    public sealed class OrderController : Controller, IOutputPort
     {
-        private readonly IFinishOrderStatusUseCase _useCase;
+        private readonly IFinishOrderUseCase _useCase;
         private readonly Notification _notification;
         private readonly IPublishEndpoint _endPoint;
 
         private IActionResult _viewModel;
 
-        public OrderController(IFinishOrderStatusUseCase useCase, Notification notification, IPublishEndpoint endPoint)
+        public OrderController(IFinishOrderUseCase useCase, Notification notification, IPublishEndpoint endPoint)
         {
             _useCase = useCase;
             _notification = notification;
@@ -29,7 +29,10 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Finish", order.SenderId));
+            _endPoint.Publish(new OrderStatusChangedEvent
+                (order.OrderRequestId,
+                 (int)order.Status,
+                 order.ReceiverId));
         }
 
         void IOutputPort.NotFound()

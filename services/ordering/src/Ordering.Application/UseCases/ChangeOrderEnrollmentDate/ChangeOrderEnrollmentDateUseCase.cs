@@ -30,9 +30,14 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
                 return;
             }
 
+            if (order.IsEnrolled)
+            {
+                _notification.Add(nameof(order), "You are enrolled");
+            }
+
             if (order.Status != OrderStatus.Active)
             {
-                _notification.Add(nameof(order), $"Order is not active");
+                _notification.Add(nameof(order), "Order is not active");
             }
 
             if (_notification.IsInvalid)

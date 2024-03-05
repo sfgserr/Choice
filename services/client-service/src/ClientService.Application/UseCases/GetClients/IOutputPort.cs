@@ -5,7 +5,5 @@ namespace Choice.ClientService.Application.UseCases.GetClients
     public interface IOutputPort
     {
         void Ok(IList<Client> clients);
-
-        void Invalid();
     }
 }

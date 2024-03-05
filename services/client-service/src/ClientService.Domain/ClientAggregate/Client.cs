@@ -22,15 +22,30 @@ namespace Choice.ClientService.Domain.ClientAggregate
         public string Surname { get; private set; }
         public string Email { get; private set; }
         public Address Address { get; private set; }
+        public double AverageGrade { get; private set; }
+        public double ReviewCount { get; private set; }    
         public IReadOnlyCollection<OrderRequest> Requests => _requests.AsReadOnly();
         
         public void SendRequest(OrderRequest request) =>
             _requests.Add(request);
 
+        public void SetRequestStatus(int requestId, OrderStatus status)
+        {
+            OrderRequest? request = _requests.FirstOrDefault(r => r.Id == requestId);
+
+            request?.SetStatus(status);
+        }
+
         public void ChangeData(string name, string surname)
         {
             Name = name;
             Surname = surname;
+        }
+
+        public void AddReview(int grade)
+        {
+            AverageGrade = (ReviewCount * AverageGrade+grade)/(ReviewCount+1);
+            ReviewCount++;
         }
     }
 }

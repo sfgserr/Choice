@@ -5,11 +5,11 @@ using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.ClientService.Api.UseCases.ChangeUserData
+namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientController : Controller, IOutputPort
+    public sealed class ClientController : Controller, IOutputPort
     {
         private readonly IChangeUserDataUseCase _useCase;
         private readonly Notification _notification;
