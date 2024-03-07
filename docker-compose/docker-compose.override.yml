@@ -7,6 +7,18 @@ services:
     depends_on:
       - chat
       - ordering
+      - authentication
+      - client-service
+  client-service:
+    environment:
+      - ASPNETCORE_URLS=http://+:8083
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    ports:
+      - "8083:8083"
+    depends_on:
+      - rabbitmq
+      - client-service-db
   chat:
     environment:
       - ASPNETCORE_URLS=http://+:8081
@@ -31,6 +43,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8082
       - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     ports:
       - "8082:8082"
     depends_on:
@@ -52,6 +65,12 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1533:1433"
+  client-service-db:
+    environment:
+      SA_PASSWORD: "S3cur3P@ssW0rd!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1633:1433"
   chat-db:
     environment:
       POSTGRES_PASSWORD: Pass129598

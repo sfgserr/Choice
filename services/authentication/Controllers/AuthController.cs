@@ -56,13 +56,15 @@ namespace Choice.Authentication.Controllers
 
             await _repository.Add(user);
 
-            await _endPoint.Publish<UserCreatedEvent>(new
+            await _endPoint.Publish<ClientCreatedEvent>(new
                 (user.Id.ToString(),
-                 user.Name,
+                 name,
+                 surname,
                  user.Email,
                  user.City,
-                 user.Street,
-                 user.PhoneNumber));
+                 user.Street));
+
+            return Ok(user);
         }
     }
 }

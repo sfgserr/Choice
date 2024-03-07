@@ -1,11 +1,14 @@
-﻿using Choice.ClientService.Application.UseCases.GetClientRequests;
+﻿using Choice.ClientService.Api.ViewModels;
+using Choice.ClientService.Application.UseCases.GetClientRequests;
 using Choice.ClientService.Domain.OrderRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.ClientService.Api.UseCases.OrderRequests.GetClientRequests
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public sealed class ClientController : Controller, IOutputPort
     {
         private readonly IGetClientRequestsUseCase _useCase;
@@ -24,7 +27,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetClientRequests
 
         void IOutputPort.Ok(IList<OrderRequest> requests)
         {
-            _viewModel = Ok(requests);
+            _viewModel = Ok(requests.Select(r => new OrderRequestDetailsViewModel(r)));
         }
 
         [HttpGet("GetClientRequests")]

@@ -6,6 +6,12 @@ services:
     image: nginx
     build:
       context: "../nginx/"
+  client-service:
+    container_name: "client-service"
+    image: client-service
+    build:
+      context: ../
+      dockerfile: services/client-service/src/ClientService.Api/Dockerfile
   chat:
     container_name: "chat"
     image: chat
@@ -32,5 +38,7 @@ services:
     container_name: chat-db
     image: postgres
   authentication-db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+  client-service-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
  

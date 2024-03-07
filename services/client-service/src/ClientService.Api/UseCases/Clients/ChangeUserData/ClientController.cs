@@ -3,12 +3,14 @@ using Choice.ClientService.Application.UseCases.ChangeUserData;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public sealed class ClientController : Controller, IOutputPort
     {
         private readonly IChangeUserDataUseCase _useCase;

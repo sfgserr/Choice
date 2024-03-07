@@ -1,11 +1,19 @@
+using Choice.ClientService.Api.Consumers;
 using Choice.ClientService.Application.Services;
 using Choice.ClientService.Application.UseCases.ChangeUserData;
 using Choice.ClientService.Application.UseCases.GetClientRequests;
 using Choice.ClientService.Application.UseCases.GetClients;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
+using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
+using Choice.ClientService.Infrastructure.Data.Repositories;
+using Choice.EventBus.Messages.Common;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Choice.ClientService.Api
 {
@@ -26,9 +34,52 @@ namespace Choice.ClientService.Api
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<Notification>();
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddMassTransit(config =>
+            {
+                config.AddConsumer<OrderStatusChangedConsumer>();
+                config.AddConsumer<ReviewLeftConsumer>();
+                config.AddConsumer<ClientCreatedConsumer>();
+
+                config.UsingRabbitMq((ctx, cfg) => {
+                    cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+
+                    cfg.ReceiveEndpoint(EventBusConstants.OrderStatusChangedQueue, c => {
+                        c.ConfigureConsumer<OrderStatusChangedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.ReviewLeftQueue, c =>
+                    {
+                        c.ConfigureConsumer<ReviewLeftConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.ClientCreatedQueue, c =>
+                    {
+                        c.ConfigureConsumer<ClientCreatedConsumer>(ctx);
+                    });
+                });
+            });
+
+            string issuerKey = builder.Configuration["JwtSettings:Key"]!;
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
+                    };
+                });
 
             builder.Services.AddDbContext<ClientContext>(o =>
-                o.UseSqlServer(builder.Configuration["SqlServerSettings:"]));
+                o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -43,7 +94,7 @@ namespace Choice.ClientService.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(e =>

@@ -9,6 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["services/authentication/Authentication.csproj", "services/authentication/"]
+COPY ["services/event-bus-messages/EventBus.Messages.csproj", "services/event-bus-messages/"]
 RUN dotnet restore "services/authentication/Authentication.csproj"
 COPY . .
 WORKDIR "/src/services/authentication"

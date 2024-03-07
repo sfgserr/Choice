@@ -8,14 +8,17 @@ namespace Choice.ClientService.Domain.ClientAggregate
         private readonly List<OrderRequest> _requests = new();
 
         public Client(string guid, string name, string surname, string email,
-            Address address)
+            Address address, string iconUri)
         {
             Guid = guid;
             Name = name;
             Surname = surname;
             Email = email;
             Address = address;
+            IconUri = iconUri;
         }
+
+        private Client() { }
 
         public string Guid { get; private set; }
         public string Name { get; private set; }
@@ -23,7 +26,8 @@ namespace Choice.ClientService.Domain.ClientAggregate
         public string Email { get; private set; }
         public Address Address { get; private set; }
         public double AverageGrade { get; private set; }
-        public double ReviewCount { get; private set; }    
+        public double ReviewCount { get; private set; }
+        public string IconUri { get; private set; }
         public IReadOnlyCollection<OrderRequest> Requests => _requests.AsReadOnly();
         
         public void SendRequest(OrderRequest request) =>

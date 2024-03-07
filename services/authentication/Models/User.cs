@@ -3,7 +3,7 @@ namespace Choice.Authentication.Models
 {
     public class User
     {
-        public User(Guid id, string email, string password, string name, string phoneNumber, string city
+        public User(Guid id, string email, string password, string name, string phoneNumber, string city,
             string street)
         {
             Id = id;

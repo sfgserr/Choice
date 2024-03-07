@@ -1,12 +1,15 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.ClientService.Api.ViewModels;
+using Choice.ClientService.Application.Services;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Domain.OrderRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ClientController : Controller, IOutputPort
     {
         private readonly ISendOrderRequestUseCase _useCase;
@@ -33,7 +36,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
 
         void IOutputPort.Ok(OrderRequest request)
         {
-            _viewModel = Ok(request);
+            _viewModel = Ok(new OrderRequestDetailsViewModel(request));
         }
 
         [HttpPost("SendOrderRequest")]

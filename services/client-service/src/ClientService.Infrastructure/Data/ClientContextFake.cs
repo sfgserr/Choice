@@ -8,7 +8,7 @@ namespace Choice.ClientService.Infrastructure.Data
         public ClientContextFake()
         {
             Clients.Add(new Client
-                (SeedData.DefaultClientGuid, "Name", "Surname", "Email", new Address("Street", "City")));
+                (SeedData.DefaultClientGuid, "Name", "Surname", "Email", new Address("Street", "City"), "FakeUri"));
         }
 
         public List<Client> Clients { get; } = new();
