@@ -1,6 +1,6 @@
 ﻿using Choice.ClientService.Domain.ClientAggregate;
 
-namespace ClientService.Api.ViewModels
+namespace Choice.ClientService.Api.ViewModels
 {
     public class ClientAdminViewModel
     {

@@ -1,9 +1,9 @@
-﻿
-namespace Choice.EventBus.Messages.Events
+﻿namespace Choice.EventBus.Messages.Events
 {
-    public class ClientCreatedEvent : IntegrationEvent
+    public class UserCreatedEvent : IntegrationEvent
     {
-        public ClientCreatedEvent(string userGuid, string name, string surname, string email, string city, string street)
+        public UserCreatedEvent(string userGuid, string name, string surname, string email, string city,
+            string street, string phoneNumber, string userType)
         {
             UserGuid = userGuid;
             Name = name;
@@ -11,6 +11,8 @@ namespace Choice.EventBus.Messages.Events
             Email = email;
             City = city;
             Street = street;
+            PhoneNumber = phoneNumber;
+            UserType = userType;
         }
 
         public string UserGuid { get; }
@@ -19,5 +21,7 @@ namespace Choice.EventBus.Messages.Events
         public string Email { get; }
         public string City { get; }
         public string Street { get; }
+        public string PhoneNumber { get; }
+        public string UserType { get; }
     }
 }

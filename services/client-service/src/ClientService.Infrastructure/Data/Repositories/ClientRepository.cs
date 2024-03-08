@@ -25,7 +25,16 @@ namespace Choice.ClientService.Infrastructure.Data.Repositories
 
         public async Task<Client> Get(string id)
         {
-            return await _context.Clients.FirstOrDefaultAsync(c => c.Guid == id);
+            Client client = await _context.Clients.FirstOrDefaultAsync(c => c.Guid == id);
+
+            if (client is Client findClient)
+            {
+                await LoadRequests(findClient);
+
+                return client;
+            }
+
+            return null;
         }
 
         public async Task<IList<Client>> GetAll()
@@ -46,6 +55,11 @@ namespace Choice.ClientService.Infrastructure.Data.Repositories
         public async Task Update(OrderRequest request)
         {
             await _context.Requests.AddAsync(request);
+        }
+
+        private async Task LoadRequests(Client client)
+        {
+            await _context.Requests.Where(r => r.ClientId == client.Id).ToListAsync();
         }
     }
 }

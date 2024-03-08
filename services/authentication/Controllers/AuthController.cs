@@ -48,21 +48,48 @@ namespace Choice.Authentication.Controllers
             return Ok(token);
         }
 
-        [HttpPost("RegisterAsClient")]
-        public async Task<IActionResult> RegisterClient(string email, string name, string surname, string password,
-            string street, string city)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(string email, string name, string surname, string password,
+            string street, string city, string phoneNumber, UserType type)
         {
-            User user = new(Guid.NewGuid(), email, password, $"{surname} {name}", string.Empty, city, street);
+            Dictionary<string, string[]> errorMessages = new();
+
+            User existUser = await _repository.GetByEmail(email);
+
+            if (existUser != null)
+            {
+                errorMessages.Add(nameof(existUser), new[] { "Email already in use" });
+            }
+
+            existUser = await _repository.GetByPhoneNumber(phoneNumber);
+
+            if (existUser != null)
+            {
+                if (errorMessages.TryGetValue(nameof(existUser), out string[] messages))
+                    errorMessages[nameof(existUser)][1] = "Phone number already in user";
+                else
+                    errorMessages.Add(nameof(existUser), new[] { "Phone already in use" });
+            }
+
+            if (errorMessages.Count > 0)
+            {
+                ValidationProblemDetails problemDetails = new(errorMessages);
+                return BadRequest(problemDetails);
+            }
+
+            User user = new(Guid.NewGuid(), email, password, $"{surname} {name}", phoneNumber, city, street, type);
 
             await _repository.Add(user);
 
-            await _endPoint.Publish<ClientCreatedEvent>(new
+            await _endPoint.Publish<UserCreatedEvent>(new
                 (user.Id.ToString(),
                  name,
                  surname,
                  user.Email,
                  user.City,
-                 user.Street));
+                 user.Street,
+                 user.PhoneNumber,
+                 user.UserType.ToString()));
 
             return Ok(user);
         }

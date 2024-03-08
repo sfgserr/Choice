@@ -18,7 +18,8 @@ namespace Choice.Authentication
                  "PaSsWoRd",
                  "37377875397",
                  "Москва",
-                 "Арбат 26");
+                 "Арбат 26",
+                 UserType.Client);
 
             await repository.Add(user);
         }

@@ -8,6 +8,7 @@ using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
 using Choice.ClientService.Infrastructure.Data.Repositories;
+using Choice.ClientService.Infrastructure.Geolocation;
 using Choice.EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,7 +43,7 @@ namespace Choice.ClientService.Api
             {
                 config.AddConsumer<OrderStatusChangedConsumer>();
                 config.AddConsumer<ReviewLeftConsumer>();
-                config.AddConsumer<ClientCreatedConsumer>();
+                config.AddConsumer<UserCreatedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -54,9 +55,9 @@ namespace Choice.ClientService.Api
                     {
                         c.ConfigureConsumer<ReviewLeftConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.ClientCreatedQueue, c =>
+                    cfg.ReceiveEndpoint(EventBusConstants.UserCreatedQueue, c =>
                     {
-                        c.ConfigureConsumer<ClientCreatedConsumer>(ctx);
+                        c.ConfigureConsumer<UserCreatedConsumer>(ctx);
                     });
                 });
             });
@@ -78,6 +79,9 @@ namespace Choice.ClientService.Api
                     };
                 });
 
+            builder.Services.AddHttpClient();
+            builder.Services.AddScoped<IAddressService, AddressService>(s =>
+                new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GeoapifySettings:ApiKey"])));
             builder.Services.AddDbContext<ClientContext>(o =>
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
             builder.Services.AddControllers();

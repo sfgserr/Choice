@@ -1,6 +1,6 @@
 ﻿using Choice.ClientService.Application.UseCases.GetClients;
 using Choice.ClientService.Domain.ClientAggregate;
-using ClientService.Api.ViewModels;
+using Choice.ClientService.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

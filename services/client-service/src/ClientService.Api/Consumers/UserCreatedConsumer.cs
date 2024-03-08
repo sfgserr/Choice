@@ -5,20 +5,23 @@ using MassTransit;
 
 namespace Choice.ClientService.Api.Consumers
 {
-    public class ClientCreatedConsumer : IConsumer<ClientCreatedEvent>
+    public class UserCreatedConsumer : IConsumer<UserCreatedEvent>
     {
         private readonly IClientRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ClientCreatedConsumer(IClientRepository repository, IUnitOfWork unitOfWork)
+        public UserCreatedConsumer(IClientRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Consume(ConsumeContext<ClientCreatedEvent> context)
+        public async Task Consume(ConsumeContext<UserCreatedEvent> context)
         {
-            ClientCreatedEvent @event = context.Message;
+            UserCreatedEvent @event = context.Message;
+
+            if (@event.UserType == "Company")
+                return;
 
             Client client = new
                 (@event.UserGuid.ToString(),
@@ -26,7 +29,8 @@ namespace Choice.ClientService.Api.Consumers
                  @event.Surname, 
                  @event.Email, 
                  new(@event.Street, @event.City),
-                 "defaulturi");
+                 "defaulturi",
+                 @event.PhoneNumber);
 
             await _repository.Add(client);
 

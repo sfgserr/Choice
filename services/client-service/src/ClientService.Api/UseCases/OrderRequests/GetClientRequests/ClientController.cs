@@ -27,7 +27,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetClientRequests
 
         void IOutputPort.Ok(IList<OrderRequest> requests)
         {
-            _viewModel = Ok(requests.Select(r => new OrderRequestDetailsViewModel(r)));
+            _viewModel = Ok(requests.Select(r => new OrderRequestViewModel(r)));
         }
 
         [HttpGet("GetClientRequests")]

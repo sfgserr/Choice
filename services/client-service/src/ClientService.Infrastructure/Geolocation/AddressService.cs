@@ -1,6 +1,5 @@
 ﻿using Choice.ClientService.Application.Services;
 using Choice.ClientService.Domain.ClientAggregate;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Choice.ClientService.Infrastructure.Geolocation
