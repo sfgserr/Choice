@@ -1,4 +1,4 @@
-﻿using Choice.Ordering.Domain.Common;
+﻿using Choice.Common.SeedWork;
 
 namespace Choice.Ordering.Domain.OrderEntity
 {

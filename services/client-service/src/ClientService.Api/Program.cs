@@ -8,11 +8,12 @@ using Choice.ClientService.Application.UseCases.GetClients;
 using Choice.ClientService.Application.UseCases.GetOrderRequests;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Domain.ClientAggregate;
-using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
 using Choice.ClientService.Infrastructure.Data.Repositories;
 using Choice.ClientService.Infrastructure.Geolocation;
 using Choice.EventBus.Messages.Common;
+using Choice.Infrastructure.Authentication;
+using Choice.Infrastructure.Data;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ namespace Choice.ClientService.Api
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<Notification>();
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(s => new(s.GetRequiredService<ClientContext>()));
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddMassTransit(config =>

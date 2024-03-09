@@ -11,8 +11,11 @@ WORKDIR /src
 COPY ["services/client-service/src/ClientService.Api/ClientService.Api.csproj", "services/client-service/src/ClientService.Api/"]
 COPY ["services/event-bus-messages/EventBus.Messages.csproj", "services/event-bus-messages/"]
 COPY ["services/client-service/src/ClientService.Application/ClientService.Application.csproj", "services/client-service/src/ClientService.Application/"]
+COPY ["services/common/Application/Application.csproj", "services/common/Application/"]
 COPY ["services/client-service/src/ClientService.Domain/ClientService.Domain.csproj", "services/client-service/src/ClientService.Domain/"]
+COPY ["services/common/Common/Common.csproj", "services/common/Common/"]
 COPY ["services/client-service/src/ClientService.Infrastructure/ClientService.Infrastructure.csproj", "services/client-service/src/ClientService.Infrastructure/"]
+COPY ["services/common/Infrastructure/Infrastructure.csproj", "services/common/Infrastructure/"]
 RUN dotnet restore "services/client-service/src/ClientService.Api/ClientService.Api.csproj"
 COPY . .
 WORKDIR "/src/services/client-service/src/ClientService.Api"

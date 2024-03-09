@@ -14,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Ordering.Application.UseCases.CancelEnrollment;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Choice.Application.Services;
+using Choice.Infrastructure.Data;
+using Choice.Infrastructure.Authentication;
 
 namespace Choice.Ordering.Api
 {
@@ -35,7 +38,7 @@ namespace Choice.Ordering.Api
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(s => new(s.GetRequiredService<OrderingContext>()));
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<Notification>();
             builder.Services.AddDbContext<OrderingContext>(o =>

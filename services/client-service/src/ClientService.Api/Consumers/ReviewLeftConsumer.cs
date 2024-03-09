@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.EventBus.Messages.Events;
 using MassTransit;

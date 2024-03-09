@@ -1,5 +1,4 @@
-﻿using Choice.Ordering.Application.Services;
-
+﻿using Choice.Application.Services;
 namespace Choice.Ordering.Application.UseCases.CreateOrder
 {
     public sealed class CreateOrderValidationUseCase : ICreateOrderUseCase

@@ -1,7 +1,7 @@
 ﻿using Choice.Application.Services;
 using Microsoft.AspNetCore.Http;
 
-namespace Choice.ClientService.Infrastructure.Authentication
+namespace Choice.Infrastructure.Authentication
 {
     public sealed class UserService : IUserService
     {
@@ -12,9 +12,7 @@ namespace Choice.ClientService.Infrastructure.Authentication
             _context = context;
         }
 
-        public string GetUserId()
-        {
-            return _context.HttpContext.User.FindFirst("id")?.Value!;
-        }
+        public string GetUserId() =>
+            _context.HttpContext.User.FindFirst("id")?.Value!;
     }
 }

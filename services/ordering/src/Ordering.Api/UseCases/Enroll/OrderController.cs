@@ -1,5 +1,5 @@
-﻿using Choice.EventBus.Messages.Events;
-using Choice.Ordering.Application.Services;
+﻿using Choice.Application.Services;
+using Choice.EventBus.Messages.Events;
 using Choice.Ordering.Application.UseCases.Enroll;
 using Choice.Ordering.Domain.OrderEntity;
 using MassTransit;

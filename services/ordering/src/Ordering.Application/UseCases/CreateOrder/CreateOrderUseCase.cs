@@ -1,4 +1,4 @@
-﻿using Choice.Ordering.Application.Services;
+﻿using Choice.Application.Services;
 using Choice.Ordering.Domain.OrderEntity;
 
 namespace Choice.Ordering.Application.UseCases.CreateOrder

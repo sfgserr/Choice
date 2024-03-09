@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.UnitTests;
 using Choice.ClientService.UnitTests.SendOrderRequest;

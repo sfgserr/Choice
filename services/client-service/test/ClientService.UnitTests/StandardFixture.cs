@@ -1,6 +1,7 @@
-﻿using Choice.ClientService.Infrastructure.Authentication;
-using Choice.ClientService.Infrastructure.Data;
+﻿using Choice.ClientService.Infrastructure.Data;
 using Choice.ClientService.Infrastructure.Data.Repositories;
+using Choice.Infrastructure.Data;
+using Infrastructure.Authentication;
 
 namespace Choice.ClientService.UnitTests
 {
