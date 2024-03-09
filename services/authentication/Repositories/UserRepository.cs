@@ -19,6 +19,11 @@ namespace Choice.Authentication.Repositories
             await _context.SaveChangesAsync();  
         }
 
+        public async Task<User> Get(string guid)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == guid);
+        }
+
         public async Task<User> GetByEmail(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);

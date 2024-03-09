@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.ClientService.Domain.Common
+namespace Choice.Common.SeedWork
 {
     public abstract class Entity
     {

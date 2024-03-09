@@ -4,6 +4,8 @@ using Choice.Authentication.Services;
 using Choice.Authentication;
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
+using Choice.EventBus.Messages.Common;
+using Choice.Authentication.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +22,14 @@ builder.Services.AddDbContext<UserContext>(o =>
 
 builder.Services.AddMassTransit(config =>
 {
+    config.AddConsumer<UserDataChangedConsumer>();
+
     config.UsingRabbitMq((ctx, cfg) => {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+
+        cfg.ReceiveEndpoint(EventBusConstants.OrderStatusChangedQueue, c => {
+            c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
+        });
     });
 });
 

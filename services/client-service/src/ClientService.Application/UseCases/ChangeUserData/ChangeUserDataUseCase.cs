@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 using Choice.ClientService.Domain.ClientAggregate;
 
 namespace Choice.ClientService.Application.UseCases.ChangeUserData
@@ -20,7 +20,7 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
             _outputPort = new ChangeUserDataPresenter();
         }
 
-        public async Task Execute(string name, string surname)
+        public async Task Execute(string name, string surname, string email, string phoneNumber)
         {
             string id = _userService.GetUserId();
 
@@ -32,14 +32,14 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
                 return;
             }
 
-            await ChangeData(client, name, surname);
+            await ChangeData(client, name, surname, email, phoneNumber);
 
             _outputPort.Ok(client);
         }
 
-        public async Task ChangeData(Client client, string name, string surname)
+        public async Task ChangeData(Client client, string name, string surname, string email, string phoneNumber)
         {
-            client.ChangeData(name, surname);
+            client.ChangeData(name, surname, email, phoneNumber);
 
             _repository.Update(client);
 

@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.ClientService.Application.Services
+namespace Choice.Application.Services
 {
     public interface IUserService
     {

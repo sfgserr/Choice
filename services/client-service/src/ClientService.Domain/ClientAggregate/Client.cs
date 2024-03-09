@@ -1,5 +1,5 @@
-﻿using Choice.ClientService.Domain.Common;
-using Choice.ClientService.Domain.OrderRequests;
+﻿using Choice.ClientService.Domain.OrderRequests;
+using Choice.Common.SeedWork;
 
 namespace Choice.ClientService.Domain.ClientAggregate
 {
@@ -42,10 +42,12 @@ namespace Choice.ClientService.Domain.ClientAggregate
             request?.SetStatus(status);
         }
 
-        public void ChangeData(string name, string surname)
+        public void ChangeData(string name, string surname, string email, string phoneNumber)
         {
             Name = name;
             Surname = surname;
+            Email = email;
+            PhoneNumber = phoneNumber;
         }
 
         public void AddReview(int grade)

@@ -1,8 +1,11 @@
+using Choice.Application.Services;
 using Choice.ClientService.Api.Consumers;
 using Choice.ClientService.Application.Services;
 using Choice.ClientService.Application.UseCases.ChangeUserData;
+using Choice.ClientService.Application.UseCases.GetClient;
 using Choice.ClientService.Application.UseCases.GetClientRequests;
 using Choice.ClientService.Application.UseCases.GetClients;
+using Choice.ClientService.Application.UseCases.GetOrderRequests;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Infrastructure.Authentication;
@@ -30,6 +33,8 @@ namespace Choice.ClientService.Api
             builder.Services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             builder.Services.AddScoped<ISendOrderRequestUseCase, SendOrderRequestUseCase>();
             builder.Services.AddScoped<IGetClientRequestsUseCase, GetClientRequestsUseCase>();
+            builder.Services.AddScoped<IGetOrderRequestsUseCase, GetOrderRequestsUseCase>();
+            builder.Services.AddScoped<IGetClientUseCase, GetClientUseCase>();
             builder.Services.Decorate<IChangeUserDataUseCase, ChangeUserDataValidationUseCase>();
             builder.Services.Decorate<ISendOrderRequestUseCase, SendOrderRequestValidationUseCase>();
 

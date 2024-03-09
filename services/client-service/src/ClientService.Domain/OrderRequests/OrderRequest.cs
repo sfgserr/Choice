@@ -1,5 +1,5 @@
-﻿using Choice.ClientService.Domain.Common;
-using Choice.ClientService.Domain.ClientAggregate;
+﻿using Choice.ClientService.Domain.ClientAggregate;
+using Choice.Common.SeedWork;
 
 namespace Choice.ClientService.Domain.OrderRequests
 {

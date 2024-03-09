@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 
 namespace Choice.ClientService.Application.UseCases.SendOrderRequest
 {

@@ -6,6 +6,8 @@ namespace Choice.Authentication.Repositories
     {
         Task Add(User user);
 
+        Task<User> Get(string guid);
+
         Task<User> GetByEmail(string email);
 
         Task<User> GetByPhoneNumber(string phoneNumber);

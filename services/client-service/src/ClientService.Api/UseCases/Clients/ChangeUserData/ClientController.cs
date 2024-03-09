@@ -1,11 +1,11 @@
-﻿using Choice.ClientService.Application.Services;
-using Choice.ClientService.Application.UseCases.ChangeUserData;
+﻿using Choice.ClientService.Application.UseCases.ChangeUserData;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.EventBus.Messages.Events;
 using Choice.ClientService.Api.ViewModels;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Choice.Application.Services;
 
 namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
 {
@@ -20,16 +20,18 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
 
         private IActionResult _viewModel;
 
-        public ClientController(IChangeUserDataUseCase useCase, Notification notification)
+        public ClientController(IChangeUserDataUseCase useCase, Notification notification, IPublishEndpoint endPoint)
         {
             _useCase = useCase;
             _notification = notification;
+            _endPoint = endPoint;
         }
 
         void IOutputPort.Ok(Client client)
         {
             _viewModel = Ok(new ClientAdminViewModel(client));
-            _endPoint.Publish<UserDataChangedEvent>(new(client.Name, client.Surname));
+            _endPoint.Publish<UserDataChangedEvent>(new
+                (client.Guid, $"{client.Surname} {client.Name}", client.Email, client.PhoneNumber));
         }
 
         void IOutputPort.NotFound()
@@ -44,11 +46,11 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
         }
 
         [HttpPut("ChangeUserData")]
-        public async Task<IActionResult> ChangeUserData(string name, string surname)
+        public async Task<IActionResult> ChangeUserData(string name, string surname, string email, string phoneNumber)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(name, surname);
+            await _useCase.Execute(name, surname, email, phoneNumber);
 
             return _viewModel;
         }

@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Domain.Common;
+﻿using Choice.Common.SeedWork;
 
 namespace Choice.ClientService.Domain.ClientAggregate
 {

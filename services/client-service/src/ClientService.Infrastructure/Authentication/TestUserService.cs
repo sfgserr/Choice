@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 using Choice.ClientService.Infrastructure.Data;
 
 namespace Choice.ClientService.Infrastructure.Authentication

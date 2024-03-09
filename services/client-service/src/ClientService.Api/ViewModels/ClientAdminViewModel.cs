@@ -13,6 +13,7 @@ namespace Choice.ClientService.Api.ViewModels
             Email = client.Email;
             AverageGrade = client.AverageGrade;
             IconUri = client.IconUri;
+            PhoneNumber = client.PhoneNumber;
         }
 
         public int Id { get; }
@@ -22,5 +23,6 @@ namespace Choice.ClientService.Api.ViewModels
         public string Email { get; }
         public double AverageGrade { get; }
         public string IconUri { get; }
+        public string PhoneNumber { get; }
     }
 }

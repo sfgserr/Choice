@@ -1,5 +1,5 @@
-﻿using Choice.ClientService.Api.ViewModels;
-using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
+using Choice.ClientService.Api.ViewModels;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Domain.OrderRequests;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +10,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ClientController : Controller, IOutputPort
+    public sealed class ClientController : Controller, IOutputPort
     {
         private readonly ISendOrderRequestUseCase _useCase;
         private readonly Notification _notification;

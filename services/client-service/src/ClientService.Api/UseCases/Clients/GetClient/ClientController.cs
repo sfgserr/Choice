@@ -1,28 +1,28 @@
 ﻿using Choice.ClientService.Api.ViewModels;
-using Choice.ClientService.Application.UseCases.GetOrderRequests;
-using Choice.ClientService.Domain.OrderRequests;
+using Choice.ClientService.Application.UseCases.GetClient;
+using Choice.ClientService.Domain.ClientAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.ClientService.Api.UseCases.OrderRequests.GetOrderRequests
+namespace Choice.ClientService.Api.UseCases.Clients.GetClient
 {
     [ApiController]
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     public sealed class ClientController : Controller, IOutputPort
     {
-        private readonly IGetOrderRequestsUseCase _useCase;
+        private readonly IGetClientUseCase _useCase;
 
         private IActionResult _viewModel;
 
-        public ClientController(IGetOrderRequestsUseCase useCase)
+        public ClientController(IGetClientUseCase useCase)
         {
             _useCase = useCase;
         }
 
-        void IOutputPort.Ok(IList<OrderRequest> requests) 
+        void IOutputPort.Ok(Client client)
         {
-            _viewModel = Ok(requests.Select(r => new OrderRequestDetailsViewModel(r)));
+            _viewModel = Ok(new ClientAdminViewModel(client));
         }
 
         void IOutputPort.NotFound()
@@ -30,8 +30,8 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetOrderRequests
             _viewModel = NotFound();
         }
 
-        [HttpGet("GetOrderRequests")]
-        public async Task<IActionResult> GetOrderRequests()
+        [HttpGet("GetClient")]
+        public async Task<IActionResult> GetClient()
         {
             _useCase.SetOutputPort(this);
 

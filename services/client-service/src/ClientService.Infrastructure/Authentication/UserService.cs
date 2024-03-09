@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Application.Services;
+﻿using Choice.Application.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace Choice.ClientService.Infrastructure.Authentication

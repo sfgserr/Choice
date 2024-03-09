@@ -26,6 +26,13 @@ namespace Choice.Authentication.Models
         public string City { get; }
         public string Street { get; }
         public UserType UserType { get; }
+
+        public void ChangeData(string name, string email, string phoneNumber)
+        {
+            Name = name;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
     }
 
     public enum UserType

@@ -1,21 +1,26 @@
 ﻿using Choice.Application.Services;
 using Choice.ClientService.Domain.ClientAggregate;
 
-namespace Choice.ClientService.Application.UseCases.GetClientRequests
+namespace Choice.ClientService.Application.UseCases.GetClient
 {
-    public sealed class GetClientRequestsUseCase : IGetClientRequestsUseCase
+    public sealed class GetClientUseCase : IGetClientUseCase
     {
         private readonly IClientRepository _repository;
         private readonly IUserService _userService;
 
         private IOutputPort _outputPort;
 
-        public GetClientRequestsUseCase(IClientRepository repository, IUserService userService)
+        public GetClientUseCase(IClientRepository repository, IUserService userService)
         {
             _repository = repository;
             _userService = userService;
 
-            _outputPort = new GetClientRequestsPresenter();
+            _outputPort = new GetClientPresenter();
+        }
+
+        public void SetOutputPort(IOutputPort outpurPort)
+        {
+            _outputPort = outpurPort;
         }
 
         public async Task Execute()
@@ -30,12 +35,7 @@ namespace Choice.ClientService.Application.UseCases.GetClientRequests
                 return;
             }
 
-            _outputPort.Ok(client.Requests.ToList());
-        }
-
-        public void SetOutputPort(IOutputPort outputPort)
-        {
-            _outputPort = outputPort;
+            _outputPort.Ok(client);
         }
     }
 }
