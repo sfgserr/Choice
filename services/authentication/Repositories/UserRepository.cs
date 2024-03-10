@@ -1,8 +1,8 @@
-﻿using Choice.Authentication.Data;
-using Choice.Authentication.Models;
+﻿using Choice.Authentication.Api.Data;
+using Choice.Authentication.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Choice.Authentication.Repositories
+namespace Choice.Authentication.Api.Repositories
 {
     public class UserRepository : IUserRepository
     {

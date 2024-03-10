@@ -1,11 +1,11 @@
-using Choice.Authentication.Data;
-using Choice.Authentication.Repositories;
-using Choice.Authentication.Services;
+using Choice.Authentication.Api.Data;
+using Choice.Authentication.Api.Repositories;
+using Choice.Authentication.Api.Services;
 using Choice.Authentication;
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
 using Choice.EventBus.Messages.Common;
-using Choice.Authentication.Consumers;
+using Choice.Authentication.Api.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 

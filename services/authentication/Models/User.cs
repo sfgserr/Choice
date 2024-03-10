@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.Authentication.Models
+namespace Choice.Authentication.Api.Models
 {
     public class User
     {

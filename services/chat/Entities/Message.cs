@@ -1,4 +1,4 @@
-﻿namespace Choice.Chat.Entities
+﻿namespace Choice.Chat.Api.Entities
 {
     public class Message
     {

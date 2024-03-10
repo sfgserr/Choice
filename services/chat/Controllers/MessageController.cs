@@ -6,7 +6,7 @@ using System.Security.Claims;
 using Choice.Chat.Repositories;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Choice.Chat.Controllers
+namespace Choice.Chat.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

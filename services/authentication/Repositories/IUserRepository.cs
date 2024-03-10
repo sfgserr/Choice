@@ -1,6 +1,6 @@
-﻿using Choice.Authentication.Models;
+﻿using Choice.Authentication.Api.Models;
 
-namespace Choice.Authentication.Repositories
+namespace Choice.Authentication.Api.Repositories
 {
     public interface IUserRepository
     {

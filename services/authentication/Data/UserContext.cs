@@ -1,8 +1,8 @@
-﻿using Choice.Authentication.EntityConfigurations;
-using Choice.Authentication.Models;
+﻿using Choice.Authentication.Api.EntityConfigurations;
+using Choice.Authentication.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Choice.Authentication.Data
+namespace Choice.Authentication.Api.Data
 {
     public class UserContext : DbContext
     {

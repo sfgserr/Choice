@@ -1,8 +1,8 @@
-﻿using Choice.Authentication.Models;
+﻿using Choice.Authentication.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Choice.Authentication.EntityConfigurations
+namespace Choice.Authentication.Api.EntityConfigurations
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {

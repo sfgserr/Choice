@@ -1,5 +1,5 @@
-﻿using Choice.Authentication.Models;
-using Choice.Authentication.Repositories;
+﻿using Choice.Authentication.Api.Models;
+using Choice.Authentication.Api.Repositories;
 
 namespace Choice.Authentication
 {

@@ -84,6 +84,9 @@ namespace Choice.Ordering.Api
                     };
                 });
 
+            builder.Services.AddAuthorization(o =>
+                o.AddPolicy("Company", policy => policy.RequireClaim("address")));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

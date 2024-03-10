@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Api", "services\or
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Messages", "services\event-bus-messages\EventBus.Messages.csproj", "{ABC20C24-9993-4984-A022-1F1D6ADD63C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "services\chat\Chat.csproj", "{06DC1474-1607-4E61-970F-53B209989ABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Api", "services\chat\Chat.Api.csproj", "{06DC1474-1607-4E61-970F-53B209989ABF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "services\authentication\Authentication.csproj", "{C9E1BDE4-BA9C-4C5B-8C60-02E8A8DB4613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Api", "services\authentication\Authentication.Api.csproj", "{C9E1BDE4-BA9C-4C5B-8C60-02E8A8DB4613}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientService.Domain", "services\client-service\src\ClientService.Domain\ClientService.Domain.csproj", "{C4458E1D-E20B-47D8-B138-AC550514AF6E}"
 EndProject
@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "services\common\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "services\common\Application\Application.csproj", "{4C0E17B6-1AC9-4FFF-BCE3-EDF44E45A406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "services\common\Infrastructure\Infrastructure.csproj", "{EC28CCAB-FE1C-42FC-95B5-533E5374DDA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "services\common\Infrastructure\Infrastructure.csproj", "{EC28CCAB-FE1C-42FC-95B5-533E5374DDA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewService.Api", "services\reviews\Review.Api\ReviewService.Api.csproj", "{0ECAC554-11A4-41E3-9881-9032BFA6E848}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{EC28CCAB-FE1C-42FC-95B5-533E5374DDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC28CCAB-FE1C-42FC-95B5-533E5374DDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC28CCAB-FE1C-42FC-95B5-533E5374DDA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ECAC554-11A4-41E3-9881-9032BFA6E848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ECAC554-11A4-41E3-9881-9032BFA6E848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ECAC554-11A4-41E3-9881-9032BFA6E848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ECAC554-11A4-41E3-9881-9032BFA6E848}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

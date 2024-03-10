@@ -1,6 +1,6 @@
-﻿using Choice.Authentication.Models;
+﻿using Choice.Authentication.Api.Models;
 
-namespace Choice.Authentication.Services
+namespace Choice.Authentication.Api.Services
 {
     public interface ITokenService
     {

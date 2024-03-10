@@ -21,12 +21,12 @@ namespace Choice.ClientService.IntegrationalTests.GeolocationTests
 
             AddressService addressService = provider.GetRequiredService<AddressService>();
 
-            Address address1 = new("Арбат 26", "Москва");
+            Address address1 = new("Береговая 26", "Магадан");
             Address address2 = new("Ангарская 21", "Москва");
 
             int distance = await addressService.GetDistance(address1, address2);
 
-            Assert.Equal(20616, distance);
+            Assert.Equal(10154831, distance);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Choice.Chat.Hubs;
+﻿using Choice.Chat.Api.Hubs;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Choice.Chat.Consumers
+namespace Choice.Chat.Api.Consumers
 {
     public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
     {

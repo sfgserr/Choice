@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using Polly;
 
-namespace Chat.Extensions
+namespace Choice.Chat.Api.Extensions
 {
     public static class Extensions
     {

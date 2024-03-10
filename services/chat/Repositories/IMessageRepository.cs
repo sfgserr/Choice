@@ -1,6 +1,6 @@
-﻿using Choice.Chat.Entities;
+﻿using Choice.Chat.Api.Entities;
 
-namespace Choice.Chat.Repositories
+namespace Choice.Chat.Api.Repositories
 {
     public interface IMessageRepository
     {

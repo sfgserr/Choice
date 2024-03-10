@@ -1,11 +1,11 @@
-﻿using Choice.Authentication.Models;
-using Choice.Authentication.Repositories;
-using Choice.Authentication.Services;
+﻿using Choice.Authentication.Api.Models;
+using Choice.Authentication.Api.Repositories;
+using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.Authentication.Controllers
+namespace Choice.Authentication.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

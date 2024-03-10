@@ -10,7 +10,7 @@ namespace Choice.Ordering.Api.UseCases.CreateOrder
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize("Company")]
     public sealed class OrderController : Controller, IOutputPort 
     {
         private readonly ICreateOrderUseCase _useCase;

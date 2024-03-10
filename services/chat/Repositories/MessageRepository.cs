@@ -1,8 +1,8 @@
-﻿using Choice.Chat.Entities;
+﻿using Choice.Chat.Api.Entities;
 using Dapper;
 using Npgsql;
 
-namespace Choice.Chat.Repositories
+namespace Choice.Chat.Api.Repositories
 {
     public sealed class MessageRepository : IMessageRepository
     {

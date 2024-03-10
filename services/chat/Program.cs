@@ -1,7 +1,7 @@
-using Chat.Extensions;
-using Choice.Chat.Consumers;
-using Choice.Chat.Hubs;
-using Choice.Chat.Repositories;
+using Choice.Chat.Api.Extensions;
+using Choice.Chat.Api.Consumers;
+using Choice.Chat.Api.Hubs;
+using Choice.Chat.Api.Repositories;
 using Choice.EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Choice.Chat
+namespace Choice.Chat.Api
 {
     public class Program
     {

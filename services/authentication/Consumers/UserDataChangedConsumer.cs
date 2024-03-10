@@ -1,9 +1,9 @@
-﻿using Choice.Authentication.Models;
-using Choice.Authentication.Repositories;
+﻿using Choice.Authentication.Api.Models;
+using Choice.Authentication.Api.Repositories;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 
-namespace Choice.Authentication.Consumers
+namespace Choice.Authentication.Api.Consumers
 {
     public class UserDataChangedConsumer : IConsumer<UserDataChangedEvent>
     {
