@@ -1,7 +1,9 @@
-﻿namespace Choice.Authentication.Services
+﻿using Choice.Authentication.Models;
+
+namespace Choice.Authentication.Services
 {
     public interface ITokenService
     {
-        string GenerateToken(string userId, string key, string issuer, string audience);
+        string GenerateToken(User user, string key, string issuer, string audience);
     }
 }

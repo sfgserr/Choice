@@ -1,4 +1,5 @@
-﻿using Choice.Authentication.Models;
+﻿using Choice.Authentication.EntityConfigurations;
+using Choice.Authentication.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Choice.Authentication.Data
@@ -12,8 +13,7 @@ namespace Choice.Authentication.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                        .HasKey(u => u.Id);
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

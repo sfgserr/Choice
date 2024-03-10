@@ -8,6 +8,7 @@ using Choice.ClientService.Application.UseCases.GetClients;
 using Choice.ClientService.Application.UseCases.GetOrderRequests;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Domain.ClientAggregate;
+using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
 using Choice.ClientService.Infrastructure.Data.Repositories;
 using Choice.ClientService.Infrastructure.Geolocation;
@@ -85,7 +86,11 @@ namespace Choice.ClientService.Api
                     };
                 });
 
+            builder.Services.AddAuthorization(o =>
+                o.AddPolicy("Company", policy => policy.RequireClaim("address")));
+
             builder.Services.AddHttpClient();
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
             builder.Services.AddScoped<IAddressService, AddressService>(s =>
                 new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GeoapifySettings:ApiKey"])));
             builder.Services.AddDbContext<ClientContext>(o =>

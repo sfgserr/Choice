@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Choice.ClientService.Api.UseCases.OrderRequests.GetOrderRequests
 {
     [ApiController]
-    [Authorize]
+    [Authorize("Company")]
     [Route("api/[controller]")]
     public sealed class ClientController : Controller, IOutputPort
     {

@@ -44,7 +44,7 @@ namespace Choice.ClientService.Infrastructure.Data.Repositories
 
         public async Task<IList<OrderRequest>> GetRequests()
         {
-            return await _context.Requests.ToListAsync();
+            return await _context.Requests.Include(r => r.Client).ToListAsync();
         }
 
         public void Update(Client client)

@@ -23,9 +23,9 @@ namespace Choice.Authentication.Models
         public string Name { get; private set; }
         public string Password { get; private set; }
         public string PhoneNumber { get; private set; }
-        public string City { get; }
-        public string Street { get; }
-        public UserType UserType { get; }
+        public string City { get; private set; }
+        public string Street { get; private set; }
+        public UserType UserType { get; private set; }
 
         public void ChangeData(string name, string email, string phoneNumber)
         {

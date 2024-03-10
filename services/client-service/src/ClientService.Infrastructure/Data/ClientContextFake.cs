@@ -1,5 +1,6 @@
 ﻿using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Domain.OrderRequests;
+using Choice.Infrastructure.Data;
 
 namespace Choice.ClientService.Infrastructure.Data
 {

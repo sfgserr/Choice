@@ -8,35 +8,27 @@ namespace Choice.ClientService.Application.UseCases.GetOrderRequests
     public sealed class GetOrderRequestsUseCase : IGetOrderRequestsUseCase
     {
         private readonly IAddressService _addressService;
-        private readonly IUserService _userService;
+        private readonly ICompanyService _companyService;
         private readonly IClientRepository _repository;
 
         private IOutputPort _outputPort;
 
-        public GetOrderRequestsUseCase(IAddressService addressService, IClientRepository repository, IUserService userService)
+        public GetOrderRequestsUseCase(IAddressService addressService, IClientRepository repository, ICompanyService companyService)
         {
             _addressService = addressService;
             _repository = repository;
-            _userService = userService;
+            _companyService = companyService;
 
             _outputPort = new GetOrderRequestsPresenter();
         }
 
         public async Task Execute()
         {
-            string id = _userService.GetUserId();
-
-            Client client = await _repository.Get(id);
-
-            if (client is null)
-            {
-                _outputPort.NotFound();
-                return;
-            }
+            Address address = _companyService.GetAddress();
 
             IList<OrderRequest> requests = await _repository.GetRequests();
 
-            IList<OrderRequest> requestsInRadius = await GetRequests(client.Address, requests);
+            IList<OrderRequest> requestsInRadius = await GetRequests(address, requests);
 
             if (requestsInRadius.Count == 0)
             {

@@ -13,6 +13,8 @@ namespace Choice.ClientService.Api.ViewModels
             ToKnowPrice = request.ToKnowPrice;
             ToKnowDeadline = request.ToKnowDeadline;
             ToKnowEnrollmentDate = request.ToKnowEnrollmentDate;
+            SearchRadius = request.SearchRadius;
+            Status = request.Status;    
         }
 
         public int Id { get; }
@@ -22,6 +24,7 @@ namespace Choice.ClientService.Api.ViewModels
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }
         public bool ToKnowEnrollmentDate { get; private set; }
-        public OrderStatus Status { get; private set; } = OrderStatus.Active;
+        public int SearchRadius { get; private set; }
+        public OrderStatus Status { get; private set; }
     }
 }

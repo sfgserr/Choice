@@ -1,10 +1,8 @@
-using Choice.Ordering.Application.Services;
 using Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate;
 using Choice.Ordering.Application.UseCases.CreateOrder;
 using Choice.Ordering.Application.UseCases.Enroll;
 using Choice.Ordering.Application.UseCases.FinishOrder;
 using Choice.Ordering.Domain.OrderEntity;
-using Choice.Ordering.Infrastructure.Authentication;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
 using MassTransit;

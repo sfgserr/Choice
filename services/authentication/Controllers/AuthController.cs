@@ -40,10 +40,10 @@ namespace Choice.Authentication.Controllers
             }
 
             string token = _tokenService.GenerateToken
-                (user.Id.ToString(),
-                _configuration["JwtSettings:Key"]!,
-                _configuration["JwtSettings:Issuer"]!,
-                _configuration["JwtSettings:Audience"]!);
+                (user,
+                 _configuration["JwtSettings:Key"]!,
+                 _configuration["JwtSettings:Issuer"]!,
+                 _configuration["JwtSettings:Audience"]!);
 
             return Ok(token);
         }

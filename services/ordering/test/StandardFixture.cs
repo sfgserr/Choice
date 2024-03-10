@@ -1,5 +1,4 @@
 ﻿using Choice.Infrastructure.Data;
-using Choice.Ordering.Infrastructure.Authentication;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
 using Infrastructure.Authentication;
