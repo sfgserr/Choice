@@ -1,9 +1,9 @@
-﻿using Choice.Chat.Entities;
-using Choice.Chat.Hubs;
+﻿using Choice.Chat.Api.Entities;
+using Choice.Chat.Api.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
-using Choice.Chat.Repositories;
+using Choice.Chat.Api.Repositories;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Choice.Chat.Api.Controllers

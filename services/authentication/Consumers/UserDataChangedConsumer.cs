@@ -20,7 +20,7 @@ namespace Choice.Authentication.Api.Consumers
 
             User user = await _repository.Get(@event.Guid);
 
-            user.ChangeData(@event.Name, @event.Email, @event.PhoneNumber);
+            user.ChangeData(@event.Name, @event.Email, @event.PhoneNumber, @event.IconUri);
 
             await _repository.Update(user);
         }

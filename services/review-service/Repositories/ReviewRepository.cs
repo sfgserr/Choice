@@ -1,6 +1,6 @@
 ﻿using Choice.ReviewService.Api.Entities;
-using Choice.ReviewService.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Choice.ReviewService.Api.Infrastructure.Data;
 
 namespace Choice.ReviewService.Api.Repositories
 {

@@ -49,7 +49,7 @@ namespace Choice.Authentication.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(string email, string name, string surname, string password,
+        public async Task<IActionResult> Register(string email, string name, string password,
             string street, string city, string phoneNumber, UserType type)
         {
             Dictionary<string, string[]> errorMessages = new();
@@ -58,17 +58,14 @@ namespace Choice.Authentication.Api.Controllers
 
             if (existUser != null)
             {
-                errorMessages.Add(nameof(existUser), new[] { "Email already in use" });
+                errorMessages.Add(nameof(email), new[] { "Email already in use" });
             }
 
             existUser = await _repository.GetByPhoneNumber(phoneNumber);
 
             if (existUser != null)
             {
-                if (errorMessages.TryGetValue(nameof(existUser), out string[] messages))
-                    errorMessages[nameof(existUser)][1] = "Phone number already in user";
-                else
-                    errorMessages.Add(nameof(existUser), new[] { "Phone already in use" });
+                errorMessages.Add(nameof(phoneNumber), new[] { "Phone already in use" });
             }
 
             if (errorMessages.Count > 0)
@@ -77,18 +74,18 @@ namespace Choice.Authentication.Api.Controllers
                 return BadRequest(problemDetails);
             }
 
-            User user = new(Guid.NewGuid(), email, password, $"{surname} {name}", phoneNumber, city, street, type);
+            User user = new(Guid.NewGuid(), email, password, name, phoneNumber, city, street, type);
 
             await _repository.Add(user);
 
             await _endPoint.Publish<UserCreatedEvent>(new
                 (user.Id.ToString(),
-                 name,
-                 surname,
+                 user.Name,
                  user.Email,
                  user.City,
                  user.Street,
                  user.PhoneNumber,
+                 user.IconUri,
                  user.UserType.ToString()));
 
             return Ok(user);

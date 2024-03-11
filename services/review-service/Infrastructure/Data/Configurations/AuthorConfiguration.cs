@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Choice.ReviewService.Api.Infrastructure.Configurations
+namespace Choice.ReviewService.Api.Infrastructure.Data.Configurations
 {
     public class AuthorConfiguration : IEntityTypeConfiguration<Author>
     {

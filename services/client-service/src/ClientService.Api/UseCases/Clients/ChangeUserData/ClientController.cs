@@ -31,7 +31,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
         {
             _viewModel = Ok(new ClientAdminViewModel(client));
             _endPoint.Publish<UserDataChangedEvent>(new
-                (client.Guid, $"{client.Surname} {client.Name}", client.Email, client.PhoneNumber));
+                (client.Guid, $"{client.Surname} {client.Name}", client.Email, client.PhoneNumber, client.IconUri));
         }
 
         void IOutputPort.NotFound()

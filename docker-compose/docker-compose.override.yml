@@ -48,6 +48,16 @@ services:
       - "8082:8082"
     depends_on:
       - authentication-db
+  review-service:
+    environment:
+      - ASPNETCORE_URLS=http://+:8084
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+    ports:
+      - "8084:8084"
+    depends_on:
+      - rabbitmq
+      - review-service-db
   rabbitmq:
     restart: always
     ports:
@@ -71,6 +81,12 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1633:1433"
+  review-service-db:
+    environment:
+      SA_PASSWORD: "S3cur3P@ssW0rd!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1733:1433"
   chat-db:
     environment:
       POSTGRES_PASSWORD: Pass129598

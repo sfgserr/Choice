@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Choice.ReviewService.Api.Entities;
-using Choice.ReviewService.Api.Infrastructure.Configurations;
+using Choice.ReviewService.Api.Infrastructure.Data.Configurations;
 
-namespace Choice.ReviewService.Api.Infrastructure
+namespace Choice.ReviewService.Api.Infrastructure.Data
 {
     public class ReviewContext : DbContext
     {
@@ -18,6 +18,6 @@ namespace Choice.ReviewService.Api.Infrastructure
         }
 
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Review> Reviews { get; set; }  
+        public DbSet<Review> Reviews { get; set; }
     }
 }

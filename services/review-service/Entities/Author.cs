@@ -12,5 +12,11 @@
         public string Guid { get; }
         public string Name { get; private set; }
         public string IconUri { get; private set; }
+
+        public void ChangeData(string name, string iconUri)
+        {
+            Name = name;
+            IconUri = iconUri;
+        }
     }
 }

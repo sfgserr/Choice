@@ -13,6 +13,7 @@ namespace Choice.Authentication.Api.Models
             PhoneNumber = phoneNumber;
             City = city;
             Street = street;
+            IconUri = "defaulturi";
             UserType = userType;
         }
 
@@ -25,13 +26,15 @@ namespace Choice.Authentication.Api.Models
         public string PhoneNumber { get; private set; }
         public string City { get; private set; }
         public string Street { get; private set; }
+        public string IconUri { get; private set; }
         public UserType UserType { get; private set; }
 
-        public void ChangeData(string name, string email, string phoneNumber)
+        public void ChangeData(string name, string email, string phoneNumber, string iconUri)
         {
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
+            IconUri = iconUri;
         }
     }
 

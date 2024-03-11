@@ -23,11 +23,13 @@ namespace Choice.ClientService.Api.Consumers
             if (@event.UserType == "Company")
                 return;
 
+            string[] name = @event.Name.Split(' ');
+
             Client client = new
                 (@event.UserGuid.ToString(),
-                 @event.Name, 
-                 @event.Surname, 
-                 @event.Email, 
+                 name[0],
+                 name[1],
+                 @event.Email,
                  new(@event.Street, @event.City),
                  "defaulturi",
                  @event.PhoneNumber);

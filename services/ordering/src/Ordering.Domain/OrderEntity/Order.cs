@@ -24,6 +24,7 @@ namespace Choice.Ordering.Domain.OrderEntity
         public int Deadline { get; private set; }
         public bool IsEnrolled { get; private set; } = false;
         public DateTime EnrollmentDate { get; private set; }
+        public string[] Reviews { get; private set; } = new string[2];
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
 
         public void SetEnrollmentDate(DateTime newDate) =>

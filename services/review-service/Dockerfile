@@ -8,17 +8,17 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["services/chat/Chat.Api.csproj", "services/chat/"]
+COPY ["services/review-service/ReviewService.Api.csproj", "services/review-service/"]
 COPY ["services/event-bus-messages/EventBus.Messages.csproj", "services/event-bus-messages/"]
-RUN dotnet restore "services/chat/Chat.Api.csproj"
+RUN dotnet restore "services/review-service/ReviewService.Api.csproj"
 COPY . .
-WORKDIR "/src/services/chat"
-RUN dotnet build "Chat.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/services/review-service"
+RUN dotnet build "ReviewService.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Chat.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ReviewService.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Chat.Api.dll"]
+ENTRYPOINT ["dotnet", "ReviewService.Api.dll"]
