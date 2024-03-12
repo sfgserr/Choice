@@ -5,11 +5,11 @@ using MassTransit;
 
 namespace Choice.ReviewService.Api.Consumers
 {
-    public class UserCreatedConsumer : IConsumer<UserCreatedEvent>
+    public class AuthorCreatedConsumer : IConsumer<UserCreatedEvent>
     {
         private readonly ReviewContext _context;
 
-        public UserCreatedConsumer(ReviewContext context)
+        public AuthorCreatedConsumer(ReviewContext context)
         {
             _context = context;
         }

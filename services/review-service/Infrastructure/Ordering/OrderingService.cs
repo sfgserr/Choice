@@ -21,9 +21,9 @@ namespace Choice.ReviewService.Api.Infrastructure.Ordering
 
         private async Task<IList<Order>> GetOrders(string guid)
         {
-            HttpClient client = _factory.CreateClient("Client");
+            HttpClient client = _factory.CreateClient("Ordering");
 
-            HttpResponseMessage response = await client.GetAsync($"/api/Order/GetOrders?guid={guid}");
+            HttpResponseMessage response = await client.GetAsync($"/GetOrders?guid={guid}");
 
             string json = await response.Content.ReadAsStringAsync();
 

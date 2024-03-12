@@ -1,6 +1,7 @@
 ﻿using Choice.ReviewService.Api.Entities;
 using Choice.ReviewService.Api.Infrastructure.Ordering;
 using Choice.ReviewService.Api.Repositories;
+using Choice.ReviewService.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,16 +25,24 @@ namespace Choice.ReviewService.Api.Controllers
         }
 
         [HttpPost("Send")]
-        public async Task<IActionResult> SendReview(string guid, string text, int grade, List<string> photoUris)
+        public async Task<IActionResult> SendReview(CreateReviewViewModel viewModel)
         {
             string id = _context.HttpContext?.User.FindFirst("id")?.Value!;
+
+            if (id == viewModel.Guid)
+                return BadRequest();
 
             bool canSendReview = await _orderingService.CanSendReview(id);
 
             if (!canSendReview)
                 return BadRequest();
 
-            Review review = new(id, guid, photoUris, text, grade);
+            Review review = new
+                (id,
+                 viewModel.Guid,
+                 viewModel.PhotoUris, 
+                 viewModel.Text, 
+                 viewModel.Grade);
 
             await _repository.Add(review);
 

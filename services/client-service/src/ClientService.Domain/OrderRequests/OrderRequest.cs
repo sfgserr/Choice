@@ -5,7 +5,7 @@ namespace Choice.ClientService.Domain.OrderRequests
 {
     public class OrderRequest : Entity
     {
-        public OrderRequest(int clientId, List<string> categories, string description,
+        public OrderRequest(int clientId, List<int> categories, string description,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius)
         {
             ClientId = clientId;
@@ -19,7 +19,7 @@ namespace Choice.ClientService.Domain.OrderRequests
 
         public int ClientId { get; }
         public Client? Client { get; set; }
-        public List<string> Categories { get; private set; }
+        public List<int> Categories { get; private set; }
         public string Description { get; private set; }
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }

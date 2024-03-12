@@ -17,7 +17,7 @@ namespace Choice.ClientService.Api.ViewModels
         }
 
         public int Id { get; }
-        public List<string> Categories { get; private set; }
+        public List<int> Categories { get; private set; }
         public string Description { get; private set; }
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }

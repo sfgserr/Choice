@@ -2,6 +2,7 @@ using Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate;
 using Choice.Ordering.Application.UseCases.CreateOrder;
 using Choice.Ordering.Application.UseCases.Enroll;
 using Choice.Ordering.Application.UseCases.FinishOrder;
+using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
@@ -9,12 +10,12 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Ordering.Application.UseCases.CancelEnrollment;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Application.Services;
 using Choice.Infrastructure.Data;
 using Choice.Infrastructure.Authentication;
+using System.Security.Claims;
 
 namespace Choice.Ordering.Api
 {
@@ -85,7 +86,10 @@ namespace Choice.Ordering.Api
                 });
 
             builder.Services.AddAuthorization(o =>
-                o.AddPolicy("Company", policy => policy.RequireClaim("address")));
+            {
+                o.AddPolicy("Company", policy => policy.RequireClaim("address"));
+                o.AddPolicy("Client", policy => policy.RequireClaim(ClaimTypes.Email));
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

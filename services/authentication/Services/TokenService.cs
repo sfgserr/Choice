@@ -1,6 +1,7 @@
 ﻿using Choice.Authentication.Api.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Choice.Authentication.Api.Services
@@ -25,6 +26,8 @@ namespace Choice.Authentication.Api.Services
 
             if (user.UserType == UserType.Company)
                 securityTokenDescriptor.Claims.Add(nameof(address), address);
+            else
+                securityTokenDescriptor.Claims.Add(ClaimTypes.Email, user.Email);
 
             var token = tokenHandler.CreateToken(securityTokenDescriptor);
 

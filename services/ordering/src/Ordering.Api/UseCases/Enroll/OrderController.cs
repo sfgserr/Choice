@@ -10,7 +10,7 @@ namespace Choice.Ordering.Api.UseCases.Enroll
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize("Client")]
     public sealed class OrderController : Controller, IOutputPort
     {
         private readonly IEnrollUseCase _useCase;

@@ -5,7 +5,6 @@ using Choice.Ordering.Domain.OrderEntity;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Ordering.Application.UseCases.CancelEnrollment;
 
 namespace Choice.Ordering.Api.UseCases.CancelEnrollment
 {
@@ -47,7 +46,7 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
                  order.ReceiverId));
         }
 
-        [HttpPut("CancelEnrollment")]
+        [HttpPut("Cancel")]
         public async Task<IActionResult> CancelEnrollment(int orderId)
         {
             _useCase.SetOutputPort(this);

@@ -21,7 +21,7 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             _outputPort = new SendOrderRequestPresenter();
         }
 
-        public async Task Execute(string description, List<string> categories, int searchRadius,
+        public async Task Execute(string description, List<int> categories, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             string id = _userService.GetUserId();

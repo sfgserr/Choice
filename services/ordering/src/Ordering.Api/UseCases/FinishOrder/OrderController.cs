@@ -46,7 +46,7 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
             _viewModel = BadRequest(problemDetails);
         }
 
-        [HttpPut("FinishOrder")]
+        [HttpPut("Finish")]
         public async Task<IActionResult> FinishOrder(int orderId)
         {
             _useCase.SetOutputPort(this);

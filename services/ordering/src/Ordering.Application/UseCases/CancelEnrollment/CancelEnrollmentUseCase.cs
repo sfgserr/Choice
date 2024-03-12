@@ -1,8 +1,7 @@
 ﻿using Choice.Application.Services;
-using Choice.Ordering.Application.UseCases.CancelEnrollment;
 using Choice.Ordering.Domain.OrderEntity;
 
-namespace Ordering.Application.UseCases.CancelEnrollment
+namespace Choice.Ordering.Application.UseCases.CancelEnrollment
 {
     public class CancelEnrollmentUseCase : ICancelEnrollmentUseCase
     {
@@ -39,6 +38,12 @@ namespace Ordering.Application.UseCases.CancelEnrollment
             if (!order.IsEnrolled)
             {
                 _notification.Add(nameof(order), "You are not enrolled yet");
+            }
+
+            if (_notification.IsInvalid)
+            {
+                _outputPort.Invalid();
+                return;
             }
 
             await CancelEnrollment(order);

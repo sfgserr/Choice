@@ -3,11 +3,12 @@ namespace Choice.EventBus.Messages.Common
 {
     public static class EventBusConstants
     {
-        public const string OrderCreatedQueue = "ordercreated-queue";
-        public const string OrderChangedQueue = "orderchanged-queue";
-        public const string UserDataChangedQueue = "userdatachanged-queue";
-        public const string OrderStatusChangedQueue = "orderstatuschanged-queue";
-        public const string UserCreatedQueue = "usercreated-queue";
-        public const string ReviewLeftQueue = "reviewleft-queue";
+        public const string OrderCreatedQueue = "ordering.order.created";
+        public const string OrderChangedQueue = "ordering.order.changed";
+        public const string UserDataChangedQueue = "auth-service.user.changed";
+        public const string OrderStatusChangedQueue = "ordering.order.status.changed";
+        public const string UserCreatedQueue = "auth-service.user.created";
+        public const string AuthorCreatedQueue = "auth-service.author.created";
+        public const string ReviewLeftQueue = "review-service.review.left";
     }
 }

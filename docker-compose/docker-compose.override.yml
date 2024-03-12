@@ -53,6 +53,7 @@ services:
       - ASPNETCORE_URLS=http://+:8084
       - ASPNETCORE_ENVIRONMENT=Development
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "OrderingSettings:Url=http://ordering:8080/api/Order"
     ports:
       - "8084:8084"
     depends_on:

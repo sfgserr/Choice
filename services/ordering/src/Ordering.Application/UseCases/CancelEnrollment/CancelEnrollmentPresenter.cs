@@ -1,7 +1,6 @@
-﻿using Choice.Ordering.Application.UseCases.CancelEnrollment;
-using Choice.Ordering.Domain.OrderEntity;
+﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Ordering.Application.UseCases.CancelEnrollment
+namespace Choice.Ordering.Application.UseCases.CancelEnrollment
 {
     public class CancelEnrollmentPresenter : IOutputPort
     {

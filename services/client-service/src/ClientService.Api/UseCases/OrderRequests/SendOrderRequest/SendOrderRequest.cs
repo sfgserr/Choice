@@ -2,7 +2,7 @@
 {
     public record SendOrderRequest
     {
-        public SendOrderRequest(string description, List<string> categories, int searchRadius,
+        public SendOrderRequest(string description, List<int> categories, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             Description = description;
@@ -14,7 +14,7 @@
         }
 
         public string Description { get; }
-        public List<string> Categories { get; }
+        public List<int> Categories { get; }
         public int SearchRadius { get; }
         public bool ToKnowPrice { get; }
         public bool ToKnowDeadline { get; }

@@ -20,6 +20,7 @@ namespace Choice.ReviewService.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IOrderingService, OrderingService>();
             builder.Services.AddDbContext<ReviewContext>(o => 
@@ -28,14 +29,14 @@ namespace Choice.ReviewService.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddMassTransit(config =>
             {
-                config.AddConsumer<UserCreatedConsumer>();
+                config.AddConsumer<AuthorCreatedConsumer>();
                 config.AddConsumer<UserDataChangedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 
-                    cfg.ReceiveEndpoint(EventBusConstants.UserCreatedQueue, c => {
-                        c.ConfigureConsumer<UserCreatedConsumer>(ctx);
+                    cfg.ReceiveEndpoint(EventBusConstants.AuthorCreatedQueue, c => {
+                        c.ConfigureConsumer<AuthorCreatedConsumer>(ctx);
                     });
                     cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c =>
                     {
@@ -44,7 +45,8 @@ namespace Choice.ReviewService.Api
                 });
             });
 
-            builder.Services.AddHttpClient("Client", o => o.BaseAddress = new("http://localhost"));
+            builder.Services.AddHttpClient("Ordering", o => 
+                o.BaseAddress = new(builder.Configuration["OrderingSettings:Url"]));
 
             string issuerKey = builder.Configuration["JwtSettings:Key"]!;
 
