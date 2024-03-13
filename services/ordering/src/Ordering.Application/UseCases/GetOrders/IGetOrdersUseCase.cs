@@ -2,7 +2,7 @@
 {
     public interface IGetOrdersUseCase
     {
-        Task Execute(string guid);
+        Task Execute();
 
         void SetOutputPort(IOutputPort outputPort);
     }

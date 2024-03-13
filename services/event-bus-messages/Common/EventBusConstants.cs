@@ -9,6 +9,7 @@ namespace Choice.EventBus.Messages.Common
         public const string OrderStatusChangedQueue = "ordering.order.status.changed";
         public const string UserCreatedQueue = "auth-service.user.created";
         public const string AuthorCreatedQueue = "auth-service.author.created";
-        public const string ReviewLeftQueue = "review-service.review.left";
+        public const string ReviewAddedToOrderQueue = "review-service.order.review.added";
+        public const string AverageGradeChangedQueue = "review-service.client.averagegrade.changed";
     }
 }

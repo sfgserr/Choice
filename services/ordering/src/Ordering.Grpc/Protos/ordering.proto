@@ -1,18 +1,16 @@
 syntax = "proto3";
 
-option csharp_namespace = "Ordering.Grpc";
-
-package ordering;
-
+option csharp_namespace = "Choice.Ordering.Grpc.Protos";
 
 service OrderingProtoService {
-  rpc CanSendReview (CanSendReviewRequest) returns (CanSendReviewResponse);
-}
-
-message CanSendReviewRequest {
-  string guid = 1;
+	rpc CanSendReview(CanSendReviewRequest) returns (CanSendReviewResponse);
 }
 
 message CanSendReviewResponse {
-	bool value = 1;
+	int32 id = 1;
+	bool result = 2;
+}
+
+message CanSendReviewRequest {
+	string guid = 1;
 }

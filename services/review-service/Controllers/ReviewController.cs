@@ -1,9 +1,12 @@
-﻿using Choice.ReviewService.Api.Entities;
-using Choice.ReviewService.Api.Infrastructure.Ordering;
+﻿using Choice.EventBus.Messages.Events;
+using Choice.ReviewService.Api.Entities;
 using Choice.ReviewService.Api.Repositories;
 using Choice.ReviewService.Api.ViewModels;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Choice.ReviewService.Api.Services;
+using Choice.Ordering.Grpc.Protos;
 
 namespace Choice.ReviewService.Api.Controllers
 {
@@ -13,15 +16,17 @@ namespace Choice.ReviewService.Api.Controllers
     public class ReviewController : Controller
     {
         private readonly IReviewRepository _repository;
-        private readonly IOrderingService _orderingService;
+        private readonly OrderingService _orderingService;
         private readonly IHttpContextAccessor _context;
+        private readonly IPublishEndpoint _endPoint;
 
         public ReviewController(IReviewRepository repository, IHttpContextAccessor context,
-            IOrderingService orderingService)
+            OrderingService orderingService, IPublishEndpoint endPoint)
         {
             _repository = repository;
             _context = context;
             _orderingService = orderingService;
+            _endPoint = endPoint;
         }
 
         [HttpPost("Send")]
@@ -32,9 +37,9 @@ namespace Choice.ReviewService.Api.Controllers
             if (id == viewModel.Guid)
                 return BadRequest();
 
-            bool canSendReview = await _orderingService.CanSendReview(id);
+            CanSendReviewResponse response = await _orderingService.CanSendReview(viewModel.Guid);
 
-            if (!canSendReview)
+            if (!response.Result)
                 return BadRequest();
 
             Review review = new
@@ -45,6 +50,8 @@ namespace Choice.ReviewService.Api.Controllers
                  viewModel.Grade);
 
             await _repository.Add(review);
+
+            await _endPoint.Publish(new ReviewLeftEvent(response.Id, id, viewModel.Grade));
 
             return Ok(review);
         }

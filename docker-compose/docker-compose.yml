@@ -24,6 +24,12 @@ services:
     build:
       context: ../
       dockerfile: services/ordering/src/Ordering.Api/Dockerfile
+  ordering-grpc:
+    container_name: "ordering-grpc"
+    image: ordering-grpc
+    build:
+      context: ../
+      dockerfile: services/ordering/src/Ordering.Grpc/Dockerfile
   review-service:
     container_name: "review-service"
     image: review-service

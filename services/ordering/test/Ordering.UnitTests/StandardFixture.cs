@@ -1,7 +1,7 @@
 ﻿using Choice.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
-using Infrastructure.Authentication;
+using Choice.Infrastructure.Authentication;
 
 namespace Choice.Ordering.UnitTests
 {

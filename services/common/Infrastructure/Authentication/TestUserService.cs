@@ -1,7 +1,7 @@
 ﻿using Choice.Application.Services;
 using Choice.Infrastructure.Data;
 
-namespace Infrastructure.Authentication
+namespace Choice.Infrastructure.Authentication
 {
     public sealed class TestUserService : IUserService
     {

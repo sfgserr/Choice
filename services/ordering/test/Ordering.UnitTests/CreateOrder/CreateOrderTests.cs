@@ -1,5 +1,4 @@
 ﻿using Choice.Ordering.Application.UseCases.CreateOrder;
-using Ordering.UnitTests.CreateOrder;
 
 namespace Choice.Ordering.UnitTests.CreateOrder
 {

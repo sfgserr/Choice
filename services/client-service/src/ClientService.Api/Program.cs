@@ -58,7 +58,7 @@ namespace Choice.ClientService.Api
                     cfg.ReceiveEndpoint(EventBusConstants.OrderStatusChangedQueue, c => {
                         c.ConfigureConsumer<OrderStatusChangedConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.ReviewLeftQueue, c =>
+                    cfg.ReceiveEndpoint(EventBusConstants.AverageGradeChangedQueue, c =>
                     {
                         c.ConfigureConsumer<ReviewLeftConsumer>(ctx);
                     });

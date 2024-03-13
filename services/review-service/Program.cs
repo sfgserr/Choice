@@ -1,13 +1,14 @@
 using Choice.EventBus.Messages.Common;
 using Choice.ReviewService.Api.Consumers;
 using Choice.ReviewService.Api.Infrastructure.Data;
-using Choice.ReviewService.Api.Infrastructure.Ordering;
 using Choice.ReviewService.Api.Repositories;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Choice.ReviewService.Api.Services;
 using System.Text;
+using Choice.Ordering.Grpc.Protos;
 
 namespace Choice.ReviewService.Api
 {
@@ -21,8 +22,12 @@ namespace Choice.ReviewService.Api
 
             builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddGrpcClient<OrderingProtoService.OrderingProtoServiceClient>(o =>
+            {
+                o.Address = new Uri(builder.Configuration["GrpcSettings:Url"]);
+            });
+            builder.Services.AddScoped<OrderingService>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-            builder.Services.AddScoped<IOrderingService, OrderingService>();
             builder.Services.AddDbContext<ReviewContext>(o => 
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

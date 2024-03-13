@@ -39,6 +39,14 @@ services:
     depends_on:
       - ordering-db
       - rabbitmq
+  ordering-grpc:
+    environment:
+      - ASPNETCORE_URLS=http://+:8085
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8085:8085"
+    depends_on:
+      - ordering-db
   authentication:
     environment:
       - ASPNETCORE_URLS=http://+:8082
@@ -53,7 +61,6 @@ services:
       - ASPNETCORE_URLS=http://+:8084
       - ASPNETCORE_ENVIRONMENT=Development
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
-      - "OrderingSettings:Url=http://ordering:8080/api/Order"
     ports:
       - "8084:8084"
     depends_on:

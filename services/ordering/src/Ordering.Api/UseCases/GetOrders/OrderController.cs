@@ -2,7 +2,6 @@
 using Choice.Ordering.Domain.OrderEntity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Ordering.Api.ViewModels;
 
 namespace Choice.Ordering.Api.UseCases.GetOrders
 {
@@ -22,15 +21,15 @@ namespace Choice.Ordering.Api.UseCases.GetOrders
 
         void IOutputPort.Ok(IList<Order> orders)
         {
-            _viewModel = Ok(orders.Select(o => new OrderViewModel(o)));
+            _viewModel = Ok(orders);
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> GetOrders(string guid)
+        public async Task<IActionResult> GetOrders()
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(guid);
+            await _useCase.Execute();
 
             return _viewModel;
         }

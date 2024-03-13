@@ -1,4 +1,5 @@
-﻿using Choice.Ordering.Domain.OrderEntity;
+﻿using Choice.Infrastructure.Data;
+using Choice.Ordering.Domain.OrderEntity;
 
 namespace Choice.Ordering.Infrastructure.Data
 {
@@ -6,7 +7,10 @@ namespace Choice.Ordering.Infrastructure.Data
     {
         public OrderingContextFake()
         {
-            
+            Order order = new
+                (1, SeedData.DefaultCompanyGuid, SeedData.DefaultClientGuid, 100, 0, 3600, DateTime.Now);
+
+            Orders.Add(order);
         }
 
         public List<Order> Orders { get; set; } = new List<Order>();    

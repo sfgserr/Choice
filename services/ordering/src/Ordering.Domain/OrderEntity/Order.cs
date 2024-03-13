@@ -4,6 +4,8 @@ namespace Choice.Ordering.Domain.OrderEntity
 {
     public class Order : Entity
     {
+        private readonly List<string> _reviews = new();
+
         public Order(int orderRequestId, string senderId, string receiverId, double price, double prepayment,
             int deadline, DateTime enrollmentDate)
         {
@@ -24,7 +26,7 @@ namespace Choice.Ordering.Domain.OrderEntity
         public int Deadline { get; private set; }
         public bool IsEnrolled { get; private set; } = false;
         public DateTime EnrollmentDate { get; private set; }
-        public string[] Reviews { get; private set; } = new string[2];
+        public IReadOnlyCollection<string> Reviews => _reviews.AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
 
         public void SetEnrollmentDate(DateTime newDate) =>
@@ -35,6 +37,9 @@ namespace Choice.Ordering.Domain.OrderEntity
 
         public void Enroll() =>
             IsEnrolled = true;
+
+        public void AddReview(string guid) =>
+            _reviews.Add(guid);
 
         public void CancelEnrollment()
         {
