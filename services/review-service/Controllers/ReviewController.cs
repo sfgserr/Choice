@@ -6,7 +6,6 @@ using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Choice.ReviewService.Api.Services;
-using Choice.Ordering.Grpc.Protos;
 
 namespace Choice.ReviewService.Api.Controllers
 {
@@ -37,9 +36,9 @@ namespace Choice.ReviewService.Api.Controllers
             if (id == viewModel.Guid)
                 return BadRequest();
 
-            CanSendReviewResponse response = await _orderingService.CanSendReview(viewModel.Guid);
+            bool result = await _orderingService.AddReview(id, viewModel.Guid);
 
-            if (!response.Result)
+            if (!result)
                 return BadRequest();
 
             Review review = new
@@ -51,9 +50,17 @@ namespace Choice.ReviewService.Api.Controllers
 
             await _repository.Add(review);
 
-            await _endPoint.Publish(new ReviewLeftEvent(response.Id, id, viewModel.Grade));
+            await _endPoint.Publish(new ReviewLeftEvent(id, viewModel.Grade));
 
             return Ok(review);
+        }
+
+        [HttpGet("Get")]
+        public async Task<IActionResult> GetReviews(string guid)
+        {
+            IList<Review> reviews = await _repository.Get(guid);
+
+            return Ok(reviews);
         }
     }
 }

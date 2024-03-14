@@ -2,18 +2,18 @@
 {
     public class Review
     {
-        public Review(string authorGuid, string userGuid, List<string> photoUris, string text, int grade)
+        public Review(string authorId, string userGuid, List<string> photoUris, string text, int grade)
         {
-            AuthorGuid = authorGuid;
+            AuthorId = authorId;
             UserGuid = userGuid;
             PhotoUris = photoUris;
             Text = text;
             Grade = grade;
         }
 
-        public int Id { get; }
+        public int Id { get; private set; }
+        public string AuthorId { get; private set; }
         public Author? Author { get; private set; }
-        public string AuthorGuid { get; private set; }
         public string UserGuid { get; private set; }
         public List<string> PhotoUris { get; private set; }
         public string Text { get; private set; }

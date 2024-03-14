@@ -8,48 +8,41 @@ namespace Choice.Ordering.Grpc.Services
     public class OrderingService : OrderingProtoService.OrderingProtoServiceBase
     {
         private readonly IOrderRepository _repository;
-        private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderingService(IOrderRepository repository, IUserService userService, IUnitOfWork unitOfWork)
+        public OrderingService(IOrderRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
-            _userService = userService;
             _unitOfWork = unitOfWork;
         }
 
-        public override async Task<CanSendReviewResponse> CanSendReview(CanSendReviewRequest request,
+        public override async Task<AddReviewResponse> AddReview(AddReviewRequest request,
             ServerCallContext context)
         {
-            CanSendReviewResponse response = new();
-
-            string id = _userService.GetUserId();
-
-            IList<Order> orders = await _repository.GetOrders();
-
-            orders = orders.Where(o => 
-                (o.SenderId == id || o.ReceiverId == id) && o.Status == OrderStatus.Finished).ToList();
-
-            Order order = orders.Where(o => 
-                (o.SenderId == request.Guid || o.ReceiverId == request.Guid) && !o.Reviews.Contains(id)).First();
-
-            if (order is null)
+            AddReviewResponse response = new()
             {
-                response.Id = 0;
-                response.Result = false;
-            }
-            else
+                Result = false
+            };
+
+            IList<Order> orders = await _repository.GetOrders(request.ToUserGuid, request.FromUserGuid);
+
+            if (orders.Count == 0)
+                return response;
+
+            Order? order = orders.FirstOrDefault(o => 
+                o.Status != OrderStatus.Active && !o.Reviews.Contains(request.FromUserGuid));
+
+            if (order is not null)
             {
-                response.Id = order.Id;
                 response.Result = true;
 
-                await UpdateOrder(order, id);
+                await AddReview(order, request.FromUserGuid);
             }
 
             return response;
         }
 
-        private async Task UpdateOrder(Order order, string id)
+        private async Task AddReview(Order order, string id)
         {
             order.AddReview(id);
 

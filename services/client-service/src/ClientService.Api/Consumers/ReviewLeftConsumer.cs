@@ -22,7 +22,10 @@ namespace Choice.ClientService.Api.Consumers
 
             Client client = await _repository.Get(@event.UserGuid);
 
-            client?.AddReview(@event.Grade);
+            if (client is null)
+                return;
+
+            client.AddReview(@event.Grade);
 
             await _unitOfWork.SaveChanges();
         }

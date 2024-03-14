@@ -27,6 +27,12 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
             return await Task.Run(() => _context.Orders);
         }
 
+        public async Task<IList<Order>> GetOrders(string guid1, string guid2)
+        {
+            return await Task.Run(() => _context.Orders.Where(o => (o.SenderId == guid1 && o.ReceiverId == guid2) ||
+                                                    (o.ReceiverId == guid1 && o.SenderId == guid2)).ToList());
+        }
+
         public void Update(Order order)
         {
             Order orderToRemove = _context.Orders.FirstOrDefault(o => o.Id == order.Id);

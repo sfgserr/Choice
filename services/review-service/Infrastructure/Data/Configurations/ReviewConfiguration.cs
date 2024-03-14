@@ -12,8 +12,7 @@ namespace Choice.ReviewService.Api.Infrastructure.Data.Configurations
 
             builder.HasKey(r => r.Id);
 
-            builder.HasOne(r => r.Author)
-                   .WithOne();
+            builder.HasOne(r => r.Author);
         }
     }
 }

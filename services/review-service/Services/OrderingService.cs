@@ -11,7 +11,12 @@ namespace Choice.ReviewService.Api.Services
             _orderingService = orderingService;
         }
 
-        public async Task<CanSendReviewResponse> CanSendReview(string guid) => 
-            await _orderingService.CanSendReviewAsync(new() { Guid = guid });
+        public async Task<bool> AddReview(string fromUserGuid, string toUserGuid)
+        {
+            AddReviewResponse response = await _orderingService.AddReviewAsync(
+                new() { FromUserGuid = fromUserGuid, ToUserGuid = toUserGuid });
+
+            return response.Result;
+        }
     }
 }

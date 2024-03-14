@@ -16,8 +16,6 @@ using Choice.Application.Services;
 using Choice.Infrastructure.Data;
 using Choice.Infrastructure.Authentication;
 using System.Security.Claims;
-using Choice.Ordering.Api.Consumers;
-using Choice.EventBus.Messages.Common;
 using Choice.Ordering.Application.UseCases.GetOrders;
 
 namespace Choice.Ordering.Api
@@ -67,14 +65,8 @@ namespace Choice.Ordering.Api
             });
 
             builder.Services.AddMassTransit(config => {
-                config.AddConsumer<ReviewLeftConsumer>();
-
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
-
-                    cfg.ReceiveEndpoint(EventBusConstants.ReviewAddedToOrderQueue, c => {
-                        c.ConfigureConsumer<ReviewLeftConsumer>(ctx);
-                    });
                 });
             });
 

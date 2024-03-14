@@ -27,6 +27,12 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
             return await _context.Orders.ToListAsync();
         }
 
+        public async Task<IList<Order>> GetOrders(string guid1, string guid2)
+        {
+            return await _context.Orders.Where(o => (o.SenderId == guid1 && o.ReceiverId == guid2) ||
+                                                    (o.ReceiverId == guid1 && o.SenderId == guid2)).ToListAsync();
+        }
+
         public void Update(Order order)
         {
             _context.Orders.Update(order);
