@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Grpc", "services\o
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.UnitTests", "services\ordering\test\Ordering.UnitTests\Ordering.UnitTests.csproj", "{5755350A-EA8B-4B53-9974-49B916B0CF08}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CategoryService.Api", "services\category-service\CategoryService.Api.csproj", "{2F865714-7422-4DB9-BA9B-C29FCD14A38F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{5755350A-EA8B-4B53-9974-49B916B0CF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5755350A-EA8B-4B53-9974-49B916B0CF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5755350A-EA8B-4B53-9974-49B916B0CF08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F865714-7422-4DB9-BA9B-C29FCD14A38F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F865714-7422-4DB9-BA9B-C29FCD14A38F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F865714-7422-4DB9-BA9B-C29FCD14A38F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F865714-7422-4DB9-BA9B-C29FCD14A38F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

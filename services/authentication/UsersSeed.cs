@@ -19,7 +19,7 @@ namespace Choice.Authentication
                  "37377875397",
                  "Москва",
                  "Арбат 26",
-                 UserType.Client);
+                 UserType.Admin);
 
             await repository.Add(user);
         }

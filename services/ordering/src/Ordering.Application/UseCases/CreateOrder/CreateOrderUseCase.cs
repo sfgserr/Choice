@@ -30,6 +30,12 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         {
             string userId = _userService.GetUserId();
 
+            if (userId == receiverId)
+            {
+                _outputPort.Invalid();
+                return;
+            }
+
             Order order = await CreateOrder(userId, receiverId, orderRequestId, price, prepayment, deadline,
                 enrollmentTime);
 

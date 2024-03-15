@@ -66,6 +66,14 @@ services:
     depends_on:
       - rabbitmq
       - review-service-db
+  category-service:
+    environment:
+      - ASPNETCORE_URLS=http://+:8086
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8086:8086"
+    depends_on:
+      - category-service-db
   rabbitmq:
     restart: always
     ports:
@@ -100,3 +108,12 @@ services:
       POSTGRES_PASSWORD: Pass129598
       POSTGRES_DB: Chat
       POSTGRES_USER: root
+    ports:
+      - "5432:5432"
+  category-service-db:
+    environment:
+      POSTGRES_PASSWORD: Pass129598
+      POSTGRES_DB: CategoryDb
+      POSTGRES_USER: root
+    ports:
+      - "6432:5432"

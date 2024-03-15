@@ -52,6 +52,9 @@ namespace Choice.Authentication.Api.Controllers
         public async Task<IActionResult> Register(string email, string name, string password,
             string street, string city, string phoneNumber, UserType type)
         {
+            if (type == UserType.Admin)
+                return BadRequest();
+
             Dictionary<string, string[]> errorMessages = new();
 
             User existUser = await _repository.GetByEmail(email);

@@ -22,12 +22,15 @@ namespace Choice.Authentication.Api.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            string address = $"{user.Street},{user.City}";
+            KeyValuePair<string, object> claimToAdd = user.UserType switch
+            {
+                UserType.Company => new KeyValuePair<string, object>("address", $"{user.Street},{user.City}"),
+                UserType.Client => new KeyValuePair<string, object>(ClaimTypes.Email, user.Email),
+                UserType.Admin => new KeyValuePair<string, object>("Admin", true),
+                _ => throw new ArgumentException(nameof(user.UserType))
+            };
 
-            if (user.UserType == UserType.Company)
-                securityTokenDescriptor.Claims.Add(nameof(address), address);
-            else
-                securityTokenDescriptor.Claims.Add(ClaimTypes.Email, user.Email);
+            securityTokenDescriptor.Claims.Add(claimToAdd);
 
             var token = tokenHandler.CreateToken(securityTokenDescriptor);
 

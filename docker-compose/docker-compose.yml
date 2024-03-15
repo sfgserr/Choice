@@ -36,6 +36,12 @@ services:
     build:
       context: ../
       dockerfile: services/review-service/Dockerfile
+  category-service:
+    container_name: "category-service"
+    image: category-service
+    build:
+      context: ../
+      dockerfile: services/category-service/Dockerfile
   authentication:
     container_name: "authentication"
     image: authentication
@@ -55,4 +61,7 @@ services:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
   review-service-db:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
+  category-service-db:
+    container_name: category-service-db
+    image: postgres
  

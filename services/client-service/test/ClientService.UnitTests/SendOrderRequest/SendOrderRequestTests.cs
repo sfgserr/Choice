@@ -16,7 +16,7 @@ namespace ClientService.UnitTests.SendOrderRequest
 
         [Theory]
         [ClassData(typeof(ValidDataSetup))]
-        public async Task SendOrderRequests_Returns_Ok(string description, List<string> categories, int searchRadius,
+        public async Task SendOrderRequests_Returns_Ok(string description, List<int> categories, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             SendOrderRequestPresenter presenter = new();
@@ -38,7 +38,7 @@ namespace ClientService.UnitTests.SendOrderRequest
 
         [Theory]
         [ClassData(typeof(InvalidDataSetup))]
-        public async Task SendOrderRequests_Returns_Invalid(string description, List<string> categories, int searchRadius,
+        public async Task SendOrderRequests_Returns_Invalid(string description, List<int> categories, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             SendOrderRequestPresenter presenter = new();
