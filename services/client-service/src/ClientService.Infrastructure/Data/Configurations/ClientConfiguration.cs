@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ClientService.Infrastructure.Data.Configuration
+namespace Choice.ClientService.Infrastructure.Data.Configurations
 {
     public sealed class ClientConfiguration : IEntityTypeConfiguration<Client>
     {

@@ -1,4 +1,4 @@
-﻿using Choice.ClientService.Domain.ClientAggregate;
+﻿using Choice.Common.ValueObjects;
 
 namespace Choice.ClientService.Application.Services
 {

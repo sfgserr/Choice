@@ -1,5 +1,5 @@
 ﻿using Choice.ClientService.Application.Services;
-using Choice.ClientService.Domain.ClientAggregate;
+using Choice.Common.ValueObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace Choice.ClientService.Infrastructure.Authentication

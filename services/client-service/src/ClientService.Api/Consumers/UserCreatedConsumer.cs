@@ -20,23 +20,23 @@ namespace Choice.ClientService.Api.Consumers
         {
             UserCreatedEvent @event = context.Message;
 
-            if (@event.UserType == "Company")
-                return;
+            if (@event.UserType == "Client")
+            {
+                string[] name = @event.Name.Split(' ');
 
-            string[] name = @event.Name.Split(' ');
+                Client client = new
+                    (@event.UserGuid.ToString(),
+                     name[0],
+                     name[1],
+                     @event.Email,
+                     new(@event.Street, @event.City),
+                     "defaulturi",
+                     @event.PhoneNumber);
 
-            Client client = new
-                (@event.UserGuid.ToString(),
-                 name[0],
-                 name[1],
-                 @event.Email,
-                 new(@event.Street, @event.City),
-                 "defaulturi",
-                 @event.PhoneNumber);
+                await _repository.Add(client);
 
-            await _repository.Add(client);
-
-            await _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChanges();
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Choice.ClientService.Domain.ClientAggregate;
-using Choice.ClientService.Infrastructure.Geolocation;
+﻿using Choice.Common.ValueObjects;
+using Choice.Infrastructure.Geolocation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Choice.ClientService.IntegrationalTests.GeolocationTests

@@ -11,7 +11,7 @@ using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
 using Choice.ClientService.Infrastructure.Data.Repositories;
-using Choice.ClientService.Infrastructure.Geolocation;
+using Choice.Infrastructure.Geolocation;
 using Choice.EventBus.Messages.Common;
 using Choice.Infrastructure.Authentication;
 using Choice.Infrastructure.Data;
@@ -58,11 +58,11 @@ namespace Choice.ClientService.Api
                     cfg.ReceiveEndpoint(EventBusConstants.OrderStatusChangedQueue, c => {
                         c.ConfigureConsumer<OrderStatusChangedConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.AverageGradeChangedQueue, c =>
+                    cfg.ReceiveEndpoint(EventBusConstants.ClientAverageGradeChangedQueue, c =>
                     {
                         c.ConfigureConsumer<ReviewLeftConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.UserCreatedQueue, c =>
+                    cfg.ReceiveEndpoint(EventBusConstants.ClientCreatedQueue, c =>
                     {
                         c.ConfigureConsumer<UserCreatedConsumer>(ctx);
                     });

@@ -1,4 +1,5 @@
 ﻿using Choice.ClientService.Domain.OrderRequests;
+using Choice.Common.ValueObjects;
 using Choice.Common.SeedWork;
 
 namespace Choice.ClientService.Domain.ClientAggregate
@@ -52,7 +53,7 @@ namespace Choice.ClientService.Domain.ClientAggregate
 
         public void AddReview(int grade)
         {
-            AverageGrade = (ReviewCount * AverageGrade+grade)/(ReviewCount+1);
+            AverageGrade = ReviewCount < 1 ? grade : (ReviewCount * AverageGrade+grade)/(ReviewCount+1);
             ReviewCount++;
         }
     }

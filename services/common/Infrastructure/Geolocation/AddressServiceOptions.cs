@@ -1,5 +1,5 @@
 ﻿
-namespace Choice.ClientService.Infrastructure.Geolocation
+namespace Choice.Infrastructure.Geolocation
 {
     public sealed class AddressServiceOptions
     {

@@ -1,7 +1,7 @@
 ﻿using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Domain.OrderRequests;
 using Choice.Infrastructure.Data;
-using ClientService.Infrastructure.Data.Configuration;
+using Choice.ClientService.Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Choice.ClientService.Infrastructure.Data

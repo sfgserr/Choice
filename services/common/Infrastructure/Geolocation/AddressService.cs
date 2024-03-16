@@ -1,8 +1,8 @@
-﻿using Choice.ClientService.Application.Services;
-using Choice.ClientService.Domain.ClientAggregate;
+﻿using Choice.Application.Services;
+using Choice.Common.ValueObjects;
 using Newtonsoft.Json.Linq;
 
-namespace Choice.ClientService.Infrastructure.Geolocation
+namespace Choice.Infrastructure.Geolocation
 {
     public class AddressService : IAddressService
     {

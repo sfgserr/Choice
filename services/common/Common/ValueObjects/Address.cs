@@ -1,6 +1,6 @@
 ﻿using Choice.Common.SeedWork;
 
-namespace Choice.ClientService.Domain.ClientAggregate
+namespace Choice.Common.ValueObjects
 {
     public class Address : ValueObject
     {
