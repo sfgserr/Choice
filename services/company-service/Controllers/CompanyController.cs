@@ -24,12 +24,12 @@ namespace Choice.CompanyService.Api.Controllers
             _context = context;
         }
 
-        [HttpGet("Get")]
-        public async Task<IActionResult> Get(string guid)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            Company company = await _repository.Get(guid);
+            IList<Company> companies = await _repository.GetAll();
 
-            return Ok(new CompanyDetailsViewModel(company));
+            return Ok(companies.Select(c => new CompanyDetailsViewModel(c)));
         }
 
         [HttpGet("Get")]

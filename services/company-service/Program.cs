@@ -5,7 +5,10 @@ using Choice.CompanyService.Api.Repositories;
 using Choice.EventBus.Messages.Common;
 using Choice.Infrastructure.Geolocation;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Choice.CompanyService.Api
 {
@@ -37,7 +40,26 @@ namespace Choice.CompanyService.Api
                 });
             });
 
+            string issuerKey = builder.Configuration["JwtSettings:Key"]!;
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
+                    };
+                });
+
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddHttpClient();
+            builder.Services.AddAuthorization(o => o.AddPolicy("Company", policy => policy.RequireClaim("address")));
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
             builder.Services.AddDbContext<CompanyContext>(o =>
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));

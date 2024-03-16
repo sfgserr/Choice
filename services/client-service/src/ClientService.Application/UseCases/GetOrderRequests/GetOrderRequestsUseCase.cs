@@ -1,4 +1,5 @@
 ﻿using Choice.Application.Services;
+using Choice.Common.ValueObjects;
 using Choice.ClientService.Application.Services;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Domain.OrderRequests;
