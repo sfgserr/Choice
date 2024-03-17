@@ -50,7 +50,7 @@ namespace Choice.ReviewService.Api.Controllers
 
             await _repository.Add(review);
 
-            await _endPoint.Publish(new ReviewLeftEvent(id, viewModel.Grade));
+            await _endPoint.Publish(new ReviewLeftEvent(viewModel.Guid, viewModel.Grade));
 
             return Ok(review);
         }

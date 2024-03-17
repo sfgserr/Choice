@@ -8,7 +8,7 @@ namespace Choice.CompanyService.Api.Infrastructure.Data
     {
         public CompanyContext(DbContextOptions options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

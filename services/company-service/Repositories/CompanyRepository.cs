@@ -1,6 +1,5 @@
 ﻿using Choice.CompanyService.Api.Entities;
 using Choice.CompanyService.Api.Infrastructure.Data;
-using Choice.CompanyService.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Choice.CompanyService.Api.Repositories

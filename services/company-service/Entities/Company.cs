@@ -1,13 +1,10 @@
 ﻿using Choice.Common.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Choice.CompanyService.Api.Entities
 {
     public class Company
     {
-        private readonly List<string> _socialMedias = new();
-        private readonly List<string> _photoUris = new();
-        private readonly List<int> _categoriesId = new();
-
         public Company(string guid, string title, string email, string phoneNumber, Address address)
         {
             Guid = guid;
@@ -20,7 +17,7 @@ namespace Choice.CompanyService.Api.Entities
         private Company() { }
 
         public int Id { get; }
-        public string Guid { get; }
+        public string Guid { get; private set; }
         public string Title { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
@@ -28,9 +25,9 @@ namespace Choice.CompanyService.Api.Entities
         public Address Address { get; private set; }    
         public double AverageGrade { get; private set; } = 0;
         public int ReviewCount { get; private set; } = 0;
-        public IReadOnlyCollection<string> SocialMedias => _socialMedias.AsReadOnly();
-        public IReadOnlyCollection<string> PhotoUris => _photoUris.AsReadOnly();
-        public IReadOnlyCollection<int> CategoriesId => _categoriesId.AsReadOnly();
+        public List<string> SocialMedias { get; private set; } = new();
+        public List<string> PhotoUris { get; private set; } = new();
+        public List<int> CategoriesId { get; private set; } = new();
 
         public void FillCompanyData(string siteUrl, string street, string city,
             List<string> socialMedias, List<string> photoUris, List<int> categoriesId)
@@ -38,9 +35,9 @@ namespace Choice.CompanyService.Api.Entities
             SiteUrl = siteUrl;
             Address = new(street, city);
 
-            _socialMedias.AddRange(socialMedias);
-            _photoUris.AddRange(photoUris);
-            _categoriesId.AddRange(categoriesId);
+            SocialMedias.AddRange(socialMedias);
+            PhotoUris.AddRange(photoUris);
+            CategoriesId.AddRange(categoriesId);
         }
 
         public void AddReview(int grade)
