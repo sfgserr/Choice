@@ -3,7 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:controls="clr-namespace:ClientApp.Controls"
              x:Class="ClientApp.Views.LoginView">
+  
   <StackPanel Orientation="Vertical">
     <Border Background="Transparent"
             Margin="0,30"
@@ -29,5 +31,21 @@
                  Text="Лучших условий"
                  HorizontalAlignment="Center"/>  
     </StackPanel>
+    <Border Padding="20,50">
+      <Grid>
+        <TextBlock FontSize="24"
+                   FontWeight="Bold"
+                   Text="Авторизация"
+                   Foreground="#313131"
+                   HorizontalAlignment="Left"/>
+        <Button Background="Transparent"
+                FontSize="16"
+                Foreground="#2D81E0"
+                FontWeight="Normal"
+                Content="Создать аккаунт"
+                HorizontalAlignment="Right"/>
+      </Grid>
+    </Border>
+    <controls:TabControl/>
   </StackPanel>
 </UserControl>

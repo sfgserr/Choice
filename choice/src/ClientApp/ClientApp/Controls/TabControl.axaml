@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ClientApp.Controls.TabControl">
+  
+  <Panel>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.Styles>
+        <Style Selector="Button:pressed /template/ ContentPresenter">
+          <Setter Property="Background" Value="Transparent"/>
+        </Style>
+      </Grid.Styles>
+      <Border Padding="20,0,10,0"
+              Grid.Column="0">
+        <Button Content="E-mail"
+                FontSize="16"
+                Foreground="Black"
+                Background="Transparent"
+                FontWeight="DemiBold"
+                BorderThickness="0,0,0,2"
+                BorderBrush="Transparent"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch"
+                x:Name="emailButton"
+                CornerRadius="0"/>
+      </Border>
+
+      <Border Padding="10,0,20,0"
+              Grid.Column="1">
+        <Button Content="Телефон"
+                FontSize="16"
+                Foreground="Black"
+                FontWeight="DemiBold"
+                Background="Transparent"
+                BorderThickness="0,0,0,2"
+                BorderBrush="Transparent"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch"
+                x:Name="phoneButton"
+                CornerRadius="0"/>
+      </Border>
+    </Grid>
+    <StackPanel x:Name="items">
+      
+    </StackPanel>
+  </Panel>
+</UserControl>
