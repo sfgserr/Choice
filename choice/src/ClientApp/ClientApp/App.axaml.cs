@@ -26,7 +26,7 @@ namespace ClientApp
 
             IServiceProvider provider = services.BuildServiceProvider();
 
-            DataTemplates.Add(provider.GetRequiredService<ViewMapper>());
+            DataTemplates.Add(provider.GetRequiredService<ViewMapperDataTemplate>());
 
             if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
             {

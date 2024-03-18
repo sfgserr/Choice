@@ -47,7 +47,7 @@
       </Border>
     </Grid>
     <StackPanel x:Name="items">
-      
+      <ContentControl Content="{Binding CurrentTab}"/>
     </StackPanel>
   </Panel>
 </UserControl>

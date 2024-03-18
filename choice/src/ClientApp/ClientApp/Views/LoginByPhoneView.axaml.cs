@@ -5,9 +5,9 @@ using ClientApp.ViewModels;
 
 namespace ClientApp.Views;
 
-public partial class LoginByEmailView : UserControl
+public partial class LoginByPhoneView : UserControl
 {
-    public LoginByEmailView(LoginByEmailViewModel viewModel)
+    public LoginByPhoneView(LoginByPhoneViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;
