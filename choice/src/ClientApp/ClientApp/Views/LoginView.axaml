@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:controls="clr-namespace:ClientApp.Controls"
              xmlns:views="clr-namespace:ClientApp.Views"
+             xmlns:controls="clr-namespace:ClientApp.Controls"
              x:Class="ClientApp.Views.LoginView">
   
   <StackPanel Orientation="Vertical">
@@ -47,7 +47,6 @@
                 HorizontalAlignment="Right"/>
       </Grid>
     </Border>
-    <controls:TabControl EmailTab="{Binding LoginByEmailView}"
-                         PhoneTab="{Binding LoginByPhoneView}"/>
+    <controls:CustomTab/>
   </StackPanel>
 </UserControl>

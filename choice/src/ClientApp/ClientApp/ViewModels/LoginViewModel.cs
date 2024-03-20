@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ClientApp.Services.Mappers;
+using ReactiveUI;
 
 namespace ClientApp.ViewModels
 {
@@ -12,9 +13,16 @@ namespace ClientApp.ViewModels
         {
             _loginByEmailViewModel = byEmail;
             _loginByPhoneViewModel = byPhone;
+
+            CurrentTab = byEmail;
         }
 
-        public LoginByEmailViewModel LoginByEmailView =>_loginByEmailViewModel;
-        public LoginByPhoneViewModel LoginByPhoneView => _loginByPhoneViewModel;
+        private ViewModelBase _currentTab;
+
+        public ViewModelBase CurrentTab
+        {
+            get => _currentTab;
+            set => this.RaiseAndSetIfChanged(ref _currentTab, value);
+        }
     }
 }
