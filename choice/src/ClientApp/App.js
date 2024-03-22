@@ -8,6 +8,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './Screens/LoginScreen';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,14 +19,6 @@ import {
   View,
 } from 'react-native';
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Nice</Text>
-    </View>
-  );
-}
-
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -33,7 +26,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home"
+                        component={LoginScreen} 
+                        options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
