@@ -6,27 +6,31 @@ import {
   SafeAreaView,
   View,
   Text,
-  ScrollView,
+  findNodeHandle,
   Animated,
   FlatList,
   Dimensions,
   TouchableOpacity
 } from 'react-native';
+import Tabs from "../Components/Tabs";
 
 const screens = {
-  LoginByEmailScreen,
-  LoginByPhoneScreen 
+  loginByEmail: { screen: LoginByEmailScreen, title: 'E-mail' },
+  loginByPhone: { screen: LoginByPhoneScreen, title: 'Телефон' }
 };
 
 const {width, height} = Dimensions.get('screen');  
 
 const data = Object.keys(screens).map((i) => ({
     key: i,
-    title: i,
-    screen: screens[i]
+    title: screens[i].title,
+    screen: screens[i].screen,
+    ref: React.createRef()
 }));
 
 export default function LoginScreen() {
+    const scrollX = React.useRef(new Animated.Value(0)).current;
+
     return (
         <SafeAreaView style={{flex:1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
             <View style={{alignSelf: 'center', paddingTop: 20}}>
@@ -47,11 +51,20 @@ export default function LoginScreen() {
             <Animated.FlatList data={data}
                                keyExtractor={(item) => item.key}
                                horizontal
+                               pagingEnabled
+                               style={{paddingTop: 30}}
+                               bounces={false}
+                               onScroll={Animated.event(
+                                [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                                { useNativeDriver: false }
+                               )}
+                               showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
-                               return <View style={{width}}>
+                               return <View style={{width, paddingTop: 40}}>
                                  <item.screen/>
                                </View>
                             }}/>
+            <Tabs scrollX={scrollX} data={data}/>
         </SafeAreaView>
     )
 }

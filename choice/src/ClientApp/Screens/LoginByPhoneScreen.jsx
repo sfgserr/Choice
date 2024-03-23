@@ -1,18 +1,18 @@
 import React from "react";
+import styles from '../Styles.jsx';
 import {
   SafeAreaView,
   TextInput,
-  View,
-  Dimensions
+  Text,
+  View
 } from 'react-native';
-
-const {width, height} = Dimensions.get('screen');
 
 export default function LoginByPhoneScreen() {
     return (
-        <SafeAreaView style={{alignContent: 'center'}}>
+        <SafeAreaView>
             <View style={{paddingHorizontal: 20}}>
-                <TextInput style={{backgroundColor: '#f2f3f5', borderRadius: 10, borderColor: '#d5d5d7', borderWidth: 1, height: height/18}}/>
+                <Text style={{color: '#6D7885', fontWeight: '400', fontSize: 14, paddingBottom: 5}}>Телефон</Text>
+                <TextInput style={styles.textInput}/>
             </View>
         </SafeAreaView>
     );
