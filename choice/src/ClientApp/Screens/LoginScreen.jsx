@@ -20,7 +20,6 @@ const screens = {
 };
 
 const {width, height} = Dimensions.get('screen');  
-
 const data = Object.keys(screens).map((i) => ({
     key: i,
     title: screens[i].title,
@@ -30,7 +29,12 @@ const data = Object.keys(screens).map((i) => ({
 
 export default function LoginScreen() {
     const scrollX = React.useRef(new Animated.Value(0)).current;
-
+    const ref = React.useRef();
+    const onItemPress = React.useCallback(itemIndex => {
+        ref?.current?.scrollToOffset({
+            offset: itemIndex * width
+        });
+    });
     return (
         <SafeAreaView style={{flex:1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
             <View style={{alignSelf: 'center', paddingTop: 20}}>
@@ -49,6 +53,7 @@ export default function LoginScreen() {
                 </View>
             </View>
             <Animated.FlatList data={data}
+                               ref={ref}
                                keyExtractor={(item) => item.key}
                                horizontal
                                pagingEnabled
@@ -64,7 +69,7 @@ export default function LoginScreen() {
                                  <item.screen/>
                                </View>
                             }}/>
-            <Tabs scrollX={scrollX} data={data}/>
+            <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>
         </SafeAreaView>
     )
 }

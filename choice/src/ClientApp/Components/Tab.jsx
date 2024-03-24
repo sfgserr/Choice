@@ -1,13 +1,16 @@
 import React from 'react';
 import {
   View,
-  Text
+  Text,
+  findNodeHandle,
+  TouchableOpacity
 } from 'react-native';
 
 
-const Tab = React.forwardRef(({ item }, ref) => {
+const Tab = React.forwardRef(({ item, onItemPress }, ref) => {
   return (
-    <View ref={ref}>
+    <TouchableOpacity onPress={onItemPress}>
+      <View ref={ref}>
         <Text 
           style={{
             color: 'black', 
@@ -17,7 +20,8 @@ const Tab = React.forwardRef(({ item }, ref) => {
         >
             {item.title}
         </Text>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 });
 

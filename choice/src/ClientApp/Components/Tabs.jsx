@@ -9,7 +9,7 @@ import Indicator from './Indicator.jsx';
 
 const {width, height} = Dimensions.get('screen');
 
-const Tabs = ({ data, scrollX }) => {
+const Tabs = ({ data, scrollX, onItemPress }) => {
     const [measures, setMeasures] = React.useState([]);
     const containerRef = React.useRef();
     React.useEffect(() => {
@@ -33,13 +33,13 @@ const Tabs = ({ data, scrollX }) => {
                 }
             );
         })
-    }, []);
+    }, [containerRef.current]);
 
     return (
         <View style={{position: 'absolute', width, paddingTop: 60}}>
             <View style={{justifyContent: 'space-evenly', flex: 1, flexDirection: 'row'}} ref={containerRef}>
-                {data.map((item) => {
-                    return <Tab key={item.key} item={item} ref={item.ref}/>
+                {data.map((item, index) => {
+                    return <Tab key={item.key} item={item} ref={item.ref} onItemPress={() => onItemPress(index)}/>
                 })}
             </View>
             { measures.length > 0 && <Indicator measures={measures} scrollX={scrollX} data={data}/>}

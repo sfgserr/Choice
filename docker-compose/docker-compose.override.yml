@@ -21,11 +21,11 @@ services:
       - client-service-db
   chat:
     environment:
-      - ASPNETCORE_URLS=http://+:8081
+      - ASPNETCORE_URLS=http://+:8088
       - ASPNETCORE_ENVIRONMENT=Development
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     ports:
-      - "8081:8081"
+      - "8088:8088"
     depends_on:
       - chat-db
       - rabbitmq
