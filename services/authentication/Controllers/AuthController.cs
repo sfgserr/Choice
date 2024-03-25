@@ -4,6 +4,8 @@ using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Twilio;
+using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Authentication.Api.Controllers
 {
@@ -46,6 +48,50 @@ namespace Choice.Authentication.Api.Controllers
                  _configuration["JwtSettings:Audience"]!);
 
             return Ok(token);
+        }
+
+        [HttpPost("LoginByPhone")]
+        public async Task<IActionResult> LoginByPhone(string phone)
+        {
+            User user = await _repository.GetByPhoneNumber(phone);
+
+            if (user == null)
+                return NotFound();
+
+            string serviceId = _configuration["TwilioSettings:ServiceId"];
+
+            var verification = VerificationResource.Create(
+                to: $"+{phone}",
+                channel: "sms",
+                pathServiceSid: serviceId);
+
+            return verification.Status == "pending" ? Ok() : BadRequest();
+        }
+
+        [HttpPost("Verify")]
+        public async Task<IActionResult> VerifyCode(string phone, string code)
+        {
+            string serviceId = _configuration["TwilioSettings:ServiceId"];
+
+            var verificationCheck = VerificationCheckResource.Create(
+                to: $"+{phone}",
+                code: code,
+                pathServiceSid: serviceId);
+
+            if (verificationCheck.Status == "approved")
+            {
+                User user = await _repository.GetByPhoneNumber(phone);
+
+                string token = _tokenService.GenerateToken
+                    (user,
+                     _configuration["JwtSettings:Key"]!,
+                     _configuration["JwtSettings:Issuer"]!,
+                     _configuration["JwtSettings:Audience"]!);
+
+                return Ok(token);
+            }
+
+            return Unauthorized();
         }
 
         [HttpPost("Register")]

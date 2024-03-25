@@ -14,8 +14,8 @@ namespace Choice.Authentication
             User user = new
                 (Guid.NewGuid(),
                  "email@gmail.com",
-                 "Alex",
                  "PaSsWoRd",
+                 "Alex",
                  "37377875397",
                  "Москва",
                  "Арбат 26",

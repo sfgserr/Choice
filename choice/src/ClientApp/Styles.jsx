@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
       borderColor: '#d5d5d7', 
       borderWidth: 1, 
       height: height/18,
-      paddingHorizontal: 15
+      paddingHorizontal: 15,
     },
     textInputFont: {
       color: 'black',

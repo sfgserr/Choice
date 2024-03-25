@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using MassTransit;
 using Choice.EventBus.Messages.Common;
 using Choice.Authentication.Api.Consumers;
+using Microsoft.Identity.Client;
+using Twilio;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,11 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<UserContext>(o =>
     o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
+
+string accountSid = builder.Configuration["TwilioSettings:AccountSid"];
+string authToken = builder.Configuration["TwilioSettings:AuthToken"];
+
+TwilioClient.Init(accountSid, authToken);
 
 builder.Services.AddMassTransit(config =>
 {

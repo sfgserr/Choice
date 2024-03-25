@@ -23,6 +23,7 @@ export default function LoginByEmailScreen() {
 
     const login = async () => {
         await authService.loginByEmail(email, password);
+        console.log(authService.apiKey);
     }
 
     const onEmailChanged = (email) => {
