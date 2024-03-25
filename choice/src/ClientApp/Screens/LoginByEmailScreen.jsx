@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../Styles.jsx";
 import authService from "../services/authService.js";
+import blobService from "../services/blobService.js";
 import { Icon } from "react-native-elements";
 import {
   SafeAreaView,
@@ -22,8 +23,10 @@ export default function LoginByEmailScreen() {
     }
 
     const login = async () => {
-        await authService.loginByEmail(email, password);
-        console.log(authService.apiKey);
+        let bytes = await blobService.getImage('auto');
+        console.log(bytes);
+
+        //await authService.loginByEmail(email, password);
     }
 
     const onEmailChanged = (email) => {
