@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CategoryService.Api", "serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyService.Api", "services\company-service\CompanyService.Api.csproj", "{EDD56A02-B95B-4B65-8F15-D2F9C2CD48D5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileService.Api", "services\file-service\FileService.Api.csproj", "{AC954F38-AD02-462C-9D9C-42A2EC26AA9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{EDD56A02-B95B-4B65-8F15-D2F9C2CD48D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDD56A02-B95B-4B65-8F15-D2F9C2CD48D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDD56A02-B95B-4B65-8F15-D2F9C2CD48D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC954F38-AD02-462C-9D9C-42A2EC26AA9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC954F38-AD02-462C-9D9C-42A2EC26AA9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC954F38-AD02-462C-9D9C-42A2EC26AA9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC954F38-AD02-462C-9D9C-42A2EC26AA9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

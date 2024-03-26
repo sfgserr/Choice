@@ -1,16 +1,15 @@
+import RNFS from 'react-native-fs';
 
 const getImage = async (fileName) => {
-    return await fetch(`https://localhost:7291/api/objects/${fileName}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .catch(error => {
-        console.log(error);
+    const response = RNFS.downloadFile({
+        fromUrl: `http://10.0.2.2/api/objects/${fileName}`,
+        toFile: `${RNFS.DocumentDirectoryPath}/auto.png`
     });
+
+    response.promise.then(res => {
+        console.log(res.bytesWritten);
+        console.log(res.statusCode);
+    })
 }
 
 export default {

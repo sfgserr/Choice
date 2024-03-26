@@ -47,7 +47,13 @@ services:
     image: company-service
     build:
       context: ../
-      dockerfile: services/company-service/Dockerfile    
+      dockerfile: services/company-service/Dockerfile
+  file-service:
+    container_name: "file-service"
+    image: file-service
+    build:
+      context: ../
+      dockerfile: services/file-service/Dockerfile
   authentication:
     container_name: "authentication"
     image: authentication

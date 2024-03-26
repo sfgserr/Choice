@@ -95,6 +95,14 @@ services:
     depends_on:
       - rabbitmq
       - company-service-db
+  file-service:
+    environment:
+      - ASPNETCORE_URLS=http://+:8089
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 8089:8089
+    volumes:
+      - ~/Files:/etc/files:ro
   authentication-db:
     environment:
       SA_PASSWORD: "S3cur3P@ssW0rd!"
