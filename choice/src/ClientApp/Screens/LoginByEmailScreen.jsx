@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../Styles.jsx";
 import authService from "../services/authService.js";
+import categoryService from "../services/categoryService.js";
 import { Icon } from "react-native-elements";
 import {
   SafeAreaView,
@@ -10,7 +11,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-export default function LoginByEmailScreen() {
+export default function LoginByEmailScreen({navigation}) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -22,7 +23,12 @@ export default function LoginByEmailScreen() {
     }
 
     const login = async () => {
-        await authService.loginByEmail(email, password);
+        let result = await authService.loginByEmail(email, password);
+        
+        if (result) {
+            let categories = await categoryService.getCategories();
+            navigation.navigate('Category', { categories: categories });
+        }
     }
 
     const onEmailChanged = (email) => {

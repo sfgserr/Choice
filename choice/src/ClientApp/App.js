@@ -9,6 +9,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './Screens/LoginScreen';
+import CategoryScreen from './Screens/CategoryScreen';
 import {
   SafeAreaView,
   ScrollView,
@@ -28,6 +29,9 @@ function App() {
       <Stack.Navigator>
           <Stack.Screen name="Home"
                         component={LoginScreen} 
+                        options={{headerShown: false}}/>
+          <Stack.Screen name="Category"
+                        component={CategoryScreen}
                         options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>

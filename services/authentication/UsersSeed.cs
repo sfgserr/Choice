@@ -11,17 +11,28 @@ namespace Choice.Authentication
 
             IUserRepository repository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
 
-            User user = new
+            User admin = new
                 (Guid.NewGuid(),
                  "email@gmail.com",
                  "PaSsWoRd",
                  "Alex",
-                 "37377875397",
+                 "37377753296",
                  "Москва",
                  "Арбат 26",
                  UserType.Admin);
 
-            await repository.Add(user);
+            User client = new
+                (Guid.NewGuid(),
+                 "dead01r@gmail.com",
+                 "PaSsWoRd",
+                 "Makar",
+                 "37377875397",
+                 "Москва",
+                 "Арбат 26",
+                 UserType.Client);
+
+            await repository.Add(admin);
+            await repository.Add(client);
         }
     }
 }

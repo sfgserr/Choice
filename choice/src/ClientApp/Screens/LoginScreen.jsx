@@ -27,7 +27,7 @@ const data = Object.keys(screens).map((i) => ({
     ref: React.createRef()
 }));
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
     const scrollX = React.useRef(new Animated.Value(0)).current;
     const ref = React.useRef();
     const onItemPress = React.useCallback(itemIndex => {
@@ -66,7 +66,7 @@ export default function LoginScreen() {
                                showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
                                return <View style={{width, paddingTop: 40}}>
-                                 <item.screen/>
+                                 <item.screen navigation={navigation}/>
                                </View>
                             }}/>
             <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>

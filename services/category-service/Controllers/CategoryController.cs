@@ -8,7 +8,7 @@ namespace Choice.CategoryService.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize("Admin")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _repository;
@@ -18,6 +18,7 @@ namespace Choice.CategoryService.Api.Controllers
             _repository = repository;
         }
 
+        [Authorize("Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> Create(CreateCategoryRequest request)
         {
@@ -38,6 +39,7 @@ namespace Choice.CategoryService.Api.Controllers
             return Ok(categories);
         }
 
+        [Authorize("Admin")]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(UpdateCategoryRequest request)
         {
@@ -53,6 +55,7 @@ namespace Choice.CategoryService.Api.Controllers
             return result ? Ok(request) : BadRequest();
         }
 
+        [Authorize("Admin")]
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int id)
         {

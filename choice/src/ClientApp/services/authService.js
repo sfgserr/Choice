@@ -1,16 +1,21 @@
 import * as KeyChain from 'react-native-keychain';
 
 const loginByEmail = async (email, password) => {
-    await fetch(`http://172.21.112.1/api/Auth/Login?email=${email}&password=${password}`, {
+    return await fetch(`http://10.0.2.2/api/Auth/Login?email=${email}&password=${password}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(async json => {
-        await KeyChain.setGenericPassword('api_key', json);
+    .then(async response => {
+        if (response.status == 200) {
+            const json = await response.json();
+            await KeyChain.setGenericPassword('api_key', json);
+            return true;
+        }
+        
+        return false;
     })
     .catch(error => {
         console.log(error);
@@ -18,7 +23,7 @@ const loginByEmail = async (email, password) => {
 }
 
 const loginByPhone = async (phone) => {
-    return await fetch(`http://172.21.112.1/api/Auth/LoginByPhone?phone=${phone}`, {
+    return await fetch(`http://10.0.2.2/api/Auth/LoginByPhone?phone=${phone}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -29,16 +34,21 @@ const loginByPhone = async (phone) => {
 }
 
 const verifyCode = async (phone, code) => {
-    await fetch(`http://172.21.112.1/api/Auth/Verify?phone=${phone}&code=${code}`, {
+    await fetch(`http://10.0.2.2/api/Auth/Verify?phone=${phone}&code=${code}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(async json => {
-        await KeyChain.setGenericPassword('api_key', json);
+    .then(async response => {
+        if (response.status == 200) {
+            const json = await response.json();
+            await KeyChain.setGenericPassword('api_key', json);
+            return true;
+        }
+        
+        return false;
     })
     .catch(error => {
         console.log(error);
