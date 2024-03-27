@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import authService from "../services/authService.js";
 
-export default function LoginByPhoneScreen() {
+export default function LoginByPhoneScreen({signIn}) {
     const [codeSent, setCodeSent] = React.useState(false);
     const [phone, setPhone] = React.useState('');
     const [disabled, setDisabled] = React.useState(true);

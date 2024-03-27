@@ -10,9 +10,9 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import blobService from "../services/blobService.js";
+import store from "../services/store.js";
 
-export default function LoginByEmailScreen({navigation}) {
+export default function LoginByEmailScreen({navigation, signIn}) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -23,19 +23,12 @@ export default function LoginByEmailScreen({navigation}) {
         setHidePassword(!hidePassword);
     }
 
-    const installImages = async (categories) => {
-        await categories.forEach(async c => {
-            await blobService.getImage(c.iconUri);
-        })
-    }
-
     const login = async () => {
         let result = await authService.loginByEmail(email, password);
         
         if (result) {
-            let categories = await categoryService.getCategories();
-            await installImages(categories);
-            navigation.navigate('Category', { categories: categories });
+            await store.retrieveData();
+            signIn();
         }
     }
 

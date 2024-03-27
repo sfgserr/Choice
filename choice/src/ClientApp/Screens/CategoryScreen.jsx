@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import RNFS from 'react-native-fs';
+import store from '../services/store.js';
 
 export default function CategoryScreen({ navigation, route }) {
-    const { categories } = route.params;
+    const categories = store.getCategories();
 
     return (
         <View>

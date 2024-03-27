@@ -25,8 +25,6 @@ const Tabs = ({ data, scrollX, onItemPress }) => {
                         height
                     });
 
-                    console.log(x, y, width, height);
-
                     if (m.length === data.length) {
                         setMeasures(m);
                     }

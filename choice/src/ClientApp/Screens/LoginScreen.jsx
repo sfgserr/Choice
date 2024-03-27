@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import Tabs from "../Components/Tabs";
+import { AuthContext } from "../App";
 
 const screens = {
   loginByEmail: { screen: LoginByEmailScreen, title: 'E-mail' },
@@ -28,7 +29,9 @@ const data = Object.keys(screens).map((i) => ({
     ref: React.createRef()
 }));
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
+    const { signIn } = React.useContext(AuthContext);
+
     const scrollX = React.useRef(new Animated.Value(0)).current;
     const ref = React.useRef();
     const onItemPress = React.useCallback(itemIndex => {
@@ -67,7 +70,7 @@ export default function LoginScreen({ navigation }) {
                                showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
                                return <View style={{width, paddingTop: 40}}>
-                                 <item.screen navigation={navigation}/>
+                                 <item.screen navigation={navigation} signIn={signIn}/>
                                </View>
                             }}/>
             <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>
