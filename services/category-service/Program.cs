@@ -35,7 +35,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 app.MigrateDatabase();
-//await SeedData.Seed(app.Services);
+
+await SeedData.Seed(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

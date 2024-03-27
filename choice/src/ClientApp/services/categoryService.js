@@ -13,8 +13,12 @@ const getCategories = async () => {
     })
     .then(async response => {
         const json = await response.json();
-        console.log(json);
-        return json;
+
+        return Object.keys(json).map((i) => ({
+            iconUri: json[i].iconUri,
+            title: json[i].title,
+            id: json[i].id
+        }));
     })
     .catch(error => {
         console.log(error);

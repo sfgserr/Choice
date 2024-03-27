@@ -12,6 +12,7 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import Tabs from "../Components/Tabs";
 
 const screens = {
@@ -39,7 +40,7 @@ export default function LoginScreen({ navigation }) {
         <SafeAreaView style={{flex:1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
             <View style={{alignSelf: 'center', paddingTop: 20}}>
                 <Image style={{width: 150, height: 150, resizeMode: 'contain', alignSelf: 'center'}}
-                       source={require('../assets/choice-logo.png')}/>
+                       source={require("../assets/choice-logo.png")}/>
                 <Text style={{fontSize: 20, color: '#313131', fontWeight: '600', alignSelf: 'center', paddingTop: 20}}>ВЫБОР</Text>
                 <Text style={{fontSize: 16, paddingTop: 10}}>Приложение для выбора</Text>
                 <Text style={{fontSize: 16, alignSelf: 'center'}}>лучших условий</Text>

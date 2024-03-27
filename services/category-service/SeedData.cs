@@ -7,6 +7,10 @@ namespace Choice.CategoryService.Api
     {
         public static async Task Seed(IServiceProvider services)
         {
+            var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+            ICategoryRepository repository = scope.ServiceProvider.GetRequiredService<ICategoryRepository>();
+
             List<Category> categories = new()
             {
                 new("Автоуслуги", "auto"),
@@ -23,8 +27,6 @@ namespace Choice.CategoryService.Api
 
                 new("Парфюм", "perfume"),
             };
-
-            ICategoryRepository repository = services.GetRequiredService<ICategoryRepository>();
 
             foreach (var c in categories)
                 await repository.Add(c);

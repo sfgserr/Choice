@@ -1,12 +1,13 @@
 import RNFS from 'react-native-fs';
 
 const getImage = async (fileName) => {
-    const ifExists = RNFS.exists(fileName);
+    const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}.png`
+    const ifExists = await RNFS.exists(filePath);
 
     if (!ifExists) {
         const response = RNFS.downloadFile({
-            fromUrl: `http://10.0.2.2/api/objects/${fileName}`,
-            toFile: `${RNFS.DocumentDirectoryPath}/auto.png`
+            fromUrl: `http://192.168.0.106/api/objects/${fileName}`,
+            toFile: filePath
         });
         response.promise.then(res => {
             console.log(res.bytesWritten);
