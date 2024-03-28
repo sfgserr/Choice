@@ -8,6 +8,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './Screens/LoginScreen';
 import CategoryScreen from './Screens/CategoryScreen';
 import * as KeyChain from 'react-native-keychain';
@@ -19,9 +20,16 @@ import {
   Text,
   useColorScheme,
   View,
+  Image
 } from 'react-native';
+import OrderScreen from './Screens/OrderScreen';
+import { Icon } from 'react-native-elements';
+import ChatScreen from './Screens/ChatScreen';
+import AccountScreen from './Screens/AccountScreen';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
 export const AuthContext = React.createContext();
 
 function App() {
@@ -33,21 +41,74 @@ function App() {
 
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
+  const getTabLabel = (routeName) => {
+    switch (routeName) {
+      case 'Category':
+        return 'Услуги';
+      case 'Order':
+        return 'Заказы';
+      case 'Chat':
+        return 'Чат';
+      case 'Account':
+        return 'Аккаунт';
+    }
+  }
+
   return (
     <NavigationContainer>
       <AuthContext.Provider value={authContext}>
-        <Stack.Navigator>
-          {
-            !isSignedIn ? 
-            <Stack.Screen name="Login"
-                          component={LoginScreen}
-                          options={{headerShown: false}}/>
-            :
-            <Stack.Screen name="Category"
-                          component={CategoryScreen}
-                          options={{headerShown: false}}/>
-          }
-        </Stack.Navigator>
+        {
+          !isSignedIn ? (
+            <>
+              <Stack.Navigator>
+                <Stack.Screen name="Login"
+                              component={LoginScreen}
+                              options={{headerShown: false}}/>
+              </Stack.Navigator>
+            </>
+          ) :
+          <Tab.Navigator screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconSrc;
+
+                if (route.name == 'Category') {
+                  iconSrc = require("./assets/category.png");
+                }
+
+                if (route.name == 'Account') {
+                  iconSrc = require("./assets/account.png");
+                }
+
+                if (route.name == 'Chat') {
+                  iconSrc = require("./assets/chat.png");
+                }
+
+                if (route.name == 'Order') {
+                  iconSrc = require("./assets/order.png");
+                }
+
+                let iconColor = focused ? '#2975CC' : '#99A2AD';
+
+                return <Image style={{height: 25, width: 25}} source={iconSrc} tintColor={iconColor}/>
+              },
+              tabBarActiveTintColor: '#2975CC',
+              tabBarInactiveTintColor: '#99A2AD',
+              tabBarLabel: getTabLabel(route.name)
+          })}>
+            <Tab.Screen name="Category"
+                        component={CategoryScreen}
+                        options={{headerShown: false}}/>
+            <Tab.Screen name="Order"
+                        component={OrderScreen}
+                        options={{headerShown: false}}/>
+            <Tab.Screen name="Chat"
+                        component={ChatScreen}
+                        options={{headerShown: false}}/>
+            <Tab.Screen name="Account"
+                        component={AccountScreen}
+                        options={{headerShown: false}}/>
+          </Tab.Navigator>
+        }
       </AuthContext.Provider>
     </NavigationContainer>
   );
