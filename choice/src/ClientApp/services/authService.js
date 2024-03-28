@@ -1,4 +1,8 @@
 import * as KeyChain from 'react-native-keychain';
+import { jwtDecode } from 'jwt-decode';
+import { decode } from "base-64";
+
+global.atob = decode;
 
 const loginByEmail = async (email, password) => {
     return await fetch(`http://10.0.2.2/api/Auth/Login?email=${email}&password=${password}`, {
@@ -12,10 +16,19 @@ const loginByEmail = async (email, password) => {
         if (response.status == 200) {
             const json = await response.json();
             await KeyChain.setGenericPassword('api_key', json);
-            return true;
+            const jsonDecoded = jwtDecode(json);
+            if (jsonDecoded.email != undefined) {
+                return 1;
+            }
+
+            if (jsonDecoded.address != undefined) {
+                return 2;
+            }
+
+            return 3;
         }
         
-        return false;
+        return -1;
     })
     .catch(error => {
         console.log(error);

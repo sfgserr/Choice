@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Dapper;
+using Npgsql;
 using Polly;
 
 namespace Choice.Chat.Api.Extensions
@@ -26,16 +27,23 @@ namespace Choice.Chat.Api.Extensions
             using var connection = new NpgsqlConnection(configuration["PostgreSqlSettings:ConnectionString"]);
             connection.Open();
 
-            using var command = new NpgsqlCommand
-            {
-                Connection = connection
-            };
+            string tableName = "Messages";
+            bool exists = connection.QueryFirstOrDefault<bool>(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = @TableName)", new { TableName = tableName });
 
-            command.CommandText = @"CREATE TABLE Messages(Id SERIAL PRIMARY KEY, 
+            if (!exists)
+            {
+                using var command = new NpgsqlCommand
+                {
+                    Connection = connection
+                };
+
+                command.CommandText = @"CREATE TABLE Messages(Id SERIAL PRIMARY KEY, 
                                                                 SenderId VARCHAR(24) NOT NULL,
                                                                 ReceiverId VARCHAR(24) NOT NULL,
                                                                 Text VARCHAR(24) NOT NULL)";
-            command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

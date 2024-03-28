@@ -24,11 +24,11 @@ export default function LoginByEmailScreen({navigation, signIn}) {
     }
 
     const login = async () => {
-        let result = await authService.loginByEmail(email, password);
+        let userType = await authService.loginByEmail(email, password);
         
-        if (result) {
+        if (userType != -1) {
             await store.retrieveData();
-            signIn();
+            signIn(userType);
         }
     }
 

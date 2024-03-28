@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Dapper;
+using Npgsql;
 using Polly;
 
 namespace Choice.CategoryService.Api.Extensions
@@ -26,15 +27,22 @@ namespace Choice.CategoryService.Api.Extensions
             using var connection = new NpgsqlConnection(configuration["PostgreSqlSettings:ConnectionString"]);
             connection.Open();
 
-            using var command = new NpgsqlCommand
-            {
-                Connection = connection
-            };
+            string tableName = "Categories";
+            bool exists = connection.QueryFirstOrDefault<bool>(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = @TableName)", new { TableName = tableName });
 
-            command.CommandText = @"CREATE TABLE Categories(Id SERIAL PRIMARY KEY, 
+            if (!exists)
+            {
+                using var command = new NpgsqlCommand
+                {
+                    Connection = connection
+                };
+
+                command.CommandText = @"CREATE TABLE Categories(Id SERIAL PRIMARY KEY, 
                                                                 Title VARCHAR(24) NOT NULL,
                                                                 IconUri VARCHAR(24) NOT NULL)";
-            command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

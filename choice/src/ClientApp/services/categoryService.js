@@ -13,7 +13,6 @@ const getCategories = async () => {
     })
     .then(async response => {
         const json = await response.json();
-
         return Object.keys(json).map((i) => ({
             iconUri: json[i].iconUri,
             title: json[i].title,

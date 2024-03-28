@@ -34,12 +34,14 @@ export const AuthContext = React.createContext();
 
 function App() {
   const authContext = React.useMemo(() => ({
-    signIn: () => {
+    signIn: (userType) => {
       setIsSignedIn(true);
+      setUserType(userType);
     }
   }));
 
   const [isSignedIn, setIsSignedIn] = React.useState(false);
+  const [userType, setUserType] = React.useState(0);
 
   const getTabLabel = (routeName) => {
     switch (routeName) {
@@ -66,8 +68,9 @@ function App() {
                               options={{headerShown: false}}/>
               </Stack.Navigator>
             </>
-          ) :
-          <Tab.Navigator screenOptions={({route}) => ({
+          ) : userType == 1 ? (
+            <>
+             <Tab.Navigator screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconSrc;
 
@@ -95,19 +98,58 @@ function App() {
               tabBarInactiveTintColor: '#99A2AD',
               tabBarLabel: getTabLabel(route.name)
           })}>
-            <Tab.Screen name="Category"
-                        component={CategoryScreen}
-                        options={{headerShown: false}}/>
-            <Tab.Screen name="Order"
-                        component={OrderScreen}
-                        options={{headerShown: false}}/>
-            <Tab.Screen name="Chat"
-                        component={ChatScreen}
-                        options={{headerShown: false}}/>
-            <Tab.Screen name="Account"
-                        component={AccountScreen}
-                        options={{headerShown: false}}/>
-          </Tab.Navigator>
+              <Tab.Screen name="Category"
+                          component={CategoryScreen}
+                          options={{headerShown: false}}/>
+              <Tab.Screen name="Order"
+                          component={OrderScreen}
+                          options={{headerShown: false}}/>
+              <Tab.Screen name="Chat"
+                          component={ChatScreen}
+                          options={{headerShown: false}}/>
+              <Tab.Screen name="Account"
+                          component={AccountScreen}
+                          options={{headerShown: false}}/>
+            </Tab.Navigator>
+            </>
+          ) : (
+            <>
+             <Tab.Navigator screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconSrc;
+
+                if (route.name == 'Account') {
+                  iconSrc = require("./assets/account.png");
+                }
+
+                if (route.name == 'Chat') {
+                  iconSrc = require("./assets/chat.png");
+                }
+
+                if (route.name == 'Order') {
+                  iconSrc = require("./assets/category.png");
+                }
+
+                let iconColor = focused ? '#2975CC' : '#99A2AD';
+
+                return <Image style={{height: 25, width: 25}} source={iconSrc} tintColor={iconColor}/>
+              },
+              tabBarActiveTintColor: '#2975CC',
+              tabBarInactiveTintColor: '#99A2AD',
+              tabBarLabel: getTabLabel(route.name)
+          })}>
+              <Tab.Screen name="Order"
+                          component={OrderScreen}
+                          options={{headerShown: false}}/>
+              <Tab.Screen name="Chat"
+                          component={ChatScreen}
+                          options={{headerShown: false}}/>
+              <Tab.Screen name="Account"
+                          component={AccountScreen}
+                          options={{headerShown: false}}/>
+            </Tab.Navigator>
+            </>
+          )
         }
       </AuthContext.Provider>
     </NavigationContainer>
