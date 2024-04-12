@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import RNFS from 'react-native-fs';
-import store from '../services/store.js';
+import categoryStore from '../services/categoryStore.js';
 
 export default function CategoryScreen({ navigation, route }) {
-    const categories = store.getCategories();
-
+    const categories = categoryStore.getCategories();
+    
     const onPressed = ({item}) => {
         navigation.navigate('Map', {
             category: item

@@ -57,7 +57,7 @@ export default function LoginByPhoneScreen({signIn}) {
                     </View>
                     <View style={{paddingTop: 30}}>
                         <TouchableOpacity onPress={onVerifyCodePressed} disabled={loginDisabled} style={[styles.button, {backgroundColor: loginDisabled ? '#ABCDf3' : '#2D81E0'}]}>
-                            <Text style={[styles.buttonText, {alignSelf: 'center'}]}>Войти</Text>
+                            <Text style={styles.buttonText}>Войти</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -69,7 +69,7 @@ export default function LoginByPhoneScreen({signIn}) {
                     </View>
                     <View style={{paddingTop: 30}}>
                         <TouchableOpacity onPress={onSendCodePressed} disabled={disabled} style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}>
-                            <Text style={[styles.buttonText, {alignSelf: 'center'}]}>Отправить код</Text>
+                            <Text style={styles.buttonText}>Отправить код</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

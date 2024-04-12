@@ -17,6 +17,7 @@ const loginByEmail = async (email, password) => {
             const json = await response.json();
             await KeyChain.setGenericPassword('api_key', json);
             const jsonDecoded = jwtDecode(json);
+            
             if (jsonDecoded.email != undefined) {
                 return 1;
             }

@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     buttonText: {
       color: 'white',
       fontSize: 17,
-      fontWeight: '500'
+      fontWeight: '500',
+      alignSelf: 'center'
     },
     textInput: {
       backgroundColor: '#f2f3f5',

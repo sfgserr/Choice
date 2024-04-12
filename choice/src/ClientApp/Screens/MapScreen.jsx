@@ -8,10 +8,15 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
+import styles from '../Styles.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const { category } = route.params;
     const { width, height } = Dimensions.get('screen');
+
+    const goBack = () => {
+        navigation.goBack();
+    }
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -23,12 +28,14 @@ export default function MapScreen({ navigation, route }) {
                     longitudeDelta: 0.0121,
                 }}
                 provider='google'
-                style={styles.map}>
+                style={mapStyles.map}>
 
             </MapView>
             <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableOpacity style={{alignSelf: 'center'}}>
+                    <TouchableOpacity 
+                        style={{alignSelf: 'center'}}
+                        onPress={goBack}>
                         <Icon name='chevron-left'
                               type='material'
                               color={'#2688EB'}
@@ -38,11 +45,16 @@ export default function MapScreen({ navigation, route }) {
                     <Text></Text>
                 </View>
             </View>
+            <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/10, bottom: 0, paddingHorizontal: 20}}>
+                <TouchableOpacity style={[styles.button, {bottom: 10}]}>
+                    <Text style={styles.buttonText}>Создать заказ</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+const mapStyles = StyleSheet.create({
     map: {
       ...StyleSheet.absoluteFillObject
     },

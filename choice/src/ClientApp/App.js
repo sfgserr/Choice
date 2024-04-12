@@ -27,6 +27,8 @@ import { Icon } from 'react-native-elements';
 import ChatScreen from './Screens/ChatScreen';
 import AccountScreen from './Screens/AccountScreen';
 import MapScreen from './Screens/MapScreen';
+import categoryStore from './services/categoryStore';
+import userStore from './services/userStore';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -94,9 +96,12 @@ function ClientTab() {
 
 function App() {
   const authContext = React.useMemo(() => ({
-    signIn: (userType) => {
-      setIsSignedIn(true);
+    signIn: async (userType) => {
+      await categoryStore.retrieveData();
+      await userStore.login(userType);
+
       setUserType(userType);
+      setIsSignedIn(true);
     }
   }));
 

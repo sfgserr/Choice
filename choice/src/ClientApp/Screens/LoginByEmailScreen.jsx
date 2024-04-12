@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "../Styles.jsx";
 import authService from "../services/authService.js";
-import categoryService from "../services/categoryService.js";
 import { Icon } from "react-native-elements";
 import {
   SafeAreaView,
@@ -10,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import store from "../services/store.js";
 
 export default function LoginByEmailScreen({navigation, signIn}) {
     const [email, setEmail] = React.useState('');
@@ -27,8 +25,7 @@ export default function LoginByEmailScreen({navigation, signIn}) {
         let userType = await authService.loginByEmail(email, password);
         
         if (userType != -1) {
-            await store.retrieveData();
-            signIn(userType);
+            await signIn(userType);
         }
     }
 
@@ -75,7 +72,7 @@ export default function LoginByEmailScreen({navigation, signIn}) {
                 </View>
                 <View style={{paddingTop: 30}}>
                     <TouchableOpacity onPress={!disabled && login} disabled={disabled} style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}>
-                        <Text style={[styles.buttonText, {alignSelf: 'center'}]}>Войти</Text>
+                        <Text style={styles.buttonText}>Войти</Text>
                     </TouchableOpacity>
                 </View>
             </View>
