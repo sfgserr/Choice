@@ -10,21 +10,30 @@ namespace Choice.ClientService.Infrastructure.Data
 
         public static void Seed(ModelBuilder builder)
         {
-            builder.Entity<Client>()
-                .OwnsOne(c => c.Address)
-                .HasData(new
+            builder.Entity<Client>(c =>
+            {
+                c.HasData(new
                 {
                     Id = 1,
+                    ClientId = 1,
                     Guid = DefaultClientGuid,
                     Name = "Makar",
                     Surname = "Cheban",
                     Email = "dead01r@gmail.com",
-                    Address = new Address("Арбат 26", "Москва"),
                     IconUri = "defaulturi",
                     PhoneNumber = "37377875397",
                     AverageGrade = (double)0,
                     ReviewCount = 0
                 });
+
+                c.OwnsOne(c => c.Address)
+                 .HasData(new
+                 {
+                     ClientId = 1,
+                     City = "Москва",
+                     Street = "Арбат 26"
+                 });
+            });
         }
     }
 }

@@ -10,6 +10,7 @@ import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import styles from '../Styles.jsx';
 import geoService from '../services/geoService.js';
+import CustomMarker from '../Components/CustomMarker.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const { category } = route.params;
@@ -36,8 +37,8 @@ export default function MapScreen({ navigation, route }) {
                 region={{
                     latitude: coords[0],
                     longitude: coords[1],
-                    latitudeDelta: 0.015,
-                    longitudeDelta: 0.0121,
+                    longitudeDelta: 1,
+                    latitudeDelta: 1
                 }}
                 provider='google'
                 style={mapStyles.map}>
