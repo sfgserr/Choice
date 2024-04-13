@@ -9,21 +9,33 @@ import {
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import styles from '../Styles.jsx';
+import geoService from '../services/geoService.js';
 
 export default function MapScreen({ navigation, route }) {
     const { category } = route.params;
     const { width, height } = Dimensions.get('screen');
 
+    const [coords, setCoords] = React.useState([]);
+
+    React.useEffect(() => {
+        async function getCoords() {
+            let coords = await geoService.getCoords();
+
+            setCoords(coords);
+        }
+        getCoords();
+    });
+
     const goBack = () => {
         navigation.goBack();
     }
-
+    
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
             <MapView 
                 region={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: coords[0],
+                    longitude: coords[1],
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}

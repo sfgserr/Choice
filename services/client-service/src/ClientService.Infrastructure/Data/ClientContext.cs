@@ -23,6 +23,7 @@ namespace Choice.ClientService.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
+            SeedData.Seed(modelBuilder);
         }
 
         public DbSet<Client> Clients { get; set; }

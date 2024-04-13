@@ -14,6 +14,8 @@ namespace Choice.ClientService.Api.ViewModels
             AverageGrade = client.AverageGrade;
             IconUri = client.IconUri;
             PhoneNumber = client.PhoneNumber;
+            Street = client.Address.Street;
+            City = client.Address.City; 
         }
 
         public int Id { get; }
@@ -24,5 +26,7 @@ namespace Choice.ClientService.Api.ViewModels
         public double AverageGrade { get; }
         public string IconUri { get; }
         public string PhoneNumber { get; }
+        public string Street { get; }
+        public string City { get; }
     }
 }

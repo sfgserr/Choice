@@ -5,6 +5,8 @@ namespace Choice.Authentication
 {
     public static class UsersSeed
     {
+        public static readonly Guid ClientGuid = new ("5a453df7-de7c-4292-a531-969ca6eaee45");
+
         public static async Task Seed(IServiceProvider services)
         {
             var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -22,10 +24,10 @@ namespace Choice.Authentication
                  UserType.Admin);
 
             User client = new
-                (Guid.NewGuid(),
+                (ClientGuid,
                  "dead01r@gmail.com",
                  "PaSsWoRd",
-                 "Makar",
+                 "Makar Cheban",
                  "37377875397",
                  "Москва",
                  "Арбат 26",

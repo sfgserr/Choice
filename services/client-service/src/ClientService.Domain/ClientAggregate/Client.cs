@@ -28,7 +28,7 @@ namespace Choice.ClientService.Domain.ClientAggregate
         public string Email { get; private set; }
         public Address Address { get; private set; }
         public double AverageGrade { get; private set; }
-        public double ReviewCount { get; private set; }
+        public int ReviewCount { get; private set; }
         public string IconUri { get; private set; }
         public string PhoneNumber { get; private set; }
         public IReadOnlyCollection<OrderRequest> Requests => _requests.AsReadOnly();
