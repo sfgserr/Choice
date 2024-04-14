@@ -29,6 +29,7 @@ import AccountScreen from './Screens/AccountScreen';
 import MapScreen from './Screens/MapScreen';
 import categoryStore from './services/categoryStore';
 import userStore from './services/userStore';
+import OrderRequestCreationScreen from './Screens/OrderRequestCreationScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -128,6 +129,9 @@ function App() {
                               options={{headerShown: false}}/>
                 <Stack.Screen name="Map"
                               component={MapScreen}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="OrderRequestCreation"
+                              component={OrderRequestCreationScreen}
                               options={{headerShown:false}}/>
              </Stack.Navigator>
             </>

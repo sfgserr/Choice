@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
       color: 'black',
       fontWeight: '400',
       fontSize: 16
+    },
+    topRightCorner: {
+      ...StyleSheet.absoluteFillObject,
+      alignSelf: 'flex-end',
+      marginTop: -5,
     }
 });
 
