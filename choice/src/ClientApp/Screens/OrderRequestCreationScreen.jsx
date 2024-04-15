@@ -9,9 +9,11 @@ import {
     Image
 } from 'react-native';
 import { Icon } from "react-native-elements";
+import { Slider } from "react-native-awesome-slider";
 import styles from "../Styles";
 import * as ImagePicker from 'react-native-image-picker';
 import ImageBox from "../Components/ImageBox";
+import { useSharedValue } from "react-native-reanimated";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
     const { category } = route.params;
@@ -20,9 +22,14 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
 
+    const progress = useSharedValue(10);
+    const min = useSharedValue(5);
+    const max = useSharedValue(25);
+
     const [categories, setCategories] = React.useState(category.title);
     const [description, setDescription] = React.useState('');
     const [toKnowPrice, setToKnowPrice] = React.useState(false);
+    const [radius, setRadius] = React.useState(10);
     const [toKnowDeadLine, setToKnowDeadLine] = React.useState(false);
     const [toKnowEnrollmentTime, setToKnowEnrollmentTime] = React.useState(false);
 
@@ -121,16 +128,87 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     </View>
                 </View>
                 <View 
-                    style={{paddingTop: 30}}>
+                    style={{
+                        paddingTop: 30,
+                    }}>
+                    <View 
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
                         <Text 
                             style={{
                                 fontSize: 14, 
                                 fontWeight: '400', 
                                 color: '#6D7885', 
-                                paddingBottom: 10
+                                paddingBottom: 20
                             }}>
                             Радиус поиска
                         </Text>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: 'black',
+                                fontWeight: '600'
+                            }}>
+                            {`${radius} км`}
+                        </Text>
+                    </View>
+                    <Slider minimumValue={min}
+                            progress={progress}
+                            maximumValue={max}
+                            onValueChange={(value) => setRadius(Math.floor(value))}
+                            theme={{
+                                disableMinTrackTintColor: '#007AFF',
+                                maximumTrackTintColor: '#78788033',
+                                minimumTrackTintColor: '#007AFF',
+                            }}
+                            renderBubble={() => {}}
+                            renderThumb={() => (
+                                <View 
+                                    style={{
+                                        borderRadius: 360,
+                                        backgroundColor: 'white',
+                                        width: 25,
+                                        height: 25,
+                                        borderWidth: 1,
+                                        borderColor: '#78788033'
+                                    }}>
+
+                                </View>
+                            )}/>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 20
+                        }}>
+                        <Text
+                            style={{
+                                fontSize: 14, 
+                                fontWeight: '400', 
+                                color: '#6D7885', 
+                            }}>
+                            от 5 км
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 14, 
+                                fontWeight: '400', 
+                                color: '#6D7885', 
+                            }}>
+                            до 25 км
+                        </Text>
+                    </View>
+                </View>
+                <View 
+                    style={{
+                        paddingTop: 30,
+                        paddingBottom: 10
+                    }}>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Создать заказ</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>

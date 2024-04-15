@@ -9,6 +9,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import LoginScreen from './Screens/LoginScreen';
 import CategoryScreen from './Screens/CategoryScreen';
 import * as KeyChain from 'react-native-keychain';
@@ -131,7 +132,7 @@ function App() {
                               component={MapScreen}
                               options={{headerShown:false}}/>
                 <Stack.Screen name="OrderRequestCreation"
-                              component={OrderRequestCreationScreen}
+                              component={gestureHandlerRootHOC(OrderRequestCreationScreen)}
                               options={{headerShown:false}}/>
              </Stack.Navigator>
             </>
