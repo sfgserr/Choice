@@ -6,7 +6,8 @@ import {
     TextInput,
     Dimensions,
     ScrollView,
-    Image
+    Image,
+    Modal
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import { Slider } from "react-native-awesome-slider";
@@ -14,8 +15,11 @@ import styles from "../Styles";
 import * as ImagePicker from 'react-native-image-picker';
 import ImageBox from "../Components/ImageBox";
 import { useSharedValue } from "react-native-reanimated";
+import categoryStore from "../services/categoryStore";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
+    const categories = categoryStore.getCategories();
+
     const { category } = route.params;
     const { width, height } = Dimensions.get('screen');
     const [fisrtImageUri, setFirstImageUri] = React.useState('');
@@ -26,7 +30,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const min = useSharedValue(5);
     const max = useSharedValue(25);
 
-    const [categories, setCategories] = React.useState(category.title);
+    const [categoriesString, setCategoriesString] = React.useState(category.title);
     const [description, setDescription] = React.useState('');
     const [toKnowPrice, setToKnowPrice] = React.useState(false);
     const [radius, setRadius] = React.useState(10);
@@ -40,6 +44,48 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 backgroundColor: 'white'
             }}
             showsVerticalScrollIndicator={false}>
+            <Modal 
+                animationType="slide"
+                transparent={true}>
+                <View 
+                    style={{
+                        height: '50%',
+                        marginTop: 'auto',
+                        backgroundColor:'white',
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        borderWidth: 1,
+                        paddingHorizontal: 10
+                    }}>        
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10,
+                        }}>
+                        <Text></Text>
+                        <Text 
+                            style={{
+                                color: 'black',
+                                fontSize: 21,
+                                fontWeight: '600',
+                            }}>
+                            Категория услуг
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}>
+                            <Icon 
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
                 <TouchableOpacity 
                     style={{alignSelf: 'center'}}
@@ -56,7 +102,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 <View style={{paddingTop: 20}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Категория услуг</Text>
                     <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <Text style={[styles.textInputFont, {alignSelf: 'center', flex: 3}]}>{categories}</Text>
+                        <Text style={[styles.textInputFont, {alignSelf: 'center', flex: 3}]}>{categoriesString}</Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                             <TouchableOpacity style={{alignSelf: 'center'}}>
                                 <Icon type='material'
