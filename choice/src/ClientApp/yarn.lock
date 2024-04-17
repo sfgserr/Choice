@@ -5997,6 +5997,11 @@ react-native-maps@^1.11.3:
   dependencies:
     "@types/geojson" "^7946.0.13"
 
+react-native-modalize@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/react-native-modalize/-/react-native-modalize-2.1.1.tgz"
+  integrity sha512-4/7EZWsrUqAAkkAVEnOsSdpAPQaEBewX7TvwFuzgvGDzxKpq3O58I9SnSeU8QtG/r91XYHJNaU5dAuDrcLjUaQ==
+
 react-native-open-street-map@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/react-native-open-street-map/-/react-native-open-street-map-2.0.1.tgz"

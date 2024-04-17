@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
     View,
     TouchableOpacity,
@@ -7,7 +7,8 @@ import {
     Dimensions,
     ScrollView,
     Image,
-    Modal
+    Modal,
+    Switch
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import { Slider } from "react-native-awesome-slider";
@@ -16,11 +17,18 @@ import * as ImagePicker from 'react-native-image-picker';
 import ImageBox from "../Components/ImageBox";
 import { useSharedValue } from "react-native-reanimated";
 import categoryStore from "../services/categoryStore";
+import { Modalize } from "react-native-modalize";
+import { FlatList } from "react-native-gesture-handler";
+import { color } from "react-native-elements/dist/helpers";
+import Category from "../Components/Category";
+import arrayHelper from "../helpers/arrayHelper";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
+    const modalRef = useRef(null);
+
     const categories = categoryStore.getCategories();
 
-    const { category } = route.params;
+    const [selectedCategories, setSelectedCategories] = React.useState([{title: route.params.category.title, track: true, id: route.params.category.id}]);
     const { width, height } = Dimensions.get('screen');
     const [fisrtImageUri, setFirstImageUri] = React.useState('');
     const [secondImageUri, setSecondImageUri] = React.useState('');
@@ -30,12 +38,33 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const min = useSharedValue(5);
     const max = useSharedValue(25);
 
-    const [categoriesString, setCategoriesString] = React.useState(category.title);
     const [description, setDescription] = React.useState('');
     const [toKnowPrice, setToKnowPrice] = React.useState(false);
+    const [categoriesString, setCategoriesString] = React.useState(arrayHelper.project(selectedCategories, c => c.title).join(','));
     const [radius, setRadius] = React.useState(10);
     const [toKnowDeadLine, setToKnowDeadLine] = React.useState(false);
     const [toKnowEnrollmentTime, setToKnowEnrollmentTime] = React.useState(false);
+
+    const selectCategory = (newCategory) => {
+        if (newCategory.track) {
+            setSelectedCategories(prev => {
+                prev.push(newCategory);
+                setCategoriesString(arrayHelper.project(prev, c => c.title).join(','));
+                return prev;
+            });
+        }
+        else {
+            setSelectedCategories(prev => {
+                let index = prev.findIndex(c => newCategory.id == c.id);
+                console.log(prev[index].title);
+                let newArray = prev.splice(index, 1);
+
+                setCategoriesString(arrayHelper.project(newArray, c => c.title).join(','));
+
+                return newArray;
+            });
+        }
+    }
 
     return (
         <ScrollView 
@@ -44,18 +73,15 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 backgroundColor: 'white'
             }}
             showsVerticalScrollIndicator={false}>
-            <Modal 
-                animationType="slide"
-                transparent={true}>
-                <View 
+            <Modalize 
+                ref={modalRef}
+                adjustToContentHeight={true}
+                childrenStyle={{height: '100%'}}>
+
+                <View
                     style={{
-                        height: '50%',
-                        marginTop: 'auto',
-                        backgroundColor:'white',
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                        borderWidth: 1,
-                        paddingHorizontal: 10
+                        paddingHorizontal: 15,
+                        paddingTop: 10
                     }}>        
                     <View
                         style={{
@@ -73,6 +99,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                             Категория услуг
                         </Text>
                         <TouchableOpacity
+                            onPress={() => modalRef.current?.close()}
                             style={{
                                 borderRadius: 360,
                                 backgroundColor: '#eff1f2',
@@ -84,8 +111,23 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                 color='#818C99'/>
                         </TouchableOpacity>
                     </View>
+                    <FlatList
+                        data={categories}
+                        scrollEnabled={false}
+                        style={{ paddingTop: 10 }} 
+                        renderItem={({item}) => {
+                        return (
+                            <Category 
+                                category={{
+                                    title: item.title,
+                                    track: selectedCategories.findIndex(c => c.id == item.id) != -1,
+                                    id: item.id
+                                }}
+                                selectCategory={(category) => selectCategory(category)}/>
+                        );
+                    }}/>
                 </View>
-            </Modal>
+            </Modalize>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
                 <TouchableOpacity 
                     style={{alignSelf: 'center'}}
@@ -104,7 +146,9 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     <View style={[styles.textInput, {flexDirection: 'row'}]}>
                         <Text style={[styles.textInputFont, {alignSelf: 'center', flex: 3}]}>{categoriesString}</Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                            <TouchableOpacity style={{alignSelf: 'center'}}>
+                            <TouchableOpacity 
+                                style={{alignSelf: 'center'}}
+                                onPress={() => modalRef.current?.open()}>
                                 <Icon type='material'
                                     color='gray'
                                     name='expand-more'/>
@@ -117,7 +161,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     <View style={[styles.textInput, {height: height/7}]}>
                         <TextInput style={[styles.textInputFont, {top:0}]}
                                    value={description}
-                                   onChange={(value) => setDescription(value)}
+                                   onChangeText={(value) => setDescription(value)}
                                    multiline={true}
                                    placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
                     </View>
