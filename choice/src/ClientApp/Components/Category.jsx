@@ -9,14 +9,11 @@ const Category = ({ category, selectCategory }) => {
     const [value, setValue] = React.useState(category.track);
 
     const onValueChanged = () => {
-        setValue(prev => {
-            selectCategory({
-                title: category.title,
-                track: !prev,
-                id: category.id
-            });
-
-            return !prev;
+        setValue(prev => !prev);
+        selectCategory({
+            title: category.title,
+            track: !value,
+            id: category.id
         });
     }
 

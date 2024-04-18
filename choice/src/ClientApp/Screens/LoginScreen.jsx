@@ -61,7 +61,6 @@ export default function LoginScreen({ navigation, route }) {
                                keyExtractor={(item) => item.key}
                                horizontal
                                pagingEnabled
-                               style={{paddingTop: 30}}
                                bounces={false}
                                onScroll={Animated.event(
                                 [{nativeEvent: {contentOffset: {x: scrollX}}}],
@@ -69,7 +68,7 @@ export default function LoginScreen({ navigation, route }) {
                                )}
                                showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
-                               return <View style={{width, paddingTop: 40}}>
+                               return <View style={{width, paddingTop: 70}}>
                                  <item.screen navigation={navigation} signIn={signIn}/>
                                </View>
                             }}/>

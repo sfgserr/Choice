@@ -34,6 +34,10 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
 
+    const disabled = (selectedCategories.length < 1 || description == '' || 
+                     (fisrtImageUri == '' && secondImageUri == '' && thirdImageUri == '') ||
+                     (!toKnowPrice && !toKnowEnrollmentTime && !toKnowDeadLine));
+
     const progress = useSharedValue(10);
     const min = useSharedValue(5);
     const max = useSharedValue(25);
@@ -56,12 +60,11 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
         else {
             setSelectedCategories(prev => {
                 let index = prev.findIndex(c => newCategory.id == c.id);
-                console.log(prev[index].title);
-                let newArray = prev.splice(index, 1);
+                prev.splice(index, 1);
+                
+                setCategoriesString(arrayHelper.project(prev, c => c.title).join(','));
 
-                setCategoriesString(arrayHelper.project(newArray, c => c.title).join(','));
-
-                return newArray;
+                return prev;
             });
         }
     }
@@ -296,7 +299,10 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                         paddingTop: 30,
                         paddingBottom: 10
                     }}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity 
+                        style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}
+                        disabled={disabled}
+                        onPress={!disabled && (() => {})}>
                         <Text style={styles.buttonText}>Создать заказ</Text>
                     </TouchableOpacity>
                 </View>
