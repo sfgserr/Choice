@@ -9,6 +9,7 @@ namespace Choice.ClientService.Api.ViewModels
             Id = request.Id;
             Client = new(request.Client!);
             Categories = request.Categories;
+            PhotoUris = request.PhotoUris;
             Description = request.Description;
             ToKnowPrice = request.ToKnowPrice;
             ToKnowDeadline = request.ToKnowDeadline;
@@ -20,6 +21,7 @@ namespace Choice.ClientService.Api.ViewModels
         public int Id { get; }
         public ClientViewModel Client { get; }
         public List<int> Categories { get; private set; }
+        public List<string> PhotoUris { get; private set; }
         public string Description { get; private set; }
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }

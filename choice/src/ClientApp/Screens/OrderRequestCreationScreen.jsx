@@ -34,9 +34,12 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
 
-    const disabled = (selectedCategories.length < 1 || description == '' || 
-                     (fisrtImageUri == '' && secondImageUri == '' && thirdImageUri == '') ||
-                     (!toKnowPrice && !toKnowEnrollmentTime && !toKnowDeadLine));
+    const [disabled, setDisabled] = React.useState(true);
+
+    const updateDisabled = (state) => {
+        setDisabled((state.selectedCategories.length < 1 || state.description == '' || 
+            (!state.toKnowPrice && !state.toKnowDeadLine && !state.toKnowEnrollmentTime)));
+    }
 
     const progress = useSharedValue(10);
     const min = useSharedValue(5);
@@ -56,6 +59,16 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 setCategoriesString(arrayHelper.project(prev, c => c.title).join(','));
                 return prev;
             });
+            updateDisabled({
+                selectedCategories,
+                description,
+                toKnowPrice,
+                toKnowDeadLine,
+                toKnowEnrollmentTime,
+                fisrtImageUri,
+                secondImageUri,
+                thirdImageUri
+            });
         }
         else {
             setSelectedCategories(prev => {
@@ -65,6 +78,16 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 setCategoriesString(arrayHelper.project(prev, c => c.title).join(','));
 
                 return prev;
+            });
+            updateDisabled({
+                selectedCategories,
+                description,
+                toKnowPrice,
+                toKnowDeadLine,
+                toKnowEnrollmentTime,
+                fisrtImageUri,
+                secondImageUri,
+                thirdImageUri
             });
         }
     }
@@ -162,11 +185,24 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 <View style={{paddingTop: 30}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Описание задачи</Text>
                     <View style={[styles.textInput, {height: height/7}]}>
-                        <TextInput style={[styles.textInputFont, {top:0}]}
-                                   value={description}
-                                   onChangeText={(value) => setDescription(value)}
-                                   multiline={true}
-                                   placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
+                        <TextInput 
+                                style={[styles.textInputFont, {top:0}]}
+                                value={description}
+                                onChangeText={(value) => { 
+                                    setDescription(value);
+                                    updateDisabled({
+                                        selectedCategories,
+                                        description: value,
+                                        toKnowPrice,
+                                        toKnowDeadLine,
+                                        toKnowEnrollmentTime,
+                                        fisrtImageUri,
+                                        secondImageUri,
+                                        thirdImageUri
+                                    });
+                                }}
+                                multiline={true}
+                                placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
                     </View>
                 </View>
                 <View style={{paddingTop: 10}}>
@@ -182,8 +218,21 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 <View style={{paddingTop:30}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Что узнать у продавца</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowPrice ? 0 : 2, backgroundColor: toKnowPrice ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
-                                          onPress={() => setToKnowPrice(!toKnowPrice)}>
+                        <TouchableOpacity 
+                            style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowPrice ? 0 : 2, backgroundColor: toKnowPrice ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
+                            onPress={() => { 
+                                setToKnowPrice(!toKnowPrice);
+                                updateDisabled({
+                                    selectedCategories,
+                                    description,
+                                    toKnowPrice: !toKnowPrice,
+                                    toKnowDeadLine,
+                                    toKnowEnrollmentTime,
+                                    fisrtImageUri,
+                                    secondImageUri,
+                                    thirdImageUri
+                                });
+                            }}>
                             <Icon name='done'
                                   type='material'
                                   color={'white'}
@@ -192,8 +241,21 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                         <Text style={{fontSize: 15, fontWeight: '400', color: 'black', paddingLeft: 10}}>Узнать стоимость</Text>
                     </View>
                     <View style={{flexDirection: 'row', paddingTop: 10}}>
-                        <TouchableOpacity style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowDeadLine ? 0 : 2, backgroundColor: toKnowDeadLine ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
-                                          onPress={() => setToKnowDeadLine(!toKnowDeadLine)}>
+                        <TouchableOpacity 
+                            style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowDeadLine ? 0 : 2, backgroundColor: toKnowDeadLine ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
+                            onPress={() => { 
+                                setToKnowDeadLine(!toKnowDeadLine);
+                                updateDisabled({
+                                    selectedCategories,
+                                    description,
+                                    toKnowPrice,
+                                    toKnowDeadLine: !toKnowDeadLine,
+                                    toKnowEnrollmentTime,
+                                    fisrtImageUri,
+                                    secondImageUri,
+                                    thirdImageUri
+                                });
+                            }}>
                             <Icon name='done'
                                   type='material'
                                   color={'white'}
@@ -202,8 +264,21 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                         <Text style={{fontSize: 15, fontWeight: '400', color: 'black', paddingLeft: 10}}>Узнать время выполнения работ</Text>
                     </View>
                     <View style={{flexDirection: 'row', paddingTop: 10}}>
-                        <TouchableOpacity style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowEnrollmentTime ? 0 : 2, backgroundColor: toKnowEnrollmentTime ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
-                                          onPress={() => setToKnowEnrollmentTime(!toKnowEnrollmentTime)}>
+                        <TouchableOpacity 
+                            style={{width: 20, height: 20, borderColor: '#B8C1CC', borderWidth: toKnowEnrollmentTime ? 0 : 2, backgroundColor: toKnowEnrollmentTime ? '#2688EB' : 'white', borderRadius: 4, justifyContent: 'center'}}
+                            onPress={() => { 
+                                setToKnowEnrollmentTime(!toKnowEnrollmentTime);
+                                updateDisabled({
+                                    selectedCategories,
+                                    description,
+                                    toKnowPrice,
+                                    toKnowDeadLine,
+                                    toKnowEnrollmentTime: !toKnowEnrollmentTime,
+                                    fisrtImageUri,
+                                    secondImageUri,
+                                    thirdImageUri
+                                });
+                            }}>
                             <Icon name='done'
                                   type='material'
                                   color={'white'}
@@ -215,9 +290,45 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 <View style={{paddingTop: 30}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Приложите файлы к заказу</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <ImageBox handleState={(state) => setFirstImageUri(state)}/>
-                        <ImageBox handleState={(state) => setSecondImageUri(state)}/>
-                        <ImageBox handleState={(state) => setThirdImageUri(state)}/>
+                        <ImageBox handleState={(state) => { 
+                            setFirstImageUri(state);
+                            updateDisabled({
+                                selectedCategories,
+                                description,
+                                toKnowPrice,
+                                toKnowDeadLine,
+                                toKnowEnrollmentTime,
+                                fisrtImageUri: state,
+                                secondImageUri,
+                                thirdImageUri
+                            });
+                        }}/>
+                        <ImageBox handleState={(state) => { 
+                            setSecondImageUri(state);
+                            updateDisabled({
+                                selectedCategories,
+                                description,
+                                toKnowPrice,
+                                toKnowDeadLine,
+                                toKnowEnrollmentTime,
+                                fisrtImageUri,
+                                secondImageUri: state,
+                                thirdImageUri
+                            });
+                        }}/>
+                        <ImageBox handleState={(state) => { 
+                            setThirdImageUri(state);
+                            updateDisabled({
+                                selectedCategories,
+                                description,
+                                toKnowPrice,
+                                toKnowDeadLine,
+                                toKnowEnrollmentTime,
+                                fisrtImageUri,
+                                secondImageUri,
+                                thirdImageUri: state
+                            }); 
+                        }}/>
                     </View>
                 </View>
                 <View 

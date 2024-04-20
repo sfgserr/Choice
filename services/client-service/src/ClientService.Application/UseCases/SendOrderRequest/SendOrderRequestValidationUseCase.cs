@@ -17,7 +17,7 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             _outputPort = new SendOrderRequestPresenter();
         }
 
-        public async Task Execute(string description, List<int> categories, int searchRadius,
+        public async Task Execute(string description, List<string> photoUris, List<int> categories, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             if (description == string.Empty)
@@ -42,7 +42,8 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             }
 
             await _useCase.Execute
-                (description, 
+                (description,
+                 photoUris,
                  categories,
                  searchRadius,
                  toKnowPrice,

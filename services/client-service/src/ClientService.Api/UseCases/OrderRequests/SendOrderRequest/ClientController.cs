@@ -46,6 +46,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
 
             await _useCase.Execute
                 (request.Description,
+                 request.PhotoUris,
                  request.Categories,
                  request.SearchRadius,
                  request.ToKnowPrice,

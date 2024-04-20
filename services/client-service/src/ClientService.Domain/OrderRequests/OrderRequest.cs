@@ -5,12 +5,13 @@ namespace Choice.ClientService.Domain.OrderRequests
 {
     public class OrderRequest : Entity
     {
-        public OrderRequest(int clientId, List<int> categories, string description,
+        public OrderRequest(int clientId, List<int> categories, string description, List<string> photoUris,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius)
         {
             ClientId = clientId;
             Categories = categories;
             Description = description;
+            PhotoUris = photoUris;
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -21,6 +22,7 @@ namespace Choice.ClientService.Domain.OrderRequests
         public Client? Client { get; set; }
         public List<int> Categories { get; private set; }
         public string Description { get; private set; }
+        public List<string> PhotoUris { get; private set; }
         public bool ToKnowPrice { get; private set; }
         public bool ToKnowDeadline { get; private set; }
         public bool ToKnowEnrollmentDate { get; private set; }
