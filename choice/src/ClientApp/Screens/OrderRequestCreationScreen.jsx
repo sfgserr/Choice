@@ -13,15 +13,14 @@ import {
 import { Icon } from "react-native-elements";
 import { Slider } from "react-native-awesome-slider";
 import styles from "../Styles";
-import * as ImagePicker from 'react-native-image-picker';
 import ImageBox from "../Components/ImageBox";
 import { useSharedValue } from "react-native-reanimated";
 import categoryStore from "../services/categoryStore";
 import { Modalize } from "react-native-modalize";
 import { FlatList } from "react-native-gesture-handler";
-import { color } from "react-native-elements/dist/helpers";
 import Category from "../Components/Category";
 import arrayHelper from "../helpers/arrayHelper";
+import clientService from "../services/clientService";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
     const modalRef = useRef(null);
@@ -413,7 +412,15 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     <TouchableOpacity 
                         style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}
                         disabled={disabled}
-                        onPress={!disabled && (() => {})}>
+                        onPress={!disabled && (async () => await clientService.sendOrderRequest({
+                            description,
+                            categories: arrayHelper.project(selectedCategories, e => e.id),
+                            photoUris: [fisrtImageUri, secondImageUri, thirdImageUri],
+                            searchRadius: radius*1000,
+                            toKnowPrice,
+                            toKnowDeadLine,
+                            toKnowEnrollmentTime
+                        }))}>
                         <Text style={styles.buttonText}>Создать заказ</Text>
                     </TouchableOpacity>
                 </View>

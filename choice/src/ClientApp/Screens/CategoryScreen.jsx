@@ -15,7 +15,8 @@ export default function CategoryScreen({ navigation, route }) {
     
     const onPressed = ({item}) => {
         navigation.navigate('Map', {
-            category: item
+            category: item,
+            orderRequest: undefined
         });
     }
 

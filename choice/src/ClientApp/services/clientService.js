@@ -14,14 +14,12 @@ const get = async () => {
     .then(async response => await response.json());
 }
 
-const sendOrderRequest = async () => {
+const sendOrderRequest = async (orderRequest) => {
     const token = await KeyChain.getGenericPassword();
     
     return await fetch('http://192.168.0.106/api/Client/SendOrderRequest', {
         method: 'POST',
-        body: {
-            
-        },
+        body: JSON.stringify(orderRequest),
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -32,5 +30,6 @@ const sendOrderRequest = async () => {
 }
 
 export default {
-    get
+    get,
+    sendOrderRequest
 }

@@ -13,9 +13,12 @@ import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore.js';
+import { Modalize } from 'react-native-modalize';
 
 export default function MapScreen({ navigation, route }) {
-    const { category } = route.params;
+    const modalRef = React.useRef(null);
+
+    const { category, orderRequest } = route.params;
     const { width, height } = Dimensions.get('screen');
 
     const [coords, setCoords] = React.useState([]);
@@ -36,6 +39,9 @@ export default function MapScreen({ navigation, route }) {
     
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
+            <Modalize ref={modalRef}>
+                
+            </Modalize>
             <MapView 
                 camera={{
                     center: {
