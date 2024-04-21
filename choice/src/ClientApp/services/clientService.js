@@ -16,7 +16,7 @@ const get = async () => {
 
 const sendOrderRequest = async (orderRequest) => {
     const token = await KeyChain.getGenericPassword();
-    
+
     return await fetch('http://192.168.0.106/api/Client/SendOrderRequest', {
         method: 'POST',
         body: JSON.stringify(orderRequest),
@@ -26,7 +26,12 @@ const sendOrderRequest = async (orderRequest) => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async response => await response.json());
+    .then(async response => {
+        const json = await response.json();
+        console.log(json);
+
+        return json;
+    });
 }
 
 export default {

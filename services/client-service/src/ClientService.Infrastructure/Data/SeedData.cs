@@ -6,7 +6,7 @@ namespace Choice.ClientService.Infrastructure.Data
 {
     public static class SeedData
     {
-        public static readonly string DefaultClientGuid = "5a453df7-de7c-4292-a531-969ca6eaee45";
+        public static readonly string DefaultClientGuid = "59f5697f-84d3-4b7a-97d7-96f9fd2c8c86";
 
         public static void Seed(ModelBuilder builder)
         {

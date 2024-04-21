@@ -21,7 +21,7 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             _outputPort = new SendOrderRequestPresenter();
         }
 
-        public async Task Execute(string description, List<string> photoUris, List<int> categories, int searchRadius,
+        public async Task Execute(string description, List<string> photoUris, int categoryId, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             string id = _userService.GetUserId();
@@ -36,7 +36,7 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
 
             OrderRequest request = new
                 (client.Id,
-                 categories,
+                 categoryId,
                  description,
                  photoUris,
                  toKnowPrice,

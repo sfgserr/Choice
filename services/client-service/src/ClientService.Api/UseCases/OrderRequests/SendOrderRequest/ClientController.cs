@@ -36,7 +36,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
 
         void IOutputPort.Ok(OrderRequest request)
         {
-            _viewModel = Ok(new OrderRequestDetailsViewModel(request));
+            _viewModel = Ok(new OrderRequestViewModel(request));
         }
 
         [HttpPost("SendOrderRequest")]
@@ -47,7 +47,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.SendOrderRequest
             await _useCase.Execute
                 (request.Description,
                  request.PhotoUris,
-                 request.Categories,
+                 request.CategoryId,
                  request.SearchRadius,
                  request.ToKnowPrice,
                  request.ToKnowDeadline,

@@ -5,7 +5,7 @@ namespace Choice.Authentication
 {
     public static class UsersSeed
     {
-        public static readonly Guid ClientGuid = new ("5a453df7-de7c-4292-a531-969ca6eaee45");
+        public static readonly Guid ClientGuid = new ("59f5697f-84d3-4b7a-97d7-96f9fd2c8c86");
 
         public static async Task Seed(IServiceProvider services)
         {

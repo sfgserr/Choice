@@ -8,19 +8,20 @@ namespace Choice.ClientService.Api.ViewModels
         {
             Id = request.Id;
             Client = new(request.Client!);
-            Categories = request.Categories;
+            CategoryId = request.CategoryId;
             PhotoUris = request.PhotoUris;
             Description = request.Description;
             ToKnowPrice = request.ToKnowPrice;
             ToKnowDeadline = request.ToKnowDeadline;
             ToKnowEnrollmentDate = request.ToKnowEnrollmentDate;
             SearchRadius = request.SearchRadius;
-            Status = request.Status;    
+            Status = request.Status;
+            CreationDate = request.CreationDate;
         }
 
         public int Id { get; }
         public ClientViewModel Client { get; }
-        public List<int> Categories { get; private set; }
+        public int CategoryId { get; private set; }
         public List<string> PhotoUris { get; private set; }
         public string Description { get; private set; }
         public bool ToKnowPrice { get; private set; }
@@ -28,5 +29,6 @@ namespace Choice.ClientService.Api.ViewModels
         public bool ToKnowEnrollmentDate { get; private set; }
         public int SearchRadius { get; private set; }
         public OrderStatus Status { get; private set; }
+        public DateTime CreationDate { get; private set; }
     }
 }

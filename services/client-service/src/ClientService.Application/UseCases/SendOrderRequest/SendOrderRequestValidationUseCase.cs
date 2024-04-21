@@ -17,17 +17,12 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             _outputPort = new SendOrderRequestPresenter();
         }
 
-        public async Task Execute(string description, List<string> photoUris, List<int> categories, int searchRadius,
+        public async Task Execute(string description, List<string> photoUris, int categoryId, int searchRadius,
             bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             if (description == string.Empty)
             {
                 _notification.Add(nameof(description), "Description is empty");
-            }
-
-            if (categories.Count == 0)
-            {
-                _notification.Add(nameof(categories), "Request should have at least one category");
             }
 
             if (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate)
@@ -44,7 +39,7 @@ namespace Choice.ClientService.Application.UseCases.SendOrderRequest
             await _useCase.Execute
                 (description,
                  photoUris,
-                 categories,
+                 categoryId,
                  searchRadius,
                  toKnowPrice,
                  toKnowDeadline,

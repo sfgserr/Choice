@@ -16,8 +16,8 @@ namespace ClientService.UnitTests.SendOrderRequest
 
         [Theory]
         [ClassData(typeof(ValidDataSetup))]
-        public async Task SendOrderRequests_Returns_Ok(string description, List<int> categories, int searchRadius,
-            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
+        public async Task SendOrderRequests_Returns_Ok(string description, List<string> photoUris, int categoryId, 
+            int searchRadius, bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             SendOrderRequestPresenter presenter = new();
 
@@ -27,7 +27,8 @@ namespace ClientService.UnitTests.SendOrderRequest
 
             await useCase.Execute
                 (description, 
-                 categories,
+                 photoUris,
+                 categoryId,
                  searchRadius,
                  toKnowPrice,
                  toKnowDeadline,
@@ -38,8 +39,8 @@ namespace ClientService.UnitTests.SendOrderRequest
 
         [Theory]
         [ClassData(typeof(InvalidDataSetup))]
-        public async Task SendOrderRequests_Returns_Invalid(string description, List<int> categories, int searchRadius,
-            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
+        public async Task SendOrderRequests_Returns_Invalid(string description, List<string> photoUris, 
+            int categoryId, int searchRadius, bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
         {
             SendOrderRequestPresenter presenter = new();
             Notification notification = new();
@@ -52,7 +53,8 @@ namespace ClientService.UnitTests.SendOrderRequest
 
             await sut.Execute
                 (description,
-                 categories,
+                 photoUris,
+                 categoryId,
                  searchRadius,
                  toKnowPrice,
                  toKnowDeadline,

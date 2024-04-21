@@ -6,13 +6,11 @@ import {
 } from 'react-native';
 
 const Category = ({ category, selectCategory }) => {
-    const [value, setValue] = React.useState(category.track);
-
     const onValueChanged = () => {
-        setValue(prev => !prev);
+        category.track = !category.track;
         selectCategory({
             title: category.title,
-            track: !value,
+            track: category.track,
             id: category.id
         });
     }
@@ -35,7 +33,8 @@ const Category = ({ category, selectCategory }) => {
             <Switch
                 trackColor={{true: '#2688EB', false: '#001C3D14'}} 
                 thumbColor={'white'}
-                value={value}
+                value={category.track}
+                disabled={category.track}
                 onValueChange={onValueChanged}/>
         </View>
     );
