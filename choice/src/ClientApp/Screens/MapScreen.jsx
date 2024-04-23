@@ -14,7 +14,7 @@ import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore.js';
-import { Modalize } from 'react-native-modalize';
+import dateHelper from '../helpers/dateHelper.js';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
@@ -33,7 +33,7 @@ export default function MapScreen({ navigation, route }) {
         toKnowPrice: false,
         toKnowDeadLine: false,
         toKnowEnrollmentDate: false,
-        creationalDate: ''
+        creationDate: ''
     });
 
     const { width, height } = Dimensions.get('screen');
@@ -184,9 +184,10 @@ export default function MapScreen({ navigation, route }) {
                                     style={{
                                         color: '#313131',
                                         fontSize: 15,
-                                        fontWeight: '500'
+                                        fontWeight: '500',
+                                        alignSelf: 'center'
                                     }}>
-                                    {orderRequest.creationalDate}
+                                    {dateHelper.formatDate(orderRequest.creationDate)}
                                 </Text>
                             </View>
                             <View style={{ paddingTop: 10, paddingBottom: 10 }}>

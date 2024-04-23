@@ -48,7 +48,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
         toKnowPrice: false,
         toKnowDeadLine: false,
         toKnowEnrollmentDate: false,
-        creationalDate: ''
+        creationDate: ''
     });
 
     const updateDisabled = (state) => {

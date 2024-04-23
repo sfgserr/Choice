@@ -28,9 +28,20 @@ const sendOrderRequest = async (orderRequest) => {
     })
     .then(async response => {
         const json = await response.json();
-        console.log(json);
 
-        return json;
+
+
+        return {
+            categoryId: json.categoryId,
+            creationDate: json.creationDate.toString(),
+            description: json.description,
+            id: json.id,
+            searchRadius: json.searchRadius,
+            status: json.status,
+            toKnowDeadLine: json.toKnowDeadLine,
+            toKnowEnrollmentDate: json.toKnowEnrollmentDate,
+            toKnowPrice: json.toKnowPrice 
+        };
     });
 }
 
