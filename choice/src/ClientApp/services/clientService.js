@@ -29,7 +29,35 @@ const sendOrderRequest = async (orderRequest) => {
     .then(async response => {
         const json = await response.json();
 
+        return {
+            categoryId: json.categoryId,
+            creationDate: json.creationDate.toString(),
+            description: json.description,
+            id: json.id,
+            searchRadius: json.searchRadius,
+            status: json.status,
+            toKnowDeadline: json.toKnowDeadline,
+            toKnowEnrollmentDate: json.toKnowEnrollmentDate,
+            toKnowPrice: json.toKnowPrice,
+            photoUris: [json.photoUris[0], json.photoUris[1], json.photoUris[2]]
+        };
+    });
+}
 
+const changeOrderRequest = async (orderRequest) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch('http://192.168.0.106/api/Client/ChangeOrderRequest', {
+        method: 'PUT',
+        body: JSON.stringify(orderRequest),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => {
+        const json = await response.json();
 
         return {
             categoryId: json.categoryId,
@@ -38,14 +66,46 @@ const sendOrderRequest = async (orderRequest) => {
             id: json.id,
             searchRadius: json.searchRadius,
             status: json.status,
-            toKnowDeadLine: json.toKnowDeadLine,
+            toKnowDeadline: json.toKnowDeadline,
             toKnowEnrollmentDate: json.toKnowEnrollmentDate,
-            toKnowPrice: json.toKnowPrice 
+            toKnowPrice: json.toKnowPrice,
+            photoUris: [json.photoUris[0], json.photoUris[1], json.photoUris[2]]
         };
+    });
+}
+
+const getClientRequests = async () => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch('http://192.168.0.106/api/Client/GetClientRequests', {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => {
+        const json = await response.json();
+
+        return Object.keys(json).map((i) => ({
+            id: json[i].id,
+            status: json[i].status,
+            description: json[i].description,
+            categoryId: json[i].categoryId,
+            searchRadius: json[i].searchRadius,
+            toKnowPrice: json[i].toKnowPrice,
+            toKnowDeadline: json[i].toKnowDeadline,
+            toKnowEnrollmentDate: json[i].toKnowEnrollmentDate,
+            creationDate: json[i].creationDate,
+            photoUris: [json[i].photoUris[0], json[i].photoUris[1], json[i].photoUris[2]]
+        }));
     });
 }
 
 export default {
     get,
-    sendOrderRequest
+    sendOrderRequest,
+    getClientRequests,
+    changeOrderRequest
 }

@@ -37,6 +37,18 @@ namespace Choice.ClientService.Domain.OrderRequests
             private set => _searchRadius = value < 5000 ? 5000 : value > 25000 ? 25000 : value;
         }
 
+        public void Update(string description, List<string> photoUris, int categoryId, int searchRadius,
+            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate)
+        {
+            Description = description;
+            PhotoUris = photoUris;
+            CategoryId = categoryId;
+            SearchRadius = searchRadius;
+            ToKnowPrice = toKnowPrice;
+            ToKnowDeadline = toKnowDeadline;
+            ToKnowEnrollmentDate = toKnowEnrollmentDate;
+        }
+
         public void SetStatus(OrderStatus status) =>
             Status = status;
     }

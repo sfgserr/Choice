@@ -23,50 +23,50 @@ import Category from "../Components/Category";
 import arrayHelper from "../helpers/arrayHelper";
 import clientService from "../services/clientService";
 import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+import dateHelper from "../helpers/dateHelper";
 
-const OrderRequestCreationScreen = ({ navigation, route }) => {
-    const modalRef = useRef(null);
+const OrderRequestScreen = ({navigation, route}) => {
+    const { orderRequest } = route.params;
 
     const categories = categoryStore.getCategories();
 
-    const { category } = route.params;
+    const category = categories[categories.findIndex(c => orderRequest.categoryId == c.id)];
 
     const [selectedCategory, setSelectedCategory] = React.useState({title: category.title, track: true, id: category.id});
+
+    const modalRef = useRef(null);
+    const progress = useSharedValue(orderRequest.searchRadius/1000);
+    const min = useSharedValue(5);
+    const max = useSharedValue(25);
+
     const { width, height } = Dimensions.get('screen');
-    const [fisrtImageUri, setFirstImageUri] = React.useState('');
-    const [secondImageUri, setSecondImageUri] = React.useState('');
-    const [thirdImageUri, setThirdImageUri] = React.useState('');
 
-    const [disabled, setDisabled] = React.useState(true);
+    const [disabled, setDisabled] = React.useState(false);
 
-    const [orderRequest, setOrderRequest] = React.useState({
-        id: 0,
-        status: 0,
-        description: '',
-        categoryId: 0,
-        searchRadius: 0,
-        toKnowPrice: false,
-        toKnowDeadline: false,
-        toKnowEnrollmentDate: false,
-        creationDate: '',
-        photoUris: []
-    });
+    const [description, setDescription] = React.useState(orderRequest.description);
+    const [toKnowPrice, setToKnowPrice] = React.useState(orderRequest.toKnowPrice);
+    const [radius, setRadius] = React.useState(orderRequest.searchRadius/1000);
+    const [toKnowDeadline, setToKnowDeadline] = React.useState(orderRequest.toKnowDeadline);
+    const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(orderRequest.toKnowEnrollmentDate);
+    const [fisrtImageUri, setFirstImageUri] = React.useState(orderRequest.photoUris[0]);
+    const [secondImageUri, setSecondImageUri] = React.useState(orderRequest.photoUris[1]);
+    const [thirdImageUri, setThirdImageUri] = React.useState(orderRequest.photoUris[2]);
+    const date = dateHelper.formatDate(orderRequest.creationDate);
 
     const updateDisabled = (state) => {
         setDisabled((state.description == '' || 
             (!state.toKnowPrice && !state.toKnowDeadline && !state.toKnowEnrollmentDate)));
     }
 
-    const progress = useSharedValue(10);
-    const min = useSharedValue(5);
-    const max = useSharedValue(25);
-    const [modalVisible, setModalVisibility] = React.useState(false);
-
-    const [description, setDescription] = React.useState('');
-    const [toKnowPrice, setToKnowPrice] = React.useState(false);
-    const [radius, setRadius] = React.useState(10);
-    const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
-    const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
+    const updateState = (state) => {
+        orderRequest.description = state.description;
+        orderRequest.photoUris = state.photoUris;
+        orderRequest.toKnowPrice = state.toKnowPrice;
+        orderRequest.toKnowDeadline = state.toKnowDeadline;
+        orderRequest.toKnowEnrollmentDate = state.toKnowEnrollmentDate;
+        orderRequest.categoryId = state.categoryId;
+        orderRequest.searchRadius = state.searchRadius;
+    }
 
     const selectCategory = (newCategory) => {
         if (newCategory.track) {
@@ -90,124 +90,6 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 backgroundColor: 'white'
             }}
             showsVerticalScrollIndicator={false}>
-            <Modal
-                visible={modalVisible}
-                transparent={true}>
-                <View
-                    style={{
-                        height,
-                        width,
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                    }}>
-                    <View
-                        style={{
-                            backgroundColor: 'white',
-                            height: '30%',
-                            width: '90%',
-                            borderRadius: 20,
-                            alignSelf: 'center',
-                            position: 'absolute',
-                            bottom: height/14
-                        }}>
-                        <View 
-                            style={{
-                                flex: 1,
-                                flexDirection: 'column'
-                            }}>
-                            <View 
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-end',
-                                    paddingTop: 20,
-                                    paddingHorizontal: 10
-                                }}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        DeviceEventEmitter.emit('orderRequestCreated', {
-                                            selectedCategory: {
-                                                id: selectedCategory.id,
-                                                title: selectedCategory.title
-                                            }, 
-                                            createdOrderRequest: orderRequest
-                                        });
-                                        navigation.goBack();
-                                    }}
-                                    style={{
-                                        borderRadius: 360,
-                                        backgroundColor: '#eff1f2',
-                                        alignSelf: 'flex-start'
-                                    }}>
-                                    <Icon 
-                                        name='close'
-                                        type='material'
-                                        size={27}
-                                        color='#818C99'/>
-                                </TouchableOpacity>
-                            </View>
-                            <View
-                                style={{
-                                    justifyContent: 'center',
-                                }}>
-                                <Icon 
-                                    name='thumb-up'
-                                    type='material'
-                                    color='#2D81E0'
-                                    size={40}/>
-                                <Text
-                                    style={{
-                                        color: 'black',
-                                        fontWeight: '500',
-                                        fontSize: 20,
-                                        alignSelf: 'center',
-                                        paddingTop: 10
-                                        
-                                    }}>
-                                    Заказ создан
-                                </Text>
-                                <Text 
-                                    style={{
-                                        paddingTop: 10,
-                                        color: '#6D7885',
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        alignSelf: 'center'
-                                    }}>
-                                    Тысячи компаний увидят ваш зазаз и ответят    
-                                </Text>
-                                <Text 
-                                    style={{
-                                        color: '#6D7885',
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        alignSelf: 'center'
-                                    }}>
-                                    вам в самое ближайшее время    
-                                </Text>
-                                <View
-                                    style={{
-                                        paddingTop: 10,
-                                        paddingHorizontal: 10
-                                    }}>
-                                    <TouchableOpacity 
-                                        style={[styles.button, {borderRadius: 10}]}
-                                        onPress={() => {
-                                            DeviceEventEmitter.emit('orderRequestCreated', {
-                                                selectedCategory: {
-                                                    id: selectedCategory.id,
-                                                    title: selectedCategory.title
-                                                }, 
-                                                createdOrderRequest: orderRequest
-                                            });
-                                            navigation.goBack();
-                                        }}>
-                                        <Text style={styles.buttonText}>Ок</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
             <Modalize 
                 ref={modalRef}
                 adjustToContentHeight={true}
@@ -272,8 +154,40 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                           color={'#2688EB'}
                           size={40}/>
                 </TouchableOpacity>
-                <Text style={{alignSelf: 'center', color: 'black', fontWeight: '600', fontSize: 21}}>Создание заказа</Text>
+                <Text style={{alignSelf: 'center', color: 'black', fontWeight: '600', fontSize: 21}}>{`Заказ №${orderRequest.id}`}</Text>
                 <Text></Text>
+            </View>
+            <View style={{paddingTop: 20, paddingHorizontal: 20}}>
+                <View 
+                    style={[
+                        styles.textInput, 
+                        { 
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between' 
+                        }
+                    ]}>
+                    <Text style={[styles.textInputFont, { alignSelf: 'center' }]}>
+                        {dateHelper.formatDate(orderRequest.creationDate)}
+                    </Text>
+                    <View style={{paddingVertical: 3, justifyContent: 'center'}}>
+                        <View
+                            style={{
+                                backgroundColor: '#6DC876',
+                                borderRadius: 8,
+                                justifyContent: 'center',
+                                padding: 5
+                            }}>
+                            <Text 
+                                style={{
+                                    fontWeight: '500',
+                                    fontSize: 14,
+                                    color: 'white',
+                                }}>
+                                Активен
+                            </Text>
+                        </View>
+                    </View>
+                </View>
             </View>
             <View style={{paddingHorizontal: 20}}>
                 <View style={{paddingTop: 20}}>
@@ -408,7 +322,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                     thirdImageUri
                                 });
                             }}
-                            uri={''}/>
+                            uri={fisrtImageUri}/>
                         <ImageBox 
                             handleState={(state) => { 
                                 setSecondImageUri(state);
@@ -422,7 +336,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                     thirdImageUri
                                 });
                             }}
-                            uri={''}/>
+                            uri={secondImageUri}/>
                         <ImageBox 
                             handleState={(state) => { 
                                 setThirdImageUri(state);
@@ -436,7 +350,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                     thirdImageUri: state
                                 }); 
                             }}
-                            uri={''}/>
+                            uri={thirdImageUri}/>
                     </View>
                 </View>
                 <View 
@@ -522,26 +436,29 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                         style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}
                         disabled={disabled}
                         onPress={!disabled && (async () => {
-                            setModalVisibility(true);
                             let state = {
+                                id: orderRequest.id,
                                 description,
                                 categoryId: selectedCategory.id,
                                 photoUris: [fisrtImageUri, secondImageUri, thirdImageUri],
-                                searchRadius: radius*1000,
+                                searchRadius: radius,
                                 toKnowPrice,
                                 toKnowDeadline,
                                 toKnowEnrollmentDate
                             }
 
-                            let orderRequest = await clientService.sendOrderRequest(state);
-                            setOrderRequest(orderRequest);
+                            let request = await clientService.changeOrderRequest(state);
+
+                            updateState(request);
+
+                            navigation.navigate('Order');
                         })}>
-                        <Text style={styles.buttonText}>Создать заказ</Text>
+                        <Text style={styles.buttonText}>Сохранить изменения</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
-    )
+    );
 }
 
-export default OrderRequestCreationScreen;
+export default OrderRequestScreen;

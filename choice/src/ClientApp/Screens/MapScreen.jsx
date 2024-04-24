@@ -15,6 +15,7 @@ import CustomMarker from '../Components/CustomMarker.jsx';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore.js';
 import dateHelper from '../helpers/dateHelper.js';
+import OrderRequestCard from '../Components/OrderRequestCard.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
@@ -31,9 +32,10 @@ export default function MapScreen({ navigation, route }) {
         categoryId: 0,
         searchRadius: 0,
         toKnowPrice: false,
-        toKnowDeadLine: false,
+        toKnowDeadline: false,
         toKnowEnrollmentDate: false,
-        creationDate: ''
+        creationDate: '',
+        photoUris: []
     });
 
     const { width, height } = Dimensions.get('screen');
@@ -113,92 +115,14 @@ export default function MapScreen({ navigation, route }) {
                     <View
                         style={{
                             position: 'absolute',
-                            backgroundColor: 'white',
-                            borderRadius: 15,
-                            paddingHorizontal: 20,
-                            flexDirection: 'column',
                             bottom: 10,
-                            width: '90%',
-                            alignSelf: 'center',
-                            borderColor: '#818C99',
-                            borderWidth: 1
+                            width: '100%'
                         }}>
-                        <View
-                            style={{
-                                borderRadius: 8,
-                                backgroundColor: '#6DC876',
-                                padding: 5,
-                                position: 'absolute',
-                                right: 10,
-                                top: 10
-                            }}>
-                            <Text 
-                                style={{
-                                    fontWeight: '500',
-                                    fontSize: 14,
-                                    color: 'white',
-                                }}>
-                                Активен
-                            </Text>
-                        </View>
-                        <View 
-                            style={{
-                                paddingTop: 10
-                            }}>
-                            <Text
-                                style={{
-                                    color: '#8E8E93',
-                                    fontWeight: '400',
-                                    fontSize: 13
-                                }}>
-                                {`№${orderRequest.id}`}
-                            </Text>
-                            <Text
-                                style={{
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    fontSize: 14
-                                }}>
-                                {category.title}
-                            </Text>
-                            <Text
-                                style={{
-                                    fontSize: 15,
-                                    fontWeight: '400',
-                                    color: '#313131',
-                                    paddingTop: 10
-                                }}>
-                                {orderRequest.description}    
-                            </Text>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    paddingTop: 10
-                                }}>
-                                <Icon 
-                                    name='calendar-month'
-                                    type='material'
-                                    color='#313131'
-                                    size={25}/>
-                                <Text
-                                    style={{
-                                        color: '#313131',
-                                        fontSize: 15,
-                                        fontWeight: '500',
-                                        alignSelf: 'center'
-                                    }}>
-                                    {dateHelper.formatDate(orderRequest.creationDate)}
-                                </Text>
-                            </View>
-                            <View style={{ paddingTop: 10, paddingBottom: 10 }}>
-                                <TouchableOpacity 
-                                    style={[styles.button, { backgroundColor: '#001C3D0D' }]}>
-                                    <Text style={[styles.buttonText, { color: '#2688EB' }]}>
-                                        Подробнее
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        
+                        <OrderRequestCard 
+                            request={orderRequest} 
+                            requestCategory={category} 
+                            navigation={navigation}/>
                     </View>
                 </>
             }

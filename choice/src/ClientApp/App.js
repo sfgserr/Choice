@@ -31,6 +31,7 @@ import MapScreen from './Screens/MapScreen';
 import categoryStore from './services/categoryStore';
 import userStore from './services/userStore';
 import OrderRequestCreationScreen from './Screens/OrderRequestCreationScreen';
+import OrderRequestScreen from './Screens/OrderRequestScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -57,24 +58,24 @@ function ClientTab() {
         let iconSrc;
 
         if (route.name == 'Category') {
-          iconSrc = require("./assets/category.png");
+          iconSrc = 'category';
         }
 
         if (route.name == 'Account') {
-          iconSrc = require("./assets/account.png");
+          iconSrc = 'account-circle';
         }
 
         if (route.name == 'Chat') {
-          iconSrc = require("./assets/chat.png");
+          iconSrc = 'chat';
         }
 
         if (route.name == 'Order') {
-          iconSrc = require("./assets/order.png");
+          iconSrc = 'shopping-basket';
         }
 
         let iconColor = focused ? '#2975CC' : '#99A2AD';
 
-        return <Image style={{height: 25, width: 25}} source={iconSrc} tintColor={iconColor}/>
+        return <Icon size={25} name={iconSrc} type='material' color={iconColor}/>
       },
       tabBarActiveTintColor: '#2975CC',
       tabBarInactiveTintColor: '#99A2AD',
@@ -133,6 +134,9 @@ function App() {
                               options={{headerShown:false}}/>
                 <Stack.Screen name="OrderRequestCreation"
                               component={gestureHandlerRootHOC(OrderRequestCreationScreen)}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="OrderRequest"
+                              component={gestureHandlerRootHOC(OrderRequestScreen)}
                               options={{headerShown:false}}/>
              </Stack.Navigator>
             </>

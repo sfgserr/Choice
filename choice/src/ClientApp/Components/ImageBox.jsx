@@ -8,10 +8,10 @@ import {
 import { Icon } from 'react-native-elements';
 import * as ImagePicker from 'react-native-image-picker';
 
-const ImageBox = ({handleState}) => {
+const ImageBox = ({handleState, uri}) => {
     const { width, height } = Dimensions.get('screen');
 
-    const [imageUri, setImageUri] = React.useState('');
+    const [imageUri, setImageUri] = React.useState(uri);
 
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
@@ -32,7 +32,7 @@ const ImageBox = ({handleState}) => {
             {
                 imageUri == '' ?
                 <>
-                    <View style={{width: height/7, height: height/7, backgroundColor: '#F9F9F9', borderWidth: 2, borderRadius: 8, borderStyle: 'dashed', borderColor: '#C8C8C8', justifyContent: 'center'}}>
+                    <View style={{width: width/3.8, height: width/3.8, backgroundColor: '#F9F9F9', borderWidth: 2, borderRadius: 8, borderStyle: 'dashed', borderColor: '#C8C8C8', justifyContent: 'center'}}>
                         <TouchableOpacity onPress={async () => await addImage()}>
                             <Icon 
                                 name='arrow-circle-down'
@@ -46,8 +46,8 @@ const ImageBox = ({handleState}) => {
                     <>
                         <View 
                             style={{
-                                width: height/7+height/350,
-                                height: height/7+height/350,
+                                width: width/3.8+width/(3.8*50),
+                                height: width/3.8+width/(3.8*50),
                                 borderRadius: 8,
                                 borderStyle: 'dashed',
                                 borderWidth: 2,
@@ -69,7 +69,8 @@ const ImageBox = ({handleState}) => {
                                     style={{
                                         backgroundColor: 'white',
                                         borderColor: '#E7E7E7',
-                                        borderRadius: 10
+                                        borderWidth: 2,
+                                        borderRadius: 360
                                     }}
                                     onPress={() => removeImage()}>
                                     <Icon 
@@ -81,13 +82,13 @@ const ImageBox = ({handleState}) => {
                             </View>
                             <Image 
                                 style={{
-                                width: height/7,
-                                height: height/7,
+                                width: width/3.8,
+                                height: width/3.8,
                                 borderRadius: 8,
                                 alignSelf: 'center',
                                 padding: 10
                             }}
-                            source={{uri: `file://${imageUri}`}}/>
+                            source={{uri: imageUri}}/>
                     </View>
                 </>
             }
