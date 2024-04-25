@@ -20,9 +20,8 @@ import categoryStore from "../services/categoryStore";
 import { Modalize } from "react-native-modalize";
 import { FlatList } from "react-native-gesture-handler";
 import Category from "../Components/Category";
-import arrayHelper from "../helpers/arrayHelper";
 import clientService from "../services/clientService";
-import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+import blobService from "../services/blobService";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
     const modalRef = useRef(null);
@@ -535,6 +534,8 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
 
                             let orderRequest = await clientService.sendOrderRequest(state);
                             setOrderRequest(orderRequest);
+                            
+                            orderRequest.photoUris.forEach(async p => await blobService.uploadImage(p));
                         })}>
                         <Text style={styles.buttonText}>Создать заказ</Text>
                     </TouchableOpacity>
