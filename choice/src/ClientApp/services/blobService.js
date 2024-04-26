@@ -18,21 +18,18 @@ const getImage = async (fileName) => {
 }
 
 const uploadImage = async (filePath) => {
-    if (filePath == '')
+    if (filePath == '') {
         return;
+    }
 
-    const directories = filePath.split('/');
-    const fileName = directories[directories.length-1].split('.')[0];
+    const data = await RNFS.readFile(filePath, 'base64');
+    const buffer = toByteArray(data);
 
-    const bs64 = await RNFS.readFile(filePath, 'base64');
-    const byteArray = toByteArray(bs64);
-
-    return await fetch(`http://192.168.0.106/api/objects/${fileName}`, {
+    return await fetch(`http://192.168.0.106/api/objects/damn`, {
         method: 'POST',
-        body: byteArray,
+        body: buffer,
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/octet-stream',
+            'Content-Type':'octet-stream'
         }
     })
     .then(async response => console.log(response.status));

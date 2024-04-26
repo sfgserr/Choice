@@ -101,7 +101,6 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     <View
                         style={{
                             backgroundColor: 'white',
-                            height: '30%',
                             width: '90%',
                             borderRadius: 20,
                             alignSelf: 'center',
@@ -185,6 +184,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                 <View
                                     style={{
                                         paddingTop: 10,
+                                        paddingBottom: 10,
                                         paddingHorizontal: 10
                                     }}>
                                     <TouchableOpacity 

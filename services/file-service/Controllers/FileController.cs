@@ -17,8 +17,12 @@ namespace FileObjectApi.Controllers
         }
 
         [HttpPost("{fileName}")]
-        public async Task<IActionResult> Upload(string fileName, [FromBody] byte[] data)
+        public async Task<IActionResult> Upload(string fileName)
         {
+            byte[] data = new byte[15000];
+
+            await HttpContext.Request.Body.ReadAsync(data);
+
             string path = $"/etc/files/{fileName}.bin";
 
             await System.IO.File.WriteAllBytesAsync(path, data);
