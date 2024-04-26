@@ -24,6 +24,8 @@ import arrayHelper from "../helpers/arrayHelper";
 import clientService from "../services/clientService";
 import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import dateHelper from "../helpers/dateHelper";
+import blobService from "../services/blobService";
+import * as RNFS from "react-native-fs";
 
 const OrderRequestScreen = ({navigation, route}) => {
     const { orderRequest } = route.params;
@@ -48,9 +50,9 @@ const OrderRequestScreen = ({navigation, route}) => {
     const [radius, setRadius] = React.useState(orderRequest.searchRadius/1000);
     const [toKnowDeadline, setToKnowDeadline] = React.useState(orderRequest.toKnowDeadline);
     const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(orderRequest.toKnowEnrollmentDate);
-    const [fisrtImageUri, setFirstImageUri] = React.useState(orderRequest.photoUris[0]);
-    const [secondImageUri, setSecondImageUri] = React.useState(orderRequest.photoUris[1]);
-    const [thirdImageUri, setThirdImageUri] = React.useState(orderRequest.photoUris[2]);
+    const [fisrtImageUri, setFirstImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[0]}.png`);
+    const [secondImageUri, setSecondImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[1]}.png`);
+    const [thirdImageUri, setThirdImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[2]}.png`);
     const date = dateHelper.formatDate(orderRequest.creationDate);
 
     const updateDisabled = (state) => {
@@ -82,6 +84,17 @@ const OrderRequestScreen = ({navigation, route}) => {
             });
         }
     }
+
+    React.useEffect(() => {
+        async function downloadPhotos() {
+            let i = 0;
+
+            for (; i < 3; i++) {
+                await blobService.getImage(orderRequest.photoUris[i]);
+            }
+        }
+        downloadPhotos();
+    }, []);
 
     return (
         <ScrollView 
@@ -167,7 +180,7 @@ const OrderRequestScreen = ({navigation, route}) => {
                         }
                     ]}>
                     <Text style={[styles.textInputFont, { alignSelf: 'center' }]}>
-                        {dateHelper.formatDate(orderRequest.creationDate)}
+                        {date}
                     </Text>
                     <View style={{paddingVertical: 3, justifyContent: 'center'}}>
                         <View

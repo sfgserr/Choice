@@ -11,17 +11,29 @@ import {
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore';
 import styles from '../Styles';
+import blobService from '../services/blobService';
+import * as ImagePicker from 'react-native-image-picker';
 
 export default function AccountScreen({ navigation }) {
     const user = userStore.get();
 
     const { width, height } =  Dimensions.get('screen');
 
+    const [iconUri, setIconUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${user.iconUri}.png`);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = React.useState(user.name);
     const [surname, setSurname] = React.useState(user.surname);
     const [phone, setPhone] = React.useState(user.phoneNumber);
     const [address, setAddress] = React.useState(`${user.city},${user.street}`);
+
+    const addImage = async () => {
+        let response = await ImagePicker.launchImageLibrary();
+
+        if (!response.didCancel) {
+            let iconUri = await blobService.uploadImage(response.assets[0].uri);
+            setIconUri(response.assets[0].uri);
+        }
+    }
 
     return (
         <ScrollView 
@@ -40,7 +52,7 @@ export default function AccountScreen({ navigation }) {
             </View>
             <View style={{paddingTop: 40}}>
                 <Image 
-                    source={{uri: `file://${RNFS.DocumentDirectoryPath}/${user.iconUri}.png`}}
+                    source={{uri: iconUri}}
                     style={{
                         width: 70,
                         height: 70,
@@ -56,7 +68,8 @@ export default function AccountScreen({ navigation }) {
                 <TouchableOpacity
                     style={{
                         backgroundColor: 'transparent',
-                    }}>
+                    }}
+                    onPress={addImage}>
                     <Text 
                         style={{
                             color: '#2D81E0',

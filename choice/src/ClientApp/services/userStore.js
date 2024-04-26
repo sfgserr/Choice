@@ -2,24 +2,32 @@ import clientService from "./clientService";
 import blobService from "./blobService";
 
 let user;
+let currentUserType;
 
 const get = () => {
     return user;
 }
 
-const login = async (userType) => {
+const getUserType = () => {
+    return currentUserType;
+}
+
+const retrieveData = async (userType) => {
     if (userType == 1) {
         user = await clientService.get();
         await blobService.getImage(user.iconUri);
+        currentUserType = 1;
     }
 }
 
 const logout = () => {
     user = null;
+    currentUserType = 0;
 }
 
 export default {
-    login,
+    retrieveData,
     logout,
-    get
+    get,
+    getUserType
 }

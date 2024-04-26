@@ -532,10 +532,13 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                 toKnowEnrollmentDate
                             }
 
+                            let i = 0;
+                            for (; i < 3; i++) {
+                                state.photoUris[i] = await blobService.uploadImage(state.photoUris[i]);
+                            }
+
                             let orderRequest = await clientService.sendOrderRequest(state);
                             setOrderRequest(orderRequest);
-                            
-                            orderRequest.photoUris.forEach(async p => await blobService.uploadImage(p));
                         })}>
                         <Text style={styles.buttonText}>Создать заказ</Text>
                     </TouchableOpacity>

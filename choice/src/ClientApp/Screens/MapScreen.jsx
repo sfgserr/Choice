@@ -16,6 +16,7 @@ import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore.js';
 import dateHelper from '../helpers/dateHelper.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
+import blobService from '../services/blobService.js';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
@@ -56,7 +57,11 @@ export default function MapScreen({ navigation, route }) {
 
             setCoords(coords);
         }
+        async function downloadPhotos() {
+            await blobService.getImage(user.iconUri);
+        }
         getCoords();
+        downloadPhotos();
     });
 
     const goBack = () => {

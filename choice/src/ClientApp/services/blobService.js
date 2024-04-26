@@ -22,17 +22,23 @@ const uploadImage = async (filePath) => {
         return;
     }
 
+    const directories = filePath.split('/')
+
     const data = await RNFS.readFile(filePath, 'base64');
+    const fileName = directories[directories.length-1].split('.')[0];
     const buffer = toByteArray(data);
 
-    return await fetch(`http://192.168.0.106/api/objects/damn`, {
+    return await fetch(`http://192.168.0.106/api/objects/${fileName}`, {
         method: 'POST',
         body: buffer,
         headers: {
-            'Content-Type':'octet-stream'
+            'Content-Type':'application/octet-stream'
         }
     })
-    .then(async response => console.log(response.status));
+    .then(async response => { 
+        console.log(response.status);
+        return fileName; 
+    });
 }
 
 export default {
