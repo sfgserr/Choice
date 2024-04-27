@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore';
+import clientService from '../services/clientService';
 import styles from '../Styles';
 import blobService from '../services/blobService';
 import * as ImagePicker from 'react-native-image-picker';
@@ -28,9 +29,10 @@ export default function AccountScreen({ navigation }) {
 
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
-
+        
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
+            await clientService.changeIconUri(iconUri);
             setIconUri(response.assets[0].uri);
         }
     }

@@ -45,6 +45,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeIconUri
             _viewModel = NotFound();
         }
 
+        [HttpPut("ChangeIconUri")]
         public async Task<IActionResult> ChangeIconUri(string iconUri)
         {
             _useCase.SetOutputPort(this);

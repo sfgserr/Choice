@@ -11,9 +11,13 @@ namespace FileObjectApi.Controllers
         {
             string path = $"/etc/files/{fileName}.bin";
 
-            byte[] data = await System.IO.File.ReadAllBytesAsync(path);
+            if (System.IO.File.Exists(path))
+            {
+                byte[] data = await System.IO.File.ReadAllBytesAsync(path);
+                return File(data, "image/png");
+            }
 
-            return File(data, "image/png");
+            return NotFound();
         }
 
         [HttpPost("{fileName}")]

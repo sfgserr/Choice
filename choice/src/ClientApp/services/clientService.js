@@ -1,4 +1,5 @@
 import * as KeyChain from 'react-native-keychain';
+import { advanceAnimationByFrame } from 'react-native-reanimated';
 
 const get = async () => {
     const token = await KeyChain.getGenericPassword();
@@ -103,9 +104,24 @@ const getClientRequests = async () => {
     });
 }
 
+const changeIconUri = async (iconUri) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`http://192.168.0.106/api/Client/ChangeIconUri?iconUri=${iconUri}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 export default {
     get,
     sendOrderRequest,
     getClientRequests,
-    changeOrderRequest
+    changeOrderRequest,
+    changeIconUri
 }
