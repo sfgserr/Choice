@@ -118,10 +118,26 @@ const changeIconUri = async (iconUri) => {
     .then(async res => await res.json());
 }
 
+const changeUserData = async (state) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`http://192.168.0.106/api/Client/ChangeUserData`, {
+        method: 'PUT',
+        body: JSON.stringify(state),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 export default {
     get,
     sendOrderRequest,
     getClientRequests,
     changeOrderRequest,
-    changeIconUri
+    changeIconUri,
+    changeUserData
 }

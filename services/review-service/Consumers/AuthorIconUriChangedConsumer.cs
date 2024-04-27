@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace ReviewService.Api.Consumers
 {
-    public class UserIconUriChangedConsumer : IConsumer<UserIconUriChangenEvent>
+    public class AuthorIconUriChangedConsumer : IConsumer<UserIconUriChangenEvent>
     {
         public Task Consume(ConsumeContext<UserIconUriChangenEvent> context)
         {

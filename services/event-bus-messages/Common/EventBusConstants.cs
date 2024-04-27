@@ -7,7 +7,8 @@ namespace Choice.EventBus.Messages.Common
         public const string OrderChangedQueue = "ordering.order.changed";
         public const string UserDataChangedQueue = "auth-service.client.changed";
         public const string UserIconUriChangedQueue = "auth-service.client.changed";
-        public const string AuthorDataChangedQueue = "auth-service.icon.changed";
+        public const string AuthorDataChangedQueue = "auth-service.data.changed";
+        public const string AuthorIconUriChangedQueue = "auth-service.icon.changed";
         public const string OrderStatusChangedQueue = "ordering.order.status.changed";
         public const string ClientCreatedQueue = "auth-service.client.created";
         public const string CompanyCreatedQueue = "auth-service.company.created";

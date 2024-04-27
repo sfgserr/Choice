@@ -20,7 +20,8 @@ export default function AccountScreen({ navigation }) {
 
     const { width, height } =  Dimensions.get('screen');
 
-    const [iconUri, setIconUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${user.iconUri}.png`);
+    const [iconUri, setIconUri] = React.useState(user.iconUri);
+    const [disable, setDisable] = React.useState(true);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = React.useState(user.name);
     const [surname, setSurname] = React.useState(user.surname);
@@ -33,8 +34,25 @@ export default function AccountScreen({ navigation }) {
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
             await clientService.changeIconUri(iconUri);
-            setIconUri(response.assets[0].uri);
+            setIconUri(iconUri);
         }
+    }
+
+    const saveChanges = async () => {
+        let addresses = address.split(',');
+
+        let state = {
+            name,
+            surname,
+            email,
+            phoneNumber: phone,
+            street: addresses[1],
+            city: addresses[0]
+        }
+
+        console.log(state);
+
+        await clientService.changeUserData(state);
     }
 
     return (
@@ -54,7 +72,7 @@ export default function AccountScreen({ navigation }) {
             </View>
             <View style={{paddingTop: 40}}>
                 <Image 
-                    source={{uri: iconUri}}
+                    source={{uri: `file://${RNFS.DocumentDirectoryPath}/${iconUri}.png`}}
                     style={{
                         width: 70,
                         height: 70,
@@ -101,7 +119,10 @@ export default function AccountScreen({ navigation }) {
                         <TextInput 
                             style={[styles.textInputFont]} 
                             value={name} 
-                            onChangeText={(text) => setName(text)}/>
+                            onChangeText={(text) => {
+                                setName(text);
+                                setDisable(false);
+                            }}/>
                     </View>
                 </View>
 
@@ -119,7 +140,10 @@ export default function AccountScreen({ navigation }) {
                         <TextInput 
                             style={[styles.textInputFont]} 
                             value={surname} 
-                            onChangeText={(text) => setSurname(text)}/>
+                            onChangeText={(text) => {
+                                setSurname(text);
+                                setDisable(false);
+                            }}/>
                     </View>
                 </View>
                 <Text
@@ -136,7 +160,10 @@ export default function AccountScreen({ navigation }) {
                         <TextInput 
                             style={[styles.textInputFont]} 
                             value={email} 
-                            onChangeText={(text) => setEmail(text)}/>
+                            onChangeText={(text) => {
+                                setEmail(text);
+                                setDisable(false);
+                            }}/>
                     </View>
                 </View>
                 <Text
@@ -153,7 +180,10 @@ export default function AccountScreen({ navigation }) {
                         <TextInput 
                             style={[styles.textInputFont]} 
                             value={phone} 
-                            onChangeText={(text) => setPhone(text)}/>
+                            onChangeText={(text) => {
+                                setPhone(text);
+                                setDisable(false);
+                            }}/>
                     </View>
                 </View>
                 <Text
@@ -170,7 +200,10 @@ export default function AccountScreen({ navigation }) {
                         <TextInput 
                             style={[styles.textInputFont]} 
                             value={address} 
-                            onChangeText={(text) => setAddress(text)}/>
+                            onChangeText={(text) => {
+                                setAddress(text);
+                                setDisable(false);
+                            }}/>
                     </View>
                 </View>
                 <TouchableOpacity style={[styles.button, { backgroundColor: '#001C3D0D' }]}>
@@ -187,14 +220,24 @@ export default function AccountScreen({ navigation }) {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{paddingTop: 20}}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text
-                            style={styles.buttonText}>
-                            Сохранить изменения
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                {
+                    !disable ?
+                    <>
+                        <View style={{paddingTop: 20}}>
+                            <TouchableOpacity 
+                                style={styles.button}
+                                onPress={saveChanges}>
+                                <Text
+                                    style={styles.buttonText}>
+                                    Сохранить изменения
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                    :
+                    <>
+                    </>
+                }
             </View>
         </ScrollView>
     );

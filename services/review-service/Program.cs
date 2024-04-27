@@ -36,8 +36,8 @@ namespace Choice.ReviewService.Api
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<AuthorCreatedConsumer>();
-                config.AddConsumer<UserDataChangedConsumer>();
-                config.AddConsumer<UserIconUriChangedConsumer>();
+                config.AddConsumer<AuthorDataChangedConsumer>();
+                config.AddConsumer<AuthorIconUriChangedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -45,11 +45,11 @@ namespace Choice.ReviewService.Api
                     cfg.ReceiveEndpoint(EventBusConstants.AuthorCreatedQueue, c => {
                         c.ConfigureConsumer<AuthorCreatedConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => { 
-                        c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
+                    cfg.ReceiveEndpoint(EventBusConstants.AuthorDataChangedQueue, c => { 
+                        c.ConfigureConsumer<AuthorDataChangedConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.UserIconUriChangedQueue, c => {
-                        c.ConfigureConsumer<UserIconUriChangedConsumer>(ctx);
+                    cfg.ReceiveEndpoint(EventBusConstants.AuthorIconUriChangedQueue, c => {
+                        c.ConfigureConsumer<AuthorIconUriChangedConsumer>(ctx);
                     });
                 });
             });

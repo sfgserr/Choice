@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Choice.ReviewService.Api.Entities;
 using Choice.ReviewService.Api.Infrastructure.Data.Configurations;
+using ReviewService.Api.Infrastructure.Data;
 
 namespace Choice.ReviewService.Api.Infrastructure.Data
 {
@@ -15,6 +16,8 @@ namespace Choice.ReviewService.Api.Infrastructure.Data
         {
             modelBuilder.ApplyConfiguration(new AuthorConfiguration());
             modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+
+            SeedData.Seed(modelBuilder);
         }
 
         public DbSet<Author> Authors { get; set; }

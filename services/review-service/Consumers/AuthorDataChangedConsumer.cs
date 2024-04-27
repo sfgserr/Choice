@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Choice.ReviewService.Api.Consumers
 {
-    public class UserDataChangedConsumer : IConsumer<UserDataChangedEvent>
+    public class AuthorDataChangedConsumer : IConsumer<UserDataChangedEvent>
     {
         private readonly ReviewContext _context;
 
-        public UserDataChangedConsumer(ReviewContext context)
+        public AuthorDataChangedConsumer(ReviewContext context)
         {
             _context = context;
         }
@@ -19,9 +19,9 @@ namespace Choice.ReviewService.Api.Consumers
         {
             UserDataChangedEvent @event = context.Message;
 
-            Author author = (await _context.Authors.FirstOrDefaultAsync(a => a.Guid == @event.Guid))!;
+            Author author = await _context.Authors.FirstOrDefaultAsync(a => a.Guid == @event.Guid);
 
-            author.ChangeName(@event.Name);
+            author!.ChangeName(@event.Name);
 
             _context.Authors.Update(author);
             await _context.SaveChangesAsync();
