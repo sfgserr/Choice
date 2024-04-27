@@ -20,11 +20,13 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
             _repository = repository;
         }
 
-        public async Task Execute(string name, string surname, string email, string phoneNumber)
+        public async Task Execute(string name, string surname, string email, string phoneNumber, string city, 
+            string street)
         {
-            if (name == string.Empty || surname == string.Empty || email == string.Empty || phoneNumber == string.Empty)
+            if (name == string.Empty || surname == string.Empty || email == string.Empty || phoneNumber == string.Empty 
+                || city == string.Empty || street == string.Empty)
             {
-                _notification.Add(nameof(name), "Neither name nor surname should be empty");
+                _notification.Add(nameof(name), "All fields should not be empty");
             }
 
             IList<Client> clients = await _repository.GetAll();
@@ -45,7 +47,7 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
                 return;
             }
 
-            await _useCase.Execute(name, surname, email, phoneNumber);
+            await _useCase.Execute(name, surname, email, phoneNumber, city, street);
         }
 
         public void SetOutputPort(IOutputPort outputPort)

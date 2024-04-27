@@ -25,9 +25,13 @@ namespace FileObjectApi.Controllers
 
             string path = $"/etc/files/{fileName}.bin";
 
-            await System.IO.File.WriteAllBytesAsync(path, data);
+            if (!System.IO.File.Exists(path))
+            {
+                await System.IO.File.WriteAllBytesAsync(path, data);
+                return Ok();
+            }
 
-            return Ok();
+            return BadRequest();
         }
     }
 }

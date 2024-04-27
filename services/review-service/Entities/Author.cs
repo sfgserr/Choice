@@ -13,9 +13,13 @@
         public string Name { get; private set; }
         public string IconUri { get; private set; }
 
-        public void ChangeData(string name, string iconUri)
+        public void ChangeName(string name)
         {
             Name = name;
+        }
+
+        public void ChangeIconUri(string iconUri)
+        {
             IconUri = iconUri;
         }
     }

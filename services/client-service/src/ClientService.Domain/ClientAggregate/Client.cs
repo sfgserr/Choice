@@ -43,12 +43,19 @@ namespace Choice.ClientService.Domain.ClientAggregate
             request?.SetStatus(status);
         }
 
-        public void ChangeData(string name, string surname, string email, string phoneNumber)
+        public void ChangeIconUri(string iconUri)
+        {   
+            IconUri = iconUri;
+        }
+
+        public void ChangeData(string name, string surname, string email, string phoneNumber, string city, 
+            string street)
         {
             Name = name;
             Surname = surname;
             Email = email;
             PhoneNumber = phoneNumber;
+            Address = new(street, city);
         }
 
         public void AddReview(int grade)

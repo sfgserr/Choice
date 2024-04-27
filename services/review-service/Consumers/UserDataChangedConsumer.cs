@@ -21,7 +21,7 @@ namespace Choice.ReviewService.Api.Consumers
 
             Author author = (await _context.Authors.FirstOrDefaultAsync(a => a.Guid == @event.Guid))!;
 
-            author.ChangeData(@event.Name, @event.IconUri);
+            author.ChangeName(@event.Name);
 
             _context.Authors.Update(author);
             await _context.SaveChangesAsync();

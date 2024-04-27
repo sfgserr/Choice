@@ -8,6 +8,7 @@ using Choice.ClientService.Application.UseCases.GetClients;
 using Choice.ClientService.Application.UseCases.GetOrderRequests;
 using Choice.ClientService.Application.UseCases.SendOrderRequest;
 using Choice.ClientService.Application.UseCases.ChangeOrderRequest;
+using Choice.ClientService.Application.UseCases.ChangeIconUri;
 using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Infrastructure.Authentication;
 using Choice.ClientService.Infrastructure.Data;
@@ -39,9 +40,11 @@ namespace Choice.ClientService.Api
             builder.Services.AddScoped<IGetOrderRequestsUseCase, GetOrderRequestsUseCase>();
             builder.Services.AddScoped<IGetClientUseCase, GetClientUseCase>();
             builder.Services.AddScoped<IChangeOrderRequestUseCase, ChangeOrderRequestUseCase>();
+            builder.Services.AddScoped<IChangeIconUriUseCase, ChangeIconUriUseCase>();
             builder.Services.Decorate<IChangeUserDataUseCase, ChangeUserDataValidationUseCase>();
             builder.Services.Decorate<ISendOrderRequestUseCase, SendOrderRequestValidationUseCase>();
             builder.Services.Decorate<IChangeOrderRequestUseCase, ChangeOrderRequestValidationUseCase>();
+            builder.Services.Decorate<IChangeIconUriUseCase, ChangeIconUriValidationUseCase>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<Notification>();

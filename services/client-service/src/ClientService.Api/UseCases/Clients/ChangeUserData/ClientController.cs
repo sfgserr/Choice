@@ -31,7 +31,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
         {
             _viewModel = Ok(new ClientAdminViewModel(client));
             _endPoint.Publish<UserDataChangedEvent>(new
-                (client.Guid, $"{client.Surname} {client.Name}", client.Email, client.PhoneNumber, client.IconUri));
+                (client.Guid, $"{client.Surname} {client.Name}", client.Email, client.PhoneNumber));
         }
 
         void IOutputPort.NotFound()
@@ -46,11 +46,17 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
         }
 
         [HttpPut("ChangeUserData")]
-        public async Task<IActionResult> ChangeUserData(string name, string surname, string email, string phoneNumber)
+        public async Task<IActionResult> ChangeUserData(ChangeUserDataRequest request)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute(name, surname, email, phoneNumber);
+            await _useCase.Execute
+                (request.Name, 
+                 request.Surname, 
+                 request.Email, 
+                 request.PhoneNumber, 
+                 request.City, 
+                 request.Street);
 
             return _viewModel;
         }

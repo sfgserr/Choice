@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Choice.ReviewService.Api.Services;
 using System.Text;
 using Choice.Ordering.Grpc.Protos;
+using ReviewService.Api.Consumers;
 
 namespace Choice.ReviewService.Api
 {
@@ -36,6 +37,7 @@ namespace Choice.ReviewService.Api
             {
                 config.AddConsumer<AuthorCreatedConsumer>();
                 config.AddConsumer<UserDataChangedConsumer>();
+                config.AddConsumer<UserIconUriChangedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -43,9 +45,11 @@ namespace Choice.ReviewService.Api
                     cfg.ReceiveEndpoint(EventBusConstants.AuthorCreatedQueue, c => {
                         c.ConfigureConsumer<AuthorCreatedConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c =>
-                    {
+                    cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => { 
                         c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.UserIconUriChangedQueue, c => {
+                        c.ConfigureConsumer<UserIconUriChangedConsumer>(ctx);
                     });
                 });
             });

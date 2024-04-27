@@ -20,7 +20,8 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
             _outputPort = new ChangeUserDataPresenter();
         }
 
-        public async Task Execute(string name, string surname, string email, string phoneNumber)
+        public async Task Execute(string name, string surname, string email, string phoneNumber, string city,
+            string street)
         {
             string id = _userService.GetUserId();
 
@@ -32,14 +33,15 @@ namespace Choice.ClientService.Application.UseCases.ChangeUserData
                 return;
             }
 
-            await ChangeData(client, name, surname, email, phoneNumber);
+            await ChangeData(client, name, surname, email, phoneNumber, city, street);
 
             _outputPort.Ok(client);
         }
 
-        public async Task ChangeData(Client client, string name, string surname, string email, string phoneNumber)
+        public async Task ChangeData(Client client, string name, string surname, string email, string phoneNumber, 
+            string city, string street)
         {
-            client.ChangeData(name, surname, email, phoneNumber);
+            client.ChangeData(name, surname, email, phoneNumber, city, street);
 
             _repository.Update(client);
 

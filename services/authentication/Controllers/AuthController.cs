@@ -134,7 +134,6 @@ namespace Choice.Authentication.Api.Controllers
                  user.City,
                  user.Street,
                  user.PhoneNumber,
-                 user.IconUri,
                  user.UserType.ToString()));
 
             return Ok(user);
