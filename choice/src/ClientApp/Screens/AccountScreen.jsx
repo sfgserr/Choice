@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Dimensions
+    Dimensions,
+    Modal
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore';
@@ -15,6 +16,7 @@ import styles from '../Styles';
 import blobService from '../services/blobService';
 import * as ImagePicker from 'react-native-image-picker';
 import { AuthContext } from '../App';
+import { Icon } from 'react-native-elements';
 
 export default function AccountScreen({ navigation }) {
     const user = userStore.get();
@@ -30,6 +32,7 @@ export default function AccountScreen({ navigation }) {
     const [surname, setSurname] = React.useState(user.surname);
     const [phone, setPhone] = React.useState(user.phoneNumber);
     const [address, setAddress] = React.useState(`${user.city},${user.street}`);
+    const [modalVisible, setModalVisible] = React.useState(false);
 
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
@@ -55,6 +58,7 @@ export default function AccountScreen({ navigation }) {
 
         await clientService.changeUserData(state);
         setDisable(true);
+        setModalVisible(true);
     }
 
     const logout = () => {
@@ -65,6 +69,91 @@ export default function AccountScreen({ navigation }) {
         <ScrollView 
             style={{flex: 1, backgroundColor: 'white'}}
             showsVerticalScrollIndicator={false}>
+            <Modal
+                visible={modalVisible}
+                transparent={true}>
+                <View
+                    style={{
+                        height,
+                        width,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                    }}>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '90%',
+                            borderRadius: 20,
+                            alignSelf: 'center',
+                            position: 'absolute',
+                            bottom: height/14
+                        }}>
+                        <View 
+                            style={{
+                                flex: 1,
+                                flexDirection: 'column'
+                            }}>
+                            <View 
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-end',
+                                    paddingTop: 20,
+                                    paddingHorizontal: 10
+                                }}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                    }}
+                                    style={{
+                                        borderRadius: 360,
+                                        backgroundColor: '#eff1f2',
+                                        alignSelf: 'flex-start'
+                                    }}>
+                                    <Icon 
+                                        name='close'
+                                        type='material'
+                                        size={27}
+                                        color='#818C99'/>
+                                </TouchableOpacity>
+                            </View>
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                }}>
+                                <Icon 
+                                    name='thumb-up'
+                                    type='material'
+                                    color='#2D81E0'
+                                    size={40}/>
+                                <Text
+                                    style={{
+                                        color: 'black',
+                                        fontWeight: '500',
+                                        fontSize: 20,
+                                        alignSelf: 'center',
+                                        paddingTop: 10
+                                        
+                                    }}>
+                                    Измение сохранены
+                                </Text>
+                                <View
+                                    style={{
+                                        paddingTop: 40,
+                                        paddingBottom: 10,
+                                        paddingHorizontal: 10
+                                    }}>
+                                    <TouchableOpacity 
+                                        style={[styles.button, {borderRadius: 10}]}
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                        }}>
+                                        <Text style={styles.buttonText}>Ок</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={{justifyContent: 'center', paddingTop: 20}}>
                 <Text 
                     style={{
