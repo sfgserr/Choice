@@ -34,7 +34,7 @@ namespace Choice.ClientService.Application.UseCases.ChangeOrderRequest
                 return;
             }
 
-            OrderRequest? request = client.Requests.FirstOrDefault(r => r.ClientId == client.Id);
+            OrderRequest? request = client.Requests.FirstOrDefault(r => r.Id == id);
 
             if (request is null)
             {

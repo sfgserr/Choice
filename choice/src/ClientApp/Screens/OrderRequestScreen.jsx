@@ -26,6 +26,7 @@ import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colo
 import dateHelper from "../helpers/dateHelper";
 import blobService from "../services/blobService";
 import * as RNFS from "react-native-fs";
+import { ScaleFromCenterAndroidSpec } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionSpecs";
 
 const OrderRequestScreen = ({navigation, route}) => {
     const { orderRequest } = route.params;
@@ -50,11 +51,10 @@ const OrderRequestScreen = ({navigation, route}) => {
     const [radius, setRadius] = React.useState(orderRequest.searchRadius/1000);
     const [toKnowDeadline, setToKnowDeadline] = React.useState(orderRequest.toKnowDeadline);
     const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(orderRequest.toKnowEnrollmentDate);
-    const [fisrtImageUri, setFirstImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[0]}.png`);
-    const [secondImageUri, setSecondImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[1]}.png`);
-    const [thirdImageUri, setThirdImageUri] = React.useState(`file://${RNFS.DocumentDirectoryPath}/${orderRequest.photoUris[2]}.png`);
+    const [fisrtImageUri, setFirstImageUri] = React.useState(orderRequest.photoUris[0] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[0]}` : '');
+    const [secondImageUri, setSecondImageUri] = React.useState(orderRequest.photoUris[1] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[1]}` : '');
+    const [thirdImageUri, setThirdImageUri] = React.useState(orderRequest.photoUris[2] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[2]}` : '');
     const date = dateHelper.formatDate(orderRequest.creationDate);
-
     const updateDisabled = (state) => {
         setDisabled((state.description == '' || 
             (!state.toKnowPrice && !state.toKnowDeadline && !state.toKnowEnrollmentDate)));
@@ -84,17 +84,6 @@ const OrderRequestScreen = ({navigation, route}) => {
             });
         }
     }
-
-    React.useEffect(() => {
-        async function downloadPhotos() {
-            let i = 0;
-
-            for (; i < 3; i++) {
-                await blobService.getImage(orderRequest.photoUris[i]);
-            }
-        }
-        downloadPhotos();
-    }, []);
 
     return (
         <ScrollView 
@@ -454,10 +443,20 @@ const OrderRequestScreen = ({navigation, route}) => {
                                 description,
                                 categoryId: selectedCategory.id,
                                 photoUris: [fisrtImageUri, secondImageUri, thirdImageUri],
-                                searchRadius: radius,
+                                searchRadius: radius*1000,
                                 toKnowPrice,
                                 toKnowDeadline,
                                 toKnowEnrollmentDate
+                            }
+
+                            let i = 0;
+                            for (; i < 3; i++) {
+                                if (!state.photoUris[i].includes('http://')) {
+                                    state.photoUris[i] = await blobService.uploadImage(state.photoUris[i]);
+                                }
+                                else {
+                                    state.photoUris[i] = orderRequest.photoUris[i];
+                                }
                             }
 
                             let request = await clientService.changeOrderRequest(state);

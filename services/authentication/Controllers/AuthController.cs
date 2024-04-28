@@ -3,8 +3,8 @@ using Choice.Authentication.Api.Repositories;
 using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Twilio;
 using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Authentication.Api.Controllers
@@ -24,6 +24,37 @@ namespace Choice.Authentication.Api.Controllers
             _configuration = configuration;
             _repository = repository;
             _endPoint = endPoint;
+        }
+
+        [HttpPut("ChangePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+        {
+            string id = HttpContext.User.FindFirst("id")?.Value!;
+
+            User user = await _repository.Get(id);
+
+            if (user is not null)
+            {
+                if (user.Password == oldPassword) 
+                {
+                    user.ChangePassword(newPassword);
+
+                    await _repository.Update(user);
+
+                    return Ok();
+                }
+                else
+                {
+                    ValidationProblemDetails problemDetails = new (new Dictionary<string, string[]> 
+                    { 
+                        ["oldPassword"] = ["Password did not match"]
+                    });
+                    return BadRequest(problemDetails);
+                }
+            }
+
+            return NotFound();
         }
 
         [HttpPost("Login")]

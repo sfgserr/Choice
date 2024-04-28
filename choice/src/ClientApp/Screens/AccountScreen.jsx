@@ -14,13 +14,16 @@ import clientService from '../services/clientService';
 import styles from '../Styles';
 import blobService from '../services/blobService';
 import * as ImagePicker from 'react-native-image-picker';
+import { AuthContext } from '../App';
 
 export default function AccountScreen({ navigation }) {
     const user = userStore.get();
 
+    const { signOut } = React.useContext(AuthContext);
+
     const { width, height } =  Dimensions.get('screen');
 
-    const [iconUri, setIconUri] = React.useState(user.iconUri);
+    const [iconUri, setIconUri] = React.useState(`http://192.168.0.106/api/objects/${user.iconUri}`);
     const [disable, setDisable] = React.useState(true);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = React.useState(user.name);
@@ -34,7 +37,7 @@ export default function AccountScreen({ navigation }) {
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
             await clientService.changeIconUri(iconUri);
-            setIconUri(iconUri);
+            setIconUri(response.assets[0].uri);
         }
     }
 
@@ -50,9 +53,12 @@ export default function AccountScreen({ navigation }) {
             city: addresses[0]
         }
 
-        console.log(state);
-
         await clientService.changeUserData(state);
+        setDisable(true);
+    }
+
+    const logout = () => {
+        signOut();
     }
 
     return (
@@ -72,7 +78,7 @@ export default function AccountScreen({ navigation }) {
             </View>
             <View style={{paddingTop: 40}}>
                 <Image 
-                    source={{uri: `file://${RNFS.DocumentDirectoryPath}/${iconUri}.png`}}
+                    source={{uri: iconUri}}
                     style={{
                         width: 70,
                         height: 70,
@@ -206,14 +212,18 @@ export default function AccountScreen({ navigation }) {
                             }}/>
                     </View>
                 </View>
-                <TouchableOpacity style={[styles.button, { backgroundColor: '#001C3D0D' }]}>
+                <TouchableOpacity 
+                    style={[styles.button, { backgroundColor: '#001C3D0D' }]}
+                    onPress={() => navigation.navigate('ChangePassword')}>
                     <Text
                         style={[styles.buttonText, { color: '#2688EB' }]}>
                         Изменить пароль
                     </Text>
                 </TouchableOpacity>
                 <View style={{paddingTop: 20}}>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: '#001C3D0D' }]}>
+                    <TouchableOpacity 
+                        style={[styles.button, { backgroundColor: '#001C3D0D' }]}
+                        onPress={logout}>
                         <Text
                             style={[styles.buttonText, { color: '#EB2626' }]}>
                             Выйти из аккаунта

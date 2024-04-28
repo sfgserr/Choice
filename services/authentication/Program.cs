@@ -8,6 +8,9 @@ using Choice.EventBus.Messages.Common;
 using Choice.Authentication.Api.Consumers;
 using Microsoft.Identity.Client;
 using Twilio;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,11 +37,28 @@ builder.Services.AddMassTransit(config =>
     config.UsingRabbitMq((ctx, cfg) => {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 
-        cfg.ReceiveEndpoint(EventBusConstants.OrderStatusChangedQueue, c => {
+        cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => {
             c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
         });
     });
 });
+
+string issuerKey = builder.Configuration["JwtSettings:Key"];
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
+    {
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
+        };
+    });
 
 var app = builder.Build();
 

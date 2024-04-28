@@ -12,11 +12,8 @@ import { Icon } from 'react-native-elements';
 import styles from '../Styles.jsx';
 import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
-import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore.js';
-import dateHelper from '../helpers/dateHelper.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
-import blobService from '../services/blobService.js';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
@@ -42,7 +39,7 @@ export default function MapScreen({ navigation, route }) {
     const { width, height } = Dimensions.get('screen');
 
     const [coords, setCoords] = React.useState([]);
-    const user = userStore.get();
+    const [user, setUser] = React.useState('');
 
     const setParams = (params) => {
         setCategory(params.selectedCategory);
@@ -57,11 +54,13 @@ export default function MapScreen({ navigation, route }) {
 
             setCoords(coords);
         }
-        async function downloadPhotos() {
-            await blobService.getImage(user.iconUri);
+        async function getUser() {
+            let currentUserType = userStore.getUserType();
+            await userStore.retrieveData(currentUserType);
+            setUser(userStore.get());
         }
         getCoords();
-        downloadPhotos();
+        getUser();
     });
 
     const goBack = () => {
@@ -85,7 +84,7 @@ export default function MapScreen({ navigation, route }) {
                 zoomEnabled={false}
                 rotateEnabled={false}
                 style={mapStyles.map}>
-                <CustomMarker imageUri={`file://${RNFS.DocumentDirectoryPath}/${user.iconUri}.png`}
+                <CustomMarker imageUri={`http://192.168.0.106/api/objects/${user.iconUri}`}
                               coordinate={{
                                 latitude: coords[0] == null ? 20 : coords[0],
                                 longitude: coords[1] == null ? 20 : coords[1]

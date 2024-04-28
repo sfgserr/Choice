@@ -48,7 +48,7 @@ const loginByPhone = async (phone) => {
 }
 
 const verifyCode = async (phone, code) => {
-    await fetch(`http://10.0.2.2/api/Auth/Verify?phone=${phone}&code=${code}`, {
+    return await fetch(`http://10.0.2.2/api/Auth/Verify?phone=${phone}&code=${code}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -69,8 +69,22 @@ const verifyCode = async (phone, code) => {
     });
 }
 
+const changePassword = async (oldPassword, newPassword) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`http://10.0.2.2/api/Auth/ChangePassword?oldPassword=${oldPassword}&newPassword=${newPassword}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    });
+}
+
 export default {
     loginByEmail,
     loginByPhone,
-    verifyCode
+    verifyCode,
+    changePassword
 }

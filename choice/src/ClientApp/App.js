@@ -32,6 +32,7 @@ import categoryStore from './services/categoryStore';
 import userStore from './services/userStore';
 import OrderRequestCreationScreen from './Screens/OrderRequestCreationScreen';
 import OrderRequestScreen from './Screens/OrderRequestScreen';
+import ChangePasswordScreen from './Screens/ChangePasswordScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -105,6 +106,12 @@ function App() {
 
       setUserType(userType);
       setIsSignedIn(true);
+    },
+    signOut: () => {
+      userStore.logout();
+
+      setIsSignedIn(false);
+      setUserType(0);
     }
   }));
 
@@ -138,6 +145,9 @@ function App() {
                 <Stack.Screen name="OrderRequest"
                               component={gestureHandlerRootHOC(OrderRequestScreen)}
                               options={{headerShown:false}}/>
+                <Stack.Screen name="ChangePassword"
+                              component={ChangePasswordScreen}
+                              options={{headerShown:false}}/>    
              </Stack.Navigator>
             </>
           ) : (

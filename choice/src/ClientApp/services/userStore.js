@@ -1,5 +1,4 @@
 import clientService from "./clientService";
-import blobService from "./blobService";
 
 let user;
 let currentUserType;
@@ -15,7 +14,6 @@ const getUserType = () => {
 const retrieveData = async (userType) => {
     if (userType == 1) {
         user = await clientService.get();
-        await blobService.getImage(user.iconUri);
         currentUserType = 1;
     }
 }

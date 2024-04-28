@@ -33,6 +33,11 @@ namespace Choice.Authentication.Api.Models
             Email = email;
             PhoneNumber = phoneNumber;
         }
+
+        public void ChangePassword(string password)
+        {
+            Password = password;
+        }
     }
 
     public enum UserType

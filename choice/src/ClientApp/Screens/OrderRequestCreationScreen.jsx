@@ -6,9 +6,7 @@ import {
     TextInput,
     Dimensions,
     ScrollView,
-    Image,
     Modal,
-    Switch,
     DeviceEventEmitter
 } from 'react-native';
 import { Icon } from "react-native-elements";
@@ -262,7 +260,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                     }}/>
                 </View>
             </Modalize>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 20}}>
                 <TouchableOpacity 
                     style={{alignSelf: 'center'}}
                     onPress={() => navigation.goBack()}>
