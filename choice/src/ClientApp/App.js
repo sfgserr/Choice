@@ -33,6 +33,7 @@ import userStore from './services/userStore';
 import OrderRequestCreationScreen from './Screens/OrderRequestCreationScreen';
 import OrderRequestScreen from './Screens/OrderRequestScreen';
 import ChangePasswordScreen from './Screens/ChangePasswordScreen';
+import RegisterScreen from './Screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -126,7 +127,10 @@ function App() {
             <>
               <Stack.Navigator>
                 <Stack.Screen name="Login"
-                              component={LoginScreen}
+                              component={gestureHandlerRootHOC(LoginScreen)}
+                              options={{headerShown: false}}/>
+                <Stack.Screen name="Register"
+                              component={RegisterScreen}
                               options={{headerShown: false}}/>
               </Stack.Navigator>
             </>
@@ -147,7 +151,7 @@ function App() {
                               options={{headerShown:false}}/>
                 <Stack.Screen name="ChangePassword"
                               component={ChangePasswordScreen}
-                              options={{headerShown:false}}/>    
+                              options={{headerShown:false}}/>
              </Stack.Navigator>
             </>
           ) : (

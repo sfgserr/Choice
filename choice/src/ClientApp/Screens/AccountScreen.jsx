@@ -33,7 +33,7 @@ export default function AccountScreen({ navigation }) {
     const [phone, setPhone] = React.useState(user.phoneNumber);
     const [address, setAddress] = React.useState(`${user.city},${user.street}`);
     const [modalVisible, setModalVisible] = React.useState(false);
-
+    
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
         

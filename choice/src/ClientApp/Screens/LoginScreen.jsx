@@ -15,6 +15,8 @@ import {
 import RNFS from 'react-native-fs';
 import Tabs from "../Components/Tabs";
 import { AuthContext } from "../App";
+import ActionSheet from "react-native-actions-sheet";
+import styles from "../Styles";
 
 const screens = {
   loginByEmail: { screen: LoginByEmailScreen, title: 'E-mail' },
@@ -31,6 +33,7 @@ const data = Object.keys(screens).map((i) => ({
 
 export default function LoginScreen({ navigation, route }) {
     const { signIn } = React.useContext(AuthContext);
+    const actionSheetRef = React.useRef(null);
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
     const ref = React.useRef();
@@ -41,6 +44,76 @@ export default function LoginScreen({ navigation, route }) {
     });
     return (
         <SafeAreaView style={{flex:1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
+            <ActionSheet 
+                ref={actionSheetRef}
+                isModal={false}>
+                <View
+                    style={{paddingHorizontal: 10}}>
+                    <TouchableOpacity
+                        style={[
+                            styles.button, 
+                            { 
+                                backgroundColor: 'white', 
+                                alignSelf: 'center' 
+                            }
+                        ]}
+                        onPress={() => {
+                            actionSheetRef.current?.hide();
+                            navigation.navigate('Register', {type: 'client'})
+                        }}>
+                        <Text
+                            style={{
+                                color: '#2688EB',
+                                fontSize: 20,
+                                fontWeight: '400'
+                            }}>
+                            Создать аккаунт клиента
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.button, 
+                            { 
+                                backgroundColor: 'white', 
+                                alignSelf: 'center' 
+                            }
+                        ]}
+                        onPress={() => {
+                            actionSheetRef.current?.hide();
+                            navigation.navigate('Register', {type: 'company'})
+                        }}>
+                        <Text
+                            style={{
+                                color: '#2688EB',
+                                fontSize: 20,
+                                fontWeight: '400'
+                            }}>
+                            Создать аккаунт компании    
+                        </Text>
+                    </TouchableOpacity>
+                    <View
+                        style={{paddingTop: 20}}>
+                        <TouchableOpacity
+                            style={[
+                                styles.button, 
+                                { 
+                                    backgroundColor: 'white', 
+                                    alignSelf: 'center' 
+                                }
+                            ]}
+                            onPress={() => actionSheetRef.current?.hide()}>
+                            <Text
+                                style={{
+                                    color: '#2688EB',
+                                    fontSize: 20,
+                                    fontWeight: '400'
+                                }}>
+                                Отменить    
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ActionSheet>
             <View style={{alignSelf: 'center', paddingTop: 20}}>
                 <Image style={{width: 150, height: 150, resizeMode: 'contain', alignSelf: 'center'}}
                        source={require("../assets/choice-logo.png")}/>
@@ -51,7 +124,9 @@ export default function LoginScreen({ navigation, route }) {
             <View style={{flexDirection: 'row', paddingHorizontal: 20, paddingTop: 40}}>
                 <Text style={{fontSize: 24, fontWeight: '700', color: '#313131'}}>Авторизация</Text>
                 <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
-                    <TouchableOpacity style={{alignSelf: 'center'}}>
+                    <TouchableOpacity 
+                        style={{alignSelf: 'center'}}
+                        onPress={() => actionSheetRef.current?.show()}>
                         <Text style={{color: '#2D81E0', fontSize: 16, fontWeight: '400'}}>Создать аккаунт</Text>
                     </TouchableOpacity>
                 </View>
