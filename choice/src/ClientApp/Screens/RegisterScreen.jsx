@@ -417,7 +417,7 @@ const RegisterScreen = ({navigation, route}) => {
                     <View style={[styles.textInput, {flexDirection: 'row'}]}>
                         <TextInput 
                             placeholder="Введите пароль" 
-                            value={hideConfirmPassword}
+                            value={confirmPassword}
                             secureTextEntry={hideConfirmPassword} 
                             onChangeText={(text) => {
                                 setConfirmPassword(text);
