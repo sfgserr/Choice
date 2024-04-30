@@ -109,7 +109,7 @@ const RegisterScreen = ({navigation, route}) => {
                                         paddingTop: 10
                                         
                                     }}>
-                                    Аккаунт создан
+                                    {type == 'client' ? 'Аккаунт создан' : 'Аккаунт компании создан'}
                                 </Text>
                                 <Text 
                                     style={{
@@ -119,7 +119,7 @@ const RegisterScreen = ({navigation, route}) => {
                                         fontWeight: '400',
                                         alignSelf: 'center'
                                     }}>
-                                    Теперь вы можете создавать заказы    
+                                    {type == 'client' ? 'Теперь вы можете создавать заказы' : 'Заполните информацию о вашей компании'}    
                                 </Text>
                                 <View
                                     style={{
@@ -130,9 +130,16 @@ const RegisterScreen = ({navigation, route}) => {
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
                                         onPress={() => {
-                                            navigation.goBack();
+                                            if (type == 'client') {
+                                                navigation.goBack();
+                                            }
+                                            else {
+                                                navigation.navigate('FillCompanyData');
+                                            }
                                         }}>
-                                        <Text style={styles.buttonText}>Ок</Text>
+                                        <Text style={styles.buttonText}>
+                                            {type == 'client' ? 'Ок' : 'Заполнить информацию'}
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -364,7 +371,7 @@ const RegisterScreen = ({navigation, route}) => {
                     <View style={[styles.textInput, {flexDirection: 'row'}]}>
                         <TextInput 
                             placeholder="Введите пароль" 
-                            value={hidePassword}
+                            value={password}
                             secureTextEntry={hidePassword} 
                             onChangeText={(text) => {
                                 setPassword(text);
