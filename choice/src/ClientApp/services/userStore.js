@@ -1,4 +1,5 @@
 import clientService from "./clientService";
+import companyService from "./companyService";
 
 let user;
 let currentUserType;
@@ -15,6 +16,11 @@ const retrieveData = async (userType) => {
     if (userType == 1) {
         user = await clientService.get();
         currentUserType = 1;
+    }
+
+    if (userType == 2) {
+        user = await companyService.get();
+        currentUserType = 2;
     }
 }
 

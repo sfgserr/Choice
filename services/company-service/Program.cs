@@ -8,6 +8,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace Choice.CompanyService.Api
@@ -56,6 +57,11 @@ namespace Choice.CompanyService.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
                     };
                 });
+
+            builder.Services.AddAuthorization(o =>
+            {
+                o.AddPolicy("Client", policy => policy.RequireClaim(ClaimTypes.Email));
+            });
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddHttpClient();

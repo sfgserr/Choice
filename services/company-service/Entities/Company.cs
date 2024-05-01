@@ -22,22 +22,43 @@ namespace Choice.CompanyService.Api.Entities
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
         public string SiteUrl { get; private set; } = string.Empty;
+        public string IconUri { get; private set; } = "defaulturi";
         public Address Address { get; private set; }    
         public double AverageGrade { get; private set; } = 0;
         public int ReviewCount { get; private set; } = 0;
-        public List<string> SocialMedias { get; private set; } = new();
-        public List<string> PhotoUris { get; private set; } = new();
-        public List<int> CategoriesId { get; private set; } = new();
+        public List<string> SocialMedias { get; private set; } = [];
+        public List<string> PhotoUris { get; private set; } = [];
+        public List<int> CategoriesId { get; private set; } = [];
+        public bool IsDataFilled { get; private set; } = false;
 
-        public void FillCompanyData(string siteUrl, string street, string city,
-            List<string> socialMedias, List<string> photoUris, List<int> categoriesId)
+        public void FillCompanyData(string siteUrl, List<string> socialMedias, List<string> photoUris, 
+            List<int> categoriesId)
         {
             SiteUrl = siteUrl;
-            Address = new(street, city);
 
-            SocialMedias.AddRange(socialMedias);
-            PhotoUris.AddRange(photoUris);
-            CategoriesId.AddRange(categoriesId);
+            SocialMedias = socialMedias;
+            PhotoUris = photoUris;
+            CategoriesId = categoriesId;
+
+            IsDataFilled = true;
+        }
+
+        public void ChangeData(string title, string phoneNumber, string email, string siteUrl, string city, 
+            string street, List<string> socialMedias, List<string> photoUris, List<int> categoriesId)
+        {
+            Title = title;
+            PhoneNumber = phoneNumber;
+            Email = email;
+            SiteUrl = siteUrl;
+            Address = new(street, city);
+            SocialMedias = socialMedias;
+            PhotoUris = photoUris;
+            CategoriesId = categoriesId;
+        }
+
+        public void ChangeIconUri(string iconUri)
+        {
+            IconUri = iconUri;
         }
 
         public void AddReview(int grade)

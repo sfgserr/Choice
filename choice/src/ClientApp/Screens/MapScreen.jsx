@@ -16,8 +16,6 @@ import userStore from '../services/userStore.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
 
 export default function MapScreen({ navigation, route }) {
-    const modalRef = React.useRef(null);
-
     const [category, setCategory] = React.useState({
         id: route.params.category.id,
         title: route.params.category.title

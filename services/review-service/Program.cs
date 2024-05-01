@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using Choice.ReviewService.Api.Services;
 using System.Text;
 using Choice.Ordering.Grpc.Protos;
-using ReviewService.Api.Consumers;
 
 namespace Choice.ReviewService.Api
 {

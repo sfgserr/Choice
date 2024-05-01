@@ -275,9 +275,8 @@ const ChangePasswordScreen = ({ navigation }) => {
                 </View>
                 <View
                     style={{
-                        justifyContent: 
-                        'flex-end', 
-                        flex:1, 
+                        justifyContent: 'flex-end', 
+                        flex: 1, 
                         paddingBottom: 10
                     }}>
                     <TouchableOpacity

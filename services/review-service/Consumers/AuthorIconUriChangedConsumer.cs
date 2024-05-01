@@ -1,13 +1,28 @@
 ﻿using Choice.EventBus.Messages.Events;
+using Choice.ReviewService.Api.Entities;
+using Choice.ReviewService.Api.Infrastructure.Data;
 using MassTransit;
 
-namespace ReviewService.Api.Consumers
+namespace Choice.ReviewService.Api.Consumers
 {
     public class AuthorIconUriChangedConsumer : IConsumer<UserIconUriChangenEvent>
     {
-        public Task Consume(ConsumeContext<UserIconUriChangenEvent> context)
+        private readonly ReviewContext _context;
+
+        public AuthorIconUriChangedConsumer(ReviewContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task Consume(ConsumeContext<UserIconUriChangenEvent> context)
+        {
+            UserIconUriChangenEvent @event = context.Message;
+
+            Author author = _context.Authors.FirstOrDefault(a => a.Guid == @event.Guid);
+
+            author!.ChangeIconUri(@event.IconUri);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

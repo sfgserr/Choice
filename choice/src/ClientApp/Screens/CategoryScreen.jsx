@@ -8,7 +8,6 @@ import {
     RefreshControl
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import RNFS from 'react-native-fs';
 import categoryStore from '../services/categoryStore.js';
 
 export default function CategoryScreen({ navigation, route }) {

@@ -104,7 +104,6 @@ function App() {
   const authContext = React.useMemo(() => ({
     signIn: async (userType) => {
       await categoryStore.retrieveData();
-      await userStore.retrieveData(userType);
 
       setUserType(userType);
       setIsSignedIn(true);

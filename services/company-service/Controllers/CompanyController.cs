@@ -3,6 +3,10 @@ using Choice.Common.ValueObjects;
 using Choice.CompanyService.Api.Entities;
 using Choice.CompanyService.Api.Repositories;
 using Choice.CompanyService.Api.ViewModels;
+using Choice.CompanyService.Api.ViewModels.Requests;
+using Choice.EventBus.Messages.Events;
+using CompanyService.Api.ViewModels.Requests;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +20,14 @@ namespace Choice.CompanyService.Api.Controllers
         private readonly ICompanyRepository _repository;
         private readonly IAddressService _addressService;
         private readonly IHttpContextAccessor _context;
+        private readonly IPublishEndpoint _endPoint;
 
-        public CompanyController(ICompanyRepository repository, IAddressService addressService, IHttpContextAccessor context)
+        public CompanyController(ICompanyRepository repository, IAddressService addressService, IHttpContextAccessor context, IPublishEndpoint endPoint)
         {
             _repository = repository;
             _addressService = addressService;
             _context = context;
+            _endPoint = endPoint;
         }
 
         [HttpGet("GetAll")]
@@ -29,15 +35,41 @@ namespace Choice.CompanyService.Api.Controllers
         {
             IList<Company> companies = await _repository.GetAll();
 
-            return Ok(companies.Select(c => new CompanyDetailsViewModel(c)));
+            return Ok(companies.Where(c => c.IsDataFilled).Select(c => new CompanyDetailsViewModel(c)));
+        }
+
+        [HttpGet("GetByCategories")]
+        public async Task<IActionResult> GetCompaniesByCategory(int categoryId)
+        {
+            IList<Company> companies = await _repository.GetAll();
+
+            return Ok(companies.Where(c => c.IsDataFilled && c.CategoriesId.Contains(categoryId))
+                .Select(c => new CompanyDetailsViewModel(c)));
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> Get(string guid, Address address)
+        public async Task<IActionResult> Get()
+        {
+            string id = _context.HttpContext?.User.FindFirst("id")?.Value!;
+
+            Company company = await _repository.Get(id);
+
+            if (company is not null)
+                return Ok(company);
+
+            return NotFound();
+        }
+
+        [HttpGet("GetCompany")]
+        [Authorize("Client")]
+        public async Task<IActionResult> GetCompany(string guid, Address address)
         {
             Company company = await _repository.Get(guid);
 
             if (company is null)
+                return NotFound();
+
+            if (!company.IsDataFilled)
                 return NotFound();
 
             int distance = await _addressService.GetDistance(company.Address, address);
@@ -45,7 +77,43 @@ namespace Choice.CompanyService.Api.Controllers
             return Ok(new CompanyViewModel(company, distance));
         }
 
-        [Authorize("Company")]
+        [HttpPut("ChangeData")]
+        public async Task<IActionResult> ChangeData(ChangeDataRequest request)
+        {
+            string id = _context.HttpContext?.User.FindFirst("id")?.Value!;
+
+            Company company = await _repository.Get(id);
+
+            if (company is null)
+                return NotFound();
+
+            company.ChangeData
+                (request.Title,
+                 request.PhoneNumber,
+                 request.Email,
+                 request.SiteUrl,
+                 request.City,
+                 request.Street,
+                 request.SocialMedias,
+                 request.PhotoUris,
+                 request.CategoriesId);
+
+            bool result = await _repository.Update(company);
+
+            if (result)
+            {
+                await _endPoint.Publish<UserDataChangedEvent>(new 
+                    (company.Guid,
+                     company.Title,
+                     company.Email,
+                     company.PhoneNumber));
+
+                return Ok(new CompanyDetailsViewModel(company));
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut("FillCompanyData")]
         public async Task<IActionResult> FillCompanyData(FillCompanyDataRequest request)
         {
@@ -58,8 +126,6 @@ namespace Choice.CompanyService.Api.Controllers
 
             company.FillCompanyData
                 (request.SiteUrl,
-                 request.Street,
-                 request.City,
                  request.SocialMedias,
                  request.PhotoUris,
                  request.CategoriesId);

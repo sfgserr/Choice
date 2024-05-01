@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
+import userStore from "../services/userStore.js";
 
 export default function LoginByEmailScreen({navigation, signIn}) {
     const [email, setEmail] = React.useState('');
@@ -24,8 +25,22 @@ export default function LoginByEmailScreen({navigation, signIn}) {
     const login = async () => {
         let userType = await authService.loginByEmail(email, password);
         
+        await userStore.retrieveData(userType);
+
         if (userType != -1) {
-            await signIn(userType);
+            if (userType == 2) {
+                let user = userStore.get();
+
+                if (!user.isDataFilled) {
+                    navigation.navigate('FillCompanyData');
+                }
+                else {
+                    await signIn(userType);
+                }
+            }
+            else {
+                await signIn(userType);
+            }
         }
     }
 

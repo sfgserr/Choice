@@ -1,4 +1,4 @@
-﻿namespace Choice.CompanyService.Api.ViewModels
+﻿namespace Choice.CompanyService.Api.ViewModels.Requests
 {
     public class FillCompanyDataRequest
     {
