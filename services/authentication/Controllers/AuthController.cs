@@ -1,10 +1,11 @@
 ﻿using Choice.Authentication.Api.Models;
-using Choice.Authentication.Api.Repositories;
 using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Authentication.Api.Controllers
@@ -14,34 +15,33 @@ namespace Choice.Authentication.Api.Controllers
     public class AuthController : Controller
     {
         private readonly ITokenService _tokenService;
-        private readonly IUserRepository _repository;
+        private readonly UserManager<User> _userManager;
         private readonly IPublishEndpoint _endPoint;
         private readonly IConfiguration _configuration;
 
-        public AuthController(ITokenService tokenService, IConfiguration configuration, IUserRepository repository, IPublishEndpoint endPoint)
+        public AuthController(ITokenService tokenService, UserManager<User> userManager, IConfiguration configuration, 
+            IPublishEndpoint endPoint)
         {
             _tokenService = tokenService;
+            _userManager = userManager;
             _configuration = configuration;
-            _repository = repository;
             _endPoint = endPoint;
         }
 
         [HttpPut("ChangePassword")]
         [Authorize]
-        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
         {
             string id = HttpContext.User.FindFirst("id")?.Value!;
 
-            User user = await _repository.Get(id);
+            User? user = await _userManager.FindByIdAsync(id);
 
             if (user is not null)
             {
-                if (user.Password == oldPassword) 
+                var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+                if (result.Succeeded)
                 {
-                    user.ChangePassword(newPassword);
-
-                    await _repository.Update(user);
-
                     return Ok();
                 }
                 else
@@ -50,6 +50,7 @@ namespace Choice.Authentication.Api.Controllers
                     { 
                         ["oldPassword"] = ["Password did not match"]
                     });
+
                     return BadRequest(problemDetails);
                 }
             }
@@ -60,31 +61,33 @@ namespace Choice.Authentication.Api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(string email, string password)
         {
-            User user = await _repository.GetByEmail(email);
+            User? user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            if (user.Password != password)
+            bool result = await _userManager.CheckPasswordAsync(user, password);
+
+            if (result)
             {
-                return Unauthorized();
+                string token = _tokenService.GenerateToken
+                    (user,
+                     _configuration["JwtSettings:Key"]!,
+                     _configuration["JwtSettings:Issuer"]!,
+                     _configuration["JwtSettings:Audience"]!);
+
+                return Ok(token);
             }
 
-            string token = _tokenService.GenerateToken
-                (user,
-                 _configuration["JwtSettings:Key"]!,
-                 _configuration["JwtSettings:Issuer"]!,
-                 _configuration["JwtSettings:Audience"]!);
-
-            return Ok(token);
+            return Unauthorized();
         }
 
         [HttpPost("LoginByPhone")]
         public async Task<IActionResult> LoginByPhone(string phone)
         {
-            User user = await _repository.GetByPhoneNumber(phone);
+            User? user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phone);
 
             if (user == null)
                 return NotFound();
@@ -111,7 +114,7 @@ namespace Choice.Authentication.Api.Controllers
 
             if (verificationCheck.Status == "approved")
             {
-                User user = await _repository.GetByPhoneNumber(phone);
+                User user = (await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phone))!;
 
                 string token = _tokenService.GenerateToken
                     (user,
@@ -134,18 +137,18 @@ namespace Choice.Authentication.Api.Controllers
 
             Dictionary<string, string[]> errorMessages = new();
 
-            User existUser = await _repository.GetByEmail(email);
+            User? existUser = await _userManager.FindByEmailAsync(email);
 
             if (existUser != null)
             {
                 errorMessages.Add(nameof(email), new[] { "Email already in use" });
             }
 
-            existUser = await _repository.GetByPhoneNumber(phoneNumber);
+            existUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
 
             if (existUser != null)
             {
-                errorMessages.Add(nameof(phoneNumber), new[] { "Phone already in use" });
+                errorMessages.Add(nameof(phoneNumber), ["Phone already in use"]);
             }
 
             if (errorMessages.Count > 0)
@@ -154,20 +157,25 @@ namespace Choice.Authentication.Api.Controllers
                 return BadRequest(problemDetails);
             }
 
-            User user = new(Guid.NewGuid(), email, password, name, phoneNumber, city, street, type);
+            User user = new(Guid.NewGuid().ToString(), email, name, phoneNumber, city, street, type);
 
-            await _repository.Add(user);
+            var result = await _userManager.CreateAsync(user,  password);
 
-            await _endPoint.Publish<UserCreatedEvent>(new
-                (user.Id.ToString(),
-                 user.Name,
-                 user.Email,
-                 user.City,
-                 user.Street,
-                 user.PhoneNumber,
-                 user.UserType.ToString()));
+            if (result.Succeeded)
+            {
+                await _endPoint.Publish<UserCreatedEvent>(new
+                    (user.Id.ToString(),
+                     user.Name,
+                     user.Email,
+                     user.City,
+                     user.Street,
+                     user.PhoneNumber,
+                     user.UserType.ToString()));
 
-            return Ok(user);
+                return Ok(user);
+            }
+
+            return BadRequest();
         }
     }
 }

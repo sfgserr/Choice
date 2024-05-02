@@ -11,11 +11,16 @@ import {
 } from 'react-native'
 import styles from '../Styles';
 import { Icon } from 'react-native-elements';
+import urlValidator from '../validators/urlValidator';
 
 const SocialMediasScreen  = ({handleState}) => {
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const { width, height } = Dimensions.get('screen');
+
+    const [urlName, setUrlName] = React.useState('');
+
+    const [currentUrl, setCurrentUrl] = React.useState('');
 
     const [instagramUrl, setInstagramUrl] = React.useState('');
     const [facebookUrl, setFacebookUrl] = React.useState('');
@@ -24,10 +29,8 @@ const SocialMediasScreen  = ({handleState}) => {
 
     const [disable, setDisable] = React.useState(true);
 
-    const onValueChanged = (value) => {
-        if (value) {
-            setModalVisible(true);
-        }
+    const updateState = (state) => {
+        setDisable(state.every(u => u == ''));
     }
 
     return (
@@ -75,7 +78,7 @@ const SocialMediasScreen  = ({handleState}) => {
                                         fontWeight: '600',
                                         color: 'black'
                                     }}>
-                                    Ссылка на ваш Instagram
+                                    {`Ссылка на ваш ${urlName}`}
                                 </Text>
                                 <TouchableOpacity
                                     onPress={() => {
@@ -97,7 +100,10 @@ const SocialMediasScreen  = ({handleState}) => {
                             <View style={{paddingHorizontal: 20, paddingTop: 10}}>
                                 <View
                                     style={styles.textInput}>
-                                    <TextInput style={styles.textInputFont}/>
+                                    <TextInput 
+                                        style={styles.textInputFont}
+                                        value={currentUrl}
+                                        onChangeText={(text) => setCurrentUrl(text)}/>
                                 </View>
                             </View>
                             <View
@@ -113,6 +119,59 @@ const SocialMediasScreen  = ({handleState}) => {
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
                                         onPress={() => {
+                                            if (urlName == 'Instagram') {
+                                                if (urlValidator.validateInstagramUrl(currentUrl)) {
+                                                    setInstagramUrl(currentUrl);
+                                                    
+                                                    updateState([
+                                                        currentUrl,
+                                                        facebookUrl,
+                                                        vkUrl,
+                                                        tgUrl
+                                                    ]);
+                                                }
+                                            }
+
+                                            if (urlName == 'Facebook') {
+                                                if (urlValidator.validateFacebookUrl(currentUrl)) {
+                                                    setFacebookUrl(currentUrl);
+
+                                                    updateState([
+                                                        instagramUrl,
+                                                        currentUrl,
+                                                        vkUrl,
+                                                        tgUrl
+                                                    ]);
+                                                }
+                                            }
+
+                                            if (urlName == 'ВК') {
+                                                if (urlValidator.validateVkUrl(currentUrl)) {
+                                                    setVkUrl(currentUrl);
+
+                                                    updateState([
+                                                        instagramUrl,
+                                                        facebookUrl,
+                                                        currentUrl,
+                                                        tgUrl
+                                                    ]);
+                                                }
+                                            }
+
+                                            if (urlName == 'Telegram') {
+                                                if (urlValidator.validateTgUrl(currentUrl)) {
+                                                    setTgUrl(currentUrl);
+
+                                                    updateState([
+                                                        instagramUrl,
+                                                        facebookUrl,
+                                                        vkUrl,
+                                                        currentUrl
+                                                    ]);
+                                                }
+                                            }
+
+                                            setModalVisible(false);
                                         }}>
                                         <Text style={styles.buttonText}>Сохранить</Text>
                                     </TouchableOpacity>
@@ -154,7 +213,26 @@ const SocialMediasScreen  = ({handleState}) => {
                         </Text>
                     </View>
                     <Switch
-                        onValueChange={onValueChanged}/>        
+                        trackColor={{true: '#2688EB', false: '#001C3D14'}} 
+                        thumbColor={'white'}
+                        value={instagramUrl != ''}
+                        onValueChange={(value) => {
+                            if (value) {
+                                setUrlName('Instagram');
+                                setCurrentUrl(instagramUrl);
+                                setModalVisible(true);
+                            }
+                            else {
+                                setInstagramUrl('');
+
+                                updateState([
+                                    '',
+                                    facebookUrl,
+                                    vkUrl,
+                                    tgUrl
+                                ]);
+                            }
+                        }}/>        
                 </View>
                 <View
                     style={{
@@ -181,7 +259,27 @@ const SocialMediasScreen  = ({handleState}) => {
                             Facebook
                         </Text>
                     </View>
-                    <Switch/>        
+                    <Switch
+                        trackColor={{true: '#2688EB', false: '#001C3D14'}} 
+                        thumbColor={'white'}
+                        value={facebookUrl != ''} 
+                        onValueChange={(value) => {
+                            if (value) {
+                                setUrlName('Facebook');
+                                setCurrentUrl(facebookUrl);
+                                setModalVisible(true);
+                            }
+                            else {
+                                setFacebookUrl('');
+
+                                updateState([
+                                    instagramUrl,
+                                    '',
+                                    vkUrl,
+                                    tgUrl
+                                ]);
+                            }
+                        }}/>        
                 </View>
                 <View
                     style={{
@@ -207,7 +305,27 @@ const SocialMediasScreen  = ({handleState}) => {
                             ВК
                         </Text>
                     </View>
-                    <Switch/>        
+                    <Switch
+                        trackColor={{true: '#2688EB', false: '#001C3D14'}} 
+                        thumbColor={'white'}
+                        value={vkUrl != ''} 
+                        onValueChange={(value) => {
+                            if (value) {
+                                setUrlName('ВК');
+                                setCurrentUrl(vkUrl);
+                                setModalVisible(true);
+                            }
+                            else {
+                                setVkUrl('');
+
+                                updateState([
+                                    instagramUrl,
+                                    facebookUrl,
+                                    '',
+                                    tgUrl
+                                ]);
+                            }
+                        }}/>        
                 </View>
                 <View
                     style={{
@@ -233,7 +351,27 @@ const SocialMediasScreen  = ({handleState}) => {
                             Telegram
                         </Text>
                     </View>
-                    <Switch/>        
+                    <Switch
+                        trackColor={{true: '#2688EB', false: '#001C3D14'}} 
+                        thumbColor={'white'}
+                        value={tgUrl != ''} 
+                        onValueChange={(value) => {
+                            if (value) {
+                                setUrlName('Telegram');
+                                setCurrentUrl(tgUrl);
+                                setModalVisible(true);
+                            }
+                            else {
+                                setTgUrl('');
+
+                                updateState([
+                                    instagramUrl,
+                                    facebookUrl,
+                                    vkUrl,
+                                    ''
+                                ]);
+                            }
+                        }}/>        
                 </View>
             </View>
             <View 
@@ -244,7 +382,8 @@ const SocialMediasScreen  = ({handleState}) => {
                 }}>
                 <TouchableOpacity 
                     style={[styles.button, { backgroundColor: disable ? '#ABCDf3' : '#2D81E0' }]}
-                    disabled={disable}>
+                    disabled={disable}
+                    onPress={!disable && handleState}>
                     <Text style={styles.buttonText}>
                         Далее
                     </Text>

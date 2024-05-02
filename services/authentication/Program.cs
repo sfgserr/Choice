@@ -1,5 +1,4 @@
 using Choice.Authentication.Api.Data;
-using Choice.Authentication.Api.Repositories;
 using Choice.Authentication.Api.Services;
 using Choice.Authentication;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,7 @@ using Twilio;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Choice.Authentication.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +20,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddIdentityCore<User>()
+                .AddUserStore<UserContext>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<UserContext>(o =>
     o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
 

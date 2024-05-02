@@ -7,10 +7,12 @@ import {
 } from 'react-native';
 import ContactDetailsScreen from "./ContactDetailsScreen";
 import SocialMediasScreen from "./SocialMediasScreen";
+import AboutScreen from "./AboutScreen";
 
 const FillCompanyDataScreen = () => {
     const { width, height } = Dimensions.get('screen');
     const [siteUrl, setSiteUrl] = React.useState('');
+    const [socialMedias, setSocialMedias] = React.useState([]);
     const [index, setIndex] = React.useState(1); 
 
     const ref = React.useRef();
@@ -26,9 +28,16 @@ const FillCompanyDataScreen = () => {
         },
         {
             screen: SocialMediasScreen,
-            handleState: () => {
+            handleState: (socialMedias) => {
+                setSocialMedias(socialMedias);
                 onItemPress(2);
                 setIndex(3);
+            }
+        },
+        {
+            screen: AboutScreen,
+            handleState: (state) => {
+
             }
         }
     ]
@@ -99,7 +108,7 @@ const FillCompanyDataScreen = () => {
                     contentContainerStyle={{flexGrow: 1}}
                     renderItem={({item}) => {
                         return <View style={{width, flex: 1}}>
-                                <item.screen handleState={(text) => item.handleState(text)}/>
+                                <item.screen handleState={(obj) => item.handleState(obj)}/>
                             </View>
                     }}/>
         </View>

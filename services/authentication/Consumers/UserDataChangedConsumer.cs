@@ -1,28 +1,28 @@
 ﻿using Choice.Authentication.Api.Models;
-using Choice.Authentication.Api.Repositories;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
+using Microsoft.AspNetCore.Identity;
 
 namespace Choice.Authentication.Api.Consumers
 {
     public class UserDataChangedConsumer : IConsumer<UserDataChangedEvent>
     {
-        private readonly IUserRepository _repository;
+        private readonly UserManager<User> _userManager;
 
-        public UserDataChangedConsumer(IUserRepository repository)
+        public UserDataChangedConsumer(UserManager<User> userManager)
         {
-            _repository = repository;
+            _userManager = userManager;
         }
 
         public async Task Consume(ConsumeContext<UserDataChangedEvent> context)
         {
             UserDataChangedEvent @event = context.Message;
 
-            User user = await _repository.Get(@event.Guid);
+            User user = (await _userManager.FindByIdAsync(@event.Guid))!;
 
             user.ChangeData(@event.Name, @event.Email, @event.PhoneNumber);
 
-            await _repository.Update(user);
+            await _userManager.UpdateAsync(user);
         }
     }
 }
