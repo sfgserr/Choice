@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Choice.Authentication.Api.Models
 {
@@ -17,11 +18,16 @@ namespace Choice.Authentication.Api.Models
             UserType = userType;
         }
 
-        private User() {  }
-
+        [Required]
         public string Name { get; private set; }
+
+        [Required]
         public string City { get; private set; }
+
+        [Required]
         public string Street { get; private set; }
+
+        [Required]
         public UserType UserType { get; private set; }
 
         public void ChangeData(string name, string email, string phoneNumber)

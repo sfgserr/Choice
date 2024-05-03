@@ -175,7 +175,7 @@ namespace Choice.Authentication.Api.Controllers
                 return Ok(user);
             }
 
-            return BadRequest();
+            return BadRequest(result);
         }
     }
 }

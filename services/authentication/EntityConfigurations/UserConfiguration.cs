@@ -8,8 +8,6 @@ namespace Choice.Authentication.Api.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users");
-
             builder.HasKey(x => x.Id);
 
             builder.Property(u => u.UserType)

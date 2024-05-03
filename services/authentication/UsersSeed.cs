@@ -1,5 +1,7 @@
-﻿using Choice.Authentication.Api.Models;
+﻿using Choice.Authentication.Api.Data;
+using Choice.Authentication.Api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Choice.Authentication
 {
@@ -10,6 +12,9 @@ namespace Choice.Authentication
         public static async Task Seed(IServiceProvider services)
         {
             var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+            UserContext context = scope.ServiceProvider.GetRequiredService<UserContext>();
+            context.Database.Migrate();
 
             UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
@@ -31,8 +36,8 @@ namespace Choice.Authentication
                  "Арбат 26",
                  UserType.Client);
 
-            await userManager.CreateAsync(admin, "PaSsWoRd");
-            await userManager.CreateAsync(client, "PaSsWoRd");
+            await userManager.CreateAsync(admin, "Pass123$");
+            await userManager.CreateAsync(client, "Pass123$");
         }
     }
 }
