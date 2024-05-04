@@ -60,7 +60,7 @@ namespace Choice.CompanyService.Api
 
             builder.Services.AddAuthorization(o =>
             {
-                o.AddPolicy("Client", policy => policy.RequireClaim("type", "1"));
+                o.AddPolicy("Client", policy => policy.RequireClaim("type", "Client"));
             });
 
             builder.Services.AddHttpContextAccessor();

@@ -33,12 +33,12 @@ const loginByEmail = async (email, password) => {
             const json = await response.json();
             await KeyChain.setGenericPassword('api_key', json);
             const jsonDecoded = jwtDecode(json);
-            
-            if (jsonDecoded.email != undefined) {
+            console.log(json);
+            if (jsonDecoded.type == 'Client') {
                 return 1;
             }
 
-            if (jsonDecoded.address != undefined) {
+            if (jsonDecoded.type == 'Company') {
                 return 2;
             }
 
@@ -85,10 +85,10 @@ const verifyCode = async (phone, code) => {
     });
 }
 
-const changePassword = async (oldPassword, newPassword) => {
+const changePassword = async (currentPassword, newPassword) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://10.0.2.2/api/Auth/ChangePassword?oldPassword=${oldPassword}&newPassword=${newPassword}`, {
+    return await fetch(`http://10.0.2.2/api/Auth/ChangePassword?currentPassword=${currentPassword}&newPassword=${newPassword}`, {
         method: 'PUT',
         headers: {
             Accept: 'application/json',

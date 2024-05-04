@@ -77,9 +77,10 @@ namespace Choice.ReviewService.Api
             {
                 auth.AddPolicy("AuthUser", policy =>
                 {
-                    policy.RequireClaim("type", "1", "2");
+                    policy.RequireClaim("type", "Client", "Company");
                     policy.RequireClaim("isDataFilled", "true");
                 });
+                auth.DefaultPolicy = auth.GetPolicy("AuthUser")!;
             });
 
             builder.Services.AddSwaggerGen();

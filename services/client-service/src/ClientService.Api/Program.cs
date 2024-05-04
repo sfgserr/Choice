@@ -95,7 +95,7 @@ namespace Choice.ClientService.Api
             builder.Services.AddAuthorization(o =>
                 o.AddPolicy("Company", policy =>
                 {
-                    policy.RequireClaim("type", "2");
+                    policy.RequireClaim("type", "Company");
                     policy.RequireClaim("isDataFilled", "true");
                 }));
 

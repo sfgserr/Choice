@@ -91,10 +91,10 @@ namespace Choice.Ordering.Api
             {
                 o.AddPolicy("Company", policy =>
                 {
-                    policy.RequireClaim("type", "2");
+                    policy.RequireClaim("type", "Company");
                     policy.RequireClaim("isDataFilled", "true");
                 });
-                o.AddPolicy("Client", policy => policy.RequireClaim("type", "1"));
+                o.AddPolicy("Client", policy => policy.RequireClaim("type", "Client"));
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

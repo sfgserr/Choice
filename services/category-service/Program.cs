@@ -29,7 +29,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(o => o.AddPolicy("Admin", policy => policy.RequireClaim("type", "3")));
+builder.Services.AddAuthorization(o => o.AddPolicy("Admin", policy => policy.RequireClaim("type", "Admin")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -469,7 +469,7 @@ const RegisterScreen = ({navigation, route}) => {
                         style={[styles.button, {backgroundColor: disable ? '#ABCDf3' : '#2D81E0'}]}
                         disabled={disable}
                         onPress={async () => {
-                            let name = type == 'client' ? `${lastName} ${firstName}` : title;
+                            let name = type == 'client' ? `${firstName}_${lastName}` : title;
                             let userType = type == 'client' ? 1 : 2;
 
                             if (!address.includes(',') || password != confirmPassword) {

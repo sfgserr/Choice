@@ -80,6 +80,16 @@ namespace Choice.Chat.Api
                     };
                 });
 
+            builder.Services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("AuthUser", policy =>
+                {
+                    policy.RequireClaim("type", "Client", "Company");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+                auth.DefaultPolicy = auth.GetPolicy("AuthUser")!;
+            });
+
             var app = builder.Build();
             app.MigrateDatabase();
 

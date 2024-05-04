@@ -133,7 +133,7 @@ function App() {
                               component={RegisterScreen}
                               options={{headerShown: false}}/>
                 <Stack.Screen name="FillCompanyData"
-                              component={FillCompanyDataScreen}
+                              component={gestureHandlerRootHOC(FillCompanyDataScreen)}
                               options={{headerShown: false}}/>
               </Stack.Navigator>
             </>
