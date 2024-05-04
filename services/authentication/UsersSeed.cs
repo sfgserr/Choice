@@ -30,7 +30,7 @@ namespace Choice.Authentication
             User client = new
                 (ClientGuid.ToString(),
                  "dead01r@gmail.com",
-                 "Makar Cheban",
+                 "Makar_Cheban",
                  "37377875397",
                  "Москва",
                  "Арбат 26",

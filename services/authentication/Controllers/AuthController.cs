@@ -133,15 +133,15 @@ namespace Choice.Authentication.Api.Controllers
             string street, string city, string phoneNumber, UserType type)
         {
             if (type == UserType.Admin)
-                return BadRequest();
+                return BadRequest("You can not register admin account");
 
-            Dictionary<string, string[]> errorMessages = new();
+            Dictionary<string, string[]> errorMessages = [];
 
             User? existUser = await _userManager.FindByEmailAsync(email);
 
             if (existUser != null)
             {
-                errorMessages.Add(nameof(email), new[] { "Email already in use" });
+                errorMessages.Add(nameof(email), ["Email already in use"]);
             }
 
             existUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
@@ -165,7 +165,7 @@ namespace Choice.Authentication.Api.Controllers
             {
                 await _endPoint.Publish<UserCreatedEvent>(new
                     (user.Id.ToString(),
-                     user.Name,
+                     user.UserName,
                      user.Email,
                      user.City,
                      user.Street,

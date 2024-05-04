@@ -93,7 +93,11 @@ namespace Choice.ClientService.Api
                 });
 
             builder.Services.AddAuthorization(o =>
-                o.AddPolicy("Company", policy => policy.RequireClaim("address")));
+                o.AddPolicy("Company", policy =>
+                {
+                    policy.RequireClaim("type", "2");
+                    policy.RequireClaim("isDataFilled", "true");
+                }));
 
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<ICompanyService, CompanyService>();

@@ -22,7 +22,7 @@ namespace Choice.ClientService.Api.Consumers
 
             if (@event.UserType == "Client")
             {
-                string[] name = @event.Name.Split(' ');
+                string[] name = @event.Name.Split('_');
 
                 Client client = new
                     (@event.UserGuid.ToString(),

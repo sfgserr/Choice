@@ -72,6 +72,16 @@ namespace Choice.ReviewService.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
                     };
                 });
+
+            builder.Services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("AuthUser", policy =>
+                {
+                    policy.RequireClaim("type", "1", "2");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+            });
+
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();

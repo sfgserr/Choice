@@ -18,19 +18,18 @@ namespace Choice.Authentication.Api.Services
                 Expires = DateTime.UtcNow.AddDays(2),
                 Issuer = issuer,
                 Audience = audience,
-                Claims = new Dictionary<string, object>() { ["id"] = user.Id },
+                Claims = new Dictionary<string, object>() 
+                { 
+                    ["id"] = user.Id,
+                    ["address"] = $"{user.Street},{user.City}",
+                    [ClaimTypes.Email] = user.Email,
+                    [ClaimTypes.Name] = user.UserName,
+                    ["phone"] = user.PhoneNumber,
+                    ["type"] = user.UserType.ToString(),
+                    ["isDataFilled"] = user.IsDataFilled,
+                },
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
-
-            KeyValuePair<string, object> claimToAdd = user.UserType switch
-            {
-                UserType.Company => new KeyValuePair<string, object>("address", $"{user.Street},{user.City}"),
-                UserType.Client => new KeyValuePair<string, object>(ClaimTypes.Email, user.Email),
-                UserType.Admin => new KeyValuePair<string, object>("Admin", true),
-                _ => throw new ArgumentException(nameof(user.UserType))
-            };
-
-            securityTokenDescriptor.Claims.Add(claimToAdd);
 
             var token = tokenHandler.CreateToken(securityTokenDescriptor);
 

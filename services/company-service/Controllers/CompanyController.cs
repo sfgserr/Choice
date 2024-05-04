@@ -132,7 +132,14 @@ namespace Choice.CompanyService.Api.Controllers
 
             bool result = await _repository.Update(company);
 
-            return result ? Ok(company) : BadRequest();
+            if (result)
+            {
+                await _endPoint.Publish(new CompanyDataFilledEvent(company.Guid));
+
+                return Ok(company);
+            }
+
+            return BadRequest();
         }
     }
 }

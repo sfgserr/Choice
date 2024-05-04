@@ -89,8 +89,12 @@ namespace Choice.Ordering.Api
 
             builder.Services.AddAuthorization(o =>
             {
-                o.AddPolicy("Company", policy => policy.RequireClaim("address"));
-                o.AddPolicy("Client", policy => policy.RequireClaim(ClaimTypes.Email));
+                o.AddPolicy("Company", policy =>
+                {
+                    policy.RequireClaim("type", "2");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+                o.AddPolicy("Client", policy => policy.RequireClaim("type", "1"));
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

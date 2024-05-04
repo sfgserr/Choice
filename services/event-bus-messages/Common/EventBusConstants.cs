@@ -14,5 +14,6 @@ namespace Choice.EventBus.Messages.Common
         public const string AuthorCreatedQueue = "auth-service.author.created";
         public const string ClientAverageGradeChangedQueue = "review-service.client.averagegrade.changed";
         public const string CompanyAverageGradeChangedQueue = "review-service.company.averagegrade.changed";
+        public const string CompanyDataFilledQueue = "company-service.user.isdatafilled.changed";
     }
 }

@@ -35,12 +35,18 @@ TwilioClient.Init(accountSid, authToken);
 builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<UserDataChangedConsumer>();
+    config.AddConsumer<CompanyDataFilledConsumer>();
 
     config.UsingRabbitMq((ctx, cfg) => {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 
         cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => {
             c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
+        });
+
+        cfg.ReceiveEndpoint(EventBusConstants.CompanyDataFilledQueue, c =>
+        {
+            c.ConfigureConsumer<CompanyDataFilledConsumer>(ctx);
         });
     });
 });
