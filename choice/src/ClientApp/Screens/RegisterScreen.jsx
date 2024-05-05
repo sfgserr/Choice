@@ -11,6 +11,7 @@ import {
 import styles from '../Styles';
 import { Icon } from 'react-native-elements';
 import authService from '../services/authService';
+import categoryStore from '../services/categoryStore';
 
 const RegisterScreen = ({navigation, route}) => {
     const { type } = route.params;
@@ -129,12 +130,16 @@ const RegisterScreen = ({navigation, route}) => {
                                     }}>
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
-                                        onPress={() => {
+                                        onPress={async () => {
                                             if (type == 'client') {
                                                 navigation.goBack();
                                             }
                                             else {
-                                                navigation.navigate('FillCompanyData');
+                                                await categoryStore.retrieveData();
+                                                navigation.navigate('FillCompanyData', {
+                                                    email,
+                                                    password
+                                                });
                                             }
                                         }}>
                                         <Text style={styles.buttonText}>

@@ -10,6 +10,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import userStore from "../services/userStore.js";
+import categoryStore from "../services/categoryStore.js";
 
 export default function LoginByEmailScreen({navigation, signIn}) {
     const [email, setEmail] = React.useState('');
@@ -32,7 +33,11 @@ export default function LoginByEmailScreen({navigation, signIn}) {
                 let user = userStore.get();
 
                 if (!user.isDataFilled) {
-                    navigation.navigate('FillCompanyData');
+                    await categoryStore.retrieveData();
+                    navigation.navigate('FillCompanyData', {
+                        email,
+                        password
+                    });
                 }
                 else {
                     await signIn(userType);

@@ -383,7 +383,12 @@ const SocialMediasScreen  = ({handleState}) => {
                 <TouchableOpacity 
                     style={[styles.button, { backgroundColor: disable ? '#ABCDf3' : '#2D81E0' }]}
                     disabled={disable}
-                    onPress={!disable && handleState}>
+                    onPress={!disable && (() => handleState([
+                        instagramUrl, 
+                        facebookUrl, 
+                        vkUrl, 
+                        tgUrl
+                    ]))}>
                     <Text style={styles.buttonText}>
                         Далее
                     </Text>

@@ -87,6 +87,14 @@ namespace Choice.CompanyService.Api.Controllers
             if (company is null)
                 return NotFound();
 
+            if (!request.IsValid)
+            {
+                return BadRequest(new Dictionary<string, string[]>()
+                {
+                    ["error"] = ["All fields should not be empty"]
+                });
+            }
+
             company.ChangeData
                 (request.Title,
                  request.PhoneNumber,
@@ -124,11 +132,20 @@ namespace Choice.CompanyService.Api.Controllers
             if (company is null)
                 return NotFound();
 
+            if (!request.IsValid)
+            {
+                return BadRequest(new Dictionary<string, string[]>() 
+                { 
+                    ["error"] = ["All fields should not be empty"] 
+                });
+            }
+
             company.FillCompanyData
                 (request.SiteUrl,
                  request.SocialMedias,
                  request.PhotoUris,
-                 request.CategoriesId);
+                 request.CategoriesId,
+                 request.PrepaymentAvailable);
 
             bool result = await _repository.Update(company);
 

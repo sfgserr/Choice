@@ -1,4 +1,6 @@
-﻿namespace CompanyService.Api.ViewModels.Requests
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace CompanyService.Api.ViewModels.Requests
 {
     public class ChangeDataRequest
     {
@@ -16,14 +18,19 @@
             CategoriesId = categoriesId;
         }
 
-        public string Title { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string SiteUrl { get; set; }
-        public List<string> PhotoUris { get; set; }
-        public List<string> SocialMedias { get; set; }
-        public List<int> CategoriesId { get; set; }
+        public string Title { get; }
+        public string Email { get; }
+        public string PhoneNumber { get; }
+        public string Street { get; }
+        public string City { get; }
+        public string SiteUrl { get; }
+        public List<string> PhotoUris { get; }
+        public List<string> SocialMedias { get; }
+        public List<int> CategoriesId { get; }
+
+        public bool IsValid => 
+            !string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Email) || 
+            !string.IsNullOrEmpty(PhoneNumber) || !string.IsNullOrEmpty(Street) || !string.IsNullOrEmpty(City) ||
+            !string.IsNullOrEmpty(SiteUrl) || !SocialMedias.IsNullOrEmpty() || !CategoriesId.IsNullOrEmpty();
     }
 }

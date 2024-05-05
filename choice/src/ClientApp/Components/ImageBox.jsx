@@ -8,7 +8,7 @@ import {
 import { Icon } from 'react-native-elements';
 import * as ImagePicker from 'react-native-image-picker';
 
-const ImageBox = ({handleState, uri}) => {
+const ImageBox = ({onUriChanged, uri}) => {
     const { width, height } = Dimensions.get('screen');
 
     const [imageUri, setImageUri] = React.useState(uri);
@@ -18,13 +18,13 @@ const ImageBox = ({handleState, uri}) => {
 
         if (!response.didCancel) {
             setImageUri(response.assets[0].uri);
-            handleState(response.assets[0].uri);
+            onUriChanged(response.assets[0].uri);
         }
     }
 
     const removeImage = () => {
         setImageUri('');
-        handleState('');
+        onUriChanged('');
     }
 
     return (

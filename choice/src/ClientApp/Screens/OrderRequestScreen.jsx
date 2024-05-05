@@ -312,45 +312,18 @@ const OrderRequestScreen = ({navigation, route}) => {
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Приложите файлы к заказу</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <ImageBox 
-                            handleState={(state) => { 
+                            onUriChanged={(state) => { 
                                 setFirstImageUri(state);
-                                updateDisabled({
-                                    description,
-                                    toKnowPrice,
-                                    toKnowDeadline,
-                                    toKnowEnrollmentDate,
-                                    fisrtImageUri: state,
-                                    secondImageUri,
-                                    thirdImageUri
-                                });
                             }}
                             uri={fisrtImageUri}/>
                         <ImageBox 
-                            handleState={(state) => { 
+                            onUriChanged={(state) => { 
                                 setSecondImageUri(state);
-                                updateDisabled({
-                                    description,
-                                    toKnowPrice,
-                                    toKnowDeadline,
-                                    toKnowEnrollmentDate,
-                                    fisrtImageUri,
-                                    secondImageUri: state,
-                                    thirdImageUri
-                                });
                             }}
                             uri={secondImageUri}/>
                         <ImageBox 
-                            handleState={(state) => { 
+                            onUriChanged={(state) => { 
                                 setThirdImageUri(state);
-                                updateDisabled({
-                                    description,
-                                    toKnowPrice,
-                                    toKnowDeadline,
-                                    toKnowEnrollmentDate,
-                                    fisrtImageUri,
-                                    secondImageUri,
-                                    thirdImageUri: state
-                                }); 
                             }}
                             uri={thirdImageUri}/>
                     </View>

@@ -29,16 +29,18 @@ namespace Choice.CompanyService.Api.Entities
         public List<string> SocialMedias { get; private set; } = [];
         public List<string> PhotoUris { get; private set; } = [];
         public List<int> CategoriesId { get; private set; } = [];
+        public bool PrepaymentAvailable { get; private set; } = false;
         public bool IsDataFilled { get; private set; } = false;
 
         public void FillCompanyData(string siteUrl, List<string> socialMedias, List<string> photoUris, 
-            List<int> categoriesId)
+            List<int> categoriesId, bool prepaymentAvailable)
         {
             SiteUrl = siteUrl;
 
             SocialMedias = socialMedias;
             PhotoUris = photoUris;
             CategoriesId = categoriesId;
+            PrepaymentAvailable = prepaymentAvailable;
 
             IsDataFilled = true;
         }

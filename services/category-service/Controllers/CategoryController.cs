@@ -1,8 +1,8 @@
-﻿using Choice.CategoryService.Api.ViewModels;
-using Choice.CategoryService.Api.Entities;
+﻿using Choice.CategoryService.Api.Entities;
 using Choice.CategoryService.Api.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Choice.CategoryService.Api.ViewModels.Requests;
 
 namespace Choice.CategoryService.Api.Controllers
 {

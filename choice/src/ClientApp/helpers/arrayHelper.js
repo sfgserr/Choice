@@ -9,6 +9,19 @@ const project = (array, predicate) => {
     return projectedArray;
 }
 
+const where = (array, predicate) => {
+    let sortedArray = [];
+
+    array.forEach(item => {
+        if (predicate(item)) {
+            sortedArray.push(item);
+        }
+    });
+
+    return sortedArray;
+}
+
 export default {
-    project
+    project,
+    where
 }

@@ -68,7 +68,7 @@ const ContactDetailsScreen = ({handleState}) => {
                 <TouchableOpacity
                     style={[styles.button, { backgroundColor: disable ? '#ABCDf3' : '#2D81E0' }]}
                     disabled={disable}
-                    onPress={!disable && handleState}>
+                    onPress={!disable && (() => handleState(url))}>
                     <Text style={styles.buttonText}>
                         Далее
                     </Text>

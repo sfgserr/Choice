@@ -1,5 +1,4 @@
-﻿
-namespace Choice.CategoryService.Api.ViewModels
+﻿namespace Choice.CategoryService.Api.ViewModels.Requests
 {
     public class CreateCategoryRequest
     {
