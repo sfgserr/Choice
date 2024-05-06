@@ -38,7 +38,7 @@ namespace Choice.CompanyService.Api.Controllers
             return Ok(companies.Where(c => c.IsDataFilled).Select(c => new CompanyDetailsViewModel(c)));
         }
 
-        [HttpGet("GetByCategories")]
+        [HttpGet("GetByCategory")]
         public async Task<IActionResult> GetCompaniesByCategory(int categoryId)
         {
             IList<Company> companies = await _repository.GetAll();

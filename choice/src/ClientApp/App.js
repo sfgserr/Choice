@@ -35,6 +35,7 @@ import OrderRequestScreen from './Screens/OrderRequestScreen';
 import ChangePasswordScreen from './Screens/ChangePasswordScreen';
 import RegisterScreen from './Screens/RegisterScreen';
 import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
+import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,45 @@ const getTabLabel = (routeName) => {
   }
 }
 
+function CompanyTab() {
+  return (
+    <Tab.Navigator screenOptions={({route}) => ({
+      tabBarIcon: ({focused, color, size}) => {
+        let iconSrc;
+
+        if (route.name == 'Account') {
+          iconSrc = require("./assets/account.png");
+        }
+
+        if (route.name == 'Chat') {
+          iconSrc = require("./assets/chat.png");
+        }
+
+        if (route.name == 'Order') {
+          iconSrc = require("./assets/category.png");
+        }
+
+        let iconColor = focused ? '#2975CC' : '#99A2AD';
+
+        return <Image style={{height: 25, width: 25}} source={iconSrc} tintColor={iconColor}/>
+      },
+      tabBarActiveTintColor: '#2975CC',
+      tabBarInactiveTintColor: '#99A2AD',
+      tabBarLabel: getTabLabel(route.name)
+  })}>
+      <Tab.Screen name="Order"
+                  component={CompanyRequestsScreen}
+                  options={{headerShown: false}}/>
+      <Tab.Screen name="Chat"
+                  component={ChatScreen}
+                  options={{headerShown: false}}/>
+      <Tab.Screen name="Account"
+                  component={AccountScreen}
+                  options={{headerShown: false}}/>
+    </Tab.Navigator>
+  )
+}
+
 function ClientTab() {
   return (
     <Tab.Navigator screenOptions={({route}) => ({
@@ -61,24 +101,28 @@ function ClientTab() {
         let iconSrc;
 
         if (route.name == 'Category') {
-          iconSrc = 'category';
+          iconSrc = require('./assets/category.png');
         }
 
         if (route.name == 'Account') {
-          iconSrc = 'account-circle';
+          iconSrc = require('./assets/account.png');
         }
 
         if (route.name == 'Chat') {
-          iconSrc = 'chat';
+          iconSrc = require('./assets/chat.png');
         }
 
         if (route.name == 'Order') {
-          iconSrc = 'shopping-basket';
+          iconSrc = require('./assets/order.png');
         }
 
         let iconColor = focused ? '#2975CC' : '#99A2AD';
 
-        return <Icon size={25} name={iconSrc} type='material' color={iconColor}/>
+        return <Image 
+                   style={{width: 30, height: 30}} 
+                   resizeMode='contain' 
+                   source={iconSrc} 
+                   tintColor={iconColor}/>
       },
       tabBarActiveTintColor: '#2975CC',
       tabBarInactiveTintColor: '#99A2AD',
@@ -159,40 +203,11 @@ function App() {
             </>
           ) : (
             <>
-             <Tab.Navigator screenOptions={({route}) => ({
-              tabBarIcon: ({focused, color, size}) => {
-                let iconSrc;
-
-                if (route.name == 'Account') {
-                  iconSrc = require("./assets/account.png");
-                }
-
-                if (route.name == 'Chat') {
-                  iconSrc = require("./assets/chat.png");
-                }
-
-                if (route.name == 'Order') {
-                  iconSrc = require("./assets/category.png");
-                }
-
-                let iconColor = focused ? '#2975CC' : '#99A2AD';
-
-                return <Image style={{height: 25, width: 25}} source={iconSrc} tintColor={iconColor}/>
-              },
-              tabBarActiveTintColor: '#2975CC',
-              tabBarInactiveTintColor: '#99A2AD',
-              tabBarLabel: getTabLabel(route.name)
-          })}>
-              <Tab.Screen name="Order"
-                          component={OrderScreen}
-                          options={{headerShown: false}}/>
-              <Tab.Screen name="Chat"
-                          component={ChatScreen}
-                          options={{headerShown: false}}/>
-              <Tab.Screen name="Account"
-                          component={AccountScreen}
-                          options={{headerShown: false}}/>
-            </Tab.Navigator>
+              <Stack.Navigator>
+                <Stack.Screen name="Tab"
+                              component={CompanyTab}
+                              options={{headerShown:false}}/>
+              </Stack.Navigator> 
             </>
           )
         }

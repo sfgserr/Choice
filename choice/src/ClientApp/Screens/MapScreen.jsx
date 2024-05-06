@@ -57,8 +57,12 @@ export default function MapScreen({ navigation, route }) {
             await userStore.retrieveData(currentUserType);
             setUser(userStore.get());
         }
-        getCoords();
-        getUser();
+        if (coords.length == 0) {
+            getCoords();
+        }
+        if (user == '') {
+            getUser();
+        }
     });
 
     const goBack = () => {

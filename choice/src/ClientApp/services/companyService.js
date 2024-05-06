@@ -16,7 +16,7 @@ const get = async () => {
 
 const fillCompanyData = async (data) => {
     const token = await KeyChain.getGenericPassword();
-
+    
     return await fetch('http://192.168.0.106/api/Company/FillCompanyData', {
         method: 'PUT',
         body: JSON.stringify(data),

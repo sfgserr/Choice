@@ -15,6 +15,8 @@ import { Icon } from "react-native-elements";
 import companyService from "../services/companyService";
 import authService from "../services/authService";
 import { AuthContext } from "../App";
+import blobService from "../services/blobService";
+import userStore from "../services/userStore";
 
 const FillCompanyDataScreen = ({navigation, route}) => {
     const { email, password } = route.params;
@@ -170,7 +172,9 @@ const FillCompanyDataScreen = ({navigation, route}) => {
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
                                         onPress={async () => {
-                                            setModalVisible(false);
+                                            for (let i = 0; i < 6; i++) {
+                                                photoUris[i] = await blobService.uploadImage(photoUris[i]);
+                                            }
 
                                             let status = await companyService.fillCompanyData({
                                                 siteUrl,
@@ -181,7 +185,12 @@ const FillCompanyDataScreen = ({navigation, route}) => {
                                             });
 
                                             if (status == 200) {
+                                                await new Promise(r => setTimeout(r, 2000));
+
+                                                setModalVisible(false);
+
                                                 await authService.loginByEmail(email, password);
+                                                await userStore.retrieveData(2);
 
                                                 await signIn(2);
                                             }

@@ -31,11 +31,11 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetOrderRequests
         }
 
         [HttpGet("GetOrderRequests")]
-        public async Task<IActionResult> GetOrderRequests()
+        public async Task<IActionResult> GetOrderRequests([FromQuery] int[] categoriesId)
         {
             _useCase.SetOutputPort(this);
 
-            await _useCase.Execute();
+            await _useCase.Execute(categoriesId);
 
             return _viewModel;
         }

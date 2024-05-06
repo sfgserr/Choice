@@ -1,10 +1,36 @@
 import * as KeyChain from 'react-native-keychain';
 import { advanceAnimationByFrame } from 'react-native-reanimated';
+import arrayHelper from '../helpers/arrayHelper';
 
 const get = async () => {
     const token = await KeyChain.getGenericPassword();
     
     return await fetch('http://192.168.0.106/api/Client/GetClient', {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
+const getOrderRequest = async (categoriesId) => {
+    const token = await KeyChain.getGenericPassword();
+
+    let index = 0;
+
+    let queryArray = arrayHelper.project(categoriesId, (id) => {
+        let string = `categoriesId[${index}]=${id}`
+        index = index + 1;
+
+        return string;
+    });
+
+    index = 0;
+
+    return await fetch(`http://192.168.0.106/api/Client/GetOrderRequests?${queryArray.join('&')}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -139,5 +165,6 @@ export default {
     getClientRequests,
     changeOrderRequest,
     changeIconUri,
-    changeUserData
+    changeUserData,
+    getOrderRequest
 }

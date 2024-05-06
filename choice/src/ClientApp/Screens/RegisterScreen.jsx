@@ -131,11 +131,14 @@ const RegisterScreen = ({navigation, route}) => {
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
                                         onPress={async () => {
+                                            setModalVisible(false);
                                             if (type == 'client') {
                                                 navigation.goBack();
                                             }
                                             else {
+                                                await authService.loginByEmail(email, password);
                                                 await categoryStore.retrieveData();
+                                                
                                                 navigation.navigate('FillCompanyData', {
                                                     email,
                                                     password

@@ -200,17 +200,41 @@ const SocialMediasScreen  = ({handleState}) => {
                             source={require('../resources/instagram.png')}
                             style={{
                                 width: 20,
-                                height: 20
+                                height: 20,
+                                alignSelf: 'center'
                             }}/>
-                        <Text
+                        <View
                             style={{
-                                fontWeight: '400',
-                                fontSize: 15,
-                                color: 'black',
-                                paddingLeft: 10
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                alignSelf: 'center'
                             }}>
-                            Instagram
-                        </Text>
+                            <Text
+                                style={{
+                                    fontWeight: '400',
+                                    fontSize: 15,
+                                    color: 'black',
+                                    paddingLeft: 10
+                                }}>
+                                Instagram
+                            </Text>
+                            {
+                                instagramUrl != '' ?
+                                <>
+                                    <Text
+                                        style={{
+                                            color: '#979797',
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            paddingLeft: 10
+                                        }}>
+                                        {instagramUrl.slice(8)}
+                                    </Text>  
+                                </>
+                                :
+                                <></>
+                            }
+                        </View>
                     </View>
                     <Switch
                         trackColor={{true: '#2688EB', false: '#001C3D14'}} 
@@ -246,18 +270,41 @@ const SocialMediasScreen  = ({handleState}) => {
                             style={{
                                 width: 20,
                                 height: 20,
-                                resizeMode: 'contain'
-                            }}
-                            />
-                        <Text
+                                resizeMode: 'contain',
+                                alignSelf: 'center'
+                            }}/>
+                        <View
                             style={{
-                                fontWeight: '400',
-                                fontSize: 15,
-                                color: 'black',
-                                paddingLeft: 10
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                alignSelf: 'center'
                             }}>
-                            Facebook
-                        </Text>
+                            <Text
+                                style={{
+                                    fontWeight: '400',
+                                    fontSize: 15,
+                                    color: 'black',
+                                    paddingLeft: 10
+                                }}>
+                                Facebook
+                            </Text>
+                            {
+                                facebookUrl != '' ?
+                                <>
+                                    <Text
+                                        style={{
+                                            color: '#979797',
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            paddingLeft: 10
+                                        }}>
+                                        {facebookUrl.slice(8)}
+                                    </Text>  
+                                </>
+                                :
+                                <></>
+                            }
+                        </View>
                     </View>
                     <Switch
                         trackColor={{true: '#2688EB', false: '#001C3D14'}} 
@@ -293,17 +340,41 @@ const SocialMediasScreen  = ({handleState}) => {
                             style={{
                                 width: 20,
                                 height: 20,
-                                resizeMode: 'contain'
+                                resizeMode: 'contain',
+                                alignSelf: 'center'
                             }}/>
-                        <Text
+                        <View
                             style={{
-                                fontWeight: '400',
-                                fontSize: 15,
-                                color: 'black',
-                                paddingLeft: 10
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                alignSelf: 'center'
                             }}>
-                            ВК
-                        </Text>
+                            <Text
+                                style={{
+                                    fontWeight: '400',
+                                    fontSize: 15,
+                                    color: 'black',
+                                    paddingLeft: 10
+                                }}>
+                                ВК
+                            </Text>
+                            {
+                                vkUrl != '' ?
+                                <>
+                                    <Text
+                                        style={{
+                                            color: '#979797',
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            paddingLeft: 10
+                                        }}>
+                                        {vkUrl.slice(8)}
+                                    </Text>  
+                                </>
+                                :
+                                <></>
+                            }
+                        </View>
                     </View>
                     <Switch
                         trackColor={{true: '#2688EB', false: '#001C3D14'}} 
@@ -339,17 +410,41 @@ const SocialMediasScreen  = ({handleState}) => {
                             style={{
                                 width: 20,
                                 height: 20,
-                                resizeMode: 'contain'
+                                resizeMode: 'contain',
+                                alignSelf: 'center'
                             }}/>
-                        <Text
+                        <View
                             style={{
-                                fontWeight: '400',
-                                fontSize: 15,
-                                color: 'black',
-                                paddingLeft: 10
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                alignSelf: 'center'
                             }}>
-                            Telegram
-                        </Text>
+                            <Text
+                                style={{
+                                    fontWeight: '400',
+                                    fontSize: 15,
+                                    color: 'black',
+                                    paddingLeft: 10
+                                }}>
+                                Telegram
+                            </Text>
+                            {
+                                tgUrl != '' ?
+                                <>
+                                    <Text
+                                        style={{
+                                            color: '#979797',
+                                            fontSize: 13,
+                                            fontWeight: '400',
+                                            paddingLeft: 10
+                                        }}>
+                                        {tgUrl.slice(8)}
+                                    </Text>  
+                                </>
+                                :
+                                <></>
+                            }
+                        </View>
                     </View>
                     <Switch
                         trackColor={{true: '#2688EB', false: '#001C3D14'}} 

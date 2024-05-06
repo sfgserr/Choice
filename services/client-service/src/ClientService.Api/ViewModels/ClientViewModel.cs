@@ -1,4 +1,5 @@
 ﻿using Choice.ClientService.Domain.ClientAggregate;
+using Choice.ClientService.Domain.OrderRequests;
 
 namespace Choice.ClientService.Api.ViewModels
 {
@@ -12,6 +13,7 @@ namespace Choice.ClientService.Api.ViewModels
             Surname = client.Surname;
             AverageGrade = client.AverageGrade;
             IconUri = client.IconUri;
+            FinishedOrdersCount = client.Requests.Where(r => r.Status == OrderStatus.Finished).Count();
         }
 
         public int Id { get; }
@@ -19,6 +21,7 @@ namespace Choice.ClientService.Api.ViewModels
         public string Name { get; }
         public string Surname { get; }
         public double AverageGrade { get; }
+        public int FinishedOrdersCount { get; }
         public string IconUri { get; }
     }
 }

@@ -23,7 +23,7 @@ namespace Choice.ClientService.Application.UseCases.GetOrderRequests
             _outputPort = new GetOrderRequestsPresenter();
         }
 
-        public async Task Execute()
+        public async Task Execute(int[] categoriesId)
         {
             Address address = _companyService.GetAddress();
 
@@ -31,13 +31,7 @@ namespace Choice.ClientService.Application.UseCases.GetOrderRequests
 
             IList<OrderRequest> requestsInRadius = await GetRequests(address, requests);
 
-            if (requestsInRadius.Count == 0)
-            {
-                _outputPort.NotFound();
-                return;
-            }
-
-            _outputPort.Ok(requestsInRadius);
+            _outputPort.Ok(requestsInRadius.Where(r => categoriesId.Any(id => id == r.CategoryId)).ToList());
         }
 
         public async Task<IList<OrderRequest>> GetRequests(Address address, IList<OrderRequest> requests)
