@@ -220,7 +220,6 @@ export default function AccountScreen({ navigation }) {
                             }}/>
                     </View>
                 </View>
-
                 <Text
                     style={{
                         color: '#6D7885', 

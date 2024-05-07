@@ -9,7 +9,7 @@ import userStore from "../services/userStore";
 import CompanyRequestCard from "../Components/CompanyRequestCard";
 import categoryStore from "../services/categoryStore";
 
-const CompanyRequestsScreen = () => {
+const CompanyRequestsScreen = ({navigation}) => {
     const [requests, setRequests] = React.useState([]);
 
     React.useEffect(() => {
@@ -50,7 +50,10 @@ const CompanyRequestsScreen = () => {
                     return (
                         <View
                             style={{paddingHorizontal: 10}}>
-                            <CompanyRequestCard orderRequest={item}/>
+                            <CompanyRequestCard 
+                                orderRequest={item}
+                                navigation={navigation}
+                                button={true}/>
                         </View>
                     )
                 }}/>    

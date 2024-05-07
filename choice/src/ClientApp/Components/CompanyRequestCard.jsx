@@ -9,7 +9,7 @@ import categoryStore from "../services/categoryStore";
 import { Icon } from "react-native-elements";
 import styles from "../Styles";
 
-const CompanyRequestCard = ({orderRequest}) => {
+const CompanyRequestCard = ({orderRequest, navigation, button}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
     const baseUrl = 'http://192.168.0.106/api/objects';
 
@@ -182,6 +182,7 @@ const CompanyRequestCard = ({orderRequest}) => {
             <View
                 style={{
                     paddingTop: 10,
+                    paddingBottom: 5,
                     flexDirection: 'row'
                 }}>
                 <Image
@@ -245,19 +246,30 @@ const CompanyRequestCard = ({orderRequest}) => {
                     </Text>
                 </View>    
             </View>
-            <View
-                style={{
-                    paddingTop: 10,
-                    paddingBottom: 5
-                }}>
-                <TouchableOpacity
-                    style={styles.button}>
-                    <Text
-                        style={styles.buttonText}>
-                        Ответить
-                    </Text>
-                </TouchableOpacity>
-            </View>   
+            {
+                button ?
+                <>
+                    <View
+                        style={{
+                            paddingTop: 5,
+                            paddingBottom: 5
+                        }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => navigation.navigate('CompanyRequestCreation', {
+                                orderRequest
+                            })}>
+                            <Text
+                                style={styles.buttonText}>
+                                Ответить
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
+                :
+                <>
+                </>
+            }   
         </View>
     )
 }

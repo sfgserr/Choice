@@ -36,6 +36,7 @@ import ChangePasswordScreen from './Screens/ChangePasswordScreen';
 import RegisterScreen from './Screens/RegisterScreen';
 import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
 import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
+import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -206,6 +207,9 @@ function App() {
               <Stack.Navigator>
                 <Stack.Screen name="Tab"
                               component={CompanyTab}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="CompanyRequestCreation"
+                              component={CompanyRequestCreationScreen}
                               options={{headerShown:false}}/>
               </Stack.Navigator> 
             </>
