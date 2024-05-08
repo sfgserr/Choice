@@ -21,6 +21,7 @@
     "react-native": "0.73.6",
     "react-native-actions-sheet": "^0.9.3",
     "react-native-awesome-slider": "^2.5.2",
+    "react-native-date-picker": "^5.0.2",
     "react-native-elements": "^3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.16.1",

@@ -9,15 +9,72 @@ import {
 import { Icon } from "react-native-elements";
 import CompanyRequestCard from "../Components/CompanyRequestCard";
 import styles from "../Styles";
+import ImageBox from "../Components/ImageBox";
+import DatePicker from "react-native-date-picker";
 
 const CompanyRequestCreationScreen = ({navigation, route}) => {
     const { orderRequest } = route.params;
     const [price, setPrice] = React.useState('');
+    const [deadLine, setDeadline] = React.useState(new Date());
+    const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
+    const [enrollmentTime, setEnrollmentTime] = React.useState(new Date());
+    const [firstImageUri, setFirstImageUri] = React.useState('');
+    const [secondImageUri, setSecondImageUri] = React.useState('');
+    const [thirdImageUri, setThirdImageUri] = React.useState('');
+
+    const [enrollmentDateModalOpen, setEnrollmentDateModalOpen] = React.useState(false);
+    const [enrollmentTimeModalOpen, setEnrollmentTimeModalOpen] = React.useState(false);
+    const [deadLineModalOpen, setDeadlineModalOpen] = React.useState(false);
 
     return (
         <ScrollView
             style={{flex: 1, backgroundColor: 'white'}}
             showsVerticalScrollIndicator={false}>
+            <DatePicker
+                modal
+                open={enrollmentDateModalOpen}
+                date={enrollmentDate}
+                onConfirm={(date) => {
+                    setEnrollmentDateModalOpen(false);
+                    setEnrollmentDate(date);
+                }}
+                onCancel={() => {
+                    setEnrollmentDateModalOpen(false);    
+                }}/>
+                <DatePicker
+                    modal
+                    open={enrollmentTimeModalOpen}
+                    date={enrollmentTime}
+                    onConfirm={(date) => {
+                        setEnrollmentTimeModalOpen(false);
+                        setEnrollmentTime(date);
+                    }}
+                    onCancel={() => {
+                        setEnrollmentTimeModalOpen(false);    
+                    }}/>
+                <DatePicker
+                    modal
+                    open={enrollmentTimeModalOpen}
+                    date={enrollmentTime}
+                    onConfirm={(date) => {
+                        setEnrollmentTimeModalOpen(false);
+                        setEnrollmentTime(date);
+                    }}
+                    onCancel={() => {
+                        setEnrollmentTimeModalOpen(false);    
+                    }}/>
+                <DatePicker
+                    open={deadLineModalOpen}
+                    modal
+                    date={deadLine}
+                    mode="time"
+                    onConfirm={(date) => {
+                        setDeadlineModalOpen(false);
+                        setDeadline(date);
+                    }}
+                    onCancel={() => {
+                        setDeadlineModalOpen(false);    
+                    }}/>
             <View
                 style={{
                     flexDirection: 'row',
@@ -120,7 +177,8 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     Время выполнения работы    
                                 </Text>
                                 <TouchableOpacity
-                                    style={{alignSelf: 'center'}}>
+                                    style={{alignSelf: 'center'}}
+                                    onPress={() => setDeadlineModalOpen(true)}>
                                     <Icon
                                         color='gray'
                                         type='material'
@@ -220,11 +278,40 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                     :
                     <></>
                 }
+                <Text
+                    style={{
+                        color: '#6D7885', 
+                        fontWeight: '400', 
+                        fontSize: 14,
+                        paddingBottom: 5
+                    }}>
+                    Приложите файлы к ответу    
+                </Text>
                 <View
                     style={{
-                        
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'   
                     }}>
+                    <ImageBox
+                        uri={firstImageUri}
+                        onUriChanged={(text) => setFirstImageUri(text)}/>
 
+                    <ImageBox
+                        uri={secondImageUri}
+                        onUriChanged={(text) => setSecondImageUri(text)}/>
+
+                    <ImageBox
+                        uri={thirdImageUri}
+                        onUriChanged={(text) => setThirdImageUri(text)}/>
+                </View>
+                <View style={{paddingTop: 20, paddingBottom: 10}}>
+                    <TouchableOpacity
+                        style={styles.button}>
+                        <Text
+                            style={styles.buttonText}>
+                            Отправить
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
