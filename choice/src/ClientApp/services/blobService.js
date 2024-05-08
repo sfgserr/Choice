@@ -12,7 +12,7 @@ const uploadImage = async (filePath) => {
     const fileName = directories[directories.length-1].split('.')[0];
     const buffer = toByteArray(data);
 
-    return await fetch(`http://192.168.0.106/api/objects/${fileName}`, {
+    return await fetch(`http://192.168.0.100/api/objects/${fileName}`, {
         method: 'POST',
         body: buffer,
         headers: {

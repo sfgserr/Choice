@@ -3,7 +3,7 @@ import * as KeyChain from 'react-native-keychain';
 const getCategories = async () => {
     const token = await KeyChain.getGenericPassword();
     
-    return await fetch('http://192.168.0.106/api/Category/Get', {
+    return await fetch('http://192.168.0.100/api/Category/Get', {
         method: 'GET',
         headers: {
             Accept: 'application/json',

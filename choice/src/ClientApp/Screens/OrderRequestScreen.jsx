@@ -51,9 +51,9 @@ const OrderRequestScreen = ({navigation, route}) => {
     const [radius, setRadius] = React.useState(orderRequest.searchRadius/1000);
     const [toKnowDeadline, setToKnowDeadline] = React.useState(orderRequest.toKnowDeadline);
     const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(orderRequest.toKnowEnrollmentDate);
-    const [fisrtImageUri, setFirstImageUri] = React.useState(orderRequest.photoUris[0] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[0]}` : '');
-    const [secondImageUri, setSecondImageUri] = React.useState(orderRequest.photoUris[1] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[1]}` : '');
-    const [thirdImageUri, setThirdImageUri] = React.useState(orderRequest.photoUris[2] != '' ? `http://192.168.0.106/api/objects/${orderRequest.photoUris[2]}` : '');
+    const [fisrtImageUri, setFirstImageUri] = React.useState(orderRequest.photoUris[0] != '' ? `http://192.168.0.100/api/objects/${orderRequest.photoUris[0]}` : '');
+    const [secondImageUri, setSecondImageUri] = React.useState(orderRequest.photoUris[1] != '' ? `http://192.168.0.100/api/objects/${orderRequest.photoUris[1]}` : '');
+    const [thirdImageUri, setThirdImageUri] = React.useState(orderRequest.photoUris[2] != '' ? `http://192.168.0.100/api/objects/${orderRequest.photoUris[2]}` : '');
     const date = dateHelper.formatDate(orderRequest.creationDate);
     const updateDisabled = (state) => {
         setDisabled((state.description == '' || 

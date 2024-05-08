@@ -25,7 +25,7 @@ export default function AccountScreen({ navigation }) {
 
     const { width, height } =  Dimensions.get('screen');
 
-    const [iconUri, setIconUri] = React.useState(`http://192.168.0.106/api/objects/${user.iconUri}`);
+    const [iconUri, setIconUri] = React.useState(`http://192.168.0.100/api/objects/${user.iconUri}`);
     const [disable, setDisable] = React.useState(true);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = React.useState(user.name);

@@ -79,7 +79,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 <TextInput 
                                     style={[styles.textInputFont]}
                                     placeholder="Введите стоимость в рублях" 
-                                    value={price} 
+                                    value={price}
                                     onChangeText={(text) => {
                                         setPrice(text);
                                     }}/>
@@ -89,6 +89,143 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                     :
                     <></>
                 }
+                {
+                    orderRequest.toKnowDeadline ? 
+                    <>
+                        <Text
+                            style={{
+                                color: '#6D7885', 
+                                fontWeight: '400', 
+                                fontSize: 14,
+                                paddingBottom: 5
+                            }}>
+                            Время выполнения работы        
+                        </Text>
+                        <View style={{paddingBottom: 20}}>
+                            <View 
+                                style={[
+                                    styles.textInput, { 
+                                        flexDirection: 'row', 
+                                        justifyContent: 'space-between' 
+                                    }
+                                ]}>
+                                <Text
+                                    style={{
+                                        color: '#818C99',
+                                        fontSize: 16,
+                                        fontWeight: '400',
+                                        alignSelf: 'center',
+                                        flex: 2,
+                                    }}>
+                                    Время выполнения работы    
+                                </Text>
+                                <TouchableOpacity
+                                    style={{alignSelf: 'center'}}>
+                                    <Icon
+                                        color='gray'
+                                        type='material'
+                                        name='expand-more'/>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </>
+                    :
+                    <></>
+                }
+                {
+                    orderRequest.toKnowEnrollmentDate ? 
+                    <>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                paddingBottom: 20
+                            }}>
+                            <View style={{flex: 1, paddingRight: 5}}>
+                                <Text
+                                    style={{
+                                        color: '#6D7885', 
+                                        fontWeight: '400', 
+                                        fontSize: 14,
+                                        paddingBottom: 5
+                                    }}>
+                                    Дата записи    
+                                </Text>
+                                <View
+                                    style={[
+                                        styles.textInput, { 
+                                            flexDirection: 'row', 
+                                            justifyContent: 'space-between' 
+                                        }
+                                    ]}>
+                                    <Text
+                                        style={{
+                                            color: '#818C99',
+                                            fontSize: 16,
+                                            fontWeight: '400',
+                                            alignSelf: 'center',
+                                            flex: 2,
+                                        }}
+                                        numberOfLines={1}>
+                                        Выбрать    
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={{alignSelf: 'center'}}>
+                                        <Icon
+                                            color='gray'
+                                            type='material'
+                                            name='expand-more'/>
+                                    </TouchableOpacity>    
+                                </View>
+                            </View>
+                            <View style={{flex: 1, paddingLeft: 5}}>
+                                <Text
+                                    style={{
+                                        color: '#6D7885', 
+                                        fontWeight: '400', 
+                                        fontSize: 14,
+                                        paddingBottom: 5
+                                    }}>
+                                    Время записи    
+                                </Text>
+                                <View
+                                    style={[
+                                        styles.textInput, { 
+                                            flexDirection: 'row', 
+                                            justifyContent: 'space-between' 
+                                        }
+                                    ]}>
+                                    <Text
+                                        style={{
+                                            color: '#818C99',
+                                            fontSize: 16,
+                                            fontWeight: '400',
+                                            alignSelf: 'center',
+                                            flex: 2,
+                                        }}
+                                        numberOfLines={1}>
+                                        Выбрать    
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={{alignSelf: 'center'}}>
+                                        <Icon
+                                            color='gray'
+                                            type='material'
+                                            name='expand-more'/>
+                                    </TouchableOpacity>    
+                                </View>
+                            </View>    
+                        </View>
+                    </>
+                    :
+                    <></>
+                }
+                <View
+                    style={{
+                        
+                    }}>
+
+                </View>
             </View>
         </ScrollView>
     )

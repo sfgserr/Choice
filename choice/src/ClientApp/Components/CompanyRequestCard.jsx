@@ -11,7 +11,7 @@ import styles from "../Styles";
 
 const CompanyRequestCard = ({orderRequest, navigation, button}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
-    const baseUrl = 'http://192.168.0.106/api/objects';
+    const baseUrl = 'http://192.168.0.100/api/objects';
 
     return (
         <View

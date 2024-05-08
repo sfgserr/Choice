@@ -86,7 +86,7 @@ export default function MapScreen({ navigation, route }) {
                 zoomEnabled={false}
                 rotateEnabled={false}
                 style={mapStyles.map}>
-                <CustomMarker imageUri={`http://192.168.0.106/api/objects/${user.iconUri}`}
+                <CustomMarker imageUri={`http://192.168.0.100/api/objects/${user.iconUri}`}
                               coordinate={{
                                 latitude: coords[0] == null ? 20 : coords[0],
                                 longitude: coords[1] == null ? 20 : coords[1]

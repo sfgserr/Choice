@@ -4,8 +4,8 @@ import arrayHelper from '../helpers/arrayHelper';
 
 const get = async () => {
     const token = await KeyChain.getGenericPassword();
-    
-    return await fetch('http://192.168.0.106/api/Client/GetClient', {
+
+    return await fetch('http://192.168.0.100/api/Client/GetClient', {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -13,7 +13,8 @@ const get = async () => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async response => await response.json());
+    .then(async response => await response.json())
+    .catch(err => console.log(err));
 }
 
 const getOrderRequest = async (categoriesId) => {
@@ -30,7 +31,7 @@ const getOrderRequest = async (categoriesId) => {
 
     index = 0;
 
-    return await fetch(`http://192.168.0.106/api/Client/GetOrderRequests?${queryArray.join('&')}`, {
+    return await fetch(`http://192.168.0.100/api/Client/GetOrderRequests?${queryArray.join('&')}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -44,7 +45,7 @@ const getOrderRequest = async (categoriesId) => {
 const sendOrderRequest = async (orderRequest) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch('http://192.168.0.106/api/Client/SendOrderRequest', {
+    return await fetch('http://192.168.0.100/api/Client/SendOrderRequest', {
         method: 'POST',
         body: JSON.stringify(orderRequest),
         headers: {
@@ -74,7 +75,7 @@ const sendOrderRequest = async (orderRequest) => {
 const changeOrderRequest = async (orderRequest) => {
     const token = await KeyChain.getGenericPassword();
     
-    return await fetch('http://192.168.0.106/api/Client/ChangeOrderRequest', {
+    return await fetch('http://192.168.0.100/api/Client/ChangeOrderRequest', {
         method: 'PUT',
         body: JSON.stringify(orderRequest),
         headers: {
@@ -104,7 +105,7 @@ const changeOrderRequest = async (orderRequest) => {
 const getClientRequests = async () => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch('http://192.168.0.106/api/Client/GetClientRequests', {
+    return await fetch('http://192.168.0.100/api/Client/GetClientRequests', {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -133,7 +134,7 @@ const getClientRequests = async () => {
 const changeIconUri = async (iconUri) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://192.168.0.106/api/Client/ChangeIconUri?iconUri=${iconUri}`, {
+    return await fetch(`http://192.168.0.100/api/Client/ChangeIconUri?iconUri=${iconUri}`, {
         method: 'PUT',
         headers: {
             Accept: 'application/json',
@@ -147,7 +148,7 @@ const changeIconUri = async (iconUri) => {
 const changeUserData = async (state) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://192.168.0.106/api/Client/ChangeUserData`, {
+    return await fetch(`http://192.168.0.100/api/Client/ChangeUserData`, {
         method: 'PUT',
         body: JSON.stringify(state),
         headers: {

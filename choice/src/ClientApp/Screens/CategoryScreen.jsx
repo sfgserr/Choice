@@ -47,7 +47,7 @@ export default function CategoryScreen({ navigation, route }) {
                                 <View style={{backgroundColor: '#47A4F9', borderRadius: 10, justifyContent: 'center', padding: 10}}>
                                     <Image 
                                         style={{height:20, width:20}}
-                                        source={{uri: `http://192.168.0.106/api/objects/${item.iconUri}`}}/>
+                                        source={{uri: `http://192.168.0.100/api/objects/${item.iconUri}`}}/>
                                 </View>
                                 <Text style={{alignSelf: 'center', paddingLeft: 10, color: '#181818', fontWeight: '400', fontSize: 18}}>{item.title}</Text>
                                 <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'flex-end'}}>
