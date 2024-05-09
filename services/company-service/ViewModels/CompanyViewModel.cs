@@ -10,7 +10,7 @@ namespace Choice.CompanyService.Api.ViewModels
             Title = company.Title;
             Address = company.Address;
             AverageGrade = company.AverageGrade;
-            ReviewCount = company.ReviewCount;
+            ReviewCount = company.ReviewsCount;
             CategoriesId = company.CategoriesId.ToList();
             SocialMedias = company.SocialMedias.ToList();
             Distance = distance;

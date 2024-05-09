@@ -11,70 +11,277 @@ import CompanyRequestCard from "../Components/CompanyRequestCard";
 import styles from "../Styles";
 import ImageBox from "../Components/ImageBox";
 import DatePicker from "react-native-date-picker";
+import { Modalize } from "react-native-modalize";
+import dateHelper from "../helpers/dateHelper";
+import userStore from "../services/userStore";
+import orderingService from "../services/orderingService";
 
 const CompanyRequestCreationScreen = ({navigation, route}) => {
     const { orderRequest } = route.params;
+    const user = userStore.get();
+
+    const [date, setDate] = React.useState(new Date());
+
+    const enrollmentDateRef = React.useRef(null);
+    const enrollmentTimeRef = React.useRef(null);
+    const deadlineRef = React.useRef(null);
+
     const [price, setPrice] = React.useState('');
-    const [deadLine, setDeadline] = React.useState(new Date());
+    const [deadline, setDeadline] = React.useState(new Date());
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const [enrollmentTime, setEnrollmentTime] = React.useState(new Date());
     const [firstImageUri, setFirstImageUri] = React.useState('');
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
+    const [prepayment, setPrepayment] = React.useState('');
 
-    const [enrollmentDateModalOpen, setEnrollmentDateModalOpen] = React.useState(false);
-    const [enrollmentTimeModalOpen, setEnrollmentTimeModalOpen] = React.useState(false);
-    const [deadLineModalOpen, setDeadlineModalOpen] = React.useState(false);
+    const [enrollmentDateString, setEnrollmentDateString] = React.useState('');
+    const [enrollmentTimeString, setEnrollmentTimeString] = React.useState('');
+    const [deadlineString, setDeadlinetString] = React.useState('')
+
+    const [disable, setDisable] = React.useState(true);
+
+    const updateDisable = (state) => {
+        if (orderRequest.toKnowPrice && state.price == '') {
+            setDisable(true);
+            return;
+        }
+
+        if (orderRequest.toKnowEnrollmentDate && (state.enrollmentDateString == '' || state.enrollmentTimeString == '')) {
+            setDisable(true);
+            return;
+        }
+
+        if (orderRequest.toKnowDeadline && state.deadlineString == '') {
+            setDisable(true);
+            return;
+        }
+
+        if (user.prepaymentAvailable && state.prepayment == '') {
+            setDisable(true);
+            return;
+        }
+
+        setDisable(false);
+    }
 
     return (
         <ScrollView
             style={{flex: 1, backgroundColor: 'white'}}
             showsVerticalScrollIndicator={false}>
-            <DatePicker
-                modal
-                open={enrollmentDateModalOpen}
-                date={enrollmentDate}
-                onConfirm={(date) => {
-                    setEnrollmentDateModalOpen(false);
-                    setEnrollmentDate(date);
-                }}
-                onCancel={() => {
-                    setEnrollmentDateModalOpen(false);    
-                }}/>
-                <DatePicker
-                    modal
-                    open={enrollmentTimeModalOpen}
-                    date={enrollmentTime}
-                    onConfirm={(date) => {
-                        setEnrollmentTimeModalOpen(false);
-                        setEnrollmentTime(date);
-                    }}
-                    onCancel={() => {
-                        setEnrollmentTimeModalOpen(false);    
-                    }}/>
-                <DatePicker
-                    modal
-                    open={enrollmentTimeModalOpen}
-                    date={enrollmentTime}
-                    onConfirm={(date) => {
-                        setEnrollmentTimeModalOpen(false);
-                        setEnrollmentTime(date);
-                    }}
-                    onCancel={() => {
-                        setEnrollmentTimeModalOpen(false);    
-                    }}/>
-                <DatePicker
-                    open={deadLineModalOpen}
-                    modal
-                    date={deadLine}
-                    mode="time"
-                    onConfirm={(date) => {
-                        setDeadlineModalOpen(false);
-                        setDeadline(date);
-                    }}
-                    onCancel={() => {
-                        setDeadlineModalOpen(false);    
-                    }}/>
+            <Modalize
+                ref={enrollmentDateRef}
+                adjustToContentHeight
+                childrenStyle={{height: '70%'}}>
+                <View
+                    style={{
+                        flex: 1, 
+                        justifyContent: 'center',
+                        paddingHorizontal: 20
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between',
+                            paddingTop: 20
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                fontSize: 21,
+                                fontWeight: '600',
+                                color: 'black'
+                            }}>
+                            Выберите дату записи
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}
+                            onPress={() => {
+                                enrollmentDateRef.current?.close();
+                                setDate(new Date());
+                            }}>
+                            <Icon
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <DatePicker
+                            date={date}
+                            mode="date"
+                            style={{alignSelf: 'center'}}
+                            onDateChange={setDate}/>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <TouchableOpacity 
+                            style={[styles.button]}
+                            onPress={() => {
+                                enrollmentDateRef.current?.close();
+                                setEnrollmentDate(date);
+                                setDate(new Date());
+                                setEnrollmentDateString(dateHelper.convertDateToString(date));
+                                updateDisable({
+                                    enrollmentDateString: '.',
+                                    enrollmentTimeString,
+                                    price,
+                                    deadlineString,
+                                    prepayment
+                                });
+                            }}>
+                            <Text style={[styles.buttonText]}>
+                                Выбрать
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalize>
+            <Modalize
+                ref={enrollmentTimeRef}
+                adjustToContentHeight
+                childrenStyle={{height: '70%'}}>
+                <View
+                    style={{
+                        flex: 1, 
+                        justifyContent: 'center',
+                        paddingHorizontal: 20
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between',
+                            paddingTop: 20
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                fontSize: 21,
+                                fontWeight: '600',
+                                color: 'black'
+                            }}>
+                            Выберите время записи
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}
+                            onPress={() => {
+                                enrollmentTimeRef.current?.close();
+                                setDate(new Date());
+                            }}>
+                            <Icon
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <DatePicker
+                            date={date}
+                            mode="time"
+                            style={{alignSelf: 'center'}}
+                            onDateChange={setDate}/>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <TouchableOpacity 
+                            style={[styles.button]}
+                            onPress={() => {
+                                enrollmentTimeRef.current?.close();
+                                setEnrollmentTime(date);
+                                setDate(new Date());
+                                setEnrollmentTimeString(dateHelper.convertTimeToString(date));
+                                updateDisable({
+                                    enrollmentDateString,
+                                    enrollmentTimeString: '.',
+                                    price,
+                                    deadlineString,
+                                    prepayment
+                                });
+                            }}>
+                            <Text style={[styles.buttonText]}>
+                                Выбрать
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalize>
+            <Modalize
+                ref={deadlineRef}
+                adjustToContentHeight
+                childrenStyle={{height: '70%'}}>
+                <View
+                    style={{
+                        flex: 1, 
+                        justifyContent: 'center',
+                        paddingHorizontal: 20
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between',
+                            paddingTop: 20
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                fontSize: 21,
+                                fontWeight: '600',
+                                color: 'black'
+                            }}>
+                            Время выполнения работ
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}
+                            onPress={() => {
+                                deadlineRef.current?.close();
+                                setDate(new Date());
+                            }}>
+                            <Icon
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <DatePicker
+                            date={date}
+                            style={{alignSelf: 'center'}}
+                            mode="time"
+                            onDateChange={setDate}/>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <TouchableOpacity 
+                            style={[styles.button]}
+                            onPress={() => {
+                                deadlineRef.current?.close();
+                                setDeadline(date);
+                                setDate(new Date());
+                                setDeadlinetString(`${date.getHours()} часов`);
+                                updateDisable({
+                                    enrollmentDateString,
+                                    enrollmentTimeString,
+                                    price,
+                                    deadlineString: '.',
+                                    prepayment
+                                });
+                            }}>
+                            <Text style={[styles.buttonText]}>
+                                Выбрать
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalize>
             <View
                 style={{
                     flexDirection: 'row',
@@ -131,14 +338,22 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                             }}>
                             Стоимость        
                         </Text>
-                        <View style={{paddingBottom: 20}}>
+                        <View>
                             <View style={[styles.textInput]}>
                                 <TextInput 
                                     style={[styles.textInputFont]}
+                                    keyboardType="numeric"
                                     placeholder="Введите стоимость в рублях" 
                                     value={price}
                                     onChangeText={(text) => {
                                         setPrice(text);
+                                        updateDisable({
+                                            enrollmentDateString,
+                                            enrollmentTimeString,
+                                            price: text,
+                                            deadlineString,
+                                            prepayment
+                                        });
                                     }}/>
                             </View>
                         </View>    
@@ -154,11 +369,12 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 color: '#6D7885', 
                                 fontWeight: '400', 
                                 fontSize: 14,
+                                paddingTop: 20,
                                 paddingBottom: 5
                             }}>
                             Время выполнения работы        
                         </Text>
-                        <View style={{paddingBottom: 20}}>
+                        <View>
                             <View 
                                 style={[
                                     styles.textInput, { 
@@ -168,17 +384,17 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 ]}>
                                 <Text
                                     style={{
-                                        color: '#818C99',
+                                        color: deadlineString == '' ? '#818C99' : 'black',
                                         fontSize: 16,
                                         fontWeight: '400',
                                         alignSelf: 'center',
                                         flex: 2,
                                     }}>
-                                    Время выполнения работы    
+                                    {deadlineString == '' ? 'Время выполнения работы' : deadlineString}    
                                 </Text>
                                 <TouchableOpacity
                                     style={{alignSelf: 'center'}}
-                                    onPress={() => setDeadlineModalOpen(true)}>
+                                    onPress={() => deadlineRef.current?.open()}>
                                     <Icon
                                         color='gray'
                                         type='material'
@@ -197,7 +413,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
-                                paddingBottom: 20
+                                paddingTop: 20,
                             }}>
                             <View style={{flex: 1, paddingRight: 5}}>
                                 <Text
@@ -218,17 +434,18 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     ]}>
                                     <Text
                                         style={{
-                                            color: '#818C99',
+                                            color: enrollmentDateString == '' ? '#818C99' : 'black',
                                             fontSize: 16,
                                             fontWeight: '400',
                                             alignSelf: 'center',
                                             flex: 2,
                                         }}
                                         numberOfLines={1}>
-                                        Выбрать    
+                                        {enrollmentDateString == '' ? 'Выбрать' : enrollmentDateString}    
                                     </Text>
                                     <TouchableOpacity
-                                        style={{alignSelf: 'center'}}>
+                                        style={{alignSelf: 'center'}}
+                                        onPress={() => enrollmentDateRef.current?.open()}>
                                         <Icon
                                             color='gray'
                                             type='material'
@@ -255,17 +472,18 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     ]}>
                                     <Text
                                         style={{
-                                            color: '#818C99',
+                                            color: enrollmentTimeString == '' ? '#818C99' : 'black',
                                             fontSize: 16,
                                             fontWeight: '400',
                                             alignSelf: 'center',
                                             flex: 2,
                                         }}
                                         numberOfLines={1}>
-                                        Выбрать    
+                                        {enrollmentTimeString == '' ? 'Выбрать' : enrollmentTimeString}    
                                     </Text>
                                     <TouchableOpacity
-                                        style={{alignSelf: 'center'}}>
+                                        style={{alignSelf: 'center'}}
+                                        onPress={() => enrollmentTimeRef.current?.open()}>
                                         <Icon
                                             color='gray'
                                             type='material'
@@ -278,35 +496,60 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                     :
                     <></>
                 }
-                <Text
-                    style={{
-                        color: '#6D7885', 
-                        fontWeight: '400', 
-                        fontSize: 14,
-                        paddingBottom: 5
-                    }}>
-                    Приложите файлы к ответу    
-                </Text>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'   
-                    }}>
-                    <ImageBox
-                        uri={firstImageUri}
-                        onUriChanged={(text) => setFirstImageUri(text)}/>
-
-                    <ImageBox
-                        uri={secondImageUri}
-                        onUriChanged={(text) => setSecondImageUri(text)}/>
-
-                    <ImageBox
-                        uri={thirdImageUri}
-                        onUriChanged={(text) => setThirdImageUri(text)}/>
-                </View>
+                {
+                    user.prepaymentAvailable ?
+                    <>
+                        <View style={{paddingTop: 20, justifyContent: 'center'}}>
+                            <Text
+                                style={{
+                                    color: '#6D7885', 
+                                    fontWeight: '400', 
+                                    fontSize: 14,
+                                    paddingBottom: 5
+                                }}>
+                                Предоплата    
+                            </Text>
+                            <View style={styles.textInput}>
+                                <TextInput
+                                    style={styles.textInputFont}
+                                    keyboardType="numeric"
+                                    placeholder="Введите предоплату в рублях"
+                                    value={prepayment}
+                                    onChangeText={(text) => {
+                                        setPrepayment(text);
+                                        updateDisable({
+                                            enrollmentDateString,
+                                            enrollmentTimeString,
+                                            price,
+                                            deadlineString,
+                                            prepayment: text
+                                        });
+                                    }}/>
+                            </View>
+                        </View>
+                    </>
+                    :
+                    <></>
+                }
                 <View style={{paddingTop: 20, paddingBottom: 10}}>
                     <TouchableOpacity
-                        style={styles.button}>
+                        style={[
+                            styles.button, {
+                                backgroundColor: disable ? '#ABCDf3' : '#2D81E0'
+                            }
+                        ]}
+                        onPress={async () => {
+                            let order = {
+                                receiverId: orderRequest.client.userId,
+                                senderId: user.guid,
+                                price: Number.parseInt(price),
+                                prepayment: Number.parseInt(price),
+                                orderRequestId: orderRequest.id,
+                                enrollmentTime: dateHelper.convertDateToJson(enrollmentDateString, enrollmentTimeString) 
+                            }
+                            
+                            await orderingService.createOrder(order);
+                        }}>
                         <Text
                             style={styles.buttonText}>
                             Отправить

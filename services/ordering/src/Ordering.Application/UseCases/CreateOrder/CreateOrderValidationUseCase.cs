@@ -22,7 +22,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
             _useCase.SetOutputPort(_outputPort);
         }
 
-        public async Task Execute(string receiverId, int orderRequestId, double price, double prepayment,
+        public async Task Execute(string receiverId, int orderRequestId, int price, int prepayment,
             int deadline, DateTime enrollmentDate)
         {
             if (price == 0 && deadline == 0)

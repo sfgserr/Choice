@@ -45,22 +45,5 @@ namespace Choice.Chat.Api.Controllers
 
             return Ok(messages);
         }
-
-        [HttpPut("EditMessage")]
-        public async Task<IActionResult> EditMessage(int messageId, string text)
-        {
-            string id = User.FindFirstValue("id")!;
-
-            Message message = await _repository.Get(messageId, id);
-
-            if (message is null)
-                return NotFound();
-
-            message.EditText(text);
-
-            await _repository.Update(message);
-
-            return Ok();
-        }
     }
 }

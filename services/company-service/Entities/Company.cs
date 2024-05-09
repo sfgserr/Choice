@@ -25,7 +25,7 @@ namespace Choice.CompanyService.Api.Entities
         public string IconUri { get; private set; } = "defaulturi";
         public Address Address { get; private set; }    
         public double AverageGrade { get; private set; } = 0;
-        public int ReviewCount { get; private set; } = 0;
+        public int ReviewsCount { get; private set; } = 0;
         public List<string> SocialMedias { get; private set; } = [];
         public List<string> PhotoUris { get; private set; } = [];
         public List<int> CategoriesId { get; private set; } = [];
@@ -65,8 +65,8 @@ namespace Choice.CompanyService.Api.Entities
 
         public void AddReview(int grade)
         {
-            AverageGrade = ReviewCount < 1 ? grade : (ReviewCount * AverageGrade + grade) / (ReviewCount + 1);
-            ReviewCount++;
+            AverageGrade = ReviewsCount < 1 ? grade : (ReviewsCount * AverageGrade + grade) / (ReviewsCount + 1);
+            ReviewsCount++;
         }
     }
 }

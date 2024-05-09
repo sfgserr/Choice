@@ -25,7 +25,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
             _outputPort = outputPort;
         }
 
-        public async Task Execute(string receiverId, int orderRequestId, double price, double prepayment,
+        public async Task Execute(string receiverId, int orderRequestId, int price, int prepayment,
             int deadline, DateTime enrollmentTime)
         {
             string userId = _userService.GetUserId();
@@ -42,8 +42,8 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
             _outputPort.Ok(order);
         }
 
-        private async Task<Order> CreateOrder(string userId, string receiverId, int orderRequestId, double price,
-            double prepayment, int deadline, DateTime enrollmentDate)
+        private async Task<Order> CreateOrder(string userId, string receiverId, int orderRequestId, int price,
+            int prepayment, int deadline, DateTime enrollmentDate)
         {
             Order order = new(orderRequestId, userId, receiverId, price, prepayment, deadline, enrollmentDate);
 

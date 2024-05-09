@@ -209,7 +209,7 @@ function App() {
                               component={CompanyTab}
                               options={{headerShown:false}}/>
                 <Stack.Screen name="CompanyRequestCreation"
-                              component={CompanyRequestCreationScreen}
+                              component={gestureHandlerRootHOC(CompanyRequestCreationScreen)}
                               options={{headerShown:false}}/>
               </Stack.Navigator> 
             </>

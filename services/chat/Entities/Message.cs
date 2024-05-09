@@ -13,8 +13,6 @@
         public string Text { get; private set; }
         public string SenderId { get; private set; }
         public string ReceiverId { get; private set; }
-
-        public void EditText(string text) =>
-            Text = text;
+        public DateTime CreationTime { get; private set; } = DateTime.Now;
     }
 }

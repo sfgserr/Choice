@@ -27,11 +27,15 @@ namespace Choice.Chat.Api.Extensions
             using var connection = new NpgsqlConnection(configuration["PostgreSqlSettings:ConnectionString"]);
             connection.Open();
 
-            string tableName = "Messages";
-            bool exists = connection.QueryFirstOrDefault<bool>(
-                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = @TableName)", new { TableName = tableName });
+            string messagesTableName = "Messages";
+            bool messagesExists = connection.QueryFirstOrDefault<bool>(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = @TableName)", new { TableName = messagesTableName });
 
-            if (!exists)
+            string ordersTableName = "Orders";
+            bool ordersExists = connection.QueryFirstOrDefault<bool>(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = @TableName)", new { TableName = ordersTableName });
+
+            if (!messagesExists)
             {
                 using var command = new NpgsqlCommand
                 {
@@ -42,6 +46,28 @@ namespace Choice.Chat.Api.Extensions
                                                                 SenderId VARCHAR(24) NOT NULL,
                                                                 ReceiverId VARCHAR(24) NOT NULL,
                                                                 Text VARCHAR(24) NOT NULL)";
+
+                command.ExecuteNonQuery();
+            }
+
+            if (!ordersExists)
+            {
+                using var command = new NpgsqlCommand
+                {
+                    Connection = connection
+                };
+
+                command.CommandText = @"CREATE TABLE Orders(Id SERIAL PRIMARY KEY,
+                                                            OrderId INTEGER NOT NULL,
+                                                            Prepayment INTEGERR NOT NULL,
+                                                            Deadline INTEGER NOT NULL,
+                                                            Price INTEGER NOT NULL,
+                                                            SenderId VARCHAR(24) NOT NULL,
+                                                            ReceiverId VARCHAR(24) NOT NULL,
+                                                            CreationTime TIMESTAMP NOT NULL,
+                                                            EnrollmentTime TIMESTAMP NOT NULL,
+                                                            IsEnrolled BOOLEAN NOT NULL)";
+
                 command.ExecuteNonQuery();
             }
         }

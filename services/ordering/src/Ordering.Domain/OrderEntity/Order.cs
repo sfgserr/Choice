@@ -6,7 +6,7 @@ namespace Choice.Ordering.Domain.OrderEntity
     {
         private readonly List<string> _reviews = new();
 
-        public Order(int orderRequestId, string senderId, string receiverId, double price, double prepayment,
+        public Order(int orderRequestId, string senderId, string receiverId, int price, int prepayment,
             int deadline, DateTime enrollmentDate)
         {
             OrderRequestId = orderRequestId;
@@ -21,8 +21,8 @@ namespace Choice.Ordering.Domain.OrderEntity
         public int OrderRequestId { get; private set; }
         public string SenderId { get; private set; }
         public string ReceiverId { get; private set; }
-        public double Price { get; private set; }
-        public double Prepayment { get; private set; }
+        public int Price { get; private set; }
+        public int Prepayment { get; private set; }
         public int Deadline { get; private set; }
         public bool IsEnrolled { get; private set; } = false;
         public DateTime EnrollmentDate { get; private set; }
