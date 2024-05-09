@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Choice.Chat.Api.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Choice.Chat.Api.Repositories.Interfaces;
 
 namespace Choice.Chat.Api.Controllers
 {
@@ -14,12 +15,12 @@ namespace Choice.Chat.Api.Controllers
     public sealed class MessageController : Controller
     {
         private readonly IHubContext<ChatHub> _hubContext;
-        private readonly IMessageRepository _repository;
+        private readonly IRepository<Message> _messageRepository;
 
-        public MessageController(IHubContext<ChatHub> hubContext, IMessageRepository repository)
+        public MessageController(IHubContext<ChatHub> hubContext, IRepository<Message> messageRepository)
         {
             _hubContext = hubContext;
-            _repository = repository;
+            _messageRepository = messageRepository;
         }
 
         [HttpPost("SendMessage")]
@@ -29,7 +30,7 @@ namespace Choice.Chat.Api.Controllers
 
             Message message = new(text, id, receiverId);
 
-            await _repository.Add(message);
+            await _messageRepository.Add(message);
 
             await _hubContext.Clients.User(receiverId).SendAsync("ReceiveTextMessage", message);
 
@@ -41,7 +42,7 @@ namespace Choice.Chat.Api.Controllers
         {
             string id = User.FindFirstValue("id")!;
 
-            IList<Message> messages = await _repository.GetAll(id, receiverId);
+            IList<Message> messages = await _messageRepository.GetAll(id, receiverId);
 
             return Ok(messages);
         }

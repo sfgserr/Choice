@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Choice.Chat.Api.Repositories.Interfaces;
+using Choice.Chat.Api.Entities;
+using Choice.EventBus.Messages.Events;
 
 namespace Choice.Chat.Api
 {
@@ -25,17 +28,19 @@ namespace Choice.Chat.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSignalR();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
+            builder.Services.AddScoped<IRepository<Order>, OrderRepository>();
             builder.Services.AddMassTransit(config =>
             {
-                config.AddConsumer<OrderChangedConsumer>();
+                config.AddConsumer<OrderEnrollmentDateChangedConsumer>();
                 config.AddConsumer<OrderCreatedConsumer>();
+                config.AddConsumer<OrderStatusChangedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 
-                    cfg.ReceiveEndpoint(EventBusConstants.OrderChangedQueue, c => {
-                        c.ConfigureConsumer<OrderChangedConsumer>(ctx);
+                    cfg.ReceiveEndpoint(EventBusConstants.OrderEnrollmentDateChangedQueue, c => {
+                        c.ConfigureConsumer<OrderEnrollmentDateChangedConsumer>(ctx);
                     });
                     cfg.ReceiveEndpoint(EventBusConstants.OrderCreatedQueue, c =>
                     {

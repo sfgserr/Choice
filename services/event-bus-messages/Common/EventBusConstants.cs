@@ -4,7 +4,8 @@ namespace Choice.EventBus.Messages.Common
     public static class EventBusConstants
     {
         public const string OrderCreatedQueue = "ordering.order.created";
-        public const string OrderChangedQueue = "ordering.order.changed";
+        public const string UserEnrolledQueue = "ordering.order.enrolled";
+        public const string OrderEnrollmentDateChangedQueue = "ordering.order.date.changed";
         public const string UserDataChangedQueue = "auth-service.user.changed";
         public const string AuthorDataChangedQueue = "auth-service.author.changed";
         public const string AuthorIconUriChangedQueue = "auth-service.author.icon.changed";

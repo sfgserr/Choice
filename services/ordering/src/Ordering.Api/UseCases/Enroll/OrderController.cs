@@ -29,7 +29,7 @@ namespace Choice.Ordering.Api.UseCases.Enroll
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderChangedEvent(order.Id, order.ReceiverId, "Enroll", order.SenderId));
+            _endPoint.Publish(new UserEnrolledEvent(order.Id, order.ReceiverId));
         }
 
         void IOutputPort.Invalid()

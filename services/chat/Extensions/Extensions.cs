@@ -57,16 +57,16 @@ namespace Choice.Chat.Api.Extensions
                     Connection = connection
                 };
 
-                command.CommandText = @"CREATE TABLE Orders(Id SERIAL PRIMARY KEY,
-                                                            OrderId INTEGER NOT NULL,
+                command.CommandText = @"CREATE TABLE Orders(OrderId SERIAL PRIMARY KEY,
                                                             Prepayment INTEGERR NOT NULL,
                                                             Deadline INTEGER NOT NULL,
                                                             Price INTEGER NOT NULL,
                                                             SenderId VARCHAR(24) NOT NULL,
                                                             ReceiverId VARCHAR(24) NOT NULL,
                                                             CreationTime TIMESTAMP NOT NULL,
-                                                            EnrollmentTime TIMESTAMP NOT NULL,
-                                                            IsEnrolled BOOLEAN NOT NULL)";
+                                                            EnrollmentDate TIMESTAMP NOT NULL,
+                                                            IsEnrolled BOOLEAN NOT NULL,
+                                                            Status INTEGER NOT NULL)";
 
                 command.ExecuteNonQuery();
             }

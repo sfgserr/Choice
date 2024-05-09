@@ -3,15 +3,13 @@ namespace Choice.EventBus.Messages.Events
 {
     public class OrderStatusChangedEvent
     {
-        public OrderStatusChangedEvent(int orderRequestId, int orderStatus, string orderReceiverId)
+        public OrderStatusChangedEvent(int orderRequestId, int orderStatus)
         {
             OrderRequestId = orderRequestId;
             OrderStatus = orderStatus;
-            OrderReceiverId = orderReceiverId;
         }
 
         public int OrderRequestId { get; }
         public int OrderStatus { get; }
-        public string OrderReceiverId { get; }
     }
 }

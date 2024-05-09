@@ -1,10 +1,11 @@
 ﻿using Choice.Chat.Api.Entities;
+using Choice.Chat.Api.Repositories.Interfaces;
 using Dapper;
 using Npgsql;
 
 namespace Choice.Chat.Api.Repositories
 {
-    public sealed class MessageRepository : IMessageRepository
+    public sealed class MessageRepository : IRepository<Message>
     {
         private readonly IConfiguration _configuration;
 
@@ -19,16 +20,16 @@ namespace Choice.Chat.Api.Repositories
 
             await connection.ExecuteAsync
                 ("INSERT INTO Messages (Text, SenderId, ReceiverId) VALUES (@Text, @SenderId, @ReceiverId)",
-                    new { Text = message.Text, SenderId = message.SenderId, ReceiverId = message.ReceiverId });
+                    new { message.Text, message.SenderId, message.ReceiverId });
         }
 
-        public async Task<Message> Get(int id, string senderId)
+        public async Task<Message> Get(int id)
         {
             using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
 
             return await connection.QueryFirstAsync
-                    ("SELECT * FROM Messages WHERE Id = @Id AND SenderId = @SenderId",
-                        new { Id = id, SenderId = senderId });
+                    ("SELECT * FROM Messages WHERE Id = @Id",
+                        new { Id = id });
         }
 
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
@@ -47,7 +48,7 @@ namespace Choice.Chat.Api.Repositories
 
             int affections = await connection.ExecuteAsync
                 ("UPDATE Messages SET Text = @Text, SenderId = @SenderId, ReceiverId = @ReceiverId WHERE Id = @Id",
-                    new { Id = message.Id, Text = message.Text, SenderId = message.SenderId, ReceiverId = message.ReceiverId });
+                    new { message.Id, message.Text, message.SenderId, message.ReceiverId });
 
             return affections > 0;
         }
