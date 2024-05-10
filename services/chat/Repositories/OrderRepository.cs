@@ -19,10 +19,10 @@ namespace Choice.Chat.Api.Repositories
             using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
 
             await connection.ExecuteAsync(
-                @"INSERT INTO Orders (OrderId, Prepayment, Deadline, Price, SenderId, ReceiverId, 
-                                        CreationTime, EnrollmentTime, IsEnrolled, OrderStatus) 
-                VALUES (@OrderId, @Prepayment, @Deadline, @Price, @SenderId, @ReceiverId, 
-                        @CreationTime, @EnrollmentDate, @IsEnrolled, @Status)",
+                @"INSERT INTO Orders (OrderId, Prepayment, Deadline, Price, SenderId, GroupId, 
+                                        CreationTime, EnrollmentTime, IsEnrolled, DateChanged, Status) 
+                VALUES (@OrderId, @Prepayment, @Deadline, @Price, @SenderId, @GroupId, 
+                        @CreationTime, @EnrollmentDate, @IsEnrolled, @DateChanged, @Status)",
                 new
                 {
                     order.OrderId,
@@ -30,11 +30,12 @@ namespace Choice.Chat.Api.Repositories
                     order.Deadline,
                     order.Price,
                     order.SenderId,
-                    order.ReceiverId,
+                    order.GroupId,
                     order.CreationTime,
                     order.EnrollmentDate,
                     order.IsEnrolled,
-                    order.Status
+                    order.Status,
+                    order.DateChanged
                 });
 
         }
@@ -48,14 +49,13 @@ namespace Choice.Chat.Api.Repositories
                         new { Id = id });
         }
 
-        public async Task<IList<Order>> GetAll(string senderId, string receiverId)
+        public async Task<IList<Order>> GetAll(int groupId)
         {
             using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
 
             var messages = await connection.QueryAsync<Order>("SELECT * FROM Orders");
 
-            return messages.Where(m => (m.SenderId == senderId || m.SenderId == receiverId) &&
-                                 (m.ReceiverId == senderId || m.ReceiverId == receiverId)).ToList();
+            return messages.Where(m => m.GroupId == groupId).ToList();
         }
 
         public async Task<bool> Update(Order order)
@@ -65,8 +65,9 @@ namespace Choice.Chat.Api.Repositories
             int affections = await connection.ExecuteAsync(
                 @"UPDATE Orders 
                     SET Prepayment = @Prepayment, Deadline = @Deadline, Price = @Price, 
-                    SenderId = @SenderId, ReceiverId = @ReceiverId, CreationTime = @CreationTime, 
-                    EnrollmentDate = @EnrollmentDate, IsEnrolled = @IsEnrolled, Status = @Status
+                    SenderId = @SenderId, GroupId = @GroupId, CreationTime = @CreationTime, 
+                    EnrollmentDate = @EnrollmentDate, IsEnrolled = @IsEnrolled, Status = @Status,
+                    DateChanged = @DateChanged
                     WHERE OrderId = @OrderId",
                 new
                 {
@@ -75,11 +76,12 @@ namespace Choice.Chat.Api.Repositories
                     order.Deadline,
                     order.Price,
                     order.SenderId,
-                    order.ReceiverId,
+                    order.GroupId,
                     order.CreationTime,
                     order.EnrollmentDate,
                     order.IsEnrolled,
-                    order.Status
+                    order.Status,
+                    order.DateChanged
                 });
 
             return affections > 0;

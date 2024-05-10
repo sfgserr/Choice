@@ -28,7 +28,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Update(order);
 
-            await _context.Clients.Users(order.ReceiverId).SendAsync("OrderStatusChanged", order);
+            await _context.Clients.User(order.ReceiverId).SendAsync("StatusChanged", new { order.Status });
         }
     }
 }

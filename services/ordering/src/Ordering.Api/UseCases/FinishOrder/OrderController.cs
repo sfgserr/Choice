@@ -31,8 +31,7 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
             _viewModel = Ok(order);
             _endPoint.Publish(new OrderStatusChangedEvent
                 (order.OrderRequestId,
-                 (int)order.Status,
-                 order.ReceiverId));
+                 (int)order.Status));
         }
 
         void IOutputPort.NotFound()

@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Entities;
-using Choice.EventBus.Messages.Events;
+using Choice.Chat.Api.Factories;
 
 namespace Choice.Chat.Api
 {
@@ -30,11 +30,13 @@ namespace Choice.Chat.Api
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
             builder.Services.AddScoped<IRepository<Order>, OrderRepository>();
+            builder.Services.AddScoped<OrderFactory>();
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<OrderEnrollmentDateChangedConsumer>();
                 config.AddConsumer<OrderCreatedConsumer>();
                 config.AddConsumer<OrderStatusChangedConsumer>();
+                config.AddConsumer<UserEnrolledConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -45,6 +47,14 @@ namespace Choice.Chat.Api
                     cfg.ReceiveEndpoint(EventBusConstants.OrderCreatedQueue, c =>
                     {
                         c.ConfigureConsumer<OrderCreatedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.OrderMessageStatusChangedQueue, c =>
+                    {
+                        c.ConfigureConsumer<OrderStatusChangedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.UserEnrolledQueue, c =>
+                    {
+                        c.ConfigureConsumer<UserEnrolledConsumer>(ctx);
                     });
                 });
             });

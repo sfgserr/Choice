@@ -2,17 +2,17 @@
 {
     public class Message
     {
-        public Message(string text, string senderId, string receiverId)
+        public Message(string text, string senderId, int groupId)
         {
             Text = text;
             SenderId = senderId;
-            ReceiverId = receiverId;
+            GroupId = groupId;
         }
 
         public int Id { get; private set; }
         public string Text { get; private set; }
         public string SenderId { get; private set; }
-        public string ReceiverId { get; private set; }
+        public int GroupId { get; private set; }
         public DateTime CreationTime { get; private set; } = DateTime.Now;
     }
 }

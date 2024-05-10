@@ -37,11 +37,14 @@ import RegisterScreen from './Screens/RegisterScreen';
 import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
 import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
+import * as SignalR from '@microsoft/signalr'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const AuthContext = React.createContext();
+
+//const signalr = require('@microsoft/signalr');
 
 const getTabLabel = (routeName) => {
   switch (routeName) {
@@ -146,12 +149,18 @@ function ClientTab() {
 }
 
 function App() {
+  let connection;
+
   const authContext = React.useMemo(() => ({
     signIn: async (userType) => {
       await categoryStore.retrieveData();
-
+      const token = await KeyChain.getGenericPassword();
       setUserType(userType);
       setIsSignedIn(true);
+
+      connection = new SignalR.HubConnectionBuilder()
+        .withUrl('http://192.168.0.100/chat', { accessTokenFactory: token.password })
+        .build();
     },
     signOut: () => {
       userStore.logout();

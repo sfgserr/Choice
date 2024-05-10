@@ -24,15 +24,15 @@ namespace Choice.Chat.Api.Controllers
         }
 
         [HttpPost("SendMessage")]
-        public async Task<IActionResult> SendMessage(string text, string receiverId)
+        public async Task<IActionResult> SendMessage(string text, int groupId)
         {
             string id = User.FindFirstValue("id")!;
 
-            Message message = new(text, id, receiverId);
+            Message message = new(text, id, groupId);
 
             await _messageRepository.Add(message);
 
-            await _hubContext.Clients.User(receiverId).SendAsync("ReceiveTextMessage", message);
+            await _hubContext.Clients.Group();
 
             return Ok();
         }
