@@ -1,10 +1,13 @@
 ﻿
-using Chat.Api.Entities;
+using Choice.Chat.Api.Content.Interfaces;
+using Choice.Chat.Api.Models;
 
 namespace Choice.Chat.Api.Entities
 {
     public class Message
     {
+        private readonly IContent<Order> _orderContent;
+
         public Message(string senderId, string receiverId, string body, MessageType type)
         {
             SenderId = senderId;

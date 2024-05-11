@@ -2,6 +2,7 @@
 using Choice.Chat.Api.Infrastructure.Data;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace Choice.Chat.Api.Repositories
 {
@@ -22,6 +23,11 @@ namespace Choice.Chat.Api.Repositories
         public async Task<Message> Get(int id)
         {
             return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<Message> GetByOrderId(int orderId)
+        {
+            return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => m.Body.);
         }
 
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
