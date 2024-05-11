@@ -9,10 +9,10 @@ namespace Choice.Chat.Api.Consumers
 {
     public class UserEnrolledConsumer : IConsumer<UserEnrolledEvent>
     {
-        private readonly IRepository<Order> _repository;
+        private readonly IRepository<OrderMessage> _repository;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public UserEnrolledConsumer(IRepository<Order> repository, IHubContext<ChatHub> hubContext)
+        public UserEnrolledConsumer(IRepository<OrderMessage> repository, IHubContext<ChatHub> hubContext)
         {
             _repository = repository;
             _hubContext = hubContext;
@@ -22,7 +22,7 @@ namespace Choice.Chat.Api.Consumers
         {
             UserEnrolledEvent @event = context.Message;
 
-            Order order = await _repository.Get(@event.OrderId);
+            OrderMessage order = await _repository.Get(@event.OrderId);
 
             order.Enroll();
 

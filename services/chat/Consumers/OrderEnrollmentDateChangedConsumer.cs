@@ -10,11 +10,11 @@ namespace Choice.Chat.Api.Consumers
 {
     public class OrderEnrollmentDateChangedConsumer : IConsumer<OrderEnrollmentDateChangedEvent>
     {
-        private readonly IRepository<Order> _repository;
+        private readonly IRepository<OrderMessage> _repository;
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly OrderFactory _factory;
 
-        public OrderEnrollmentDateChangedConsumer(IRepository<Order> repository, IHubContext<ChatHub> hubContext, OrderFactory factory)
+        public OrderEnrollmentDateChangedConsumer(IRepository<OrderMessage> repository, IHubContext<ChatHub> hubContext, OrderFactory factory)
         {
             _repository = repository;
             _hubContext = hubContext;
@@ -25,13 +25,13 @@ namespace Choice.Chat.Api.Consumers
         {
             OrderEnrollmentDateChangedEvent @event = context.Message;
 
-            Order order = await _repository.Get(@event.OrderId);
+            OrderMessage order = await _repository.Get(@event.OrderId);
 
             order.ChangeEnrollmentDate(@event.EnrollmentDate);
 
             await _repository.Update(order);
 
-            Order newOrder = _factory.Copy(order);
+            OrderMessage newOrder = _factory.Copy(order);
             newOrder.ChangeEnrollmentDate(@event.EnrollmentDate);
 
             await _repository.Add(order);

@@ -1,62 +1,45 @@
 ﻿using Choice.Chat.Api.Entities;
+using Choice.Chat.Api.Infrastructure.Data;
 using Choice.Chat.Api.Repositories.Interfaces;
-using Dapper;
-using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace Choice.Chat.Api.Repositories
 {
     public sealed class MessageRepository : IRepository<Message>
     {
-        private readonly IConfiguration _configuration;
+        private readonly ChatDdContext _context;
 
-        public MessageRepository(IConfiguration configuration)
+        public MessageRepository(ChatDdContext context)
         {
-            _configuration = configuration;
+            _context = context;
         }
 
         public async Task Add(Message message)
         {
-            using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
-
-            await connection.ExecuteAsync
-                ("INSERT INTO Messages (Text, SenderId, ReceiverId) VALUES (@Text, @SenderId, @ReceiverId)",
-                    new { message.Text, message.SenderId, message.ReceiverId });
+            await _context.Messages.AddAsync(message);   
         }
 
         public async Task<Message> Get(int id)
         {
-            using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
-
-            return await connection.QueryFirstAsync
-                    ("SELECT * FROM Messages WHERE Id = @Id",
-                        new { Id = id });
+            return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
         {
-            using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
-
-            var messages = await connection.QueryAsync<Message>("SELECT * FROM Messages");
-
-            return messages.Where(m => (m.SenderId == senderId || m.SenderId == receiverId) &&
-                                 (m.ReceiverId == senderId || m.ReceiverId == receiverId)).ToList();
+            return await _context.Messages.Include(m => m.Receiver)
+                                          .Where(m => m.SenderId == senderId || m.SenderId == receiverId 
+                                            && m.Receiver.Guid == receiverId || m.Receiver.Guid == senderId)
+                                          .ToListAsync();
         }
 
-        public async Task<bool> Update(Message message)
+        public void Update(Message message)
         {
-            using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
-
-            int affections = await connection.ExecuteAsync
-                ("UPDATE Messages SET Text = @Text, SenderId = @SenderId, ReceiverId = @ReceiverId WHERE Id = @Id",
-                    new { message.Id, message.Text, message.SenderId, message.ReceiverId });
-
-            return affections > 0;
+            _context.Messages.Update(message);   
         }
 
         public async Task<bool> Delete(int id)
         {
-            using var connection = new NpgsqlConnection(_configuration["PostgreSqlSettings:ConnectionString"]);
-            int affections = await connection.ExecuteAsync("DELETE FROM Messages WHERE Id = @Id", new { Id = id });
+            int affections = await _context.Database.ExecuteSqlRawAsync("DELETE FROM Messages WHERE Id = @p0", id);
 
             return affections > 0;
         }

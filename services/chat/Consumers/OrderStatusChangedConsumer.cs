@@ -10,9 +10,9 @@ namespace Choice.Chat.Api.Consumers
     public class OrderStatusChangedConsumer : IConsumer<OrderStatusChangedEvent>
     {
         private readonly IHubContext<ChatHub> _context;
-        private readonly IRepository<Order> _repository;
+        private readonly IRepository<OrderMessage> _repository;
 
-        public OrderStatusChangedConsumer(IHubContext<ChatHub> context, IRepository<Order> repository)
+        public OrderStatusChangedConsumer(IHubContext<ChatHub> context, IRepository<OrderMessage> repository)
         {
             _context = context;
             _repository = repository;
@@ -22,7 +22,7 @@ namespace Choice.Chat.Api.Consumers
         {
             OrderStatusChangedEvent @event = context.Message;
 
-            Order order = await _repository.Get(@event.OrderRequestId);
+            OrderMessage order = await _repository.Get(@event.OrderRequestId);
 
             order.ChangeStatus(@event.OrderStatus);
 

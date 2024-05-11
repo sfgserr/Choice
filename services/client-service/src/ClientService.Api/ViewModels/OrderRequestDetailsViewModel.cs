@@ -21,14 +21,14 @@ namespace Choice.ClientService.Api.ViewModels
 
         public int Id { get; }
         public ClientViewModel Client { get; }
-        public int CategoryId { get; private set; }
-        public List<string> PhotoUris { get; private set; }
-        public string Description { get; private set; }
-        public bool ToKnowPrice { get; private set; }
-        public bool ToKnowDeadline { get; private set; }
-        public bool ToKnowEnrollmentDate { get; private set; }
-        public int SearchRadius { get; private set; }
-        public OrderStatus Status { get; private set; }
-        public DateTime CreationDate { get; private set; }
+        public int CategoryId { get; }
+        public List<string> PhotoUris { get; }
+        public string Description { get; }
+        public bool ToKnowPrice { get; }
+        public bool ToKnowDeadline { get; }
+        public bool ToKnowEnrollmentDate { get; }
+        public int SearchRadius { get; }
+        public OrderStatus Status { get; }
+        public DateTime CreationDate { get; }
     }
 }

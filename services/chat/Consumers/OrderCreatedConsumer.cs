@@ -4,15 +4,16 @@ using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace Choice.Chat.Api.Consumers
 {
     public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
     {
         private readonly IHubContext<ChatHub> _context;
-        private readonly IRepository<Order> _repository;
+        private readonly IRepository<Message> _repository;
 
-        public OrderCreatedConsumer(IHubContext<ChatHub> context, IRepository<Order> repository)
+        public OrderCreatedConsumer(IHubContext<ChatHub> context, IRepository<Message> repository)
         {
             _context = context;
             _repository = repository;
@@ -22,17 +23,11 @@ namespace Choice.Chat.Api.Consumers
         {
             OrderCreatedEvent @event = context.Message;
 
-            Order order = new(@event.OrderId,
-                              @event.Price,
-                              @event.Deadline,
-                              @event.EnrollmentTime,
-                              @event.Prepayment,
-                              @event.SenderGuid,
-                              @event.ReceiverId);
+            Message message = new(@event.SenderGuid, @event.ReceiverId, JsonConvert.SerializeObject(@event), MessageType.Order);
 
-            await _repository.Add(order);
+            await _repository.Add(message);
 
-            await _context.Clients.User(@event.ReceiverId).SendAsync("OrderCreated", order);
+            await _context.Clients.User(@event.ReceiverId).SendAsync("OrderCreated", message);
         }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Entities;
-using Choice.Chat.Api.Factories;
+using Choice.Chat.Api.Infrastructure.Data;
 
 namespace Choice.Chat.Api
 {
@@ -29,8 +29,8 @@ namespace Choice.Chat.Api
             builder.Services.AddSignalR();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
-            builder.Services.AddScoped<IRepository<Order>, OrderRepository>();
-            builder.Services.AddScoped<OrderFactory>();
+            builder.Services.AddDbContext<ChatDdContext>(o => 
+                o.UseNpgsql(builder.Configuration["PostgreSqlSettings:ConnectionString"]));
             builder.Services.AddMassTransit(config =>
             {
                 config.AddConsumer<OrderEnrollmentDateChangedConsumer>();
@@ -106,7 +106,7 @@ namespace Choice.Chat.Api
             });
 
             var app = builder.Build();
-            app.MigrateDatabase();
+            //app.MigrateDatabase();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
