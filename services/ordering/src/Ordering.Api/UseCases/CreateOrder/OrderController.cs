@@ -39,9 +39,7 @@ namespace Choice.Ordering.Api.UseCases.CreateOrder
                 order.Price, 
                 order.Prepayment, 
                 order.Deadline, 
-                order.IsEnrolled, 
-                order.EnrollmentDate, 
-                order.Status.ToString()));
+                order.EnrollmentDate));
         }
 
         void IOutputPort.Invalid()

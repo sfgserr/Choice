@@ -44,6 +44,11 @@ namespace Choice.Ordering.Application.UseCases.Enroll
                 _notification.Add(nameof(order), "Order is not active");
             }
 
+            if (!order.IsDateConfirmed)
+            {
+                _notification.Add(nameof(order), "Company didn't confirm enrollment date");
+            }
+
             if (order.IsEnrolled)
             {
                 _notification.Add(nameof(order), "You are already enrolled");

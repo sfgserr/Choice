@@ -161,6 +161,10 @@ function App() {
       connection = new SignalR.HubConnectionBuilder()
         .withUrl('http://192.168.0.100/chat', { accessTokenFactory: token.password })
         .build();
+
+      connection.on("OrderCreated", data => {
+        console.log(data);  
+      })
     },
     signOut: () => {
       userStore.logout();

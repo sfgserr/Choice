@@ -12,6 +12,7 @@ namespace Choice.Chat.Api.ViewModels
             ReceiverId = message.Receiver?.Guid!;
             IconUri = message.Receiver?.IconUri!;
             CreationTime = message.CreationTime;
+            Type = (int)message.Type;
         }
 
         public int Id { get; }
@@ -19,6 +20,7 @@ namespace Choice.Chat.Api.ViewModels
         public string SenderId { get; }
         public string ReceiverId { get; }
         public string IconUri { get; }
+        public int Type { get; }
         public DateTime CreationTime { get; }
     }
 }

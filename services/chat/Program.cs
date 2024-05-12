@@ -1,4 +1,3 @@
-using Choice.Chat.Api.Extensions;
 using Choice.Chat.Api.Consumers;
 using Choice.Chat.Api.Hubs;
 using Choice.Chat.Api.Repositories;
@@ -28,7 +27,8 @@ namespace Choice.Chat.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSignalR();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddDbContext<ChatDdContext>(o => 
                 o.UseNpgsql(builder.Configuration["PostgreSqlSettings:ConnectionString"]));
             builder.Services.AddMassTransit(config =>
@@ -37,6 +37,9 @@ namespace Choice.Chat.Api
                 config.AddConsumer<OrderCreatedConsumer>();
                 config.AddConsumer<OrderStatusChangedConsumer>();
                 config.AddConsumer<UserEnrolledConsumer>();
+                config.AddConsumer<UserCreatedConsumer>();
+                config.AddConsumer<UserIconUriChangedConsumer>();
+                config.AddConsumer<UserDataChangedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -55,6 +58,18 @@ namespace Choice.Chat.Api
                     cfg.ReceiveEndpoint(EventBusConstants.UserEnrolledQueue, c =>
                     {
                         c.ConfigureConsumer<UserEnrolledConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.UserCreatedQueue, c =>
+                    {
+                        c.ConfigureConsumer<UserCreatedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.UserIconUriChangedQueue, c =>
+                    {
+                        c.ConfigureConsumer<UserIconUriChangedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.ChatUserNameChangedQueue, c =>
+                    {
+                        c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
                     });
                 });
             });
@@ -106,7 +121,6 @@ namespace Choice.Chat.Api
             });
 
             var app = builder.Build();
-            //app.MigrateDatabase();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

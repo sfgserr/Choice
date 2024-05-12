@@ -5,7 +5,7 @@ using MassTransit;
 
 namespace Choice.ReviewService.Api.Consumers
 {
-    public class AuthorIconUriChangedConsumer : IConsumer<UserIconUriChangenEvent>
+    public class AuthorIconUriChangedConsumer : IConsumer<UserIconUriChangedEvent>
     {
         private readonly ReviewContext _context;
 
@@ -14,9 +14,9 @@ namespace Choice.ReviewService.Api.Consumers
             _context = context;
         }
 
-        public async Task Consume(ConsumeContext<UserIconUriChangenEvent> context)
+        public async Task Consume(ConsumeContext<UserIconUriChangedEvent> context)
         {
-            UserIconUriChangenEvent @event = context.Message;
+            UserIconUriChangedEvent @event = context.Message;
 
             Author author = _context.Authors.FirstOrDefault(a => a.Guid == @event.Guid);
 

@@ -1,9 +1,9 @@
 ﻿
 namespace Choice.EventBus.Messages.Events
 {
-    public class UserIconUriChangenEvent
+    public class UserIconUriChangedEvent
     {
-        public UserIconUriChangenEvent(string guid, string iconUri)
+        public UserIconUriChangedEvent(string guid, string iconUri)
         {
             Guid = guid;
             IconUri = iconUri;

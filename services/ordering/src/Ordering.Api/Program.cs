@@ -95,6 +95,14 @@ namespace Choice.Ordering.Api
                     policy.RequireClaim("isDataFilled", "true");
                 });
                 o.AddPolicy("Client", policy => policy.RequireClaim("type", "Client"));
+
+                o.AddPolicy("Default", policy =>
+                {
+                    policy.RequireClaim("type", "Company", "Client");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+
+                o.DefaultPolicy = o.GetPolicy("Default")!;
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

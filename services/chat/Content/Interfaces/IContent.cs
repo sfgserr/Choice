@@ -1,10 +1,12 @@
 ﻿namespace Choice.Chat.Api.Content.Interfaces
 {
-    public interface IContent<T> where T : class
+    public interface IContent
     {
-        T GetContent();
+        object GetContent();
 
-        IContent<T> ChangeContent(Action<T> action);
+        void ChangeContent(Action<object> action);
+
+        bool Match(string propertyName, object value);
 
         string Content { get; }
     }

@@ -10,17 +10,22 @@ namespace Choice.Chat.Api.Infrastructure.Data
             Database.EnsureCreated();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<Message>()
+            builder.Entity<Message>()
                         .HasKey(m => m.Id);
 
-            modelBuilder.Entity<Message>()
+            builder.Entity<User>()
+                   .HasKey(u => u.Guid);
+
+            builder.Entity<Message>()
                         .HasOne(m => m.Receiver)
                         .WithMany()
                         .HasForeignKey(m => m.ReceiverId);
+
+            SeedData.Seed(builder);
         }
 
         public DbSet<Message> Messages { get; set; }

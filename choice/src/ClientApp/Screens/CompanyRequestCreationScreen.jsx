@@ -549,6 +549,8 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                             }
                             
                             await orderingService.createOrder(order);
+
+                            
                         }}>
                         <Text
                             style={styles.buttonText}>

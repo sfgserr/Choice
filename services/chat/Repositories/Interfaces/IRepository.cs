@@ -3,14 +3,10 @@ namespace Choice.Chat.Api.Repositories.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task Add(T message);
+        Task Add(T entity);
 
-        Task<T> Get(int id);
+        Task<IList<T>> GetAll();
 
-        Task<IList<T>> GetAll(string senderId, string receiverId);
-
-        void Update(T message);
-
-        Task<bool> Delete(int id);
+        void Update(T entity);
     }
 }

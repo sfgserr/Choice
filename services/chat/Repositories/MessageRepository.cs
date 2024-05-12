@@ -2,11 +2,10 @@
 using Choice.Chat.Api.Infrastructure.Data;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace Choice.Chat.Api.Repositories
 {
-    public sealed class MessageRepository : IRepository<Message>
+    public sealed class MessageRepository : IMessageRepository
     {
         private readonly ChatDdContext _context;
 
@@ -20,21 +19,31 @@ namespace Choice.Chat.Api.Repositories
             await _context.Messages.AddAsync(message);   
         }
 
-        public async Task<Message> Get(int id)
+        public async Task<Message?> Get(int id)
         {
             return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<Message> GetByOrderId(int orderId)
+        public async Task<Message?> GetByOrderId(int orderId)
         {
-            return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => m.Body.);
+            return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m => 
+                m.Type == MessageType.Order & m.Content.Match("OrderId", orderId));
         }
+
+        public async Task<Message?> GetByOrderRequestId(int orderRequestId)
+        {
+            return await _context.Messages.Include(m => m.Receiver).FirstOrDefaultAsync(m =>
+                m.Type == MessageType.Order & m.Content.Match("OrderRequestId", orderRequestId));
+        }
+
+        public async Task<IList<Message>> GetAll() => 
+            await _context.Messages.Include(m => m.Receiver).ToListAsync();
 
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
         {
             return await _context.Messages.Include(m => m.Receiver)
                                           .Where(m => m.SenderId == senderId || m.SenderId == receiverId 
-                                            && m.Receiver.Guid == receiverId || m.Receiver.Guid == senderId)
+                                            && m.ReceiverId == receiverId || m.ReceiverId == senderId)
                                           .ToListAsync();
         }
 

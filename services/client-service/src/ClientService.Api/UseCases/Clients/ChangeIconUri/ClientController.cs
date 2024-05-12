@@ -31,7 +31,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeIconUri
         void IOutputPort.Ok(Client client)
         {
             _viewModel = Ok(new ClientAdminViewModel(client));
-            _endPoint.Publish<UserIconUriChangenEvent>(new(client.Guid, client.IconUri));
+            _endPoint.Publish<UserIconUriChangedEvent>(new(client.Guid, client.IconUri));
         }
 
         void IOutputPort.Invalid()

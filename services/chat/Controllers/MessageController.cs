@@ -15,15 +15,15 @@ namespace Choice.Chat.Api.Controllers
     public sealed class MessageController : Controller
     {
         private readonly IHubContext<ChatHub> _hubContext;
-        private readonly IRepository<Message> _messageRepository;
+        private readonly IMessageRepository _messageRepository;
 
-        public MessageController(IHubContext<ChatHub> hubContext, IRepository<Message> messageRepository)
+        public MessageController(IHubContext<ChatHub> hubContext, IMessageRepository messageRepository)
         {
             _hubContext = hubContext;
             _messageRepository = messageRepository;
         }
 
-        [HttpPost("SendMessage")]
+        [HttpPost("Send")]
         public async Task<IActionResult> SendMessage(string text, string receiverId)
         {
             string id = User.FindFirstValue("id")!;
@@ -37,6 +37,25 @@ namespace Choice.Chat.Api.Controllers
             return Ok();
         }
 
+        [HttpPut("Read")]
+        public async Task<IActionResult> Read(int id)
+        {
+            Message? message = await _messageRepository.Get(id);
+
+            if (message is not null)
+            {
+                message.Read();
+
+                _messageRepository.Update(message);
+
+                await _hubContext.Clients.User(message.SenderId).SendAsync("Read", new { message.Id });
+
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
         [HttpGet("GetMessages")]
         public async Task<IActionResult> GetMessages(string receiverId)
         {
@@ -45,6 +64,16 @@ namespace Choice.Chat.Api.Controllers
             IList<Message> messages = await _messageRepository.GetAll(id, receiverId);
 
             return Ok(messages);
+        }
+
+        [HttpGet("GetChats")]
+        public async Task<IActionResult> GetChats()
+        {
+            string id = User.FindFirstValue("id")!;
+
+            IList<Message> messages = await _messageRepository.GetAll();
+
+            return Ok(messages.Where(m => m.SenderId == id || m.ReceiverId == id).Select(m => m.Receiver));
         }
     }
 }

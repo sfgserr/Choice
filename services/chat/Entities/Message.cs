@@ -1,28 +1,38 @@
-﻿
+﻿using Choice.Chat.Api.Content;
 using Choice.Chat.Api.Content.Interfaces;
-using Choice.Chat.Api.Models;
 
 namespace Choice.Chat.Api.Entities
 {
     public class Message
     {
-        private readonly IContent<Order> _orderContent;
-
         public Message(string senderId, string receiverId, string body, MessageType type)
         {
             SenderId = senderId;
             ReceiverId = receiverId;
-            Body = body;
             Type = type;
+            Content = type switch
+            {
+                MessageType.Order => new OrderContent(body),
+                _ => new DefaultContent(body)
+            };
         }
+
+        protected Message() { }
 
         public int Id { get; }
         public string SenderId { get; }
         public string ReceiverId { get; }
         public User? Receiver { get; set; }
-        public string Body { get; }
+        public string Body => Content.Content;
         public MessageType Type { get; }
+        public bool IsRead { get; private set; } = false;
         public DateTime CreationTime { get; } = DateTime.Now;
+        public IContent Content { get; }
+
+        public void Read()
+        {
+            IsRead = true;
+        }
     }
 
     public enum MessageType

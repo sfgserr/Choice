@@ -26,11 +26,15 @@ namespace Choice.Ordering.Domain.OrderEntity
         public int Deadline { get; private set; }
         public bool IsEnrolled { get; private set; } = false;
         public DateTime EnrollmentDate { get; private set; }
+        public bool IsDateConfirmed { get; private set; } = true;
         public IReadOnlyCollection<string> Reviews => _reviews.AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
 
-        public void SetEnrollmentDate(DateTime newDate) =>
+        public void SetEnrollmentDate(DateTime newDate)
+        {
             EnrollmentDate = newDate;
+            IsDateConfirmed = false;
+        }
 
         public void FinishOrder() =>
             Status = OrderStatus.Finished;

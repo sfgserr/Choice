@@ -4,7 +4,7 @@ namespace Choice.EventBus.Messages.Events
     public class OrderCreatedEvent : IntegrationEvent
     {
         public OrderCreatedEvent(int orderId, int orderRequestId, string senderGuid, string receiverId, int price,
-            int prepayment, int deadline, bool isEnrolled, DateTime enrollmentTime, string status)
+            int prepayment, int deadline, DateTime enrollmentTime)
         {
             OrderId = orderId;
             OrderRequestId = orderRequestId;
@@ -13,9 +13,7 @@ namespace Choice.EventBus.Messages.Events
             Price = price;
             Prepayment = prepayment;
             Deadline = deadline;
-            IsEnrolled = isEnrolled;
             EnrollmentTime = enrollmentTime;
-            Status = status;
         }
 
         public int OrderId { get; }
@@ -27,6 +25,6 @@ namespace Choice.EventBus.Messages.Events
         public int Deadline { get; }
         public bool IsEnrolled { get; } = false;
         public DateTime EnrollmentTime { get; }
-        public string Status { get; }
+        public int Status { get; } = 1;
     }
 }

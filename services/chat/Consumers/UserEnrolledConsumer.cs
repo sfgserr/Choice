@@ -1,5 +1,6 @@
 ﻿using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Hubs;
+using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
@@ -9,10 +10,10 @@ namespace Choice.Chat.Api.Consumers
 {
     public class UserEnrolledConsumer : IConsumer<UserEnrolledEvent>
     {
-        private readonly IRepository<OrderMessage> _repository;
+        private readonly IMessageRepository _repository;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public UserEnrolledConsumer(IRepository<OrderMessage> repository, IHubContext<ChatHub> hubContext)
+        public UserEnrolledConsumer(IMessageRepository repository, IHubContext<ChatHub> hubContext)
         {
             _repository = repository;
             _hubContext = hubContext;
@@ -22,13 +23,18 @@ namespace Choice.Chat.Api.Consumers
         {
             UserEnrolledEvent @event = context.Message;
 
-            OrderMessage order = await _repository.Get(@event.OrderId);
+            Message message = (await _repository.GetByOrderId(@event.OrderId))!;
 
-            order.Enroll();
+            message.Content.ChangeContent(o =>
+            {
+                Order order = (Order)o;
 
-            await _repository.Update(order);
+                order.Enroll();
+            });
 
-            await _hubContext.Clients.User(order.ReceiverId).SendAsync("Enrolled", new { order.OrderId });
+            _repository.Update(message);
+
+            await _hubContext.Clients.User(message.SenderId).SendAsync("Enrolled", new { message });
         }
     }
 }
