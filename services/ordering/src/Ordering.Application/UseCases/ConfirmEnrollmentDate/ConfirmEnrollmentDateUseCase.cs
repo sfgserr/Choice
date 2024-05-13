@@ -1,32 +1,28 @@
 ﻿using Choice.Application.Services;
 using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.CancelEnrollment
+namespace Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate
 {
-    public class CancelEnrollmentUseCase : ICancelEnrollmentUseCase
+    public sealed class ConfirmEnrollmentDateUseCase : IConfirmEnrollmentDateUseCase
     {
         private readonly IOrderRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly Notification _notification;
-        private readonly IUserService _userService;
 
         private IOutputPort _outputPort;
 
-        public CancelEnrollmentUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification, IUserService userService)
+        public ConfirmEnrollmentDateUseCase(IOrderRepository repository, IUnitOfWork unitOfWork, Notification notification)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _notification = notification;
-            _userService = userService;
 
-            _outputPort = new CancelEnrollmentPresenter();
+            _outputPort = new ConfirmEnrollmentDatePresenter();
         }
 
-        public async Task Execute(int orderId)
+        public async Task Execute(int id)
         {
-            string id = _userService.GetUserId();
-
-            Order order = await _repository.GetOrder(orderId);
+            Order order = await _repository.GetOrder(id);
 
             if (order is null)
             {
@@ -34,19 +30,14 @@ namespace Choice.Ordering.Application.UseCases.CancelEnrollment
                 return;
             }
 
-            if (order.ClientId != id && order.CompanyId != id)
-            {
-                _notification.Add(nameof(id), "You don't have such order");
-            }
-
             if (order.Status != OrderStatus.Active)
             {
                 _notification.Add(nameof(order), "Order is not active");
             }
 
-            if (!order.IsEnrolled)
+            if (order.IsDateConfirmed)
             {
-                _notification.Add(nameof(order), "You are not enrolled yet");
+                _notification.Add(nameof(order), "Enrollment date already confirmed");
             }
 
             if (_notification.IsInvalid)
@@ -55,14 +46,14 @@ namespace Choice.Ordering.Application.UseCases.CancelEnrollment
                 return;
             }
 
-            await CancelEnrollment(order);
+            await ConfirmEnrollmentDate(order);
 
-            _outputPort.Ok(order, id != order.CompanyId ? order.CompanyId : order.ClientId);
+            _outputPort.Ok(order);
         }
 
-        private async Task CancelEnrollment(Order order)
+        private async Task ConfirmEnrollmentDate(Order order)
         {
-            order.CancelEnrollment();
+            order.ConfirmDate();
 
             _repository.Update(order);
 

@@ -1,9 +1,10 @@
 import * as KeyChain from 'react-native-keychain';
+import env from '../env';
 
 const get = async () => {
     const token = await KeyChain.getGenericPassword();
     
-    return await fetch('http://192.168.0.100/api/Company/Get', {
+    return await fetch(`${env.api_url}/api/Company/Get`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -17,7 +18,7 @@ const get = async () => {
 const fillCompanyData = async (data) => {
     const token = await KeyChain.getGenericPassword();
     
-    return await fetch('http://192.168.0.100/api/Company/FillCompanyData', {
+    return await fetch(`${env.api_url}/api/Company/FillCompanyData`, {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: {

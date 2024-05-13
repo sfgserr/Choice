@@ -34,7 +34,7 @@ namespace Choice.Chat.Api.Consumers
 
             _repository.Update(message);
 
-            await _context.Clients.User(message.ReceiverId).SendAsync("StatusChanged", new { message });
+            await _context.Clients.User(@event.ReceiverId).SendAsync("StatusChanged", new { message });
         }
     }
 }

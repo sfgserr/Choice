@@ -34,8 +34,8 @@ namespace Choice.Ordering.Api.UseCases.CreateOrder
             _endPoint.Publish(new OrderCreatedEvent(
                 order.Id,
                 order.OrderRequestId,
-                order.SenderId, 
-                order.ReceiverId, 
+                order.CompanyId, 
+                order.ClientId, 
                 order.Price, 
                 order.Prepayment, 
                 order.Deadline, 

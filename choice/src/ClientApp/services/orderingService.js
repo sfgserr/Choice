@@ -1,9 +1,10 @@
 import * as KeyChain from 'react-native-keychain';
+import env from '../env';
 
 const createOrder = async (order) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch('http://192.168.0.100/api/Order/Create', {
+    return await fetch(`${env.api_url}/api/Order/Create`, {
         method: 'POST',
         body: JSON.stringify(order),
         headers: {

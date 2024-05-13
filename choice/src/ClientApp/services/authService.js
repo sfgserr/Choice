@@ -1,11 +1,12 @@
 import * as KeyChain from 'react-native-keychain';
 import { jwtDecode } from 'jwt-decode';
 import { decode } from "base-64";
+import env from '../env';
 
 global.atob = decode;
 
 const register = async (name, email, phone, street, city, password, userType) => {
-    return await fetch(`http://10.0.2.2/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}`, {
+    return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -21,7 +22,7 @@ const register = async (name, email, phone, street, city, password, userType) =>
 }
 
 const loginByEmail = async (email, password) => {
-    return await fetch(`http://10.0.2.2/api/Auth/Login?email=${email}&password=${password}`, {
+    return await fetch(`${env.auth_url}/api/Auth/Login?email=${email}&password=${password}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -53,7 +54,7 @@ const loginByEmail = async (email, password) => {
 }
 
 const loginByPhone = async (phone) => {
-    return await fetch(`http://10.0.2.2/api/Auth/LoginByPhone?phone=${phone}`, {
+    return await fetch(`${env.auth_url}/api/Auth/LoginByPhone?phone=${phone}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -64,7 +65,7 @@ const loginByPhone = async (phone) => {
 }
 
 const verifyCode = async (phone, code) => {
-    return await fetch(`http://10.0.2.2/api/Auth/Verify?phone=${phone}&code=${code}`, {
+    return await fetch(`${env.auth_url}/api/Auth/Verify?phone=${phone}&code=${code}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -88,7 +89,7 @@ const verifyCode = async (phone, code) => {
 const changePassword = async (currentPassword, newPassword) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://10.0.2.2/api/Auth/ChangePassword?currentPassword=${currentPassword}&newPassword=${newPassword}`, {
+    return await fetch(`${env.auth_url}/api/Auth/ChangePassword?currentPassword=${currentPassword}&newPassword=${newPassword}`, {
         method: 'PUT',
         headers: {
             Accept: 'application/json',

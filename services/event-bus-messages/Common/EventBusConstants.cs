@@ -6,6 +6,7 @@ namespace Choice.EventBus.Messages.Common
         public const string OrderCreatedQueue = "ordering.order.created";
         public const string UserEnrolledQueue = "ordering.order.enrolled";
         public const string OrderEnrollmentDateChangedQueue = "ordering.order.date.changed";
+        public const string OrderEnrollmentDateConfirmedQueue = "ordering.order.confirmed";
         public const string ChatUserNameChangedQueue = "auth-service.chatuser.changed";
         public const string UserDataChangedQueue = "auth-service.user.changed";
         public const string AuthorDataChangedQueue = "auth-service.author.changed";

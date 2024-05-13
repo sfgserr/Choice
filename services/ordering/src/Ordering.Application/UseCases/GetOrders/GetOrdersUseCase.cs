@@ -24,7 +24,7 @@ namespace Choice.Ordering.Application.UseCases.GetOrders
 
             IList<Order> orders = await _repository.GetOrders();
 
-            _outputPort.Ok(orders.Where(o => o.SenderId == id || o.ReceiverId == id).ToList());
+            _outputPort.Ok(orders.Where(o => o.CompanyId == id || o.ClientId == id).ToList());
         }
 
         public void SetOutputPort(IOutputPort outputPort)

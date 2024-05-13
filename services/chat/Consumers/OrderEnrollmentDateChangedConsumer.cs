@@ -30,7 +30,7 @@ namespace Choice.Chat.Api.Consumers
             {
                 Order content = (Order)o;
 
-                content.ChangeEnrollmentTime(@event.EnrollmentDate);
+                content.ChangeEnrollmentTime(@event.EnrollmentDate, message.ReceiverId != @event.ReceiverId);
             });
 
             _repository.Update(message);
@@ -41,7 +41,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Add(orderMessage);
 
-            await _hubContext.Clients.User(orderMessage.ReceiverId)
+            await _hubContext.Clients.User(@event.ReceiverId)
                 .SendAsync("EnrollmentChanged", orderMessage, (Order)message.Content.GetContent());
         }
     }

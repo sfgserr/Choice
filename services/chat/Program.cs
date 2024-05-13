@@ -40,6 +40,7 @@ namespace Choice.Chat.Api
                 config.AddConsumer<UserCreatedConsumer>();
                 config.AddConsumer<UserIconUriChangedConsumer>();
                 config.AddConsumer<UserDataChangedConsumer>();
+                config.AddConsumer<OrderEnrollmentDateConfirmedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -70,6 +71,10 @@ namespace Choice.Chat.Api
                     cfg.ReceiveEndpoint(EventBusConstants.ChatUserNameChangedQueue, c =>
                     {
                         c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.OrderEnrollmentDateConfirmedQueue, c =>
+                    {
+                        c.ConfigureConsumer<OrderEnrollmentDateConfirmedConsumer>(ctx);
                     });
                 });
             });

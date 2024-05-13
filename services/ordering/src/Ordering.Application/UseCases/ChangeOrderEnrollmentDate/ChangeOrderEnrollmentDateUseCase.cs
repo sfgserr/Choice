@@ -34,7 +34,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
                 return;
             }
 
-            if (order.ReceiverId != id && order.SenderId != id)
+            if (order.ClientId != id && order.CompanyId != id)
             {
                 _notification.Add(nameof(id), "You don't have such order");
             }
@@ -55,14 +55,14 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
                 return;
             }
 
-            await ChangeOrderEnrollmentDate(order, newDate);
+            await ChangeOrderEnrollmentDate(order, newDate, id);
 
-            _outputPort.Ok(order);
+            _outputPort.Ok(order, id != order.ClientId ? order.ClientId : order.CompanyId);
         }
 
-        private async Task ChangeOrderEnrollmentDate(Order order, DateTime newDate)
+        private async Task ChangeOrderEnrollmentDate(Order order, DateTime newDate, string id)
         {
-            order.SetEnrollmentDate(newDate);
+            order.SetEnrollmentDate(newDate, order.ClientId == id);
 
             _repository.Update(order);
 

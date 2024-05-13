@@ -34,7 +34,7 @@ namespace Choice.Ordering.Application.UseCases.Enroll
                 return;
             }
 
-            if (order.ReceiverId != id)
+            if (order.ClientId != id)
             {
                 _notification.Add(nameof(id), "You don't have such order");
             }

@@ -5,6 +5,7 @@ import {
     Image,
     Text
 } from 'react-native';
+import env from "../env";
 
 const Chat = ({navigation, chat}) => {
     const { width, height } = Dimensions.get('screen');
@@ -17,7 +18,7 @@ const Chat = ({navigation, chat}) => {
                     width: 40,
                     height: 40
                 }}
-                source={{uri: `http://192.168.0.100/api/objects/${chat.iconUri}`}}/>
+                source={{uri: `${env.api_url}/api/objects/${chat.iconUri}`}}/>
 
             <View
                 style={{flexDirection: 'column'}}>

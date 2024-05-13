@@ -3,6 +3,8 @@ using Choice.Ordering.Application.UseCases.CreateOrder;
 using Choice.Ordering.Application.UseCases.Enroll;
 using Choice.Ordering.Application.UseCases.FinishOrder;
 using Choice.Ordering.Application.UseCases.CancelEnrollment;
+using Choice.Ordering.Application.UseCases.GetOrders;
+using Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate;
 using Choice.Ordering.Domain.OrderEntity;
 using Choice.Ordering.Infrastructure.Data;
 using Choice.Ordering.Infrastructure.Data.Repositories;
@@ -15,8 +17,6 @@ using System.Text;
 using Choice.Application.Services;
 using Choice.Infrastructure.Data;
 using Choice.Infrastructure.Authentication;
-using System.Security.Claims;
-using Choice.Ordering.Application.UseCases.GetOrders;
 
 namespace Choice.Ordering.Api
 {
@@ -36,6 +36,7 @@ namespace Choice.Ordering.Api
             builder.Services.Decorate<ICreateOrderUseCase, CreateOrderValidationUseCase>();
             builder.Services.AddScoped<IEnrollUseCase, EnrollUseCase>();
             builder.Services.AddScoped<IFinishOrderUseCase, FinishOrderUseCase>();
+            builder.Services.AddScoped<IConfirmEnrollmentDateUseCase, ConfirmEnrollmentDateUseCase>();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserService, UserService>();

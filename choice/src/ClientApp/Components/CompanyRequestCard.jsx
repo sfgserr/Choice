@@ -8,6 +8,7 @@ import {
 import categoryStore from "../services/categoryStore";
 import { Icon } from "react-native-elements";
 import styles from "../Styles";
+import env from "../env";
 
 const CompanyRequestCard = ({orderRequest, navigation, button}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
@@ -186,7 +187,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                     flexDirection: 'row'
                 }}>
                 <Image
-                    source={{uri: `${baseUrl}/${orderRequest.client.iconUri}`}}
+                    source={{uri: `${env.api_url}/${orderRequest.client.iconUri}`}}
                     style={{
                         width: 40,
                         height: 40,

@@ -34,7 +34,7 @@ namespace Choice.Ordering.Application.UseCases.FinishOrder
                 return;
             }
 
-            if (order.ReceiverId != id && order.SenderId != id)
+            if (order.ClientId != id && order.CompanyId != id)
             {
                 _notification.Add(nameof(id), "You don't have such order");
             }
@@ -57,7 +57,7 @@ namespace Choice.Ordering.Application.UseCases.FinishOrder
 
             await FinishOrder(order);
 
-            _outputPort.Ok(order);
+            _outputPort.Ok(order, id != order.CompanyId ? order.CompanyId : order.ClientId);
         }
 
         private async Task FinishOrder(Order order)

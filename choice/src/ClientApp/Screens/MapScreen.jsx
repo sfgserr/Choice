@@ -14,6 +14,7 @@ import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
 import userStore from '../services/userStore.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
+import env from '../env.js';
 
 export default function MapScreen({ navigation, route }) {
     const [category, setCategory] = React.useState({
@@ -86,7 +87,7 @@ export default function MapScreen({ navigation, route }) {
                 zoomEnabled={false}
                 rotateEnabled={false}
                 style={mapStyles.map}>
-                <CustomMarker imageUri={`http://192.168.0.100/api/objects/${user.iconUri}`}
+                <CustomMarker imageUri={`${env.api_url}/api/objects/${user.iconUri}`}
                               coordinate={{
                                 latitude: coords[0] == null ? 20 : coords[0],
                                 longitude: coords[1] == null ? 20 : coords[1]

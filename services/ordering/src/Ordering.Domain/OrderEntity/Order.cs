@@ -6,12 +6,12 @@ namespace Choice.Ordering.Domain.OrderEntity
     {
         private readonly List<string> _reviews = new();
 
-        public Order(int orderRequestId, string senderId, string receiverId, int price, int prepayment,
+        public Order(int orderRequestId, string companyId, string clientId, int price, int prepayment,
             int deadline, DateTime enrollmentDate)
         {
             OrderRequestId = orderRequestId;
-            SenderId = senderId;
-            ReceiverId = receiverId;
+            CompanyId = companyId;
+            ClientId = clientId;
             Price = price;
             Prepayment = prepayment;
             Deadline = deadline;
@@ -19,8 +19,8 @@ namespace Choice.Ordering.Domain.OrderEntity
         }
 
         public int OrderRequestId { get; private set; }
-        public string SenderId { get; private set; }
-        public string ReceiverId { get; private set; }
+        public string CompanyId { get; private set; }
+        public string ClientId { get; private set; }
         public int Price { get; private set; }
         public int Prepayment { get; private set; }
         public int Deadline { get; private set; }
@@ -30,10 +30,15 @@ namespace Choice.Ordering.Domain.OrderEntity
         public IReadOnlyCollection<string> Reviews => _reviews.AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
 
-        public void SetEnrollmentDate(DateTime newDate)
+        public void SetEnrollmentDate(DateTime newDate, bool clientChanged)
         {
             EnrollmentDate = newDate;
-            IsDateConfirmed = false;
+            IsDateConfirmed = !clientChanged;
+        }
+
+        public void ConfirmDate()
+        {
+            IsDateConfirmed = true;
         }
 
         public void FinishOrder() =>

@@ -1,13 +1,12 @@
 ﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.FinishOrder
+namespace Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate
 {
-    public sealed class FinishOrderPresenter : IOutputPort
+    public sealed class ConfirmEnrollmentDatePresenter : IOutputPort
     {
         public bool IsInvalid { get; set; }
         public bool IsNotFound { get; set; }
         public Order? Order { get; set; }
-        public string? ReceiverId { get; set; }
 
         public void Invalid()
         {
@@ -19,10 +18,9 @@ namespace Choice.Ordering.Application.UseCases.FinishOrder
             IsNotFound = true;
         }
 
-        public void Ok(Order order, string receiverId)
+        public void Ok(Order order)
         {
             Order = order;
-            ReceiverId = receiverId;
         }
     }
 }

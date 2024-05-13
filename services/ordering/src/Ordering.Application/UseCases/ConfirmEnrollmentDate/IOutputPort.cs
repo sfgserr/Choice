@@ -1,10 +1,10 @@
 ﻿using Choice.Ordering.Domain.OrderEntity;
 
-namespace Choice.Ordering.Application.UseCases.FinishOrder
+namespace Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate
 {
     public interface IOutputPort
     {
-        void Ok(Order order, string receiverId);
+        void Ok(Order order);
 
         void NotFound();
 

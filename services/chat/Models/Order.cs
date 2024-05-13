@@ -24,11 +24,18 @@
         public DateTime EnrollmentTime { get; private set; }
         public int Status { get; private set; }
         public bool IsActive { get; private set; } = true;
+        public bool IsDateConfirmed { get; private set; } = true;
 
-        public void ChangeEnrollmentTime(DateTime newTime)
+        public void ChangeEnrollmentTime(DateTime newTime, bool clientChanged)
         {
             EnrollmentTime = newTime;
             IsActive = false;
+            IsDateConfirmed = !clientChanged;
+        }
+
+        public void ConfirmDate()
+        {
+            IsDateConfirmed = true;
         }
 
         public void ChangeStatus(int status)

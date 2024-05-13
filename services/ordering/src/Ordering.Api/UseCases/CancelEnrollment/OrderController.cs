@@ -37,12 +37,10 @@ namespace Choice.Ordering.Api.UseCases.CancelEnrollment
             _viewModel = NotFound();
         }
 
-        void IOutputPort.Ok(Order order)
+        void IOutputPort.Ok(Order order, string receiverId)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderStatusChangedEvent
-                (order.OrderRequestId, 
-                 (int)order.Status));
+            _endPoint.Publish(new OrderStatusChangedEvent(order.OrderRequestId, (int)order.Status, receiverId));
         }
 
         [HttpPut("Cancel")]

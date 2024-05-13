@@ -1,35 +1,30 @@
 ﻿using Choice.Application.Services;
-using Choice.EventBus.Messages.Events;
-using Choice.Ordering.Application.UseCases.FinishOrder;
+using Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate;
 using Choice.Ordering.Domain.OrderEntity;
-using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Choice.Ordering.Api.UseCases.FinishOrder
+namespace Choice.Ordering.Api.UseCases.ConfirmEnrollmentDate
 {
     [ApiController]
+    [Authorize("Company")]
     [Route("api/[controller]")]
-    [Authorize]
-    public sealed class OrderController : Controller, IOutputPort
+    public class OrderController : Controller, IOutputPort
     {
-        private readonly IFinishOrderUseCase _useCase;
+        private readonly IConfirmEnrollmentDateUseCase _useCase;
         private readonly Notification _notification;
-        private readonly IPublishEndpoint _endPoint;
 
         private IActionResult _viewModel;
 
-        public OrderController(IFinishOrderUseCase useCase, Notification notification, IPublishEndpoint endPoint)
+        public OrderController(IConfirmEnrollmentDateUseCase useCase, Notification notification)
         {
             _useCase = useCase;
             _notification = notification;
-            _endPoint = endPoint;
         }
 
-        void IOutputPort.Ok(Order order, string receiverId)
+        void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderStatusChangedEvent(order.OrderRequestId, (int)order.Status, receiverId));
         }
 
         void IOutputPort.NotFound()
@@ -43,8 +38,8 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
             _viewModel = BadRequest(problemDetails);
         }
 
-        [HttpPut("Finish")]
-        public async Task<IActionResult> FinishOrder(int orderId)
+        [HttpPut("ConfirmEnrollmentDate")]
+        public async Task<IActionResult> ConfirmEnrollmentDate(int orderId)
         {
             _useCase.SetOutputPort(this);
 

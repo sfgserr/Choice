@@ -5,6 +5,7 @@ namespace Choice.Ordering.Application.UseCases.CancelEnrollment
     public class CancelEnrollmentPresenter : IOutputPort
     {
         public Order? Order { get; set; }
+        public string? ReceiverId { get; set; }
         public bool IsInvalid { get; set; }
         public bool IsNotFound { get; set; }
 
@@ -18,9 +19,10 @@ namespace Choice.Ordering.Application.UseCases.CancelEnrollment
             IsNotFound = true;
         }
 
-        public void Ok(Order order)
+        public void Ok(Order order, string receiverId)
         {
             Order = order;
+            ReceiverId = receiverId;
         }
     }
 }

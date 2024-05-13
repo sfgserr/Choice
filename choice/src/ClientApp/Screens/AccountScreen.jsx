@@ -17,6 +17,7 @@ import blobService from '../services/blobService';
 import * as ImagePicker from 'react-native-image-picker';
 import { AuthContext } from '../App';
 import { Icon } from 'react-native-elements';
+import env from '../env';
 
 export default function AccountScreen({ navigation }) {
     const user = userStore.get();
@@ -25,7 +26,7 @@ export default function AccountScreen({ navigation }) {
 
     const { width, height } =  Dimensions.get('screen');
 
-    const [iconUri, setIconUri] = React.useState(`http://192.168.0.100/api/objects/${user.iconUri}`);
+    const [iconUri, setIconUri] = React.useState(`${env.api_url}/api/objects/${user.iconUri}`);
     const [disable, setDisable] = React.useState(true);
     const [email, setEmail] = React.useState(user.email);
     const [name, setName] = React.useState(user.name);

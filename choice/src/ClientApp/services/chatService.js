@@ -1,9 +1,10 @@
 import * as KeyChain from 'react-native-keychain';
+import env from '../env';
 
 const getMessages = async (receiverId) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://192.168.0.100/api/Message/GetMessages?receiverId=${receiverId}`, {
+    return await fetch(`${env.api_url}/api/Message/GetMessages?receiverId=${receiverId}`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -29,7 +30,7 @@ const getMessages = async (receiverId) => {
 const getChats = async () => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`http://192.168.0.100/api/Message/GetChats`, {
+    return await fetch(`${env.api_url}/api/Message/GetChats`, {
         method: 'GET',
         headers: {
             Accept: 'application/json',
