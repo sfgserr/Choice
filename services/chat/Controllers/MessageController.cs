@@ -32,7 +32,7 @@ namespace Choice.Chat.Api.Controllers
 
             await _messageRepository.Add(message);
 
-            await _hubContext.Clients.User(message.ReceiverId).SendAsync("OnSend", new MessageViewModel(message));
+            await _hubContext.Clients.Client(message.ReceiverId).SendAsync("onSend", new MessageViewModel(message));
 
             return Ok();
         }
@@ -48,7 +48,7 @@ namespace Choice.Chat.Api.Controllers
 
                 _messageRepository.Update(message);
 
-                await _hubContext.Clients.User(message.SenderId).SendAsync("Read", new { message.Id });
+                await _hubContext.Clients.Client(message.SenderId).SendAsync("read", new { message.Id });
 
                 return Ok();
             }

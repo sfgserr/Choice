@@ -2,6 +2,7 @@
 using Choice.Chat.Api.Hubs;
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
+using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
@@ -10,13 +11,13 @@ namespace Choice.Chat.Api.Consumers
 {
     public class OrderStatusChangedConsumer : IConsumer<OrderStatusChangedEvent>
     {
-        private readonly IHubContext<ChatHub> _context;
         private readonly IMessageRepository _repository;
+        private readonly ChatService _chatService;
 
-        public OrderStatusChangedConsumer(IHubContext<ChatHub> context, IMessageRepository repository)
+        public OrderStatusChangedConsumer(IMessageRepository repository, ChatService chatService)
         {
-            _context = context;
             _repository = repository;
+            _chatService = chatService;
         }
 
         public async Task Consume(ConsumeContext<OrderStatusChangedEvent> context)
@@ -32,9 +33,9 @@ namespace Choice.Chat.Api.Consumers
                 order.ChangeStatus(@event.OrderStatus);
             });
 
-            _repository.Update(message);
+            await _repository.Update(message);
 
-            await _context.Clients.User(@event.ReceiverId).SendAsync("StatusChanged", new { message });
+            await _chatService.SendMessage(@event.ReceiverId, "statusChanged", message);
         }
     }
 }

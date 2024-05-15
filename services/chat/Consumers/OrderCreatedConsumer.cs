@@ -1,23 +1,22 @@
 ﻿using Choice.Chat.Api.Entities;
-using Choice.Chat.Api.Hubs;
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
+using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 
 namespace Choice.Chat.Api.Consumers
 {
     public class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
     {
-        private readonly IHubContext<ChatHub> _context;
         private readonly IMessageRepository _repository;
+        private readonly ChatService _chatService;
 
-        public OrderCreatedConsumer(IHubContext<ChatHub> context, IMessageRepository repository)
+        public OrderCreatedConsumer(IMessageRepository repository, ChatService chatService)
         {
-            _context = context;
             _repository = repository;
+            _chatService = chatService;
         }
 
         public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
@@ -38,7 +37,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Add(message);
 
-            await _context.Clients.User(@event.ReceiverId).SendAsync("OrderCreated", message);
+            await _chatService.SendMessage(message.ReceiverId, "orderCreated", message);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Choice.Chat.Api.Repositories
         public async Task Add(User user)
         {
             await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IList<User>> GetAll() =>
@@ -25,9 +26,10 @@ namespace Choice.Chat.Api.Repositories
         public async Task<User> Get(string guid) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Guid == guid);
 
-        public void Update(User user)
+        public async Task Update(User user)
         {
             _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> Delete(string id)

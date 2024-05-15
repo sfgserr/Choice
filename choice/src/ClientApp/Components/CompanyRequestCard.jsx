@@ -12,7 +12,6 @@ import env from "../env";
 
 const CompanyRequestCard = ({orderRequest, navigation, button}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
-    const baseUrl = 'http://192.168.0.100/api/objects';
 
     return (
         <View
@@ -187,7 +186,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                     flexDirection: 'row'
                 }}>
                 <Image
-                    source={{uri: `${env.api_url}/${orderRequest.client.iconUri}`}}
+                    source={{uri: `${env.api_url}/api/objects/${orderRequest.client.iconUri}`}}
                     style={{
                         width: 40,
                         height: 40,

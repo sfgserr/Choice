@@ -7,6 +7,6 @@ namespace Choice.Chat.Api.Repositories.Interfaces
 
         Task<IList<T>> GetAll();
 
-        void Update(T entity);
+        Task Update(T entity);
     }
 }

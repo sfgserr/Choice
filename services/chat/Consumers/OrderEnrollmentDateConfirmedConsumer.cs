@@ -1,22 +1,21 @@
 ﻿using Choice.Chat.Api.Entities;
-using Choice.Chat.Api.Hubs;
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
+using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Choice.Chat.Api.Consumers
 {
     public class OrderEnrollmentDateConfirmedConsumer : IConsumer<OrderEnrollmentDateConfirmedEvent>
     {
         private readonly IMessageRepository _repository;
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly ChatService _chatService;
 
-        public OrderEnrollmentDateConfirmedConsumer(IMessageRepository repository, IHubContext<ChatHub> hubContext)
+        public OrderEnrollmentDateConfirmedConsumer(IMessageRepository repository, ChatService chatService)
         {
             _repository = repository;
-            _hubContext = hubContext;
+            _chatService = chatService;
         }
 
         public async Task Consume(ConsumeContext<OrderEnrollmentDateConfirmedEvent> context)
@@ -32,9 +31,9 @@ namespace Choice.Chat.Api.Consumers
                 content.ConfirmDate();
             });
 
-            _repository.Update(message);
+            await _repository.Update(message);
 
-            await _hubContext.Clients.User(message.ReceiverId).SendAsync("Confirmed", message);
+            await _chatService.SendMessage(message.ReceiverId, "confirmed", message);
         }
     }
 }

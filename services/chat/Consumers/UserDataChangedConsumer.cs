@@ -22,7 +22,7 @@ namespace Choice.Chat.Api.Consumers
 
             user.ChangeName(@event.Name);
 
-            _repository.Update(user);
+            await _repository.Update(user);
         }
     }
 }

@@ -38,6 +38,8 @@ import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
 import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
 import * as SignalR from '@microsoft/signalr'
+import env from './env';
+import 'react-native-url-polyfill/auto';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -149,22 +151,23 @@ function ClientTab() {
 }
 
 function App() {
-  let connection;
-
   const authContext = React.useMemo(() => ({
     signIn: async (userType) => {
       await categoryStore.retrieveData();
-      const token = await KeyChain.getGenericPassword();
       setUserType(userType);
       setIsSignedIn(true);
 
-      connection = new SignalR.HubConnectionBuilder()
-        .withUrl('http://192.168.0.100/chat', { accessTokenFactory: token.password })
+      const key = await KeyChain.getGenericPassword();
+
+      let connection = new SignalR.HubConnectionBuilder()
+        .withUrl(`${env.api_url}/chat`, { accessTokenFactory: () => key.password })
         .build();
 
-      connection.on("OrderCreated", data => {
-        console.log(data);  
-      })
+      connection.on("orderCreated", message => {
+        console.log(message);
+      });
+
+      await connection.start();
     },
     signOut: () => {
       userStore.logout();

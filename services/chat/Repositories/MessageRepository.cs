@@ -16,7 +16,8 @@ namespace Choice.Chat.Api.Repositories
 
         public async Task Add(Message message)
         {
-            await _context.Messages.AddAsync(message);   
+            await _context.Messages.AddAsync(message);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Message?> Get(int id)
@@ -47,9 +48,10 @@ namespace Choice.Chat.Api.Repositories
                                           .ToListAsync();
         }
 
-        public void Update(Message message)
+        public async Task Update(Message message)
         {
-            _context.Messages.Update(message);   
+            _context.Messages.Update(message);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> Delete(int id)

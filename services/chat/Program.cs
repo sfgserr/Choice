@@ -11,6 +11,7 @@ using System.Text;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Infrastructure.Data;
+using Choice.Chat.Api.Services;
 
 namespace Choice.Chat.Api
 {
@@ -27,6 +28,7 @@ namespace Choice.Chat.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSignalR();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<ChatService>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddDbContext<ChatDdContext>(o => 
