@@ -1,11 +1,10 @@
 ﻿using Choice.Chat.Api.Entities;
-using Choice.Chat.Api.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.ViewModels;
+using Choice.Chat.Api.Services;
 
 namespace Choice.Chat.Api.Controllers
 {
@@ -14,13 +13,15 @@ namespace Choice.Chat.Api.Controllers
     [Authorize]
     public sealed class MessageController : Controller
     {
-        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly ChatService _chatService;
         private readonly IMessageRepository _messageRepository;
+        private readonly IUserRepository _userRepository;
 
-        public MessageController(IHubContext<ChatHub> hubContext, IMessageRepository messageRepository)
+        public MessageController(IMessageRepository messageRepository, ChatService chatService, IUserRepository userRepository)
         {
-            _hubContext = hubContext;
             _messageRepository = messageRepository;
+            _chatService = chatService;
+            _userRepository = userRepository;
         }
 
         [HttpPost("Send")]
@@ -32,7 +33,7 @@ namespace Choice.Chat.Api.Controllers
 
             await _messageRepository.Add(message);
 
-            await _hubContext.Clients.Client(message.ReceiverId).SendAsync("onSend", new MessageViewModel(message));
+            await _chatService.SendMessage(message.ReceiverId, "onSend", message);
 
             return Ok();
         }
@@ -46,9 +47,9 @@ namespace Choice.Chat.Api.Controllers
             {
                 message.Read();
 
-                _messageRepository.Update(message);
+                await _messageRepository.Update(message);
 
-                await _hubContext.Clients.Client(message.SenderId).SendAsync("read", new { message.Id });
+                await _chatService.SendMessage(message.SenderId,"read", message);
 
                 return Ok();
             }
@@ -69,11 +70,34 @@ namespace Choice.Chat.Api.Controllers
         [HttpGet("GetChats")]
         public async Task<IActionResult> GetChats()
         {
-            string id = User.FindFirstValue("id")!;
+            string userId = User.FindFirstValue("id")!;
 
             IList<Message> messages = await _messageRepository.GetAll();
 
-            return Ok(messages.Where(m => m.SenderId == id || m.ReceiverId == id).Select(m => m.Receiver));
+            IEnumerable<string> ids = messages.Where(m => m.SenderId == userId || m.ReceiverId == userId)
+                                .SelectMany(m => new[] { m.SenderId, m.ReceiverId })
+                                .Distinct()
+                                .Where(i => i != userId);
+
+            List<ChatViewModel> chats = [];
+
+            foreach (string id in ids) 
+            {
+                User user = (await _userRepository.Get(id))!;
+
+                Message lastMessage = messages.Where(m => (m.SenderId == id || m.ReceiverId == id) || 
+                                      (m.SenderId == userId || m.ReceiverId == userId)).Last();
+
+                chats.Add(new ChatViewModel(user.Name, 
+                                            user.IconUri, 
+                                            lastMessage.Type == MessageType.Text ? lastMessage.Body : "Заказ", 
+                                            id, 
+                                            lastMessage.IsRead, 
+                                            lastMessage.CreationTime, 
+                                            lastMessage.ReceiverId == userId));
+            }
+
+            return Ok(chats);
         }
     }
 }

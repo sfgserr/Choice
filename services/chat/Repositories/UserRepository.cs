@@ -23,7 +23,7 @@ namespace Choice.Chat.Api.Repositories
         public async Task<IList<User>> GetAll() =>
             await _context.Users.ToListAsync();
 
-        public async Task<User> Get(string guid) =>
+        public async Task<User?> Get(string guid) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Guid == guid);
 
         public async Task Update(User user)
