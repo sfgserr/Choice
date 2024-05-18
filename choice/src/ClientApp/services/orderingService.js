@@ -13,7 +13,7 @@ const createOrder = async (order) => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(response => response.status)
+    .then(async response => await response.json())
     .catch(err => {
         console.log(err);
     });

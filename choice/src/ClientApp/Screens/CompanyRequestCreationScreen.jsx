@@ -30,9 +30,6 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
     const [deadline, setDeadline] = React.useState(new Date());
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const [enrollmentTime, setEnrollmentTime] = React.useState(new Date());
-    const [firstImageUri, setFirstImageUri] = React.useState('');
-    const [secondImageUri, setSecondImageUri] = React.useState('');
-    const [thirdImageUri, setThirdImageUri] = React.useState('');
     const [prepayment, setPrepayment] = React.useState('');
 
     const [enrollmentDateString, setEnrollmentDateString] = React.useState('');
@@ -541,16 +538,16 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                         onPress={async () => {
                             let order = {
                                 receiverId: orderRequest.client.userId,
-                                senderId: user.guid,
+                                deadline: deadline.getHours(),
                                 price: Number.parseInt(price),
                                 prepayment: Number.parseInt(price),
                                 orderRequestId: orderRequest.id,
                                 enrollmentTime: dateHelper.convertDateToJson(enrollmentDateString, enrollmentTimeString) 
                             }
-                            
+
                             await orderingService.createOrder(order);
 
-                            
+                            navigation.navigate('Chat');
                         }}>
                         <Text
                             style={styles.buttonText}>
