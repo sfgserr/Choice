@@ -49,7 +49,7 @@ namespace Choice.Chat.Api.Controllers
 
                 await _messageRepository.Update(message);
 
-                await _chatService.SendMessage(message.SenderId,"read", message);
+                await _chatService.SendMessage(message.SenderId, "read", message);
 
                 return Ok();
             }
@@ -85,7 +85,7 @@ namespace Choice.Chat.Api.Controllers
             {
                 User user = (await _userRepository.Get(id))!;
 
-                Message lastMessage = messages.Where(m => (m.SenderId == id || m.ReceiverId == id) || 
+                Message lastMessage = messages.Where(m => (m.SenderId == id || m.ReceiverId == id) && 
                                       (m.SenderId == userId || m.ReceiverId == userId)).Last();
 
                 chats.Add(new ChatViewModel(user.Name, 

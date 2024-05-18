@@ -20,13 +20,14 @@ namespace Choice.Chat.Api.Entities
         protected Message() { }
 
         public int Id { get; }
-        public string SenderId { get; }
-        public string ReceiverId { get; }
+        public string SenderId { get; private set; }
+        public string ReceiverId { get; private set; }
         public User? Receiver { get; set; }
         public string Body => Content.Content;
-        public MessageType Type { get; }
+        public MessageType Type { get; private set; }
         public bool IsRead { get; private set; } = false;
-        public DateTime CreationTime { get; } = DateTime.Now;
+        public DateTime CreationTime { get; private set; } = DateTime.Now;
+
         public IContent Content { get; }
 
         public void Read()

@@ -36,6 +36,14 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
                 return;
             }
 
+            Order existingOrder = await _repository.GetOrder(orderRequestId, userId);
+
+            if (existingOrder is not null)
+            {
+                _outputPort.Invalid();
+                return;
+            }
+
             Order order = await CreateOrder(userId, receiverId, orderRequestId, price, prepayment, deadline,
                 enrollmentTime);
 

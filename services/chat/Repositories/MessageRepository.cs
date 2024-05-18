@@ -43,8 +43,8 @@ namespace Choice.Chat.Api.Repositories
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
         {
             return await _context.Messages.Include(m => m.Receiver)
-                                          .Where(m => m.SenderId == senderId || m.SenderId == receiverId 
-                                            && m.ReceiverId == receiverId || m.ReceiverId == senderId)
+                                          .Where(m => (m.SenderId == senderId || m.SenderId == receiverId) 
+                                            && (m.ReceiverId == receiverId || m.ReceiverId == senderId))
                                           .ToListAsync();
         }
 

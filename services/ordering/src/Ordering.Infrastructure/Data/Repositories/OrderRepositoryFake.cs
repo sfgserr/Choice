@@ -22,6 +22,12 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
             return await Task.Run(() => _context.Orders.FirstOrDefault(o => o.Id == id));
         }
 
+        public async Task<Order> GetOrder(int requestId, string companyId)
+        {
+            return await Task.Run(() => 
+                _context.Orders.FirstOrDefault(o => o.OrderRequestId == requestId && o.CompanyId == companyId));
+        }
+
         public async Task<IList<Order>> GetOrders()
         {
             return await Task.Run(() => _context.Orders);

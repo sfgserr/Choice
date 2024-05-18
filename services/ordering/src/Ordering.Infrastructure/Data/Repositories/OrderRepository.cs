@@ -22,6 +22,11 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
             return await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
         }
 
+        public async Task<Order> GetOrder(int requestId, string companyId)
+        {
+            return await _context.Orders.FirstOrDefaultAsync(o => o.OrderRequestId == requestId && o.CompanyId == companyId);
+        }
+
         public async Task<IList<Order>> GetOrders()
         {
             return await _context.Orders.ToListAsync();

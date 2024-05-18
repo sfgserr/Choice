@@ -29,7 +29,7 @@ const getMessages = async (receiverId) => {
 
 const getChats = async () => {
     const token = await KeyChain.getGenericPassword();
-    console.log(token.password);
+    
     return await fetch(`${env.api_url}/api/Message/GetChats`, {
         method: 'GET',
         headers: {
