@@ -2,7 +2,8 @@ import React from "react";
 import {
     View,
     Text,
-    FlatList
+    FlatList,
+    RefreshControl
 } from 'react-native';
 import clientService from "../services/clientService";
 import userStore from "../services/userStore";
@@ -11,11 +12,23 @@ import categoryStore from "../services/categoryStore";
 
 const CompanyRequestsScreen = ({navigation}) => {
     const [requests, setRequests] = React.useState([]);
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    let user = userStore.get();
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+
+        let fetchedRequests = await clientService.getOrderRequest(user.categoriesId);
+        await categoryStore.retrieveData();
+
+        setRequests(fetchedRequests);
+
+        setRefreshing(false);
+    }, []);
 
     React.useEffect(() => {
         async function getRequestsAndCategories() {
-            let user = userStore.get();
-
             let fetchedRequests = await clientService.getOrderRequest(user.categoriesId);
             await categoryStore.retrieveData();
 
@@ -46,6 +59,9 @@ const CompanyRequestsScreen = ({navigation}) => {
                 style={{
                     paddingTop: 20
                 }}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                }
                 renderItem={({item}) => {
                     return (
                         <View
