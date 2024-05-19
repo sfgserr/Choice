@@ -34,7 +34,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Update(message);
 
-            await _chatService.SendMessage(message.SenderId, "enrolled", message);
+            await _chatService.SendMessage(message.SenderId, "enrolled", new(message));
         }
     }
 }

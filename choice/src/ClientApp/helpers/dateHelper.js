@@ -7,6 +7,14 @@ const formatDate = (date) => {
     return `${utc} ${Number.parseInt(time[0])+3}:${time[1]}:${time[2].split('.')[0]}`;
 }
 
+const getTimeFromString = (timeString) => {
+    let dateElements = timeString.split('T');
+
+    let time = dateElements[1].split(':');
+
+    return `${time[0]}:${time[1]}`;
+}
+
 const convertDateToString = (date) => {
     let year = date.getFullYear();
     let month = date.getUTCMonth()+1;
@@ -32,5 +40,6 @@ export default {
     formatDate,
     convertDateToString,
     convertTimeToString,
-    convertDateToJson
+    convertDateToJson,
+    getTimeFromString
 }

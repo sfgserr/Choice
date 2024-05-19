@@ -7,6 +7,7 @@ namespace Choice.Chat.Api.Infrastructure.Data
     {
         public ChatDdContext(DbContextOptions options) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             Database.EnsureCreated();
         }
 
@@ -15,15 +16,10 @@ namespace Choice.Chat.Api.Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.Entity<Message>()
-                        .HasKey(m => m.Id);
+                   .HasKey(m => m.Id);
 
             builder.Entity<User>()
                    .HasKey(u => u.Guid);
-
-            builder.Entity<Message>()
-                        .HasOne(m => m.Receiver)
-                        .WithMany()
-                        .HasForeignKey(m => m.ReceiverId);
 
             SeedData.Seed(builder);
         }

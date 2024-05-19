@@ -21,6 +21,7 @@ import {
   Text,
   useColorScheme,
   View,
+  DeviceEventEmitter,
   Image
 } from 'react-native';
 import OrderScreen from './Screens/OrderScreen';
@@ -164,7 +165,7 @@ function App() {
         .build();
 
       connection.on("orderCreated", message => {
-        console.log(message);
+        DeviceEventEmitter.emit('orderCreated', message);
       });
 
       await connection.start();

@@ -42,7 +42,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Add(orderMessage);
 
-            await _chatService.SendMessage(@event.ReceiverId, "enrollmentDateChanged", orderMessage);
+            await _chatService.SendMessage(@event.ReceiverId, "enrollmentDateChanged", new(orderMessage));
         }
     }
 }

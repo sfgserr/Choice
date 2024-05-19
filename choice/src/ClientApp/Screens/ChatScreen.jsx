@@ -3,7 +3,8 @@ import {
     View,
     FlatList,
     Text,
-    RefreshControl
+    RefreshControl,
+    DeviceEventEmitter
 } from 'react-native';
 import Chat from '../Components/Chat';
 import chatStore from '../services/chatStore';
@@ -20,6 +21,10 @@ export default function ChatScreen({ navigation }) {
 
         setRefreshing(false);
     }, []);
+
+    DeviceEventEmitter.addListener('orderCreated', message => {
+            
+    });
 
     React.useEffect(() => {
         async function getChats() {

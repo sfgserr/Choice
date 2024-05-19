@@ -10,11 +10,10 @@ namespace Choice.Chat.Api.Entities
             SenderId = senderId;
             ReceiverId = receiverId;
             Type = type;
-            Content = type switch
-            {
-                MessageType.Order => new OrderContent(body),
-                _ => new DefaultContent(body)
-            };
+            Body = body;
+
+            Content = type == MessageType.Order ? new OrderContent(body) : new DefaultContent(body);
+            Content.BodyChanged += OnBodyChanged;
         }
 
         protected Message() { }
@@ -22,8 +21,7 @@ namespace Choice.Chat.Api.Entities
         public int Id { get; }
         public string SenderId { get; private set; }
         public string ReceiverId { get; private set; }
-        public User? Receiver { get; set; }
-        public string Body => Content.Content;
+        public string Body { get; private set; }
         public MessageType Type { get; private set; }
         public bool IsRead { get; private set; } = false;
         public DateTime CreationTime { get; private set; } = DateTime.Now;
@@ -33,6 +31,11 @@ namespace Choice.Chat.Api.Entities
         public void Read()
         {
             IsRead = true;
+        }
+
+        public void OnBodyChanged(string body)
+        {
+            Body = body;
         }
     }
 

@@ -3,7 +3,8 @@ import {
     View,
     Dimensions,
     Image,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import env from "../env";
 import { Icon } from "react-native-elements";
@@ -13,44 +14,70 @@ const Chat = ({navigation, chat}) => {
     const { width, height } = Dimensions.get('screen');
 
     return (
-        <View
-            style={{backgroundColor: 'white', width, flexDirection: 'row'}}>
+        <TouchableOpacity
+            style={{
+                backgroundColor: 'white',
+                flexDirection: 'row', 
+                paddingHorizontal: 10,
+            }}>
             <Image
                 style={{
-                    width: 40,
-                    height: 40
+                    width: 50,
+                    height: 50,
+                    borderRadius: 360
                 }}
                 source={{uri: `${env.api_url}/api/objects/${chat.iconUri}`}}/>
 
             <View
-                style={{flexDirection: 'column', paddingLeft: 10}}>
+                style={{flexDirection: 'column', paddingLeft: 10, flex: 1}}>
                 <View
-                    style={{flexDirection: 'row'}}>
-                    <Text
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                    <View
                         style={{
-                            color: 'black',
-                            fontSize: 16,
-                            fontWeight: '500',
-                            alignSelf: 'flex-start'
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start'
                         }}>
-                        {chat.name}
-                    </Text>
-                    <Icon
-                        name="done-all"
-                        type="material"
-                        color={chat.isRead ? '#21C004' : '#BBBBBB'}
-                        style={{alignSelf: 'flex-end'}}/>
-                    <Text
-                        style={{
-                            color: '#8E8E93',
-                            fontWeight: '400',
-                            fontSize: 14
-                        }}>
-                        {dateHelper.convertTimeToString(chat.sentTime)}
-                    </Text>    
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontSize: 16,
+                                fontWeight: '500',
+                                alignSelf: 'flex-start'
+                            }}>
+                            {chat.name}
+                        </Text>
+                    </View>
+                    <View
+                        style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <Icon
+                            name="done-all"
+                            type="material"
+                            size={20}
+                            color={chat.isRead ? '#21C004' : '#BBBBBB'}
+                            style={{alignSelf: 'flex-end', paddingRight: 5}}/>
+                        <Text
+                            style={{
+                                color: '#8E8E93',
+                                fontWeight: '400',
+                                fontSize: 14
+                            }}>
+                            {dateHelper.getTimeFromString(chat.sentTime)}
+                        </Text> 
+                    </View>   
                 </View>
+                <Text
+                    style={{
+                        color: '#8E8E93',
+                        fontSize: 15,
+                        fontWeight: '400'
+                    }}>
+                    {chat.lastMessage}
+                </Text>
             </View>    
-        </View>
+        </TouchableOpacity>
     )
 }
 

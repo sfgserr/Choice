@@ -33,7 +33,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Update(message);
 
-            await _chatService.SendMessage(message.ReceiverId, "confirmed", message);
+            await _chatService.SendMessage(message.ReceiverId, "confirmed", new(message));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Hubs;
+using Choice.Chat.Api.ViewModels;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Choice.Chat.Api.Services
@@ -15,7 +16,7 @@ namespace Choice.Chat.Api.Services
             _hubContext = hubContext;
         }
 
-        public async Task SendMessage(string receiverGuid, string method, Message message)
+        public async Task SendMessage(string receiverGuid, string method, MessageViewModel message)
         {
             await _hubContext.Clients.Client(_connectionIds[receiverGuid]).SendAsync(method, message);
         }

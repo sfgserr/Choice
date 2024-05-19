@@ -33,7 +33,7 @@ namespace Choice.Chat.Api.Controllers
 
             await _messageRepository.Add(message);
 
-            await _chatService.SendMessage(message.ReceiverId, "onSend", message);
+            await _chatService.SendMessage(message.ReceiverId, "send", new(message));
 
             return Ok();
         }
@@ -49,7 +49,7 @@ namespace Choice.Chat.Api.Controllers
 
                 await _messageRepository.Update(message);
 
-                await _chatService.SendMessage(message.SenderId, "read", message);
+                await _chatService.SendMessage(message.SenderId, "read", new(message));
 
                 return Ok();
             }
@@ -64,7 +64,7 @@ namespace Choice.Chat.Api.Controllers
 
             IList<Message> messages = await _messageRepository.GetAll(id, receiverId);
 
-            return Ok(messages);
+            return Ok(messages.Select(m => new MessageViewModel(m)));
         }
 
         [HttpGet("GetChats")]
@@ -88,13 +88,16 @@ namespace Choice.Chat.Api.Controllers
                 Message lastMessage = messages.Where(m => (m.SenderId == id || m.ReceiverId == id) && 
                                       (m.SenderId == userId || m.ReceiverId == userId)).Last();
 
+                IList<Message> chatMessages = await _messageRepository.GetAll(userId, id);
+
                 chats.Add(new ChatViewModel(user.Name, 
                                             user.IconUri, 
                                             lastMessage.Type == MessageType.Text ? lastMessage.Body : "Заказ", 
                                             id, 
                                             lastMessage.IsRead, 
                                             lastMessage.CreationTime, 
-                                            lastMessage.ReceiverId == userId));
+                                            lastMessage.ReceiverId == userId,
+                                            chatMessages.Select(m => new MessageViewModel(m)).ToList()));
             }
 
             return Ok(chats);

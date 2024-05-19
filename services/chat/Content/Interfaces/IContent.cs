@@ -8,6 +8,8 @@
 
         bool Match(string propertyName, object value);
 
-        string Content { get; }
+        string Body { get; }
+
+        event Action<string> BodyChanged;
     }
 }

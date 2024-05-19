@@ -7,15 +7,17 @@ namespace Choice.Chat.Api.Content
 {
     public class OrderContent : IContent
     {
+        public event Action<string>? BodyChanged;
+
         public OrderContent(string content)
         {
-            Content = content;
+            Body = content;
         }
 
-        public string Content { get; private set; }
+        public string Body { get; private set; }
 
         public object GetContent() =>
-            JsonConvert.DeserializeObject<Order>(Content)!;
+            JsonConvert.DeserializeObject<Order>(Body)!;
 
         public bool Match(string propertyName, object value)
         {
@@ -37,7 +39,9 @@ namespace Choice.Chat.Api.Content
 
             action(order);
 
-            Content = JsonConvert.SerializeObject(order);
+            Body = JsonConvert.SerializeObject(order);
+
+            BodyChanged?.Invoke(Body);
         }
     }
 }

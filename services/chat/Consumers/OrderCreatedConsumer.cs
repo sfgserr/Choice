@@ -2,6 +2,7 @@
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Services;
+using Choice.Chat.Api.ViewModels;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Newtonsoft.Json;
@@ -37,7 +38,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Add(message);
 
-            await _chatService.SendMessage(message.ReceiverId, "orderCreated", message);
+            await _chatService.SendMessage(message.ReceiverId, "orderCreated", new(message));
         }
     }
 }
