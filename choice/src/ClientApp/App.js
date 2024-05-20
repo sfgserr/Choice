@@ -38,9 +38,8 @@ import RegisterScreen from './Screens/RegisterScreen';
 import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
 import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
-import * as SignalR from '@microsoft/signalr'
 import env from './env';
-import 'react-native-url-polyfill/auto';
+import ConnectionSerivce from './services/connectionService';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -152,6 +151,8 @@ function ClientTab() {
 }
 
 function App() {
+  let connectionService = new ConnectionSerivce();
+
   const authContext = React.useMemo(() => ({
     signIn: async (userType) => {
       await categoryStore.retrieveData();
@@ -160,21 +161,17 @@ function App() {
 
       const key = await KeyChain.getGenericPassword();
 
-      let connection = new SignalR.HubConnectionBuilder()
-        .withUrl(`${env.api_url}/chat`, { accessTokenFactory: () => key.password })
-        .build();
+      connectionService.build(key.password);
 
-      connection.on("orderCreated", message => {
-        DeviceEventEmitter.emit('orderCreated', message);
-      });
-
-      await connection.start();
+      await connectionService.start();
     },
-    signOut: () => {
+    signOut: async () => {
       userStore.logout();
 
       setIsSignedIn(false);
       setUserType(0);
+
+      await connectionService.stop();
     }
   }));
 

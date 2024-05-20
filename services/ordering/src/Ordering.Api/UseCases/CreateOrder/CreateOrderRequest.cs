@@ -3,7 +3,7 @@
     public record CreateOrderRequest
     {
         public CreateOrderRequest(string receiverId, int orderRequestId, int price, int prepayment, int deadline,
-            DateTime enrollmentTime)
+            DateTime? enrollmentTime)
         {
             ReceiverId = receiverId;
             OrderRequestId = orderRequestId;
@@ -18,6 +18,6 @@
         public int Price { get; }
         public int Prepayment { get; }
         public int Deadline { get; }
-        public DateTime EnrollmentTime { get; }
+        public DateTime? EnrollmentTime { get; }
     }
 }

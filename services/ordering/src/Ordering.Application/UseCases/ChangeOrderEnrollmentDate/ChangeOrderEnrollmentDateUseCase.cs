@@ -22,7 +22,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
             _outputPort = new ChangeOrderEnrollmentDatePresenter();
         }
 
-        public async Task Execute(int orderId, DateTime newDate)
+        public async Task Execute(int orderId, DateTime? newDate)
         {
             string id = _userService.GetUserId();
 
@@ -60,7 +60,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
             _outputPort.Ok(order, id != order.ClientId ? order.ClientId : order.CompanyId);
         }
 
-        private async Task ChangeOrderEnrollmentDate(Order order, DateTime newDate, string id)
+        private async Task ChangeOrderEnrollmentDate(Order order, DateTime? newDate, string id)
         {
             order.SetEnrollmentDate(newDate, order.ClientId == id);
 

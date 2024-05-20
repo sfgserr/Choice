@@ -26,7 +26,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         }
 
         public async Task Execute(string receiverId, int orderRequestId, int price, int prepayment,
-            int deadline, DateTime enrollmentTime)
+            int deadline, DateTime? enrollmentTime)
         {
             string userId = _userService.GetUserId();
 
@@ -51,7 +51,7 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         }
 
         private async Task<Order> CreateOrder(string userId, string receiverId, int orderRequestId, int price,
-            int prepayment, int deadline, DateTime enrollmentDate)
+            int prepayment, int deadline, DateTime? enrollmentDate)
         {
             Order order = new(orderRequestId, userId, receiverId, price, prepayment, deadline, enrollmentDate);
 

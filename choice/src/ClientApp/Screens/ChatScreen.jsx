@@ -8,9 +8,11 @@ import {
 } from 'react-native';
 import Chat from '../Components/Chat';
 import chatStore from '../services/chatStore';
+import chatService from '../services/chatService';
 
 export default function ChatScreen({ navigation }) {
     const [chats, setChats] = React.useState([]);
+    const [isGotChats, setIsGotChats] = React.useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
 
     const onRefresh = React.useCallback(async () => {
@@ -22,8 +24,22 @@ export default function ChatScreen({ navigation }) {
         setRefreshing(false);
     }, []);
 
-    DeviceEventEmitter.addListener('orderCreated', message => {
-            
+    DeviceEventEmitter.addListener('orderCreated', async message => {
+        if (isGotChats && chats.length == 0) {
+            let chat = await chatService.getChat(message.senderId);
+
+            setChats(prev => {
+                prev.push(chat);
+                return [...prev];
+            });
+        }
+        else if (isGotChats) {
+            let index = chats.findIndex(c => c.guid == message.senderId);
+            chats[index].messages.push(prev => {
+                prev.push(message);
+                return [...prev];
+            });
+        }
     });
 
     React.useEffect(() => {
@@ -32,6 +48,7 @@ export default function ChatScreen({ navigation }) {
             setChats(chatStore.getChats());
         }
         getChats();
+        setIsGotChats(true);
     }, []);
 
     return (

@@ -3,7 +3,7 @@ namespace Choice.EventBus.Messages.Events
 {
     public class OrderEnrollmentDateChangedEvent
     {
-        public OrderEnrollmentDateChangedEvent(int orderId, DateTime enrollmentDate, string receiverId)
+        public OrderEnrollmentDateChangedEvent(int orderId, DateTime? enrollmentDate, string receiverId)
         {
             OrderId = orderId;
             EnrollmentDate = enrollmentDate;
@@ -11,7 +11,7 @@ namespace Choice.EventBus.Messages.Events
         }
 
         public int OrderId { get; }
-        public DateTime EnrollmentDate { get; }
+        public DateTime? EnrollmentDate { get; }
         public string ReceiverId { get; }
     }
 }

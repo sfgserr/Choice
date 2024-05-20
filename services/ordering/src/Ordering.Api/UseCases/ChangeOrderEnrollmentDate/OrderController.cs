@@ -44,7 +44,7 @@ namespace Choice.Ordering.Api.UseCases.ChangeOrderEnrollmentDate
         }
 
         [HttpPut("ChangeOrderEnrollmentDate")]
-        public async Task<IActionResult> ChangeOrderEnrollmentDate(int orderId, DateTime newDate)
+        public async Task<IActionResult> ChangeOrderEnrollmentDate(int orderId, DateTime? newDate)
         {
             _useCase.SetOutputPort(this);
 

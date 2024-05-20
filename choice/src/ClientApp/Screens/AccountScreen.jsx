@@ -62,8 +62,8 @@ export default function AccountScreen({ navigation }) {
         setModalVisible(true);
     }
 
-    const logout = () => {
-        signOut();
+    const logout = async () => {
+        await signOut();
     }
 
     return (

@@ -64,7 +64,7 @@ const Chat = ({navigation, chat}) => {
                                 fontWeight: '400',
                                 fontSize: 14
                             }}>
-                            {dateHelper.getTimeFromString(chat.sentTime)}
+                            {dateHelper.getTimeFromString(chat.messages[chat.messages.length-1].creationTime)}
                         </Text> 
                     </View>   
                 </View>
@@ -74,7 +74,7 @@ const Chat = ({navigation, chat}) => {
                         fontSize: 15,
                         fontWeight: '400'
                     }}>
-                    {chat.lastMessage}
+                    {chat.messages[chat.messages.length-1].type == 1 ? chat.messages[chat.messages.length-1].body : chat.messages[chat.messages.length-1].type == 2 ? 'Фото' : 'Заказ'}
                 </Text>
             </View>    
         </TouchableOpacity>

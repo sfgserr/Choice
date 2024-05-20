@@ -65,7 +65,7 @@ const CompanyRequestsScreen = ({navigation}) => {
                 renderItem={({item}) => {
                     return (
                         <View
-                            style={{paddingHorizontal: 10}}>
+                            style={{paddingHorizontal: 10, paddingBottom: 10}}>
                             <CompanyRequestCard 
                                 orderRequest={item}
                                 navigation={navigation}

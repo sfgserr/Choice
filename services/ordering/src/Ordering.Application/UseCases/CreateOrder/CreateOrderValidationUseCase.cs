@@ -23,11 +23,12 @@ namespace Choice.Ordering.Application.UseCases.CreateOrder
         }
 
         public async Task Execute(string receiverId, int orderRequestId, int price, int prepayment,
-            int deadline, DateTime enrollmentDate)
+            int deadline, DateTime? enrollmentDate)
         {
-            if (price == 0 && deadline == 0)
+            if (price == 0 && deadline == 0 && enrollmentDate is null)
             {
-                _notification.Add($"{nameof(price)},{nameof(deadline)}", "At least one property should have value");
+                _notification.Add($"{nameof(price)},{nameof(deadline)},{nameof(enrollmentDate)}", 
+                    "At least one property should have value");
             }
 
             if (_notification.IsInvalid)

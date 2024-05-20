@@ -27,6 +27,20 @@ const getMessages = async (receiverId) => {
     });
 }
 
+const getChat = async (userId) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Message/GetChat?userId=${userId}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 const getChats = async () => {
     const token = await KeyChain.getGenericPassword();
     
@@ -43,5 +57,6 @@ const getChats = async () => {
 
 export default {
     getMessages,
-    getChats
+    getChats,
+    getChat
 }

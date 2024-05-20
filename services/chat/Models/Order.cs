@@ -3,7 +3,7 @@
     public class Order
     {
         public Order(int orderId, int orderRequestId, int price, int prepayment, int deadline, bool isEnrolled, 
-            DateTime enrollmentTime, int status)
+            DateTime? enrollmentTime, int status)
         {
             OrderId = orderId;
             OrderRequestId = orderRequestId;
@@ -21,12 +21,12 @@
         public int Prepayment { get; }
         public int Deadline { get; }
         public bool IsEnrolled { get; private set; } = false;
-        public DateTime EnrollmentTime { get; private set; }
+        public DateTime? EnrollmentTime { get; private set; }
         public int Status { get; private set; }
         public bool IsActive { get; private set; } = true;
         public bool IsDateConfirmed { get; private set; } = true;
 
-        public void ChangeEnrollmentTime(DateTime newTime, bool clientChanged)
+        public void ChangeEnrollmentTime(DateTime? newTime, bool clientChanged)
         {
             EnrollmentTime = newTime;
             IsActive = false;
