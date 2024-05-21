@@ -39,7 +39,7 @@ import FillCompanyDataScreen from './Screens/FillCompanyDataScreen';
 import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
 import env from './env';
-import ConnectionSerivce from './services/connectionService';
+import connectionService from './services/connectionService';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -151,8 +151,6 @@ function ClientTab() {
 }
 
 function App() {
-  let connectionService = new ConnectionSerivce();
-
   const authContext = React.useMemo(() => ({
     signIn: async (userType) => {
       await categoryStore.retrieveData();

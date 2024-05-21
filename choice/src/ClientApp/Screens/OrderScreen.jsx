@@ -12,12 +12,15 @@ import OrderRequestCard from '../Components/OrderRequestCard';
 import categoryStore from '../services/categoryStore';
 import { Icon } from 'react-native-elements';
 import styles from '../Styles';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function OrderScreen({ navigation }) {
     const [orderRequests, setOrderRequests] = React.useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
 
     const categories = categoryStore.getCategories();
+
+    const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -29,12 +32,8 @@ export default function OrderScreen({ navigation }) {
     }, []);
 
     React.useEffect(() => {
-        async function getRequests() {
-            let requests = await clientService.getClientRequests();
-            setOrderRequests(requests);
-        }
-        getRequests();
-    }, []);
+        isFocused && onRefresh();
+    }, [isFocused]);
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>

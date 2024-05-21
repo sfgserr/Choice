@@ -10,10 +10,13 @@ import {
 import { Icon } from 'react-native-elements';
 import categoryStore from '../services/categoryStore.js';
 import env from '../env.js';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function CategoryScreen({ navigation, route }) {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
     const [refreshing, setRefreshing] = React.useState(false);
+
+    const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -23,6 +26,10 @@ export default function CategoryScreen({ navigation, route }) {
 
         setRefreshing(false);
     }, []);
+
+    React.useEffect(() => {
+        isFocused && onRefresh();
+    }, [isFocused]);
 
     const onPressed = ({item}) => {
         navigation.navigate('Map', {

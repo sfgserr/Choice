@@ -5,22 +5,29 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 
-export default class ConnectionSerivce {
-    build(token) {
-        this.connection = new SignalR.HubConnectionBuilder()
-            .withUrl(`${env.api_url}/chat`, { accessTokenFactory: () => token })
-            .build();
+let builder = new SignalR.HubConnectionBuilder();
+let connection = builder.withUrl(`${env.api_url}/chat`).build();
 
-        this.connection.on("orderCreated", message => {
-            DeviceEventEmitter.emit('orderCreated', message);
-        });
-    }
+const build = (token) => {
+    connection = builder
+        .withUrl(`${env.api_url}/chat`, { accessTokenFactory: () => token })
+        .build();
 
-    async start() {
-        await this.connection.start();
-    }
+    connection.on('orderCreated', message => {
+        DeviceEventEmitter.emit('orderCreated', message);
+    });
+}
 
-    async stop() {
-        await this.connection.stop();
-    }
+const start = async () => {
+    await connection.start();
+}
+
+const stop = async () => {
+    await connection.stop();
+}
+
+export default {
+    build,
+    start,
+    stop
 }

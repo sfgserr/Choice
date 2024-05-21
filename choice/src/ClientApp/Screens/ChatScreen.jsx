@@ -9,11 +9,13 @@ import {
 import Chat from '../Components/Chat';
 import chatStore from '../services/chatStore';
 import chatService from '../services/chatService';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function ChatScreen({ navigation }) {
     const [chats, setChats] = React.useState([]);
-    const [isGotChats, setIsGotChats] = React.useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
+
+    const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -25,7 +27,7 @@ export default function ChatScreen({ navigation }) {
     }, []);
 
     DeviceEventEmitter.addListener('orderCreated', async message => {
-        if (isGotChats && chats.length == 0) {
+        if (chats.length == 0) {
             let chat = await chatService.getChat(message.senderId);
 
             setChats(prev => {
@@ -33,7 +35,7 @@ export default function ChatScreen({ navigation }) {
                 return [...prev];
             });
         }
-        else if (isGotChats) {
+        else {
             let index = chats.findIndex(c => c.guid == message.senderId);
             chats[index].messages.push(prev => {
                 prev.push(message);
@@ -43,13 +45,8 @@ export default function ChatScreen({ navigation }) {
     });
 
     React.useEffect(() => {
-        async function getChats() {
-            await chatStore.retrieveData();
-            setChats(chatStore.getChats());
-        }
-        getChats();
-        setIsGotChats(true);
-    }, []);
+        isFocused && onRefresh();
+    }, [isFocused]);
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>

@@ -37,7 +37,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                     paddingTop: 20,
                     fontWeight: '600'
                 }}>
-                {categories[categories.findIndex(c => c.id == orderRequest.id)].title}
+                {categories[categories.findIndex(c => c.id == orderRequest.categoryId)].title}
             </Text>
             <Text
                 style={{
