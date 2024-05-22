@@ -9,12 +9,15 @@ import clientService from "../services/clientService";
 import userStore from "../services/userStore";
 import CompanyRequestCard from "../Components/CompanyRequestCard";
 import categoryStore from "../services/categoryStore";
+import { useIsFocused } from '@react-navigation/native';
 
 const CompanyRequestsScreen = ({navigation}) => {
     const [requests, setRequests] = React.useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
 
     let user = userStore.get();
+
+    const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -28,15 +31,8 @@ const CompanyRequestsScreen = ({navigation}) => {
     }, []);
 
     React.useEffect(() => {
-        async function getRequestsAndCategories() {
-            let fetchedRequests = await clientService.getOrderRequest(user.categoriesId);
-            await categoryStore.retrieveData();
-
-            setRequests(fetchedRequests);
-        }
-        
-        getRequestsAndCategories();
-    }, []);
+        isFocused && onRefresh();
+    }, [isFocused]);
 
     return (
         <View

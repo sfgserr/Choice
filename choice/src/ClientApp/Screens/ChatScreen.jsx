@@ -27,6 +27,7 @@ export default function ChatScreen({ navigation }) {
     }, []);
 
     DeviceEventEmitter.addListener('orderCreated', async message => {
+        console.log(message);
         if (chats.length == 0) {
             let chat = await chatService.getChat(message.senderId);
 

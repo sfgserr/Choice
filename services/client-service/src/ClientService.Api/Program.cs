@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Choice.ClientService.Application.UseCases.GetRequest;
 
 namespace Choice.ClientService.Api
 {
@@ -41,6 +42,7 @@ namespace Choice.ClientService.Api
             builder.Services.AddScoped<IGetClientUseCase, GetClientUseCase>();
             builder.Services.AddScoped<IChangeOrderRequestUseCase, ChangeOrderRequestUseCase>();
             builder.Services.AddScoped<IChangeIconUriUseCase, ChangeIconUriUseCase>();
+            builder.Services.AddScoped<IGetRequestUseCase, GetRequestUseCase>();
             builder.Services.Decorate<IChangeUserDataUseCase, ChangeUserDataValidationUseCase>();
             builder.Services.Decorate<ISendOrderRequestUseCase, SendOrderRequestValidationUseCase>();
             builder.Services.Decorate<IChangeOrderRequestUseCase, ChangeOrderRequestValidationUseCase>();
