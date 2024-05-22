@@ -27,7 +27,6 @@ export default function ChatScreen({ navigation }) {
     }, []);
 
     DeviceEventEmitter.addListener('orderCreated', async message => {
-        console.log(message);
         if (chats.length == 0) {
             let chat = await chatService.getChat(message.senderId);
 
@@ -38,8 +37,8 @@ export default function ChatScreen({ navigation }) {
         }
         else {
             let index = chats.findIndex(c => c.guid == message.senderId);
-            chats[index].messages.push(prev => {
-                prev.push(message);
+            setChats(prev => {
+                prev[index].messages.push(message);
                 return [...prev];
             });
         }

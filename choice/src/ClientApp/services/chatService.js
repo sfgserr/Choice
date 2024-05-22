@@ -15,15 +15,7 @@ const getMessages = async (receiverId) => {
     .then(async res => {
         let json = await res.json();
 
-        return Object.keys(json).map((i) => ({
-            id: json[i].id,
-            body: json[i].body,
-            senderId: json[i].senderId,
-            receiverId: json[i].receiverId,
-            iconUri: json[i].iconUri,
-            type: json[i].type,
-            creationTime: json[i].creationTime            
-        }));
+        return json;
     });
 }
 
@@ -38,7 +30,11 @@ const getChat = async (userId) => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async res => await res.json());
+    .then(async res => {
+        let json = await res.json();
+
+        return json;
+    });
 }
 
 const getChats = async () => {
@@ -52,7 +48,11 @@ const getChats = async () => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async res => await res.json());
+    .then(async res => {
+        let json = await res.json();
+
+        return json;
+    });
 }
 
 export default {

@@ -14,15 +14,8 @@ import LoginScreen from './Screens/LoginScreen';
 import CategoryScreen from './Screens/CategoryScreen';
 import * as KeyChain from 'react-native-keychain';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  DeviceEventEmitter,
-  Image
+  Image,
+  AppState
 } from 'react-native';
 import OrderScreen from './Screens/OrderScreen';
 import { Icon } from 'react-native-elements';
