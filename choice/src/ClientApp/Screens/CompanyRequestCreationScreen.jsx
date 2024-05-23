@@ -547,7 +547,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
 
                             await orderingService.createOrder(order);
 
-                            navigation.navigate('Chat');
+                            navigation.navigate('Chats');
                         }}>
                         <Text
                             style={styles.buttonText}>

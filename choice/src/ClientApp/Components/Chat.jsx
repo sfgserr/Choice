@@ -4,7 +4,7 @@ import {
     Dimensions,
     Image,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import env from "../env";
 import { Icon } from "react-native-elements";
@@ -19,7 +19,8 @@ const Chat = ({navigation, chat}) => {
                 backgroundColor: 'white',
                 flexDirection: 'row', 
                 paddingHorizontal: 10,
-            }}>
+            }}
+            onPress={() => navigation.navigate('Chat', { chatId: chat.guid })}>
             <Image
                 style={{
                     width: 50,

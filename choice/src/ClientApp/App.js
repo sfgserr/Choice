@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import OrderScreen from './Screens/OrderScreen';
 import { Icon } from 'react-native-elements';
-import ChatScreen from './Screens/ChatScreen';
+import ChatsScreen from './Screens/ChatsScreen';
 import AccountScreen from './Screens/AccountScreen';
 import MapScreen from './Screens/MapScreen';
 import categoryStore from './services/categoryStore';
@@ -33,6 +33,7 @@ import CompanyRequestsScreen from './Screens/CompanyRequestsScreen';
 import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen';
 import env from './env';
 import connectionService from './services/connectionService';
+import ChatScreen from './Screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,7 +65,7 @@ function CompanyTab() {
           iconSrc = require("./assets/account.png");
         }
 
-        if (route.name == 'Chat') {
+        if (route.name == 'Chats') {
           iconSrc = require("./assets/chat.png");
         }
 
@@ -83,8 +84,8 @@ function CompanyTab() {
       <Tab.Screen name="Order"
                   component={CompanyRequestsScreen}
                   options={{headerShown: false}}/>
-      <Tab.Screen name="Chat"
-                  component={ChatScreen}
+      <Tab.Screen name="Chats"
+                  component={ChatsScreen}
                   options={{headerShown: false}}/>
       <Tab.Screen name="Account"
                   component={AccountScreen}
@@ -107,7 +108,7 @@ function ClientTab() {
           iconSrc = require('./assets/account.png');
         }
 
-        if (route.name == 'Chat') {
+        if (route.name == 'Chats') {
           iconSrc = require('./assets/chat.png');
         }
 
@@ -133,8 +134,8 @@ function ClientTab() {
       <Tab.Screen name="Order"
                   component={OrderScreen}
                   options={{headerShown: false}}/>
-      <Tab.Screen name="Chat"
-                  component={ChatScreen}
+      <Tab.Screen name="Chats"
+                  component={ChatsScreen}
                   options={{headerShown: false}}/>
       <Tab.Screen name="Account"
                   component={AccountScreen}
@@ -205,6 +206,9 @@ function App() {
                 <Stack.Screen name="ChangePassword"
                               component={ChangePasswordScreen}
                               options={{headerShown:false}}/>
+                <Stack.Screen name="Chat"
+                              component={gestureHandlerRootHOC(ChatScreen)}
+                              options={{headerShown:false}}/>
              </Stack.Navigator>
             </>
           ) : (
@@ -215,6 +219,9 @@ function App() {
                               options={{headerShown:false}}/>
                 <Stack.Screen name="CompanyRequestCreation"
                               component={gestureHandlerRootHOC(CompanyRequestCreationScreen)}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="Chat"
+                              component={gestureHandlerRootHOC(ChatScreen)}
                               options={{headerShown:false}}/>
               </Stack.Navigator> 
             </>
