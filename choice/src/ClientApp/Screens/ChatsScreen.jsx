@@ -10,6 +10,7 @@ import Chat from '../Components/Chat';
 import chatStore from '../services/chatStore';
 import chatService from '../services/chatService';
 import { useIsFocused } from '@react-navigation/native';
+import { measure } from 'react-native-reanimated';
 
 export default function ChatsScreen({ navigation }) {
     const [chats, setChats] = React.useState([]);
@@ -26,23 +27,29 @@ export default function ChatsScreen({ navigation }) {
         setRefreshing(false);
     }, []);
 
-    DeviceEventEmitter.addListener('orderCreated', async message => {
-        if (chats.length == 0) {
-            let chat = await chatService.getChat(message.senderId);
+    const handleMessage = async (message) => {
+        if (isFocused) {
+            if (chats.length == 0) {
+                let chat = await chatService.getChat(message.senderId);
+    
+                if (chats.findIndex(c => c.guid == chat.guid) == -1) {
+                    setChats(prev => {
+                        prev.push(chat);
+                        return [...prev];
+                    });
+                }
+            }
+            else {
+                let index = chats.findIndex(c => c.guid == message.senderId);
+                setChats(prev => {
+                    prev[index].messages.push(message);
+                    return [...prev];
+                });
+            }
+        }
+    }
 
-            setChats(prev => {
-                prev.push(chat);
-                return [...prev];
-            });
-        }
-        else {
-            let index = chats.findIndex(c => c.guid == message.senderId);
-            setChats(prev => {
-                prev[index].messages.push(message);
-                return [...prev];
-            });
-        }
-    });
+    DeviceEventEmitter.addListener('messageReceived', handleMessage);
 
     React.useEffect(() => {
         isFocused && onRefresh();

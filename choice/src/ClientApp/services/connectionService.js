@@ -14,7 +14,11 @@ const build = (token) => {
         .build();
 
     connection.on('orderCreated', message => {
-        DeviceEventEmitter.emit('orderCreated', message);
+        DeviceEventEmitter.emit('messageReceived', message);
+    });
+
+    connection.on('send', message => {
+        DeviceEventEmitter.emit('messageReceived', message);
     });
 }
 

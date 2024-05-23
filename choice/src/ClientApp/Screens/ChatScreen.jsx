@@ -6,7 +6,8 @@ import {
     Text,
     Image,
     RefreshControl,
-    TextInput
+    TextInput,
+    DeviceEventEmitter
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
@@ -31,6 +32,19 @@ const ChatScreen = ({ navigation, route }) => {
     const { width, height } = Dimensions.get('screen');
 
     const isFocused = useIsFocused();
+
+    const handleMessage = (message) => {
+        if (isFocused) {
+            if (messages.findIndex(m.id == message.id) == -1) {
+                setMessages(prev => {
+                    prev.push(message);
+                    return [...prev];
+                })
+            }
+        }
+    }
+
+    DeviceEventEmitter.addListener('messageReceived', handleMessage);
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -172,7 +186,12 @@ const ChatScreen = ({ navigation, route }) => {
                         style={{alignSelf: 'center'}}
                         disabled={text == ''}
                         onPress={text != '' && (async () => {
-                            await chatService.sendMessage(text, chat.guid);
+                            let message = await chatService.sendMessage(text, chat.guid);
+
+                            setMessages(prev => {
+                                prev.push(message);
+                                return [...prev];
+                            }); 
                         })}>
                         <Icon
                             type='material'

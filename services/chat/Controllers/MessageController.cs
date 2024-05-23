@@ -35,7 +35,7 @@ namespace Choice.Chat.Api.Controllers
 
             await _chatService.SendMessage(message.ReceiverId, "send", new(message));
 
-            return Ok();
+            return Ok(new MessageViewModel(message));
         }
 
         [HttpPut("Read")]
