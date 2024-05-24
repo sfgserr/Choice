@@ -15,6 +15,7 @@ import { measure } from 'react-native-reanimated';
 export default function ChatsScreen({ navigation }) {
     const [chats, setChats] = React.useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
+    const [isAdd, setIsAdd] = React.useState(false);
 
     const isFocused = useIsFocused();
 
@@ -29,18 +30,16 @@ export default function ChatsScreen({ navigation }) {
 
     const handleMessage = async (message) => {
         if (isFocused) {
-            if (chats.length == 0) {
+            let index = chats.findIndex(c => c.guid == message.senderId);
+            if (index == -1) {
                 let chat = await chatService.getChat(message.senderId);
-    
-                if (chats.findIndex(c => c.guid == chat.guid) == -1) {
-                    setChats(prev => {
-                        prev.push(chat);
-                        return [...prev];
-                    });
-                }
-            }
+
+                setChats(prev => {
+                    prev.push(chat);
+                    return [...prev];
+                });
+            } 
             else {
-                let index = chats.findIndex(c => c.guid == message.senderId);
                 setChats(prev => {
                     prev[index].messages.push(message);
                     return [...prev];
@@ -49,11 +48,15 @@ export default function ChatsScreen({ navigation }) {
         }
     }
 
-    DeviceEventEmitter.addListener('messageReceived', handleMessage);
-
     React.useEffect(() => {
         isFocused && onRefresh();
     }, [isFocused]);
+
+    React.useEffect(() => {
+        DeviceEventEmitter.addListener('messageReceived', handleMessage);
+
+        return () => DeviceEventEmitter.removeAllListeners('messageReceived');
+    }, [handleMessage]);
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -75,7 +78,7 @@ export default function ChatsScreen({ navigation }) {
                 }
                 renderItem={({item}) => {
                     return (
-                        <View>
+                        <View style={{paddingBottom: 5}}>
                             <Chat chat={item} navigation={navigation}/>
                         </View>
                     )

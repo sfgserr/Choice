@@ -16,6 +16,7 @@ import env from '../env';
 import { FlatList } from 'react-native-gesture-handler';
 import userStore from '../services/userStore';
 import Message from '../Components/Message';
+import dateHelper from '../helpers/dateHelper';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -35,16 +36,18 @@ const ChatScreen = ({ navigation, route }) => {
 
     const handleMessage = (message) => {
         if (isFocused) {
-            if (messages.findIndex(m.id == message.id) == -1) {
-                setMessages(prev => {
-                    prev.push(message);
-                    return [...prev];
-                })
-            }
+            setMessages(prev => {
+                prev.push(message);
+                return [...prev];
+            })
         }
     }
 
-    DeviceEventEmitter.addListener('messageReceived', handleMessage);
+    React.useEffect(() => {
+        DeviceEventEmitter.addListener('messageReceived', handleMessage);
+
+        return () => DeviceEventEmitter.removeAllListeners('messageReceived');
+    }, [handleMessage]);
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -123,11 +126,39 @@ const ChatScreen = ({ navigation, route }) => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
-                data={messages}
+                data={[...messages].reverse()}
                 style={{paddingTop: 10}}
-                renderItem={({item}) => {
+                inverted
+                renderItem={({item, index}) => {
                     return (
-                        <View style={{paddingHorizontal: 10, paddingTop: 5}}>
+                        <View style={{paddingHorizontal: 10, paddingTop: 2.5, paddingBottom: 2.5}}>
+                            {
+                                index == messages.length-1 || dateHelper.getDateFromString(messages[index].creationTime) != dateHelper.getDateFromString(messages[index+1].creationTime) ?
+                                <>
+                                    <View style={{paddingTop: 2.5}}>
+                                        <View
+                                            style={{
+                                                borderRadius: 20,
+                                                backgroundColor: '#DBE3FF82',
+                                                padding: 7,
+                                                alignSelf: 'center'
+                                            }}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 11,
+                                                    fontWeight: '400',
+                                                    color: '#6B89AC',
+                                                    alignSelf: 'center'
+                                                }}>
+                                                {dateHelper.getDateFromString(item.creationTime)}
+                                            </Text>    
+                                        </View>
+                                    </View>        
+                                </>
+                                :
+                                <>
+                                </>
+                            }
                             <Message 
                                 message={item}
                                 userId={userStore.get().guid}/>    
@@ -191,7 +222,9 @@ const ChatScreen = ({ navigation, route }) => {
                             setMessages(prev => {
                                 prev.push(message);
                                 return [...prev];
-                            }); 
+                            });
+                            
+                            setText('');
                         })}>
                         <Icon
                             type='material'

@@ -48,7 +48,7 @@ const getTabLabel = (routeName) => {
       return 'Услуги';
     case 'Order':
       return 'Заказы';
-    case 'Chat':
+    case 'Chats':
       return 'Чат';
     case 'Account':
       return 'Аккаунт';

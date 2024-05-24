@@ -12,7 +12,13 @@ const getTimeFromString = (timeString) => {
 
     let time = dateElements[1].split(':');
 
-    return `${time[0]}:${time[1]}`;
+    return `${Number.parseInt(time[0])+3}:${time[1]}`;
+}
+
+const getDateFromString = (dateString) => {
+    let dateElements = dateString.split('T');
+
+    return dateElements[0];
 }
 
 const convertDateToString = (date) => {
@@ -41,5 +47,6 @@ export default {
     convertDateToString,
     convertTimeToString,
     convertDateToJson,
-    getTimeFromString
+    getTimeFromString,
+    getDateFromString
 }
