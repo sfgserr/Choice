@@ -538,11 +538,11 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                         onPress={async () => {
                             let order = {
                                 receiverId: orderRequest.client.userId,
-                                deadline: deadline.getHours(),
-                                price: Number.parseInt(price),
-                                prepayment: Number.parseInt(price),
+                                deadline: orderRequest.toKnowDeadline ? deadline.getHours() : 0,
+                                price: orderRequest.toKnowPrice ? Number.parseInt(price) : 0,
+                                prepayment: user.prepaymentAvailable ? Number.parseInt(price) : 0,
                                 orderRequestId: orderRequest.id,
-                                enrollmentTime: dateHelper.convertDateToJson(enrollmentDateString, enrollmentTimeString) 
+                                enrollmentTime: orderRequest.toKnowEnrollmentDate ? dateHelper.convertDateToJson(enrollmentDateString, enrollmentTimeString) : null
                             }
 
                             await orderingService.createOrder(order);

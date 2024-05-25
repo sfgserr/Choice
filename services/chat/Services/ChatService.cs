@@ -18,11 +18,11 @@ namespace Choice.Chat.Api.Services
 
         public async Task SendMessage(string receiverGuid, string method, MessageViewModel message)
         {
-            await _hubContext.Clients.Client(_connectionIds[receiverGuid]).SendAsync(method, message);
-        }
+            bool ifExist = _connectionIds.TryGetValue(receiverGuid, out string? connectionId);
 
-        public string GetConnectionId(string guid) =>
-            _connectionIds[guid];
+            if (ifExist)
+                await _hubContext.Clients.Client(connectionId!).SendAsync(method, message);
+        }
 
         public void Add(string guid, string connectionId) =>
             _connectionIds.TryAdd(guid, connectionId);

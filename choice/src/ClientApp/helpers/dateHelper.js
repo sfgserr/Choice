@@ -4,7 +4,7 @@ const formatDate = (date) => {
     
     let time = dateElements[1].split(':');
 
-    return `${utc} ${Number.parseInt(time[0])+3}:${time[1]}:${time[2].split('.')[0]}`;
+    return `${utc} ${Number.parseInt(time[0])+3}:${time[1]}:${time[2].split('Z')[0]}`;
 }
 
 const getTimeFromString = (timeString) => {

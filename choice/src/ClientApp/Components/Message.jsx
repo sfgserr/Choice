@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import { Icon } from 'react-native-elements';
 import dateHelper from '../helpers/dateHelper';
+import userStore from '../services/userStore';
 
 const Message = ({message, userId}) => {
     const isUserReceiver = message.receiverId == userId;
@@ -71,8 +72,210 @@ const Message = ({message, userId}) => {
                     </View>
                 </>
                 :
+                message.type == '2' ?
                 <>
                 </> 
+                :
+                <>
+                    <View
+                        style={{
+                            paddingHorizontal: 15,
+                            borderRadius: 10,
+                            backgroundColor: 'white',
+                            borderColor: '#B5CADD',
+                            borderWidth: 1
+                        }}>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontSize: 14,
+                                fontWeight: '600',
+                                paddingTop: 10
+                            }}>
+                            {userStore.getUserType() == 1 ? 'Ответ компании на ваш запрос' : 'Ваш ответ на заказ клиента'}
+                        </Text>
+                        {
+                            JSON.parse(message.body).Price > 0 ?
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                    <View 
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingTop: 10
+                                        }}>
+                                        <Icon
+                                            type='material'
+                                            name='currency-ruble'
+                                            size={15}
+                                            color='#3B4147'
+                                            style={{alignSelf: 'center'}}/>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: '400',
+                                                color: '#2E2424',
+                                                alignSelf: 'center',
+                                                paddingLeft: 5
+                                            }}>
+                                            Стоимость
+                                        </Text>
+                                    </View>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontSize: 14,
+                                            fontWeight: '500',
+                                            alignSelf: 'center'
+                                        }}>
+                                        {`${JSON.parse(message.body).Price} рублей`}        
+                                    </Text>
+                                </View>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
+                        {
+                            JSON.parse(message.body).Deadline > 0 ?
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                    <View 
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingTop: 10
+                                        }}>
+                                        <Icon
+                                            type='material'
+                                            name='schedule'
+                                            size={15}
+                                            color='#3B4147'
+                                            style={{alignSelf: 'center'}}/>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: '400',
+                                                color: '#2E2424',
+                                                alignSelf: 'center',
+                                                paddingLeft: 5
+                                            }}>
+                                            Время выполнения работы
+                                        </Text>
+                                    </View>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontSize: 14,
+                                            fontWeight: '500',
+                                            alignSelf: 'center'
+                                        }}>
+                                        {`${JSON.parse(message.body).Deadline} часов`}        
+                                    </Text>
+                                </View>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
+                        {
+                            JSON.parse(message.body).EnrollmentTime != 'null' ?
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                    <View 
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingTop: 10
+                                        }}>
+                                        <Icon
+                                            type='material'
+                                            name='calendar-today'
+                                            size={15}
+                                            color='#3B4147'
+                                            style={{alignSelf: 'center'}}/>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: '400',
+                                                color: '#2E2424',
+                                                alignSelf: 'center',
+                                                paddingLeft: 5
+                                            }}>
+                                            Дата и время записи
+                                        </Text>
+                                    </View>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontSize: 14,
+                                            fontWeight: '500',
+                                            alignSelf: 'center'
+                                        }}>
+                                        {`${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}`}        
+                                    </Text>
+                                </View>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
+                        {
+                            JSON.parse(message.body).Prepayment > 0 ?
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                    <View 
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingTop: 10
+                                        }}>
+                                        <Icon
+                                            type='material'
+                                            name='payments'
+                                            size={15}
+                                            color='#3B4147'
+                                            style={{alignSelf: 'center'}}/>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: '400',
+                                                color: '#2E2424',
+                                                alignSelf: 'center',
+                                                paddingLeft: 5
+                                            }}>
+                                            Предоплата
+                                        </Text>
+                                    </View>
+                                    <Text
+                                        style={{
+                                            color: 'black',
+                                            fontSize: 14,
+                                            fontWeight: '500',
+                                            alignSelf: 'center'
+                                        }}>
+                                        {`${JSON.parse(message.body).Prepayment}`}        
+                                    </Text>
+                                </View>
+                            </>
+                            :
+                            <>
+                            </>
+                        }
+                    </View>
+                </>
             }    
         </View>
     )
