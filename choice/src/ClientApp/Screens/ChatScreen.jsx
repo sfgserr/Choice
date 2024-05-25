@@ -17,6 +17,10 @@ import { FlatList } from 'react-native-gesture-handler';
 import userStore from '../services/userStore';
 import Message from '../Components/Message';
 import dateHelper from '../helpers/dateHelper';
+import DatePicker from 'react-native-date-picker';
+import { Modalize } from 'react-native-modalize';
+import styles from '../Styles';
+import orderingService from '../services/orderingService';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -29,8 +33,10 @@ const ChatScreen = ({ navigation, route }) => {
     });
     const [messages, setMessages] = React.useState([]);
     const [text, setText] = React.useState('');
-
+    const enrollmentDateRef = React.useRef(null);
+    const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const { width, height } = Dimensions.get('screen');
+    const [id, setId] = React.useState(-1);
 
     const isFocused = useIsFocused();
 
@@ -80,6 +86,79 @@ const ChatScreen = ({ navigation, route }) => {
                 justifyContent: 'center', 
                 backgroundColor: '#F4F5FF'
             }}>
+            <Modalize
+                ref={enrollmentDateRef}
+                adjustToContentHeight
+                childrenStyle={{height: '70%'}}>
+                <View
+                    style={{
+                        flex: 1, 
+                        justifyContent: 'center',
+                        paddingHorizontal: 20
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row', 
+                            justifyContent: 'space-between',
+                            paddingTop: 20
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                fontSize: 21,
+                                fontWeight: '600',
+                                color: 'black'
+                            }}>
+                            Выберите дату и время записи
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}
+                            onPress={() => {
+                                enrollmentDateRef.current?.close();
+                            }}>
+                            <Icon
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <DatePicker
+                            date={enrollmentDate}
+                            mode="datetime"
+                            style={{alignSelf: 'center'}}
+                            onDateChange={setEnrollmentDate}/>
+                    </View>
+                    <View style={{paddingTop: 20}}>
+                        <TouchableOpacity 
+                            style={[styles.button]}
+                            onPress={async () => {
+                                let order = await orderingService.changeOrderEnrollmentDate(id, dateHelper.convertFullDateToJson(enrollmentDate));
+                                setMessages(prev => {
+                                    let index = prev.findIndex(m => m.id == id);
+                                    JSON.parse(prev[index].body).IsActive = false;
+                                    prev.push({
+                                        id: 0,
+                                        body: order,
+                                        senderId: userStore.get().guid,
+                                        receiverId: prev[index].receiverId != userStore.get().guid ? prev[index].receiverId : prev[index].senderId,
+                                        type: 3,
+                                        creationTime: new Date()
+                                    });
+                                });
+                                enrollmentDateRef.current?.close();
+                            }}>
+                            <Text style={[styles.buttonText]}>
+                                Выбрать
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalize>
             <View
                 style={{
                     width,
@@ -161,7 +240,11 @@ const ChatScreen = ({ navigation, route }) => {
                             }
                             <Message 
                                 message={item}
-                                userId={userStore.get().guid}/>    
+                                userId={userStore.get().guid}
+                                changeDate={(id) => {
+                                    setId(id);
+                                    enrollmentDateRef.current?.open()
+                                }}/>    
                         </View>
                     )
                 }}/>

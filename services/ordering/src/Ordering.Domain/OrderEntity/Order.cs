@@ -4,7 +4,7 @@ namespace Choice.Ordering.Domain.OrderEntity
 {
     public class Order : Entity
     {
-        private readonly List<string> _reviews = new();
+        private readonly List<string> _reviews = [];
 
         public Order(int orderRequestId, string companyId, string clientId, int price, int prepayment,
             int deadline, DateTime? enrollmentDate)
@@ -39,6 +39,7 @@ namespace Choice.Ordering.Domain.OrderEntity
         public void ConfirmDate()
         {
             IsDateConfirmed = true;
+            IsEnrolled = true;
         }
 
         public void FinishOrder() =>

@@ -12,74 +12,12 @@ import styles from '../Styles';
 import DatePicker from 'react-native-date-picker';
 import { Modalize } from 'react-native-modalize';
 
-const Message = ({message, userId}) => {
+const Message = ({message, userId, changeDate}) => {
     const isUserReceiver = message.receiverId == userId;
-    const enrollmentDateRef = React.useRef(null);
-    const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const { width, height } = Dimensions.get('screen');
 
     return (
         <View style={{flexDirection: 'column'}}>
-            <Modalize
-                ref={enrollmentDateRef}
-                adjustToContentHeight
-                childrenStyle={{height: '70%'}}>
-                <View
-                    style={{
-                        flex: 1, 
-                        justifyContent: 'center',
-                        paddingHorizontal: 20
-                    }}>
-                    <View
-                        style={{
-                            flexDirection: 'row', 
-                            justifyContent: 'space-between',
-                            paddingTop: 20
-                        }}>
-                        <Text></Text>
-                        <Text
-                            style={{
-                                fontSize: 21,
-                                fontWeight: '600',
-                                color: 'black'
-                            }}>
-                            Выберите дату записи
-                        </Text>
-                        <TouchableOpacity
-                            style={{
-                                borderRadius: 360,
-                                backgroundColor: '#eff1f2',
-                            }}
-                            onPress={() => {
-                                enrollmentDateRef.current?.close();
-                            }}>
-                            <Icon
-                                name='close'
-                                type='material'
-                                size={27}
-                                color='#818C99'/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{paddingTop: 20}}>
-                        <DatePicker
-                            date={enrollmentDate}
-                            mode="date"
-                            style={{alignSelf: 'center'}}
-                            onDateChange={setEnrollmentDate}/>
-                    </View>
-                    <View style={{paddingTop: 20}}>
-                        <TouchableOpacity 
-                            style={[styles.button]}
-                            onPress={() => {
-                                enrollmentDateRef.current?.close();
-                            }}>
-                            <Text style={[styles.buttonText]}>
-                                Выбрать
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modalize>
             {
                 message.type == '1' ?
                 <>
@@ -347,7 +285,8 @@ const Message = ({message, userId}) => {
                                         borderRadius: 10,
                                         backgroundColor: '#001C3D0D',
                                         justifyContent: 'center'
-                                    }}>
+                                    }}
+                                    onPress={() => changeDate(JSON.parse(message.body).Id)}>
                                     <Text
                                         style={[
                                             styles.buttonText, {

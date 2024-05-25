@@ -3,7 +3,7 @@
     public class Order
     {
         public Order(int orderId, int orderRequestId, int price, int prepayment, int deadline, bool isEnrolled, 
-            DateTime? enrollmentTime, int status)
+            DateTime? enrollmentTime, int status, bool isDateConfirmed = true)
         {
             OrderId = orderId;
             OrderRequestId = orderRequestId;
@@ -13,6 +13,7 @@
             IsEnrolled = isEnrolled;
             EnrollmentTime = enrollmentTime;
             Status = status;
+            IsDateConfirmed = isDateConfirmed;
         }
 
         public int OrderId { get; }
@@ -24,7 +25,7 @@
         public DateTime? EnrollmentTime { get; private set; }
         public int Status { get; private set; }
         public bool IsActive { get; private set; } = true;
-        public bool IsDateConfirmed { get; private set; } = true;
+        public bool IsDateConfirmed { get; private set; }
 
         public void ChangeEnrollmentTime(DateTime? newTime, bool clientChanged)
         {
@@ -36,6 +37,7 @@
         public void ConfirmDate()
         {
             IsDateConfirmed = true;
+            IsEnrolled = true;
         }
 
         public void ChangeStatus(int status)
@@ -48,10 +50,11 @@
 
         public void Enroll()
         {
-            IsEnrolled = true;
+            if (IsDateConfirmed)
+                IsEnrolled = true;
         }
 
         public Order Copy() => 
-            new(OrderId, OrderRequestId, Price, Prepayment, Deadline, IsEnrolled, EnrollmentTime, Status);
+            new(OrderId, OrderRequestId, Price, Prepayment, Deadline, IsEnrolled, EnrollmentTime, Status, IsDateConfirmed);
     }
 }
