@@ -139,11 +139,23 @@ const ChatScreen = ({ navigation, route }) => {
                             onPress={async () => {
                                 let order = await orderingService.changeOrderEnrollmentDate(id, dateHelper.convertFullDateToJson(enrollmentDate));
                                 setMessages(prev => {
-                                    let index = prev.findIndex(m => m.id == id);
-                                    JSON.parse(prev[index].body).IsActive = false;
+                                    let index = prev.findIndex(m => JSON.parse(m.body).OrderId == id);
+                                    prev[index].body.IsActive = false;
                                     prev.push({
                                         id: 0,
-                                        body: order,
+                                        body: {
+                                            OrderId: order.id,
+                                            OrderRequestId: order.orderRequestId,
+                                            Price: order.price,
+                                            Prepayment: order.prepayment,
+                                            Deadline: order.deadline,
+                                            IsEnrolled: order.isEnrolled,
+                                            EnrollmentTime: order.enrollmentDate,
+                                            Status: order.status,
+                                            IsActive: true,
+                                            IsDateConfirmed: order.isDateConfirmed,
+                                            UserChangedEnrollmentDate: order.userChangedEnrollmentDateGuid
+                                        },
                                         senderId: userStore.get().guid,
                                         receiverId: prev[index].receiverId != userStore.get().guid ? prev[index].receiverId : prev[index].senderId,
                                         type: 3,

@@ -2,14 +2,12 @@
 {
     public interface IContent
     {
-        object GetContent();
-
         void ChangeContent(Action<object> action);
 
         bool Match(string propertyName, object value);
 
-        string Body { get; }
+        object Body { get; }
 
-        event Action<string> BodyChanged;
+        event Action<object> BodyChanged;
     }
 }

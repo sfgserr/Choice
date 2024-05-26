@@ -6,6 +6,7 @@ using Choice.Chat.Api.ViewModels;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Choice.Chat.Api.Consumers
 {

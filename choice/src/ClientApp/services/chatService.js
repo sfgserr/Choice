@@ -50,7 +50,6 @@ const getChats = async () => {
     })
     .then(async res => {
         let json = await res.json();
-
         return json;
     });
 }

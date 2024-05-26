@@ -29,11 +29,13 @@ namespace Choice.Ordering.Domain.OrderEntity
         public bool IsDateConfirmed { get; private set; } = true;
         public IReadOnlyCollection<string> Reviews => _reviews.AsReadOnly();
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
+        public string? UserChangedEnrollmentDateGuid { get; private set; }
 
-        public void SetEnrollmentDate(DateTime? newDate, bool clientChanged)
+        public void SetEnrollmentDate(DateTime? newDate, string userGuid)
         {
             EnrollmentDate = newDate;
-            IsDateConfirmed = !clientChanged;
+            IsDateConfirmed = !(userGuid == ClientId);
+            UserChangedEnrollmentDateGuid = userGuid;
         }
 
         public void ConfirmDate()

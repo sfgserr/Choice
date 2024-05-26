@@ -96,7 +96,14 @@ const Message = ({message, userId, changeDate}) => {
                                     fontWeight: '600',
                                     paddingTop: 10
                                 }}>
-                                {userStore.getUserType() == 1 ? 'Ответ компании на ваш запрос' : 'Ваш ответ на заказ клиента'}
+                                {JSON.parse(message.body).UserChangedEnrollmentDate != null ? 
+                                    (JSON.parse(message.body).UserChangedEnrollmentDate == userStore.get().guid ? 
+                                        'Вы изменили дату и время записи' : userStore.getUserType() == 1 ? 
+                                            'Клиент предлагает изменить дату записи' : 
+                                                'Компания предлагает изменить дату записи ') : 
+                                                    userStore.getUserType() == 1 ? 
+                                                    'Ответ компании на ваш запрос' : 
+                                                        'Ваш ответ на заказ клиента'}
                             </Text>
                             {
                                 JSON.parse(message.body).Price > 0 ?
@@ -286,7 +293,7 @@ const Message = ({message, userId, changeDate}) => {
                                         backgroundColor: '#001C3D0D',
                                         justifyContent: 'center'
                                     }}
-                                    onPress={() => changeDate(JSON.parse(message.body).Id)}>
+                                    onPress={() => changeDate(JSON.parse(message.body).OrderId)}>
                                     <Text
                                         style={[
                                             styles.buttonText, {

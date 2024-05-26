@@ -21,7 +21,7 @@ namespace Choice.Chat.Api.Entities
         public int Id { get; }
         public string SenderId { get; private set; }
         public string ReceiverId { get; private set; }
-        public string Body { get; private set; }
+        public object Body { get; private set; }
         public MessageType Type { get; private set; }
         public bool IsRead { get; private set; } = false;
         public DateTime CreationTime { get; private set; } = DateTime.Now;
@@ -33,7 +33,7 @@ namespace Choice.Chat.Api.Entities
             IsRead = true;
         }
 
-        public void OnBodyChanged(string body)
+        public void OnBodyChanged(object body)
         {
             Body = body;
         }

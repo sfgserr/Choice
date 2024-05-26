@@ -1,27 +1,25 @@
 ﻿using Choice.Chat.Api.Content.Interfaces;
 using Choice.Chat.Api.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Choice.Chat.Api.Content
 {
     public class OrderContent : IContent
     {
-        public event Action<string>? BodyChanged;
+        public event Action<object>? BodyChanged;
 
-        public OrderContent(string content)
+        public OrderContent(object content)
         {
             Body = content;
         }
 
-        public string Body { get; private set; }
-
-        public object GetContent() =>
-            JsonConvert.DeserializeObject<Order>(Body)!;
+        public object Body { get; private set; }
 
         public bool Match(string propertyName, object value)
         {
-            Order order = (Order)GetContent();
+            Order order = (Order)Body;
 
             PropertyInfo? property = order.GetType().GetProperty(propertyName);
 
@@ -35,7 +33,7 @@ namespace Choice.Chat.Api.Content
 
         public void ChangeContent(Action<object> action)
         {
-            Order order = (Order)GetContent();
+            Order order = (Order)Body;
 
             action(order);
 

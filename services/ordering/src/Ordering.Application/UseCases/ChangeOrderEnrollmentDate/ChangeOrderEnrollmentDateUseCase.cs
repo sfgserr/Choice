@@ -62,7 +62,7 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
 
         private async Task ChangeOrderEnrollmentDate(Order order, DateTime? newDate, string id)
         {
-            order.SetEnrollmentDate(newDate, order.ClientId == id);
+            order.SetEnrollmentDate(newDate, id);
 
             _repository.Update(order);
 

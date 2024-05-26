@@ -7,6 +7,7 @@ using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Choice.Chat.Api.Consumers
 {
@@ -27,18 +28,21 @@ namespace Choice.Chat.Api.Consumers
 
             Message message = (await _repository.GetByOrderId(@event.OrderId))!;
 
+            string senderId = message.ReceiverId != @event.ReceiverId ? message.ReceiverId : message.SenderId;
+
             message.Content.ChangeContent(o =>
             {
                 Order content = (Order)o;
 
-                content.ChangeEnrollmentTime(@event.EnrollmentDate, message.ReceiverId != @event.ReceiverId);
+                content.ChangeEnrollmentTime(@event.EnrollmentDate, @event.IsClientChanged, senderId);
             });
 
             await _repository.Update(message);
 
-            Order order = ((Order)message.Content.GetContent()).Copy();
+            Order order = ((Order)message.Body).Copy();
 
-            Message orderMessage = new(message.SenderId, message.ReceiverId, JsonConvert.SerializeObject(order), MessageType.Order);
+            Message orderMessage = new
+                (senderId, @event.ReceiverId, JsonConvert.SerializeObject(order), MessageType.Order);
 
             await _repository.Add(orderMessage);
 

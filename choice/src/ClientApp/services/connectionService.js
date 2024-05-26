@@ -20,6 +20,10 @@ const build = (token) => {
     connection.on('send', message => {
         DeviceEventEmitter.emit('messageReceived', message);
     });
+
+    connection.on('enrollmentDateChanged', message => {
+        DeviceEventEmitter.emit('messageReceived', message);
+    });
 }
 
 const start = async () => {
