@@ -39,7 +39,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Update(message);
 
-            Order order = ((Order)message.Body).Copy();
+            Order order = ((Order)message.Content.GetContent()).Copy();
 
             Message orderMessage = new
                 (senderId, @event.ReceiverId, JsonConvert.SerializeObject(order), MessageType.Order);

@@ -8,18 +8,20 @@ namespace Choice.Chat.Api.Content
 {
     public class OrderContent : IContent
     {
-        public event Action<object>? BodyChanged;
+        public event Action<string>? BodyChanged;
 
-        public OrderContent(object content)
+        public OrderContent(string content)
         {
             Body = content;
         }
 
-        public object Body { get; private set; }
+        public string Body { get; private set; }
+
+        public object GetContent() => JsonConvert.DeserializeObject<Order>(Body);
 
         public bool Match(string propertyName, object value)
         {
-            Order order = (Order)Body;
+            Order order = JsonConvert.DeserializeObject<Order>(Body)!;
 
             PropertyInfo? property = order.GetType().GetProperty(propertyName);
 
@@ -33,7 +35,7 @@ namespace Choice.Chat.Api.Content
 
         public void ChangeContent(Action<object> action)
         {
-            Order order = (Order)Body;
+            Order order = JsonConvert.DeserializeObject<Order>(Body)!;
 
             action(order);
 

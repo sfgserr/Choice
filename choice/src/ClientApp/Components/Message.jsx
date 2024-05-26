@@ -15,7 +15,7 @@ import { Modalize } from 'react-native-modalize';
 const Message = ({message, userId, changeDate}) => {
     const isUserReceiver = message.receiverId == userId;
     const { width, height } = Dimensions.get('screen');
-
+    console.log(message.body);
     return (
         <View style={{flexDirection: 'column'}}>
             {

@@ -4,14 +4,16 @@ namespace Choice.Chat.Api.Content
 {
     public class DefaultContent : IContent
     {
-        public event Action<object>? BodyChanged;
+        public event Action<string>? BodyChanged;
 
         public DefaultContent(string content)
         {
             Body = content;
         }
 
-        public object Body { get; }
+        public string Body { get; }
+
+        public object GetContent() => Body;
 
         public void ChangeContent(Action<object> action)
         {
@@ -22,9 +24,9 @@ namespace Choice.Chat.Api.Content
 
         public bool Match(string propertyName, object value)
         {
-            if (value is string s && Body is string body)
+            if (string.IsNullOrEmpty(propertyName) && value is string s)
             {
-                return body == s;
+                return Body == s;
             }
 
             return false;

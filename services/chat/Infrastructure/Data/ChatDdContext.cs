@@ -19,10 +19,6 @@ namespace Choice.Chat.Api.Infrastructure.Data
             builder.Entity<Message>()
                    .HasKey(m => m.Id);
 
-            builder.Entity<Message>()
-                   .Property(m => m.Body)
-                   .HasConversion(b => JsonConvert.SerializeObject(b), j => JsonConvert.DeserializeObject(j));
-
             builder.Entity<User>()
                    .HasKey(u => u.Guid);
 

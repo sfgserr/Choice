@@ -15,7 +15,7 @@ namespace Choice.Chat.Api.ViewModels
         }
 
         public int Id { get; }
-        public object Body { get; }
+        public string Body { get; }
         public string SenderId { get; }
         public string ReceiverId { get; }
         public int Type { get; }

@@ -140,10 +140,10 @@ const ChatScreen = ({ navigation, route }) => {
                                 let order = await orderingService.changeOrderEnrollmentDate(id, dateHelper.convertFullDateToJson(enrollmentDate));
                                 setMessages(prev => {
                                     let index = prev.findIndex(m => JSON.parse(m.body).OrderId == id);
-                                    prev[index].body.IsActive = false;
+                                    JSON.parse(prev[index].body).IsActive = false;
                                     prev.push({
                                         id: 0,
-                                        body: {
+                                        body: JSON.stringify({
                                             OrderId: order.id,
                                             OrderRequestId: order.orderRequestId,
                                             Price: order.price,
@@ -155,12 +155,14 @@ const ChatScreen = ({ navigation, route }) => {
                                             IsActive: true,
                                             IsDateConfirmed: order.isDateConfirmed,
                                             UserChangedEnrollmentDate: order.userChangedEnrollmentDateGuid
-                                        },
+                                        }),
                                         senderId: userStore.get().guid,
                                         receiverId: prev[index].receiverId != userStore.get().guid ? prev[index].receiverId : prev[index].senderId,
                                         type: 3,
-                                        creationTime: new Date()
+                                        creationTime: dateHelper.convertFullDateToJson(new Date())
                                     });
+
+                                    return [...prev];
                                 });
                                 enrollmentDateRef.current?.close();
                             }}>

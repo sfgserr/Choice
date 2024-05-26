@@ -1,7 +1,9 @@
 ﻿using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Infrastructure.Data;
+using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Choice.Chat.Api.Repositories
 {
@@ -27,14 +29,16 @@ namespace Choice.Chat.Api.Repositories
 
         public async Task<Message?> GetByOrderId(int orderId)
         {
-            return await _context.Messages.FirstOrDefaultAsync(m => 
-                m.Type == MessageType.Order & m.Content.Match("OrderId", orderId));
+            IList<Message> messages = await _context.Messages.ToListAsync();
+
+            return messages.LastOrDefault(m => 
+                m.Type == MessageType.Order && JsonConvert.DeserializeObject<Order>(m.Body).OrderId == orderId);
         }
 
         public async Task<Message?> GetByOrderRequestId(int orderRequestId)
         {
             return await _context.Messages.FirstOrDefaultAsync(m =>
-                m.Type == MessageType.Order & m.Content.Match("OrderRequestId", orderRequestId));
+                m.Type == MessageType.Order && JsonConvert.DeserializeObject<Order>(m.Body).OrderRequestId == orderRequestId);
         }
 
         public async Task<IList<Message>> GetAll() => 
