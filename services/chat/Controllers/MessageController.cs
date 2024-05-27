@@ -77,6 +77,7 @@ namespace Choice.Chat.Api.Controllers
             if (user is not null)
             {
                 IList<Message> messages = await _messageRepository.GetAll(id, userId);
+                messages = messages.OrderBy(m => m.CreationTime).ToList();
 
                 ChatViewModel chat = new(user.Name,
                                          user.IconUri,

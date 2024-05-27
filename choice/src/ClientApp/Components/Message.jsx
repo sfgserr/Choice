@@ -11,11 +11,12 @@ import userStore from '../services/userStore';
 import styles from '../Styles';
 import DatePicker from 'react-native-date-picker';
 import { Modalize } from 'react-native-modalize';
+import orderingService from '../services/orderingService';
 
 const Message = ({message, userId, changeDate}) => {
     const isUserReceiver = message.receiverId == userId;
     const { width, height } = Dimensions.get('screen');
-    console.log(message.body);
+
     return (
         <View style={{flexDirection: 'column'}}>
             {
@@ -96,11 +97,11 @@ const Message = ({message, userId, changeDate}) => {
                                     fontWeight: '600',
                                     paddingTop: 10
                                 }}>
-                                {JSON.parse(message.body).UserChangedEnrollmentDate != null ? 
+                                {JSON.parse(message.body).UserChangedEnrollmentDate != null && JSON.parse(message.body).IsActive ? 
                                     (JSON.parse(message.body).UserChangedEnrollmentDate == userStore.get().guid ? 
                                         'Вы изменили дату и время записи' : userStore.getUserType() == 1 ? 
-                                            'Клиент предлагает изменить дату записи' : 
-                                                'Компания предлагает изменить дату записи ') : 
+                                            'Компания предлагает изменить дату записи' : 
+                                                'Клиент предлагает изменить дату записи ') : 
                                                     userStore.getUserType() == 1 ? 
                                                     'Ответ компании на ваш запрос' : 
                                                         'Ваш ответ на заказ клиента'}
@@ -232,7 +233,7 @@ const Message = ({message, userId, changeDate}) => {
                                                 fontWeight: '500',
                                                 alignSelf: 'center'
                                             }}>
-                                            {`${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}`}        
+                                            {`${JSON.parse(message.body).IsActive ? dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime) : dateHelper.formatDate(JSON.parse(message.body).PastEnrollmentTime)}`}        
                                         </Text>
                                     </View>
                                 </>
@@ -286,25 +287,96 @@ const Message = ({message, userId, changeDate}) => {
                                 </>
                             }
                             <View style={{paddingTop: 10, paddingBottom: 10}}>
+                                {
+                                    JSON.parse(message.body).IsEnrolled ?
+                                    <>
+                                        <View style={{paddingBottom: 10}}>
+                                            <View
+                                                style={{
+                                                    height: height/20,
+                                                    borderRadius: 10,
+                                                    backgroundColor: '#6DC876',
+                                                    justifyContent: 'space-between'
+                                                }}>
+                                                <Icon
+                                                    type="materials"
+                                                    name="celebration"
+                                                    color='white'
+                                                    size={20}/>
+
+                                                <Text>
+                                                    {`Клиент записан на ${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}`}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
+                                {
+                                    JSON.parse(message.body).IsActive && userStore.getUserType() == 2 && JSON.parse(message.body).UserChangedEnrollmentDate != null && JSON.parse(message.body).UserChangedEnrollmentDate != userStore.get().guid ?
+                                    <>
+                                        <View style={{paddingBottom: 5}}>
+                                            <TouchableOpacity
+                                                style={{
+                                                    height: height/20,
+                                                    borderRadius: 10,
+                                                    backgroundColor: '#001C3D0D',
+                                                    justifyContent: 'center'
+                                                }}
+                                                onPress={async () => {
+                                                    let order = await orderingService.confirmDate(JSON.parse(message.body).OrderId);
+
+                                                    message.body = JSON.stringify({
+                                                        OrderId: order.id,
+                                                        OrderRequestId: order.orderRequestId,
+                                                        Price: order.price,
+                                                        Prepayment: order.prepayment,
+                                                        Deadline: order.deadline,
+                                                        IsEnrolled: order.isEnrolled,
+                                                        EnrollmentTime: order.enrollmentDate,
+                                                        Status: order.status,
+                                                        IsActive: true,
+                                                        IsDateConfirmed: order.isDateConfirmed,
+                                                        UserChangedEnrollmentDate: order.userChangedEnrollmentDateGuid    
+                                                    });
+                                                }}>
+                                                <Text
+                                                    style={[
+                                                        styles.buttonText, {
+                                                            color: '#2688EB', 
+                                                            fontSize: 15
+                                                        }]}>
+                                                    {`Подтвердить дату записи на ${dateHelper.getMonthAndDayFromString(JSON.parse(message.body).EnrollmentTime)} в ${dateHelper.getTimeFromString(JSON.parse(message.body).EnrollmentTime)}`}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
                                 <TouchableOpacity
                                     style={{
                                         height: height/20,
                                         borderRadius: 10,
-                                        backgroundColor: '#001C3D0D',
+                                        backgroundColor: JSON.parse(message.body).IsActive && (userStore.getUserType() == 1 ? JSON.parse(message.body).IsDateConfirmed : true) ? '#001C3D0D' : '#fafafb',
                                         justifyContent: 'center'
                                     }}
-                                    onPress={() => changeDate(JSON.parse(message.body).OrderId)}>
+                                    disabled={!JSON.parse(message.body).IsActive}
+                                    onPress={JSON.parse(message.body).IsActive && (() => changeDate(JSON.parse(message.body).OrderId))}>
                                     <Text
                                         style={[
                                             styles.buttonText, {
-                                                color: '#2688EB', 
+                                                color: JSON.parse(message.body).IsActive && (userStore.getUserType() == 1 ? JSON.parse(message.body).IsDateConfirmed : true) ? '#2688EB' : '#a8cff7', 
                                                 fontSize: 15
                                             }]}>
-                                        Изменить дату и время записи
+                                        {JSON.parse(message.body).UserChangedEnrollmentDate != null && JSON.parse(message.body).IsActive ? 'Предложить другую дату и время' : 'Изменить дату и время записи'}
                                     </Text>
                                 </TouchableOpacity>
                                 {
-                                    userStore.getUserType() == 1 ?
+                                    userStore.getUserType() == 1 && JSON.parse(message.body).IsActive && JSON.parse(message.body).IsDateConfirmed ?
                                     <>
                                         <View style={{paddingTop: 10}}>
                                             <TouchableOpacity

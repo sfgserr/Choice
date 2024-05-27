@@ -24,31 +24,50 @@ namespace Choice.Chat.Api.Repositories
 
         public async Task<Message?> Get(int id)
         {
-            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+            Message message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+
+            message?.SetContent();
+
+            return message;
         }
 
         public async Task<Message?> GetByOrderId(int orderId)
         {
-            IList<Message> messages = await _context.Messages.ToListAsync();
+            List<Message> messages = await _context.Messages.ToListAsync();
+
+            messages.ForEach(m => m.SetContent());
 
             return messages.LastOrDefault(m => 
-                m.Type == MessageType.Order && JsonConvert.DeserializeObject<Order>(m.Body).OrderId == orderId);
+                m.Type == MessageType.Order && m.Content.Match("OrderId", orderId));
         }
 
         public async Task<Message?> GetByOrderRequestId(int orderRequestId)
         {
-            return await _context.Messages.FirstOrDefaultAsync(m =>
-                m.Type == MessageType.Order && JsonConvert.DeserializeObject<Order>(m.Body).OrderRequestId == orderRequestId);
+            List<Message> messages = await _context.Messages.ToListAsync();
+
+            messages.ForEach(m => m.SetContent());
+
+            return messages.FirstOrDefault(m =>
+                m.Type == MessageType.Order && m.Content.Match("OrderRequestId", orderRequestId));
         }
 
-        public async Task<IList<Message>> GetAll() => 
-            await _context.Messages.ToListAsync();
+        public async Task<IList<Message>> GetAll()
+        {
+            List<Message> messages = await _context.Messages.ToListAsync();
 
+            messages.ForEach(m => m.SetContent());
+
+            return messages;
+        }
+            
         public async Task<IList<Message>> GetAll(string senderId, string receiverId)
         {
-            return await _context.Messages.Where(m => (m.SenderId == senderId || m.SenderId == receiverId) 
-                                            && (m.ReceiverId == receiverId || m.ReceiverId == senderId))
-                                          .ToListAsync();
+            List<Message> messages = await _context.Messages.ToListAsync();
+
+            messages.ForEach(m => m.SetContent());
+
+            return messages.Where(m => (m.SenderId == senderId || m.SenderId == receiverId) 
+                                            && (m.ReceiverId == receiverId || m.ReceiverId == senderId)).ToList();
         }
 
         public async Task Update(Message message)

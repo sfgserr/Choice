@@ -1,4 +1,5 @@
 ﻿using Choice.Chat.Api.Entities;
+using Choice.Chat.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -18,6 +19,9 @@ namespace Choice.Chat.Api.Infrastructure.Data
 
             builder.Entity<Message>()
                    .HasKey(m => m.Id);
+
+            builder.Entity<Message>()
+                   .Ignore(m => m.Content);
 
             builder.Entity<User>()
                    .HasKey(u => u.Guid);

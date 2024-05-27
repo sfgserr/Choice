@@ -36,7 +36,25 @@ const changeOrderEnrollmentDate = async (orderId, newDate) => {
     });
 }
 
+const confirmDate = async (orderId) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Order/ConfirmEnrollmentDate?orderId=${orderId}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json())
+    .catch(err => {
+        console.log(err);
+    });
+}
+
 export default {
     createOrder,
-    changeOrderEnrollmentDate
+    changeOrderEnrollmentDate,
+    confirmDate
 }

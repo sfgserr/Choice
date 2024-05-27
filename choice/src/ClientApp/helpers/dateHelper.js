@@ -4,7 +4,7 @@ const formatDate = (date) => {
     
     let time = dateElements[1].split(':');
 
-    return `${utc} ${Number.parseInt(time[0])+3}:${time[1]}:${time[2].split('.')[0]}`.split('Z')[0];
+    return `${utc} ${Number.parseInt(time[0])}:${time[1]}:${time[2].split('.')[0]}`.split('Z')[0];
 }
 
 const getTimeFromString = (timeString) => {
@@ -12,7 +12,14 @@ const getTimeFromString = (timeString) => {
 
     let time = dateElements[1].split(':');
 
-    return `${Number.parseInt(time[0])+3}:${time[1]}`;
+    return `${Number.parseInt(time[0])}:${time[1]}`;
+}
+
+const getMonthAndDayFromString = (dateString) => {
+    let dateElements = dateString.split('T');
+    let ymd = dateElements[0].split('-');
+
+    return `${ymd[2]}.${ymd[1]}`;
 }
 
 const getDateFromString = (dateString) => {
@@ -59,5 +66,6 @@ export default {
     convertDateToJson,
     getTimeFromString,
     getDateFromString,
-    convertFullDateToJson
+    convertFullDateToJson,
+    getMonthAndDayFromString
 }

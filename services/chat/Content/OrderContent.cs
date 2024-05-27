@@ -27,7 +27,7 @@ namespace Choice.Chat.Api.Content
 
             if (property is not null)
             {
-                return property.GetValue(order) == value;
+                return Equals(property.GetValue(order), value);
             }
 
             return false;

@@ -12,8 +12,7 @@ namespace Choice.Chat.Api.Entities
             Type = type;
             Body = body;
 
-            Content = type == MessageType.Order ? new OrderContent(body) : new DefaultContent(body);
-            Content.BodyChanged += OnBodyChanged;
+            SetContent();
         }
 
         protected Message() { }
@@ -24,9 +23,18 @@ namespace Choice.Chat.Api.Entities
         public string Body { get; private set; }
         public MessageType Type { get; private set; }
         public bool IsRead { get; private set; } = false;
-        public DateTime CreationTime { get; private set; } = DateTime.Now;
+        public DateTime CreationTime { get; private set; } = DateTime.UtcNow;
 
-        public IContent Content { get; }
+        public IContent Content { get; private set; }
+
+        public void SetContent()
+        {
+            if (Content is null)
+            {
+                Content = Type == MessageType.Order ? new OrderContent(Body) : new DefaultContent(Body);
+                Content.BodyChanged += OnBodyChanged;
+            }
+        }
 
         public void Read()
         {

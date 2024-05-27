@@ -32,6 +32,7 @@ const ChatScreen = ({ navigation, route }) => {
         messages: []
     });
     const [messages, setMessages] = React.useState([]);
+    const [mockId, setMockId] = React.useState(-1);
     const [text, setText] = React.useState('');
     const enrollmentDateRef = React.useRef(null);
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
@@ -49,8 +50,21 @@ const ChatScreen = ({ navigation, route }) => {
         }
     }
 
+    const handleChangedMessage = (message) => {
+        if (isFocused) {
+            setMessages(prev => {
+                let index = prev.findIndex(m => m.id == message.id);
+
+                prev[index] = message;
+
+                return [...prev];
+            });
+        }
+    }
+
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
+        DeviceEventEmitter.addListener('messageChanged', handleChangedMessage);
 
         return () => DeviceEventEmitter.removeAllListeners('messageReceived');
     }, [handleMessage]);
@@ -139,10 +153,16 @@ const ChatScreen = ({ navigation, route }) => {
                             onPress={async () => {
                                 let order = await orderingService.changeOrderEnrollmentDate(id, dateHelper.convertFullDateToJson(enrollmentDate));
                                 setMessages(prev => {
-                                    let index = prev.findIndex(m => JSON.parse(m.body).OrderId == id);
+                                    let index = prev.findIndex(m => {
+                                        if (m.type == 3) {
+                                            return JSON.parse(m.body).OrderId == id
+                                        }
+
+                                        return false;
+                                    });
                                     JSON.parse(prev[index].body).IsActive = false;
                                     prev.push({
-                                        id: 0,
+                                        id: mockId,
                                         body: JSON.stringify({
                                             OrderId: order.id,
                                             OrderRequestId: order.orderRequestId,
@@ -161,7 +181,7 @@ const ChatScreen = ({ navigation, route }) => {
                                         type: 3,
                                         creationTime: dateHelper.convertFullDateToJson(new Date())
                                     });
-
+                                    setMockId(prev => prev-1);
                                     return [...prev];
                                 });
                                 enrollmentDateRef.current?.close();

@@ -5,9 +5,7 @@ using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Choice.Chat.Api.Consumers
 {
