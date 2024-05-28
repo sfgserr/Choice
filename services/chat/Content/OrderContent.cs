@@ -1,7 +1,6 @@
 ﻿using Choice.Chat.Api.Content.Interfaces;
 using Choice.Chat.Api.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Choice.Chat.Api.Content
@@ -33,13 +32,11 @@ namespace Choice.Chat.Api.Content
             return false;
         }
 
-        public void ChangeContent(Action<object> action)
+        public void ChangeContent(Func<object, string> action)
         {
             Order order = JsonConvert.DeserializeObject<Order>(Body)!;
 
-            action(order);
-
-            Body = JsonConvert.SerializeObject(order);
+            Body = action(order);
 
             BodyChanged?.Invoke(Body);
         }

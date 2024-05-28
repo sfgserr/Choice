@@ -4,6 +4,7 @@ using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
+using Newtonsoft.Json;
 
 namespace Choice.Chat.Api.Consumers
 {
@@ -29,6 +30,8 @@ namespace Choice.Chat.Api.Consumers
                 Order content = (Order)o;
 
                 content.ConfirmDate();
+
+                return JsonConvert.SerializeObject(content);
             });
 
             await _repository.Update(message);

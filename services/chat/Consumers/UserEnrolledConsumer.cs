@@ -5,6 +5,7 @@ using Choice.Chat.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace Choice.Chat.Api.Consumers
 {
@@ -30,6 +31,8 @@ namespace Choice.Chat.Api.Consumers
                 Order order = (Order)o;
 
                 order.Enroll();
+
+                return JsonConvert.SerializeObject(order);
             });
 
             await _repository.Update(message);

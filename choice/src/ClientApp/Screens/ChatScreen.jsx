@@ -21,6 +21,7 @@ import DatePicker from 'react-native-date-picker';
 import { Modalize } from 'react-native-modalize';
 import styles from '../Styles';
 import orderingService from '../services/orderingService';
+import arrayHelper from '../helpers/arrayHelper';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -50,12 +51,28 @@ const ChatScreen = ({ navigation, route }) => {
         }
     }
 
+    const handleEnrollmentChangedMessage = (message) => {
+        if (isFocused) {
+            let lastIndex = arrayHelper.lastOrDefault(messages, (m) => m.type == 3);
+
+            setMessages(prev => {
+                let body = JSON.parse(prev[lastIndex].body);
+                body.IsActive = false;
+                body.PastEnrollmentTime = body.EnrollmentTime;
+                prev[lastIndex].body = JSON.stringify(body);
+
+                prev.push(message);
+                return [...prev];
+            })
+        }
+    }
+
     const handleChangedMessage = (message) => {
         if (isFocused) {
+            let index = prev.findIndex(m => m.id == message.id);
             setMessages(prev => {
-                let index = prev.findIndex(m => m.id == message.id);
-
-                prev[index] = message;
+                prev.splice(index, 1);
+                prev.push(message);
 
                 return [...prev];
             });
@@ -65,9 +82,38 @@ const ChatScreen = ({ navigation, route }) => {
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
         DeviceEventEmitter.addListener('messageChanged', handleChangedMessage);
+        DeviceEventEmitter.addListener('enrollmentDateChanged', handleEnrollmentChangedMessage);
 
-        return () => DeviceEventEmitter.removeAllListeners('messageReceived');
+        return () => {
+            DeviceEventEmitter.removeAllListeners('messageReceived');
+            DeviceEventEmitter.removeAllListeners('messageChanged');
+            DeviceEventEmitter.removeAllListeners('enrollmentDateChanged');
+        };
     }, [handleMessage]);
+
+    const confirmDate = async (id) => {
+        let index = messages.findIndex(m => m.id == id);
+
+        let order = await orderingService.confirmDate(JSON.parse(messages[index].body).OrderId);
+
+        setMessages(prev => {
+            prev[index].body = JSON.stringify({
+                OrderId: order.id,
+                OrderRequestId: order.orderRequestId,
+                Price: order.price,
+                Prepayment: order.prepayment,
+                Deadline: order.deadline,
+                IsEnrolled: order.isEnrolled,
+                EnrollmentTime: order.enrollmentDate,
+                Status: order.status,
+                IsActive: true,
+                IsDateConfirmed: order.isDateConfirmed,
+                UserChangedEnrollmentDate: order.userChangedEnrollmentDateGuid
+            });
+
+            return [...prev];
+        });
+    }
 
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
@@ -153,14 +199,18 @@ const ChatScreen = ({ navigation, route }) => {
                             onPress={async () => {
                                 let order = await orderingService.changeOrderEnrollmentDate(id, dateHelper.convertFullDateToJson(enrollmentDate));
                                 setMessages(prev => {
-                                    let index = prev.findIndex(m => {
+                                    let index = arrayHelper.lastOrDefault(prev, m => {
                                         if (m.type == 3) {
                                             return JSON.parse(m.body).OrderId == id
                                         }
 
                                         return false;
                                     });
-                                    JSON.parse(prev[index].body).IsActive = false;
+
+                                    let body = JSON.parse(prev[index].body);
+                                    body.IsActive = false;
+                                    body.PastEnrollmentTime = body.EnrollmentTime;
+                                    prev[index].body = JSON.stringify(body);
                                     prev.push({
                                         id: mockId,
                                         body: JSON.stringify({
@@ -171,6 +221,7 @@ const ChatScreen = ({ navigation, route }) => {
                                             Deadline: order.deadline,
                                             IsEnrolled: order.isEnrolled,
                                             EnrollmentTime: order.enrollmentDate,
+                                            PastEnrollmentTime: body.EnrollmentTime,
                                             Status: order.status,
                                             IsActive: true,
                                             IsDateConfirmed: order.isDateConfirmed,
@@ -275,6 +326,7 @@ const ChatScreen = ({ navigation, route }) => {
                             <Message 
                                 message={item}
                                 userId={userStore.get().guid}
+                                confirmDate={confirmDate}
                                 changeDate={(id) => {
                                     setId(id);
                                     enrollmentDateRef.current?.open()

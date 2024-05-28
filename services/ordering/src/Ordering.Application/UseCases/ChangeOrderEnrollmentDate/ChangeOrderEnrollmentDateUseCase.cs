@@ -39,6 +39,11 @@ namespace Choice.Ordering.Application.UseCases.ChangeOrderEnrollmentDate
                 _notification.Add(nameof(id), "You don't have such order");
             }
 
+            if (order.UserChangedEnrollmentDateGuid == order.ClientId && id == order.ClientId)
+            {
+                _notification.Add(nameof(id), "Client cannot change enrollment time when date isn't confirmed");
+            }
+
             if (order.IsEnrolled)
             {
                 _notification.Add(nameof(order), "You are enrolled");

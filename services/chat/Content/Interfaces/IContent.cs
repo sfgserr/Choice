@@ -4,7 +4,7 @@
     {
         object GetContent();
 
-        void ChangeContent(Action<object> action);
+        void ChangeContent(Func<object, string> action);
 
         bool Match(string propertyName, object value);
 

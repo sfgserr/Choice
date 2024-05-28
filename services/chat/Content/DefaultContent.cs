@@ -11,13 +11,13 @@ namespace Choice.Chat.Api.Content
             Body = content;
         }
 
-        public string Body { get; }
+        public string Body { get; private set; }
 
         public object GetContent() => Body;
 
-        public void ChangeContent(Action<object> action)
+        public void ChangeContent(Func<object, string> action)
         {
-            action(Body);
+            Body = action(Body);
 
             BodyChanged?.Invoke(Body);
         }

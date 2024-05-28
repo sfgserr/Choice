@@ -22,10 +22,15 @@ const build = (token) => {
     });
 
     connection.on('enrollmentDateChanged', message => {
-        DeviceEventEmitter.emit('messageReceived', message);
+        DeviceEventEmitter.emit('enrollmentDateChanged', message);
     });
 
     connection.on('enrolled', message => {
+        DeviceEventEmitter.emit('messageChanged', message);
+    });
+
+    connection.on('confirmed', message => {
+        console.log('signalr');
         DeviceEventEmitter.emit('messageChanged', message);
     });
 }

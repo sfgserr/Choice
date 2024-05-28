@@ -33,6 +33,8 @@ namespace Choice.Chat.Api.Consumers
                 Order content = (Order)o;
 
                 content.ChangeEnrollmentTime(@event.EnrollmentDate, @event.IsClientChanged, senderId);
+
+                return JsonConvert.SerializeObject(content);
             });
 
             await _repository.Update(message);

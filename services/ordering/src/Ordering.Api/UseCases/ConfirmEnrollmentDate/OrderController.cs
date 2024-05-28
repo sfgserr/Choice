@@ -1,6 +1,8 @@
 ﻿using Choice.Application.Services;
+using Choice.EventBus.Messages.Events;
 using Choice.Ordering.Application.UseCases.ConfirmEnrollmentDate;
 using Choice.Ordering.Domain.OrderEntity;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +15,22 @@ namespace Choice.Ordering.Api.UseCases.ConfirmEnrollmentDate
     {
         private readonly IConfirmEnrollmentDateUseCase _useCase;
         private readonly Notification _notification;
+        private readonly IPublishEndpoint _endPoint;
 
         private IActionResult _viewModel;
 
-        public OrderController(IConfirmEnrollmentDateUseCase useCase, Notification notification)
+        public OrderController(IConfirmEnrollmentDateUseCase useCase, Notification notification, 
+            IPublishEndpoint endPoint)
         {
             _useCase = useCase;
             _notification = notification;
+            _endPoint = endPoint;
         }
 
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
+            _endPoint.Publish(new OrderEnrollmentDateConfirmedEvent(order.Id));
         }
 
         void IOutputPort.NotFound()

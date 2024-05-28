@@ -21,7 +21,18 @@ const where = (array, predicate) => {
     return sortedArray;
 }
 
+const lastOrDefault = (array, predicate) => {
+    for (let i = array.length-1; i >= 0; i--) {
+        if (predicate(array[i])) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 export default {
     project,
-    where
+    where,
+    lastOrDefault
 }
