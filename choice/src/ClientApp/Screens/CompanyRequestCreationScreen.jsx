@@ -69,12 +69,12 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
             <Modalize
                 ref={enrollmentDateRef}
                 adjustToContentHeight
-                childrenStyle={{height: '70%'}}>
+                childrenStyle={{height: '90%'}}>
                 <View
                     style={{
                         flex: 1, 
                         justifyContent: 'center',
-                        paddingHorizontal: 20
+                        paddingHorizontal: 20,
                     }}>
                     <View
                         style={{
@@ -114,7 +114,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                             style={{alignSelf: 'center'}}
                             onDateChange={setDate}/>
                     </View>
-                    <View style={{paddingTop: 20}}>
+                    <View>
                         <TouchableOpacity 
                             style={[styles.button]}
                             onPress={() => {
@@ -140,7 +140,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
             <Modalize
                 ref={enrollmentTimeRef}
                 adjustToContentHeight
-                childrenStyle={{height: '70%'}}>
+                childrenStyle={{height: '90%'}}>
                 <View
                     style={{
                         flex: 1, 
@@ -211,7 +211,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
             <Modalize
                 ref={deadlineRef}
                 adjustToContentHeight
-                childrenStyle={{height: '70%'}}>
+                childrenStyle={{height: '90%'}}>
                 <View
                     style={{
                         flex: 1, 

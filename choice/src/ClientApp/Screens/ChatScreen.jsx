@@ -68,15 +68,12 @@ const ChatScreen = ({ navigation, route }) => {
     }
 
     const handleChangedMessage = (message) => {
-        if (isFocused) {
-            let index = prev.findIndex(m => m.id == message.id);
-            setMessages(prev => {
-                prev.splice(index, 1);
-                prev.push(message);
+        let index = arrayHelper.lastOrDefault(messages, m => JSON.parse(m.body).OrderId == JSON.parse(message.body).OrderId);
 
-                return [...prev];
-            });
-        }
+        setMessages(prev => {
+            prev[index] = message;
+            return [...prev];
+        });
     }
 
     React.useEffect(() => {
@@ -89,7 +86,7 @@ const ChatScreen = ({ navigation, route }) => {
             DeviceEventEmitter.removeAllListeners('messageChanged');
             DeviceEventEmitter.removeAllListeners('enrollmentDateChanged');
         };
-    }, [handleMessage]);
+    }, [handleMessage,handleChangedMessage,handleEnrollmentChangedMessage]);
 
     const confirmDate = async (id) => {
         let index = messages.findIndex(m => m.id == id);

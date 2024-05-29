@@ -5,8 +5,10 @@ namespace Choice.ClientService.Domain.OrderRequests
 {
     public class OrderRequest : Entity
     {
-        public OrderRequest(int clientId, int categoryId, string description, List<string> photoUris,
-            bool toKnowPrice, bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius)
+        private readonly List<string> _companiesWatched = [];
+
+        public OrderRequest(int clientId, int categoryId, string description, List<string> photoUris, bool toKnowPrice, 
+            bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius, List<string> companiesWatched)
         {
             ClientId = clientId;
             CategoryId = categoryId;
@@ -16,6 +18,7 @@ namespace Choice.ClientService.Domain.OrderRequests
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
             SearchRadius = searchRadius;
+            CompaniesWatched = companiesWatched;
         }
 
         public int ClientId { get; }
@@ -28,6 +31,7 @@ namespace Choice.ClientService.Domain.OrderRequests
         public bool ToKnowEnrollmentDate { get; private set; }
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
         public DateTime CreationDate { get; private set; } = DateTime.UtcNow;
+        public List<string> CompaniesWatched { get; private set; } = [];
 
         private int _searchRadius;
 
@@ -47,6 +51,16 @@ namespace Choice.ClientService.Domain.OrderRequests
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
+        }
+
+        public void CompanyWatched(string id)
+        {
+            string? companyId = _companiesWatched.FirstOrDefault(s => s == id);
+
+            if (companyId is null)
+            {
+                _companiesWatched.Add(id);
+            }
         }
 
         public void SetStatus(OrderStatus status) =>

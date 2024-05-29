@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Choice.ClientService.Api.ViewModels;
 using Choice.ClientService.Application.UseCases.GetRequest;
 using Choice.ClientService.Domain.OrderRequests;
-using Choice.ClientService.Api.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Choice.ClientService.Api.UseCases.OrderRequests.GetRequest
 {
@@ -20,9 +20,10 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetRequest
             _useCase = useCase;
         }
 
-        void IOutputPort.Ok(OrderRequest request)
+        void IOutputPort.Ok(OrderRequest request, bool isUserCompany)
         {
-            _viewModel = Ok(new OrderRequestDetailsViewModel(request));
+            _viewModel = Ok(
+                isUserCompany ? new OrderRequestDetailsViewModel(request) : new OrderRequestViewModel(request));
         }
 
         void IOutputPort.NotFound()
@@ -30,7 +31,7 @@ namespace Choice.ClientService.Api.UseCases.OrderRequests.GetRequest
             _viewModel = NotFound();
         }
 
-        [HttpGet("GetRequest")]
+        [HttpGet("GetOrderRequest")]
         public async Task<IActionResult> GetRequest(int id)
         {
             _useCase.SetOutputPort(this);

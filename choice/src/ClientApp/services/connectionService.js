@@ -30,7 +30,6 @@ const build = (token) => {
     });
 
     connection.on('confirmed', message => {
-        console.log('signalr');
         DeviceEventEmitter.emit('messageChanged', message);
     });
 }

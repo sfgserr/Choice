@@ -7,5 +7,8 @@ namespace Choice.Infrastructure.Authentication
     {
         public string GetUserId() =>
             SeedData.DefaultClientGuid;
+
+        public string GetUserType() =>
+            "Client";
     }
 }

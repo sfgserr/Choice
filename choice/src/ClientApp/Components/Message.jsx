@@ -107,6 +107,18 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                         'Ваш ответ на заказ клиента'}
                             </Text>
                             {
+                                JSON.parse(message.body).Status != 1 ?
+                                <>
+                                    <TouchableOpacity
+                                        style={[styles.button]}>
+                                        
+                                    </TouchableOpacity>    
+                                </>
+                                :
+                                <>
+                                </>
+                            }
+                            {
                                 JSON.parse(message.body).Price > 0 ?
                                 <>
                                     <View
@@ -406,7 +418,7 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                 backgroundColor: JSON.parse(message.body).IsActive && (userStore.getUserType() == 1 ? JSON.parse(message.body).IsDateConfirmed : true) ? '#001C3D0D' : '#fafafb',
                                                 justifyContent: 'center'
                                             }}
-                                            disabled={!JSON.parse(message.body).IsActive}
+                                            disabled={!JSON.parse(message.body).IsActive || (userStore.getUserType() == 1 ? !JSON.parse(message.body).IsDateConfirmed : false)}
                                             onPress={JSON.parse(message.body).IsActive && (() => changeDate(JSON.parse(message.body).OrderId))}>
                                             <Text
                                                 style={[

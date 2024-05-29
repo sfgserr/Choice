@@ -4,7 +4,7 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
 {
     public interface IOutputPort
     {
-        void Ok(OrderRequest request);
+        void Ok(OrderRequest request, bool isUserCompany);
 
         void NotFound();
     }

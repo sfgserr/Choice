@@ -1,4 +1,5 @@
-﻿using Choice.ClientService.Domain.ClientAggregate;
+﻿using Choice.Application.Services;
+using Choice.ClientService.Domain.ClientAggregate;
 using Choice.ClientService.Domain.OrderRequests;
 
 namespace Choice.ClientService.Application.UseCases.GetRequest
@@ -6,12 +7,14 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
     public sealed class GetRequestUseCase : IGetRequestUseCase
     {
         private readonly IClientRepository _repository;
+        private readonly IUserService _userService;
 
         private IOutputPort _outputPort;
 
-        public GetRequestUseCase(IClientRepository repository)
+        public GetRequestUseCase(IClientRepository repository, IUserService userService)
         {
             _repository = repository;
+            _userService = userService;
 
             _outputPort = new GetRequestPresenter();
         }
@@ -22,9 +25,22 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
 
             OrderRequest? request = requests.FirstOrDefault(r => r.Id == id);
 
+            bool isUserCompany = false;
+
             if (request is not null)
             {
-                _outputPort.Ok(request);
+                if (_userService.GetUserType() == "Company")
+                {
+                    isUserCompany = true;
+
+                    string userId = _userService.GetUserId();
+
+                    request.CompanyWatched(userId);
+
+                    _repository.Update(request.Client!);
+                }
+
+                _outputPort.Ok(request, isUserCompany);
             }
 
             _outputPort.NotFound();

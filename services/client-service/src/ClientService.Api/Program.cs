@@ -95,11 +95,19 @@ namespace Choice.ClientService.Api
                 });
 
             builder.Services.AddAuthorization(o =>
+            {
                 o.AddPolicy("Company", policy =>
                 {
                     policy.RequireClaim("type", "Company");
                     policy.RequireClaim("isDataFilled", "true");
-                }));
+                });
+                o.AddPolicy("Default", policy =>
+                {
+                    policy.RequireClaim("type", "Client", "Company");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+                o.DefaultPolicy = o.GetPolicy("Default")!;
+            });
 
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<ICompanyService, CompanyService>();

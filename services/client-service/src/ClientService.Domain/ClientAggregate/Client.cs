@@ -6,7 +6,7 @@ namespace Choice.ClientService.Domain.ClientAggregate
 {
     public class Client : Entity
     {
-        private readonly List<OrderRequest> _requests = new();
+        private readonly List<OrderRequest> _requests = [];
 
         public Client(string guid, string name, string surname, string email,
             Address address, string iconUri, string phoneNumber)

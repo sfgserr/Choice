@@ -27,7 +27,7 @@ namespace Choice.Chat.Api.Consumers
 
             message.Content.ChangeContent(o =>
             {
-                Order content = (Order)o;
+                 Order content = (Order)o;
 
                 content.ConfirmDate();
 
@@ -36,7 +36,7 @@ namespace Choice.Chat.Api.Consumers
 
             await _repository.Update(message);
 
-            await _chatService.SendMessage(message.ReceiverId, "confirmed", new(message));
+            await _chatService.SendMessage(@event.ClientId, "confirmed", new(message));
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Choice.Ordering.Api.UseCases.ConfirmEnrollmentDate
         void IOutputPort.Ok(Order order)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderEnrollmentDateConfirmedEvent(order.Id));
+            _endPoint.Publish(new OrderEnrollmentDateConfirmedEvent(order.Id, order.ClientId));
         }
 
         void IOutputPort.NotFound()

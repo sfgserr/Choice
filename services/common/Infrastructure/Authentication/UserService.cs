@@ -14,5 +14,8 @@ namespace Choice.Infrastructure.Authentication
 
         public string GetUserId() =>
             _context.HttpContext.User.FindFirst("id")?.Value!;
+
+        public string GetUserType() =>
+            _context.HttpContext.User.FindFirst("type")?.Value!;
     }
 }
