@@ -47,7 +47,7 @@ namespace Choice.Chat.Api.Repositories
 
             messages.ForEach(m => m.SetContent());
 
-            return messages.FirstOrDefault(m =>
+            return messages.LastOrDefault(m =>
                 m.Type == MessageType.Order && m.Content.Match("OrderRequestId", orderRequestId));
         }
 
