@@ -32,6 +32,14 @@ const build = (token) => {
     connection.on('confirmed', message => {
         DeviceEventEmitter.emit('messageChanged', message);
     });
+
+    connection.on("statusChanged", message => {
+        DeviceEventEmitter.emit('messageChanged', message)
+    });
+
+    connection.on("userStatusChanged", user => {
+        DeviceEventEmitter.emit('chatChanged', user);
+    });
 }
 
 const start = async () => {

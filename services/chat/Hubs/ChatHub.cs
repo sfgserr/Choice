@@ -30,7 +30,7 @@ namespace Choice.Chat.Api.Hubs
 
             await _repository.Update(user);
 
-            await Clients.All.SendAsync("statusChanged", user);
+            await Clients.All.SendAsync("userStatusChanged", user);
 
             await base.OnConnectedAsync();
         }
@@ -47,7 +47,7 @@ namespace Choice.Chat.Api.Hubs
 
             await _repository.Update(user);
 
-            await Clients.All.SendAsync("statusChanged", user);
+            await Clients.All.SendAsync("userStatusChanged", user);
 
             await base.OnDisconnectedAsync(exception);
         }

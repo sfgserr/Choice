@@ -59,6 +59,33 @@ const convertFullDateToJson = (date) => {
     return `${year}-${month < 10 ? '0'+month : month}-${day < 10 ? '0'+day : day}T${hours < 10 ? '0'+hours : hours}:${minutes < 10 ? '0'+minutes : minutes}:00.000Z`;
 }
 
+const getDifference = (json) => {
+    let difference = Math.abs(new Date()-new Date(json));
+
+    const seconds = difference / 1000;
+    if (seconds < 0) {
+        return 'только что';
+    } else if (seconds < 60) {
+        return `${Math.floor(seconds)} секунд`;
+    }
+
+    const minutes = seconds / 60;
+    if (minutes < 60) {
+        const minutesRounded = Math.floor(minutes);
+        return minutesRounded === 1 ? 'минуту' : `${minutesRounded} минуты`;
+    }
+
+    const hours = minutes / 60;
+    if (hours < 24) {
+        const hoursRounded = Math.floor(hours);
+        return hoursRounded === 1 ? 'час' : `${hoursRounded} часов`;
+    }
+
+    const days = hours / 24;
+    const daysRounded = Math.floor(days);
+    return daysRounded === 1 ? 'день' : `${daysRounded} дней`;
+}
+
 export default {
     formatDate,
     convertDateToString,
@@ -67,5 +94,6 @@ export default {
     getTimeFromString,
     getDateFromString,
     convertFullDateToJson,
-    getMonthAndDayFromString
+    getMonthAndDayFromString,
+    getDifference
 }

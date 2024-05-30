@@ -22,6 +22,7 @@ import { Modalize } from 'react-native-modalize';
 import styles from '../Styles';
 import orderingService from '../services/orderingService';
 import arrayHelper from '../helpers/arrayHelper';
+import { stat } from 'react-native-fs';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -30,8 +31,11 @@ const ChatScreen = ({ navigation, route }) => {
         name: '',
         iconUri: '',
         guid: '',
+        status: 1,
+        lastTimeOnline: '',
         messages: []
     });
+    const [lastTimeOnlineString, setLastTimeOnlineString] = React.useState('');
     const [messages, setMessages] = React.useState([]);
     const [mockId, setMockId] = React.useState(-1);
     const [text, setText] = React.useState('');
@@ -76,18 +80,65 @@ const ChatScreen = ({ navigation, route }) => {
         });
     }
 
+    const handleChatChanged = (user) => {
+        if (user.guid == chat.guid) {
+            setChat(prev => {
+                prev.status = user.status;
+                prev.lastTimeOnline = user.lastTimeOnline;
+
+                return prev;
+            });
+            setLastTimeOnlineString(user.status == 2 ? `Был(а) ${dateHelper.getDifference(user.lastTimeOnline)} назад` : 'В сети');
+        }
+    }
+
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
         DeviceEventEmitter.addListener('messageChanged', handleChangedMessage);
         DeviceEventEmitter.addListener('enrollmentDateChanged', handleEnrollmentChangedMessage);
+        DeviceEventEmitter.addListener('chatChanged', handleChatChanged);
 
         return () => {
             DeviceEventEmitter.removeAllListeners('messageReceived');
             DeviceEventEmitter.removeAllListeners('messageChanged');
             DeviceEventEmitter.removeAllListeners('enrollmentDateChanged');
+            DeviceEventEmitter.removeAllListeners('chatChanged');
         };
     }, [handleMessage,handleChangedMessage,handleEnrollmentChangedMessage]);
 
+    const enroll = async (id) => {
+        let index = messages.findIndex(m => m.id == id);
+        setMessages(prev => {
+            let body = JSON.parse(prev[index].body);
+            body.IsEnrolled = true;
+
+            prev[index].body = JSON.stringify(body);
+
+            return [...prev];
+        });
+
+        await orderingService.enroll(JSON.parse(messages[index].body).OrderId);
+    }
+
+    const changeStatus = async (id, status) => {
+        let index = messages.findIndex(m => m.id == id);
+        setMessages(prev => {
+            let body = JSON.parse(prev[index].body);
+            body.Status = status;
+
+            prev[index].body = JSON.stringify(body);
+
+            return [...prev];
+        });
+
+        if (status == 2) {
+            await orderingService.finish(JSON.parse(messages[index].body).OrderId);
+        }
+        else {
+            await orderingService.cancel(JSON.parse(messages[index].body).OrderId);
+        }
+    }
+    
     const confirmDate = async (id) => {
         let index = messages.findIndex(m => m.id == id);
 
@@ -117,6 +168,8 @@ const ChatScreen = ({ navigation, route }) => {
 
         let chat = await chatService.getChat(chatId);
         setChat(chat);
+
+        setLastTimeOnlineString(chat.status == 2 ? `Был(а) ${dateHelper.getDifference(chat.lastTimeOnline)} назад` : 'В сети');
 
         setMessages(Object.keys(chat.messages).map((i) => ({
             id: chat.messages[i].id,
@@ -264,15 +317,29 @@ const ChatScreen = ({ navigation, route }) => {
                             color={'#2688EB'}
                             size={40}/>
                     </TouchableOpacity>
-                    <Text
+                    <View
                         style={{
-                            fontSize: 17,
-                            fontWeight: '500',
-                            color: 'black',
-                            alignSelf: 'center'
+                            flexDirection: 'column',
                         }}>
-                        {chat.name}
-                    </Text>
+                        <Text
+                            style={{
+                                fontSize: 17,
+                                fontWeight: '500',
+                                color: 'black',
+                                alignSelf: 'center'
+                            }}>
+                            {chat.name}
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: 'center',
+                                fontSize: 13,
+                                color: '#787878',
+                                fontWeight: '400'
+                            }}>
+                            {lastTimeOnlineString}
+                        </Text>
+                    </View>
                     <Image
                         style={{
                             width: 40,
@@ -324,6 +391,8 @@ const ChatScreen = ({ navigation, route }) => {
                                 message={item}
                                 userId={userStore.get().guid}
                                 confirmDate={confirmDate}
+                                enroll={enroll}
+                                changeStatus={changeStatus}
                                 changeDate={(id) => {
                                     setId(id);
                                     enrollmentDateRef.current?.open()

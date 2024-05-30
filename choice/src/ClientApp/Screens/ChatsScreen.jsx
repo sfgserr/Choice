@@ -15,7 +15,6 @@ import { measure } from 'react-native-reanimated';
 export default function ChatsScreen({ navigation }) {
     const [chats, setChats] = React.useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
-    const [isAdd, setIsAdd] = React.useState(false);
 
     const isFocused = useIsFocused();
 
@@ -48,15 +47,23 @@ export default function ChatsScreen({ navigation }) {
         }
     }
 
+    const handleChatChanged = (user) => {
+        
+    }
+
     React.useEffect(() => {
         isFocused && onRefresh();
     }, [isFocused]);
 
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
+        DeviceEventEmitter.addListener('chatChanged', handleChatChanged);
 
-        return () => DeviceEventEmitter.removeAllListeners('messageReceived');
-    }, [handleMessage]);
+        return () => {
+            DeviceEventEmitter.removeAllListeners('messageReceived');
+            DeviceEventEmitter.removeAllListeners('chatChanged');
+        }
+    }, [handleMessage,handleChatChanged]);
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>

@@ -13,7 +13,7 @@ import DatePicker from 'react-native-date-picker';
 import { Modalize } from 'react-native-modalize';
 import orderingService from '../services/orderingService';
 
-const Message = ({message, userId, changeDate, confirmDate}) => {
+const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus}) => {
     const isUserReceiver = message.receiverId == userId;
     const { width, height } = Dimensions.get('screen');
 
@@ -106,18 +106,6 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                     'Ответ компании на ваш запрос' : 
                                                         'Ваш ответ на заказ клиента'}
                             </Text>
-                            {
-                                JSON.parse(message.body).Status != 1 ?
-                                <>
-                                    <TouchableOpacity
-                                        style={[styles.button]}>
-                                        
-                                    </TouchableOpacity>    
-                                </>
-                                :
-                                <>
-                                </>
-                            }
                             {
                                 JSON.parse(message.body).Price > 0 ?
                                 <>
@@ -300,7 +288,30 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                             }
                             <View style={{paddingTop: 10, paddingBottom: 10}}>
                                 {
-                                    JSON.parse(message.body).IsEnrolled ?
+                                    JSON.parse(message.body).Status != 1 ?
+                                    <>
+                                        <TouchableOpacity
+                                            style={[
+                                                styles.button, {
+                                                    height: height/20                
+                                                }
+                                            ]}>
+                                            <Text
+                                                style={[
+                                                    styles.buttonText, {
+                                                        fontSize: 15
+                                                    }
+                                                ]}>
+                                                Оставить отзыв    
+                                            </Text>    
+                                        </TouchableOpacity>    
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
+                                {
+                                    JSON.parse(message.body).Status == 1 && JSON.parse(message.body).IsEnrolled ?
                                     <>
                                         <View style={{paddingBottom: 10}}>
                                             <View
@@ -342,7 +353,8 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                         styles.button, {
                                                             height: height/20
                                                         }
-                                                    ]}>
+                                                    ]}
+                                                    onPress={async () => await changeStatus(message.id, 2)}>
                                                     <Text
                                                         style={[
                                                             styles.buttonText, {
@@ -363,7 +375,8 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                             height: height/20,
                                                             backgroundColor: '#001C3D0D'
                                                         }
-                                                    ]}>
+                                                    ]}
+                                                    onPress={async () => await changeStatus(message.id, 3)}>
                                                     <Text
                                                         style={[
                                                             styles.buttonText, {
@@ -382,7 +395,7 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                     </>
                                 }
                                 {
-                                    !JSON.parse(message.body).IsEnrolled && JSON.parse(message.body).IsActive && userStore.getUserType() == 2 && JSON.parse(message.body).UserChangedEnrollmentDate != null && JSON.parse(message.body).UserChangedEnrollmentDate != userStore.get().guid ?
+                                    JSON.parse(message.body).Status == 1 && !JSON.parse(message.body).IsEnrolled && JSON.parse(message.body).IsActive && userStore.getUserType() == 2 && JSON.parse(message.body).UserChangedEnrollmentDate != null && JSON.parse(message.body).UserChangedEnrollmentDate != userStore.get().guid ?
                                     <>
                                         <View style={{paddingBottom: 5}}>
                                             <TouchableOpacity
@@ -409,7 +422,7 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                     </>
                                 }
                                 {
-                                    !JSON.parse(message.body).IsEnrolled ?
+                                    JSON.parse(message.body).Status == 1 && !JSON.parse(message.body).IsEnrolled ?
                                     <>
                                         <TouchableOpacity
                                             style={{
@@ -435,7 +448,7 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                     </>
                                 }
                                 {
-                                    userStore.getUserType() == 1 && JSON.parse(message.body).IsActive && JSON.parse(message.body).IsDateConfirmed && !JSON.parse(message.body).IsEnrolled ?
+                                    JSON.parse(message.body).Status == 1 && userStore.getUserType() == 1 && JSON.parse(message.body).IsActive && JSON.parse(message.body).IsDateConfirmed && !JSON.parse(message.body).IsEnrolled ?
                                     <>
                                         <View style={{paddingTop: 10}}>
                                             <TouchableOpacity
@@ -443,7 +456,8 @@ const Message = ({message, userId, changeDate, confirmDate}) => {
                                                     styles.button, {
                                                         height: height/20
                                                     }
-                                                ]}>
+                                                ]}
+                                                onPress={() => enroll(message.id)}>
                                                 <Text
                                                     style={[
                                                         styles.buttonText, {

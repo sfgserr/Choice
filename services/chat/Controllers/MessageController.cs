@@ -82,7 +82,9 @@ namespace Choice.Chat.Api.Controllers
                 ChatViewModel chat = new(user.Name,
                                          user.IconUri,
                                          user.Guid,
-                                         messages.Select(m => new MessageViewModel(m)).ToList());
+                                         messages.Select(m => new MessageViewModel(m)).ToList(),
+                                         (int)user.Status,
+                                         user.LastTimeOnline);
 
                 return Ok(chat);
             }
@@ -113,7 +115,9 @@ namespace Choice.Chat.Api.Controllers
                 chats.Add(new(user.Name, 
                               user.IconUri, 
                               id,
-                              chatMessages.Select(m => new MessageViewModel(m)).ToList()));
+                              chatMessages.Select(m => new MessageViewModel(m)).ToList(),
+                              (int)user.Status,
+                              user.LastTimeOnline));
             }
 
             return Ok(chats);
