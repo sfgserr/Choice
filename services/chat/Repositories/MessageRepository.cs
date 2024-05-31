@@ -36,6 +36,7 @@ namespace Choice.Chat.Api.Repositories
             List<Message> messages = await _context.Messages.ToListAsync();
 
             messages.ForEach(m => m.SetContent());
+            messages = messages.OrderBy(m => m.CreationTime).ToList();
 
             return messages.LastOrDefault(m => 
                 m.Type == MessageType.Order && m.Content.Match("OrderId", orderId));
@@ -46,6 +47,7 @@ namespace Choice.Chat.Api.Repositories
             List<Message> messages = await _context.Messages.ToListAsync();
 
             messages.ForEach(m => m.SetContent());
+            messages = messages.OrderBy(m => m.CreationTime).ToList();
 
             return messages.LastOrDefault(m =>
                 m.Type == MessageType.Order && m.Content.Match("OrderRequestId", orderRequestId));

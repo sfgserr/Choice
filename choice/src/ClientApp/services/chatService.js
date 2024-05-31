@@ -72,9 +72,23 @@ const sendMessage = async (text, receiverId) => {
     });
 }
 
+const read = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Message/Read?id=${id}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    });
+}
+
 export default {
     getMessages,
     getChats,
     getChat,
+    read,
     sendMessage
 }

@@ -16,7 +16,7 @@ import orderingService from '../services/orderingService';
 const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus}) => {
     const isUserReceiver = message.receiverId == userId;
     const { width, height } = Dimensions.get('screen');
-
+    
     return (
         <View style={{flexDirection: 'column'}}>
             {

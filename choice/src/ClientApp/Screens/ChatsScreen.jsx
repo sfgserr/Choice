@@ -47,6 +47,37 @@ export default function ChatsScreen({ navigation }) {
         }
     }
 
+    const handleReadMessage = (message) => {
+        let chatIndex = chats.findIndex(c => c.guid == message.receiverId);
+        let messageIndex = chats[chatIndex].messages.findIndex(m => m.id == message.id);
+
+        setChats(prev => {
+            prev[chatIndex].messages[messageIndex].isRead = true;
+
+            return [...prev];
+        });
+    }
+
+    const handleEnrollmentDateChanged = async (message) => {
+        if (isFocused) {
+            let index = chats.findIndex(c => c.guid == message.senderId);
+            if (index == -1) {
+                let chat = await chatService.getChat(message.senderId);
+
+                setChats(prev => {
+                    prev.push(chat);
+                    return [...prev];
+                });
+            } 
+            else {
+                setChats(prev => {
+                    prev[index].messages.push(message);
+                    return [...prev];
+                });
+            }
+        }
+    }
+
     const handleChatChanged = (user) => {
         
     }
@@ -58,12 +89,16 @@ export default function ChatsScreen({ navigation }) {
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
         DeviceEventEmitter.addListener('chatChanged', handleChatChanged);
+        DeviceEventEmitter.addListener('read', handleReadMessage);
+        DeviceEventEmitter.addListener('enrollmentDateChanged', handleEnrollmentDateChanged);
 
         return () => {
             DeviceEventEmitter.removeAllListeners('messageReceived');
             DeviceEventEmitter.removeAllListeners('chatChanged');
+            DeviceEventEmitter.removeAllListeners('read');
+            DeviceEventEmitter.removeAllListeners('enrollmentDateChanged');
         }
-    }, [handleMessage,handleChatChanged]);
+    }, [handleMessage,handleChatChanged,handleReadMessage,handleEnrollmentDateChanged]);
 
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>

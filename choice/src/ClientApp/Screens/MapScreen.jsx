@@ -14,6 +14,7 @@ import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
 import userStore from '../services/userStore.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
+import { useIsFocused } from '@react-navigation/native';
 import env from '../env.js';
 
 export default function MapScreen({ navigation, route }) {
@@ -40,6 +41,8 @@ export default function MapScreen({ navigation, route }) {
     const [coords, setCoords] = React.useState([]);
     const [user, setUser] = React.useState('');
 
+    const isFocused = useIsFocused();
+
     const setParams = (params) => {
         setCategory(params.selectedCategory);
         setOrderRequest(params.createdOrderRequest);
@@ -47,24 +50,26 @@ export default function MapScreen({ navigation, route }) {
 
     DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
 
-    React.useEffect(() => {
-        async function getCoords() {
-            let coords = await geoService.getCoords();
+    const retrieveData = async () => {
+        let coords = await geoService.getCoords();
+        setCoords(coords);
 
-            setCoords(coords);
-        }
-        async function getUser() {
-            let currentUserType = userStore.getUserType();
-            await userStore.retrieveData(currentUserType);
-            setUser(userStore.get());
-        }
-        if (coords.length == 0) {
-            getCoords();
-        }
-        if (user == '') {
-            getUser();
-        }
-    });
+        let currentUserType = userStore.getUserType();
+        await userStore.retrieveData(currentUserType);
+        setUser(userStore.get());
+    }
+
+    React.useEffect(() => {
+        isFocused && retrieveData();
+    }, [isFocused]);
+
+    React.useEffect(() => {
+        DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
+
+        return () => {
+            DeviceEventEmitter.removeAllListeners('orerRequestCreated');
+        };
+    }, [setParams]);
 
     const goBack = () => {
         navigation.goBack();
@@ -83,8 +88,8 @@ export default function MapScreen({ navigation, route }) {
                     zoom: 16
                 }}
                 provider='google'
-                scrollEnabled={false}
-                zoomEnabled={false}
+                scrollEnabled
+                zoomEnabled
                 rotateEnabled={false}
                 style={mapStyles.map}>
                 <CustomMarker imageUri={`${env.api_url}/api/objects/${user.iconUri}`}

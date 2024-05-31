@@ -10,6 +10,7 @@ namespace Choice.Chat.Api.ViewModels
             Body = message.Body;
             SenderId = message.SenderId;
             ReceiverId = message.ReceiverId;
+            IsRead = message.IsRead;
             CreationTime = message.CreationTime;
             Type = (int)message.Type;
         }
@@ -18,6 +19,7 @@ namespace Choice.Chat.Api.ViewModels
         public string Body { get; }
         public string SenderId { get; }
         public string ReceiverId { get; }
+        public bool IsRead { get; }
         public int Type { get; }
         public DateTime CreationTime { get; }
     }

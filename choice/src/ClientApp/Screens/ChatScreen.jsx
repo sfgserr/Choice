@@ -22,7 +22,6 @@ import { Modalize } from 'react-native-modalize';
 import styles from '../Styles';
 import orderingService from '../services/orderingService';
 import arrayHelper from '../helpers/arrayHelper';
-import { stat } from 'react-native-fs';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -92,19 +91,33 @@ const ChatScreen = ({ navigation, route }) => {
         }
     }
 
+    const handleReadMessage = (message) => {
+        let index = messages.findIndex(m => m.id == message.id);
+
+        if (index != -1) {
+            setMessages(prev => {
+                prev[index].isRead = true;
+    
+                return [...prev];
+            });
+        }
+    }
+
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
         DeviceEventEmitter.addListener('messageChanged', handleChangedMessage);
         DeviceEventEmitter.addListener('enrollmentDateChanged', handleEnrollmentChangedMessage);
         DeviceEventEmitter.addListener('chatChanged', handleChatChanged);
+        DeviceEventEmitter.addListener('read', handleReadMessage);
 
         return () => {
             DeviceEventEmitter.removeAllListeners('messageReceived');
             DeviceEventEmitter.removeAllListeners('messageChanged');
             DeviceEventEmitter.removeAllListeners('enrollmentDateChanged');
             DeviceEventEmitter.removeAllListeners('chatChanged');
+            DeviceEventEmitter.removeAllListeners('read');
         };
-    }, [handleMessage,handleChangedMessage,handleEnrollmentChangedMessage]);
+    }, [handleMessage,handleChangedMessage,handleEnrollmentChangedMessage,handleReadMessage]);
 
     const enroll = async (id) => {
         let index = messages.findIndex(m => m.id == id);
@@ -170,20 +183,30 @@ const ChatScreen = ({ navigation, route }) => {
         setChat(chat);
 
         setLastTimeOnlineString(chat.status == 2 ? `Был(а) ${dateHelper.getDifference(chat.lastTimeOnline)} назад` : 'В сети');
-
         setMessages(Object.keys(chat.messages).map((i) => ({
             id: chat.messages[i].id,
             receiverId: chat.messages[i].receiverId,
             senderId: chat.messages[i].senderId,
             creationTime: chat.messages[i].creationTime,
             body: chat.messages[i].body,
-            type: chat.messages[i].type    
+            type: chat.messages[i].type,
+            isRead: chat.messages[i].isRead     
         })));
 
         await userStore.retrieveData(userStore.getUserType());
 
         setRefreshing(false);
     }, []);
+
+    const onViewableItemsChanged = React.useRef(async ({viewableItems, changed}) => {
+        viewableItems.forEach(async i => {
+            if (i.isViewable && i.item.receiverId == userStore.get().guid) {
+                await chatService.read(i.item.id);
+            }
+        });
+    });
+
+    const viewabilityConfig = React.useRef({viewAreaCoveragePercentThreshold: 50});
 
     React.useEffect(() => {
         isFocused && onRefresh();
@@ -280,11 +303,13 @@ const ChatScreen = ({ navigation, route }) => {
                                         senderId: userStore.get().guid,
                                         receiverId: prev[index].receiverId != userStore.get().guid ? prev[index].receiverId : prev[index].senderId,
                                         type: 3,
+                                        isRead: false,
                                         creationTime: dateHelper.convertFullDateToJson(new Date())
                                     });
                                     setMockId(prev => prev-1);
                                     return [...prev];
                                 });
+                                
                                 enrollmentDateRef.current?.close();
                             }}>
                             <Text style={[styles.buttonText]}>
@@ -356,6 +381,8 @@ const ChatScreen = ({ navigation, route }) => {
                 }
                 data={[...messages].reverse()}
                 style={{paddingTop: 10}}
+                onViewableItemsChanged={onViewableItemsChanged.current}
+                viewabilityConfig={viewabilityConfig.current}
                 inverted
                 renderItem={({item, index}) => {
                     return (

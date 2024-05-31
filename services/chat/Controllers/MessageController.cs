@@ -43,7 +43,7 @@ namespace Choice.Chat.Api.Controllers
         {
             Message? message = await _messageRepository.Get(id);
 
-            if (message is not null)
+            if (message is not null && !message.IsRead)
             {
                 message.Read();
 
@@ -111,6 +111,7 @@ namespace Choice.Chat.Api.Controllers
                 User user = (await _userRepository.Get(id))!;
 
                 IList<Message> chatMessages = await _messageRepository.GetAll(userId, id);
+                chatMessages = chatMessages.OrderBy(m => m.CreationTime).ToList();
 
                 chats.Add(new(user.Name, 
                               user.IconUri, 

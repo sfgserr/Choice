@@ -40,6 +40,10 @@ const build = (token) => {
     connection.on("userStatusChanged", user => {
         DeviceEventEmitter.emit('chatChanged', user);
     });
+
+    connection.on("read", message => {
+        DeviceEventEmitter.emit('read', message);
+    });
 }
 
 const start = async () => {

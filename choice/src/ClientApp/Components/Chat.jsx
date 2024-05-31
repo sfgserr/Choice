@@ -57,7 +57,7 @@ const Chat = ({navigation, chat}) => {
                             name="done-all"
                             type="material"
                             size={20}
-                            color={chat.isRead ? '#21C004' : '#BBBBBB'}
+                            color={chat.messages[chat.messages.length-1].isRead ? '#21C004' : '#BBBBBB'}
                             style={{alignSelf: 'flex-end', paddingRight: 5}}/>
                         <Text
                             style={{
