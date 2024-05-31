@@ -16,6 +16,7 @@ import userStore from '../services/userStore.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
 import { useIsFocused } from '@react-navigation/native';
 import env from '../env.js';
+import companyService from '../services/companyService.js';
 
 export default function MapScreen({ navigation, route }) {
     const [category, setCategory] = React.useState({
@@ -35,7 +36,7 @@ export default function MapScreen({ navigation, route }) {
         creationDate: '',
         photoUris: []
     });
-
+    const [companies, setCompanies] = React.useState([]);
     const { width, height } = Dimensions.get('screen');
 
     const [coords, setCoords] = React.useState([]);
@@ -51,6 +52,9 @@ export default function MapScreen({ navigation, route }) {
     DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
 
     const retrieveData = async () => {
+        let companies = await companyService.getAll();
+        setCompanies(companies);
+
         let coords = await geoService.getCoords();
         setCoords(coords);
 
@@ -97,6 +101,14 @@ export default function MapScreen({ navigation, route }) {
                                 latitude: coords[0] == null ? 20 : coords[0],
                                 longitude: coords[1] == null ? 20 : coords[1]
                               }}/>
+                {companies.map(({company}) => {(
+                    <CustomMarker 
+                        imageUri={`${env.api_url}/api/objects/${company.iconUri}`}
+                        coordinate={{
+                            latitude: coords[0] == null ? 20 : coords[0],
+                            longitude: coords[1] == null ? 20 : coords[1]
+                        }}/>
+                )})}
             </MapView>
             <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>

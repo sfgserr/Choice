@@ -62,8 +62,12 @@ namespace Choice.CompanyService.Api.Controllers
 
         [HttpGet("GetCompany")]
         [Authorize("Client")]
-        public async Task<IActionResult> GetCompany(string guid, Address address)
+        public async Task<IActionResult> GetCompany(string guid)
         {
+            string[] addressJson = HttpContext.User.FindFirst("address")?.Value.Split(',')!;
+
+            Address address = new(addressJson[0], addressJson[1]);
+
             Company company = await _repository.Get(guid);
 
             if (company is null)

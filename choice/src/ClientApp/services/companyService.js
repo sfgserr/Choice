@@ -30,7 +30,37 @@ const fillCompanyData = async (data) => {
     .then(response => response.status);
 }
 
+const getCompany = async (guid) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/GetCompany?guid=${guid}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
+const getAll = async () => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/GetAll`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 export default {
     get,
-    fillCompanyData
+    fillCompanyData,
+    getCompany,
+    getAll
 }
