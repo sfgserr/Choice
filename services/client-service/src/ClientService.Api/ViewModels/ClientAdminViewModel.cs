@@ -15,7 +15,8 @@ namespace Choice.ClientService.Api.ViewModels
             IconUri = client.IconUri;
             PhoneNumber = client.PhoneNumber;
             Street = client.Address.Street;
-            City = client.Address.City; 
+            City = client.Address.City;
+            Coords = client.Coordinates;
         }
 
         public int Id { get; }
@@ -28,5 +29,6 @@ namespace Choice.ClientService.Api.ViewModels
         public string PhoneNumber { get; }
         public string Street { get; }
         public string City { get; }
+        public string Coords { get; }
     }
 }

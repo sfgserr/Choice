@@ -23,7 +23,8 @@ namespace Choice.ClientService.Infrastructure.Data
                     IconUri = "defaulturi",
                     PhoneNumber = "37377875397",
                     AverageGrade = (double)0,
-                    ReviewCount = 0
+                    ReviewCount = 0,
+                    Coordinates = "55.7499413,37.5908556"
                 });
 
                 c.OwnsOne(c => c.Address)

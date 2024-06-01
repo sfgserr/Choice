@@ -5,13 +5,14 @@ namespace Choice.CompanyService.Api.Entities
 {
     public class Company
     {
-        public Company(string guid, string title, string email, string phoneNumber, Address address)
+        public Company(string guid, string title, string email, string phoneNumber, Address address, string coordinates)
         {
             Guid = guid;
             Title = title;
             Email = email;
             PhoneNumber = phoneNumber;
             Address = address;
+            Coordinates = coordinates;
         }
 
         private Company() { }
@@ -23,7 +24,8 @@ namespace Choice.CompanyService.Api.Entities
         public string Email { get; private set; }
         public string SiteUrl { get; private set; } = string.Empty;
         public string IconUri { get; private set; } = "defaulturi";
-        public Address Address { get; private set; }    
+        public Address Address { get; private set; }
+        public string Coordinates { get; private set; }
         public double AverageGrade { get; private set; } = 0;
         public int ReviewsCount { get; private set; } = 0;
         public List<string> SocialMedias { get; private set; } = [];
@@ -46,7 +48,7 @@ namespace Choice.CompanyService.Api.Entities
         }
 
         public void ChangeData(string title, string phoneNumber, string email, string siteUrl, string city, 
-            string street, List<string> socialMedias, List<string> photoUris, List<int> categoriesId)
+            string street, List<string> socialMedias, List<string> photoUris, List<int> categoriesId, string coordinates)
         {
             Title = title;
             PhoneNumber = phoneNumber;
@@ -56,6 +58,7 @@ namespace Choice.CompanyService.Api.Entities
             SocialMedias = socialMedias;
             PhotoUris = photoUris;
             CategoriesId = categoriesId;
+            Coordinates = coordinates;
         }
 
         public void ChangeIconUri(string iconUri)

@@ -5,12 +5,13 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import MapView from 'react-native-maps';
 import { Icon } from 'react-native-elements';
 import styles from '../Styles.jsx';
-import geoService from '../services/geoService.js';
 import CustomMarker from '../Components/CustomMarker.jsx';
 import userStore from '../services/userStore.js';
 import OrderRequestCard from '../Components/OrderRequestCard.jsx';
@@ -39,8 +40,7 @@ export default function MapScreen({ navigation, route }) {
     const [companies, setCompanies] = React.useState([]);
     const { width, height } = Dimensions.get('screen');
 
-    const [coords, setCoords] = React.useState([]);
-    const [user, setUser] = React.useState('');
+    const [refreshing, setRefreshing] = React.useState(false);
 
     const isFocused = useIsFocused();
 
@@ -51,17 +51,17 @@ export default function MapScreen({ navigation, route }) {
 
     DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
 
-    const retrieveData = async () => {
+    const retrieveData = React.useCallback(async () => {
+        setRefreshing(true);
+
         let companies = await companyService.getAll();
         setCompanies(companies);
 
-        let coords = await geoService.getCoords();
-        setCoords(coords);
-
         let currentUserType = userStore.getUserType();
         await userStore.retrieveData(currentUserType);
-        setUser(userStore.get());
-    }
+
+        setRefreshing(false);
+    }, []);
 
     React.useEffect(() => {
         isFocused && retrieveData();
@@ -80,12 +80,16 @@ export default function MapScreen({ navigation, route }) {
     }
 
     return (
-        <View style={{flex: 1, backgroundColor: 'white'}}>
+        <ScrollView 
+            style={{flex: 1, backgroundColor: 'white'}}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={retrieveData}/>
+            }>
             <MapView 
                 camera={{
                     center: {
-                        latitude: coords[0] == null ? 20 : coords[0],
-                        longitude: coords[1] == null ? 20 : coords[1],
+                        latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
+                        longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
                     },
                     pitch: 1,
                     heading: 1,
@@ -96,19 +100,19 @@ export default function MapScreen({ navigation, route }) {
                 zoomEnabled
                 rotateEnabled={false}
                 style={mapStyles.map}>
-                <CustomMarker imageUri={`${env.api_url}/api/objects/${user.iconUri}`}
+                <CustomMarker imageUri={`${env.api_url}/api/objects/${userStore.get().iconUri}`}
                               coordinate={{
-                                latitude: coords[0] == null ? 20 : coords[0],
-                                longitude: coords[1] == null ? 20 : coords[1]
+                                latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
+                                longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
                               }}/>
-                {companies.map(({company}) => {(
+                {companies.length > 0 ? companies.map((company) => { console.log(company); return (
                     <CustomMarker 
                         imageUri={`${env.api_url}/api/objects/${company.iconUri}`}
                         coordinate={{
-                            latitude: coords[0] == null ? 20 : coords[0],
-                            longitude: coords[1] == null ? 20 : coords[1]
+                            latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
+                            longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
                         }}/>
-                )})}
+                )}) : <></>}
             </MapView>
             <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -150,7 +154,7 @@ export default function MapScreen({ navigation, route }) {
                     </View>
                 </>
             }
-        </View>
+        </ScrollView>
     );
 }
 

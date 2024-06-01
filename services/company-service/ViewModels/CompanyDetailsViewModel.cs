@@ -15,6 +15,7 @@ namespace Choice.CompanyService.Api.ViewModels
             IconUri = company.IconUri;
             SiteUrl = company.SiteUrl;
             Address = company.Address;
+            Coords = company.Coordinates;
             AverageGrade = company.AverageGrade;
             SocialMedias = company.SocialMedias.ToList();
             PhotoUris = company.PhotoUris.ToList();
@@ -31,6 +32,7 @@ namespace Choice.CompanyService.Api.ViewModels
         public string IconUri { get; }
         public string SiteUrl { get; }
         public Address Address { get; }
+        public string Coords { get; }
         public double AverageGrade { get; }
         public List<string> SocialMedias { get; }
         public List<string> PhotoUris { get; }

@@ -27,20 +27,22 @@ namespace Choice.ClientService.Application.UseCases.GetOrderRequests
         {
             Address address = _companyService.GetAddress();
 
+            string coords = await _addressService.Geocode(address);
+
             IList<OrderRequest> requests = await _repository.GetRequests();
 
-            IList<OrderRequest> requestsInRadius = await GetRequests(address, requests);
+            IList<OrderRequest> requestsInRadius = await GetRequests(coords, requests);
 
             _outputPort.Ok(requestsInRadius.Where(r => categoriesId.Any(id => id == r.CategoryId)).ToList());
         }
 
-        public async Task<IList<OrderRequest>> GetRequests(Address address, IList<OrderRequest> requests)
+        public async Task<IList<OrderRequest>> GetRequests(string coords, IList<OrderRequest> requests)
         {
             List<OrderRequest> requestsInRadius = new();
 
             foreach (OrderRequest request in requests)
             {
-                int distance = await _addressService.GetDistance(address, request.Client?.Address!);
+                int distance = await _addressService.GetDistance(coords, request.Client?.Coordinates!);
 
                 if (distance <= request.SearchRadius)
                     requestsInRadius.Add(request);

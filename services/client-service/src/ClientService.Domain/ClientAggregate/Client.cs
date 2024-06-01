@@ -9,13 +9,14 @@ namespace Choice.ClientService.Domain.ClientAggregate
         private readonly List<OrderRequest> _requests = [];
 
         public Client(string guid, string name, string surname, string email,
-            Address address, string iconUri, string phoneNumber)
+            Address address, string coordinates, string iconUri, string phoneNumber)
         {
             Guid = guid;
             Name = name;
             Surname = surname;
             Email = email;
             Address = address;
+            Coordinates = coordinates;
             IconUri = iconUri;
             PhoneNumber = phoneNumber;
         }
@@ -27,6 +28,7 @@ namespace Choice.ClientService.Domain.ClientAggregate
         public string Surname { get; private set; }
         public string Email { get; private set; }
         public Address Address { get; private set; }
+        public string Coordinates { get; private set; }
         public double AverageGrade { get; private set; }
         public int ReviewCount { get; private set; }
         public string IconUri { get; private set; }
@@ -49,13 +51,14 @@ namespace Choice.ClientService.Domain.ClientAggregate
         }
 
         public void ChangeData(string name, string surname, string email, string phoneNumber, string city, 
-            string street)
+            string street, string coordinates)
         {
             Name = name;
             Surname = surname;
             Email = email;
             PhoneNumber = phoneNumber;
             Address = new(street, city);
+            Coordinates = coordinates;
         }
 
         public void AddReview(int grade)

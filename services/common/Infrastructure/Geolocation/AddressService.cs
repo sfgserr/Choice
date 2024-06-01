@@ -17,11 +17,8 @@ namespace Choice.Infrastructure.Geolocation
             _options = options;
         }
 
-        public async Task<int> GetDistance(Address clientAddress, Address companyAddress)
+        public async Task<int> GetDistance(string clientCoords, string companyCoords)
         {
-            string clientCoords = await Geocode(clientAddress);
-            string companyCoords = await Geocode(companyAddress);
-
             Uri requestUri = new($"{_geocodeUrl}/routing?waypoints={clientCoords}|{companyCoords}&mode=drive&apiKey={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient
@@ -34,7 +31,7 @@ namespace Choice.Infrastructure.Geolocation
             return int.Parse(obj?.SelectToken("features[0].properties.distance")?.ToString()!);
         }
 
-        private async Task<string> Geocode(Address address)
+        public async Task<string> Geocode(Address address)
         {
             Uri requestUri = new
                 ($"{_geocodeUrl}/geocode/search?text={address.Street},{address.City}&apiKey={_options.ApiKey}");
