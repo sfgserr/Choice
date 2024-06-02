@@ -39,7 +39,7 @@ export default function MapScreen({ navigation, route }) {
     });
     const [companies, setCompanies] = React.useState([]);
     const { width, height } = Dimensions.get('screen');
-
+    const map = React.createRef();
     const [refreshing, setRefreshing] = React.useState(false);
 
     const isFocused = useIsFocused();
@@ -63,28 +63,45 @@ export default function MapScreen({ navigation, route }) {
         setRefreshing(false);
     }, []);
 
+    const handleMessageReceived = (message) => {
+        if (message.type == 3 && JSON.parse(message.body).OrderRequestId == orderRequest.id && JSON.parse(message.body).PastEnrollmentTime == null) {
+            let id = userStore.get().guid != message.receiverId ? message.receiverId : message.senderId;
+            let index = companies.findIndex(c => c.guid == id);
+
+            let coords = companies[index].coords.split(',');
+
+            const region = {
+                latitude: Number(coords[0]),
+                longitude: Number(coords[1]),
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+            }
+            
+            map.current.animateToRegion(region, 500);
+        }
+    }
+
     React.useEffect(() => {
         isFocused && retrieveData();
     }, [isFocused]);
 
     React.useEffect(() => {
         DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
+        DeviceEventEmitter.addListener('messageReceived', handleMessageReceived);
 
         return () => {
             DeviceEventEmitter.removeAllListeners('orerRequestCreated');
+            DeviceEventEmitter.removeAllListeners('messageReceived');
         };
-    }, [setParams]);
+    }, [setParams, handleMessageReceived]);
 
     const goBack = () => {
         navigation.goBack();
     }
 
     return (
-        <ScrollView 
-            style={{flex: 1, backgroundColor: 'white'}}
-            refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={retrieveData}/>
-            }>
+        <View 
+            style={{flex: 1, backgroundColor: 'white'}}>
             <MapView 
                 camera={{
                     center: {
@@ -95,6 +112,7 @@ export default function MapScreen({ navigation, route }) {
                     heading: 1,
                     zoom: 16
                 }}
+                ref={map}
                 provider='google'
                 scrollEnabled
                 zoomEnabled
@@ -105,14 +123,15 @@ export default function MapScreen({ navigation, route }) {
                                 latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
                                 longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
                               }}/>
-                {companies.length > 0 ? companies.map((company) => { console.log(company); return (
-                    <CustomMarker 
+                {companies.length > 0 ? companies.map((company) => (
+                    <CustomMarker
+                        key={company.id} 
                         imageUri={`${env.api_url}/api/objects/${company.iconUri}`}
                         coordinate={{
-                            latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
-                            longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
+                            latitude: Number(company.coords.split(',')[0]),
+                            longitude: Number(company.coords.split(',')[1]),
                         }}/>
-                )}) : <></>}
+                )) : <></>}
             </MapView>
             <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -154,7 +173,7 @@ export default function MapScreen({ navigation, route }) {
                     </View>
                 </>
             }
-        </ScrollView>
+        </View>
     );
 }
 

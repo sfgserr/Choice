@@ -34,7 +34,7 @@ namespace Choice.Infrastructure.Geolocation
         public async Task<string> Geocode(Address address)
         {
             Uri requestUri = new
-                ($"{_geocodeUrl}/geocode/search?text={address.Street},{address.City}&apiKey={_options.ApiKey}");
+                ($"{_geocodeUrl}/geocode/search?text={address.City},{address.Street}&apiKey={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
 
