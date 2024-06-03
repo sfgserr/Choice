@@ -37,6 +37,12 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
             return await _context.Orders.Where(o => (o.CompanyId == guid1 && o.ClientId == guid2) ||
                                                     (o.ClientId == guid1 && o.CompanyId == guid2)).ToListAsync();
         }
+        
+        public async Task<Order> GetOrder(string clientId, string companyId)
+        {
+            return await _context.Orders.FirstOrDefaultAsync(o => 
+                o.ClientId == clientId && o.CompanyId == companyId && o.Status == OrderStatus.Active);
+        }
 
         public void Update(Order order)
         {

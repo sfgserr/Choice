@@ -1,4 +1,4 @@
 export default {
-    api_url: 'http://192.168.0.104',
-    auth_url: 'http://10.0.2.2'
+    api_url: 'http://45.89.189.115',
+    auth_url: 'http://45.89.189.115'
 }

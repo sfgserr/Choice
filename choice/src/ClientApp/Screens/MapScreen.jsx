@@ -38,6 +38,7 @@ export default function MapScreen({ navigation, route }) {
         photoUris: []
     });
     const [companies, setCompanies] = React.useState([]);
+    const [order, setOrder] = React.useState('');
     const { width, height } = Dimensions.get('screen');
     const map = React.createRef();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -76,7 +77,7 @@ export default function MapScreen({ navigation, route }) {
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1
             }
-            
+            setOrder(message);
             map.current.animateToRegion(region, 500);
         }
     }
@@ -130,7 +131,9 @@ export default function MapScreen({ navigation, route }) {
                         coordinate={{
                             latitude: Number(company.coords.split(',')[0]),
                             longitude: Number(company.coords.split(',')[1]),
-                        }}/>
+                        }}
+                        company={company}
+                        message={order}/>
                 )) : <></>}
             </MapView>
             <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>

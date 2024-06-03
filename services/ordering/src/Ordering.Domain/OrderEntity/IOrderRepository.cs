@@ -13,6 +13,8 @@ namespace Choice.Ordering.Domain.OrderEntity
 
         Task<Order> GetOrder(int requestId, string companyId);
 
+        Task<Order> GetOrder(string clientId, string companyId);
+
         void Update(Order order);
     }
 }

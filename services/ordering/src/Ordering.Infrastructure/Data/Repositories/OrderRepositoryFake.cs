@@ -39,6 +39,12 @@ namespace Choice.Ordering.Infrastructure.Data.Repositories
                                                     (o.ClientId == guid1 && o.CompanyId == guid2)).ToList());
         }
 
+        public async Task<Order> GetOrder(string clientId, string companyId)
+        {
+            return await Task.Run(() => _context.Orders.FirstOrDefault(o => 
+                o.ClientId == clientId && o.CompanyId == companyId && o.Status == OrderStatus.Active));
+        }
+
         public void Update(Order order)
         {
             Order orderToRemove = _context.Orders.FirstOrDefault(o => o.Id == order.Id);
