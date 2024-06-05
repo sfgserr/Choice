@@ -103,7 +103,7 @@ services:
     ports:
       - 8089:8089
     volumes:
-      - ~/files:/etc/files:rw
+      - /var/lib/myapp/files:/etc/files
   authentication-db:
     environment:
       SA_PASSWORD: "S3cur3P@ssW0rd!"
