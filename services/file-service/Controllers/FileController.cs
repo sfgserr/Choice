@@ -6,10 +6,17 @@ namespace FileObjectApi.Controllers
     [ApiController]
     public class FileController : Controller
     {
+        private readonly string _path;
+
+        public FileController(IConfiguration configuration)
+        {
+            _path = configuration["FILE_UPLOAD_PATH"] ?? "etc/files";
+        }
+
         [HttpGet("{fileName}")]
         public async Task<IActionResult> Download(string fileName)
         {
-            string path = $"/etc/files/{fileName}.bin";
+            string path = $"{_path}/{fileName}.bin";
 
             if (System.IO.File.Exists(path))
             {
@@ -27,7 +34,7 @@ namespace FileObjectApi.Controllers
 
             await HttpContext.Request.Body.ReadAsync(data);
 
-            string path = $"/etc/files/{fileName}.bin";
+            string path = $"{_path}/{fileName}.bin";
 
             if (!System.IO.File.Exists(path))
             {

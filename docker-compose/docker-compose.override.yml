@@ -99,10 +99,11 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8089
       - ASPNETCORE_ENVIRONMENT=Development
+      - FILE_UPLOAD_PATH=/etc/files
     ports:
       - 8089:8089
     volumes:
-      - ~/Files:/etc/files
+      - ~/files:/etc/files:rw
   authentication-db:
     environment:
       SA_PASSWORD: "S3cur3P@ssW0rd!"
