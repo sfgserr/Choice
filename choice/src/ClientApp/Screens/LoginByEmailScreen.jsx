@@ -7,7 +7,8 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import userStore from "../services/userStore.js";
 import categoryStore from "../services/categoryStore.js";
@@ -18,6 +19,8 @@ export default function LoginByEmailScreen({navigation, signIn}) {
 
     const [hidePassword, setHidePassword] = React.useState(true);
     const [disabled, setDisabled] = React.useState(true);
+
+    const { width, height } = Dimensions.get('screen');
 
     const onPress = () => {
         setHidePassword(!hidePassword);
@@ -77,7 +80,7 @@ export default function LoginByEmailScreen({navigation, signIn}) {
         <SafeAreaView>
              <View style={{paddingHorizontal: 20}}>
                 <Text style={{color: '#6D7885', fontWeight: '400', fontSize: 14, paddingBottom: 5}}>E-mail</Text>
-                <View style={styles.textInput}>
+                <View style={[styles.textInput]}>
                     <TextInput placeholder="E-mail" value={email} onChangeText={onEmailChanged} style={styles.textInputFont}/>
                 </View>
 

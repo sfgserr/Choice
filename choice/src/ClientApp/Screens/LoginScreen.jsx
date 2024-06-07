@@ -143,7 +143,7 @@ export default function LoginScreen({ navigation, route }) {
                                )}
                                showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
-                               return <View style={{width, paddingTop: 70}}>
+                               return <View style={{width,paddingTop: 60}}>
                                  <item.screen navigation={navigation} signIn={signIn}/>
                                </View>
                             }}/>

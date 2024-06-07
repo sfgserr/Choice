@@ -13,7 +13,7 @@ import DatePicker from 'react-native-date-picker';
 import { Modalize } from 'react-native-modalize';
 import orderingService from '../services/orderingService';
 
-const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus}) => {
+const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus, openReviewModal}) => {
     const isUserReceiver = message.receiverId == userId;
     const { width, height } = Dimensions.get('screen');
     
@@ -41,20 +41,21 @@ const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus
                             style={{
                                 color: isUserReceiver ? 'black' : 'white',
                                 fontSize: 15,
-                                fontWeight: '400'
+                                fontWeight: '400',
                             }}>
                             {message.body}    
                         </Text>
                         <View
-                            style={{flexDirection: 'column', paddingLeft: 10}}>
+                            style={{flexDirection: 'column', justifyContent: 'flex-end', paddingLeft: 5}}>
                             <View
-                                style={{flexDirection: 'row', flex:1}}>
+                                style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
                                 <Text
                                     style={{
                                         fontWeight: '100',
                                         fontSize: 11,
                                         alignSelf: 'flex-end',
-                                        color: isUserReceiver ? 'black' : 'white'
+                                        color: isUserReceiver ? 'black' : 'white',
+                                        letterSpacing: 1
                                     }}>
                                     {dateHelper.getTimeFromString(message.creationTime)}
                                 </Text>
@@ -295,7 +296,8 @@ const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus
                                                 styles.button, {
                                                     height: height/20                
                                                 }
-                                            ]}>
+                                            ]}
+                                            onPress={() => openReviewModal(message.id)}>
                                             <Text
                                                 style={[
                                                     styles.buttonText, {

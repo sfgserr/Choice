@@ -52,7 +52,7 @@ const Chat = ({navigation, chat}) => {
                         </Text>
                     </View>
                     <View
-                        style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        style={{flexDirection: 'row', justifyContent: 'flex-end', flex: 1}}>
                         <Icon
                             name="done-all"
                             type="material"
@@ -63,7 +63,7 @@ const Chat = ({navigation, chat}) => {
                             style={{
                                 color: '#8E8E93',
                                 fontWeight: '400',
-                                fontSize: 14
+                                fontSize: 14,
                             }}>
                             {dateHelper.getTimeFromString(chat.messages[chat.messages.length-1].creationTime)}
                         </Text> 
@@ -74,7 +74,8 @@ const Chat = ({navigation, chat}) => {
                         color: '#8E8E93',
                         fontSize: 15,
                         fontWeight: '400'
-                    }}>
+                    }}
+                    numberOfLines={2}>
                     {chat.messages[chat.messages.length-1].type == 1 ? chat.messages[chat.messages.length-1].body : chat.messages[chat.messages.length-1].type == 2 ? 'Фото' : 'Заказ'}
                 </Text>
             </View>    

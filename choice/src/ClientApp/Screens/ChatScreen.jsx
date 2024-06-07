@@ -22,10 +22,16 @@ import { Modalize } from 'react-native-modalize';
 import styles from '../Styles';
 import orderingService from '../services/orderingService';
 import arrayHelper from '../helpers/arrayHelper';
+import ImageBox from '../Components/ImageBox';
+import reviewService from '../services/reviewService';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
     const [refreshing, setRefreshing] = React.useState(false);
+    const [fisrtImageUri, setFirstImageUri] = React.useState('');
+    const [secondImageUri, setSecondImageUri] = React.useState('');
+    const [thirdImageUri, setThirdImageUri] = React.useState('');
+    const [grade, setGrade] = React.useState(1);
     const [chat, setChat] = React.useState({
         name: '',
         iconUri: '',
@@ -39,9 +45,11 @@ const ChatScreen = ({ navigation, route }) => {
     const [mockId, setMockId] = React.useState(-1);
     const [text, setText] = React.useState('');
     const enrollmentDateRef = React.useRef(null);
+    const reviewsModalRef = React.useRef(null);
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const { width, height } = Dimensions.get('screen');
     const [id, setId] = React.useState(-1);
+    const [reviewBody, setReviewBody] = React.useState('');
 
     const isFocused = useIsFocused();
 
@@ -206,6 +214,30 @@ const ChatScreen = ({ navigation, route }) => {
         });
     });
 
+    const getGradeName = () => {
+        let s = '';
+
+        switch (grade) {
+            case 1:
+                s = 'Очень плохо'
+                break;
+            case 2:
+                s = 'Плохо'
+                break;
+            case 3: 
+                s = 'Нормально'
+                break;
+            case 4:
+                s = 'Хорошо'
+                break;
+            case 5:
+                s = 'Отлично'
+                break;
+        }
+
+        return s;
+    }
+
     const viewabilityConfig = React.useRef({viewAreaCoveragePercentThreshold: 50});
 
     React.useEffect(() => {
@@ -219,6 +251,170 @@ const ChatScreen = ({ navigation, route }) => {
                 justifyContent: 'center', 
                 backgroundColor: '#F4F5FF'
             }}>
+            <Modalize
+                ref={reviewsModalRef}
+                adjustToContentHeight
+                childrenStyle={{height: '90%'}}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 20
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10
+                        }}>
+                        <Text>
+                        </Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontSize: 21,
+                                fontWeight: 600,
+                                alignSelf: 'center'
+                            }}>
+                            Отзыв о компании 
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center',
+                                borderRadius: 360,
+                                backgroundColor: '#EFF1F2'
+                            }}
+                            onPress={() => reviewsModalRef.current?.close()}>
+                            <Icon
+                                name='close'
+                                type='material'
+                                size={25}
+                                color='#818C99'/>    
+                        </TouchableOpacity>    
+                    </View>
+                    <Text
+                        style={{
+                            fontWeight: '600',
+                            fontSize: 16,
+                            color: 'black',
+                            alignSelf: 'center',
+                            paddingTop: 30
+                        }}>
+                        {getGradeName()}
+                    </Text>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10
+                        }}>
+                        <TouchableOpacity
+                            onPress={() => setGrade(1)}>
+                            <Icon
+                                type='material'
+                                name='star'
+                                color='#E4E839'
+                                size={50}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setGrade(2)}>
+                            <Icon
+                                type='material'
+                                name='star'
+                                color={grade >= 2 ? '#E4E839' : '#CFCFCF'}
+                                size={50}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setGrade(3)}>
+                            <Icon
+                                type='material'
+                                name='star'
+                                color={grade >= 3 ? '#E4E839' : '#CFCFCF'}
+                                size={50}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setGrade(4)}>
+                            <Icon
+                                type='material'
+                                name='star'
+                                color={grade >= 4 ? '#E4E839' : '#CFCFCF'}
+                                size={50}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setGrade(5)}>
+                            <Icon
+                                type='material'
+                                name='star'
+                                color={grade == 5 ? '#E4E839' : '#CFCFCF'}
+                                size={50}/>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text
+                        style={{
+                            color: '#6D7885',
+                            fontSize: 14,
+                            fontWeight: '400',
+                            paddingBottom: 5,
+                            paddingTop: 30
+                        }}>
+                        Отзыв
+                    </Text>
+                    <View
+                        style={[styles.textInput, {height: height/7}]}>
+                        <TextInput
+                            style={styles.textInputFont}
+                            value={reviewBody}
+                            onChangeText={setReviewBody}
+                            placeholder='Введите текст вашего отзыва'/>
+                    </View>
+                    <Text 
+                        style={{
+                            fontSize: 14, 
+                            fontWeight: '400', 
+                            color: '#6D7885',
+                            paddingTop: 20, 
+                            paddingBottom: 10
+                        }}>
+                        Приложите файлы к заказу
+                    </Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <ImageBox 
+                            onUriChanged={(state) => { 
+                                setFirstImageUri(state);
+                            }}
+                            uri={fisrtImageUri}/>
+                        <ImageBox 
+                            onUriChanged={(state) => { 
+                                setSecondImageUri(state);
+                            }}
+                            uri={secondImageUri}/>
+                        <ImageBox 
+                            onUriChanged={(state) => { 
+                                setThirdImageUri(state);
+                            }}
+                            uri={thirdImageUri}/>
+                    </View>
+                    <View
+                        style={{paddingTop: 30}}>
+                        <TouchableOpacity 
+                            style={styles.button}
+                            onPress={(reviewBody != '') && (async () => {
+                                let index = messages.findIndex(m => m.id == id);
+                                await reviewService.send({
+                                    guid: userStore.get().guid != messages[index].senderId ? messages[index].senderId : messages[index].receiverId,
+                                    text: reviewBody,
+                                    grade,
+                                    photoUris: [fisrtImageUri, secondImageUri, thirdImageUri]
+                                });
+                            })}>
+                            <Text style={styles.buttonText}>
+                                Оставить отзыв
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalize>
             <Modalize
                 ref={enrollmentDateRef}
                 adjustToContentHeight
@@ -388,7 +584,7 @@ const ChatScreen = ({ navigation, route }) => {
                     return (
                         <View style={{paddingHorizontal: 10, paddingTop: 2.5, paddingBottom: 2.5}}>
                             {
-                                index == messages.length-1 || dateHelper.getDateFromString(messages[index].creationTime) != dateHelper.getDateFromString(messages[index+1].creationTime) ?
+                                index == messages.length-1 || dateHelper.getDateFromString([...messages].reverse()[index].creationTime) != dateHelper.getDateFromString([...messages].reverse()[index+1].creationTime) ?
                                 <>
                                     <View style={{paddingTop: 2.5}}>
                                         <View
@@ -420,6 +616,10 @@ const ChatScreen = ({ navigation, route }) => {
                                 confirmDate={confirmDate}
                                 enroll={enroll}
                                 changeStatus={changeStatus}
+                                openReviewModal={(id) => {
+                                    setId(id);
+                                    reviewsModalRef.current?.open();
+                                }}
                                 changeDate={(id) => {
                                     setId(id);
                                     enrollmentDateRef.current?.open()
