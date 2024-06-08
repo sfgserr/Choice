@@ -168,7 +168,7 @@ export default function ChatsScreen({ navigation }) {
                         <View style={{paddingTop: 60, paddingHorizontal: 80}}>
                             <TouchableOpacity 
                                 style={styles.button}
-                                onPress={() => navigation.navigate(userStore.getUserType() == 1 ? 'Category' : 'CompanyRequests')}>
+                                onPress={() => navigation.navigate(userStore.getUserType() == 1 ? 'Category' : 'Order')}>
                                 <Text style={styles.buttonText}>
                                     {userStore.getUserType() == 1 ? 'Посмотреть услуги' : 'Посмотреть заказы'}
                                 </Text>
