@@ -25,14 +25,12 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
 
             OrderRequest? request = requests.FirstOrDefault(r => r.Id == id);
 
-            bool isUserCompany = false;
-
             if (request is not null)
             {
-                if (_userService.GetUserType() == "Company")
-                {
-                    isUserCompany = true;
+                bool isUserCompany = _userService.GetUserType() == "Company";
 
+                if (isUserCompany)
+                {
                     string userId = _userService.GetUserId();
 
                     request.CompanyWatched(userId);
@@ -41,6 +39,7 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
                 }
 
                 _outputPort.Ok(request, isUserCompany);
+                return;
             }
 
             _outputPort.NotFound();
