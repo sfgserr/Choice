@@ -7,7 +7,8 @@ import {
     TextInput,
     ScrollView,
     Dimensions,
-    Modal
+    Modal,
+    RefreshControl
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 import userStore from '../services/userStore';
@@ -17,11 +18,11 @@ import blobService from '../services/blobService';
 import * as ImagePicker from 'react-native-image-picker';
 import { AuthContext } from '../App';
 import { Icon } from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
 import env from '../env';
 
 export default function AccountScreen({ navigation }) {
-    const user = userStore.get();
-
+    const [user, setUser] = React.useState(userStore.get());
     const { signOut } = React.useContext(AuthContext);
 
     const { width, height } =  Dimensions.get('screen');
@@ -34,7 +35,8 @@ export default function AccountScreen({ navigation }) {
     const [phone, setPhone] = React.useState(user.phoneNumber);
     const [address, setAddress] = React.useState(`${user.city},${user.street}`);
     const [modalVisible, setModalVisible] = React.useState(false);
-    
+    const [refreshing, setRefreshing] = React.useState(false);
+
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
         
@@ -62,6 +64,21 @@ export default function AccountScreen({ navigation }) {
         setModalVisible(true);
     }
 
+    const isFocused = useIsFocused();
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+
+        await userStore.retrieveData();
+        setUser(userStore.get());
+
+        setRefreshing(false);
+    }, []);
+
+    React.useEffect(() => {
+        isFocused && onRefresh();
+    }, [isFocused]);
+
     const logout = async () => {
         await signOut();
     }
@@ -69,6 +86,9 @@ export default function AccountScreen({ navigation }) {
     return (
         <ScrollView 
             style={{flex: 1, backgroundColor: 'white'}}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+            }
             showsVerticalScrollIndicator={false}>
             <Modal
                 visible={modalVisible}

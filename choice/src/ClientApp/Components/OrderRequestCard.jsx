@@ -35,7 +35,7 @@ const OrderRequestCard = ({request, requestCategory, navigation }) => {
             <View
                 style={{
                     borderRadius: 8,
-                    backgroundColor: '#6DC876',
+                    backgroundColor: request.status == 1 ? '#6DC876' : request.status == 2 ? '#2D81E0' : '#AEAEB2',
                     padding: 5,
                     position: 'absolute',
                     right: 10,
@@ -47,7 +47,7 @@ const OrderRequestCard = ({request, requestCategory, navigation }) => {
                         fontSize: 14,
                         color: 'white',
                     }}>
-                    Активен
+                    {request.status == 1 ? 'Активен' : request.status == 2 ? 'Завершен' : 'Отменен'}
                 </Text>
             </View>
             <View 

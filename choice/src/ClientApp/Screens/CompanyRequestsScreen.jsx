@@ -2,6 +2,8 @@ import React from "react";
 import {
     View,
     Text,
+    TouchableOpacity,
+    ScrollView,
     FlatList,
     RefreshControl
 } from 'react-native';
@@ -10,6 +12,8 @@ import userStore from "../services/userStore";
 import CompanyRequestCard from "../Components/CompanyRequestCard";
 import categoryStore from "../services/categoryStore";
 import { useIsFocused } from '@react-navigation/native';
+import { Icon } from "react-native-elements";
+import styles from "../Styles";
 
 const CompanyRequestsScreen = ({navigation}) => {
     const [requests, setRequests] = React.useState([]);
@@ -50,25 +54,64 @@ const CompanyRequestsScreen = ({navigation}) => {
                 }}>
                 Заказы    
             </Text>
-            <FlatList
-                data={requests}
-                style={{
-                    paddingTop: 20
-                }}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                }
-                renderItem={({item}) => {
-                    return (
-                        <View
-                            style={{paddingHorizontal: 10, paddingBottom: 10}}>
-                            <CompanyRequestCard 
-                                orderRequest={item}
-                                navigation={navigation}
-                                button={true}/>
-                        </View>
-                    )
-                }}/>    
+            {
+                requests.length > 0 ?
+                <>
+                    <FlatList
+                        data={requests}
+                        style={{
+                            paddingTop: 20
+                        }}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }
+                        renderItem={({item}) => {
+                            return (
+                                <View
+                                    style={{paddingHorizontal: 10, paddingBottom: 10}}>
+                                    <CompanyRequestCard 
+                                        orderRequest={item}
+                                        navigation={navigation}
+                                        button={true}/>
+                                </View>
+                            )
+                        }}/>
+                </>
+                :
+                <>
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }>
+                        <Icon 
+                            size={60}
+                            type='material'
+                            name='sentiment-dissatisfied'
+                            style={{paddingTop: 200}}
+                            color='#3F8AE0'/>
+                        <Text 
+                            style={{
+                                fontSize: 24, 
+                                fontWeight: '700', 
+                                color: 'black', 
+                                alignSelf: 'center',
+                                paddingTop: 30
+                            }}>
+                            Пока нет заказов
+                        </Text>
+                        <Text 
+                            style={{
+                                fontSize: 16, 
+                                fontWeight: '400', 
+                                color: '#818C99', 
+                                alignSelf: 'center',
+                                paddingTop: 20
+                            }}>
+                            Дождитесь пока клиенты создадут заказ
+                        </Text>
+                    </ScrollView>        
+                </>
+            }    
         </View>
     );
 }

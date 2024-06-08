@@ -73,6 +73,20 @@ const sendOrderRequest = async (orderRequest) => {
     });
 }
 
+const getOrder = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Client/GetOrderRequest?id=${id}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 const changeOrderRequest = async (orderRequest) => {
     const token = await KeyChain.getGenericPassword();
     
@@ -163,6 +177,7 @@ const changeUserData = async (state) => {
 
 export default {
     get,
+    getOrder,
     sendOrderRequest,
     getClientRequests,
     changeOrderRequest,

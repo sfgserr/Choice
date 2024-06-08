@@ -407,6 +407,7 @@ const ChatScreen = ({ navigation, route }) => {
                                     grade,
                                     photoUris: [fisrtImageUri, secondImageUri, thirdImageUri]
                                 });
+                                reviewsModalRef.current?.close();
                             })}>
                             <Text style={styles.buttonText}>
                                 Оставить отзыв

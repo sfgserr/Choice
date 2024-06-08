@@ -4,7 +4,8 @@ import {
     View,
     Text,
     TextInput,
-    ScrollView
+    ScrollView,
+    RefreshControl,
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import CompanyRequestCard from "../Components/CompanyRequestCard";
@@ -15,12 +16,16 @@ import { Modalize } from "react-native-modalize";
 import dateHelper from "../helpers/dateHelper";
 import userStore from "../services/userStore";
 import orderingService from "../services/orderingService";
+import { useIsFocused } from '@react-navigation/native';
+import clientService from "../services/clientService";
 
 const CompanyRequestCreationScreen = ({navigation, route}) => {
-    const { orderRequest } = route.params;
+    const [orderRequest, setOrderRequest] = React.useState(route.params.orderRequest);
     const user = userStore.get();
 
     const [date, setDate] = React.useState(new Date());
+
+    const [refreshing, setRefreshing] = React.useState(false);
 
     const enrollmentDateRef = React.useRef(null);
     const enrollmentTimeRef = React.useRef(null);
@@ -62,10 +67,29 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
         setDisable(false);
     }
 
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+
+        let request = await clientService.getOrder(orderRequest.id);
+        
+        setOrderRequest(request);
+
+        setRefreshing(false);
+    }, []);
+
+    const isFocused = useIsFocused();
+
+    React.useEffect(() => {
+        isFocused && onRefresh();
+    }, [isFocused]);
+
     return (
         <ScrollView
             style={{flex: 1, backgroundColor: 'white'}}
-            showsVerticalScrollIndicator={false}>
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing}/>
+            }>
             <Modalize
                 ref={enrollmentDateRef}
                 adjustToContentHeight
