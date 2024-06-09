@@ -34,6 +34,7 @@ import CompanyRequestCreationScreen from './Screens/CompanyRequestCreationScreen
 import env from './env';
 import connectionService from './services/connectionService';
 import ChatScreen from './Screens/ChatScreen';
+import CompanyAccountScreen from './Screens/CompanyAccountScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,7 +89,7 @@ function CompanyTab() {
                   component={ChatsScreen}
                   options={{headerShown: false}}/>
       <Tab.Screen name="Account"
-                  component={AccountScreen}
+                  component={CompanyAccountScreen}
                   options={{headerShown: false}}/>
     </Tab.Navigator>
   )

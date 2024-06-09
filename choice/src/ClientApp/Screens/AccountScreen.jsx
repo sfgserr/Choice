@@ -69,7 +69,7 @@ export default function AccountScreen({ navigation }) {
     const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
 
-        await userStore.retrieveData();
+        await userStore.retrieveData(userStore.getUserType());
         setUser(userStore.get());
 
         setRefreshing(false);
