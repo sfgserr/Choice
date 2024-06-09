@@ -89,7 +89,7 @@ function CompanyTab() {
                   component={ChatsScreen}
                   options={{headerShown: false}}/>
       <Tab.Screen name="Account"
-                  component={CompanyAccountScreen}
+                  component={gestureHandlerRootHOC(CompanyAccountScreen)}
                   options={{headerShown: false}}/>
     </Tab.Navigator>
   )
