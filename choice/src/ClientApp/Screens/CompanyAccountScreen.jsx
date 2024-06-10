@@ -22,17 +22,48 @@ import categoryStore from '../services/categoryStore';
 import arrayHelper from '../helpers/arrayHelper';
 import { Modalize } from 'react-native-modalize';
 import CompanyCategorySelectionList from '../Components/CompanyCategorySelectionList';
+import ImageBox from '../Components/ImageBox';
+import { AuthContext } from '../App';
 
-const CompanyAccountScreen = () => {
+const CompanyAccountScreen = ({navigation}) => {
+    const { signOut } = React.useContext(AuthContext);
     const [categoryString, setCategoryString] = React.useState();
     const [trackedCategories, setTrackedCategories] = React.useState('');
     const modalRef = React.useRef(null);
     
-    const updateCategoryString = () => {
+    const [isChanged, setIsChanged] = React.useState(false);
+
+    const convertCategoryToString = () => {
         let sortedArray = arrayHelper.where(trackedCategories, (c) => c.tracked);
-        let string = arrayHelper.project(sortedArray, (c) => c.title).join(',');
+        return arrayHelper.project(sortedArray, (c) => c.title).join(',');
+    }
+
+    const updateCategoryString = () => {
+        let string = convertCategoryToString();
 
         return string == '' ? 'Виды деятельности' : string;
+    }
+
+    const isDisable = () => {
+        const data = [
+            title,
+            email,
+            phone,
+            convertCategoryToString()
+        ]
+
+        const socialMedias = [
+            instagramUrl,
+            facebookUrl,
+            vkUrl,
+            tgUrl
+        ]
+
+        const isDataInvalid = data.some(s => s == '');
+        const isAddressValid = address.includes(',') && address.split(',').every(s => s != '');
+        const isSocialMediasInvalid = socialMedias.every(s => s == '');
+        
+        return isDataInvalid || !isAddressValid || isSocialMediasInvalid;
     }
 
     const getCategoryString = () => {
@@ -90,6 +121,13 @@ const CompanyAccountScreen = () => {
     const [facebookUrl, setFacebookUrl] = React.useState(user.socialMedias[getUrlIndex('facebook')]);
     const [vkUrl, setVkUrl] = React.useState(user.socialMedias[getUrlIndex('vk')]);
     const [tgUrl, setTgUrl] = React.useState(user.socialMedias[getUrlIndex('t.me')]);
+    const [fisrtImageUri, setFirstImageUri] = React.useState(user.photoUris[0]);
+    const [secondImageUri, setSecondImageUri] = React.useState(user.photoUris[1]);
+    const [thirdImageUri, setThirdImageUri] = React.useState(user.photoUris[2]);
+    const [fourthImageUri, setFourthImageUri] = React.useState(user.photoUris[3]);
+    const [fivthImageUri, setFivthImageUri] = React.useState(user.photoUris[4]);
+    const [sixthImageUri, setSixthImageUri] = React.useState(user.photoUris[5]);
+    const [prepayment, setPrepayment] = React.useState(user.prepaymentAvailable);
 
     const updateState = (user) => {
         setTitle(user.title);
@@ -159,7 +197,6 @@ const CompanyAccountScreen = () => {
                 flex: 1,
                 backgroundColor: 'white',
             }}
-            nestedScrollEnabled
             showsVerticalScrollIndicator={false}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
@@ -214,7 +251,8 @@ const CompanyAccountScreen = () => {
                             onPress={() => {
                                 DeviceEventEmitter.emit('addCategories');
                                 modalRef.current?.close();
-                                setCategoryString(updateCategoryString());       
+                                setCategoryString(updateCategoryString());  
+                                setIsChanged(true);     
                             }}>
                             <Text
                                 style={styles.buttonText}>
@@ -305,6 +343,7 @@ const CompanyAccountScreen = () => {
                                         onPress={() => {
                                             if (socialMedias[currentIndex].validate(currentUrl)) {
                                                 socialMedias[currentIndex].setUrl(currentUrl);
+                                                setIsChanged(true);
                                             }
 
                                             setModalVisible(false);
@@ -403,7 +442,10 @@ const CompanyAccountScreen = () => {
                     <TextInput
                         style={styles.textInputFont}
                         value={title}
-                        onChangeText={setTitle}/>
+                        onChangeText={(text) => {
+                            setTitle(text);
+                            setIsChanged(true);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -420,7 +462,10 @@ const CompanyAccountScreen = () => {
                     <TextInput
                         style={styles.textInputFont}
                         value={email}
-                        onChangeText={setEmail}/>
+                        onChangeText={(text) => {
+                            setEmail(text);
+                            setIsChanged(true);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -437,7 +482,10 @@ const CompanyAccountScreen = () => {
                     <TextInput
                         style={styles.textInputFont}
                         value={phone}
-                        onChangeText={setPhone}/>
+                        onChangeText={(text) => {
+                            setPhone(text);
+                            setIsChanged(true);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -454,7 +502,10 @@ const CompanyAccountScreen = () => {
                     <TextInput
                         style={styles.textInputFont}
                         value={address}
-                        onChangeText={setAddress}/>
+                        onChangeText={(text) => {
+                            setAddress(text);
+                            setIsChanged(true);
+                        }}/>
                 </View>
                 <View 
                     style={{paddingTop: 10}}> 
@@ -522,6 +573,7 @@ const CompanyAccountScreen = () => {
                                         }   
                                         else {
                                             item.setUrl('');
+                                            setIsChanged(true);
                                         }
                                     }}/>
                             </View>    
@@ -567,7 +619,186 @@ const CompanyAccountScreen = () => {
                                 size={27}
                                 color='gray'/>
                         </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            paddingTop: 10
+                        }}>
+                        <ImageBox
+                            uri={fisrtImageUri}
+                            onUriChanged={(uri) => {
+                                setFirstImageUri(uri);
+                                setIsChanged(true);
+                            }}/>
+
+                        <ImageBox
+                            uri={secondImageUri}
+                            onUriChanged={(uri) => {
+                                setSecondImageUri(uri);
+                                setIsChanged(true);
+                            }}/>
+
+                        <ImageBox
+                            uri={thirdImageUri}
+                            onUriChanged={(uri) => {
+                                setThirdImageUri(uri);
+                                setIsChanged(true);
+                            }}/>          
+                    </View>
+                    <View
+                        style={{
+                            paddingTop: 10,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row'
+                        }}>
+                        <ImageBox
+                            uri={fourthImageUri}
+                            onUriChanged={(uri) => {
+                                setFourthImageUri(uri);
+                                setIsChanged(true);
+                            }}/>
+
+                        <ImageBox
+                            uri={fivthImageUri}
+                            onUriChanged={(uri) => {
+                                setFivthImageUri(uri);
+                                setIsChanged(true);
+                            }}/>
+
+                        <ImageBox
+                            uri={sixthImageUri}
+                            onUriChanged={(uri) => {
+                                setSixthImageUri(uri);
+                                setIsChanged(true);
+                            }}/>          
+                    </View>
+                    <Text
+                        style={{
+                            color: '#6D7885',
+                            fontWeight: '400',
+                            fontSize: 14,
+                            paddingTop: 20
+                        }}
+                        >
+                        Опции    
+                    </Text>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            paddingTop: 10
+                        }}>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center'
+                            }}
+                            disabled={prepayment}
+                            onPress={() => {
+                                setPrepayment(true);
+                                setIsChanged(true);
+                            }}>
+                            <Icon 
+                                type='material'
+                                name={prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
+                                color={!prepayment ? '#B8C1CC' : '#2688EB'}/>
+                        </TouchableOpacity>
+                        <Text
+                            style={{
+                                paddingLeft: 10,
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '400',
+                                alignSelf: 'center'
+                            }}>
+                            Работа с предоплатой    
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            paddingTop: 20
+                        }}>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center'
+                            }}
+                            disabled={!prepayment}
+                            onPress={() => {
+                                setPrepayment(false);
+                                setIsChanged(true);
+                            }}>
+                            <Icon 
+                                type='material'
+                                name={!prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
+                                color={prepayment ? '#B8C1CC' : '#2688EB'}/>
+                        </TouchableOpacity>
+                        <Text
+                            style={{
+                                paddingLeft: 10,
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '400',
+                                alignSelf: 'center'
+                            }}>
+                            Работа без предоплаты  
+                        </Text>
                     </View>    
+                </View>
+                <View
+                    style={{
+                        paddingTop: 20,
+                        justifyContent: 'center'
+                    }}>
+                    <TouchableOpacity
+                        style={[styles.button, {
+                            backgroundColor: '#001C3D0D',
+                        }]}
+                        onPress={() => navigation.navigate('ChangePassword')}>
+                        <Text
+                            style={[styles.buttonText, {
+                                color: '#2688EB'
+                            }]}>
+                            Изменить пароль
+                        </Text>    
+                    </TouchableOpacity>
+                    <View
+                        style={{paddingTop: 10, paddingBottom: 10}}>
+                        <TouchableOpacity
+                            style={[styles.button, {
+                                backgroundColor: '#001C3D0D',
+                            }]}
+                            onPress={async () => await signOut()}>
+                            <Text
+                                style={[styles.buttonText, {
+                                    color: '#EB2626'
+                                }]}>
+                                Выйти из аккаунта
+                            </Text>    
+                        </TouchableOpacity>
+                    </View>
+                    {
+                        isChanged ?
+                        <>
+                            <View
+                                style={{paddingTop: 10}}>
+                                <TouchableOpacity
+                                    style={[styles.button, {
+                                        backgroundColor: isDisable() ? '#ABCDf3' : '#2D81E0'
+                                    }]}
+                                    disabled={isDisable()}
+                                    onPress={!isDisable() && (async () => {})}>
+                                    <Text
+                                        style={styles.buttonText}>
+                                        Сохранить изменения
+                                    </Text>    
+                                </TouchableOpacity> 
+                            </View>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
                 </View>
             </ScrollView>
         </View>

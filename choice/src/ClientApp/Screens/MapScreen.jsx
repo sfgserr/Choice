@@ -18,6 +18,7 @@ import OrderRequestCard from '../Components/OrderRequestCard.jsx';
 import { useIsFocused } from '@react-navigation/native';
 import env from '../env.js';
 import companyService from '../services/companyService.js';
+import MapOrderCard from '../Components/MapOrderCard.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const [category, setCategory] = React.useState({
@@ -39,6 +40,7 @@ export default function MapScreen({ navigation, route }) {
     });
     const [companies, setCompanies] = React.useState([]);
     const [order, setOrder] = React.useState('');
+    const [company, setCompany] = React.useState(company);
     const { width, height } = Dimensions.get('screen');
     const map = React.createRef();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -49,8 +51,6 @@ export default function MapScreen({ navigation, route }) {
         setCategory(params.selectedCategory);
         setOrderRequest(params.createdOrderRequest);
     }
-
-    DeviceEventEmitter.addListener('orderRequestCreated', (params) => setParams(params));
 
     const retrieveData = React.useCallback(async () => {
         setRefreshing(true);
@@ -65,10 +65,10 @@ export default function MapScreen({ navigation, route }) {
     }, []);
 
     const handleMessageReceived = (message) => {
+        console.log('in');
         if (message.type == 3 && JSON.parse(message.body).OrderRequestId == orderRequest.id && JSON.parse(message.body).PastEnrollmentTime == null) {
             let id = userStore.get().guid != message.receiverId ? message.receiverId : message.senderId;
             let index = companies.findIndex(c => c.guid == id);
-
             let coords = companies[index].coords.split(',');
 
             const region = {
@@ -77,8 +77,10 @@ export default function MapScreen({ navigation, route }) {
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1
             }
-            setOrder(message);
             map.current.animateToRegion(region, 500);
+
+            setCompany(companies[index]);
+            setOrder(message);
         }
     }
 
@@ -136,19 +138,45 @@ export default function MapScreen({ navigation, route }) {
                         message={order}/>
                 )) : <></>}
             </MapView>
-            <View style={{position: 'absolute', justifyContent: 'center', backgroundColor: 'white', width, height: height/12, paddingHorizontal: 10}}>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableOpacity 
-                        style={{alignSelf: 'center'}}
-                        onPress={goBack}>
-                        <Icon name='chevron-left'
-                              type='material'
-                              color={'#2688EB'}
-                              size={40}/>
-                    </TouchableOpacity>
-                    <Text style={{alignSelf: 'center', color: 'black', fontWeight: '600', fontSize: 21}}>{category.title}</Text>
-                    <Text></Text>
+            <View
+                style={{
+                    position: 'absolute', 
+                    justifyContent: 'center',
+                    width,
+                    top: 0
+                }}>
+                <View style={{backgroundColor: 'white', height: height/12, paddingHorizontal: 10}}>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <TouchableOpacity 
+                            style={{alignSelf: 'center'}}
+                            onPress={goBack}>
+                            <Icon   
+                                name='chevron-left'
+                                type='material'
+                                color={'#2688EB'}
+                                size={40}/>
+                        </TouchableOpacity>
+                        <Text style={{alignSelf: 'center', color: 'black', fontWeight: '600', fontSize: 21}}>{category.title}</Text>
+                        <Text></Text>
+                    </View>
                 </View>
+                {
+                    order != '' ?
+                    <>
+                        <View
+                            style={{
+                                paddingTop: 10,
+                                paddingHorizontal: 15
+                            }}>
+                            <MapOrderCard
+                                message={order}
+                                company={company}/>
+                        </View>
+                    </>
+                    :
+                    <>
+                    </>
+                }
             </View>
             {
                 orderRequest.id == 0 ?
@@ -176,6 +204,7 @@ export default function MapScreen({ navigation, route }) {
                     </View>
                 </>
             }
+            
         </View>
     );
 }

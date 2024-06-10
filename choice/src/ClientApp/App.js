@@ -224,6 +224,9 @@ function App() {
                 <Stack.Screen name="Chat"
                               component={gestureHandlerRootHOC(ChatScreen)}
                               options={{headerShown:false}}/>
+                <Stack.Screen name="ChangePassword"
+                              component={ChangePasswordScreen}
+                              options={{headerShown:false}}/>   
               </Stack.Navigator> 
             </>
           )

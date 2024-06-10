@@ -14,6 +14,7 @@ const build = (token) => {
         .build();
 
     connection.on('orderCreated', message => {
+        console.log('Order created');
         DeviceEventEmitter.emit('messageReceived', message);
     });
 
