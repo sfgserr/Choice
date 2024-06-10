@@ -208,8 +208,11 @@ const ChatScreen = ({ navigation, route }) => {
 
     const onViewableItemsChanged = React.useRef(async ({viewableItems, changed}) => {
         viewableItems.forEach(async i => {
-            if (i.isViewable && i.item.receiverId == userStore.get().guid) {
+            if (i.isViewable && i.item.receiverId == userStore.get().guid && !i.item.isRead) {
                 await chatService.read(i.item.id);
+                DeviceEventEmitter.emit('tabRead');
+                let index = messages.findIndex(m => m.id == i.item.id);
+                messages[index].isRead = true;
             }
         });
     });

@@ -15,6 +15,7 @@ import CategoryScreen from './Screens/CategoryScreen';
 import * as KeyChain from 'react-native-keychain';
 import {
   Image,
+  DeviceEventEmitter,
   AppState
 } from 'react-native';
 import OrderScreen from './Screens/OrderScreen';
@@ -39,9 +40,9 @@ import CompanyAccountScreen from './Screens/CompanyAccountScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export const AuthContext = React.createContext();
+let unreadMessagesCount = 0;
 
-//const signalr = require('@microsoft/signalr');
+export const AuthContext = React.createContext();
 
 const getTabLabel = (routeName) => {
   switch (routeName) {
@@ -57,6 +58,28 @@ const getTabLabel = (routeName) => {
 }
 
 function CompanyTab() {
+  const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
+
+  const handleMessage = () => {
+    setUnreadMessagesCount(prev => prev+1);
+    console.log('receive');
+  }
+
+  const handleReadMessage = () => {
+    setUnreadMessagesCount(unreadMessagesCount-1);
+    console.log('read');
+  }
+
+  React.useEffect(() => {
+    DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
+    DeviceEventEmitter.addListener('tabRead', handleReadMessage);
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('tabMessageReceived');
+      DeviceEventEmitter.removeAllListeners('tabRead');
+    }
+  }, [handleReadMessage,handleMessage]);
+
   return (
     <Tab.Navigator screenOptions={({route}) => ({
       tabBarIcon: ({focused, color, size}) => {
@@ -80,6 +103,7 @@ function CompanyTab() {
       },
       tabBarActiveTintColor: '#2975CC',
       tabBarInactiveTintColor: '#99A2AD',
+      tabBarBadge: route.name != 'Chats' ? null : unreadMessagesCount == 0 ? null : unreadMessagesCount,
       tabBarLabel: getTabLabel(route.name)
   })}>
       <Tab.Screen name="Order"
@@ -96,6 +120,28 @@ function CompanyTab() {
 }
 
 function ClientTab() {
+  const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
+
+  const handleMessage = () => {
+    setUnreadMessagesCount(prev => prev+1);
+    console.log('receive');
+  }
+
+  const handleReadMessage = () => {
+    setUnreadMessagesCount(prev => prev-1);
+    console.log('read');
+  }
+
+  React.useEffect(() => {
+    DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
+    DeviceEventEmitter.addListener('tabRead', handleReadMessage);
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('tabMessageReceived');
+      DeviceEventEmitter.removeAllListeners('tabRead');
+    }
+  }, [handleReadMessage,handleMessage]);
+
   return (
     <Tab.Navigator screenOptions={({route}) => ({
       tabBarIcon: ({focused, color, size}) => {
@@ -127,6 +173,7 @@ function ClientTab() {
       },
       tabBarActiveTintColor: '#2975CC',
       tabBarInactiveTintColor: '#99A2AD',
+      tabBarBadge: route.name != 'Chats' ? null : unreadMessagesCount == 0 ? null : unreadMessagesCount,
       tabBarLabel: getTabLabel(route.name)
   })}>
       <Tab.Screen name="Category"

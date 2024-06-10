@@ -9,6 +9,7 @@ import {
 import env from "../env";
 import { Icon } from "react-native-elements";
 import dateHelper from "../helpers/dateHelper";
+import userStore from "../services/userStore";
 
 const Chat = ({navigation, chat}) => {
     const { width, height } = Dimensions.get('screen');
@@ -69,15 +70,45 @@ const Chat = ({navigation, chat}) => {
                         </Text> 
                     </View>   
                 </View>
-                <Text
-                    style={{
-                        color: '#8E8E93',
-                        fontSize: 15,
-                        fontWeight: '400'
-                    }}
-                    numberOfLines={2}>
-                    {chat.messages[chat.messages.length-1].type == 1 ? chat.messages[chat.messages.length-1].body : chat.messages[chat.messages.length-1].type == 2 ? 'Фото' : 'Заказ'}
-                </Text>
+                <View
+                    style={{flexDirection: 'row'}}>
+                    <Text
+                        style={{
+                            color: '#8E8E93',
+                            fontSize: 15,
+                            fontWeight: '400'
+                        }}
+                        numberOfLines={2}>
+                        {chat.messages[chat.messages.length-1].type == 1 ? chat.messages[chat.messages.length-1].body : chat.messages[chat.messages.length-1].type == 2 ? 'Фото' : 'Заказ'}
+                    </Text>
+                    {
+                        chat.messages.filter(m => !m.isRead && m.receiverId == userStore.get().guid).length > 0 ?
+                        <>
+                            <View
+                                style={{flex:1}}>
+                                <View
+                                    style={{
+                                        backgroundColor: '#037EE5',
+                                        borderRadius: 10,
+                                        alignSelf: 'flex-end'
+                                    }}>
+                                    <Text
+                                        style={{
+                                            color: 'white',
+                                            fontSize: 14,
+                                            paddingHorizontal: 10,
+                                            fontWeight: '400'
+                                        }}>
+                                        {chat.messages.filter(m => !m.isRead && m.receiverId == userStore.get().guid).length}
+                                    </Text>    
+                                </View>
+                            </View>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
+                </View>
             </View>    
         </TouchableOpacity>
     )

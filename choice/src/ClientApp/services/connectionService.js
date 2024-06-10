@@ -16,10 +16,12 @@ const build = (token) => {
     connection.on('orderCreated', message => {
         console.log('Order created');
         DeviceEventEmitter.emit('messageReceived', message);
+        DeviceEventEmitter.emit('tabMessageReceived');
     });
 
     connection.on('send', message => {
         DeviceEventEmitter.emit('messageReceived', message);
+        DeviceEventEmitter.emit('tabMessageReceived');
     });
 
     connection.on('enrollmentDateChanged', message => {
