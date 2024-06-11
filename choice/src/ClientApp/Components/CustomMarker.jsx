@@ -22,10 +22,11 @@ const ImageMarker = ({imageUri}) => {
     );
 }
 
-const CustomMarker = ({imageUri, coordinate}) => {
+const CustomMarker = ({imageUri, coordinate, onPress}) => {
     return (
         <Marker
-            coordinate={coordinate}>
+            coordinate={coordinate}
+            onPress={onPress}>
             <ImageMarker
                 imageUri={imageUri}/>
         </Marker>

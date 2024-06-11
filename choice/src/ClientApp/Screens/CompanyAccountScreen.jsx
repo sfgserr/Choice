@@ -530,7 +530,8 @@ const CompanyAccountScreen = ({navigation}) => {
                             style={{
                                 flexDirection: 'row', 
                                 paddingBottom: 5,   
-                            }}>
+                            }}
+                            key={i}>
                             <Image 
                                 source={item.icon}
                                 style={{

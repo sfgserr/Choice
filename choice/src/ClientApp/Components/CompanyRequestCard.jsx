@@ -232,7 +232,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                                     fontWeight: '600',
                                     color: '#575757'
                                 }}>
-                                {orderRequest.client.averageGrade}
+                                {`${orderRequest.client.averageGrade}`.slice(0, 3)}
                             </Text>   
                         </View>                         
                     </View>

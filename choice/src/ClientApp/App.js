@@ -266,7 +266,7 @@ function App() {
                               component={ClientTab}
                               options={{headerShown: false}}/>
                 <Stack.Screen name="Map"
-                              component={MapScreen}
+                              component={gestureHandlerRootHOC(MapScreen)}
                               options={{headerShown:false}}/>
                 <Stack.Screen name="OrderRequestCreation"
                               component={gestureHandlerRootHOC(OrderRequestCreationScreen)}

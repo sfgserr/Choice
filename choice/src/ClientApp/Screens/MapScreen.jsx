@@ -19,8 +19,11 @@ import { useIsFocused } from '@react-navigation/native';
 import env from '../env.js';
 import companyService from '../services/companyService.js';
 import MapOrderCard from '../Components/MapOrderCard.jsx';
+import { Modalize } from 'react-native-modalize';
 
 export default function MapScreen({ navigation, route }) {
+    const modalRef = React.useRef(null);
+
     const [category, setCategory] = React.useState({
         id: route.params.category.id,
         title: route.params.category.title
@@ -119,13 +122,15 @@ export default function MapScreen({ navigation, route }) {
                 provider='google'
                 scrollEnabled
                 zoomEnabled
+                onPress={(lat) => setOrder()}
                 rotateEnabled={false}
                 style={mapStyles.map}>
                 <CustomMarker imageUri={`${env.api_url}/api/objects/${userStore.get().iconUri}`}
                               coordinate={{
                                 latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
                                 longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
-                              }}/>
+                              }}
+                              onPress={(obj) => {}}/>
                 {companies.length > 0 ? companies.map((company) => (
                     <CustomMarker
                         key={company.id} 
@@ -134,10 +139,18 @@ export default function MapScreen({ navigation, route }) {
                             latitude: Number(company.coords.split(',')[0]),
                             longitude: Number(company.coords.split(',')[1]),
                         }}
-                        company={company}
-                        message={order}/>
+                        onPress={(obj) => {
+                            modalRef.current?.open();
+                        }}/>
                 )) : <></>}
             </MapView>
+            <Modalize 
+                ref={modalRef}
+                adjustToContentHeight={true}
+                scrollViewProps={{nestedScrollEnabled: false, scrollEnabled: false}}
+                childrenStyle={{height: '90%'}}>
+                
+            </Modalize>
             <View
                 style={{
                     position: 'absolute', 

@@ -26,6 +26,7 @@ const build = (token) => {
 
     connection.on('enrollmentDateChanged', message => {
         DeviceEventEmitter.emit('enrollmentDateChanged', message);
+        DeviceEventEmitter.emit('tabMessageReceived');
     });
 
     connection.on('enrolled', message => {
