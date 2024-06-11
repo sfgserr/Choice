@@ -1,5 +1,10 @@
 import * as KeyChain from 'react-native-keychain';
 import env from '../env';
+import {
+    DeviceEventEmitter
+} from 'react-native';
+
+let readMessages = [];
 
 const getMessages = async (receiverId) => {
     const token = await KeyChain.getGenericPassword();
@@ -75,14 +80,19 @@ const sendMessage = async (text, receiverId) => {
 const read = async (id) => {
     const token = await KeyChain.getGenericPassword();
     
-    return await fetch(`${env.api_url}/api/Message/Read?id=${id}`, {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token.password}`
-        }
-    });
+    if (!readMessages.includes(id)) {
+        readMessages.push(id);
+        DeviceEventEmitter.emit('tabRead');
+
+        return await fetch(`${env.api_url}/api/Message/Read?id=${id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.password}`
+            }
+        });
+    }
 }
 
 export default {

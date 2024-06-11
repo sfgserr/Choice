@@ -24,6 +24,7 @@ import orderingService from '../services/orderingService';
 import arrayHelper from '../helpers/arrayHelper';
 import ImageBox from '../Components/ImageBox';
 import reviewService from '../services/reviewService';
+import messageStore from '../services/messageStore';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -31,6 +32,7 @@ const ChatScreen = ({ navigation, route }) => {
     const [fisrtImageUri, setFirstImageUri] = React.useState('');
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
+    const [readMessages, setReadMessages] = React.useState([]);
     const [grade, setGrade] = React.useState(1);
     const [chat, setChat] = React.useState({
         name: '',
@@ -191,7 +193,8 @@ const ChatScreen = ({ navigation, route }) => {
         setChat(chat);
 
         setLastTimeOnlineString(chat.status == 2 ? `Был(а) ${dateHelper.getDifference(chat.lastTimeOnline)} назад` : 'В сети');
-        setMessages(Object.keys(chat.messages).map((i) => ({
+
+        let messages = Object.keys(chat.messages).map((i) => ({
             id: chat.messages[i].id,
             receiverId: chat.messages[i].receiverId,
             senderId: chat.messages[i].senderId,
@@ -199,7 +202,11 @@ const ChatScreen = ({ navigation, route }) => {
             body: chat.messages[i].body,
             type: chat.messages[i].type,
             isRead: chat.messages[i].isRead     
-        })));
+        }));
+
+        setMessages(messages);
+
+        messageStore.setMessages(messages);
 
         await userStore.retrieveData(userStore.getUserType());
 
@@ -210,9 +217,6 @@ const ChatScreen = ({ navigation, route }) => {
         viewableItems.forEach(async i => {
             if (i.isViewable && i.item.receiverId == userStore.get().guid && !i.item.isRead) {
                 await chatService.read(i.item.id);
-                DeviceEventEmitter.emit('tabRead');
-                let index = messages.findIndex(m => m.id == i.item.id);
-                messages[index].isRead = true;
             }
         });
     });

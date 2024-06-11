@@ -36,6 +36,7 @@ import env from './env';
 import connectionService from './services/connectionService';
 import ChatScreen from './Screens/ChatScreen';
 import CompanyAccountScreen from './Screens/CompanyAccountScreen';
+import chatService from './services/chatService';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,6 +60,17 @@ const getTabLabel = (routeName) => {
 
 function CompanyTab() {
   const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
+
+  React.useEffect(() => {
+    async function getUnreadMessages() {
+      let chats = await chatService.getChats();
+
+      let count = chats.flatMap(c => c.messages).filter(m => !m.isRead).length;
+
+      setUnreadMessagesCount(count);
+    }
+    getUnreadMessages();
+  }, []);
 
   const handleMessage = () => {
     setUnreadMessagesCount(prev => prev+1);
@@ -121,6 +133,17 @@ function CompanyTab() {
 
 function ClientTab() {
   const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
+
+  React.useEffect(() => {
+    async function getUnreadMessages() {
+      let chats = await chatService.getChats();
+
+      let count = chats.flatMap(c => c.messages).filter(m => !m.isRead).length;
+
+      setUnreadMessagesCount(count);
+    }
+    getUnreadMessages();
+  }, []);
 
   const handleMessage = () => {
     setUnreadMessagesCount(prev => prev+1);
