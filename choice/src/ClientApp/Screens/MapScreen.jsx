@@ -20,6 +20,7 @@ import env from '../env.js';
 import companyService from '../services/companyService.js';
 import MapOrderCard from '../Components/MapOrderCard.jsx';
 import { Modalize } from 'react-native-modalize';
+import CompanyPage from '../Components/CompanyPage.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
@@ -56,15 +57,11 @@ export default function MapScreen({ navigation, route }) {
     }
 
     const retrieveData = React.useCallback(async () => {
-        setRefreshing(true);
-
         let companies = await companyService.getAll();
         setCompanies(companies);
 
         let currentUserType = userStore.getUserType();
         await userStore.retrieveData(currentUserType);
-
-        setRefreshing(false);
     }, []);
 
     const handleMessageReceived = (message) => {
@@ -86,6 +83,15 @@ export default function MapScreen({ navigation, route }) {
             setOrder(message);
         }
     }
+
+    const getCompany = React.useCallback(async (companyId) => {
+        setRefreshing(true);
+
+        let company = await companyService.getCompany(companyId);
+        setCompany(company);
+
+        setRefreshing(false);
+    }, []);
 
     React.useEffect(() => {
         isFocused && retrieveData();
@@ -122,7 +128,7 @@ export default function MapScreen({ navigation, route }) {
                 provider='google'
                 scrollEnabled
                 zoomEnabled
-                onPress={(lat) => setOrder()}
+                onPress={(lat) => setOrder('')}
                 rotateEnabled={false}
                 style={mapStyles.map}>
                 <CustomMarker imageUri={`${env.api_url}/api/objects/${userStore.get().iconUri}`}
@@ -139,8 +145,10 @@ export default function MapScreen({ navigation, route }) {
                             latitude: Number(company.coords.split(',')[0]),
                             longitude: Number(company.coords.split(',')[1]),
                         }}
-                        onPress={(obj) => {
+                        onPress={async (obj) => {
+                            setCompany(company);
                             modalRef.current?.open();
+                            await getCompany(company.guid);
                         }}/>
                 )) : <></>}
             </MapView>
@@ -149,7 +157,61 @@ export default function MapScreen({ navigation, route }) {
                 adjustToContentHeight={true}
                 scrollViewProps={{nestedScrollEnabled: false, scrollEnabled: false}}
                 childrenStyle={{height: '90%'}}>
-                
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontWeight: '600',
+                                fontSize: 21
+                            }}>
+                            Компания
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => modalRef.current?.close()}
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}>
+                            <Icon 
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            paddingTop: 10
+                        }}>
+                        {
+                            refreshing ?
+                            <>
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={getCompany}/>
+                            </>
+                            :
+                            <>
+                                <CompanyPage
+                                    navigation={navigation}
+                                    company={company}
+                                    order={order == '' ? order : order.companyId == company.guid ? order : ''}/>
+                            </>
+                        }    
+                    </View>
+                </View>
             </Modalize>
             <View
                 style={{
