@@ -24,6 +24,8 @@ import { Modalize } from 'react-native-modalize';
 import CompanyCategorySelectionList from '../Components/CompanyCategorySelectionList';
 import ImageBox from '../Components/ImageBox';
 import { AuthContext } from '../App';
+import companyService from '../services/companyService';
+import blobService from '../services/blobService';
 
 const CompanyAccountScreen = ({navigation}) => {
     const { signOut } = React.useContext(AuthContext);
@@ -71,6 +73,7 @@ const CompanyAccountScreen = ({navigation}) => {
 
         let trackedCategories = categories.map((c, i) => ({
             tracked: user.categoriesId.some(i => i == c.id),
+            id: c.id,
             title: c.title,
             add: (i) => {}
         }));
@@ -121,12 +124,12 @@ const CompanyAccountScreen = ({navigation}) => {
     const [facebookUrl, setFacebookUrl] = React.useState(user.socialMedias[getUrlIndex('facebook')]);
     const [vkUrl, setVkUrl] = React.useState(user.socialMedias[getUrlIndex('vk')]);
     const [tgUrl, setTgUrl] = React.useState(user.socialMedias[getUrlIndex('t.me')]);
-    const [fisrtImageUri, setFirstImageUri] = React.useState(user.photoUris[0]);
-    const [secondImageUri, setSecondImageUri] = React.useState(user.photoUris[1]);
-    const [thirdImageUri, setThirdImageUri] = React.useState(user.photoUris[2]);
-    const [fourthImageUri, setFourthImageUri] = React.useState(user.photoUris[3]);
-    const [fivthImageUri, setFivthImageUri] = React.useState(user.photoUris[4]);
-    const [sixthImageUri, setSixthImageUri] = React.useState(user.photoUris[5]);
+    const [fisrtImageUri, setFirstImageUri] = React.useState(user.photoUris[0] != '' ? `${env.api_url}/api/objects/${user.photoUris[0]}` : '');
+    const [secondImageUri, setSecondImageUri] = React.useState(user.photoUris[1] != '' ? `${env.api_url}/api/objects/${user.photoUris[1]}` : '');
+    const [thirdImageUri, setThirdImageUri] = React.useState(user.photoUris[2] != '' ? `${env.api_url}/api/objects/${user.photoUris[2]}` : '');
+    const [fourthImageUri, setFourthImageUri] = React.useState(user.photoUris[3] != '' ? `${env.api_url}/api/objects/${user.photoUris[3]}` : '');
+    const [fivthImageUri, setFivthImageUri] = React.useState(user.photoUris[4] != '' ? `${env.api_url}/api/objects/${user.photoUris[4]}` : '');
+    const [sixthImageUri, setSixthImageUri] = React.useState(user.photoUris[5] != '' ? `${env.api_url}/api/objects/${user.photoUris[5]}` : '');
     const [prepayment, setPrepayment] = React.useState(user.prepaymentAvailable);
 
     const updateState = (user) => {
@@ -138,6 +141,12 @@ const CompanyAccountScreen = ({navigation}) => {
         setFacebookUrl(user.socialMedias[getUrlIndex('facebook')]);
         setVkUrl(user.socialMedias[getUrlIndex('vk')]);
         setTgUrl(user.socialMedias[getUrlIndex('t.me')]);
+        setFirstImageUri(user.photoUris[0] == '' ? user.photoUris[0] : `${env.api_url}/api/objects/${user.photoUris[0]}`);
+        setSecondImageUri(user.photoUris[1] == '' ? user.photoUris[1] : `${env.api_url}/api/objects/${user.photoUris[1]}`);
+        setThirdImageUri(user.photoUris[2] == '' ? user.photoUris[2] : `${env.api_url}/api/objects/${user.photoUris[2]}`);
+        setFourthImageUri(user.photoUris[3] == '' ? user.photoUris[3] : `${env.api_url}/api/objects/${user.photoUris[3]}`);
+        setFivthImageUri(user.photoUris[4] == '' ? user.photoUris[4] : `${env.api_url}/api/objects/${user.photoUris[4]}`);
+        setSixthImageUri(user.photoUris[5] == '' ? user.photoUris[5] : `${env.api_url}/api/objects/${user.photoUris[5]}`);
     }
 
     const socialMedias = [
@@ -191,7 +200,6 @@ const CompanyAccountScreen = ({navigation}) => {
     }, [isFocused]);
 
     return (
-        
         <View
             style={{
                 flex: 1,
@@ -788,7 +796,53 @@ const CompanyAccountScreen = ({navigation}) => {
                                         backgroundColor: isDisable() ? '#ABCDf3' : '#2D81E0'
                                     }]}
                                     disabled={isDisable()}
-                                    onPress={!isDisable() && (async () => {})}>
+                                    onPress={!isDisable() && (async () => {
+                                        const photos = [
+                                            fisrtImageUri, 
+                                            secondImageUri, 
+                                            thirdImageUri, 
+                                            fourthImageUri, 
+                                            fivthImageUri, 
+                                            sixthImageUri
+                                        ];
+
+                                        const getFileName = (path) => {
+                                            let d = path.split('/');
+
+                                            let name = d[d.length-1];
+
+                                            return name.includes('.') ? name.split('.')[0] : name;
+                                        }
+
+                                        const extractedFileNames = photos.map(u => u == '' ? u : getFileName(u));
+
+                                        const state = {
+                                            title,
+                                            email,
+                                            phoneNumber: phone,
+                                            street: address.split(',')[1],
+                                            city: address.split(',')[0],
+                                            siteUrl: user.siteUrl,
+                                            photoUris: extractedFileNames,
+                                            socialMedias: [
+                                                instagramUrl,
+                                                facebookUrl,
+                                                vkUrl,
+                                                tgUrl
+                                            ],
+                                            categoriesId: trackedCategories.filter(c => c.tracked).map(c => c.id)
+                                        };
+
+                                        photos.forEach(async p => {
+                                            if (p != '' && p[0] == 'f') {
+                                                await blobService.uploadImage(p);
+                                            }
+                                        });
+
+                                        await companyService.changeData(state);
+
+                                        setIsChanged(false);
+                                    })}>
                                     <Text
                                         style={styles.buttonText}>
                                         Сохранить изменения

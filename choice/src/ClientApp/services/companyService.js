@@ -58,7 +58,23 @@ const getAll = async () => {
     .then(async response => await response.json());
 }
 
+const changeData = async (data) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/ChangeData`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 export default {
+    changeData,
     get,
     fillCompanyData,
     getCompany,

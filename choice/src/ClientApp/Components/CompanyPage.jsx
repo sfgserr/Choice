@@ -9,6 +9,7 @@ import env from "../env";
 import { Icon } from "react-native-elements";
 
 const CompanyPage = ({navigation, company, order}) => {
+    
     return (
         <View
             style={{

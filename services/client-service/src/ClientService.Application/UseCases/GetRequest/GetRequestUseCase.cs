@@ -8,13 +8,15 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
     {
         private readonly IClientRepository _repository;
         private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
 
         private IOutputPort _outputPort;
 
-        public GetRequestUseCase(IClientRepository repository, IUserService userService)
+        public GetRequestUseCase(IClientRepository repository, IUserService userService, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _userService = userService;
+            _unitOfWork = unitOfWork;
 
             _outputPort = new GetRequestPresenter();
         }
@@ -36,6 +38,8 @@ namespace Choice.ClientService.Application.UseCases.GetRequest
                     request.CompanyWatched(userId);
 
                     _repository.Update(request.Client!);
+
+                    await _unitOfWork.SaveChanges();
                 }
 
                 _outputPort.Ok(request, isUserCompany);
