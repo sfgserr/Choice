@@ -10,10 +10,10 @@ const uploadImage = async (filePath) => {
     const directories = filePath.split('/')
 
     const data = await RNFS.readFile(filePath, 'base64');
-    const fileName = directories[directories.length-1].split('.')[0];
+    const fileNameAndExtension = directories[directories.length-1].split('.');
     const buffer = toByteArray(data);
 
-    return await fetch(`${env.api_url}/api/objects/${fileName}`, {
+    return await fetch(`${env.api_url}/api/objects/${fileNameAndExtension[0]}`, {
         method: 'POST',
         body: buffer,
         headers: {
@@ -23,7 +23,7 @@ const uploadImage = async (filePath) => {
     .then(async response => { 
         console.log(response.status);
         if (response.status == 200) {
-            return fileName; 
+            return fileNameAndExtension[0]; 
         }
         else {
             return '';

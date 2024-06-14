@@ -200,7 +200,7 @@ const CompanyAccountScreen = ({navigation}) => {
     }, [isFocused]);
 
     return (
-        <View
+        <ScrollView
             style={{
                 flex: 1,
                 backgroundColor: 'white',
@@ -365,7 +365,7 @@ const CompanyAccountScreen = ({navigation}) => {
                     </View>
                 </View>
             </Modal>
-            <ScrollView
+            <View
                 style={{paddingHorizontal: 20}}>
                 <Text
                     style={{
@@ -797,25 +797,6 @@ const CompanyAccountScreen = ({navigation}) => {
                                     }]}
                                     disabled={isDisable()}
                                     onPress={!isDisable() && (async () => {
-                                        const photos = [
-                                            fisrtImageUri, 
-                                            secondImageUri, 
-                                            thirdImageUri, 
-                                            fourthImageUri, 
-                                            fivthImageUri, 
-                                            sixthImageUri
-                                        ];
-
-                                        const getFileName = (path) => {
-                                            let d = path.split('/');
-
-                                            let name = d[d.length-1];
-
-                                            return name.includes('.') ? name.split('.')[0] : name;
-                                        }
-
-                                        const extractedFileNames = photos.map(u => u == '' ? u : getFileName(u));
-
                                         const state = {
                                             title,
                                             email,
@@ -823,7 +804,14 @@ const CompanyAccountScreen = ({navigation}) => {
                                             street: address.split(',')[1],
                                             city: address.split(',')[0],
                                             siteUrl: user.siteUrl,
-                                            photoUris: extractedFileNames,
+                                            photoUris: [
+                                                fisrtImageUri, 
+                                                secondImageUri, 
+                                                thirdImageUri, 
+                                                fourthImageUri, 
+                                                fivthImageUri, 
+                                                sixthImageUri
+                                            ],
                                             socialMedias: [
                                                 instagramUrl,
                                                 facebookUrl,
@@ -833,11 +821,16 @@ const CompanyAccountScreen = ({navigation}) => {
                                             categoriesId: trackedCategories.filter(c => c.tracked).map(c => c.id)
                                         };
 
-                                        photos.forEach(async p => {
-                                            if (p != '' && p[0] == 'f') {
-                                                await blobService.uploadImage(p);
+                                        for (let i = 0; i < 6; i++) {
+                                            if (state.photoUris[i][0] == 'f') {
+                                                state.photoUris[i] = await blobService.uploadImage(state.photoUris[i]);
                                             }
-                                        });
+                                            else {
+                                                let dirs = state.photoUris[i].split('/');
+                                                state.photoUris[i] = dirs[dirs.length-1];
+                                                console.log(dirs[dirs.length-1]);
+                                            }
+                                        }
 
                                         await companyService.changeData(state);
 
@@ -855,8 +848,8 @@ const CompanyAccountScreen = ({navigation}) => {
                         </>
                     }
                 </View>
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     )
 }
 

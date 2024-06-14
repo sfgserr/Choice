@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as ImagePicker from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
+import {toByteArray } from 'react-native-quick-base64';
 
 const ImageBox = ({onUriChanged, uri}) => {
     const { width, height } = Dimensions.get('screen');
@@ -17,8 +19,19 @@ const ImageBox = ({onUriChanged, uri}) => {
         let response = await ImagePicker.launchImageLibrary();
 
         if (!response.didCancel) {
-            setImageUri(response.assets[0].uri);
-            onUriChanged(response.assets[0].uri);
+            const directories = response.assets[0].uri.split('/')
+
+            const data = await RNFS.readFile(response.assets[0].uri, 'base64');
+            const fileNameAndExtension = directories[directories.length-1].split('.');
+            const buffer = toByteArray(data);
+
+            if (true) {
+                setImageUri(response.assets[0].uri);
+                onUriChanged(response.assets[0].uri);
+            }
+            else {
+                console.log(`Size: ${buffer.length} || Extension: ${fileNameAndExtension[1]}`);
+            }
         }
     }
 

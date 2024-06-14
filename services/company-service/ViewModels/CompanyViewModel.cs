@@ -8,20 +8,28 @@ namespace Choice.CompanyService.Api.ViewModels
         public CompanyViewModel(Company company, int distance)
         {
             Title = company.Title;
+            IconUri = company.IconUri;
             Address = company.Address;
             AverageGrade = company.AverageGrade;
             ReviewCount = company.ReviewsCount;
-            CategoriesId = company.CategoriesId.ToList();
-            SocialMedias = company.SocialMedias.ToList();
+            Email = company.Email;
+            PhoneNumber = company.PhoneNumber;
+            CategoriesId = [.. company.CategoriesId];
+            SocialMedias = [.. company.SocialMedias];
+            PhotoUris = [.. company.PhotoUris];
             Distance = distance;
         }
 
         public string Title { get; }
+        public string IconUri { get; }
         public Address Address { get; }
         public double AverageGrade { get; }
         public int ReviewCount { get; }
+        public string Email { get; }
+        public string PhoneNumber { get; }
         public List<int> CategoriesId { get; }
         public List<string> SocialMedias { get; }
+        public List<string> PhotoUris { get; }
         public int Distance { get; }
     }
 }

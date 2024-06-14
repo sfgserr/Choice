@@ -156,7 +156,7 @@ export default function MapScreen({ navigation, route }) {
                 ref={modalRef}
                 adjustToContentHeight={true}
                 scrollViewProps={{nestedScrollEnabled: false, scrollEnabled: false}}
-                childrenStyle={{height: '90%'}}>
+                childrenStyle={{height: '100%'}}>
                 <View
                     style={{
                         flex: 1,
@@ -207,7 +207,7 @@ export default function MapScreen({ navigation, route }) {
                                 <CompanyPage
                                     navigation={navigation}
                                     company={company}
-                                    order={order == '' ? order : order.companyId == company.guid ? order : ''}/>
+                                    order={order == '' ? order : JSON.parse(order.body).CompanyId == company.guid ? order : ''}/>
                             </>
                         }    
                     </View>
