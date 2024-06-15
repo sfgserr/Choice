@@ -1,13 +1,16 @@
 import React from "react";
 import {
     View,
-    Text
+    Text,
+    Dimensions
 } from 'react-native';
 import { Icon } from "react-native-elements";
 
 const Review = ({review}) => {
-    const stars = [1,2,3,4,5]
-    console.log(review);
+    const stars = [1,2,3,4,5];
+
+    const wh = Dimensions.get('screen');
+
     return (
         <View
             style={{
@@ -34,6 +37,7 @@ const Review = ({review}) => {
                     {stars.map(s => (
                         <Icon
                             type='material'
+                            key={s}
                             name='star'
                             size={20}
                             color={s <= review.grade ? '#E4E839' : '#C8C8C8'}/>    
@@ -49,6 +53,17 @@ const Review = ({review}) => {
                 }}>
                 {review.text}
             </Text>
+            <View
+                style={{
+                    paddingTop: 10
+                }}>
+                <View
+                    style={{
+                        height: 5,
+                        color: '#eaeaea',
+                        width: wh.width
+                    }}/>
+            </View>
         </View>
     )
 }

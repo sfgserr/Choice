@@ -284,7 +284,7 @@ const ChatScreen = ({ navigation, route }) => {
                                 fontWeight: 600,
                                 alignSelf: 'center'
                             }}>
-                            Отзыв о компании 
+                            {userStore.getUserType() == 1 ? 'Отзыв о компании' : 'Отзыв о клиенте'} 
                         </Text>
                         <TouchableOpacity
                             style={{

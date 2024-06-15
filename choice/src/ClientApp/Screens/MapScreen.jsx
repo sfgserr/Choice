@@ -168,13 +168,13 @@ export default function MapScreen({ navigation, route }) {
                     style={{
                         flex: 1,
                         justifyContent: 'center',
-                        paddingHorizontal: 10
                     }}>
                     <View
                         style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            paddingTop: 10
+                            paddingTop: 10,
+                            paddingHorizontal: 10
                         }}>
                         <Text></Text>
                         <Text

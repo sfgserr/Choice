@@ -35,7 +35,8 @@ const ReviewPage = ({company}) => {
                 style={{
                     flexDirection: 'row',
                     paddingTop: 10,
-                    flex: 1
+                    flex: 1,
+                    paddingHorizontal: 10
                 }}>
                 <Image
                     source={{uri: `${env.api_url}/api/objects/${company.iconUri}`}}
@@ -101,7 +102,12 @@ const ReviewPage = ({company}) => {
                     paddingTop: 20
                 }}
                 renderItem={({item}) => (
-                    <View>
+                    <View
+                        style={{
+                            paddingHorizontal: 10,
+                            borderBottomWidth: 1,
+                            borderColor: '#EAEAEA'
+                        }}>
                         <Review
                             review={item}/>
                     </View>

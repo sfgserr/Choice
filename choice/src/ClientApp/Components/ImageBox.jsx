@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as ImagePicker from 'react-native-image-picker';
-import RNFS from 'react-native-fs';
+import RNFS, { read } from 'react-native-fs';
 import {toByteArray } from 'react-native-quick-base64';
 
-const ImageBox = ({onUriChanged, uri}) => {
+const ImageBox = ({onUriChanged, uri, readOnly}) => {
     const { width, height } = Dimensions.get('screen');
-
+    readOnly = readOnly == undefined ? false : readOnly;
     const [imageUri, setImageUri] = React.useState(uri);
 
     const addImage = async () => {
@@ -45,13 +45,25 @@ const ImageBox = ({onUriChanged, uri}) => {
             {
                 imageUri == '' ?
                 <>
-                    <View style={{width: width/3.8, height: width/3.8, backgroundColor: '#F9F9F9', borderWidth: 2, borderRadius: 8, borderStyle: 'dashed', borderColor: '#C8C8C8', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={async () => await addImage()}>
+                    <View 
+                        style={{
+                            width: width/3.8, 
+                            height: width/3.8, 
+                            backgroundColor: readOnly ? 'transparent' : '#F9F9F9', 
+                            borderWidth: 2, 
+                            borderRadius: 8, 
+                            borderStyle: 'dashed', 
+                            borderColor: readOnly ? 'transparent' : '#C8C8C8', 
+                            justifyContent: 'center'
+                        }}>
+                        <TouchableOpacity 
+                            onPress={async () => await addImage()}
+                            disabled={readOnly}>
                             <Icon 
                                 name='arrow-circle-down'
                                 type='material'
                                 size={40}
-                                color={'#2D81E0'}/>
+                                color={readOnly ? 'transparent' : '#2D81E0'}/>
                         </TouchableOpacity>
                     </View>
                     </>
@@ -63,7 +75,7 @@ const ImageBox = ({onUriChanged, uri}) => {
                                 height: width/3.8+width/(3.8*50),
                                 borderRadius: 8,
                                 borderStyle: 'dashed',
-                                borderWidth: 2,
+                                borderWidth: readOnly ? 0 : 2,
                                 borderColor: 'black',
                                 backgroundColor: 'transparent',
                                 justifyContent: 'center',
@@ -78,20 +90,26 @@ const ImageBox = ({onUriChanged, uri}) => {
                                     alignItems: 'flex-end',
                                     zIndex: 1,
                                 }}>
-                                <TouchableOpacity
-                                    style={{
-                                        backgroundColor: 'white',
-                                        borderColor: '#E7E7E7',
-                                        borderWidth: 2,
-                                        borderRadius: 360
-                                    }}
-                                    onPress={() => removeImage()}>
-                                    <Icon 
-                                        name='close'
-                                        type='material'
-                                        size={20}
-                                        color={'#818C99'}/>
-                                </TouchableOpacity>
+                                {!readOnly ? 
+                                <>
+                                    <TouchableOpacity
+                                        style={{
+                                            backgroundColor: 'white',
+                                            borderColor: '#E7E7E7',
+                                            borderWidth: 2,
+                                            borderRadius: 360
+                                        }}
+                                        onPress={() => removeImage()}>
+                                        <Icon 
+                                            name='close'
+                                            type='material'
+                                            size={20}
+                                            color={'#818C99'}/>
+                                    </TouchableOpacity>
+                                </>
+                                :
+                                <>
+                                </>}
                             </View>
                             <Image 
                                 style={{
