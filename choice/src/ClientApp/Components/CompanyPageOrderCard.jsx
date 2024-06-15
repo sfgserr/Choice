@@ -8,7 +8,7 @@ import { Icon } from "react-native-elements";
 import styles from "../Styles";
 import dateHelper from "../helpers/dateHelper";
 
-const CompanyPageOrderCard = ({message}) => {
+const CompanyPageOrderCard = ({navigation, message}) => {
     return (
         <View
             style={{
@@ -204,7 +204,10 @@ const CompanyPageOrderCard = ({message}) => {
             <View
                 style={{paddingTop: 20, paddingBottom: 10}}>
                 <TouchableOpacity
-                    style={[styles.button, {backgroundColor: 'white'}]}>
+                    style={[styles.button, {backgroundColor: 'white'}]}
+                    onPress={() => {
+                        navigation.navigate('Chat', {chatId: message.senderId})
+                    }}>
                     <Text
                         style={[styles.buttonText, {color: '#2C2D2E'}]}>
                         Перейти в чат с компанией

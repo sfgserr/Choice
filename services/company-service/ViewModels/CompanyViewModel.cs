@@ -7,6 +7,7 @@ namespace Choice.CompanyService.Api.ViewModels
     {
         public CompanyViewModel(Company company, int distance)
         {
+            Guid = company.Guid;
             Title = company.Title;
             IconUri = company.IconUri;
             Address = company.Address;
@@ -20,6 +21,7 @@ namespace Choice.CompanyService.Api.ViewModels
             Distance = distance;
         }
 
+        public string Guid { get; }
         public string Title { get; }
         public string IconUri { get; }
         public Address Address { get; }

@@ -16,6 +16,7 @@ namespace Choice.ClientService.Api.ViewModels
             ToKnowEnrollmentDate = request.ToKnowEnrollmentDate;
             SearchRadius = request.SearchRadius;
             Status = request.Status;
+            CompaniesWatched = request.CompaniesWatched;
             CreationDate = request.CreationDate;
         }
 
@@ -29,6 +30,7 @@ namespace Choice.ClientService.Api.ViewModels
         public bool ToKnowEnrollmentDate { get; }
         public int SearchRadius { get; }
         public OrderStatus Status { get; }
+        public List<string> CompaniesWatched { get; }
         public DateTime CreationDate { get; }
     }
 }

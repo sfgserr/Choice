@@ -4,7 +4,7 @@ import {
     Text,
     Image,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import ImageViewer from "./ImageViewer";
 import env from "../env";
@@ -12,8 +12,9 @@ import { Icon } from "react-native-elements";
 import urlValidator from "../validators/urlValidator";
 import styles from "../Styles";
 import CompanyPageOrderCard from "./CompanyPageOrderCard";
+import { Modalize } from "react-native-modalize";
 
-const CompanyPage = ({navigation, company, order}) => {
+const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
     const wh = Dimensions.get('screen');
 
     const getImageSource = (url) => {
@@ -127,7 +128,8 @@ const CompanyPage = ({navigation, company, order}) => {
                 <View
                     style={{paddingTop: 10}}>
                     <CompanyPageOrderCard
-                        message={order}/>
+                        message={order}
+                        navigation={navigation}/>
                 </View>
             </>
             :
@@ -153,7 +155,8 @@ const CompanyPage = ({navigation, company, order}) => {
                             width: 50,
                             height: 50
                         }
-                    }}>
+                    }}
+                    onPress={() => onReviewPressed()}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -219,7 +222,10 @@ const CompanyPage = ({navigation, company, order}) => {
                 <View
                     style={{paddingTop: 20}}>
                     <TouchableOpacity
-                        style={styles.button}>
+                        style={styles.button}
+                        onPress={() => {
+                            navigation.navigate('Chat', {chatId: company.guid})
+                        }}>
                         <Text
                             style={styles.buttonText}>
                             Перейти в чат

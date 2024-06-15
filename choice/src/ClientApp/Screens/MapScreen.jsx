@@ -21,9 +21,11 @@ import companyService from '../services/companyService.js';
 import MapOrderCard from '../Components/MapOrderCard.jsx';
 import { Modalize } from 'react-native-modalize';
 import CompanyPage from '../Components/CompanyPage.jsx';
+import ReviewPage from '../Components/ReviewPage.jsx';
 
 export default function MapScreen({ navigation, route }) {
     const modalRef = React.useRef(null);
+    const reviewModalRef = React.useRef(null);
 
     const [category, setCategory] = React.useState({
         id: route.params.category.id,
@@ -54,6 +56,12 @@ export default function MapScreen({ navigation, route }) {
     const setParams = (params) => {
         setCategory(params.selectedCategory);
         setOrderRequest(params.createdOrderRequest);
+    }
+
+    const onReviewPressed = () => {
+        modalRef.current?.close();
+
+        reviewModalRef.current.open();
     }
 
     const retrieveData = React.useCallback(async () => {
@@ -152,6 +160,48 @@ export default function MapScreen({ navigation, route }) {
                         }}/>
                 )) : <></>}
             </MapView>
+            <Modalize
+                adjustToContentHeight={true}
+                childrenStyle={{height: '100%'}}
+                ref={reviewModalRef}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontWeight: '600',
+                                fontSize: 21
+                            }}>
+                            Отзывы
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => reviewModalRef.current?.close()}
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}>
+                            <Icon 
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>    
+                    </View>
+                    <ReviewPage
+                        company={company}/>
+                </View>
+            </Modalize>
             <Modalize 
                 ref={modalRef}
                 adjustToContentHeight={true}
@@ -206,8 +256,9 @@ export default function MapScreen({ navigation, route }) {
                             <>
                                 <CompanyPage
                                     navigation={navigation}
+                                    onReviewPressed={onReviewPressed}
                                     company={company}
-                                    order={order == '' ? order : JSON.parse(order.body).CompanyId == company.guid ? order : ''}/>
+                                    order={order == '' ? order :order.senderId == company.guid ? order : ''}/>
                             </>
                         }    
                     </View>

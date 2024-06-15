@@ -25,9 +25,11 @@ import arrayHelper from '../helpers/arrayHelper';
 import ImageBox from '../Components/ImageBox';
 import reviewService from '../services/reviewService';
 import messageStore from '../services/messageStore';
+import categoryService from '../services/categoryService';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
+
     const [refreshing, setRefreshing] = React.useState(false);
     const [fisrtImageUri, setFirstImageUri] = React.useState('');
     const [secondImageUri, setSecondImageUri] = React.useState('');
@@ -191,7 +193,6 @@ const ChatScreen = ({ navigation, route }) => {
 
         let chat = await chatService.getChat(chatId);
         setChat(chat);
-
         setLastTimeOnlineString(chat.status == 2 ? `Был(а) ${dateHelper.getDifference(chat.lastTimeOnline)} назад` : 'В сети');
 
         let messages = Object.keys(chat.messages).map((i) => ({
@@ -239,7 +240,7 @@ const ChatScreen = ({ navigation, route }) => {
                 break;
             case 5:
                 s = 'Отлично'
-                break;
+                break; 
         }
 
         return s;
@@ -525,8 +526,9 @@ const ChatScreen = ({ navigation, route }) => {
             </Modalize>
             <View
                 style={{
-                    width,
                     top: 0,
+                    width,
+                    position: messages.length > 0 ? 'relative' : 'absolute',
                     backgroundColor: 'white',
                     justifyContent: 'center'
                 }}>
@@ -579,67 +581,111 @@ const ChatScreen = ({ navigation, route }) => {
                         source={{uri: `${env.api_url}/api/objects/${chat.iconUri}`}}/>    
                 </View>
             </View>
-            <FlatList
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                }
-                data={[...messages].reverse()}
-                style={{paddingTop: 10}}
-                onViewableItemsChanged={onViewableItemsChanged.current}
-                viewabilityConfig={viewabilityConfig.current}
-                inverted
-                renderItem={({item, index}) => {
-                    return (
-                        <View style={{paddingHorizontal: 10, paddingTop: 2.5, paddingBottom: 2.5}}>
-                            {
-                                index == messages.length-1 || dateHelper.getDateFromString([...messages].reverse()[index].creationTime) != dateHelper.getDateFromString([...messages].reverse()[index+1].creationTime) ?
-                                <>
-                                    <View style={{paddingTop: 2.5}}>
-                                        <View
-                                            style={{
-                                                borderRadius: 20,
-                                                backgroundColor: '#DBE3FF82',
-                                                padding: 7,
-                                                alignSelf: 'center'
-                                            }}>
-                                            <Text
+            {messages.length > 0 ?
+            <>
+                <FlatList
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                    }
+                    data={[...messages].reverse()}
+                    style={{paddingTop: 10}}
+                    onViewableItemsChanged={onViewableItemsChanged.current}
+                    viewabilityConfig={viewabilityConfig.current}
+                    inverted
+                    renderItem={({item, index}) => {
+                        return (
+                            <View style={{paddingHorizontal: 10, paddingTop: 2.5, paddingBottom: 2.5}}>
+                                {
+                                    index == messages.length-1 || dateHelper.getDateFromString([...messages].reverse()[index].creationTime) != dateHelper.getDateFromString([...messages].reverse()[index+1].creationTime) ?
+                                    <>
+                                        <View style={{paddingTop: 2.5}}>
+                                            <View
                                                 style={{
-                                                    fontSize: 11,
-                                                    fontWeight: '400',
-                                                    color: '#6B89AC',
+                                                    borderRadius: 20,
+                                                    backgroundColor: '#DBE3FF82',
+                                                    padding: 7,
                                                     alignSelf: 'center'
                                                 }}>
-                                                {dateHelper.getDateFromString(item.creationTime)}
-                                            </Text>    
-                                        </View>
-                                    </View>        
-                                </>
-                                :
-                                <>
-                                </>
-                            }
-                            <Message 
-                                message={item}
-                                userId={userStore.get().guid}
-                                confirmDate={confirmDate}
-                                enroll={enroll}
-                                changeStatus={changeStatus}
-                                openReviewModal={(id) => {
-                                    setId(id);
-                                    reviewsModalRef.current?.open();
-                                }}
-                                changeDate={(id) => {
-                                    setId(id);
-                                    enrollmentDateRef.current?.open()
-                                }}/>    
-                        </View>
-                    )
-                }}/>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 11,
+                                                        fontWeight: '400',
+                                                        color: '#6B89AC',
+                                                        alignSelf: 'center'
+                                                    }}>
+                                                    {dateHelper.getDateFromString(item.creationTime)}
+                                                </Text>    
+                                            </View>
+                                        </View>        
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }
+                                <Message 
+                                    message={item}
+                                    userId={userStore.get().guid}
+                                    confirmDate={confirmDate}
+                                    enroll={enroll}
+                                    changeStatus={changeStatus}
+                                    openReviewModal={(id) => {
+                                        setId(id);
+                                        reviewsModalRef.current?.open();
+                                    }}
+                                    changeDate={(id) => {
+                                        setId(id);
+                                        enrollmentDateRef.current?.open()
+                                    }}/>    
+                            </View>
+                        )
+                    }}/>
+            </>
+            :
+            <>
+                <Text
+                    style={{
+                        fontWeight: '700',
+                        fontSize: 24,
+                        color: 'black',
+                        alignSelf: 'center'
+                    }}>
+                    Нет сообщений
+                </Text>
+                <Text
+                    style={{
+                        color: '#818C99',
+                        fontSize: 16,
+                        paddingTop: 20,
+                        fontWeight: '400',
+                        alignSelf: 'center'
+                    }}>
+                    {`Можете запросить у компании любую\nинтересующую Вас информацию или\nсоздать заказ и дождаться ответов от\nкомпаний рядом с вами`}
+                </Text>
+                <View
+                    style={{
+                        paddingTop: 40,
+                        paddingHorizontal: 80
+                    }}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={async () => {
+                            let categories = await categoryService.getCategories();
+
+                            navigation.navigate('OrderRequestCreation', {category: categories[0]});
+                        }}>
+                        <Text
+                            style={styles.buttonText}>
+                            Создать заказ    
+                        </Text>
+                    </TouchableOpacity>    
+                </View>
+            </>}
             <View
                 style={{
                     bottom: 0,
+                    width,
+                    position: messages.length > 0 ? 'relative' : 'absolute',
                     backgroundColor: 'white',
-
                 }}>
                 <View
                     style={{

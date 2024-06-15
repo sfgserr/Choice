@@ -30,7 +30,7 @@ const CompanyRequestsScreen = ({navigation}) => {
         await categoryStore.retrieveData();
 
         setRequests(fetchedRequests);
-
+        console.log(fetchedRequests);
         setRefreshing(false);
     }, []);
 
