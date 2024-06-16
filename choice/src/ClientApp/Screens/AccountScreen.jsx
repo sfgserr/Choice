@@ -20,6 +20,7 @@ import { AuthContext } from '../App';
 import { Icon } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
 import env from '../env';
+import CustomTextInput from '../Components/CustomTextInput';
 
 export default function AccountScreen({ navigation }) {
     const [user, setUser] = React.useState(userStore.get());
@@ -231,15 +232,12 @@ export default function AccountScreen({ navigation }) {
                     Имя        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]} 
-                            value={name} 
-                            onChangeText={(text) => {
-                                setName(text);
-                                setDisable(false);
-                            }}/>
-                    </View>
+                    <CustomTextInput 
+                        value={name} 
+                        changed={(text) => {
+                            setName(text);
+                            setDisable(false);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -251,15 +249,12 @@ export default function AccountScreen({ navigation }) {
                     Фамилия        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]} 
-                            value={surname} 
-                            onChangeText={(text) => {
-                                setSurname(text);
-                                setDisable(false);
-                            }}/>
-                    </View>
+                    <CustomTextInput 
+                        value={surname} 
+                        changed={(text) => {
+                            setSurname(text);
+                            setDisable(false);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -271,15 +266,12 @@ export default function AccountScreen({ navigation }) {
                     E-mail        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]} 
-                            value={email} 
-                            onChangeText={(text) => {
-                                setEmail(text);
-                                setDisable(false);
-                            }}/>
-                    </View>
+                    <CustomTextInput 
+                        value={email} 
+                        changed={(text) => {
+                            setEmail(text);
+                            setDisable(false);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -291,15 +283,12 @@ export default function AccountScreen({ navigation }) {
                     Телефон        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]} 
-                            value={phone} 
-                            onChangeText={(text) => {
-                                setPhone(text);
-                                setDisable(false);
-                            }}/>
-                    </View>
+                    <CustomTextInput  
+                        value={phone} 
+                        changed={(text) => {
+                            setPhone(text);
+                            setDisable(false);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -311,15 +300,13 @@ export default function AccountScreen({ navigation }) {
                     Адрес        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {height: height/7}]}>
-                        <TextInput 
-                            style={[styles.textInputFont]} 
-                            value={address} 
-                            onChangeText={(text) => {
-                                setAddress(text);
-                                setDisable(false);
-                            }}/>
-                    </View>
+                    <CustomTextInput 
+                        value={address}
+                        big 
+                        changed={(text) => {
+                            setAddress(text);
+                            setDisable(false);
+                        }}/>
                 </View>
                 <TouchableOpacity 
                     style={[styles.button, { backgroundColor: '#001C3D0D' }]}

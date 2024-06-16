@@ -14,7 +14,7 @@ const register = async (name, email, phone, street, city, password, userType) =>
         }
     })
     .then(async response => {
-        return response.status == 200;
+        return await response.json();
     })
     .catch(error => {
         console.log(error);
@@ -76,10 +76,20 @@ const verifyCode = async (phone, code) => {
         if (response.status == 200) {
             const json = await response.json();
             await KeyChain.setGenericPassword('api_key', json);
-            return true;
+            const jsonDecoded = jwtDecode(json);
+            console.log(json);
+            if (jsonDecoded.type == 'Client') {
+                return 1;
+            }
+
+            if (jsonDecoded.type == 'Company') {
+                return 2;
+            }
+
+            return 3;
         }
         
-        return false;
+        return -1;
     })
     .catch(error => {
         console.log(error);

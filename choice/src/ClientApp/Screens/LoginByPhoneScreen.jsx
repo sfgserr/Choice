@@ -8,8 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import authService from "../services/authService.js";
+import CustomTextInput from "../Components/CustomTextInput.jsx";
 
-export default function LoginByPhoneScreen({signIn}) {
+export default function LoginByPhoneScreen({signIn, navigation}) {
     const [codeSent, setCodeSent] = React.useState(false);
     const [phone, setPhone] = React.useState('');
     const [disabled, setDisabled] = React.useState(true);
@@ -22,7 +23,27 @@ export default function LoginByPhoneScreen({signIn}) {
     }
 
     const onVerifyCodePressed = async () => {
-        await authService.verifyCode(phone, code);
+        let userType = await authService.verifyCode(phone, code);
+
+        if (userType != -1) {
+            if (userType == 2) {
+                let user = userStore.get();
+
+                if (!user.isDataFilled) {
+                    await categoryStore.retrieveData();
+                    navigation.navigate('FillCompanyData', {
+                        email,
+                        password
+                    });
+                }
+                else {
+                    await signIn(userType);
+                }
+            }
+            else {
+                await signIn(userType);
+            }
+        }
     }
 
     const onCodeChanged = (code) => {
@@ -51,22 +72,52 @@ export default function LoginByPhoneScreen({signIn}) {
         <SafeAreaView>
             {codeSent ?  
                 <View style={{paddingHorizontal: 20}}>
-                    <Text style={{color: '#6D7885', fontWeight: '400', fontSize: 14, paddingBottom: 5}}>Код</Text>
-                    <View style={styles.textInput}>
-                        <TextInput onChangeText={onCodeChanged} value={code} placeholder="Введите код из смс" style={styles.textInputFont}/>
-                    </View>
-                    <View style={{paddingTop: 30}}>
-                        <TouchableOpacity onPress={onVerifyCodePressed} disabled={loginDisabled} style={[styles.button, {backgroundColor: loginDisabled ? '#ABCDf3' : '#2D81E0'}]}>
-                            <Text style={styles.buttonText}>Войти</Text>
+                    <Text 
+                        style={{
+                            color: '#6D7885', 
+                            fontWeight: '400', 
+                            fontSize: 14, 
+                            paddingBottom: 5
+                        }}>
+                        Код
+                    </Text>
+                    <CustomTextInput
+                        value={code}
+                        changed={onCodeChanged}
+                        placeholder={'Введите код из смс'}/>
+                    <View 
+                        style={{paddingTop: 30}}>
+                        <TouchableOpacity 
+                            onPress={onVerifyCodePressed} 
+                            disabled={loginDisabled} 
+                            style={[
+                                styles.button, {
+                                    backgroundColor: loginDisabled ? '#ABCDf3' : '#2D81E0'
+                                }
+                            ]}>
+                            <Text 
+                                style={styles.buttonText}>
+                                Войти
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 : 
-                <View style={[{paddingHorizontal: 20}]}>
-                    <Text style={{color: '#6D7885', fontWeight: '400', fontSize: 14, paddingBottom: 5}}>Телефон</Text>
-                    <View style={styles.textInput}>
-                        <TextInput onChangeText={onPhoneChanged} value={phone} placeholder="+7 (000) 000-00-00" style={styles.textInputFont}/>
-                    </View>
+                <View 
+                    style={[{paddingHorizontal: 20}]}>
+                    <Text 
+                        style={{
+                            color: '#6D7885', 
+                            fontWeight: '400', 
+                            fontSize: 14, 
+                            paddingBottom: 5
+                        }}>
+                        Телефон
+                    </Text>
+                    <CustomTextInput
+                            value={phone}
+                            changed={onPhoneChanged}
+                            placeholder='+7 (000) 000-00-00'/>
                     <View style={{paddingTop: 30}}>
                         <TouchableOpacity onPress={onSendCodePressed} disabled={disabled} style={[styles.button, {backgroundColor: disabled ? '#ABCDf3' : '#2D81E0'}]}>
                             <Text style={styles.buttonText}>Отправить код</Text>

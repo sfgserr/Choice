@@ -9,9 +9,11 @@ import {
     TouchableOpacity
 } from 'react-native';
 import styles from '../Styles';
-import { Icon } from 'react-native-elements';
+import { Icon, Tooltip } from 'react-native-elements';
 import authService from '../services/authService';
 import categoryStore from '../services/categoryStore';
+import CustomTextInput from '../Components/CustomTextInput';
+import PasswordBox from '../Components/PasswordBox';
 
 const RegisterScreen = ({navigation, route}) => {
     const { type } = route.params;
@@ -19,9 +21,6 @@ const RegisterScreen = ({navigation, route}) => {
     const { width, height } = Dimensions.get('screen');
 
     const [modalVisible, setModalVisible] = React.useState(false);
-
-    const [hidePassword, setHidePassword] = React.useState(true);
-    const [hideConfirmPassword, setHideConfirmPassword] = React.useState(true);
 
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
@@ -31,11 +30,18 @@ const RegisterScreen = ({navigation, route}) => {
     const [address, setAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [emailError, setEmailError] = React.useState(false);
+    const [emailValidationError, setEmailValidationError] = React.useState(false);
+    const [phoneError, setPhoneError] = React.useState(false);
+    const [phoneValidationError, setPhoneValidationError] = React.useState(false);
+    const [addressError, setAddressError] = React.useState(false);
+    const [weakPasswordError, setWeakPasswordError] = React.useState(false);
+    const [passwordsNotMatchedError, setPasswordsNotMatchedError] = React.useState(false);
 
     const [disable, setDisable] = React.useState(true);
 
-    const updateState = (state) => {
-        setDisable(state.includes(''));
+    const updateState = (state, errors) => {
+        setDisable(state.includes('') || errors.some(e => e));
     }
 
     return (
@@ -181,23 +187,20 @@ const RegisterScreen = ({navigation, route}) => {
                             Имя        
                         </Text>
                         <View style={{paddingBottom: 20}}>
-                            <View style={[styles.textInput]}>
-                                <TextInput 
-                                    style={[styles.textInputFont]}
-                                    value={firstName}
-                                    placeholder='Введите имя' 
-                                    onChangeText={(text) => {
-                                        setFirstName(text);
-                                        updateState([
-                                            text, 
-                                            lastName, 
-                                            email, 
-                                            phone, 
-                                            address, 
-                                            password, 
-                                            confirmPassword]);
-                                    }}/>
-                            </View>
+                            <CustomTextInput 
+                                value={firstName}
+                                placeholder='Введите имя' 
+                                changed={(text) => {
+                                    setFirstName(text);
+                                    updateState([
+                                        text, 
+                                        lastName, 
+                                        email, 
+                                        phone, 
+                                        address, 
+                                        password, 
+                                        confirmPassword]);
+                                }}/>
                         </View>
                         <Text
                             style={{
@@ -209,22 +212,20 @@ const RegisterScreen = ({navigation, route}) => {
                             Фамилия        
                         </Text>
                         <View style={{paddingBottom: 20}}>
-                            <View style={[styles.textInput]}>
-                                <TextInput 
-                                    style={[styles.textInputFont]}
-                                    placeholder='Введите фамилию' 
-                                    onChangeText={(text) => {
-                                        setLastName(text);
-                                        updateState([
-                                            firstName, 
-                                            text, 
-                                            email, 
-                                            phone, 
-                                            address, 
-                                            password, 
-                                            confirmPassword]);
-                                    }}/>
-                            </View>
+                            <CustomTextInput 
+                                placeholder='Введите фамилию'
+                                value={lastName} 
+                                changed={(text) => {
+                                    setLastName(text);
+                                    updateState([
+                                        firstName, 
+                                        text, 
+                                        email, 
+                                        phone, 
+                                        address, 
+                                        password, 
+                                        confirmPassword]);
+                                }}/>
                         </View>
                     </>
                     :
@@ -239,21 +240,19 @@ const RegisterScreen = ({navigation, route}) => {
                             Название        
                         </Text>
                         <View style={{paddingBottom: 20}}>
-                            <View style={[styles.textInput]}>
-                                <TextInput 
-                                    style={[styles.textInputFont]}
-                                    placeholder='Введите название компании'
-                                    onChangeText={(text) => {
-                                        setTitle(text);
-                                        updateState([
-                                            text,
-                                            email, 
-                                            phone, 
-                                            address, 
-                                            password, 
-                                            confirmPassword]);
-                                    }}/>
-                            </View>
+                            <CustomTextInput
+                                value={title} 
+                                placeholder='Введите название компании'
+                                changed={(text) => {
+                                    setTitle(text);
+                                    updateState([
+                                        text,
+                                        email, 
+                                        phone, 
+                                        address, 
+                                        password, 
+                                        confirmPassword]);
+                                }}/>
                         </View>    
                     </>
                 }
@@ -267,31 +266,61 @@ const RegisterScreen = ({navigation, route}) => {
                     E-mail        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]}
-                            placeholder='Введите E-mail' 
-                            onChangeText={(text) => {
-                                setEmail(text);
-                                let state = [
-                                    text,
-                                    phone,
-                                    address,
-                                    password,
-                                    confirmPassword
-                                ]
+                    <CustomTextInput 
+                        value={email}
+                        error={emailValidationError || emailError}
+                        placeholder='Введите E-mail' 
+                        changed={(text) => {
+                            setEmail(text);
+                            let state = [
+                                text,
+                                phone,
+                                address,
+                                password,
+                                confirmPassword
+                            ]
 
-                                if (type == 'client') {
-                                    state.push(firstName);
-                                    state.push(lastName)
-                                }
-                                else {
-                                    state.push(title);
-                                }
+                            const errors = [
+                                addressError,
+                                weakPasswordError,
+                                passwordsNotMatchedError
+                            ];
 
-                                updateState(state);
-                            }}/>
-                    </View>
+                            if (text != '') {
+                                var regex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                                let error = !regex.test(text);
+                                errors.push(error);
+                                setEmailValidationError(error);
+                            }
+                            else {
+                                setEmailValidationError(false);
+                            }
+
+                            if (type == 'client') {
+                                state.push(firstName);
+                                state.push(lastName)
+                            }
+                            else {
+                                state.push(title);
+                            }
+
+                            updateState(state, errors);
+                        }}/>
+                    {emailError ?
+                    <>
+                        <Text
+                            style={{
+                                color: '#E64646',
+                                fontWeight: '400',
+                                fontSize: 13,
+                                paddingTop: 5
+                            }}>
+                            E-mail уже используется
+                        </Text>
+                    </>
+                    :
+                    <>
+                    </>}
                 </View>
                 <Text
                     style={{
@@ -303,121 +332,244 @@ const RegisterScreen = ({navigation, route}) => {
                     Телефон        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput]}>
-                        <TextInput 
-                            style={[styles.textInputFont]}
-                            keyboardType='phone-pad'
-                            placeholder='+7 (999) 999-99-99' 
-                            onChangeText={(text) => {
-                                setPhone(text);
-                                let state = [
-                                    email,
-                                    text,
-                                    address,
-                                    password,
-                                    confirmPassword
-                                ]
+                    <CustomTextInput
+                        value={phone}
+                        max={10}
+                        type={'phone-pad'}
+                        error={phoneValidationError || phoneError} 
+                        placeholder='+7 (999) 999-99-99' 
+                        changed={(text) => {
+                            setPhone(text);
+                            let state = [
+                                email,
+                                text,
+                                address,
+                                password,
+                                confirmPassword
+                            ]
 
-                                if (type == 'client') {
-                                    state.push(firstName);
-                                    state.push(lastName)
-                                }
-                                else {
-                                    state.push(title);
-                                }
+                            const errors = [
+                                addressError,
+                                weakPasswordError,
+                                passwordsNotMatchedError,
+                            ];
 
-                                updateState(state);
-                            }}/>
-                    </View>
-                </View>
-                <Text
-                    style={{
-                        color: '#6D7885', 
-                        fontWeight: '400', 
-                        fontSize: 14, 
-                        paddingBottom: 5
-                    }}>
-                    Адрес        
-                </Text>
-                <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {height: height/7}]}>
-                        <TextInput 
-                            style={[styles.textInputFont]}
-                            placeholder='Введите адрес' 
-                            onChangeText={(text) => {
-                                setAddress(text);
-                                let state = [
-                                    email,
-                                    phone,
-                                    text,
-                                    password,
-                                    confirmPassword
-                                ]
+                            if (text != '') {
+                                var regex = new RegExp(/\d{10,10}/);
+                                let error = !regex.test(text);
+                                errors.push(error);
+                                setPhoneValidationError(error);
+                            }
+                            else {
+                                setPhoneValidationError(false);
+                            }
 
-                                if (type == 'client') {
-                                    state.push(firstName);
-                                    state.push(lastName)
-                                }
-                                else {
-                                    state.push(title);
-                                }
+                            if (type == 'client') {
+                                state.push(firstName);
+                                state.push(lastName)
+                            }
+                            else {
+                                state.push(title);
+                            }
 
-                                updateState(state);
-                            }}/>
-                    </View>
-                </View>
-                <Text
-                    style={{
-                        color: '#6D7885', 
-                        fontWeight: '400', 
-                        fontSize: 14, 
-                        paddingBottom: 5
-                    }}>
-                    Пароль        
-                </Text>
-                <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <TextInput 
-                            placeholder="Введите пароль" 
-                            value={password}
-                            secureTextEntry={hidePassword} 
-                            onChangeText={(text) => {
-                                setPassword(text);
-                                let state = [
-                                    email,
-                                    phone,
-                                    address,
-                                    text,
-                                    confirmPassword
-                                ]
-
-                                if (type == 'client') {
-                                    state.push(firstName);
-                                    state.push(lastName)
-                                }
-                                else {
-                                    state.push(title);
-                                }
-
-                                updateState(state);
-                            }} 
-                            style={[styles.textInputFont, {flex: 3}]}/>
-                        <View 
+                            updateState(state, errors);
+                        }}/>
+                    {phoneError ?
+                    <>
+                        <Text
                             style={{
-                                flex: 1, 
-                                flexDirection: 'row', 
-                                justifyContent: 'flex-end'
+                                color: '#E64646',
+                                fontWeight: '400',
+                                fontSize: 13,
+                                paddingTop: 5
                             }}>
-                            <TouchableOpacity 
-                                style={{alignSelf: 'center'}} 
-                                onPress={() => {setHidePassword(prev => !prev)}}>
-                                <Icon 
-                                    type='material-community'
-                                    color='gray'
-                                    name={hidePassword ? 'eye' : 'eye-off'}/>
-                            </TouchableOpacity>
-                        </View>
+                            Телефон уже используется
+                        </Text>
+                    </>
+                    :
+                    <>
+                    </>}
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row'
+                    }}>
+                    <Text
+                        style={{
+                            color: '#6D7885', 
+                            fontWeight: '400', 
+                            fontSize: 14, 
+                            paddingBottom: 5,
+                            alignSelf: 'center'
+                        }}>
+                        Адрес
+                    </Text>
+                    <View
+                        style={{
+                            paddingLeft: 5,
+                            alignSelf: 'center'
+                        }}>
+                        <Tooltip
+                            backgroundColor='#2D81E0'
+                            height={'auto'}
+                            popover={
+                                <Text
+                                    style={{
+                                        fontWeight: '400',
+                                        fontSize: 13,
+                                        color: 'white'
+                                    }}>
+                                    {'Для того чтобы мы лучше определили Ваше местоположение\nвводите свой адрес в таком формате: {Город},{Улица}'} 
+                                </Text>
+                            }>
+                            <View
+                                style={{
+                                    borderRadius: 360,
+                                    backgroundColor: '#2D81E0',
+                                    padding: 2
+                                }}>
+                                <Icon
+                                    type='material'
+                                    color='white'
+                                    size={10}
+                                    name='question-mark'/>
+                            </View>
+                        </Tooltip>
                     </View>
+                </View>
+                <View style={{paddingBottom: 20}}>
+                    <CustomTextInput 
+                        placeholder='Введите адрес'
+                        error={addressError}
+                        value={address}
+                        big 
+                        changed={(text) => {
+                            setAddress(text);
+                            let state = [
+                                email,
+                                phone,
+                                text,
+                                password,
+                                confirmPassword
+                            ]
+
+                            const errors = [
+                                emailValidationError,
+                                weakPasswordError,
+                                addressError,
+                                passwordsNotMatchedError
+                            ];
+
+                            if (text != '') {
+                                var regex = new RegExp(/^[А-Яа-яЁё\s\-]+,[А-Яа-яЁё\-]+\s+\d+(\/\d+)?$/);
+                                let error = !regex.test(text);
+                                errors.push(error);
+                                setAddressError(error);
+                            }
+                            else {
+                                setAddressError(false);
+                            }
+
+                            if (type == 'client') {
+                                state.push(firstName);
+                                state.push(lastName)
+                            }
+                            else {
+                                state.push(title);
+                            }
+
+                            updateState(state, errors);
+                        }}/>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row'
+                    }}>
+                    <Text
+                        style={{
+                            color: '#6D7885', 
+                            fontWeight: '400', 
+                            fontSize: 14, 
+                            paddingBottom: 5,
+                            alignSelf: 'center'
+                        }}>
+                        Пароль
+                    </Text>
+                    <View
+                        style={{
+                            paddingLeft: 5,
+                            alignSelf: 'center'
+                        }}>
+                        <Tooltip
+                            backgroundColor='#2D81E0'
+                            height={150}
+                            width={200}
+                            popover={
+                                <Text
+                                    style={{
+                                        fontWeight: '400',
+                                        fontSize: 13,
+                                        color: 'white'
+                                    }}>
+                                    {'-Минимум 8 символов\n-Минимум один символ в верхнем регистре\n-Минимум один символ в нижнем регистре\n-Минимум один цифровой символ\n-Минимум один спец символ'} 
+                                </Text>
+                            }>
+                            <View
+                                style={{
+                                    borderRadius: 360,
+                                    backgroundColor: '#2D81E0',
+                                    padding: 2
+                                }}>
+                                <Icon
+                                    type='material'
+                                    color='white'
+                                    size={10}
+                                    name='question-mark'/>
+                            </View>
+                        </Tooltip>
+                    </View>
+                </View>
+                <View style={{paddingBottom: 20}}>
+                    <PasswordBox 
+                        value={password}
+                        error={weakPasswordError}
+                        changed={(text) => {
+                            setPassword(text);
+                            let state = [
+                                email,
+                                phone,
+                                address,
+                                text,
+                                confirmPassword
+                            ]
+                            
+                            const errors = [
+                                emailValidationError,
+                                addressError,
+                                passwordsNotMatchedError,
+                                phoneValidationError
+                            ];
+
+                            if (text != '') {
+                                var regex = new RegExp(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"'|<>?,.]).{8,16}$/);
+                                let error = !regex.test(text);
+                                errors.push(error);
+                                setWeakPasswordError(error);
+                            }
+                            else {
+                                setWeakPasswordError(false);
+                            }
+
+                            if (type == 'client') {
+                                state.push(firstName);
+                                state.push(lastName)
+                            }
+                            else {
+                                state.push(title);
+                            }
+
+                            updateState(state, errors);
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -429,48 +581,45 @@ const RegisterScreen = ({navigation, route}) => {
                     Повторите пароль        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <TextInput 
-                            placeholder="Введите пароль" 
-                            value={confirmPassword}
-                            secureTextEntry={hideConfirmPassword} 
-                            onChangeText={(text) => {
-                                setConfirmPassword(text);
-                                let state = [
-                                    email,
-                                    phone,
-                                    address,
-                                    password,
-                                    text
-                                ]
+                    <PasswordBox 
+                        value={confirmPassword}
+                        error={passwordsNotMatchedError}
+                        changed={(text) => {
+                            setConfirmPassword(text);
+                            let state = [
+                                email,
+                                phone,
+                                address,
+                                password,
+                                text
+                            ]
 
-                                if (type == 'client') {
-                                    state.push(firstName);
-                                    state.push(lastName)
-                                }
-                                else {
-                                    state.push(title);
-                                }
+                            const errors = [
+                                emailValidationError,
+                                addressError,
+                                weakPasswordError,
+                                phoneValidationError
+                            ];
 
-                                updateState(state);
-                            }} 
-                            style={[styles.textInputFont, {flex: 3}]}/>
-                        <View 
-                            style={{
-                                flex: 1, 
-                                flexDirection: 'row', 
-                                justifyContent: 'flex-end'
-                            }}>
-                            <TouchableOpacity 
-                                style={{alignSelf: 'center'}} 
-                                onPress={() => {setHideConfirmPassword(prev => !prev)}}>
-                                <Icon 
-                                    type='material-community'
-                                    color='gray'
-                                    name={hideConfirmPassword ? 'eye' : 'eye-off'}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                            if (text != '') {
+                                let error = text != password;
+                                errors.push(error);
+                                setPasswordsNotMatchedError(error);
+                            }
+                            else {
+                                setPasswordsNotMatchedError(false);
+                            }
+
+                            if (type == 'client') {
+                                state.push(firstName);
+                                state.push(lastName)
+                            }
+                            else {
+                                state.push(title);
+                            }
+
+                            updateState(state, errors);
+                        }}/>
                 </View>
                 <View>
                     <TouchableOpacity 
@@ -494,8 +643,18 @@ const RegisterScreen = ({navigation, route}) => {
                                 addresses[0],
                                 password,
                                 userType);
-                                
-                            result && setModalVisible(true);
+
+                            let emailError = result.errors.email != undefined;
+                            let phoneError = result.errors.phoneNumber != undefined;
+
+                            if (emailError || phoneError) {
+                                setEmailError(emailError);
+                                setPhoneError(phoneError);
+
+                                return;
+                            }
+                            
+                            setModalVisible(true);
                         }}>
                         <Text style={styles.buttonText}>
                             Создать аккаунт        

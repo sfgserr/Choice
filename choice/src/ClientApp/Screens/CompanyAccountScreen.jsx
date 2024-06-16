@@ -26,6 +26,7 @@ import ImageBox from '../Components/ImageBox';
 import { AuthContext } from '../App';
 import companyService from '../services/companyService';
 import blobService from '../services/blobService';
+import CustomTextInput from '../Components/CustomTextInput';
 
 const CompanyAccountScreen = ({navigation}) => {
     const { signOut } = React.useContext(AuthContext);
@@ -445,16 +446,12 @@ const CompanyAccountScreen = ({navigation}) => {
                     }}>
                     Название
                 </Text>
-                <View
-                    style={styles.textInput}>
-                    <TextInput
-                        style={styles.textInputFont}
-                        value={title}
-                        onChangeText={(text) => {
-                            setTitle(text);
-                            setIsChanged(true);
-                        }}/>
-                </View>
+                <CustomTextInput
+                    value={title}
+                    changed={(text) => {
+                        setTitle(text);
+                        setIsChanged(true);
+                    }}/>
                 <Text
                     style={{
                         color: '#6D7885',
@@ -465,16 +462,12 @@ const CompanyAccountScreen = ({navigation}) => {
                     }}>
                     E-mail
                 </Text>
-                <View
-                    style={styles.textInput}>
-                    <TextInput
-                        style={styles.textInputFont}
-                        value={email}
-                        onChangeText={(text) => {
-                            setEmail(text);
-                            setIsChanged(true);
-                        }}/>
-                </View>
+                <CustomTextInput
+                    value={email}
+                    changed={(text) => {
+                        setEmail(text);
+                        setIsChanged(true);
+                    }}/>
                 <Text
                     style={{
                         color: '#6D7885',
@@ -485,16 +478,15 @@ const CompanyAccountScreen = ({navigation}) => {
                     }}>
                     Телефон
                 </Text>
-                <View
-                    style={styles.textInput}>
-                    <TextInput
-                        style={styles.textInputFont}
-                        value={phone}
-                        onChangeText={(text) => {
-                            setPhone(text);
-                            setIsChanged(true);
-                        }}/>
-                </View>
+                <CustomTextInput
+                    style={styles.textInputFont}
+                    value={phone}
+                    type='phone-pad'
+                    max={10}
+                    onChangeText={(text) => {
+                        setPhone(text);
+                        setIsChanged(true);
+                    }}/>
                 <Text
                     style={{
                         color: '#6D7885',
@@ -505,16 +497,13 @@ const CompanyAccountScreen = ({navigation}) => {
                     }}>
                     Адрес
                 </Text>
-                <View
-                    style={[styles.textInput, {height: height/7}]}>
-                    <TextInput
-                        style={styles.textInputFont}
-                        value={address}
-                        onChangeText={(text) => {
-                            setAddress(text);
-                            setIsChanged(true);
-                        }}/>
-                </View>
+                <CustomTextInput
+                    value={address}
+                    onChangeText={(text) => {
+                        setAddress(text);
+                        setIsChanged(true);
+                    }}
+                    big/>
                 <View 
                     style={{paddingTop: 10}}> 
                     <View
@@ -612,7 +601,7 @@ const CompanyAccountScreen = ({navigation}) => {
                         Виды деятельности
                     </Text>
                     <View
-                        style={[styles.textInput, {
+                        style={[styles.textInput(false, false), {
                             flexDirection: 'row'
                         }]}>
                         <Text

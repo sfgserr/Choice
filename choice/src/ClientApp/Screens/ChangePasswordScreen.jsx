@@ -10,6 +10,8 @@ import {
 import { Icon } from 'react-native-elements';
 import styles from '../Styles';
 import authService from '../services/authService';
+import CustomTextInput from '../Components/CustomTextInput';
+import PasswordBox from '../Components/PasswordBox';
 
 const ChangePasswordScreen = ({ navigation }) => {
     const { width, height } = Dimensions.get('screen');
@@ -160,36 +162,16 @@ const ChangePasswordScreen = ({ navigation }) => {
                     Старый пароль        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <TextInput 
-                            placeholder="Введите текущий пароль" 
-                            value={oldPassword} 
-                            onChangeText={(text) => {
-                                setOldPassword(text);
-                                updateState({
-                                    password,
-                                    oldPassword: text,
-                                    confirmPassword
-                                });
-                            }} 
-                            secureTextEntry={hideOldPassword} 
-                            style={[styles.textInputFont, {flex: 3}]}/>
-                        <View 
-                            style={{
-                                flex: 1, 
-                                flexDirection: 'row', 
-                                justifyContent: 'flex-end'
-                            }}>
-                            <TouchableOpacity 
-                                style={{alignSelf: 'center'}} 
-                                onPress={() => {setHideOldPassword(prev => !prev)}}>
-                                <Icon 
-                                    type='material-community'
-                                    color='gray'
-                                    name={hideOldPassword ? 'eye' : 'eye-off'}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <PasswordBox  
+                        value={oldPassword} 
+                        changed={(text) => {
+                            setOldPassword(text);
+                            updateState({
+                                password,
+                                oldPassword: text,
+                                confirmPassword
+                            });
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -201,36 +183,16 @@ const ChangePasswordScreen = ({ navigation }) => {
                     Новый пароль        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <TextInput 
-                            placeholder="Введите новый пароль" 
-                            value={password} 
-                            onChangeText={(text) => {
-                                setPassword(text);
-                                updateState({
-                                    password: text,
-                                    oldPassword,
-                                    confirmPassword
-                                });
-                            }} 
-                            secureTextEntry={hidePassword} 
-                            style={[styles.textInputFont, {flex: 3}]}/>
-                        <View 
-                            style={{
-                                flex: 1, 
-                                flexDirection: 'row', 
-                                justifyContent: 'flex-end'
-                            }}>
-                            <TouchableOpacity 
-                                style={{alignSelf: 'center'}} 
-                                onPress={() => {setHidePassword(prev => !prev)}}>
-                                <Icon 
-                                    type='material-community'
-                                    color='gray'
-                                    name={hidePassword ? 'eye' : 'eye-off'}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <PasswordBox  
+                        value={password} 
+                        changed={(text) => {
+                            setPassword(text);
+                            updateState({
+                                password: text,
+                                oldPassword,
+                                confirmPassword
+                            });
+                        }}/>
                 </View>
                 <Text
                     style={{
@@ -242,36 +204,16 @@ const ChangePasswordScreen = ({ navigation }) => {
                     Повторите новый пароль        
                 </Text>
                 <View style={{paddingBottom: 20}}>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
-                        <TextInput 
-                            placeholder="Введите новый пароль" 
-                            value={confirmPassword} 
-                            onChangeText={(text) => {
-                                setConfirmPassword(text);
-                                updateState({
-                                    password,
-                                    oldPassword,
-                                    confirmPassword: text
-                                });
-                            }} 
-                            secureTextEntry={hideConfirmPassword} 
-                            style={[styles.textInputFont, {flex: 3}]}/>
-                        <View 
-                            style={{
-                                flex: 1, 
-                                flexDirection: 'row', 
-                                justifyContent: 'flex-end'
-                            }}>
-                            <TouchableOpacity 
-                                style={{alignSelf: 'center'}} 
-                                onPress={() => {setHideConfirmPassword(prev => !prev)}}>
-                                <Icon 
-                                    type='material-community'
-                                    color='gray'
-                                    name={hideConfirmPassword ? 'eye' : 'eye-off'}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <PasswordBox  
+                        value={confirmPassword} 
+                        changed={(text) => {
+                            setConfirmPassword(text);
+                            updateState({
+                                password,
+                                oldPassword,
+                                confirmPassword: text
+                            });
+                        }}/>
                 </View>
                 <View
                     style={{

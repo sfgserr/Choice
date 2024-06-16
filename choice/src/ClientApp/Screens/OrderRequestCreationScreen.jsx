@@ -20,6 +20,7 @@ import { FlatList } from "react-native-gesture-handler";
 import Category from "../Components/Category";
 import clientService from "../services/clientService";
 import blobService from "../services/blobService";
+import CustomTextInput from "../Components/CustomTextInput";
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
     const modalRef = useRef(null);
@@ -275,7 +276,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
             <View style={{paddingHorizontal: 20}}>
                 <View style={{paddingTop: 20}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Категория услуг</Text>
-                    <View style={[styles.textInput, {flexDirection: 'row'}]}>
+                    <View style={[styles.textInput(false, false), {flexDirection: 'row'}]}>
                         <Text style={[styles.textInputFont, {alignSelf: 'center', flex: 3}]}>{selectedCategory.title}</Text>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                             <TouchableOpacity 
@@ -290,25 +291,23 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 </View>
                 <View style={{paddingTop: 30}}>
                     <Text style={{fontSize: 14, fontWeight: '400', color: '#6D7885', paddingBottom: 10}}>Описание задачи</Text>
-                    <View style={[styles.textInput, {height: height/7}]}>
-                        <TextInput 
-                                style={[styles.textInputFont, {top:0}]}
-                                value={description}
-                                onChangeText={(value) => { 
-                                    setDescription(value);
-                                    updateDisabled({
-                                        description: value,
-                                        toKnowPrice,
-                                        toKnowDeadline,
-                                        toKnowEnrollmentDate,
-                                        fisrtImageUri,
-                                        secondImageUri,
-                                        thirdImageUri
-                                    });
-                                }}
-                                multiline={true}
-                                placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
-                    </View>
+                        <CustomTextInput 
+                            value={description}
+                            changed={(value) => { 
+                                setDescription(value);
+                                updateDisabled({
+                                    description: value,
+                                    toKnowPrice,
+                                    toKnowDeadline,
+                                    toKnowEnrollmentDate,
+                                    fisrtImageUri,
+                                    secondImageUri,
+                                    thirdImageUri
+                                });
+                            }}
+                            multiline
+                            big
+                            placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
                 </View>
                 <View style={{paddingTop: 10}}>
                     <TouchableOpacity style={{backgroundColor: '#F2F3F5', height: height/18, borderRadius: 10, justifyContent: 'center'}}>

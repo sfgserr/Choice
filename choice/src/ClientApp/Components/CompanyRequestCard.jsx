@@ -9,6 +9,7 @@ import categoryStore from "../services/categoryStore";
 import { Icon } from "react-native-elements";
 import styles from "../Styles";
 import env from "../env";
+import userStore from "../services/userStore";
 
 const CompanyRequestCard = ({orderRequest, navigation, button}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
@@ -30,15 +31,46 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                     height: 50
                 }
             }}>
-            <Text
+            <View
                 style={{
-                    color: 'black',
-                    fontSize: 14,
-                    paddingTop: 20,
-                    fontWeight: '600'
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
                 }}>
-                {categories[categories.findIndex(c => c.id == orderRequest.categoryId)].title}
-            </Text>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontSize: 14,
+                        paddingTop: 20,
+                        fontWeight: '600',
+                        alignSelf: 'center'
+                    }}>
+                    {categories[categories.findIndex(c => c.id == orderRequest.categoryId)].title}
+                </Text>
+                {orderRequest.companiesWatched.includes(userStore.get().guid) && button ?
+                <>
+                    <View
+                        style={{
+                            borderRadius: 10,
+                            backgroundColor: '#F1F1F1',
+                            justifyContent: 'center',
+                            alignSelf: 'center'
+                        }}>
+                        <Text
+                            style={{
+                                color: '#979797',
+                                fontWeight: '400',
+                                fontSize: 14,
+                                padding: 5,
+                                alignSelf: 'center'
+                            }}>
+                            Просмотрено
+                        </Text>
+                    </View>
+                </>
+                :
+                <>
+                </>}
+            </View>
             <Text
                 style={{
                     color: '#313131',

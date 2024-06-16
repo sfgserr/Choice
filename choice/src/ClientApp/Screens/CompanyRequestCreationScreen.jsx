@@ -18,6 +18,8 @@ import userStore from "../services/userStore";
 import orderingService from "../services/orderingService";
 import { useIsFocused } from '@react-navigation/native';
 import clientService from "../services/clientService";
+import CustomTextInput from "../Components/CustomTextInput";
+import { Tooltip } from "react-native-elements";
 
 const CompanyRequestCreationScreen = ({navigation, route}) => {
     const [orderRequest, setOrderRequest] = React.useState(route.params.orderRequest);
@@ -42,8 +44,11 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
     const [deadlineString, setDeadlinetString] = React.useState('')
 
     const [disable, setDisable] = React.useState(true);
+    
+    const [costError, setCostError] = React.useState(false);
+    const [prepaymentError, setPrepaymentError] = React.useState(false);
 
-    const updateDisable = (state) => {
+    const updateDisable = (state, errors) => {
         if (orderRequest.toKnowPrice && state.price == '') {
             setDisable(true);
             return;
@@ -60,6 +65,11 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
         }
 
         if (user.prepaymentAvailable && state.prepayment == '') {
+            setDisable(true);
+            return;
+        }
+
+        if (errors.some(e => e)) {
             setDisable(true);
             return;
         }
@@ -152,7 +162,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     price,
                                     deadlineString,
                                     prepayment
-                                });
+                                }, [costError, prepaymentError]);
                             }}>
                             <Text style={[styles.buttonText]}>
                                 Выбрать
@@ -223,7 +233,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     price,
                                     deadlineString,
                                     prepayment
-                                });
+                                }, [costError, prepaymentError]);
                             }}>
                             <Text style={[styles.buttonText]}>
                                 Выбрать
@@ -294,7 +304,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                     price,
                                     deadlineString: '.',
                                     prepayment
-                                });
+                                }, [costError, prepaymentError]);
                             }}>
                             <Text style={[styles.buttonText]}>
                                 Выбрать
@@ -360,23 +370,36 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                             Стоимость        
                         </Text>
                         <View>
-                            <View style={[styles.textInput]}>
-                                <TextInput 
-                                    style={[styles.textInputFont]}
-                                    keyboardType="numeric"
-                                    placeholder="Введите стоимость в рублях" 
-                                    value={price}
-                                    onChangeText={(text) => {
-                                        setPrice(text);
-                                        updateDisable({
-                                            enrollmentDateString,
-                                            enrollmentTimeString,
-                                            price: text,
-                                            deadlineString,
-                                            prepayment
-                                        });
-                                    }}/>
-                            </View>
+                            <CustomTextInput 
+                                type="numeric"
+                                error={costError}
+                                placeholder="Введите стоимость в рублях" 
+                                value={price}
+                                changed={(text) => {
+                                    setPrice(text);
+
+                                    if (text == '') {
+                                        setCostError(false);
+                                    }
+
+                                    console.log(text);
+
+                                    let number = new Number(text);
+
+                                    let error = number > 500000 || number < 1000;
+                                    let prepaymentError = prepayment < number*0.1 || prepayment > number*0.25;
+
+                                    setCostError(error);
+                                    setPrepaymentError(prepaymentError);
+
+                                    updateDisable({
+                                        enrollmentDateString,
+                                        enrollmentTimeString,
+                                        price: text,
+                                        deadlineString,
+                                        prepayment
+                                    }, [error, prepaymentError]);
+                                }}/>
                         </View>    
                     </>
                     :
@@ -398,7 +421,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                         <View>
                             <View 
                                 style={[
-                                    styles.textInput, { 
+                                    styles.textInput(false, false), { 
                                         flexDirection: 'row', 
                                         justifyContent: 'space-between' 
                                     }
@@ -448,7 +471,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 </Text>
                                 <View
                                     style={[
-                                        styles.textInput, { 
+                                        styles.textInput(false, false), { 
                                             flexDirection: 'row', 
                                             justifyContent: 'space-between' 
                                         }
@@ -486,7 +509,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 </Text>
                                 <View
                                     style={[
-                                        styles.textInput, { 
+                                        styles.textInput(false, false), { 
                                             flexDirection: 'row', 
                                             justifyContent: 'space-between' 
                                         }
@@ -530,23 +553,31 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 }}>
                                 Предоплата    
                             </Text>
-                            <View style={styles.textInput}>
-                                <TextInput
-                                    style={styles.textInputFont}
-                                    keyboardType="numeric"
-                                    placeholder="Введите предоплату в рублях"
-                                    value={prepayment}
-                                    onChangeText={(text) => {
-                                        setPrepayment(text);
-                                        updateDisable({
-                                            enrollmentDateString,
-                                            enrollmentTimeString,
-                                            price,
-                                            deadlineString,
-                                            prepayment: text
-                                        });
-                                    }}/>
-                            </View>
+                            <CustomTextInput
+                                type="numeric"
+                                placeholder="Введите предоплату в рублях"
+                                error={prepaymentError}
+                                value={prepayment}
+                                changed={(text) => {
+                                    setPrepayment(text);
+
+                                    if (text == '') {
+                                        setPrepaymentError(false);
+                                    }
+
+                                    let number = new Number(text);
+
+                                    let error = number < price*0.1 || number > price*0.25;
+                                    setPrepaymentError(error);
+
+                                    updateDisable({
+                                        enrollmentDateString,
+                                        enrollmentTimeString,
+                                        price,
+                                        deadlineString,
+                                        prepayment: text
+                                    }, [costError, error]);
+                                }}/>
                         </View>
                     </>
                     :

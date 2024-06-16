@@ -5,8 +5,6 @@ namespace Choice.ClientService.Domain.OrderRequests
 {
     public class OrderRequest : Entity
     {
-        private readonly List<string> _companiesWatched = [];
-
         public OrderRequest(int clientId, int categoryId, string description, List<string> photoUris, bool toKnowPrice, 
             bool toKnowDeadline, bool toKnowEnrollmentDate, int searchRadius, List<string> companiesWatched)
         {
@@ -55,11 +53,11 @@ namespace Choice.ClientService.Domain.OrderRequests
 
         public void CompanyWatched(string id)
         {
-            string? companyId = _companiesWatched.FirstOrDefault(s => s == id);
+            string? companyId = CompaniesWatched.FirstOrDefault(s => s == id);
 
             if (companyId is null)
             {
-                _companiesWatched.Add(id);
+                CompaniesWatched.Add(id);
             }
         }
 

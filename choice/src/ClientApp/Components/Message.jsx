@@ -343,7 +343,7 @@ const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus
                                                         fontWeight: '500',
                                                         paddingLeft: 5
                                                     }}>
-                                                    {userStore.getUserType() == 2 ? `Клиент записан на ${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}` : `Вы записаны на ${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}`}
+                                                    {userStore.getUserType() == 2 ? (JSON.parse(message.body).EnrollmentTime != null ? `Клиент записан на ${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}` : 'Клиент записан') : (JSON.parse(message.body).EnrollmentTime != null ? `Вы записаны на ${dateHelper.formatDate(JSON.parse(message.body).EnrollmentTime)}` : 'Вы записаны')}
                                                 </Text>
                                             </View>
                                             <View
