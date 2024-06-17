@@ -25,7 +25,7 @@ export default function LoginByEmailScreen({navigation, signIn}) {
         setError(false);
 
         let userType = await authService.loginByEmail(email, password);
-
+        console.log(userType);
         await userStore.retrieveData(userType);
 
         console.log(userType);

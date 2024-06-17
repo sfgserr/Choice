@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import styles from "../Styles";
+import CustomTextInput from "../Components/CustomTextInput";
 
 const ContactDetailsScreen = ({handleState}) => {
     const [url, setUrl] = React.useState('');
@@ -48,16 +49,13 @@ const ContactDetailsScreen = ({handleState}) => {
                 Сайт        
             </Text>
             <View>
-                <View style={[styles.textInput]}>
-                    <TextInput 
-                        style={[styles.textInputFont]}
-                        value={url}
-                        placeholder="Введите адрес сайта" 
-                        onChangeText={(text) => {
-                            setUrl(text);
-                            setDisable(text == '');
-                        }}/>
-                </View>
+                <CustomTextInput
+                    value={url}
+                    placeholder="Введите адрес сайта" 
+                    changed={(text) => {
+                        setUrl(text);
+                        setDisable(text == '');
+                    }}/>
             </View>
             <View
                 style={{

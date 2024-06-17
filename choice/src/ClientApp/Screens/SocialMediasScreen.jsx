@@ -12,6 +12,7 @@ import {
 import styles from '../Styles';
 import { Icon } from 'react-native-elements';
 import urlValidator from '../validators/urlValidator';
+import CustomTextInput from '../Components/CustomTextInput';
 
 const SocialMediasScreen  = ({handleState}) => {
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -98,13 +99,9 @@ const SocialMediasScreen  = ({handleState}) => {
                                 </TouchableOpacity>
                             </View>
                             <View style={{paddingHorizontal: 20, paddingTop: 10}}>
-                                <View
-                                    style={styles.textInput}>
-                                    <TextInput 
-                                        style={styles.textInputFont}
-                                        value={currentUrl}
-                                        onChangeText={(text) => setCurrentUrl(text)}/>
-                                </View>
+                                <CustomTextInput 
+                                    value={currentUrl}
+                                    changed={(text) => setCurrentUrl(text)}/>
                             </View>
                             <View
                                 style={{

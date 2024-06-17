@@ -144,7 +144,7 @@ const AboutScreen = ({handleState}) => {
                 Виды деятельности        
             </Text>
             <View>
-                <View style={[styles.textInput, {justifyContent: 'center'}]}>
+                <View style={[styles.textInput(false, false), {justifyContent: 'center'}]}>
                     <View
                         style={{
                             justifyContent: 'space-between',
