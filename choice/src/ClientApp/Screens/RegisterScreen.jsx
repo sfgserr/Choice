@@ -251,7 +251,7 @@ const RegisterScreen = ({navigation, route}) => {
                                         phone, 
                                         address, 
                                         password, 
-                                        confirmPassword]);
+                                        confirmPassword], [emailValidationError, phoneValidationError]);
                                 }}/>
                         </View>    
                     </>
@@ -653,7 +653,7 @@ const RegisterScreen = ({navigation, route}) => {
 
                                 return;
                             }
-                            
+
                             setModalVisible(true);
                         }}>
                         <Text style={styles.buttonText}>
