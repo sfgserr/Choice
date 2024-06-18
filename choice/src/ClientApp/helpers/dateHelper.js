@@ -60,7 +60,8 @@ const convertFullDateToJson = (date) => {
 }
 
 const getDifference = (json) => {
-    let difference = Math.abs(new Date()-new Date(json));
+    let today = new Date();
+    let difference = Math.abs((today-Math.abs(today.getTimezoneOffset()/60))-new Date(json));
 
     const seconds = difference / 1000;
     if (seconds < 0) {

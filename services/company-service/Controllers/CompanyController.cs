@@ -119,11 +119,37 @@ namespace Choice.CompanyService.Api.Controllers
 
             if (result)
             {
-                await _endPoint.Publish<UserDataChangedEvent>(new 
-                    (company.Guid,
-                     company.Title,
-                     company.Email,
-                     company.PhoneNumber));
+                await _endPoint.Publish<UserDataChangedEvent>(new(
+                    company.Guid,
+                    company.Title,
+                    company.Email,
+                    company.PhoneNumber));
+
+                return Ok(new CompanyDetailsViewModel(company));
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut("ChangeIconUri")]
+        public async Task<IActionResult> ChangeIconUri(string uri)
+        {
+            string id = _context.HttpContext?.User.FindFirst("id")?.Value!;
+
+            Company company = await _repository.Get(id);
+
+            if (company is null)
+                return NotFound();
+
+            company.ChangeIconUri(uri);
+
+            bool result = await _repository.Update(company);
+
+            if (result)
+            {
+                await _endPoint.Publish<UserIconUriChangedEvent>(new(
+                    company.Guid,
+                    company.IconUri));
 
                 return Ok(new CompanyDetailsViewModel(company));
             }

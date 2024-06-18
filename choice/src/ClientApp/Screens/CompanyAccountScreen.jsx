@@ -107,6 +107,16 @@ const CompanyAccountScreen = ({navigation}) => {
         }
     }
 
+    const addImage = async () => {
+        let response = await ImagePicker.launchImageLibrary();
+        
+        if (!response.didCancel) {
+            let iconUri = await blobService.uploadImage(response.assets[0].uri);
+            await companyService.changeIconUri(iconUri);
+            setIconUri(response.assets[0].uri);
+        }
+    }
+
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [currentUrl, setCurrentUrl] = React.useState('');
@@ -399,7 +409,8 @@ const CompanyAccountScreen = ({navigation}) => {
                     <TouchableOpacity
                         style={{
                             alignSelf: 'center'
-                        }}>
+                        }}
+                        onPress={addImage}>
                         <Text
                             style={{
                                 color: '#2D81E0',

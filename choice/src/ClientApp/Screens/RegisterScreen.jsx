@@ -411,6 +411,7 @@ const RegisterScreen = ({navigation, route}) => {
                         }}>
                         <Tooltip
                             backgroundColor='#2D81E0'
+                            width={300}
                             height={'auto'}
                             popover={
                                 <Text
@@ -419,7 +420,7 @@ const RegisterScreen = ({navigation, route}) => {
                                         fontSize: 13,
                                         color: 'white'
                                     }}>
-                                    {'Для того чтобы мы лучше определили Ваше местоположение\nвводите свой адрес в таком формате: {Город},{Улица}'} 
+                                    {'Для того чтобы мы лучше определили Ваше местоположение\nвводите свой адрес в таком формате: {Город},{Улица} {Номер дома}'} 
                                 </Text>
                             }>
                             <View
@@ -643,9 +644,14 @@ const RegisterScreen = ({navigation, route}) => {
                                 addresses[0],
                                 password,
                                 userType);
+                            
+                            let emailError = false;
+                            let phoneError = false;
 
-                            let emailError = result.errors.email != undefined;
-                            let phoneError = result.errors.phoneNumber != undefined;
+                            if (result.errors != undefined) {
+                                emailError = result.errors.email != undefined;
+                                phoneError = result.errors.phoneNumber != undefined;
+                            }
 
                             if (emailError || phoneError) {
                                 setEmailError(emailError);

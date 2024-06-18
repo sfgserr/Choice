@@ -50,7 +50,7 @@ export default function ChatsScreen({ navigation }) {
             }
         }
     }
-
+    
     const handleReadMessage = (message) => {
         let chatIndex = chats.findIndex(c => c.guid == message.receiverId);
         let messageIndex = chats[chatIndex].messages.findIndex(m => m.id == message.id);

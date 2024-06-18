@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.ViewModels;
 using Choice.Chat.Api.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Choice.Chat.Api.Controllers
 {
@@ -30,6 +31,20 @@ namespace Choice.Chat.Api.Controllers
             string id = User.FindFirstValue("id")!;
 
             Message message = new(id, receiverId, text, MessageType.Text);
+
+            await _messageRepository.Add(message);
+
+            await _chatService.SendMessage(message.ReceiverId, "send", new(message));
+
+            return Ok(new MessageViewModel(message));
+        }
+
+        [HttpPost("SendImage")]
+        public async Task<IActionResult> SendImage(string uri, string receiverId)
+        {
+            string id = User.FindFirstValue("id")!;
+
+            Message message = new(id, receiverId, uri, MessageType.Image);
 
             await _messageRepository.Add(message);
 

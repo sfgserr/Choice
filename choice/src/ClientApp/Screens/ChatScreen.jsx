@@ -26,6 +26,8 @@ import ImageBox from '../Components/ImageBox';
 import reviewService from '../services/reviewService';
 import messageStore from '../services/messageStore';
 import categoryService from '../services/categoryService';
+import CustomTextInput from '../Components/CustomTextInput';
+import * as ImagePicker from 'react-native-image-picker';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -63,6 +65,15 @@ const ChatScreen = ({ navigation, route }) => {
                 prev.push(message);
                 return [...prev];
             })
+        }
+    }
+
+    const sendImage = async () => {
+        let response = await ImagePicker.launchImageLibrary();
+        
+        if (!response.didCancel) {
+            let iconUri = await blobService.uploadImage(response.assets[0].uri);
+
         }
     }
 
@@ -368,14 +379,11 @@ const ChatScreen = ({ navigation, route }) => {
                         }}>
                         Отзыв
                     </Text>
-                    <View
-                        style={[styles.textInput, {height: height/7}]}>
-                        <TextInput
-                            style={styles.textInputFont}
-                            value={reviewBody}
-                            onChangeText={setReviewBody}
-                            placeholder='Введите текст вашего отзыва'/>
-                    </View>
+                    <CustomTextInput
+                        value={reviewBody}
+                        big
+                        changed={setReviewBody}
+                        placeholder='Введите текст вашего отзыва'/>
                     <Text 
                         style={{
                             fontSize: 14, 
@@ -693,7 +701,8 @@ const ChatScreen = ({ navigation, route }) => {
                         justifyContent: 'space-between',
                         paddingTop: 10,
                         paddingBottom: 20
-                    }}>
+                    }}
+                    onPress={sendImage}>
                     <TouchableOpacity
                         style={{alignSelf: 'center'}}>
                         <Icon

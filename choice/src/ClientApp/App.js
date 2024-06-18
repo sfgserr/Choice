@@ -138,7 +138,7 @@ function ClientTab() {
     async function getUnreadMessages() {
       let chats = await chatService.getChats();
 
-      let count = chats.flatMap(c => c.messages).filter(m => !m.isRead).length;
+      let count = chats.flatMap(c => c.messages).filter(m => !m.isRead && m.receiverId == userStore.get().guid).length;
 
       setUnreadMessagesCount(count);
     }

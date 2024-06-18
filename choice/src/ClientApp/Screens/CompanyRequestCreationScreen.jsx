@@ -567,8 +567,12 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
 
                                     let number = new Number(text);
 
-                                    let error = number < price*0.1 || number > price*0.25;
-                                    setPrepaymentError(error);
+                                    let error = false;
+
+                                    if (orderRequest.toKnowPrice) {
+                                        error = number < price*0.1 || number > price*0.25;
+                                        setPrepaymentError(error);
+                                    }
 
                                     updateDisable({
                                         enrollmentDateString,
