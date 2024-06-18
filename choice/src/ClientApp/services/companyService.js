@@ -73,7 +73,22 @@ const changeData = async (data) => {
     .then(async response => await response.json());
 }
 
+const changeIconUri = async (iconUri) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/ChangeIconUri?uri=${iconUri}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 export default {
+    changeIconUri,
     changeData,
     get,
     fillCompanyData,

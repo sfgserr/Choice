@@ -70,8 +70,7 @@ const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
                     style={{
                         width: 45,
                         height: 45,
-                        borderRadius: 360,
-                        resizeMode: 'contain',
+                        borderRadius: 45,
                     }}/>
                 <View
                     style={{

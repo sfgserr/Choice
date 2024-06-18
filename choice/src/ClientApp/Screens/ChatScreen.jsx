@@ -28,6 +28,7 @@ import messageStore from '../services/messageStore';
 import categoryService from '../services/categoryService';
 import CustomTextInput from '../Components/CustomTextInput';
 import * as ImagePicker from 'react-native-image-picker';
+import blobService from '../services/blobService';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
@@ -74,6 +75,14 @@ const ChatScreen = ({ navigation, route }) => {
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
 
+            let message = await chatService.sendImage(iconUri, chat.guid);
+
+            setMessages(prev => {
+                prev.push(message);
+                return [...prev];
+            });
+                            
+            setText('');
         }
     }
 
@@ -701,10 +710,10 @@ const ChatScreen = ({ navigation, route }) => {
                         justifyContent: 'space-between',
                         paddingTop: 10,
                         paddingBottom: 20
-                    }}
-                    onPress={sendImage}>
+                    }}>
                     <TouchableOpacity
-                        style={{alignSelf: 'center'}}>
+                        style={{alignSelf: 'center'}}
+                        onPress={sendImage}>
                         <Icon
                             type='material'
                             name='attach-file'

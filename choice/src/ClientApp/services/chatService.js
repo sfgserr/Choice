@@ -77,6 +77,24 @@ const sendMessage = async (text, receiverId) => {
     });
 }
 
+const sendImage = async (uri, receiverId) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Message/SendImage?receiverId=${receiverId}&uri=${uri}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => {
+        let json = await res.json();
+
+        return json;
+    });
+}
+
 const read = async (id) => {
     const token = await KeyChain.getGenericPassword();
     
@@ -96,6 +114,7 @@ const read = async (id) => {
 }
 
 export default {
+    sendImage,
     getMessages,
     getChats,
     getChat,

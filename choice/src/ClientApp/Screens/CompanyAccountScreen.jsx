@@ -27,6 +27,7 @@ import { AuthContext } from '../App';
 import companyService from '../services/companyService';
 import blobService from '../services/blobService';
 import CustomTextInput from '../Components/CustomTextInput';
+import * as ImagePicker from 'react-native-image-picker';
 
 const CompanyAccountScreen = ({navigation}) => {
     const { signOut } = React.useContext(AuthContext);

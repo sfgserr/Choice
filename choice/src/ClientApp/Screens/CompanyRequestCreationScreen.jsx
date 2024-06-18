@@ -599,11 +599,11 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                                 receiverId: orderRequest.client.userId,
                                 deadline: orderRequest.toKnowDeadline ? deadline.getHours() : 0,
                                 price: orderRequest.toKnowPrice ? Number.parseInt(price) : 0,
-                                prepayment: user.prepaymentAvailable ? Number.parseInt(price) : 0,
+                                prepayment: user.prepaymentAvailable ? Number.parseInt(prepayment) : 0,
                                 orderRequestId: orderRequest.id,
                                 enrollmentTime: orderRequest.toKnowEnrollmentDate ? dateHelper.convertDateToJson(enrollmentDateString, enrollmentTimeString) : null
                             }
-
+                            
                             await orderingService.createOrder(order);
 
                             navigation.navigate('Chats');

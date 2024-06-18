@@ -3,15 +3,14 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native'
 import { Icon } from 'react-native-elements';
 import dateHelper from '../helpers/dateHelper';
 import userStore from '../services/userStore';
 import styles from '../Styles';
-import DatePicker from 'react-native-date-picker';
-import { Modalize } from 'react-native-modalize';
-import orderingService from '../services/orderingService';
+import env from '../env';
 
 const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus, openReviewModal}) => {
     const isUserReceiver = message.receiverId == userId;
@@ -79,6 +78,76 @@ const Message = ({message, userId, changeDate, confirmDate, enroll, changeStatus
                 :
                 message.type == '2' ?
                 <>
+                    <View
+                        style={{
+                            alignSelf: isUserReceiver ? 'flex-start' : 'flex-end',
+                            backgroundColor: isUserReceiver ? 'white' : '#2D81E0',
+                            borderTopLeftRadius: 15,
+                            borderTopRightRadius: 15,
+                            borderBottomLeftRadius: isUserReceiver ? 5 : 15,
+                            borderBottomRightRadius: !isUserReceiver ? 5 : 15,
+                            maxWidth: width*0.9,
+                            flexDirection: 'row',
+                            paddingHorizontal: 10,
+                            padding: 7,
+                            justifyContent: 'space-between',
+                            borderColor: '#B5CADD',
+                            borderWidth: isUserReceiver ? 1 : 0
+                        }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                            }}>
+                            <Image
+                                source={{uri: `${env.api_url}/api/objects/${message.body}`}}
+                                style={{
+                                    borderRadius: 15,
+                                    width: 100,
+                                    height: 100
+                                }}/>
+                            <Text
+                                style={{
+                                    alignSelf: 'center',
+                                    fontWeight: '400',
+                                    fontSize: 16,
+                                    color: isUserReceiver ? '#2D81E0' : 'white',
+                                    paddingLeft: 5
+                                }}
+                                numberOfLines={1}
+                                lineBreakMode='head'>
+                                {message.body.length > 20 ? message.body.slice(0, 19) : message.body}
+                            </Text>    
+                        </View>
+                        <View
+                            style={{flexDirection: 'column', justifyContent: 'flex-end', paddingLeft: 5}}>
+                            <View
+                                style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
+                                <Text
+                                    style={{
+                                        fontWeight: '100',
+                                        fontSize: 11,
+                                        alignSelf: 'flex-end',
+                                        color: isUserReceiver ? 'black' : 'white',
+                                        letterSpacing: 1
+                                    }}>
+                                    {dateHelper.getTimeFromString(message.creationTime)}
+                                </Text>
+                                {
+                                    !isUserReceiver ? 
+                                    <>
+                                        <Icon
+                                            type="material"
+                                            name={message.isRead ? 'done-all' : 'check'}
+                                            size={20}
+                                            color={'white'}/>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                                }    
+                            </View>     
+                        </View>
+                    </View>
                 </> 
                 :
                 <>
