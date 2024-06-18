@@ -16,7 +16,7 @@ namespace FileObjectApi.Controllers
         [HttpGet("{fileName}")]
         public async Task<IActionResult> Download(string fileName)
         {
-            string path = $"{_path}/{fileName}.bin";
+            string path = $"{_path}/{fileName}";
 
             if (System.IO.File.Exists(path))
             {
@@ -30,11 +30,11 @@ namespace FileObjectApi.Controllers
         [HttpPost("{fileName}")]
         public async Task<IActionResult> Upload(string fileName)
         {
-            byte[] data = new byte[15000];
+            byte[] data = new byte[150000];
 
             await HttpContext.Request.Body.ReadAsync(data);
 
-            string path = $"{_path}/{fileName}.bin";
+            string path = $"{_path}/{fileName}";
 
             if (!System.IO.File.Exists(path))
             {
