@@ -66,7 +66,11 @@ export default function MapScreen({ navigation, route }) {
 
     const retrieveData = React.useCallback(async () => {
         let companies = await companyService.getAll();
-        setCompanies(companies);
+        let markerCompanies = companies.map(c => ({
+            company: c,
+            isMarked: false
+        }));
+        setCompanies(markerCompanies);
 
         let currentUserType = userStore.getUserType();
         await userStore.retrieveData(currentUserType);
@@ -76,8 +80,13 @@ export default function MapScreen({ navigation, route }) {
         console.log('in');
         if (message.type == 3 && JSON.parse(message.body).OrderRequestId == orderRequest.id && JSON.parse(message.body).PastEnrollmentTime == null) {
             let id = userStore.get().guid != message.receiverId ? message.receiverId : message.senderId;
-            let index = companies.findIndex(c => c.guid == id);
-            let coords = companies[index].coords.split(',');
+            let index = companies.findIndex(c => c.company.guid == id);
+            let coords = companies[index].company.coords.split(',');
+            setCompanies(prev => {
+                prev[index].isMarked = true;
+
+                return prev;
+            });
 
             const region = {
                 latitude: Number(coords[0]),
@@ -147,17 +156,19 @@ export default function MapScreen({ navigation, route }) {
                               onPress={(obj) => {}}/>
                 {companies.length > 0 ? companies.map((company) => (
                     <CustomMarker
-                        key={company.id} 
-                        imageUri={`${env.api_url}/api/objects/${company.iconUri}`}
+                        key={company.company.id} 
+                        imageUri={`${env.api_url}/api/objects/${company.company.iconUri}`}
                         coordinate={{
-                            latitude: Number(company.coords.split(',')[0]),
-                            longitude: Number(company.coords.split(',')[1]),
+                            latitude: Number(company.company.coords.split(',')[0]),
+                            longitude: Number(company.company.coords.split(',')[1]),
                         }}
+                        isMarked={company.isMarked}
                         onPress={async (obj) => {
-                            setCompany(company);
+                            setCompany(company.company);
                             modalRef.current?.open();
-                            await getCompany(company.guid);
-                        }}/>
+                            await getCompany(company.company.guid);
+                        }}
+                        />
                 )) : <></>}
             </MapView>
             <Modalize

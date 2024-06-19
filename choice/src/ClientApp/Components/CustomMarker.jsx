@@ -6,7 +6,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { Callout, Marker } from "react-native-maps";
 
-const ImageMarker = ({imageUri}) => {
+const ImageMarker = ({imageUri, isMarked}) => {
     return (
         <Image 
             style={{
@@ -14,7 +14,7 @@ const ImageMarker = ({imageUri}) => {
                 height: 40,
                 borderRadius: 40/2,
                 borderWidth: 4,
-                borderColor: 'white',
+                borderColor: isMarked ? '#2D81E0' : 'white',
                 backgroundColor: 'white'
             }}
             source={{uri: imageUri}}
@@ -22,13 +22,14 @@ const ImageMarker = ({imageUri}) => {
     );
 }
 
-const CustomMarker = ({imageUri, coordinate, onPress}) => {
+const CustomMarker = ({imageUri, coordinate, onPress, isMarked}) => {
     return (
         <Marker
             coordinate={coordinate}
             onPress={onPress}>
             <ImageMarker
-                imageUri={imageUri}/>
+                imageUri={imageUri}
+                isMarked={isMarked}/>
         </Marker>
     );
 }

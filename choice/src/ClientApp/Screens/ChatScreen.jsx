@@ -423,7 +423,10 @@ const ChatScreen = ({ navigation, route }) => {
                     <View
                         style={{paddingTop: 30}}>
                         <TouchableOpacity 
-                            style={styles.button}
+                            style={[styles.button, {
+                                backgroundColor: reviewBody == '' ? '#ABCDf3' : '#2D81E0'
+                            }]}
+                            disabled={reviewBody == ''}
                             onPress={(reviewBody != '') && (async () => {
                                 let index = messages.findIndex(m => m.id == id);
                                 await reviewService.send({

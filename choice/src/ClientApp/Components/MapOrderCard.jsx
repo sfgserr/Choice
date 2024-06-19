@@ -28,7 +28,7 @@ const MapOrderCard = ({message, company}) => {
                         fontSize: 13,
                         paddingRight: 5
                     }}>
-                    {company.title}
+                    {company.company.title}
                 </Text>
                 <View
                     style={{
@@ -47,7 +47,7 @@ const MapOrderCard = ({message, company}) => {
                         fontWeight: '500',
                         fontSize: 13
                     }}>
-                    {company.averageGrade}
+                    {company.company.averageGrade}
                 </Text>    
             </View>
             {
