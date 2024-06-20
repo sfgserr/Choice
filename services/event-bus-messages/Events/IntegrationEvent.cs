@@ -6,7 +6,7 @@ namespace Choice.EventBus.Messages.Events
         public IntegrationEvent()
         {
             Id = Guid.NewGuid();
-            CreationDate = DateTime.UtcNow;
+            CreationDate = DateTime.Now;
         }
 
         public IntegrationEvent(Guid id, DateTime creationDate)

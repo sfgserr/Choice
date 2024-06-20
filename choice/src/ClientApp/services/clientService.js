@@ -21,16 +21,7 @@ const get = async () => {
 const getOrderRequest = async (categoriesId) => {
     const token = await KeyChain.getGenericPassword();
 
-    let index = 0;
-
-    let queryArray = arrayHelper.project(categoriesId, (id) => {
-        let string = `categoriesId[${index}]=${id}`
-        index = index + 1;
-
-        return string;
-    });
-
-    index = 0;
+    let queryArray = categoriesId.map((id, i) => `categoriesId[${i}]=${id}`);
 
     return await fetch(`${env.api_url}/api/Client/GetOrderRequests?${queryArray.join('&')}`, {
         method: 'GET',

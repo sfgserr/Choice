@@ -38,13 +38,13 @@ namespace Choice.ClientService.Application.UseCases.GetOrderRequests
 
         public async Task<IList<OrderRequest>> GetRequests(string coords, IList<OrderRequest> requests)
         {
-            List<OrderRequest> requestsInRadius = new();
+            List<OrderRequest> requestsInRadius = [];
 
             foreach (OrderRequest request in requests)
             {
                 int distance = await _addressService.GetDistance(coords, request.Client?.Coordinates!);
 
-                if (distance <= request.SearchRadius)
+                if (distance <= request.SearchRadius && request.Status == OrderStatus.Active)
                     requestsInRadius.Add(request);
             }
 

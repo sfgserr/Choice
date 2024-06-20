@@ -8,7 +8,7 @@ namespace Choice.Ordering.Infrastructure.Data
         public OrderingContextFake()
         {
             Order order = new
-                (1, SeedData.DefaultCompanyGuid, SeedData.DefaultClientGuid, 100, 0, 3600, DateTime.UtcNow);
+                (1, SeedData.DefaultCompanyGuid, SeedData.DefaultClientGuid, 100, 0, 3600, DateTime.Now);
 
             Orders.Add(order);
         }

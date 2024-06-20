@@ -16,7 +16,7 @@ namespace Choice.Chat.Api.Infrastructure.Data
                        IconUri = "defaulturi",
                        Name = "Makar_Cheban",
                        Status = UserStatus.Offline,
-                       LastTimeOnline = DateTime.UtcNow,
+                       LastTimeOnline = DateTime.Now,
                    });
         }
     }

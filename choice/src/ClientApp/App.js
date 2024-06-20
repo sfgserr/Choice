@@ -78,7 +78,7 @@ function CompanyTab() {
   }
 
   const handleReadMessage = () => {
-    setUnreadMessagesCount(unreadMessagesCount-1);
+    setUnreadMessagesCount(prev => prev > 0 ? prev-1 : prev);
     console.log('read');
   }
 

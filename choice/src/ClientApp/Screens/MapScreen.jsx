@@ -46,6 +46,7 @@ export default function MapScreen({ navigation, route }) {
     });
     const [companies, setCompanies] = React.useState([]);
     const [order, setOrder] = React.useState('');
+    const [orderView, setOrderView] = React.useState('');
     const [company, setCompany] = React.useState(company);
     const { width, height } = Dimensions.get('screen');
     const map = React.createRef();
@@ -68,7 +69,8 @@ export default function MapScreen({ navigation, route }) {
         let companies = await companyService.getAll();
         let markerCompanies = companies.map(c => ({
             company: c,
-            isMarked: false
+            isMarked: false,
+            order: ''
         }));
         setCompanies(markerCompanies);
 
@@ -84,6 +86,7 @@ export default function MapScreen({ navigation, route }) {
             let coords = companies[index].company.coords.split(',');
             setCompanies(prev => {
                 prev[index].isMarked = true;
+                prev[index].order = message;
 
                 return prev;
             });
@@ -96,8 +99,8 @@ export default function MapScreen({ navigation, route }) {
             }
             map.current.animateToRegion(region, 500);
 
-            setCompany(companies[index]);
-            setOrder(message);
+            setCompany(companies[index].company);
+            setOrderView(message);
         }
     }
 
@@ -165,6 +168,7 @@ export default function MapScreen({ navigation, route }) {
                         isMarked={company.isMarked}
                         onPress={async (obj) => {
                             setCompany(company.company);
+                            setOrder(company.order);
                             modalRef.current?.open();
                             await getCompany(company.company.guid);
                         }}
@@ -269,7 +273,7 @@ export default function MapScreen({ navigation, route }) {
                                     navigation={navigation}
                                     onReviewPressed={onReviewPressed}
                                     company={company}
-                                    order={order == '' ? order :order.senderId == company.guid ? order : ''}/>
+                                    order={order}/>
                             </>
                         }    
                     </View>
@@ -298,7 +302,7 @@ export default function MapScreen({ navigation, route }) {
                     </View>
                 </View>
                 {
-                    order != '' ?
+                    orderView != '' ?
                     <>
                         <View
                             style={{
@@ -306,7 +310,7 @@ export default function MapScreen({ navigation, route }) {
                                 paddingHorizontal: 15
                             }}>
                             <MapOrderCard
-                                message={order}
+                                message={orderView}
                                 company={company}/>
                         </View>
                     </>

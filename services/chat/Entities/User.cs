@@ -26,7 +26,7 @@
         public void SetStatus(UserStatus status)
         {
             if (status == UserStatus.Offline)
-                LastTimeOnline = DateTime.UtcNow;
+                LastTimeOnline = DateTime.Now;
 
             Status = status;
         }

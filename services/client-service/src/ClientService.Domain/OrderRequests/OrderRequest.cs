@@ -28,7 +28,7 @@ namespace Choice.ClientService.Domain.OrderRequests
         public bool ToKnowDeadline { get; private set; }
         public bool ToKnowEnrollmentDate { get; private set; }
         public OrderStatus Status { get; private set; } = OrderStatus.Active;
-        public DateTime CreationDate { get; private set; } = DateTime.UtcNow;
+        public DateTime CreationDate { get; private set; } = DateTime.Now;
         public List<string> CompaniesWatched { get; private set; } = [];
 
         private int _searchRadius;

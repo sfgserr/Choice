@@ -23,7 +23,7 @@ namespace Choice.Chat.Api.Entities
         public string Body { get; private set; }
         public MessageType Type { get; private set; }
         public bool IsRead { get; private set; } = false;
-        public DateTime CreationTime { get; private set; } = DateTime.UtcNow;
+        public DateTime CreationTime { get; private set; } = DateTime.Now;
 
         public IContent Content { get; private set; }
 

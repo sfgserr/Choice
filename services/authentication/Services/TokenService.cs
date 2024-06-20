@@ -15,7 +15,7 @@ namespace Choice.Authentication.Api.Services
 
             var securityTokenDescriptor = new SecurityTokenDescriptor()
             {
-                Expires = DateTime.UtcNow.AddDays(2),
+                Expires = DateTime.Now.AddDays(2),
                 Issuer = issuer,
                 Audience = audience,
                 Claims = new Dictionary<string, object>() 
