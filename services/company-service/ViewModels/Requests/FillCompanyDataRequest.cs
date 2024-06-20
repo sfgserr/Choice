@@ -20,7 +20,7 @@ namespace Choice.CompanyService.Api.ViewModels.Requests
         public List<int> CategoriesId { get; }
         public bool PrepaymentAvailable { get; }
 
-        public bool IsValid => !string.IsNullOrEmpty(SiteUrl) || !SocialMedias.IsNullOrEmpty() || 
+        public bool IsValid => !SocialMedias.IsNullOrEmpty() || 
             CategoriesId.IsNullOrEmpty();
     }
 }

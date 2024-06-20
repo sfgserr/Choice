@@ -11,8 +11,6 @@ import CustomTextInput from "../Components/CustomTextInput";
 const ContactDetailsScreen = ({handleState}) => {
     const [url, setUrl] = React.useState('');
 
-    const [disable, setDisable] = React.useState(true);
-
     return (
         <View
             style={{
@@ -54,7 +52,6 @@ const ContactDetailsScreen = ({handleState}) => {
                     placeholder="Введите адрес сайта" 
                     changed={(text) => {
                         setUrl(text);
-                        setDisable(text == '');
                     }}/>
             </View>
             <View
@@ -64,9 +61,8 @@ const ContactDetailsScreen = ({handleState}) => {
                     paddingBottom: 10,
                 }}>
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: disable ? '#ABCDf3' : '#2D81E0' }]}
-                    disabled={disable}
-                    onPress={!disable && (() => handleState(url))}>
+                    style={styles.button}
+                    onPress={(() => handleState(url))}>
                     <Text style={styles.buttonText}>
                         Далее
                     </Text>
