@@ -148,7 +148,7 @@ export default function MapScreen({ navigation, route }) {
                 provider='google'
                 scrollEnabled
                 zoomEnabled
-                onPress={(lat) => setOrder('')}
+                onPress={(lat) => setOrderView('')}
                 rotateEnabled={false}
                 style={mapStyles.map}>
                 <CustomMarker imageUri={`${env.api_url}/api/objects/${userStore.get().iconUri}`}

@@ -511,7 +511,7 @@ const CompanyAccountScreen = ({navigation}) => {
                 </Text>
                 <CustomTextInput
                     value={address}
-                    onChangeText={(text) => {
+                    changed={(text) => {
                         setAddress(text);
                         setIsChanged(true);
                     }}

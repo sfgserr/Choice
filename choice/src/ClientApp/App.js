@@ -151,7 +151,7 @@ function ClientTab() {
   }
 
   const handleReadMessage = () => {
-    setUnreadMessagesCount(prev => prev-1);
+    setUnreadMessagesCount(prev => prev > 0 ? prev-1 : prev);
     console.log('read');
   }
 
