@@ -1,7 +1,7 @@
 import React from "react";
 import {
     View,
-    TextInput
+    TextInput,
 } from 'react-native';
 import styles from "../Styles";
 

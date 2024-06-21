@@ -10,7 +10,8 @@ import {
   Animated,
   FlatList,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import Tabs from "../Components/Tabs";
@@ -42,8 +43,19 @@ export default function LoginScreen({ navigation, route }) {
             offset: itemIndex * width
         });
     });
+
     return (
-        <SafeAreaView style={{flex:1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
+        <KeyboardAvoidingView
+            behavior="position"
+            keyboardVerticalOffset={0} 
+            style={{
+                flex:1, 
+                flexDirection: 'column', 
+                justifyContent: 'center', 
+                backgroundColor: 'white',
+                width,
+                position: 'absolute'
+            }}>
             <ActionSheet 
                 ref={actionSheetRef}
                 isModal={false}>
@@ -131,6 +143,7 @@ export default function LoginScreen({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>
             <Animated.FlatList data={data}
                                ref={ref}
                                keyExtractor={(item) => item.key}
@@ -143,11 +156,10 @@ export default function LoginScreen({ navigation, route }) {
                                )}
                                showsHorizontalScrollIndicator={false}
                                renderItem={({item}) => {
-                               return <View style={{width,paddingTop: 60}}>
+                               return <View style={{width,paddingTop: 30}}>
                                  <item.screen navigation={navigation} signIn={signIn}/>
                                </View>
                             }}/>
-            <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }

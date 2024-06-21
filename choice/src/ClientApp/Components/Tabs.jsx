@@ -36,7 +36,7 @@ const Tabs = ({ data, scrollX, onItemPress }) => {
     }, [containerRef.current]);
     
     return (
-        <View style={{position: 'absolute', width, paddingTop: 60}}>
+        <View style={{width, paddingTop: 10}}>
             <View style={{justifyContent: 'space-evenly', flex: 1, flexDirection: 'row'}} ref={containerRef}>
                 {data.map((item, index) => {
                     return <Tab key={item.key} item={item} ref={item.ref} onItemPress={() => onItemPress(index)}/>
