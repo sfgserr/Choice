@@ -143,7 +143,16 @@ export default function LoginScreen({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress}/>
+            <View
+                style={{
+                    paddingTop: 10
+                }}>
+                <Tabs 
+                    scrollX={scrollX} 
+                    data={data} 
+                    onItemPress={onItemPress} 
+                    admin={false}/>
+            </View>
             <Animated.FlatList data={data}
                                ref={ref}
                                keyExtractor={(item) => item.key}

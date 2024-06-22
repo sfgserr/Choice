@@ -37,6 +37,7 @@ import connectionService from './services/connectionService';
 import ChatScreen from './Screens/ChatScreen';
 import CompanyAccountScreen from './Screens/CompanyAccountScreen';
 import chatService from './services/chatService';
+import AdminScreen from './Screens/AdminScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -222,11 +223,13 @@ function App() {
       setUserType(userType);
       setIsSignedIn(true);
 
-      const key = await KeyChain.getGenericPassword();
+      if (userType != 3) {
+        const key = await KeyChain.getGenericPassword();
 
-      connectionService.build(key.password);
+        connectionService.build(key.password);
 
-      await connectionService.start();
+        await connectionService.start();
+      }
     },
     signOut: async () => {
       userStore.logout();
@@ -234,7 +237,9 @@ function App() {
       setIsSignedIn(false);
       setUserType(0);
 
-      await connectionService.stop();
+      if (userStore.getUserType() != 3) {
+        await connectionService.stop();
+      }
     }
   }));
 
@@ -282,7 +287,7 @@ function App() {
                               options={{headerShown:false}}/>
              </Stack.Navigator>
             </>
-          ) : (
+          ) : userType == 2 ? (
             <>
               <Stack.Navigator>
                 <Stack.Screen name="Tab"
@@ -298,6 +303,14 @@ function App() {
                               component={ChangePasswordScreen}
                               options={{headerShown:false}}/>   
               </Stack.Navigator> 
+            </>
+          ) : (
+            <>
+              <Stack.Navigator>
+                <Stack.Screen name="Admin"
+                              component={AdminScreen}
+                              options={{headerShown:false}}/>  
+              </Stack.Navigator>
             </>
           )
         }
