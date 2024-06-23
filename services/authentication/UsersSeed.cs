@@ -20,11 +20,11 @@ namespace Choice.Authentication
 
             User admin = new
                 (Guid.NewGuid().ToString(),
-                 "email@gmail.com",
-                 "Alex",
-                 "37377753296",
-                 "Москва",
-                 "Арбат 26",
+                 "Aleshkin1981@yandex.ru",
+                 "Алексей Алешкин",
+                 "89095355570",
+                 "Омск",
+                 "Ленина 7",
                  UserType.Admin);
 
             User client = new
@@ -36,7 +36,7 @@ namespace Choice.Authentication
                  "Арбат 26",
                  UserType.Client);
 
-            await userManager.CreateAsync(admin, "Pass123$");
+            await userManager.CreateAsync(admin, "Fktirby_1");
             await userManager.CreateAsync(client, "Pass123$");
         }
     }

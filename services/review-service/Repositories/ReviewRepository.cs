@@ -24,6 +24,11 @@ namespace Choice.ReviewService.Api.Repositories
             return await _context.Reviews.Include(r => r.Author).Where(r => r.UserGuid == guid).ToListAsync();
         }
 
+        public async Task<Review> Get(int id)
+        {
+            return await _context.Reviews.Include(r => r.Author).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
         public async Task<bool> Update(Review review)
         {
             _context.Reviews.Update(review);
