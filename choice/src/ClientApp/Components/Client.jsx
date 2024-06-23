@@ -8,7 +8,7 @@ import {
 import env from "../env";
 import { Icon } from "react-native-elements";
 
-const Company = ({company}) => {
+const Client = ({client}) => {
     return (
         <TouchableOpacity
             style={{
@@ -25,7 +25,7 @@ const Company = ({company}) => {
                         height: 45,
                         borderRadius: 360,
                     }}
-                    source={{uri: `${env.api_url}/api/objects/${company.iconUri}`}}/>
+                    source={{uri: `${env.api_url}/api/objects/${client.iconUri}`}}/>
                 <View
                     style={{
                         flexDirection: 'column',
@@ -38,7 +38,7 @@ const Company = ({company}) => {
                             fontWeight: '600',
                             color: 'black'
                         }}>
-                        {company.title}
+                        {client.name}
                     </Text>
                     <Text
                         style={{
@@ -46,7 +46,7 @@ const Company = ({company}) => {
                             fontWeight: '400',
                             color: '#99A2AD'
                         }}>
-                        {`${company.address.city}, ${company.address.street}`}
+                        {`${client.city}, ${client.street}`}
                     </Text>    
                 </View>    
             </View>
@@ -64,4 +64,4 @@ const Company = ({company}) => {
     )
 }
 
-export default Company;
+export default Client;

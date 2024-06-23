@@ -25,5 +25,12 @@
             get => _grade;
             private set => _grade = value < 1 ? 1 : value > 5 ? 5 : value;
         }
+
+        public void Edit(int grade, string text, List<string> photoUris)
+        {
+            Grade = grade;
+            Text = text;
+            PhotoUris = photoUris;
+        }
     }
 }

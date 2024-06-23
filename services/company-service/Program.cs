@@ -61,6 +61,7 @@ namespace Choice.CompanyService.Api
             builder.Services.AddAuthorization(o =>
             {
                 o.AddPolicy("Client", policy => policy.RequireClaim("type", "Client"));
+                o.AddPolicy("Admin", policy => policy.RequireClaim("type", "Admin"));
             });
 
             builder.Services.AddHttpContextAccessor();

@@ -6,6 +6,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Choice.ReviewService.Api.Services;
+using ReviewService.Api.Controllers;
 
 namespace Choice.ReviewService.Api.Controllers
 {
@@ -53,6 +54,24 @@ namespace Choice.ReviewService.Api.Controllers
             await _endPoint.Publish(new ReviewLeftEvent(viewModel.Guid, viewModel.Grade));
 
             return Ok(review);
+        }
+
+        [HttpPut("Edit")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> EditReview(EditReviewRequest request)
+        {
+            Review review = await _repository.Get(request.Id);
+
+            if (review is not null)
+            {
+                review.Edit(request.Grade, request.Text, request.PhotoUris);
+
+                await _repository.Update(review);
+
+                return Ok(review);
+            }
+
+            return NotFound();
         }
 
         [HttpGet("Get")]

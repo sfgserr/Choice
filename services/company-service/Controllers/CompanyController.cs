@@ -60,6 +60,18 @@ namespace Choice.CompanyService.Api.Controllers
             return NotFound();
         }
 
+        [HttpGet("GetCompanyAdmin")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> GetCompanyAdmin(string guid)
+        {
+            Company company = await _repository.Get(guid);
+
+            if (company is not null)
+                return Ok(company);
+
+            return NotFound();
+        }
+
         [HttpGet("GetCompany")]
         [Authorize("Client")]
         public async Task<IActionResult> GetCompany(string guid)
@@ -131,12 +143,84 @@ namespace Choice.CompanyService.Api.Controllers
             return BadRequest();
         }
 
+        [HttpPut("ChangeDataAdmin")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> ChangeDataAmin(ChangeDataAdminRequest request)
+        {
+            Company company = await _repository.Get(request.Guid);
+
+            if (company is null)
+                return NotFound();
+
+            if (!request.IsValid)
+            {
+                return BadRequest(new Dictionary<string, string[]>()
+                {
+                    ["error"] = ["All fields should not be empty"]
+                });
+            }
+
+            string coords = await _addressService.Geocode(new(request.Street, request.City));
+
+            company.ChangeData
+                (request.Title,
+                 request.PhoneNumber,
+                 request.Email,
+                 request.SiteUrl,
+                 request.City,
+                 request.Street,
+                 request.SocialMedias,
+                 request.PhotoUris,
+                 request.CategoriesId,
+                 coords);
+
+            bool result = await _repository.Update(company);
+
+            if (result)
+            {
+                await _endPoint.Publish<UserDataChangedEvent>(new(
+                    company.Guid,
+                    company.Title,
+                    company.Email,
+                    company.PhoneNumber));
+
+                return Ok(new CompanyDetailsViewModel(company));
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut("ChangeIconUri")]
         public async Task<IActionResult> ChangeIconUri(string uri)
         {
             string id = _context.HttpContext?.User.FindFirst("id")?.Value!;
 
             Company company = await _repository.Get(id);
+
+            if (company is null)
+                return NotFound();
+
+            company.ChangeIconUri(uri);
+
+            bool result = await _repository.Update(company);
+
+            if (result)
+            {
+                await _endPoint.Publish<UserIconUriChangedEvent>(new(
+                    company.Guid,
+                    company.IconUri));
+
+                return Ok(new CompanyDetailsViewModel(company));
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut("ChangeIconUriAdmin")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> ChangeIconUriAdmin(string guid, string uri)
+        {
+            Company company = await _repository.Get(guid);
 
             if (company is null)
                 return NotFound();

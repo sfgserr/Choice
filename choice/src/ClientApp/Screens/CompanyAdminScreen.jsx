@@ -73,7 +73,7 @@ const CompanyAdminScreen = ({navigation}) => {
                             alignSelf: 'center',
                             paddingTop: 30
                         }}>
-                        Пока нет заказов
+                        Компании нет
                     </Text>
                     <Text 
                         style={{
@@ -83,7 +83,7 @@ const CompanyAdminScreen = ({navigation}) => {
                             alignSelf: 'center',
                             paddingTop: 20
                         }}>
-                        Дождитесь пока клиенты создадут заказ
+                        Дождитесь пока пользователи зарегистрируются
                     </Text>
                 </ScrollView>
             </>}    

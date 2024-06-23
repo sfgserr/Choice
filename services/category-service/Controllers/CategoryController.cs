@@ -43,6 +43,9 @@ namespace Choice.CategoryService.Api.Controllers
         [HttpPut("Update")]
         public async Task<IActionResult> Update(UpdateCategoryRequest request)
         {
+            if (request.Id >= 1 && request.Id <= 7)
+                return BadRequest();
+
             Category category = await _repository.Get(request.Id);
 
             if (category is null)
@@ -59,6 +62,9 @@ namespace Choice.CategoryService.Api.Controllers
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id >= 1 && id <= 7)
+                return BadRequest();
+
             await _repository.Delete(id);
 
             return Ok();

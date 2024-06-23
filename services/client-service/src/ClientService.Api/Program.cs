@@ -23,6 +23,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.ClientService.Application.UseCases.GetRequest;
+using Choice.ClientService.Application.UseCases.GetClientAdmin;
+using Choice.ClientService.Application.UseCases.ChangeUserDataAdmin;
+using Choice.ClientService.Application.UseCases.ChangeIconUriAdmin;
 
 namespace Choice.ClientService.Api
 {
@@ -47,6 +50,11 @@ namespace Choice.ClientService.Api
             builder.Services.Decorate<ISendOrderRequestUseCase, SendOrderRequestValidationUseCase>();
             builder.Services.Decorate<IChangeOrderRequestUseCase, ChangeOrderRequestValidationUseCase>();
             builder.Services.Decorate<IChangeIconUriUseCase, ChangeIconUriValidationUseCase>();
+            builder.Services.AddScoped<IGetClientAdminUseCase, GetClientAdminUseCase>();
+            builder.Services.AddScoped<IChangeUserDataAdminUseCase, ChangeUserDataAdminUseCase>();
+            builder.Services.AddScoped<IChangeIconUriAdminUseCase, ChangeIconUriAdminUseCase>();
+            builder.Services.Decorate<IChangeIconUriAdminUseCase, ChangeIconUriAdminValidationUseCase>();
+            builder.Services.Decorate<IChangeUserDataAdminUseCase, ChangeUserDataAdminValidationUseCase>();
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<Notification>();
@@ -103,7 +111,12 @@ namespace Choice.ClientService.Api
                 });
                 o.AddPolicy("Default", policy =>
                 {
-                    policy.RequireClaim("type", "Client", "Company");
+                    policy.RequireClaim("type", "Client", "Company", "Admin");
+                    policy.RequireClaim("isDataFilled", "true");
+                });
+                o.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireClaim("type", "Admin");
                     policy.RequireClaim("isDataFilled", "true");
                 });
                 o.DefaultPolicy = o.GetPolicy("Default")!;

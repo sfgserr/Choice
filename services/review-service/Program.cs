@@ -80,6 +80,10 @@ namespace Choice.ReviewService.Api
                     policy.RequireClaim("type", "Client", "Company");
                     policy.RequireClaim("isDataFilled", "true");
                 });
+                auth.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireClaim("type", "Admin");
+                });
                 auth.DefaultPolicy = auth.GetPolicy("AuthUser")!;
             });
 

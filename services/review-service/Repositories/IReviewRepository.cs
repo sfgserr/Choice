@@ -8,6 +8,8 @@ namespace Choice.ReviewService.Api.Repositories
 
         Task<IList<Review>> Get(string guid);
 
+        Task<Review> Get(int id);
+
         Task<bool> Update(Review review);
     }
 }

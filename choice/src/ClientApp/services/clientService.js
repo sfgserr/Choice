@@ -166,8 +166,23 @@ const changeUserData = async (state) => {
     .then(async res => await res.json());
 }
 
+const getAll = async () => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Client/Get`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 export default {
     get,
+    getAll,
     getOrder,
     sendOrderRequest,
     getClientRequests,
