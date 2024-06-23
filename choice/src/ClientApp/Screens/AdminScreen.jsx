@@ -59,46 +59,48 @@ const AdminScreen = ({navigation}) => {
                 width,
                 position: 'absolute',
             }}>
-            <Text
-                style={{
-                    alignSelf: 'center',
-                    fontSize: 21,
-                    fontWeight: '600',
-                    color: 'black',
-                    position: 'absolute',
-                    top: 20,
-                }}>
-                Админ панель    
-            </Text>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    paddingTop: 20,
-                    paddingHorizontal: 15
-                }}>
-                <TouchableOpacity
-                    onPress={async () => {
-                        await signOut();
+            <View>
+                <Text
+                    style={{
+                        alignSelf: 'center',
+                        fontSize: 21,
+                        fontWeight: '600',
+                        color: 'black',
+                        position: 'absolute',
+                        top: 20,
                     }}>
-                    <Icon
-                        name='logout'
-                        type='material'
-                        color='#2D81E0'
-                        size={25}/>
-                </TouchableOpacity>
-            </View>
-            <View
-                style={{
-                    paddingTop: 20,
-                    flex: 1,
-                    alignSelf: 'center'
-                }}>
-                <Tabs 
-                    scrollX={scrollX} 
-                    data={data} 
-                    onItemPress={onItemPress}
-                    admin/>
+                    Админ панель    
+                </Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        paddingTop: 20,
+                        paddingHorizontal: 15
+                    }}>
+                    <TouchableOpacity
+                        onPress={async () => {
+                            await signOut();
+                        }}>
+                        <Icon
+                            name='logout'
+                            type='material'
+                            color='#2D81E0'
+                            size={25}/>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        paddingTop: 20,
+                        flex: 1,
+                        alignSelf: 'center'
+                    }}>
+                    <Tabs 
+                        scrollX={scrollX} 
+                        data={data} 
+                        onItemPress={onItemPress}
+                        admin/>
+                </View>
             </View>
             <Animated.FlatList 
                 data={data}

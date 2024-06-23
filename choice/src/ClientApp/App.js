@@ -38,6 +38,7 @@ import ChatScreen from './Screens/ChatScreen';
 import CompanyAccountScreen from './Screens/CompanyAccountScreen';
 import chatService from './services/chatService';
 import AdminScreen from './Screens/AdminScreen';
+import EditCategoryScreen from './Screens/EditCategoryScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -309,6 +310,9 @@ function App() {
               <Stack.Navigator>
                 <Stack.Screen name="Admin"
                               component={AdminScreen}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="EditCategory"
+                              component={EditCategoryScreen}
                               options={{headerShown:false}}/>  
               </Stack.Navigator>
             </>
