@@ -21,7 +21,7 @@ namespace Choice.Authentication
             User admin = new
                 (Guid.NewGuid().ToString(),
                  "Aleshkin1981@yandex.ru",
-                 "Алексей Алешкин",
+                 "Alexey_Aleshkin",
                  "89095355570",
                  "Омск",
                  "Ленина 7",
@@ -36,7 +36,7 @@ namespace Choice.Authentication
                  "Арбат 26",
                  UserType.Client);
 
-            await userManager.CreateAsync(admin, "Fktirby_1");
+            await userManager.CreateAsync(admin, "Fktirby-1");
             await userManager.CreateAsync(client, "Pass123$");
         }
     }
