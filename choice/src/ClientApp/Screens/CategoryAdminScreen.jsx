@@ -36,7 +36,7 @@ export default function CategoryAdminScreen({ navigation, route }) {
     }, [isFocused]);
 
     const onPressed = ({item}) => {
-
+        navigation.navigate('EditCategory', {category: item});
     }
 
     return (
