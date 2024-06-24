@@ -25,6 +25,62 @@ const getCategories = async () => {
     });
 }
 
+const create = async (body) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Category/Create`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(response => response.status)
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+const update = async (body) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Category/Update`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(response => response.status)
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+const remove = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Category/Delete?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(response => response.status)
+    .catch(error => {
+        console.log(error);
+    });
+}
+
 export default {
-    getCategories
+    create,
+    update,
+    getCategories,
+    remove
 }

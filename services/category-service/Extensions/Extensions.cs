@@ -39,8 +39,8 @@ namespace Choice.CategoryService.Api.Extensions
                 };
 
                 command.CommandText = @"CREATE TABLE Categories(Id SERIAL PRIMARY KEY, 
-                                                                Title VARCHAR(24) NOT NULL,
-                                                                IconUri VARCHAR(24) NOT NULL)";
+                                                                Title TEXT NOT NULL,
+                                                                IconUri TEXT NOT NULL)";
                 command.ExecuteNonQuery();
             }
         }

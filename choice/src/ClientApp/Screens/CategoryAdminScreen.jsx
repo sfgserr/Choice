@@ -71,10 +71,11 @@ export default function CategoryAdminScreen({ navigation, route }) {
                     paddingHorizontal: 10
                 }}>
                 <TouchableOpacity
-                    style={styles.button}>
+                    style={styles.button}
+                    onPress={() => navigation.navigate('CreateCategory')}>
                     <Text
                         style={styles.buttonText}>
-                        Создать категорию
+                        Добавить категорию
                     </Text>
                 </TouchableOpacity>
             </View>
