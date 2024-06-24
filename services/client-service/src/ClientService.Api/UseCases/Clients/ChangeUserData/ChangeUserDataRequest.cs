@@ -1,8 +1,8 @@
 ﻿namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
 {
-    public class ChangeUserDataAdminRequest
+    public class ChangeUserDataRequest
     {
-        public ChangeUserDataAdminRequest(string name, string surname, string email, string phoneNumber, string city,
+        public ChangeUserDataRequest(string name, string surname, string email, string phoneNumber, string city,
             string street) 
         {
             Name = name;

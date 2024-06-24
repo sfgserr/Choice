@@ -46,7 +46,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserData
         }
 
         [HttpPut("ChangeUserData")]
-        public async Task<IActionResult> ChangeUserData(ChangeUserDataAdminRequest request)
+        public async Task<IActionResult> ChangeUserData(ChangeUserDataRequest request)
         {
             _useCase.SetOutputPort(this);
 
