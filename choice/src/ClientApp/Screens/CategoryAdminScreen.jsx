@@ -46,6 +46,10 @@ export default function CategoryAdminScreen({ navigation, route }) {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                 }
+                showsVerticalScrollIndicator
+                style={{
+                    maxHeight: wh.height*0.6
+                }}
                 renderItem={({item}) => {
                     return (
                         <View style={{paddingHorizontal: 10}}>

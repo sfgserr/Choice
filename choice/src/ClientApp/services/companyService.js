@@ -15,6 +15,20 @@ const get = async () => {
     .then(async response => await response.json());
 }
 
+const getAdmin = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/GetCompanyAdmin?guid=${id}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 const fillCompanyData = async (data) => {
     const token = await KeyChain.getGenericPassword();
     
@@ -73,6 +87,21 @@ const changeData = async (data) => {
     .then(async response => await response.json());
 }
 
+const changeDataAdmin = async (data) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/ChangeDataAdmin`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 const changeIconUri = async (iconUri) => {
     const token = await KeyChain.getGenericPassword();
     
@@ -87,10 +116,27 @@ const changeIconUri = async (iconUri) => {
     .then(async response => await response.json());
 }
 
+const changeIconUriAdmin = async (guid, iconUri) => {
+    const token = await KeyChain.getGenericPassword();
+    
+    return await fetch(`${env.api_url}/api/Company/ChangeIconUriAdmin?guid=${guid}&uri=${iconUri}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async response => await response.json());
+}
+
 export default {
     changeIconUri,
+    changeIconUriAdmin,
     changeData,
+    changeDataAdmin,
     get,
+    getAdmin,
     fillCompanyData,
     getCompany,
     getAll

@@ -7,13 +7,20 @@ import {
 } from 'react-native';
 import env from "../env";
 import { Icon } from "react-native-elements";
+import companyService from "../services/companyService";
 
-const Company = ({company}) => {
+const Company = ({company, navigation}) => {
+
     return (
         <TouchableOpacity
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between'
+            }}
+            onPress={async () => {
+                let fetchedCompany = await companyService.getAdmin(company.guid);
+                
+                navigation.navigate('EditCompany', {companyId: company.guid, company: fetchedCompany})
             }}>
             <View
                 style={{

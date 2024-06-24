@@ -49,7 +49,8 @@ const CompanyAdminScreen = ({navigation}) => {
                         <View
                             style={{paddingBottom: 5}}>
                             <Company
-                                company={item}/>
+                                company={item}
+                                navigation={navigation}/>
                         </View>
                     )}}/>
             </>

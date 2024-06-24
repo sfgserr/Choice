@@ -190,6 +190,7 @@ const CreateCategoryScreen = ({navigation}) => {
                         });
 
                         console.log(status);
+                        navigation.goBack();
                     }}>
                     <Text
                         style={styles.buttonText}>

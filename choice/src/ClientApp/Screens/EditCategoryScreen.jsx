@@ -3,17 +3,24 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Image
+    Image,
+    KeyboardAvoidingView
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import env from "../env";
 import CustomTextInput from "../Components/CustomTextInput";
 import styles from "../Styles";
+import * as ImagePicker from 'react-native-image-picker';
+import blobService from "../services/blobService";
+import categoryService from "../services/categoryService";
 
 const EditCategoryScreen = ({navigation, route}) => {
     const { category } = route.params;
+    const defaultUri = `${env.api_url}/api/objects/${category.iconUri}`;
 
     const [title, setTitle] = React.useState(category.title);
+    const [uri, setUri] = React.useState(defaultUri);
+    const [isEditMode, setIsEditMode] = React.useState(false);
 
     return (
         <View
@@ -39,7 +46,31 @@ const EditCategoryScreen = ({navigation, route}) => {
                         color='#2688EB'
                         size={40}/>
                 </TouchableOpacity>  
-                <Text></Text>
+                {category.id >= 1 && category.id <= 7 ?
+                <>
+                    <Text></Text>
+                </>
+                :
+                <>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (isEditMode) {
+                                setTitle(category.title);
+                                setUri(defaultUri);
+                            }
+
+                            setIsEditMode(prev => !prev);
+                        }}
+                        style={{
+                            alignSelf: 'center'
+                        }}>
+                        <Icon
+                            name={isEditMode ? 'close' : 'edit'}
+                            type='material'
+                            color='#2688EB'
+                            size={25}/>
+                    </TouchableOpacity>
+                </>}
             </View>
             <Text
                 style={{
@@ -66,7 +97,7 @@ const EditCategoryScreen = ({navigation, route}) => {
                         backgroundColor: '#47A4F9'
                     }}>
                     <Image
-                        source={{uri: `${env.api_url}/api/objects/${category.iconUri}`}}
+                        source={{uri}}
                         style={{
                             alignSelf: 'center',
                             height: 30,
@@ -78,12 +109,20 @@ const EditCategoryScreen = ({navigation, route}) => {
                 style={{
                     paddingTop: 20
                 }}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    disabled={(category.id >= 1 && category.id <= 7) || !isEditMode}
+                    onPress={async () => {
+                        let response = await ImagePicker.launchImageLibrary();
+
+                        if (!response.didCancel) {
+                            setUri(response.assets[0].uri);
+                        }
+                    }}>
                     <Text
                         style={{
                             fontSize: 15,
                             fontWeight: '500',
-                            color: '#2D81E0',
+                            color: !(category.id >= 1 && category.id <= 7) && isEditMode ? '#2D81E0' : '#ABCDf3',
                             alignSelf: 'center'
                         }}>
                         Изменить иконку    
@@ -152,11 +191,12 @@ const EditCategoryScreen = ({navigation, route}) => {
                 <CustomTextInput
                     value={title}
                     changed={setTitle}
-                    readonly={category.id >= 1 && category.id <= 7}/>
+                    readonly={(category.id >= 1 && category.id <= 7) || !isEditMode}/>
             </View>
-            {!(category.id >= 1 && category.id <= 7) ?
+            {!(category.id >= 1 && category.id <= 7) && isEditMode ?
             <>
-                <View
+                <KeyboardAvoidingView
+                    behavior="position"
                     style={{
                         flex: 1,
                         justifyContent: 'flex-end',
@@ -164,13 +204,37 @@ const EditCategoryScreen = ({navigation, route}) => {
                         paddingHorizontal: 20
                     }}>
                     <TouchableOpacity
-                        style={styles.button}>
+                        style={[styles.button, {
+                            backgroundColor: title != '' ? '#2D81E0' : '#ABCDf3'
+                        }]}
+                        disabled={title == ''}
+                        onPress={async () => {
+                            let iconUri = '';
+
+                            if (uri != defaultUri) {
+                                iconUri = await blobService.uploadImage(uri);
+                            }
+                            else {
+                                iconUri = category.iconUri;
+                            }
+
+                            let body = {
+                                id: category.id,
+                                title,
+                                iconUri
+                            }
+
+                            let status = await categoryService.update(body);
+                            console.log(status);
+
+                            setIsEditMode(false);
+                        }}>
                         <Text
                             style={styles.buttonText}>
                             Сохранить изменения
                         </Text>
                     </TouchableOpacity>
-                </View>
+                </KeyboardAvoidingView>
             </>
             :
             <>

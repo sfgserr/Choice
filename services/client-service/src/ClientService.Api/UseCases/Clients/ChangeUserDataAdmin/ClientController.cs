@@ -46,7 +46,7 @@ namespace Choice.ClientService.Api.UseCases.Clients.ChangeUserDataAdmin
             _viewModel = BadRequest(problemDetails);
         }
 
-        [HttpPut("ChangeUserData")]
+        [HttpPut("ChangeUserDataAdmin")]
         public async Task<IActionResult> ChangeUserData(ChangeUserDataAdminRequest request)
         {
             _useCase.SetOutputPort(this);
