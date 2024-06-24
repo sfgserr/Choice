@@ -7,13 +7,19 @@ import {
 } from 'react-native';
 import env from "../env";
 import { Icon } from "react-native-elements";
+import clientService from "../services/clientService";
 
-const Client = ({client}) => {
+const Client = ({client, navigation}) => {
     return (
         <TouchableOpacity
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between'
+            }}
+            onPress={async () => {
+                let fetchedClient = await clientService.getAdmin(client.guid);
+
+                navigation.navigate('EditClient', {client: fetchedClient});
             }}>
             <View
                 style={{

@@ -783,33 +783,6 @@ const EditCompanyScreen = ({navigation, route}) => {
                         paddingTop: 20,
                         justifyContent: 'center'
                     }}>
-                    <TouchableOpacity
-                        style={[styles.button, {
-                            backgroundColor: '#001C3D0D',
-                        }]}
-                        onPress={() => navigation.navigate('ChangePassword')}>
-                        <Text
-                            style={[styles.buttonText, {
-                                color: '#2688EB'
-                            }]}>
-                            Изменить пароль
-                        </Text>    
-                    </TouchableOpacity>
-                    <View
-                        style={{paddingTop: 10, paddingBottom: 10}}>
-                        <TouchableOpacity
-                            style={[styles.button, {
-                                backgroundColor: '#001C3D0D',
-                            }]}
-                            onPress={async () => await signOut()}>
-                            <Text
-                                style={[styles.buttonText, {
-                                    color: '#EB2626'
-                                }]}>
-                                Выйти из аккаунта
-                            </Text>    
-                        </TouchableOpacity>
-                    </View>
                     {
                         isChanged ?
                         <>

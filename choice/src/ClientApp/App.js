@@ -41,6 +41,7 @@ import AdminScreen from './Screens/AdminScreen';
 import EditCategoryScreen from './Screens/EditCategoryScreen';
 import CreateCategoryScreen from './Screens/CreateCategoryScreen';
 import EditCompanyScreen from './Screens/EditCompanyScreen';
+import EditClientScreen from './Screens/EditClientScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -321,6 +322,9 @@ function App() {
                               options={{headerShown:false}}/>
                 <Stack.Screen name="EditCompany"
                               component={gestureHandlerRootHOC(EditCompanyScreen)}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="EditClient"
+                              component={EditClientScreen}
                               options={{headerShown:false}}/>   
               </Stack.Navigator>
             </>

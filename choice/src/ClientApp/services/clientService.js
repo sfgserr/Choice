@@ -166,6 +166,20 @@ const changeIconUri = async (iconUri) => {
     .then(async res => await res.json());
 }
 
+const changeIconUriAdmin = async (id, iconUri) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Client/ChangeIconUriAdmin?id=${id}&iconUri=${iconUri}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 const changeUserData = async (state) => {
     const token = await KeyChain.getGenericPassword();
 
@@ -184,7 +198,7 @@ const changeUserData = async (state) => {
 const changeUserDataAdmin = async (state) => {
     const token = await KeyChain.getGenericPassword();
 
-    return await fetch(`${env.api_url}/api/Client/ChangeUserData`, {
+    return await fetch(`${env.api_url}/api/Client/ChangeUserDataAdmin`, {
         method: 'PUT',
         body: JSON.stringify(state),
         headers: {
@@ -219,6 +233,8 @@ export default {
     getClientRequests,
     changeOrderRequest,
     changeIconUri,
+    changeIconUriAdmin,
     changeUserData,
+    changeUserDataAdmin,
     getOrderRequest
 }

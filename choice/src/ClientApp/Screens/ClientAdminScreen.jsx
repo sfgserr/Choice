@@ -49,7 +49,8 @@ const ClientAdminScreen = ({navigation}) => {
                         <View
                             style={{paddingBottom: 5}}>
                             <Client
-                                client={item}/>
+                                client={item}
+                                navigation={navigation}/>
                         </View>
                     )}}/>
             </>
