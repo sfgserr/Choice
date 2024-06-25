@@ -14,6 +14,7 @@ import authService from '../services/authService';
 import categoryStore from '../services/categoryStore';
 import CustomTextInput from '../Components/CustomTextInput';
 import PasswordBox from '../Components/PasswordBox';
+import ErrorModal from './ErrorModal';
 
 const RegisterScreen = ({navigation, route}) => {
     const { type } = route.params;
@@ -38,6 +39,7 @@ const RegisterScreen = ({navigation, route}) => {
     const [weakPasswordError, setWeakPasswordError] = React.useState(false);
     const [passwordsNotMatchedError, setPasswordsNotMatchedError] = React.useState(false);
 
+    const [errorModalVisible, setErrorModalVisible] = React.useState(false);
     const [disable, setDisable] = React.useState(true);
 
     const updateState = (state, errors) => {
@@ -52,6 +54,9 @@ const RegisterScreen = ({navigation, route}) => {
                 paddingHorizontal: 20
             }}
             showsVerticalScrollIndicator={false}>
+            <ErrorModal
+                visible={errorModalVisible}
+                hide={() => setErrorModalVisible(false)}/>
             <Modal
                 visible={modalVisible}
                 transparent={true}>
@@ -648,7 +653,7 @@ const RegisterScreen = ({navigation, route}) => {
                             let emailError = false;
                             let phoneError = false;
 
-                            if (result.errors != undefined) {
+                            if (result[1].errors != undefined) {
                                 emailError = result.errors.email != undefined;
                                 phoneError = result.errors.phoneNumber != undefined;
                             }
@@ -658,6 +663,10 @@ const RegisterScreen = ({navigation, route}) => {
                                 setPhoneError(phoneError);
 
                                 return;
+                            }
+
+                            if (result[0] != 200) {
+                                setErrorModalVisible(true);
                             }
 
                             setModalVisible(true);

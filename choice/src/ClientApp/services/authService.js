@@ -14,7 +14,9 @@ const register = async (name, email, phone, street, city, password, userType) =>
         }
     })
     .then(async response => {
-        return await response.json();
+        let json = await response.json();
+
+        return [response.status, json]
     })
     .catch(error => {
         console.log(error);
@@ -49,7 +51,7 @@ const loginByEmail = async (email, password) => {
         return -1;
     })
     .catch(error => {
-        console.log(error);
+        return [500, error];
     });
 }
 
@@ -61,7 +63,10 @@ const loginByPhone = async (phone) => {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.status == 200);
+    .then(response => response.status == 200)
+    .catch(error => {
+        return [500, error];
+    });
 }
 
 const verifyCode = async (phone, code) => {
@@ -92,7 +97,7 @@ const verifyCode = async (phone, code) => {
         return -1;
     })
     .catch(error => {
-        console.log(error);
+        return [500, error];
     });
 }
 
@@ -106,6 +111,14 @@ const changePassword = async (currentPassword, newPassword) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token.password}`
         }
+    })
+    .then(async res => {
+        let json = await res.json();
+
+        return [res.status, json];
+    })
+    .catch(error => {
+        return [500, error];
     });
 }
 

@@ -23,8 +23,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UserContext>(o =>
     o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
-builder.Services.AddIdentityCore<User>()
-                .AddEntityFrameworkStores<UserContext>();
+builder.Services.AddIdentityCore<User>(options =>
+{
+    options.User.AllowedUserNameCharacters = "àáâãäåæçèéêëìíîïğñòóôõö÷øùüûışÿÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜÛİŞßabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+})
+.AddEntityFrameworkStores<UserContext>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 string accountSid = builder.Configuration["TwilioSettings:AccountSid"];

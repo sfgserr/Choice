@@ -13,6 +13,10 @@ const uploadImage = async (filePath) => {
     const fileNameAndExtension = directories[directories.length-1].split('.');
     const buffer = toByteArray(data);
 
+    if (buffer.length > 150000 || fileNameAndExtension[1] != 'png') {
+        return 0;
+    }
+
     return await fetch(`${env.api_url}/api/objects/${fileNameAndExtension[0]}`, {
         method: 'POST',
         body: buffer,

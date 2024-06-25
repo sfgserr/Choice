@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Authentication.Api.Controllers
@@ -136,6 +137,13 @@ namespace Choice.Authentication.Api.Controllers
                 return BadRequest("You can not register admin account");
 
             Dictionary<string, string[]> errorMessages = [];
+
+            Regex regex = new(@"\d{10}");
+
+            if (!regex.IsMatch(phoneNumber))
+            {
+                errorMessages.Add(nameof(email), ["Invalid phone"]);
+            }
 
             User? existUser = await _userManager.FindByEmailAsync(email);
 

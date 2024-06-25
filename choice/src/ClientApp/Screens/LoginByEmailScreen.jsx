@@ -30,6 +30,10 @@ export default function LoginByEmailScreen({navigation, signIn}) {
 
         console.log(userType);
 
+        if (userType[0] == 500) {
+            return;
+        }
+
         if (userType != -1) {
             if (userType == 2) {
                 let user = userStore.get();
