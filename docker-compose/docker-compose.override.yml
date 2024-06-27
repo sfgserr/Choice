@@ -52,6 +52,9 @@ services:
       - ASPNETCORE_URLS=http://+:8082
       - ASPNETCORE_ENVIRONMENT=Development
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "TwilioSettings:AccountSid=ACdf6bfdcacd0f2f8c967a755e67a685a8"
+      - "TwilioSettings:AuthToken=c990ed308d6cd4ff6601d8db6105e636"
+      - "TwilioSettings:ServiceId=VA5a0c20fd23b6b2b93a590d0aec92e973"
     ports:
       - "8082:8082"
     depends_on:
