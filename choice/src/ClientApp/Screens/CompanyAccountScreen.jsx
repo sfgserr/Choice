@@ -113,6 +113,11 @@ const CompanyAccountScreen = ({navigation}) => {
         
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
+
+            if (iconUri == '' || iconUri == 0) {
+                return;
+            }
+
             await companyService.changeIconUri(iconUri);
             setIconUri(response.assets[0].uri);
         }
@@ -824,7 +829,13 @@ const CompanyAccountScreen = ({navigation}) => {
 
                                         for (let i = 0; i < 6; i++) {
                                             if (state.photoUris[i][0] == 'f') {
-                                                state.photoUris[i] = await blobService.uploadImage(state.photoUris[i]);
+                                                let uri = await blobService.uploadImage(state.photoUris[i]);
+
+                                                if (uri == '' || uri == 0) {
+                                                    return;
+                                                }
+
+                                                state.photoUris[0] = uri;
                                             }
                                             else {
                                                 let dirs = state.photoUris[i].split('/');

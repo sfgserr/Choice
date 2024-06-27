@@ -43,6 +43,11 @@ export default function AccountScreen({ navigation }) {
         
         if (!response.didCancel) {
             let iconUri = await blobService.uploadImage(response.assets[0].uri);
+
+            if (iconUri == '' || iconUri == 0) {
+                return;
+            }
+
             await clientService.changeIconUri(iconUri);
             setIconUri(response.assets[0].uri);
         }

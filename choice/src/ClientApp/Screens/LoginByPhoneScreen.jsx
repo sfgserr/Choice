@@ -30,11 +30,7 @@ export default function LoginByPhoneScreen({signIn, navigation}) {
                 let user = userStore.get();
 
                 if (!user.isDataFilled) {
-                    await categoryStore.retrieveData();
-                    navigation.navigate('FillCompanyData', {
-                        email,
-                        password
-                    });
+                    return;
                 }
                 else {
                     await signIn(userType);
