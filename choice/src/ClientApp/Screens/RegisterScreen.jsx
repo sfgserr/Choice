@@ -654,8 +654,8 @@ const RegisterScreen = ({navigation, route}) => {
                             let phoneError = false;
 
                             if (result[1].errors != undefined) {
-                                emailError = result.errors.email != undefined;
-                                phoneError = result.errors.phoneNumber != undefined;
+                                emailError = result[1].errors.email != undefined;
+                                phoneError = result[1].errors.phoneNumber != undefined;
                             }
 
                             if (emailError || phoneError) {
@@ -667,6 +667,7 @@ const RegisterScreen = ({navigation, route}) => {
 
                             if (result[0] != 200) {
                                 setErrorModalVisible(true);
+                                return;
                             }
 
                             setModalVisible(true);
