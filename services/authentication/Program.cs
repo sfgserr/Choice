@@ -25,7 +25,7 @@ builder.Services.AddDbContext<UserContext>(o =>
     o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
 builder.Services.AddIdentityCore<User>(options =>
 {
-    options.User.AllowedUserNameCharacters = "àáâãäåæçèéêëìíîïğñòóôõö÷øùüûışÿÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜÛİŞßabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.AllowedUserNameCharacters = null;
 })
 .AddEntityFrameworkStores<UserContext>();
 builder.Services.AddScoped<ITokenService, TokenService>();

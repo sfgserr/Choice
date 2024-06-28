@@ -142,7 +142,7 @@ namespace Choice.Authentication.Api.Controllers
 
             if (!regex.IsMatch(phoneNumber))
             {
-                errorMessages.Add(nameof(email), ["Invalid phone"]);
+                errorMessages.Add(nameof(phoneNumber), ["Invalid phone"]);
             }
 
             User? existUser = await _userManager.FindByEmailAsync(email);
