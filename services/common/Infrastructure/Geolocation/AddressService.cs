@@ -22,7 +22,7 @@ namespace Choice.Infrastructure.Geolocation
             string clientAddressString = $"{clientAddress.City},{clientAddress.Street}";
             string companyAddressString = $"{companyAddress.City},{companyAddress.Street}";
 
-            Uri requestUri = new($"{_googleApi}/distancematrix/json?destinations={clientAddressString}&origins={companyAddressString}&units=imperial&apiKey={_options.ApiKey}");
+            Uri requestUri = new($"{_googleApi}/distancematrix/json?destinations={clientAddressString}&origins={companyAddressString}&units=imperial&key={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient
                 .GetAsync(requestUri);
@@ -37,7 +37,7 @@ namespace Choice.Infrastructure.Geolocation
         public async Task<string> Geocode(Address address)
         {
             Uri requestUri = new
-                ($"{_googleApi}/geocode/json?address={address.City},{address.Street}&apiKey={_options.ApiKey}");
+                ($"{_googleApi}/geocode/json?address={address.City},{address.Street}&key={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
 

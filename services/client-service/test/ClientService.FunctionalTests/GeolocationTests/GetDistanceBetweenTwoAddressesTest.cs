@@ -6,7 +6,7 @@ namespace Choice.ClientService.IntegrationalTests.GeolocationTests
 {
     public sealed class GetDistanceBetweenTwoAddressesTest
     {
-        private const string _apiKey = "893c71be7dfe47b897e4f622951e11af";
+        private const string _apiKey = "AIzaSyAEjTEUxbhuwK-UN8lv-e_8Us5qiySiGnc";
 
         [Fact]
         public async Task GetDistance()
@@ -21,12 +21,12 @@ namespace Choice.ClientService.IntegrationalTests.GeolocationTests
 
             AddressService addressService = provider.GetRequiredService<AddressService>();
 
-            Address address1 = new(" Angarskaya 21 ", "Moscow");
+            Address address1 = new("Ангарская 21", "Москва");
             Address address2 = new("Арбат 26", "Москва");
 
             int distance = await addressService.GetDistance(address1, address2);
 
-            Assert.Equal(5205, distance);
+            Assert.Equal(21294, distance);
         }
     }
 }
