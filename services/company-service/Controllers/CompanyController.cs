@@ -80,8 +80,6 @@ namespace Choice.CompanyService.Api.Controllers
 
             Address address = new(addressJson[0], addressJson[1]);
 
-            string coords = await _addressService.Geocode(address);
-
             Company company = await _repository.Get(guid);
 
             if (company is null)
@@ -90,7 +88,7 @@ namespace Choice.CompanyService.Api.Controllers
             if (!company.IsDataFilled)
                 return NotFound();
 
-            int distance = await _addressService.GetDistance(company.Coordinates, coords);
+            int distance = await _addressService.GetDistance(company.Address, address);
 
             return Ok(new CompanyViewModel(company, distance));
         }
