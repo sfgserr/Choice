@@ -25,7 +25,7 @@ namespace Choice.Chat.Api.Consumers
         {
             OrderStatusChangedEvent @event = context.Message;
 
-            Message message = (await _repository.GetByOrderRequestId(@event.OrderRequestId))!;
+            Message message = (await _repository.GetByOrderId(@event.OrderId))!;
 
             message.Content.ChangeContent(o =>
             {

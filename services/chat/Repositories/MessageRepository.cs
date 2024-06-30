@@ -42,17 +42,6 @@ namespace Choice.Chat.Api.Repositories
                 m.Type == MessageType.Order && m.Content.Match("OrderId", orderId));
         }
 
-        public async Task<Message?> GetByOrderRequestId(int orderRequestId)
-        {
-            List<Message> messages = await _context.Messages.ToListAsync();
-
-            messages.ForEach(m => m.SetContent());
-            messages = messages.OrderBy(m => m.CreationTime).ToList();
-
-            return messages.LastOrDefault(m =>
-                m.Type == MessageType.Order && m.Content.Match("OrderRequestId", orderRequestId));
-        }
-
         public async Task<IList<Message>> GetAll()
         {
             List<Message> messages = await _context.Messages.ToListAsync();

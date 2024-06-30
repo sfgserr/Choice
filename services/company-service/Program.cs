@@ -71,7 +71,7 @@ namespace Choice.CompanyService.Api
             builder.Services.AddDbContext<CompanyContext>(o =>
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
             builder.Services.AddScoped<IAddressService, AddressService>(s =>
-                new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GeoapifySettings:ApiKey"])));
+                new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GoogleApi:ApiKey"])));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

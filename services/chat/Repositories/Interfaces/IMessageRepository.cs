@@ -6,8 +6,6 @@ namespace Choice.Chat.Api.Repositories.Interfaces
     {
         Task<Message?> GetByOrderId(int orderId);
 
-        Task<Message?> GetByOrderRequestId(int orderRequestId);
-
         Task<IList<Message>> GetAll(string senderId, string receiverId);
 
         Task<Message?> Get(int id);

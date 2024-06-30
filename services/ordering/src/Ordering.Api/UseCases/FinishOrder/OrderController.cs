@@ -29,7 +29,7 @@ namespace Choice.Ordering.Api.UseCases.FinishOrder
         void IOutputPort.Ok(Order order, string receiverId)
         {
             _viewModel = Ok(order);
-            _endPoint.Publish(new OrderStatusChangedEvent(order.OrderRequestId, (int)order.Status, receiverId));
+            _endPoint.Publish(new OrderStatusChangedEvent(order.OrderRequestId, order.Id, (int)order.Status, receiverId));
         }
 
         void IOutputPort.NotFound()

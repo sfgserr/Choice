@@ -125,7 +125,7 @@ namespace Choice.ClientService.Api
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<ICompanyService, CompanyService>();
             builder.Services.AddScoped<IAddressService, AddressService>(s =>
-                new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GeoapifySettings:ApiKey"])));
+                new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GoogleApi:ApiKey"])));
             builder.Services.AddDbContext<ClientContext>(o =>
                 o.UseSqlServer(builder.Configuration["SqlServerSettings:ConnectionString"]));
             builder.Services.AddControllers();

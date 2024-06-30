@@ -6,7 +6,7 @@ namespace Choice.Infrastructure.Geolocation
 {
     public class AddressService : IAddressService
     {
-        private const string _geocodeUrl = "https://api.geoapify.com/v1";
+        private const string _googleApi = "https://maps.googleapis.com/maps/api";
 
         private readonly HttpClient _httpClient;
         private readonly AddressServiceOptions _options;
@@ -17,9 +17,12 @@ namespace Choice.Infrastructure.Geolocation
             _options = options;
         }
 
-        public async Task<int> GetDistance(string clientCoords, string companyCoords)
+        public async Task<int> GetDistance(Address clientAddress, Address companyAddress)
         {
-            Uri requestUri = new($"{_geocodeUrl}/routing?waypoints={clientCoords}|{companyCoords}&mode=drive&apiKey={_options.ApiKey}");
+            string clientAddressString = $"{clientAddress.City},{clientAddress.Street}";
+            string companyAddressString = $"{companyAddress.City},{companyAddress.Street}";
+
+            Uri requestUri = new($"{_googleApi}/distancematrix/json?destinations={clientAddressString}&origins={companyAddressString}&units=imperial&apiKey={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient
                 .GetAsync(requestUri);
@@ -28,13 +31,13 @@ namespace Choice.Infrastructure.Geolocation
 
             JObject obj = JObject.Parse(json);
 
-            return int.Parse(obj?.SelectToken("features[0].properties.distance")?.ToString()!);
+            return int.Parse(obj?.SelectToken("rows[0].elements[0].distance.value")?.ToString()!);
         }
 
         public async Task<string> Geocode(Address address)
         {
             Uri requestUri = new
-                ($"{_geocodeUrl}/geocode/search?text={address.City},{address.Street}&apiKey={_options.ApiKey}");
+                ($"{_googleApi}/geocode/json?address={address.City},{address.Street}&apiKey={_options.ApiKey}");
 
             HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
 
@@ -42,7 +45,7 @@ namespace Choice.Infrastructure.Geolocation
 
             JObject obj = JObject.Parse(json);
 
-            return $"{obj?.SelectToken("features[0].properties.lat")?.Value<string>()},{obj?.SelectToken("features[0].properties.lon")?.Value<string>()}";
+            return $"{obj?.SelectToken("results[0].geometry.location.lat")?.Value<string>()},{obj?.SelectToken("results[0].geometry.location.lng")?.Value<string>()}";
         }
     }
 }
