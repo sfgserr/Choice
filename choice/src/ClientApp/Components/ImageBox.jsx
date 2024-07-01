@@ -25,7 +25,7 @@ const ImageBox = ({onUriChanged, uri, readOnly}) => {
             const fileNameAndExtension = directories[directories.length-1].split('.');
             const buffer = toByteArray(data);
 
-            if (true) {
+            if (fileNameAndExtension[1] == 'png' && buffer.length <= 150000) {
                 setImageUri(response.assets[0].uri);
                 onUriChanged(response.assets[0].uri);
             }

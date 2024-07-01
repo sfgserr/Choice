@@ -5,6 +5,7 @@ import {
     Image,
     Dimensions,
     TouchableOpacity,
+    Linking,
 } from 'react-native';
 import ImageViewer from "./ImageViewer";
 import env from "../env";
@@ -204,6 +205,12 @@ const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
                             backgroundColor: '#F4F4F4',
                             borderWidth: 1,
                             borderColor: '#EEEEEE'
+                        }}
+                        onPress={() => {
+                            var emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                            var phoneRegex = new RegExp(/^\d{10}$/);
+
+                            Linking.openURL(emailRegex.test(c.url) ? `mailto:${c.url}` : phoneRegex.test(c.url) ? `tel:${c.url}` : c.url);
                         }}>
                         <Image
                             source={getImageSource(c.url)}
