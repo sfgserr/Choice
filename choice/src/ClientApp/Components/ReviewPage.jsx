@@ -18,6 +18,7 @@ const ReviewPage = ({company}) => {
 
     const retrieveData = React.useCallback(async () => {
         let reviews = await reviewService.get(company.guid);
+        console.log(reviews);
         setReviews(reviews);
     }, []);
 

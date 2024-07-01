@@ -28,7 +28,7 @@ const Review = ({review}) => {
                         fontSize: 16,
                         color: 'black'
                     }}>
-                    {`${review.author.name.split(' ')[0]} ${review.author.name.split(' ')[1][0]}.`}
+                    {`${review.author.name.split('_')[0]} ${review.author.name.split('_')[1][0]}.`}
                 </Text>
                 <View
                     style={{
