@@ -22,14 +22,54 @@ const ImageMarker = ({imageUri, isMarked}) => {
     );
 }
 
-const CustomMarker = ({imageUri, coordinate, onPress, isMarked}) => {
+const CustomMarker = ({imageUri, averageGrade, coordinate, onPress, isMarked, isCompany}) => {
+    let s = new Number(averageGrade).toString();
+    const formattedGrade = s.length == 3 ? s.slice(0, 2) : `${s}.0`;
+
     return (
         <Marker
             coordinate={coordinate}
             onPress={onPress}>
-            <ImageMarker
-                imageUri={imageUri}
-                isMarked={isMarked}/>
+            <View
+                style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignSelf: 'center'
+                }}>
+                <ImageMarker
+                    imageUri={imageUri}
+                    isMarked={isMarked}/>
+                {isCompany ? 
+                <>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                            justifyContent: 'center'
+                        }}>
+                        <Icon
+                            size={20}
+                            type='material'
+                            name='star'
+                            color='yellow'
+                            style={{
+                                alignSelf: 'center'
+                            }}/>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: '600',
+                                alignSelf: 'center',
+                                color: 'black'
+                            }}>
+                            {formattedGrade}
+                        </Text>
+                    </View>
+                </>
+                :
+                <>
+                </>}
+            </View>
         </Marker>
     );
 }

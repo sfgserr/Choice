@@ -152,6 +152,7 @@ export default function MapScreen({ navigation, route }) {
                 rotateEnabled={false}
                 style={mapStyles.map}>
                 <CustomMarker imageUri={`${env.api_url}/api/objects/${userStore.get().iconUri}`}
+                              isCompany={false}
                               coordinate={{
                                 latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
                                 longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
@@ -160,6 +161,8 @@ export default function MapScreen({ navigation, route }) {
                 {companies.length > 0 ? companies.map((company) => (
                     <CustomMarker
                         key={company.company.id} 
+                        averageGrade={company.company.averageGrade}
+                        isCompany
                         imageUri={`${env.api_url}/api/objects/${company.company.iconUri}`}
                         coordinate={{
                             latitude: Number(company.company.coords.split(',')[0]),
