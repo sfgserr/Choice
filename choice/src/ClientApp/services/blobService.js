@@ -13,11 +13,13 @@ const uploadImage = async (filePath) => {
     const fileNameAndExtension = directories[directories.length-1].split('.');
     const buffer = toByteArray(data);
 
-    if (buffer.length > 150000 || fileNameAndExtension[1] != 'png') {
+    if (buffer.length > 150000 || (fileNameAndExtension[1] != 'png' && fileNameAndExtension[1] != 'jpg')) {
         return 0;
     }
 
-    return await fetch(`${env.api_url}/api/objects/${fileNameAndExtension[0]}`, {
+    const fileName = `${fileNameAndExtension[0]}-${fileNameAndExtension[1]}`;
+
+    return await fetch(`${env.api_url}/api/objects/${fileName}`, {
         method: 'POST',
         body: buffer,
         headers: {
@@ -27,7 +29,7 @@ const uploadImage = async (filePath) => {
     .then(async response => { 
         console.log(response.status);
         if (response.status == 200) {
-            return fileNameAndExtension[0]; 
+            return fileName; 
         }
         else {
             return '';
