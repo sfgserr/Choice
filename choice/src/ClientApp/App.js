@@ -42,6 +42,7 @@ import EditCategoryScreen from './Screens/EditCategoryScreen';
 import CreateCategoryScreen from './Screens/CreateCategoryScreen';
 import EditCompanyScreen from './Screens/EditCompanyScreen';
 import EditClientScreen from './Screens/EditClientScreen';
+import ImageViewerScreen from './Screens/ImageViewerScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -305,6 +306,9 @@ function App() {
                               options={{headerShown:false}}/>
                 <Stack.Screen name="ChangePassword"
                               component={ChangePasswordScreen}
+                              options={{headerShown:false}}/>
+                <Stack.Screen name="ImageViewer"
+                              component={ImageViewerScreen}
                               options={{headerShown:false}}/>   
               </Stack.Navigator> 
             </>

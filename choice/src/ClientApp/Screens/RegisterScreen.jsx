@@ -467,7 +467,7 @@ const RegisterScreen = ({navigation, route}) => {
                             ];
 
                             if (text != '') {
-                                var regex = new RegExp(/^[А-Яа-яЁё\s\-]+,[А-Яа-яЁё\-]+\s+\d+(\/\d+)?$/);
+                                var regex = new RegExp(/^[А-Яа-яЁё\s\-]+,[А-Яа-яЁё0-9\s\-]+$/);
                                 let error = !regex.test(text);
                                 errors.push(error);
                                 setAddressError(error);

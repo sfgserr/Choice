@@ -107,7 +107,8 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                                 style={{
                                     borderColor: '#2D81E0',
                                     borderBottomWidth: 1
-                                }}>
+                                }}
+                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[0]})}>
                                 <Text
                                     style={{
                                         fontSize: 14,
@@ -148,7 +149,8 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                                 style={{
                                     borderColor: '#2D81E0',
                                     borderBottomWidth: 1
-                                }}>
+                                }}
+                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[1]})}>
                                 <Text
                                     style={{
                                         fontSize: 14,
@@ -189,7 +191,8 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                                 style={{
                                     borderColor: '#2D81E0',
                                     borderBottomWidth: 1
-                                }}>
+                                }}
+                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[2]})}>
                                 <Text
                                     style={{
                                         fontSize: 14,
