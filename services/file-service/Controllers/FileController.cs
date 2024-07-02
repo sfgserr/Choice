@@ -18,23 +18,29 @@ namespace FileObjectApi.Controllers
         {
             string path = $"{_path}/{fileName}";
 
-            if (System.IO.File.Exists(path))
+            if (System.IO.File.Exists($"{path}-png"))
             {
                 byte[] data = await System.IO.File.ReadAllBytesAsync(path);
                 return File(data, "image/png");
+            }
+
+            if (System.IO.File.Exists($"{path}-jpg"))
+            {
+                byte[] data = await System.IO.File.ReadAllBytesAsync(path);
+                return File(data, "image/jpg");
             }
 
             return NotFound();
         }
 
         [HttpPost("{fileName}")]
-        public async Task<IActionResult> Upload(string fileName)
+        public async Task<IActionResult> Upload(string fileName, string extension)
         {
             byte[] data = new byte[150000];
 
             await HttpContext.Request.Body.ReadAsync(data);
 
-            string path = $"{_path}/{fileName}";
+            string path = $"{_path}/{fileName}-{extension}";
 
             if (!System.IO.File.Exists(path))
             {
