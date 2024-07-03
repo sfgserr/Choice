@@ -224,6 +224,20 @@ const getAll = async () => {
     .then(async res => await res.json());
 }
 
+const deleteClient = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Client/Delete?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 export default {
     get,
     getAdmin,
@@ -236,5 +250,6 @@ export default {
     changeIconUriAdmin,
     changeUserData,
     changeUserDataAdmin,
-    getOrderRequest
+    getOrderRequest,
+    deleteClient
 }

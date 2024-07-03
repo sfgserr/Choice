@@ -40,7 +40,7 @@ namespace Choice.CompanyService.Api.Repositories
 
         public async Task<bool> Delete(string id)
         {
-            int affections = await _context.Database.ExecuteSqlRawAsync("DELETE FROM Companies WHERE Id = @p0", id);
+            int affections = await _context.Database.ExecuteSqlRawAsync("DELETE FROM Companies WHERE Guid = @p0", id);
 
             return affections > 0;
         }

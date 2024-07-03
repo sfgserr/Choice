@@ -780,6 +780,39 @@ const EditCompanyScreen = ({navigation, route}) => {
                 </View>
                 <View
                     style={{
+                        paddingTop: 20
+                    }}>
+                    <TouchableOpacity 
+                        style={{
+                            backgroundColor: '#F2F3F5', 
+                            height: height/18, 
+                            borderRadius: 10, 
+                            justifyContent: 'center'
+                        }}
+                        onPress={async () => {
+                            console.log(company);
+                            await companyService.deleteCompany(company.guid);
+                            navigation.goBack();
+                        }}>
+                        <View 
+                            style={{
+                                flexDirection: 'row', 
+                                justifyContent: 'center'
+                            }}>
+                            <Text 
+                                style={{
+                                    color: '#EB2626', 
+                                    fontSize: 17, 
+                                    fontWeight: '500', 
+                                    alignSelf: 'center'
+                                }}>
+                                Удалить компанию
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
                         paddingTop: 20,
                         justifyContent: 'center'
                     }}>

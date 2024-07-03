@@ -189,6 +189,24 @@ const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <Text
+                style={{
+                    paddingTop: 20,
+                    fontWeight: '600',
+                    fontSize: 16,
+                    color: 'black'
+                }}>
+                Деятельность компании    
+            </Text>
+            <Text
+                style={{
+                    paddingTop: 5,
+                    fontWeight: '400',
+                    fontSize: 14,
+                    color: '#99A2AD'
+                }}>
+                {company.description}    
+            </Text>
             <View
                 style={{
                     justifyContent: 'space-evenly',

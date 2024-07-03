@@ -130,6 +130,20 @@ const changeIconUriAdmin = async (guid, iconUri) => {
     .then(async response => await response.json());
 }
 
+const deleteCompany = async (id) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.api_url}/api/Company/Delete?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(async res => await res.json());
+}
+
 export default {
     changeIconUri,
     changeIconUriAdmin,
@@ -139,5 +153,6 @@ export default {
     getAdmin,
     fillCompanyData,
     getCompany,
-    getAll
+    getAll,
+    deleteCompany
 }
