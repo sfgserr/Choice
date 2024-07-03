@@ -16,7 +16,7 @@
         public string IconUri { get; private set; }
         public UserStatus Status { get; private set; } = UserStatus.Offline;
         public DateTime? LastTimeOnline { get; private set; }
-        public bool IsDeleted { get; private set; }
+        public bool IsDeleted { get; private set; } = false;
 
         public void ChangeIconUri(string iconUri)
         {

@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Authentication.Api.Models;
-using Microsoft.AspNetCore.Identity;
-using EventBus.Messages.Events;
 using Authentication.Api.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);

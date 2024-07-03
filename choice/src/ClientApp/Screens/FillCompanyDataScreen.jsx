@@ -28,6 +28,7 @@ const FillCompanyDataScreen = ({navigation, route}) => {
     const [categoriesId, setCategoriesId] = React.useState([]);
     const [prepaymentAvailable, setPrepayment] = React.useState(false);
     const [photoUris, setPhotoUris] = React.useState([]);
+    const [description, setDescription] = React.useState('');
 
     const [index, setIndex] = React.useState(1); 
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -59,6 +60,7 @@ const FillCompanyDataScreen = ({navigation, route}) => {
                 setCategoriesId(state.categories);
                 setPrepayment(state.prepayment);
                 setPhotoUris(state.photoUris);
+                setDescription(state.description);
 
                 setModalVisible(true);
             }
@@ -70,6 +72,32 @@ const FillCompanyDataScreen = ({navigation, route}) => {
             offset: itemIndex * width
         });
     });
+
+    const fillCompanyData = async () => {
+        for (let i = 0; i < 6; i++) {
+            photoUris[i] = await blobService.uploadImage(photoUris[i]);
+        }
+
+        let status = await companyService.fillCompanyData({
+            siteUrl,
+            socialMedias,
+            photoUris,
+            categoriesId,
+            prepaymentAvailable,
+            description 
+        });
+
+        if (status == 200) {
+            await new Promise(r => setTimeout(r, 2000));
+
+            setModalVisible(false);
+
+            await authService.loginByEmail(email, password);
+            await userStore.retrieveData(2);
+
+            await signIn(2);
+        }
+    }
 
     return (
         <View
@@ -109,8 +137,8 @@ const FillCompanyDataScreen = ({navigation, route}) => {
                                     paddingHorizontal: 10
                                 }}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        setModalVisible(false);
+                                    onPress={async () => {
+                                        await fillCompanyData();
                                     }}
                                     style={{
                                         borderRadius: 360,
@@ -172,28 +200,7 @@ const FillCompanyDataScreen = ({navigation, route}) => {
                                     <TouchableOpacity 
                                         style={[styles.button, {borderRadius: 10}]}
                                         onPress={async () => {
-                                            for (let i = 0; i < 6; i++) {
-                                                photoUris[i] = await blobService.uploadImage(photoUris[i]);
-                                            }
-
-                                            let status = await companyService.fillCompanyData({
-                                                siteUrl,
-                                                socialMedias,
-                                                photoUris,
-                                                categoriesId,
-                                                prepaymentAvailable 
-                                            });
-
-                                            if (status == 200) {
-                                                await new Promise(r => setTimeout(r, 2000));
-
-                                                setModalVisible(false);
-
-                                                await authService.loginByEmail(email, password);
-                                                await userStore.retrieveData(2);
-
-                                                await signIn(2);
-                                            }
+                                            await fillCompanyData();
                                         }}>
                                         <Text style={styles.buttonText}>
                                             Понятно

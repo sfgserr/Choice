@@ -3,7 +3,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    ScrollView
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import styles from "../Styles";
@@ -12,6 +13,7 @@ import CompanyCategorySelectionList from "../Components/CompanyCategorySelection
 import categoryStore from "../services/categoryStore";
 import arrayHelper from "../helpers/arrayHelper";
 import ImageBox from "../Components/ImageBox";
+import CustomTextInput from "../Components/CustomTextInput";
 
 const AboutScreen = ({handleState}) => {
     const modalRef = React.useRef(null);
@@ -26,6 +28,7 @@ const AboutScreen = ({handleState}) => {
     const [sixthImageUri, setSixthImageUri] = React.useState('');
 
     const [prepayment, setPrepayment] = React.useState(false);
+    const [description, setDescription] = React.useState('');
 
     const [selectedCategories, setSelectedCategories] = React.useState(
         Object.keys(categories).map((i) => ({
@@ -125,195 +128,224 @@ const AboutScreen = ({handleState}) => {
                     </View>
                 </View>
             </Modalize>
-            <Text
+            <ScrollView
                 style={{
-                    color: 'black',
-                    fontWeight: '700',
-                    fontSize: 17
-                }}>
-                О работе    
-            </Text>
-            <Text
-                style={{
-                    color: '#6D7885', 
-                    fontWeight: '400', 
-                    fontSize: 14, 
-                    paddingTop: 20,
-                    paddingBottom: 5
-                }}>
-                Виды деятельности        
-            </Text>
-            <View>
-                <View style={[styles.textInput(false, false), {justifyContent: 'center'}]}>
-                    <View
-                        style={{
-                            justifyContent: 'space-between',
-                            flexDirection: 'row'
-                        }}>
-                        <Text
-                            style={{
-                                color: categoryCount == 0 ? '#818C99' : 'black',
-                                fontSize: 16,
-                                fontWeight: '400',
-                                flex: 2
-                            }}>
-                            {categoryString}
-                        </Text>
-                        <TouchableOpacity 
-                            style={{
-                                alignSelf: 'center'    
-                            }}
-                            onPress={() => modalRef.current?.open()}>
-                            <Icon
-                                color='gray'
-                                type='material'
-                                name='expand-more'/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-            <Text 
-                style={{
-                    color: '#6D7885', 
-                    fontWeight: '400', 
-                    fontSize: 14, 
-                    paddingTop: 20,
-                    paddingBottom: 5
-                }}>
-                Добавьте фотографии
-            </Text>
-            <View
-                style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row'
-                }}>
-                <ImageBox
-                    uri={fisrtImageUri}
-                    onUriChanged={(uri) => setFirstImageUri(uri)}/>
-
-                <ImageBox
-                    uri={secondImageUri}
-                    onUriChanged={(uri) => setSecondImageUri(uri)}/>
-
-                <ImageBox
-                    uri={thirdImageUri}
-                    onUriChanged={(uri) => setThirdImageUri(uri)}/>          
-            </View>
-            <View
-                style={{
-                    paddingTop: 5,
-                    justifyContent: 'space-between',
-                    flexDirection: 'row'
-                }}>
-                <ImageBox
-                    uri={fourthImageUri}
-                    onUriChanged={(uri) => setFourthImageUri(uri)}/>
-
-                <ImageBox
-                    uri={fivthImageUri}
-                    onUriChanged={(uri) => setFivthImageUri(uri)}/>
-
-                <ImageBox
-                    uri={sixthImageUri}
-                    onUriChanged={(uri) => setSixthImageUri(uri)}/>          
-            </View>
-            <View
-                style={{
-                    flexDirection: 'column',
-                    paddingTop: 20
-                }}>
+                    flex: 1,
+                    backgroundColor: 'white',
+                }}
+                showsVerticalScrollIndicator={false}>
+                <Text
+                    style={{
+                        color: 'black',
+                        fontWeight: '700',
+                        fontSize: 17
+                    }}>
+                    О работе    
+                </Text>
+                <Text
+                    style={{
+                        paddingTop: 20,
+                        paddingBottom: 5,
+                        color: '#6D7885', 
+                        fontWeight: '400', 
+                        fontSize: 14,
+                    }}>
+                    Описание    
+                </Text>
+                <CustomTextInput
+                        value={description}
+                        changed={setDescription}
+                        big
+                        placeholder={'Введите описание'}
+                        multiline/>
                 <Text
                     style={{
                         color: '#6D7885', 
                         fontWeight: '400', 
                         fontSize: 14, 
+                        paddingTop: 20,
                         paddingBottom: 5
                     }}>
-                    Опции    
+                    Виды деятельности        
+                </Text>
+                <View>
+                    <View style={[styles.textInput(false, false), {justifyContent: 'center'}]}>
+                        <View
+                            style={{
+                                justifyContent: 'space-between',
+                                flexDirection: 'row'
+                            }}>
+                            <Text
+                                style={{
+                                    color: categoryCount == 0 ? '#818C99' : 'black',
+                                    fontSize: 16,
+                                    fontWeight: '400',
+                                    flex: 2
+                                }}>
+                                {categoryString}
+                            </Text>
+                            <TouchableOpacity 
+                                style={{
+                                    alignSelf: 'center'    
+                                }}
+                                onPress={() => modalRef.current?.open()}>
+                                <Icon
+                                    color='gray'
+                                    type='material'
+                                    name='expand-more'/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+                <Text 
+                    style={{
+                        color: '#6D7885', 
+                        fontWeight: '400', 
+                        fontSize: 14, 
+                        paddingTop: 20,
+                        paddingBottom: 5
+                    }}>
+                    Добавьте фотографии
                 </Text>
                 <View
                     style={{
+                        justifyContent: 'space-between',
                         flexDirection: 'row'
                     }}>
-                    <TouchableOpacity
-                        style={{
-                            alignSelf: 'center'
-                        }}
-                        disabled={prepayment}
-                        onPress={() => {
-                            setPrepayment(true);
-                        }}>
-                        <Icon 
-                            type='material'
-                            name={prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
-                            color={!prepayment ? '#B8C1CC' : '#2688EB'}/>
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            paddingLeft: 10,
-                            color: 'black',
-                            fontSize: 15,
-                            fontWeight: '400',
-                            alignSelf: 'center'
-                        }}>
-                        Работа с предоплатой    
-                    </Text>
+                    <ImageBox
+                        uri={fisrtImageUri}
+                        onUriChanged={(uri) => setFirstImageUri(uri)}/>
+
+                    <ImageBox
+                        uri={secondImageUri}
+                        onUriChanged={(uri) => setSecondImageUri(uri)}/>
+
+                    <ImageBox
+                        uri={thirdImageUri}
+                        onUriChanged={(uri) => setThirdImageUri(uri)}/>          
                 </View>
                 <View
                     style={{
-                        flexDirection: 'row',
+                        paddingTop: 5,
+                        justifyContent: 'space-between',
+                        flexDirection: 'row'
+                    }}>
+                    <ImageBox
+                        uri={fourthImageUri}
+                        onUriChanged={(uri) => setFourthImageUri(uri)}/>
+
+                    <ImageBox
+                        uri={fivthImageUri}
+                        onUriChanged={(uri) => setFivthImageUri(uri)}/>
+
+                    <ImageBox
+                        uri={sixthImageUri}
+                        onUriChanged={(uri) => setSixthImageUri(uri)}/>          
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'column',
                         paddingTop: 20
                     }}>
+                    <Text
+                        style={{
+                            color: '#6D7885', 
+                            fontWeight: '400', 
+                            fontSize: 14, 
+                            paddingBottom: 5
+                        }}>
+                        Опции    
+                    </Text>
+                    <View
+                        style={{
+                            flexDirection: 'row'
+                        }}>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center'
+                            }}
+                            disabled={prepayment}
+                            onPress={() => {
+                                setPrepayment(true);
+                            }}>
+                            <Icon 
+                                type='material'
+                                name={prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
+                                color={!prepayment ? '#B8C1CC' : '#2688EB'}/>
+                        </TouchableOpacity>
+                        <Text
+                            style={{
+                                paddingLeft: 10,
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '400',
+                                alignSelf: 'center'
+                            }}>
+                            Работа с предоплатой    
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            paddingTop: 20
+                        }}>
+                        <TouchableOpacity
+                            style={{
+                                alignSelf: 'center'
+                            }}
+                            disabled={!prepayment}
+                            onPress={() => {
+                                setPrepayment(false);
+                            }}>
+                            <Icon 
+                                type='material'
+                                name={!prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
+                                color={prepayment ? '#B8C1CC' : '#2688EB'}/>
+                        </TouchableOpacity>
+                        <Text
+                            style={{
+                                paddingLeft: 10,
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '400',
+                                alignSelf: 'center'
+                            }}>
+                            Работа без предоплаты  
+                        </Text>
+                    </View>    
+                </View>
+                <View
+                    style={{
+                        paddingTop: 40,
+                        paddingBottom: 20
+                    }}>
                     <TouchableOpacity
-                        style={{
-                            alignSelf: 'center'
-                        }}
-                        disabled={!prepayment}
-                        onPress={() => {
-                            setPrepayment(false);
-                        }}>
-                        <Icon 
-                            type='material'
-                            name={!prepayment ? 'radio-button-checked' : 'radio-button-unchecked'}
-                            color={prepayment ? '#B8C1CC' : '#2688EB'}/>
+                        style={[
+                            styles.button, { 
+                                backgroundColor: categoryCount == 0 || description == '' ? '#ABCDf3' : '#2D81E0',
+                            }
+                        ]}
+                        disabled={categoryCount == 0 || description == ''}
+                        onPress={(categoryCount != 0 && description != '') && (() => handleState({
+                            photoUris: [
+                                fisrtImageUri, 
+                                secondImageUri, 
+                                thirdImageUri,
+                                fourthImageUri,
+                                fivthImageUri,
+                                sixthImageUri
+                            ],
+                            prepayment,
+                            description,
+                            categories: projectCategoriesToIntArray()
+                        }))}>
+                        <Text
+                            style={styles.buttonText}>
+                            Сохранить
+                        </Text>
                     </TouchableOpacity>
-                    <Text
-                        style={{
-                            paddingLeft: 10,
-                            color: 'black',
-                            fontSize: 15,
-                            fontWeight: '400',
-                            alignSelf: 'center'
-                        }}>
-                        Работа без предоплаты  
-                    </Text>
-                </View>    
-            </View>
-            <View
-                style={{
-                    paddingTop: 40
-                }}>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: categoryCount == 0 ? '#ABCDf3' : '#2D81E0' }]}
-                    disabled={categoryCount == 0}
-                    onPress={(categoryCount != 0) && (() => handleState({
-                        photoUris: [
-                            fisrtImageUri, 
-                            secondImageUri, 
-                            thirdImageUri,
-                            fourthImageUri,
-                            fivthImageUri,
-                            sixthImageUri
-                        ],
-                        prepayment,
-                        categories: projectCategoriesToIntArray()
-                    }))}>
-                    <Text
-                        style={styles.buttonText}>
-                        Сохранить
-                    </Text>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </ScrollView>
         </View>
     )
 }
