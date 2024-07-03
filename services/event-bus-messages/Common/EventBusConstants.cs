@@ -7,6 +7,7 @@ namespace Choice.EventBus.Messages.Common
         public const string UserEnrolledQueue = "ordering.order.enrolled";
         public const string AuthorDeletedQueue = "review-service.user.deleted";
         public const string ChatUserDeletedQueue = "chat-service.user.deleted";
+        public const string UserDeletedQueue = "auth-service.user.deleted";
         public const string OrderEnrollmentDateChangedQueue = "ordering.order.date.changed";
         public const string OrderEnrollmentDateConfirmedQueue = "ordering.order.confirmed";
         public const string ChatUserNameChangedQueue = "auth-service.chatuser.changed";

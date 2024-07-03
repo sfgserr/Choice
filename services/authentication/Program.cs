@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Authentication.Api.Models;
 using Microsoft.AspNetCore.Identity;
+using EventBus.Messages.Events;
+using Authentication.Api.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,17 +41,24 @@ builder.Services.AddMassTransit(config =>
 {
     config.AddConsumer<UserDataChangedConsumer>();
     config.AddConsumer<CompanyDataFilledConsumer>();
+    config.AddConsumer<UserDeletedConsumer>();
 
     config.UsingRabbitMq((ctx, cfg) => {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
 
-        cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => {
+        cfg.ReceiveEndpoint(EventBusConstants.UserDataChangedQueue, c => 
+        {
             c.ConfigureConsumer<UserDataChangedConsumer>(ctx);
         });
 
         cfg.ReceiveEndpoint(EventBusConstants.CompanyDataFilledQueue, c =>
         {
             c.ConfigureConsumer<CompanyDataFilledConsumer>(ctx);
+        });
+
+        cfg.ReceiveEndpoint(EventBusConstants.UserDeletedQueue, c =>
+        {
+            c.ConfigureConsumer<UserDeletedConsumer>(ctx);
         });
     });
 });
