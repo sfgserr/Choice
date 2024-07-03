@@ -329,6 +329,33 @@ export default function EditClientScreen({ navigation, route }) {
                             setDisable(false);
                         }}/>
                 </View>
+                <TouchableOpacity 
+                    style={{
+                        backgroundColor: '#F2F3F5', 
+                        height: height/18, 
+                        borderRadius: 10, 
+                        justifyContent: 'center'
+                    }}
+                    onPress={async () => {
+                        await clientService.deleteClient(user.guid);
+                        navigation.goBack();
+                    }}>
+                    <View 
+                        style={{
+                            flexDirection: 'row', 
+                            justifyContent: 'center'
+                        }}>
+                        <Text 
+                            style={{
+                                color: '#EB2626', 
+                                fontSize: 17, 
+                                fontWeight: '500', 
+                                alignSelf: 'center'
+                            }}>
+                            Удалить компанию
+                        </Text>
+                    </View>
+                </TouchableOpacity>
                 {
                     !disable ?
                     <>

@@ -235,7 +235,7 @@ const deleteClient = async (id) => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async res => await res.json());
+    .then(async res => res.status);
 }
 
 export default {
