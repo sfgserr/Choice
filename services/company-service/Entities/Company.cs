@@ -26,6 +26,7 @@ namespace Choice.CompanyService.Api.Entities
         public string IconUri { get; private set; } = "defaulturi";
         public Address Address { get; private set; }
         public string Coordinates { get; private set; }
+        public string Description { get; private set; } = string.Empty;
         public double AverageGrade { get; private set; } = 0;
         public int ReviewsCount { get; private set; } = 0;
         public List<string> SocialMedias { get; private set; } = [];
@@ -34,8 +35,13 @@ namespace Choice.CompanyService.Api.Entities
         public bool PrepaymentAvailable { get; private set; } = false;
         public bool IsDataFilled { get; private set; } = false;
 
-        public void FillCompanyData(string siteUrl, List<string> socialMedias, List<string> photoUris, 
-            List<int> categoriesId, bool prepaymentAvailable)
+        public void FillCompanyData(
+            string siteUrl, 
+            List<string> socialMedias, 
+            List<string> photoUris, 
+            List<int> categoriesId, 
+            bool prepaymentAvailable, 
+            string description)
         {
             SiteUrl = siteUrl;
 
@@ -43,12 +49,23 @@ namespace Choice.CompanyService.Api.Entities
             PhotoUris = photoUris;
             CategoriesId = categoriesId;
             PrepaymentAvailable = prepaymentAvailable;
+            Description = description;
 
             IsDataFilled = true;
         }
 
-        public void ChangeData(string title, string phoneNumber, string email, string siteUrl, string city, 
-            string street, List<string> socialMedias, List<string> photoUris, List<int> categoriesId, string coordinates)
+        public void ChangeData(
+            string title, 
+            string phoneNumber, 
+            string email, 
+            string siteUrl, 
+            string city, 
+            string street, 
+            List<string> socialMedias, 
+            List<string> photoUris, 
+            List<int> categoriesId, 
+            string coordinates,
+            string description)
         {
             Title = title;
             PhoneNumber = phoneNumber;
@@ -59,6 +76,7 @@ namespace Choice.CompanyService.Api.Entities
             PhotoUris = photoUris;
             CategoriesId = categoriesId;
             Coordinates = coordinates;
+            Description = description;
         }
 
         public void ChangeIconUri(string iconUri)

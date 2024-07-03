@@ -38,9 +38,9 @@ namespace Choice.CompanyService.Api.Repositories
             return affections > 0;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(string id)
         {
-            int affections = await _context.Database.ExecuteSqlRawAsync("DELETE FROM Categories WHERE Id = @p0", id);
+            int affections = await _context.Database.ExecuteSqlRawAsync("DELETE FROM Companies WHERE Id = @p0", id);
 
             return affections > 0;
         }

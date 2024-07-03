@@ -17,5 +17,7 @@ namespace Choice.ClientService.Domain.ClientAggregate
         void Update(Client client);
 
         Task Update(OrderRequest request);
+
+        Task Delete(string id);
     }
 }

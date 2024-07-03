@@ -12,6 +12,7 @@ using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Infrastructure.Data;
 using Choice.Chat.Api.Services;
+using Chat.Api.Consumers;
 
 namespace Choice.Chat.Api
 {
@@ -43,6 +44,7 @@ namespace Choice.Chat.Api
                 config.AddConsumer<UserIconUriChangedConsumer>();
                 config.AddConsumer<UserDataChangedConsumer>();
                 config.AddConsumer<OrderEnrollmentDateConfirmedConsumer>();
+                config.AddConsumer<UserDeletedConsumer>();
 
                 config.UsingRabbitMq((ctx, cfg) => {
                     cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -77,6 +79,10 @@ namespace Choice.Chat.Api
                     cfg.ReceiveEndpoint(EventBusConstants.OrderEnrollmentDateConfirmedQueue, c =>
                     {
                         c.ConfigureConsumer<OrderEnrollmentDateConfirmedConsumer>(ctx);
+                    });
+                    cfg.ReceiveEndpoint(EventBusConstants.ChatUserDeletedQueue, c =>
+                    {
+                        c.ConfigureConsumer<UserDeletedConsumer>(ctx);
                     });
                 });
             });

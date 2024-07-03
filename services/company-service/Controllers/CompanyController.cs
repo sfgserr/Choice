@@ -6,6 +6,7 @@ using Choice.CompanyService.Api.ViewModels;
 using Choice.CompanyService.Api.ViewModels.Requests;
 using Choice.EventBus.Messages.Events;
 using CompanyService.Api.ViewModels.Requests;
+using EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -123,7 +124,8 @@ namespace Choice.CompanyService.Api.Controllers
                  request.SocialMedias,
                  request.PhotoUris,
                  request.CategoriesId,
-                 coords);
+                 coords,
+                 request.Description);
 
             bool result = await _repository.Update(company);
 
@@ -170,7 +172,8 @@ namespace Choice.CompanyService.Api.Controllers
                  request.SocialMedias,
                  request.PhotoUris,
                  request.CategoriesId,
-                 coords);
+                 coords,
+                 request.Description);
 
             bool result = await _repository.Update(company);
 
@@ -239,6 +242,21 @@ namespace Choice.CompanyService.Api.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("Delete")]
+        [Authorize("Admin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            bool result = await _repository.Delete(id);
+
+            if (result)
+            {
+                await _endPoint.Publish(new UserDeletedEvent(id));
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut("FillCompanyData")]
         public async Task<IActionResult> FillCompanyData(FillCompanyDataRequest request)
         {
@@ -262,7 +280,8 @@ namespace Choice.CompanyService.Api.Controllers
                  request.SocialMedias,
                  request.PhotoUris,
                  request.CategoriesId,
-                 request.PrepaymentAvailable);
+                 request.PrepaymentAvailable,
+                 request.Description);
 
             bool result = await _repository.Update(company);
 

@@ -4,8 +4,17 @@ namespace CompanyService.Api.ViewModels.Requests
 {
     public class ChangeDataRequest
     {
-        public ChangeDataRequest(string title, string email, string phoneNumber, string street, string city, 
-            string siteUrl, List<string> photoUris, List<string> socialMedias, List<int> categoriesId)
+        public ChangeDataRequest(
+            string title, 
+            string email, 
+            string phoneNumber, 
+            string street, 
+            string city,
+            string siteUrl, 
+            List<string> photoUris, 
+            List<string> socialMedias, 
+            List<int> categoriesId, 
+            string description)
         {
             Title = title;
             Email = email;
@@ -16,6 +25,7 @@ namespace CompanyService.Api.ViewModels.Requests
             PhotoUris = photoUris;
             SocialMedias = socialMedias;
             CategoriesId = categoriesId;
+            Description = description;
         }
 
         public string Title { get; }
@@ -27,10 +37,12 @@ namespace CompanyService.Api.ViewModels.Requests
         public List<string> PhotoUris { get; }
         public List<string> SocialMedias { get; }
         public List<int> CategoriesId { get; }
+        public string Description { get; }
 
         public bool IsValid => 
             !string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Email) || 
             !string.IsNullOrEmpty(PhoneNumber) || !string.IsNullOrEmpty(Street) || !string.IsNullOrEmpty(City) ||
-            !string.IsNullOrEmpty(SiteUrl) || !SocialMedias.IsNullOrEmpty() || !CategoriesId.IsNullOrEmpty();
+            !string.IsNullOrEmpty(SiteUrl) || !SocialMedias.IsNullOrEmpty() || !CategoriesId.IsNullOrEmpty() ||
+            !string.IsNullOrEmpty(Description);
     }
 }

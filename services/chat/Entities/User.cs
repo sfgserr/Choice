@@ -16,11 +16,19 @@
         public string IconUri { get; private set; }
         public UserStatus Status { get; private set; } = UserStatus.Offline;
         public DateTime? LastTimeOnline { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         public void ChangeIconUri(string iconUri)
         {
             if (!string.IsNullOrEmpty(iconUri))
                 IconUri = iconUri;
+        }
+
+        public void Delete()
+        {
+            IsDeleted = true;
+            IconUri = "deleted-png";
+            Name = "Удаленный аккаунт";
         }
 
         public void SetStatus(UserStatus status)

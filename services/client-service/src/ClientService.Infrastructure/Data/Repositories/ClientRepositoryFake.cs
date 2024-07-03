@@ -50,5 +50,15 @@ namespace Choice.ClientService.Infrastructure.Data.Repositories
         {
             await Task.Run(() => _context.Requests.Add(request));
         }
+
+        public async Task Delete(string id)
+        {
+            await Task.Run(() =>
+            {
+                Client clientToRemove = _context.Clients.FirstOrDefault(c => c.Guid == id);
+
+                _context.Clients.Remove(clientToRemove);
+            });
+        }
     }
 }

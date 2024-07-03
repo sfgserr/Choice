@@ -22,6 +22,7 @@ namespace Choice.CompanyService.Api.ViewModels
             CategoriesId = company.CategoriesId.ToList();
             PrepaymentAvailable = company.PrepaymentAvailable;
             ReviewsCount = company.ReviewsCount;
+            Description = company.Description;
         }
 
         public int Id { get; }
@@ -39,5 +40,6 @@ namespace Choice.CompanyService.Api.ViewModels
         public List<int> CategoriesId { get; }
         public bool PrepaymentAvailable { get; }
         public int ReviewsCount { get; }
+        public string Description { get; }
     }
 }

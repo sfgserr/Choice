@@ -26,6 +26,7 @@ using Choice.ClientService.Application.UseCases.GetRequest;
 using Choice.ClientService.Application.UseCases.GetClientAdmin;
 using Choice.ClientService.Application.UseCases.ChangeUserDataAdmin;
 using Choice.ClientService.Application.UseCases.ChangeIconUriAdmin;
+using ClientService.Application.UseCases.DeleteClientAdmin;
 
 namespace Choice.ClientService.Api
 {
@@ -53,6 +54,7 @@ namespace Choice.ClientService.Api
             builder.Services.AddScoped<IGetClientAdminUseCase, GetClientAdminUseCase>();
             builder.Services.AddScoped<IChangeUserDataAdminUseCase, ChangeUserDataAdminUseCase>();
             builder.Services.AddScoped<IChangeIconUriAdminUseCase, ChangeIconUriAdminUseCase>();
+            builder.Services.AddScoped<IDeleteClientAdminUseCase, DeleteClientAdminUseCase>();
             builder.Services.Decorate<IChangeIconUriAdminUseCase, ChangeIconUriAdminValidationUseCase>();
             builder.Services.Decorate<IChangeUserDataAdminUseCase, ChangeUserDataAdminValidationUseCase>();
 

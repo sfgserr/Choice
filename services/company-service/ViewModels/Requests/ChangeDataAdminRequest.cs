@@ -4,8 +4,18 @@ namespace CompanyService.Api.ViewModels.Requests
 {
     public class ChangeDataAdminRequest
     {
-        public ChangeDataAdminRequest(string guid, string title, string email, string phoneNumber, string street, 
-            string city, string siteUrl, List<string> photoUris, List<string> socialMedias, List<int> categoriesId)
+        public ChangeDataAdminRequest(
+            string guid,
+            string title,
+            string email,
+            string phoneNumber,
+            string street,
+            string city,
+            string siteUrl,
+            List<string> photoUris,
+            List<string> socialMedias,
+            List<int> categoriesId,
+            string description)
         {
             Guid = guid;
             Title = title;
@@ -17,6 +27,7 @@ namespace CompanyService.Api.ViewModels.Requests
             PhotoUris = photoUris;
             SocialMedias = socialMedias;
             CategoriesId = categoriesId;
+            Description = description;
         }
 
         public string Guid { get; }
@@ -29,6 +40,7 @@ namespace CompanyService.Api.ViewModels.Requests
         public List<string> PhotoUris { get; }
         public List<string> SocialMedias { get; }
         public List<int> CategoriesId { get; }
+        public string Description { get; }
 
         public bool IsValid =>
             !string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Email) ||

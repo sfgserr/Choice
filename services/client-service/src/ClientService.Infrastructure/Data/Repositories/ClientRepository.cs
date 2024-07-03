@@ -57,6 +57,11 @@ namespace Choice.ClientService.Infrastructure.Data.Repositories
             await _context.Requests.AddAsync(request);
         }
 
+        public async Task Delete(string id)
+        {
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM Clients WHERE Guid = @p0", id);
+        }
+
         private async Task LoadRequests(Client client)
         {
             await _context.Requests.Where(r => r.ClientId == client.Id).ToListAsync();

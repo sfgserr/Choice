@@ -19,6 +19,7 @@ namespace Choice.CompanyService.Api.ViewModels
             SocialMedias = [.. company.SocialMedias];
             PhotoUris = [.. company.PhotoUris];
             Distance = distance;
+            Description = company.Description;
         }
 
         public string Guid { get; }
@@ -33,5 +34,6 @@ namespace Choice.CompanyService.Api.ViewModels
         public List<string> SocialMedias { get; }
         public List<string> PhotoUris { get; }
         public int Distance { get; }
+        public string Description { get; }
     }
 }

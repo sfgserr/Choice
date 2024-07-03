@@ -12,6 +12,6 @@ namespace Choice.CompanyService.Api.Repositories
 
         Task<bool> Update(Company company);
 
-        Task<bool> Delete(int id);
+        Task<bool> Delete(string id);
     }
 }
