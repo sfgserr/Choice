@@ -17,6 +17,7 @@ namespace Choice.Chat.Api.Infrastructure.Data
                        Name = "Makar_Cheban",
                        Status = UserStatus.Offline,
                        LastTimeOnline = DateTime.Now,
+                       IsDeleted = false,
                    });
         }
     }
