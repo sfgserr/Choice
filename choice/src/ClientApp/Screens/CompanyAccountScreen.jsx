@@ -53,7 +53,8 @@ const CompanyAccountScreen = ({navigation}) => {
             title,
             email,
             phone,
-            convertCategoryToString()
+            convertCategoryToString(),
+            description
         ]
 
         const socialMedias = [
@@ -148,6 +149,7 @@ const CompanyAccountScreen = ({navigation}) => {
     const [fivthImageUri, setFivthImageUri] = React.useState(user.photoUris[4] != '' ? `${env.api_url}/api/objects/${user.photoUris[4]}` : '');
     const [sixthImageUri, setSixthImageUri] = React.useState(user.photoUris[5] != '' ? `${env.api_url}/api/objects/${user.photoUris[5]}` : '');
     const [prepayment, setPrepayment] = React.useState(user.prepaymentAvailable);
+    const [description, setDescription] = React.useState(user.description);
 
     const updateState = (user) => {
         setTitle(user.title);
@@ -164,6 +166,7 @@ const CompanyAccountScreen = ({navigation}) => {
         setFourthImageUri(user.photoUris[3] == '' ? user.photoUris[3] : `${env.api_url}/api/objects/${user.photoUris[3]}`);
         setFivthImageUri(user.photoUris[4] == '' ? user.photoUris[4] : `${env.api_url}/api/objects/${user.photoUris[4]}`);
         setSixthImageUri(user.photoUris[5] == '' ? user.photoUris[5] : `${env.api_url}/api/objects/${user.photoUris[5]}`);
+        setDescription(user.description);
     }
 
     const socialMedias = [
@@ -607,6 +610,25 @@ const CompanyAccountScreen = ({navigation}) => {
                         }}>
                         О работе
                     </Text>
+                    <Text
+                        style={{
+                            fontWeight: '400',
+                            fontSize: 14,
+                            color: '#6D7885',
+                            paddingTop: 10,
+                            paddingBottom: 5
+                        }}>
+                        Описание    
+                    </Text>
+                    <CustomTextInput
+                        value={description}
+                        changed={(text) => {
+                            setDescription(text);
+                            setIsChanged(true);
+                        }}
+                        big
+                        multiline
+                        placeholder={'Введите описание'}/>
                     <Text
                         style={{
                             fontWeight: '400',
