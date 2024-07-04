@@ -126,6 +126,7 @@ const CompanyAccountScreen = ({navigation}) => {
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [changesSavedModalVisible, setChangesSavedModalVisible] = React.useState(false);
     const [currentUrl, setCurrentUrl] = React.useState('');
 
     const { width, height } = Dimensions.get('screen');
@@ -229,6 +230,91 @@ const CompanyAccountScreen = ({navigation}) => {
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
             }>
+            <Modal
+                visible={changesSavedModalVisible}
+                transparent={true}>
+                <View
+                    style={{
+                        height,
+                        width,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                    }}>
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            width: '90%',
+                            borderRadius: 20,
+                            alignSelf: 'center',
+                            position: 'absolute',
+                            bottom: height/14
+                        }}>
+                        <View 
+                            style={{
+                                flex: 1,
+                                flexDirection: 'column'
+                            }}>
+                            <View 
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-end',
+                                    paddingTop: 20,
+                                    paddingHorizontal: 10
+                                }}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setChangesSavedModalVisible(false);
+                                    }}
+                                    style={{
+                                        borderRadius: 360,
+                                        backgroundColor: '#eff1f2',
+                                        alignSelf: 'flex-start'
+                                    }}>
+                                    <Icon 
+                                        name='close'
+                                        type='material'
+                                        size={27}
+                                        color='#818C99'/>
+                                </TouchableOpacity>
+                            </View>
+                            <View
+                                style={{
+                                    justifyContent: 'center',
+                                }}>
+                                <Icon 
+                                    name='thumb-up'
+                                    type='material'
+                                    color='#2D81E0'
+                                    size={40}/>
+                                <Text
+                                    style={{
+                                        color: 'black',
+                                        fontWeight: '500',
+                                        fontSize: 20,
+                                        alignSelf: 'center',
+                                        paddingTop: 10
+                                        
+                                    }}>
+                                    Измение сохранены
+                                </Text>
+                                <View
+                                    style={{
+                                        paddingTop: 40,
+                                        paddingBottom: 10,
+                                        paddingHorizontal: 10
+                                    }}>
+                                    <TouchableOpacity 
+                                        style={[styles.button, {borderRadius: 10}]}
+                                        onPress={() => {
+                                            setChangesSavedModalVisible(false);
+                                        }}>
+                                        <Text style={styles.buttonText}>Ок</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Modalize
                 ref={modalRef}
                 adjustToContentHeight={true}
@@ -846,7 +932,8 @@ const CompanyAccountScreen = ({navigation}) => {
                                                 vkUrl,
                                                 tgUrl
                                             ],
-                                            categoriesId: trackedCategories.filter(c => c.tracked).map(c => c.id)
+                                            categoriesId: trackedCategories.filter(c => c.tracked).map(c => c.id),
+                                            description
                                         };
 
                                         for (let i = 0; i < 6; i++) {

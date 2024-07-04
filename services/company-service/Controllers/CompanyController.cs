@@ -135,7 +135,9 @@ namespace Choice.CompanyService.Api.Controllers
                     company.Guid,
                     company.Title,
                     company.Email,
-                    company.PhoneNumber));
+                    company.PhoneNumber,
+                    company.Address.Street,
+                    company.Address.City));
 
                 return Ok(new CompanyDetailsViewModel(company));
             }
@@ -183,7 +185,9 @@ namespace Choice.CompanyService.Api.Controllers
                     company.Guid,
                     company.Title,
                     company.Email,
-                    company.PhoneNumber));
+                    company.PhoneNumber,
+                    company.Address.City,
+                    company.Address.Street));
 
                 return Ok(new CompanyDetailsViewModel(company));
             }

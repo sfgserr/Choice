@@ -30,11 +30,13 @@ namespace Choice.Authentication.Api.Models
         [Required]
         public bool IsDataFilled { get; private set; }
 
-        public void ChangeData(string name, string email, string phoneNumber)
+        public void ChangeData(string name, string email, string phoneNumber, string city, string street)
         {
             UserName = name;
             Email = email;
             PhoneNumber = phoneNumber;
+            City = city;
+            Street = street;
         }
 
         public void SetDataFilled()
