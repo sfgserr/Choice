@@ -953,9 +953,13 @@ const CompanyAccountScreen = ({navigation}) => {
                                             }
                                         }
 
-                                        await companyService.changeData(state);
+                                        let status = await companyService.changeData(state);
 
                                         setIsChanged(false);
+
+                                        if (status == 200) {
+                                            setChangesSavedModalVisible(true);
+                                        }
                                     })}>
                                     <Text
                                         style={styles.buttonText}>

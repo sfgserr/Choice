@@ -7,10 +7,12 @@ import {
     TouchableOpacity,
     Modal,
     Dimensions,
-    TextInput
+    TextInput,
+    KeyboardAvoidingView,
+    ScrollView
 } from 'react-native'
 import styles from '../Styles';
-import { Icon } from 'react-native-elements';
+import { BottomSheet, Icon } from 'react-native-elements';
 import urlValidator from '../validators/urlValidator';
 import CustomTextInput from '../Components/CustomTextInput';
 
@@ -52,130 +54,137 @@ const SocialMediasScreen  = ({handleState}) => {
                         width,
                         backgroundColor: 'rgba(0,0,0,0.5)',
                     }}>
-                    <View
+                    <KeyboardAvoidingView
+                        behavior='position'
+                        keyboardVerticalOffset={0}
                         style={{
-                            backgroundColor: 'white',
-                            width: '90%',
-                            borderRadius: 20,
-                            alignSelf: 'center',
                             position: 'absolute',
+                            width: '90%',
+                            alignSelf: 'center',
                             bottom: height/14
                         }}>
-                        <View 
+                        <View
                             style={{
-                                flex: 1,
-                                flexDirection: 'column'
+                                backgroundColor: 'white',
+                                borderRadius: 20,
+                                alignSelf: 'center',
                             }}>
                             <View 
                                 style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    paddingTop: 20,
-                                    paddingHorizontal: 20
+                                    flex: 1,
+                                    flexDirection: 'column'
                                 }}>
-                                <Text
+                                <View 
                                     style={{
-                                        fontSize: 24,
-                                        fontWeight: '600',
-                                        color: 'black'
-                                    }}>
-                                    {`Ссылка на ваш ${urlName}`}
-                                </Text>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        setModalVisible(false);
-                                    }}
-                                    style={{
-                                        borderRadius: 360,
-                                        backgroundColor: '#eff1f2',
-                                        alignSelf: 'flex-start',
-                                        padding: 2
-                                    }}>
-                                    <Icon 
-                                        name='close'
-                                        type='material'
-                                        size={27}
-                                        color='#818C99'/>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{paddingHorizontal: 20, paddingTop: 10}}>
-                                <CustomTextInput 
-                                    value={currentUrl}
-                                    changed={(text) => setCurrentUrl(text)}/>
-                            </View>
-                            <View
-                                style={{
-                                    justifyContent: 'center',
-                                }}>
-                                <View
-                                    style={{
-                                        paddingTop: 10,
-                                        paddingBottom: 10,
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        paddingTop: 20,
                                         paddingHorizontal: 20
                                     }}>
-                                    <TouchableOpacity 
-                                        style={[styles.button, {borderRadius: 10}]}
-                                        onPress={() => {
-                                            if (urlName == 'Instagram') {
-                                                if (urlValidator.validateInstagramUrl(currentUrl)) {
-                                                    setInstagramUrl(currentUrl);
-                                                    
-                                                    updateState([
-                                                        currentUrl,
-                                                        facebookUrl,
-                                                        vkUrl,
-                                                        tgUrl
-                                                    ]);
-                                                }
-                                            }
-
-                                            if (urlName == 'Facebook') {
-                                                if (urlValidator.validateFacebookUrl(currentUrl)) {
-                                                    setFacebookUrl(currentUrl);
-
-                                                    updateState([
-                                                        instagramUrl,
-                                                        currentUrl,
-                                                        vkUrl,
-                                                        tgUrl
-                                                    ]);
-                                                }
-                                            }
-
-                                            if (urlName == 'ВК') {
-                                                if (urlValidator.validateVkUrl(currentUrl)) {
-                                                    setVkUrl(currentUrl);
-
-                                                    updateState([
-                                                        instagramUrl,
-                                                        facebookUrl,
-                                                        currentUrl,
-                                                        tgUrl
-                                                    ]);
-                                                }
-                                            }
-
-                                            if (urlName == 'Telegram') {
-                                                if (urlValidator.validateTgUrl(currentUrl)) {
-                                                    setTgUrl(currentUrl);
-
-                                                    updateState([
-                                                        instagramUrl,
-                                                        facebookUrl,
-                                                        vkUrl,
-                                                        currentUrl
-                                                    ]);
-                                                }
-                                            }
-
-                                            setModalVisible(false);
+                                    <Text
+                                        style={{
+                                            fontSize: 24,
+                                            fontWeight: '600',
+                                            color: 'black'
                                         }}>
-                                        <Text style={styles.buttonText}>Сохранить</Text>
+                                        {`Ссылка на ваш ${urlName}`}
+                                    </Text>
+                                <TouchableOpacity
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                        }}
+                                        style={{
+                                            borderRadius: 360,
+                                            backgroundColor: '#eff1f2',
+                                            alignSelf: 'flex-start',
+                                            padding: 2
+                                        }}>
+                                        <Icon 
+                                            name='close'
+                                            type='material'
+                                            size={27}
+                                            color='#818C99'/>
                                     </TouchableOpacity>
+                                </View>
+                                <View style={{paddingHorizontal: 20, paddingTop: 10}}>
+                                    <CustomTextInput 
+                                        value={currentUrl}
+                                        changed={(text) => setCurrentUrl(text)}/>
+                                </View>
+                                <View
+                                    style={{
+                                        justifyContent: 'center',
+                                    }}>
+                                    <View
+                                        style={{
+                                            paddingTop: 10,
+                                            paddingBottom: 10,
+                                            paddingHorizontal: 20
+                                        }}>
+                                        <TouchableOpacity 
+                                            style={[styles.button, {borderRadius: 10}]}
+                                            onPress={() => {
+                                                if (urlName == 'Instagram') {
+                                                    if (urlValidator.validateInstagramUrl(currentUrl)) {
+                                                        setInstagramUrl(currentUrl);
+                                                    
+                                                        updateState([
+                                                            currentUrl,
+                                                            facebookUrl,
+                                                            vkUrl,
+                                                            tgUrl
+                                                        ]);
+                                                    }
+                                                }
+
+                                                if (urlName == 'Facebook') {
+                                                    if (urlValidator.validateFacebookUrl(currentUrl)) {
+                                                        setFacebookUrl(currentUrl);
+
+                                                        updateState([
+                                                            instagramUrl,
+                                                            currentUrl,
+                                                            vkUrl,
+                                                            tgUrl
+                                                        ]);
+                                                    }
+                                                }
+
+                                                if (urlName == 'ВК') {
+                                                    if (urlValidator.validateVkUrl(currentUrl)) {
+                                                        setVkUrl(currentUrl);
+
+                                                        updateState([
+                                                            instagramUrl,
+                                                            facebookUrl,
+                                                            currentUrl,
+                                                            tgUrl
+                                                        ]);
+                                                    }
+                                                }
+
+                                                if (urlName == 'Telegram') {
+                                                    if (urlValidator.validateTgUrl(currentUrl)) {
+                                                        setTgUrl(currentUrl);
+
+                                                        updateState([
+                                                            instagramUrl,
+                                                            facebookUrl,
+                                                            vkUrl,
+                                                            currentUrl
+                                                        ]);
+                                                    }
+                                                }
+
+                                                setModalVisible(false);
+                                            }}>
+                                            <Text style={styles.buttonText}>Сохранить</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
+                    </KeyboardAvoidingView>
                 </View>
             </Modal>
             <Text

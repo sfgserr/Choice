@@ -84,7 +84,7 @@ const changeData = async (data) => {
             'Authorization': `Bearer ${token.password}`
         }
     })
-    .then(async response => await response.json());
+    .then(async response => response.status);
 }
 
 const changeDataAdmin = async (data) => {
