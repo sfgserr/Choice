@@ -29,11 +29,15 @@ import categoryService from '../services/categoryService';
 import CustomTextInput from '../Components/CustomTextInput';
 import * as ImagePicker from 'react-native-image-picker';
 import blobService from '../services/blobService';
+import companyService from '../services/companyService';
+import ReviewPage from '../Components/ReviewPage';
+import CompanyPage from '../Components/CompanyPage';
 
 const ChatScreen = ({ navigation, route }) => {
     const { chatId } = route.params;
 
     const [refreshing, setRefreshing] = React.useState(false);
+    const [companyPageRefreshing, setCompanyPageRefreshing] = React.useState(false);
     const [fisrtImageUri, setFirstImageUri] = React.useState('');
     const [secondImageUri, setSecondImageUri] = React.useState('');
     const [thirdImageUri, setThirdImageUri] = React.useState('');
@@ -51,8 +55,11 @@ const ChatScreen = ({ navigation, route }) => {
     const [messages, setMessages] = React.useState([]);
     const [mockId, setMockId] = React.useState(-1);
     const [text, setText] = React.useState('');
+    const [company, setCompany] = React.useState('');
     const enrollmentDateRef = React.useRef(null);
     const reviewsModalRef = React.useRef(null);
+    const companyReviewModalRef = React.useRef(null);
+    const modalRef = React.useRef(null);
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const { width, height } = Dimensions.get('screen');
     const [id, setId] = React.useState(-1);
@@ -134,6 +141,21 @@ const ChatScreen = ({ navigation, route }) => {
             });
         }
     }
+
+    const onReviewPressed = () => {
+        modalRef.current?.close();
+
+        companyReviewModalRef.current.open();
+    }
+
+    const getCompany = React.useCallback(async (companyId) => {
+        setCompanyPageRefreshing(true);
+
+        let company = await companyService.getCompany(companyId);
+        setCompany(company);
+
+        setCompanyPageRefreshing(false);
+    }, [])
 
     React.useEffect(() => {
         DeviceEventEmitter.addListener('messageReceived', handleMessage);
@@ -279,6 +301,110 @@ const ChatScreen = ({ navigation, route }) => {
                 justifyContent: 'center', 
                 backgroundColor: '#F4F5FF'
             }}>
+            <Modalize
+                adjustToContentHeight={true}
+                childrenStyle={{height: '100%'}}
+                ref={companyReviewModalRef}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10,
+                            paddingHorizontal: 10
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontWeight: '600',
+                                fontSize: 21
+                            }}>
+                            Отзывы
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => companyReviewModalRef.current?.close()}
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}>
+                            <Icon 
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>    
+                    </View>
+                    <ReviewPage
+                        company={company}/>
+                </View>
+            </Modalize>
+            <Modalize 
+                ref={modalRef}
+                adjustToContentHeight={true}
+                scrollViewProps={{nestedScrollEnabled: false, scrollEnabled: false}}
+                childrenStyle={{height: '100%'}}>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10
+                    }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingTop: 10
+                        }}>
+                        <Text></Text>
+                        <Text
+                            style={{
+                                color: 'black',
+                                fontWeight: '600',
+                                fontSize: 21
+                            }}>
+                            Компания
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => modalRef.current?.close()}
+                            style={{
+                                borderRadius: 360,
+                                backgroundColor: '#eff1f2',
+                            }}>
+                            <Icon 
+                                name='close'
+                                type='material'
+                                size={27}
+                                color='#818C99'/>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            paddingTop: 10
+                        }}>
+                        {
+                            refreshing ?
+                            <>
+                                <RefreshControl
+                                    refreshing={companyPageRefreshing}
+                                    onRefresh={getCompany}/>
+                            </>
+                            :
+                            <>
+                                <CompanyPage
+                                    navigation={navigation}
+                                    onReviewPressed={onReviewPressed}
+                                    company={company}
+                                    order={''}/>
+                            </>
+                        }    
+                    </View>
+                </View>
+            </Modalize>
             <Modalize
                 ref={reviewsModalRef}
                 adjustToContentHeight
@@ -544,13 +670,18 @@ const ChatScreen = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modalize>
-            <View
+            <TouchableOpacity
+                disabled={userStore.getUserType() == 2}
                 style={{
                     top: 0,
                     width,
                     position: messages.length > 0 ? 'relative' : 'absolute',
                     backgroundColor: 'white',
                     justifyContent: 'center'
+                }}
+                onPress={async () => {
+                    await getCompany(chat.guid);
+                    modalRef.current.open();
                 }}>
                 <View
                     style={{
@@ -600,7 +731,7 @@ const ChatScreen = ({ navigation, route }) => {
                         }}
                         source={{uri: `${env.api_url}/api/objects/${chat.iconUri}`}}/>    
                 </View>
-            </View>
+            </TouchableOpacity>
             {messages.length > 0 ?
             <>
                 <FlatList
