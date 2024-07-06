@@ -36,7 +36,7 @@ string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
 var credentials = Credentials.FromApiKeyAndSecret(apiKey, apiSecret);
 
-builder.Services.AddSingleton<IVerificationService, VerificationService>();
+builder.Services.AddScoped<IVerificationService, VerificationService>();
 builder.Services.AddVonageClientScoped(credentials);
 
 builder.Services.AddMassTransit(config =>
