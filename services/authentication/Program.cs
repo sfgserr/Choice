@@ -32,7 +32,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
 string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
-builder.Services.AddScoped<IVerificationService, VerificationService>();
+builder.Services.AddScoped<IVerificationService, VerificationService>(c => 
+    new(new(apiKey, apiSecret), c.GetRequiredService<IHttpClientFactory>()));
 builder.Services.AddHttpClient("Sms", o =>
 {
     o.BaseAddress = new("https://rest.nexmo.com/sms/json");
