@@ -12,6 +12,7 @@ using Choice.Authentication.Api.Models;
 using Authentication.Api.Consumers;
 using Vonage.Request;
 using Authentication.Api.Services;
+using Vonage.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,12 +34,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
 string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
-builder.Services.AddSingleton<IVerificationService>(c =>
-{
-    var credentials = Credentials.FromApiKeyAndSecret(apiKey, apiSecret);
+var credentials = Credentials.FromApiKeyAndSecret(apiKey, apiSecret);
 
-    return new VerificationService(new(credentials));
-});
+builder.Services.AddSingleton<IVerificationService, VerificationService>();
+builder.Services.AddVonageClientScoped(credentials);
 
 builder.Services.AddMassTransit(config =>
 {

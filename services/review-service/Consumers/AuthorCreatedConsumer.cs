@@ -18,7 +18,7 @@ namespace Choice.ReviewService.Api.Consumers
         {
             UserCreatedEvent @event = context.Message;
 
-            Author author = new(@event.UserGuid, @event.Name, "defaulturi");
+            Author author = new(@event.UserGuid, @event.Name, "defaulturi-png");
 
             await _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();

@@ -17,7 +17,7 @@ namespace Choice.Chat.Api.Consumers
         {
             UserCreatedEvent @event = context.Message;
 
-            await _repository.Add(new(@event.UserGuid, @event.Name, "defaulturi"));
+            await _repository.Add(new(@event.UserGuid, @event.Name, "defaulturi-png"));
         }
     }
 }

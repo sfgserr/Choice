@@ -23,7 +23,7 @@ namespace Choice.CompanyService.Api.Entities
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
         public string SiteUrl { get; private set; } = string.Empty;
-        public string IconUri { get; private set; } = "defaulturi";
+        public string IconUri { get; private set; } = "defaulturi-png";
         public Address Address { get; private set; }
         public string Coordinates { get; private set; }
         public string Description { get; private set; } = string.Empty;

@@ -38,7 +38,7 @@ namespace Choice.ClientService.Api.Consumers
                      @event.Email,
                      address,
                      coords,
-                     "defaulturi",
+                     "defaulturi-png",
                      @event.PhoneNumber);
 
                 await _repository.Add(client);
