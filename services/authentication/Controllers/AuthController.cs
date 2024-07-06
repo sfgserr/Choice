@@ -1,4 +1,5 @@
-﻿using Choice.Authentication.Api.Models;
+﻿using Authentication.Api.Services;
+using Choice.Authentication.Api.Models;
 using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
 using MassTransit;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-using Twilio.Rest.Verify.V2.Service;
 
 namespace Choice.Authentication.Api.Controllers
 {
@@ -19,14 +19,16 @@ namespace Choice.Authentication.Api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IPublishEndpoint _endPoint;
         private readonly IConfiguration _configuration;
+        private readonly IVerificationService _verificationService;
 
-        public AuthController(ITokenService tokenService, UserManager<User> userManager, IConfiguration configuration, 
-            IPublishEndpoint endPoint)
+        public AuthController(ITokenService tokenService, UserManager<User> userManager, IConfiguration configuration,
+            IPublishEndpoint endPoint, IVerificationService verificationService)
         {
             _tokenService = tokenService;
             _userManager = userManager;
             _configuration = configuration;
             _endPoint = endPoint;
+            _verificationService = verificationService;
         }
 
         [HttpPut("ChangePassword")]
@@ -93,27 +95,17 @@ namespace Choice.Authentication.Api.Controllers
             if (user == null)
                 return NotFound();
 
-            string serviceId = _configuration["TwilioSettings:ServiceId"];
+            await _verificationService.SendCode(phone);
 
-            var verification = VerificationResource.Create(
-                to: $"+{phone}",
-                channel: "sms",
-                pathServiceSid: serviceId);
-
-            return verification.Status == "pending" ? Ok() : BadRequest();
+            return Ok();
         }
 
         [HttpPost("Verify")]
         public async Task<IActionResult> VerifyCode(string phone, string code)
         {
-            string serviceId = _configuration["TwilioSettings:ServiceId"];
+            bool isVerified = _verificationService.VerifyCode(phone, code);
 
-            var verificationCheck = VerificationCheckResource.Create(
-                to: $"+{phone}",
-                code: code,
-                pathServiceSid: serviceId);
-
-            if (verificationCheck.Status == "approved")
+            if (isVerified)
             {
                 User user = (await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phone))!;
 

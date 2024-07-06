@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using MassTransit;
 using Choice.EventBus.Messages.Common;
 using Choice.Authentication.Api.Consumers;
-using Microsoft.Identity.Client;
-using Twilio;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Authentication.Api.Models;
 using Authentication.Api.Consumers;
+using Vonage.Request;
+using Authentication.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,10 +30,15 @@ builder.Services.AddIdentityCore<User>(options =>
 .AddEntityFrameworkStores<UserContext>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-string accountSid = builder.Configuration["TwilioSettings:AccountSid"];
-string authToken = builder.Configuration["TwilioSettings:AuthToken"];
+string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
+string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
-TwilioClient.Init(accountSid, authToken);
+builder.Services.AddSingleton<IVerificationService>(c =>
+{
+    var credentials = Credentials.FromApiKeyAndSecret(apiKey, apiSecret);
+
+    return new VerificationService(new(credentials));
+});
 
 builder.Services.AddMassTransit(config =>
 {
