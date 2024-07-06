@@ -2,7 +2,7 @@
 {
     public interface IVerificationService
     {
-        Task SendCode(string phone);
+        Task<bool> SendCode(string phone);
 
         bool VerifyCode(string phone, string code);
     }

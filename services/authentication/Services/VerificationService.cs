@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Vonage;
 
 namespace Authentication.Api.Services
 {
@@ -7,30 +6,49 @@ namespace Authentication.Api.Services
     {
         private readonly Dictionary<string, string> _verificationResources = [];
 
-        private readonly VonageClient _vonageClient;
+        private readonly VerificationOptions _options;
+        private readonly HttpClient _httpClient;
 
-        public VerificationService(VonageClient vonageClient)
+        public VerificationService(VerificationOptions options, IHttpClientFactory httpClientFactory)
         {
-            _vonageClient = vonageClient;
+            _options = options;
+            _httpClient = httpClientFactory.CreateClient("Sms");
         }
 
-        public async Task SendCode(string phone)
+        public async Task<bool> SendCode(string phone)
         {
             string code = GenerateCode();
 
-            await _vonageClient.SmsClient.SendAnSmsAsync(new()
-            {
-                To = phone,
-                From = "Выбор",
-                Text = code
-            });
+            HttpRequestMessage request = new(
+                HttpMethod.Post, 
+                $"api_key=${_options.ApiKey}&api_secret=${_options.ApiSecret}&to=${phone}&text=${code}&type=text&from=Vybor");
 
-            _verificationResources.Add(phone, code);
+            var result = await _httpClient.SendAsync(request);
+
+            if (result.IsSuccessStatusCode)
+            {
+                bool isAdd = _verificationResources.TryAdd(phone, code);
+
+                return isAdd;
+            }
+
+            return false;
         }
 
         public bool VerifyCode(string phone, string code)
         {
-            return _verificationResources[phone] == code;
+            if (_verificationResources.ContainsKey(phone))
+            {
+                return false;
+            }
+
+            if (_verificationResources[phone] == code)
+            {
+                _verificationResources.Remove(phone);
+                return true;
+            }
+
+            return false;
         }
 
         private string GenerateCode()
@@ -39,13 +57,14 @@ namespace Authentication.Api.Services
 
             var stringBuilder = new StringBuilder();
 
-            while (_verificationResources.ContainsValue(stringBuilder.ToString()))
+            do
             {
                 stringBuilder.Clear();
 
                 for (int i = 0; i < 6; i++)
                     stringBuilder.Append(random.Next(1, 10));
             }
+            while (_verificationResources.ContainsValue(stringBuilder.ToString()));
 
             return stringBuilder.ToString();
         }

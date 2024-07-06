@@ -10,9 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Choice.Authentication.Api.Models;
 using Authentication.Api.Consumers;
-using Vonage.Request;
 using Authentication.Api.Services;
-using Vonage.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,10 +32,11 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
 string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
-var credentials = Credentials.FromApiKeyAndSecret(apiKey, apiSecret);
-
 builder.Services.AddScoped<IVerificationService, VerificationService>();
-builder.Services.AddVonageClientScoped(credentials);
+builder.Services.AddHttpClient("Sms", o =>
+{
+    o.BaseAddress = new("https://rest.nexmo.com/sms/json");
+});
 
 builder.Services.AddMassTransit(config =>
 {
