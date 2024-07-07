@@ -21,6 +21,7 @@ import Category from "../Components/Category";
 import clientService from "../services/clientService";
 import blobService from "../services/blobService";
 import CustomTextInput from "../Components/CustomTextInput";
+import Voice from '@react-native-voice/voice'
 
 const OrderRequestCreationScreen = ({ navigation, route }) => {
     const modalRef = useRef(null);
@@ -65,6 +66,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     const [radius, setRadius] = React.useState(10);
     const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
     const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
+    const [isRecording, setIsRecording] = React.useState(false);
 
     const selectCategory = (newCategory) => {
         if (newCategory.track) {
@@ -79,6 +81,24 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                 thirdImageUri
             });
         }
+    }
+
+    React.useEffect(() => {
+        Voice.onSpeechEnd = onSpeechEnd;
+        Voice.onSpeechResults = onSpeechResults;
+
+        return () => {
+            Voice.destroy().then(Voice.removeAllListeners);
+        };
+    }, []);
+
+    const onSpeechEnd = (e) => {
+        console.log(e);
+        setIsRecording(false);
+    } 
+
+    const onSpeechResults = (e) => {
+        setDescription(e.value);
     }
 
     return (
@@ -309,13 +329,55 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                             big
                             placeholder="Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат"/>
                 </View>
-                <View style={{paddingTop: 10}}>
-                    <TouchableOpacity style={{backgroundColor: '#F2F3F5', height: height/18, borderRadius: 10, justifyContent: 'center'}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                            <Icon name='mic'
-                                 type='material'
-                                 color='#3F8AE0'/>
-                            <Text style={{color: '#2688EB', fontSize: 17, fontWeight: '500', alignSelf: 'center'}}>Записать голосом</Text>
+                <View 
+                    style={{paddingTop: 10}}>
+                    <TouchableOpacity 
+                        style={{
+                            backgroundColor: '#F2F3F5', 
+                            height: height/18, 
+                            borderRadius: 10, 
+                            justifyContent: 'center'
+                        }}
+                        onPress={() => {
+                            setIsRecording(prev => {
+                                if (prev) {
+                                    Voice.stop();
+                                }
+                                else {
+                                    Voice.start('ru');
+                                }
+
+                                return !prev;
+                            });
+                        }}>
+                        <View 
+                            style={{
+                                flexDirection: 'row', 
+                                justifyContent: 'center'
+                            }}>
+                            {isRecording ?
+                            <>
+                                <Icon
+                                    type="material"
+                                    name="stop-circle"
+                                    color="#3F8AE0"/>
+                            </>
+                            :
+                            <>
+                                <Icon 
+                                    name='mic'
+                                    type='material'
+                                    color='#3F8AE0'/>
+                                <Text 
+                                    style={{
+                                        color: '#2688EB', 
+                                        fontSize: 17, 
+                                        fontWeight: '500', 
+                                        alignSelf: 'center'
+                                    }}>
+                                    Записать голосом
+                                </Text>
+                            </>}
                         </View>
                     </TouchableOpacity>
                 </View>

@@ -234,6 +234,26 @@ const EditCategoryScreen = ({navigation, route}) => {
                             Сохранить изменения
                         </Text>
                     </TouchableOpacity>
+                    <View
+                        style={{
+                            paddingTop: 10
+                        }}>
+                        <TouchableOpacity
+                            style={[styles.button, {
+                                backgroundColor: '#0000000D'
+                            }]}
+                            onPress={async () => {
+                                await categoryService.remove(category.id);
+                                navigation.goBack();
+                            }}>
+                            <Text
+                                style={[styles.buttonText,{
+                                    color: '#EB2626'
+                                }]}>
+                                Удалить категорию
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </KeyboardAvoidingView>
             </>
             :
