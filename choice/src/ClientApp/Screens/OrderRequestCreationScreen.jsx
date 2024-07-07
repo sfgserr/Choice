@@ -98,7 +98,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
 
     const onSpeechResults = (e) => {
         console.log(e);
-        setDescription(e.value);
+        setDescription(e.value[0]);
     }
 
     return (
