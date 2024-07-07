@@ -344,7 +344,7 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
                                     Voice.stop();
                                 }
                                 else {
-                                    Voice.start('ru');
+                                    Voice.start('ru-RU');
                                 }
 
                                 return !prev;
