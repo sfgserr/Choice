@@ -27,7 +27,6 @@ export default function AccountScreen({ navigation }) {
     const { signOut } = React.useContext(AuthContext);
 
     const { width, height } =  Dimensions.get('screen');
-
     const [iconUri, setIconUri] = React.useState(`${env.api_url}/api/objects/${user.iconUri}`);
     const [disable, setDisable] = React.useState(true);
     const [email, setEmail] = React.useState(user.email);

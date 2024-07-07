@@ -93,11 +93,11 @@ const OrderRequestCreationScreen = ({ navigation, route }) => {
     }, []);
 
     const onSpeechEnd = (e) => {
-        console.log(e);
         setIsRecording(false);
     } 
 
     const onSpeechResults = (e) => {
+        console.log(e);
         setDescription(e.value);
     }
 

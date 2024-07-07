@@ -13,7 +13,7 @@ namespace Choice.Chat.Api.Infrastructure.Data
                    .HasData(new
                    {
                        Guid = UserGuid,
-                       IconUri = "defaulturi",
+                       IconUri = "defaulturi-png",
                        Name = "Makar_Cheban",
                        Status = UserStatus.Offline,
                        LastTimeOnline = DateTime.Now,

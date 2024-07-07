@@ -14,7 +14,7 @@ namespace ReviewService.Api.Infrastructure.Data
                    {
                        Guid = DefaultClientGuid,
                        Name = "Макар Чебан",
-                       IconUri = "defaulturi",
+                       IconUri = "defaulturi-png",
                        IsDeleted = false,
                    });
         }

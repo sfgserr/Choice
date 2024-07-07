@@ -20,7 +20,7 @@ namespace Choice.ClientService.Infrastructure.Data
                     Name = "Makar",
                     Surname = "Cheban",
                     Email = "dead01r@gmail.com",
-                    IconUri = "defaulturi",
+                    IconUri = "defaulturi-png",
                     PhoneNumber = "37377875397",
                     AverageGrade = (double)0,
                     ReviewCount = 0,
