@@ -122,10 +122,29 @@ const changePassword = async (currentPassword, newPassword) => {
     });
 }
 
+const resetPassword = async (email) => {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.auth_url}/api/Auth/ResetPassword?email=${email}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.password}`
+        }
+    })
+    .then(res => {
+        return res.status;
+    })
+    .catch(error => {
+    });
+}
+
 export default {
     loginByEmail,
     loginByPhone,
     verifyCode,
     changePassword,
-    register
+    register,
+    resetPassword
 }

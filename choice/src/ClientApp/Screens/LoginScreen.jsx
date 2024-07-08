@@ -169,6 +169,27 @@ export default function LoginScreen({ navigation, route }) {
                                  <item.screen navigation={navigation} signIn={signIn}/>
                                </View>
                             }}/>
+            <View
+                style={{
+                    paddingTop: 30
+                }}>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: 'transparent',
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => navigation.navigate('ResetPassword')}>
+                    <Text
+                        style={{
+                            color: '#2D81E0',
+                            fontSize: 16,
+                            fontWeight: '400',
+                            alignSelf: 'center'
+                        }}>
+                        Я забыл пароль
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     )
 }

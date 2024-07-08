@@ -21,8 +21,10 @@ const uploadImage = async (filePath) => {
 
     return await fetch(`${env.api_url}/api/objects/${fileName}`, {
         method: 'POST',
-        body: JSON.stringify(buffer),
-        'Content-Type': 'application/octet-stream'
+        body: buffer,
+        headers: {
+            'Content-Type':'application/octet-stream'
+        }
     })
     .then(async response => { 
         console.log(response.status);
