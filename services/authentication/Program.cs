@@ -34,6 +34,7 @@ string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
 builder.Services.AddScoped<IPhoneVerificationService, PhoneVerificationService>(c => 
     new(new(apiKey, apiSecret), c.GetRequiredService<IHttpClientFactory>()));
+builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 builder.Services.AddHttpClient("Sms", o =>
 {
     o.BaseAddress = new("https://rest.nexmo.com/sms/json");
