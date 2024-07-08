@@ -30,7 +30,7 @@ namespace FileObjectApi.Controllers
         }
 
         [HttpPost("{fileName}")]
-        public async Task<IActionResult> Upload(string fileName, [FromBody] IFormFile file)
+        public async Task<IActionResult> Upload(string fileName, [FromForm] IFormFile file)
         {
             string path = $"{_path}/{fileName}";
 

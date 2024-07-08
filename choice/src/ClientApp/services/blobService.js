@@ -13,17 +13,19 @@ const uploadImage = async (filePath) => {
     const fileNameAndExtension = directories[directories.length-1].split('.');
     const buffer = toByteArray(data);
 
-    if (buffer.length > 150000 || (fileNameAndExtension[1] != 'png' && fileNameAndExtension[1] != 'jpg')) {
+    if (buffer.length > 2000000 || (fileNameAndExtension[1] != 'png' && fileNameAndExtension[1] != 'jpg')) {
         return 0;
     }
 
     const fileName = `${fileNameAndExtension[0]}-${fileNameAndExtension[1]}`;
 
+    const formData = new FormData(buffer);
+    
     return await fetch(`${env.api_url}/api/objects/${fileName}`, {
         method: 'POST',
-        body: buffer,
+        body: formData,
         headers: {
-            'Content-Type':'application/octet-stream'
+            'Content-Type':'multipart/form-data'
         }
     })
     .then(async response => { 
