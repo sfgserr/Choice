@@ -11,7 +11,7 @@ import styles from "../Styles";
 import env from "../env";
 import userStore from "../services/userStore";
 
-const CompanyRequestCard = ({orderRequest, navigation, button}) => {
+const CompanyRequestCard = ({orderRequest, navigation, button, onPress}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
 
     return (
@@ -214,12 +214,13 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                         backgroundColor: '#f0f0f0'
                     }}/>
             </View>
-            <View
+            <TouchableOpacity
                 style={{
                     paddingTop: 10,
                     paddingBottom: 5,
                     flexDirection: 'row'
-                }}>
+                }}
+                onPress={() => onPress(orderRequest.client)}>
                 <Image
                     source={{uri: `${env.api_url}/api/objects/${orderRequest.client.iconUri}`}}
                     style={{
@@ -280,7 +281,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button}) => {
                         {`Совершенно заказов: ${orderRequest.client.finishedOrdersCount}`}
                     </Text>
                 </View>    
-            </View>
+            </TouchableOpacity>
             {
                 button ?
                 <>

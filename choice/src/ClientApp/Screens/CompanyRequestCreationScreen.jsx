@@ -386,7 +386,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
 
                                     let number = new Number(text);
 
-                                    let error = number > 500000 || number < 1000;
+                                    let error = number > 500000 || number < 100;
                                     let prepaymentError = prepayment < number*0.1 || prepayment > number*0.25;
 
                                     setCostError(error);

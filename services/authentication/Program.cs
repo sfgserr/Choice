@@ -32,7 +32,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
 string apiSecret = builder.Configuration["VonageSettings:ApiSecret"]!;
 
-builder.Services.AddScoped<IVerificationService, VerificationService>(c => 
+builder.Services.AddScoped<IPhoneVerificationService, PhoneVerificationService>(c => 
     new(new(apiKey, apiSecret), c.GetRequiredService<IHttpClientFactory>()));
 builder.Services.AddHttpClient("Sms", o =>
 {
@@ -81,6 +81,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerKey))
         };
     });
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("PasswordReset", b =>
+    {
+        b.RequireClaim("onlyForPasswordReset");
+    });
+});
 
 var app = builder.Build();
 

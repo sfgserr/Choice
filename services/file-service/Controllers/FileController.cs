@@ -30,17 +30,19 @@ namespace FileObjectApi.Controllers
         }
 
         [HttpPost("{fileName}")]
-        public async Task<IActionResult> Upload(string fileName)
+        public async Task<IActionResult> Upload(string fileName, [FromBody] IFormFile file)
         {
-            byte[] data = new byte[150000];
-
-            await HttpContext.Request.Body.ReadAsync(data);
-
             string path = $"{_path}/{fileName}";
 
-            if (!System.IO.File.Exists(path))
+            using var stream = new MemoryStream();
+
+            using var fs = new FileStream(path, FileMode.Create);
+
+            await file.CopyToAsync(stream);
+
+            if (stream.Length <= 2097152)
             {
-                await System.IO.File.WriteAllBytesAsync(path, data);
+                stream.WriteTo(fs);
                 return Ok();
             }
 

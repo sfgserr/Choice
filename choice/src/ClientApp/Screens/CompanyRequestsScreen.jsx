@@ -14,10 +14,14 @@ import categoryStore from "../services/categoryStore";
 import { useIsFocused } from '@react-navigation/native';
 import { Icon } from "react-native-elements";
 import styles from "../Styles";
+import ClientModal from "../Components/ClientModal";
+import { Modalize } from "react-native-modalize";
 
 const CompanyRequestsScreen = ({navigation}) => {
     const [requests, setRequests] = React.useState([]);
     const [refreshing, setRefreshing] = React.useState(false);
+    const [client, setClient] = React.useState();
+    const modalRef = React.useRef(null);
 
     let user = userStore.get();
 
@@ -30,7 +34,7 @@ const CompanyRequestsScreen = ({navigation}) => {
         await categoryStore.retrieveData();
 
         setRequests(fetchedRequests);
-        console.log(fetchedRequests);
+
         setRefreshing(false);
     }, []);
 
@@ -44,6 +48,14 @@ const CompanyRequestsScreen = ({navigation}) => {
                 flex: 1,
                 backgroundColor: 'white'
             }}>
+            <Modalize
+                ref={modalRef}
+                adjustToContentHeight={true}
+                childrenStyle={{height: '100%'}}>
+                <ClientModal
+                    client={client}
+                    close={() => modalRef.current.close()}/>
+            </Modalize>
             <Text
                 style={{
                     color: 'black',
@@ -72,6 +84,10 @@ const CompanyRequestsScreen = ({navigation}) => {
                                     <CompanyRequestCard 
                                         orderRequest={item}
                                         navigation={navigation}
+                                        onPress={(client) => {
+                                            setClient(client);
+                                            modalRef.current?.open()
+                                        }}
                                         button={true}/>
                                 </View>
                             )

@@ -11,13 +11,15 @@ import env from "../env";
 import { FlatList } from "react-native-actions-sheet";
 import Review from "./Review";
 
-const ReviewPage = ({company}) => {
+const ReviewPage = ({user, companyReviews}) => {
     const [reviews, setReviews] = React.useState([]);
+
+    const isCompany = companyReviews == undefined ? true : companyReviews;
 
     const isFocused = useIsFocused();
 
     const retrieveData = React.useCallback(async () => {
-        let reviews = await reviewService.get(company.guid);
+        let reviews = await reviewService.get(user.guid);
         console.log(reviews);
         setReviews(reviews);
     }, []);
@@ -40,7 +42,7 @@ const ReviewPage = ({company}) => {
                     paddingHorizontal: 10
                 }}>
                 <Image
-                    source={{uri: `${env.api_url}/api/objects/${company.iconUri}`}}
+                    source={{uri: `${env.api_url}/api/objects/${user.iconUri}`}}
                     style={{
                         width: 45,
                         height: 45,
@@ -66,26 +68,32 @@ const ReviewPage = ({company}) => {
                                 fontWeight: '600',
                                 fontSize: 16
                             }}>
-                            {company.title}
+                            {isCompany ? user.title : `${user.surname} ${user.name}`}
                         </Text>
-                        <View
-                            style={{
-                                flexDirection: 'row'
-                            }}>
-                            <Icon
-                                type='material'
-                                name='near-me'
-                                color='#99A2AD'
-                                size={20}/>
-                            <Text
+                        {isCompany ?
+                        <>
+                            <View
                                 style={{
-                                    color: '#99A2AD',
-                                    fontSize: 13,
-                                    fontWeight: '400'
+                                    flexDirection: 'row'
                                 }}>
-                                {`${company.distance} м от Вас`}
-                            </Text>
-                        </View>    
+                                <Icon
+                                    type='material'
+                                    name='near-me'
+                                    color='#99A2AD'
+                                    size={20}/>
+                                <Text
+                                    style={{
+                                        color: '#99A2AD',
+                                        fontSize: 13,
+                                        fontWeight: '400'
+                                    }}>
+                                    {`${user.distance} м от Вас`}
+                                </Text>
+                            </View> 
+                        </>
+                        :
+                        <>
+                        </>}   
                     </View>
                     <Text
                         style={{
@@ -93,7 +101,7 @@ const ReviewPage = ({company}) => {
                             fontWeight: '400',
                             fontSize: 14
                         }}>
-                        {`${company.address.city}, ${company.address.street}`}
+                        {`${user.address.city}, ${user.address.street}`}
                     </Text>
                 </View>
             </View>

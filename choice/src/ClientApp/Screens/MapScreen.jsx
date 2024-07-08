@@ -217,7 +217,7 @@ export default function MapScreen({ navigation, route }) {
                         </TouchableOpacity>    
                     </View>
                     <ReviewPage
-                        company={company}/>
+                        user={company}/>
                 </View>
             </Modalize>
             <Modalize 

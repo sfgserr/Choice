@@ -19,20 +19,60 @@ namespace Choice.Authentication.Api.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IPublishEndpoint _endPoint;
         private readonly IConfiguration _configuration;
-        private readonly IVerificationService _verificationService;
+        private readonly IPhoneVerificationService _verificationService;
+        private readonly IEmailVerificationService _emailVerificationService;
 
         public AuthController(ITokenService tokenService, UserManager<User> userManager, IConfiguration configuration,
-            IPublishEndpoint endPoint, IVerificationService verificationService)
+            IPublishEndpoint endPoint, IPhoneVerificationService verificationService, IEmailVerificationService emailVerificationService)
         {
             _tokenService = tokenService;
             _userManager = userManager;
             _configuration = configuration;
             _endPoint = endPoint;
             _verificationService = verificationService;
+            _emailVerificationService = emailVerificationService;
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string email)
+        {
+            User? user = await _userManager.FindByEmailAsync(email);
+
+            if (user is not null)
+            {
+                await _emailVerificationService.SendCode(email);
+
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost("VerifyPasswordReset")]
+        public async Task<IActionResult> VerifyPasswordReset(string email, string code)
+        {
+            User? user = await _userManager.FindByEmailAsync(email);
+
+            if (user is not null)
+            {
+                bool isVerified = _emailVerificationService.VerifyCode(email, code);
+
+                if (isVerified)
+                    return Ok(_tokenService.GenerateToken(
+                        user.Id,
+                        _configuration["JwtSettings:Key"]!,
+                        _configuration["JwtSettings:Issuer"]!,
+                        _configuration["JwtSettings:Audience"]!));
+
+                return Unauthorized();
+            }
+
+            return NotFound();
         }
 
         [HttpPut("ChangePassword")]
         [Authorize]
+        [Authorize("PasswordReset")]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
         {
             string id = HttpContext.User.FindFirst("id")?.Value!;

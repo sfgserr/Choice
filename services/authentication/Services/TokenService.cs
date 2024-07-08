@@ -35,5 +35,28 @@ namespace Choice.Authentication.Api.Services
 
             return tokenHandler.WriteToken(token);
         }
+
+        public string GenerateToken(string userId, string key, string issuer, string audience)
+        {
+            JwtSecurityTokenHandler tokenHandler = new();
+            byte[] tokenKey = Encoding.UTF8.GetBytes(key);
+
+            var securityTokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Expires = DateTime.Now.AddDays(2),
+                Issuer = issuer,
+                Audience = audience,
+                Claims = new Dictionary<string, object>()
+                {
+                    ["id"] = userId,
+                    ["onlyForPasswordReset"] = true
+                },
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(securityTokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
     }
 }

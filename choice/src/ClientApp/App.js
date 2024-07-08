@@ -125,7 +125,7 @@ function CompanyTab() {
       tabBarLabel: getTabLabel(route.name)
   })}>
       <Tab.Screen name="Order"
-                  component={CompanyRequestsScreen}
+                  component={gestureHandlerRootHOC(CompanyRequestsScreen)}
                   options={{headerShown: false}}/>
       <Tab.Screen name="Chats"
                   component={ChatsScreen}
