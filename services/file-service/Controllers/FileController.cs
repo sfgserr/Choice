@@ -36,7 +36,7 @@ namespace FileObjectApi.Controllers
         {
             string path = $"{_path}/{fileName}";
 
-            if (HttpContext.Request.ContentLength > _maxFileSize)
+            if (HttpContext.Request.ContentLength <= _maxFileSize)
             {
                 byte[] data = new byte[(int)HttpContext.Request.ContentLength];
 
