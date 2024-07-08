@@ -19,19 +19,10 @@ const uploadImage = async (filePath) => {
 
     const fileName = `${fileNameAndExtension[0]}-${fileNameAndExtension[1]}`;
 
-    let formData = new FormData();
-    
-    const newImageUri =  "file:///" + filePath.split("file:/").join("");
-
-    formData.append('file', filePath);
-
-    let s = formData.getAll('file');
-
-    console.log(s);
-
     return await fetch(`${env.api_url}/api/objects/${fileName}`, {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify(buffer),
+        'Content-Type': 'application/octet-stream'
     })
     .then(async response => { 
         console.log(response.status);

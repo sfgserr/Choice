@@ -6,6 +6,8 @@ namespace FileObjectApi.Controllers
     [ApiController]
     public class FileController : Controller
     {
+        private const long _maxFileSize = 1024*1024*2;
+
         private readonly string _path;
 
         public FileController(IConfiguration configuration)
@@ -34,14 +36,17 @@ namespace FileObjectApi.Controllers
         {
             string path = $"{_path}/{fileName}";
 
-            byte[] data = new byte[2097152];
-
-            await HttpContext.Request.Body.ReadAsync(data);
-
-            if (!System.IO.File.Exists(path))
+            if (HttpContext.Request.Body.Length > _maxFileSize)
             {
-                await System.IO.File.WriteAllBytesAsync(path, data);
-                return Ok();
+                byte[] data = new byte[HttpContext.Request.Body.Length];
+
+                await HttpContext.Request.Body.ReadAsync(data);
+
+                if (!System.IO.File.Exists(path))
+                {
+                    await System.IO.File.WriteAllBytesAsync(path, data);
+                    return Ok();
+                }
             }
 
             return BadRequest();

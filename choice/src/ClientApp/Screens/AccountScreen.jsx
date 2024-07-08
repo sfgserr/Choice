@@ -36,7 +36,7 @@ export default function AccountScreen({ navigation }) {
     const [address, setAddress] = React.useState(`${user.city},${user.street}`);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [refreshing, setRefreshing] = React.useState(false);
-
+    console.log(user);
     const addImage = async () => {
         let response = await ImagePicker.launchImageLibrary();
         
