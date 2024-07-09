@@ -40,7 +40,7 @@ namespace Authentication.Api.Identity
                 var jwtToken = handler.ReadJwtToken(token);
                 var id = jwtToken.Claims.FirstOrDefault(c => c.ValueType == "id");
 
-                return Task.FromResult(id is not null);
+                return Task.FromResult(id is not null && id.Value == user.Id);
             }
 
             return Task.FromResult(false);

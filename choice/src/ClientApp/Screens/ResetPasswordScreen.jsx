@@ -132,7 +132,6 @@ const ResetPasswordScreen = ({navigation}) => {
                             let result = await authService.verifyPasswordReset(email, code);
                             
                             if (result[0] == 200) {
-                                console.log(result[1]);
                                 setCode('');
                                 setEmail('');
                                 setIsCodeSent(false);

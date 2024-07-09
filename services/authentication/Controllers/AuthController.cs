@@ -73,9 +73,10 @@ namespace Choice.Authentication.Api.Controllers
 
         [Authorize]
         [HttpPut("SetNewPassword")]
-        public async Task<IActionResult> SetNewPassword(string password, string token)
+        public async Task<IActionResult> SetNewPassword(string password)
         {
             string id = HttpContext.User.FindFirst("id")?.Value!;
+            string token = HttpContext.Request.Headers.Authorization!.ToString().Replace("Bearer", "").Trim();
 
             User? user = await _userManager.FindByIdAsync(id);
 

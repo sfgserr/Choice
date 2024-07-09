@@ -7,7 +7,8 @@ import {
 import styles from "../Styles";
 import { Icon } from "react-native-elements";
 
-const PasswordBox = ({value, changed, error}) => {
+const PasswordBox = ({value, changed, placeholder, error}) => {
+    placeholder = placeholder == undefined ? 'Пароль' : placeholder;
     error = error == undefined ? false : error;
 
     const [hidden, setHidden] = React.useState(true);
@@ -24,7 +25,7 @@ const PasswordBox = ({value, changed, error}) => {
                     alignSelf: 'center'
                 }]}
                 secureTextEntry={hidden}
-                placeholder={'Пароль'}
+                placeholder={placeholder}
                 value={value}
                 onChangeText={(v) => changed(v)}
                 onFocus={(e) => setIsFocused(true)}
