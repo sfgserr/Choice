@@ -23,6 +23,8 @@ namespace Authentication.Api.Services
 
             await client.ConnectAsync("smtp.gmail.com", 587);
 
+            await client.AuthenticateAsync("sfgserr@gmail.com", "129598Ec!");
+
             await client.SendAsync(message);
         }
 
