@@ -158,7 +158,7 @@ const verifyPasswordReset = async (email, code) => {
 }
 
 const setNewPassword = async (password, token) => {
-    return await fetch(`${env.auth_url}/api/Auth/SetNewPassword?password=${password}&token=${token}`, {
+    return await fetch(`${env.auth_url}/api/Auth/SetNewPassword?password=${password}`, {
         method: 'PUT',
         headers: {
             Accept: 'application/json',
@@ -167,11 +167,6 @@ const setNewPassword = async (password, token) => {
         }
     })
     .then(async res => {
-        if (res.status == 200) {
-            const token = await res.json();
-            await KeyChain.setGenericPassword('api_key', token);
-        }
-
         return res.status;
     })
     .catch(error => {

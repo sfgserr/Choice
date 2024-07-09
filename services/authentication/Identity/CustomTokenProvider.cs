@@ -38,7 +38,7 @@ namespace Authentication.Api.Identity
             {
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
-                var id = jwtToken.Claims.FirstOrDefault(c => c.ValueType == "id");
+                var id = jwtToken.Claims.FirstOrDefault(c => c.Type == "id");
 
                 return Task.FromResult(id is not null && id.Value == user.Id);
             }

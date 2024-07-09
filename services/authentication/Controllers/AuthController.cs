@@ -92,7 +92,7 @@ namespace Choice.Authentication.Api.Controllers
                 {
                     ValidationProblemDetails problemDetails = new(new Dictionary<string, string[]>
                     {
-                        ["oldPassword"] = ["Password did not match"]
+                        ["Token"] = ["Token is invalid"]
                     });
 
                     return BadRequest(problemDetails);
