@@ -12,9 +12,21 @@ import authService from "../services/authService";
 
 const ResetPasswordScreen = ({navigation}) => {
     const [email, setEmail] = React.useState('');
+    const [emailError, setEmailError] = React.useState(false);
     const [code, setCode] = React.useState('');
+    const [codeError, setCodeError] = React.useState(false);
 
     const [isCodeSent, setIsCodeSent] = React.useState(false);
+
+    const emailChanged = (text) => {
+        setEmailError(false);
+        setEmail(text);
+    }
+
+    const codeChanged = (text) => {
+        setCodeError(false);
+        setCode(text);
+    }
 
     return (
         <View
@@ -75,10 +87,27 @@ const ResetPasswordScreen = ({navigation}) => {
             </Text>
             <CustomTextInput
                 value={isCodeSent ? code : email}
-                changed={isCodeSent ? setCode : setEmail}
+                changed={isCodeSent ? codeChanged : emailChanged}
                 placeholder={isCodeSent ? '000-000' : 'Введите E-mail'}
                 max={isCodeSent ? 6 : undefined}
-                type={isCodeSent ? 'numeric' : 'email-address'}/>
+                type={isCodeSent ? 'numeric' : 'email-address'}
+                error={isCodeSent ? codeError : emailError}/>
+
+            {emailError || codeError ?
+            <>
+                <Text
+                    style={{
+                        color: '#E64646',
+                        fontWeight: '400',
+                        fontSize: 13,
+                        paddingTop: 5
+                    }}>
+                    {isCodeSent ? 'Неверный код' : 'Нету аккаунта с таким email'}
+                </Text>
+            </>
+            :
+            <>
+            </>}
 
             <View
                 style={{
@@ -91,12 +120,26 @@ const ResetPasswordScreen = ({navigation}) => {
                     disabled={email == ''}
                     onPress={async () => {
                         if (!isCodeSent) {
-                            await authService.resetPassword(email);
-                            console.log('s');
-                            setIsCodeSent(true);
+                            let status = await authService.resetPassword(email);
+                            if (status == 200) {
+                                setIsCodeSent(true);
+                            }
+                            else {
+                                setEmailError(true);
+                            }
                         }
                         else {
-
+                            let status = await authService.verifyPasswordReset(email, code);
+                            
+                            if (status == 200) {
+                                setCode('');
+                                setEmail('');
+                                setIsCodeSent(false);
+                                navigation.navigate('ChangePassword');
+                            }
+                            else {
+                                setCodeError(true);
+                            }
                         }
                     }}>
                     <Text

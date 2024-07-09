@@ -44,6 +44,7 @@ import EditCompanyScreen from './Screens/EditCompanyScreen';
 import EditClientScreen from './Screens/EditClientScreen';
 import ImageViewerScreen from './Screens/ImageViewerScreen';
 import ResetPasswordScreen from './Screens/ResetPasswordScreen';
+import SetNewPasswordScreen from './Screens/SetNewPasswordScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -270,6 +271,9 @@ function App() {
                               options={{headerShown: false}}/>
                 <Stack.Screen name="ResetPassword"
                               component={ResetPasswordScreen}
+                              options={{headerShown: false}}/>
+                <Stack.Screen name="SetNewPassword"
+                              component={SetNewPasswordScreen}
                               options={{headerShown: false}}/>
               </Stack.Navigator>
             </>

@@ -123,17 +123,34 @@ const changePassword = async (currentPassword, newPassword) => {
 }
 
 const resetPassword = async (email) => {
-    const token = await KeyChain.getGenericPassword();
-
     return await fetch(`${env.auth_url}/api/Auth/ResetPassword?email=${email}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token.password}`
         }
     })
     .then(res => {
+        return res.status;
+    })
+    .catch(error => {
+    });
+}
+
+const verifyPasswordReset = async (email, code) => {
+    return await fetch(`${env.auth_url}/api/Auth/VerifyPasswordReset?email=${email}&code=${code}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(async res => {
+        if (res.status == 200) {
+            const token = await res.json();
+            await KeyChain.setGenericPassword('api_key', token);
+        }
+
         return res.status;
     })
     .catch(error => {
@@ -146,5 +163,6 @@ export default {
     verifyCode,
     changePassword,
     register,
-    resetPassword
+    resetPassword,
+    verifyPasswordReset
 }

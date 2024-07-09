@@ -11,6 +11,8 @@ using System.Text;
 using Choice.Authentication.Api.Models;
 using Authentication.Api.Consumers;
 using Authentication.Api.Services;
+using Microsoft.AspNetCore.Identity;
+using Authentication.Api.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,8 @@ builder.Services.AddIdentityCore<User>(options =>
 {
     options.User.AllowedUserNameCharacters = null;
 })
-.AddEntityFrameworkStores<UserContext>();
+.AddEntityFrameworkStores<UserContext>()
+.AddTokenProvider<CustomTokenProvider>("ResetPassword");
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;

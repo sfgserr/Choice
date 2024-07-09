@@ -58,11 +58,11 @@ namespace Choice.Authentication.Api.Controllers
                 bool isVerified = _emailVerificationService.VerifyCode(email, code);
 
                 if (isVerified)
-                    return Ok(_tokenService.GenerateToken(
-                        user.Id,
-                        _configuration["JwtSettings:Key"]!,
-                        _configuration["JwtSettings:Issuer"]!,
-                        _configuration["JwtSettings:Audience"]!));
+                {
+                    string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    return Ok(resetPasswordToken);
+                }
 
                 return Unauthorized();
             }
@@ -70,9 +70,38 @@ namespace Choice.Authentication.Api.Controllers
             return NotFound();
         }
 
+        [Authorize]
+        [HttpPut("SetNewPassword")]
+        public async Task<IActionResult> SetNewPassword(string password, string token)
+        {
+            string id = HttpContext.User.FindFirst("id")?.Value!;
+
+            User? user = await _userManager.FindByIdAsync(id);
+
+            if (user is not null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, token, password);
+
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    ValidationProblemDetails problemDetails = new(new Dictionary<string, string[]>
+                    {
+                        ["oldPassword"] = ["Password did not match"]
+                    });
+
+                    return BadRequest(problemDetails);
+                }
+            }
+
+            return NotFound();
+        }
+
         [HttpPut("ChangePassword")]
         [Authorize]
-        [Authorize("PasswordReset")]
         public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword)
         {
             string id = HttpContext.User.FindFirst("id")?.Value!;
