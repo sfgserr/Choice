@@ -135,7 +135,7 @@ const ResetPasswordScreen = ({navigation}) => {
                                 setCode('');
                                 setEmail('');
                                 setIsCodeSent(false);
-                                navigation.navigate('ChangePassword');
+                                navigation.navigate('SetNewPassword');
                             }
                             else {
                                 setCodeError(true);

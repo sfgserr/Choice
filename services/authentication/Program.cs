@@ -29,7 +29,8 @@ builder.Services.AddIdentityCore<User>(options =>
     options.User.AllowedUserNameCharacters = null;
 })
 .AddEntityFrameworkStores<UserContext>()
-.AddTokenProvider<CustomTokenProvider>("ResetPassword");
+.AddTokenProvider<CustomTokenProvider>("ResetPassword")
+.AddDefaultTokenProviders();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
