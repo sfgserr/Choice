@@ -101,7 +101,7 @@ const ResetPasswordScreen = ({navigation}) => {
                     }}>
                     <Text
                         style={styles.buttonText}>
-                        Отправить код    
+                        {isCodeSent ? 'Сбросить пароль' : 'Отправить код'}    
                     </Text>
                 </TouchableOpacity>    
             </View>
