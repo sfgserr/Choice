@@ -1,4 +1,5 @@
-﻿using Authentication.Api.Services;
+﻿using Authentication.Api.Identity;
+using Authentication.Api.Services;
 using Choice.Authentication.Api.Models;
 using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
@@ -81,7 +82,7 @@ namespace Choice.Authentication.Api.Controllers
             if (user is not null)
             {
                 var result = await _userManager.ResetPasswordAsync(user, token, password);
-
+                
                 if (result.Succeeded)
                 {
                     return Ok();

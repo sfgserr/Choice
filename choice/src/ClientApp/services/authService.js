@@ -148,6 +148,27 @@ const verifyPasswordReset = async (email, code) => {
     .then(async res => {
         if (res.status == 200) {
             const token = await res.json();
+            return [res.status, token]
+        }
+
+        return [res.status, ''];
+    })
+    .catch(error => {
+    });
+}
+
+const setNewPassword = async (password, token) => {
+    return await fetch(`${env.auth_url}/api/Auth/SetNewPassword?password=${password}&token=${token}`, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(async res => {
+        if (res.status == 200) {
+            const token = await res.json();
             await KeyChain.setGenericPassword('api_key', token);
         }
 
@@ -164,5 +185,6 @@ export default {
     changePassword,
     register,
     resetPassword,
-    verifyPasswordReset
+    verifyPasswordReset,
+    setNewPassword
 }

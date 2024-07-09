@@ -129,13 +129,14 @@ const ResetPasswordScreen = ({navigation}) => {
                             }
                         }
                         else {
-                            let status = await authService.verifyPasswordReset(email, code);
+                            let result = await authService.verifyPasswordReset(email, code);
                             
-                            if (status == 200) {
+                            if (result[0] == 200) {
+                                console.log(result[1]);
                                 setCode('');
                                 setEmail('');
                                 setIsCodeSent(false);
-                                navigation.navigate('SetNewPassword');
+                                navigation.navigate('SetNewPassword', { token: result[1] });
                             }
                             else {
                                 setCodeError(true);

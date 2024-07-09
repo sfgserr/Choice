@@ -27,10 +27,10 @@ builder.Services.AddDbContext<UserContext>(o =>
 builder.Services.AddIdentityCore<User>(options =>
 {
     options.User.AllowedUserNameCharacters = null;
+    options.Tokens.PasswordResetTokenProvider = nameof(CustomTokenProvider);
 })
 .AddEntityFrameworkStores<UserContext>()
-.AddTokenProvider<CustomTokenProvider>("ResetPassword")
-.AddDefaultTokenProviders();
+.AddTokenProvider<CustomTokenProvider>(nameof(CustomTokenProvider));
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 string apiKey = builder.Configuration["VonageSettings:ApiKey"]!;
