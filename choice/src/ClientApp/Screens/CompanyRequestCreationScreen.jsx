@@ -19,11 +19,13 @@ import orderingService from "../services/orderingService";
 import { useIsFocused } from '@react-navigation/native';
 import clientService from "../services/clientService";
 import CustomTextInput from "../Components/CustomTextInput";
-import { Tooltip } from "react-native-elements";
+import ClientModal from "../Components/ClientModal";
 
 const CompanyRequestCreationScreen = ({navigation, route}) => {
     const [orderRequest, setOrderRequest] = React.useState(route.params.orderRequest);
     const user = userStore.get();
+
+    const modalRef = React.useRef(null);
 
     const [date, setDate] = React.useState(new Date());
 
@@ -38,6 +40,7 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
     const [enrollmentDate, setEnrollmentDate] = React.useState(new Date());
     const [enrollmentTime, setEnrollmentTime] = React.useState(new Date());
     const [prepayment, setPrepayment] = React.useState('');
+    const [client, setClient] = React.useState('');
 
     const [enrollmentDateString, setEnrollmentDateString] = React.useState('');
     const [enrollmentTimeString, setEnrollmentTimeString] = React.useState('');
@@ -313,6 +316,14 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
                     </View>
                 </View>
             </Modalize>
+            <Modalize
+                ref={modalRef}
+                adjustToContentHeight={true}
+                childrenStyle={{height: '100%'}}>
+                <ClientModal
+                    client={client}
+                    close={() => modalRef.current.close()}/>
+            </Modalize>
             <View
                 style={{
                     flexDirection: 'row',
@@ -345,7 +356,12 @@ const CompanyRequestCreationScreen = ({navigation, route}) => {
             <View style={{paddingTop: 20, paddingHorizontal: 15}}>
                 <CompanyRequestCard
                     orderRequest={orderRequest}
-                    button={false}/>        
+                    button={false}
+                    navigation={navigation}
+                    onPress={(client) => {
+                        setClient(client);
+                        modalRef.current?.open();
+                    }}/>        
             </View>
             <View style={{paddingTop: 20, paddingHorizontal: 20}}>
                 <Text

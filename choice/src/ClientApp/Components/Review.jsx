@@ -5,10 +5,11 @@ import {
     Dimensions
 } from 'react-native';
 import { Icon } from "react-native-elements";
+import userStore from "../services/userStore";
 
 const Review = ({review}) => {
     const stars = [1,2,3,4,5];
-
+    console.log(review);
     const wh = Dimensions.get('screen');
 
     return (
@@ -28,7 +29,7 @@ const Review = ({review}) => {
                         fontSize: 16,
                         color: 'black'
                     }}>
-                    {`${review.author.name.split('_')[0]} ${review.author.name.split('_')[1][0]}.`}
+                    {userStore.getUserType() == 2 ? review.author.name : `${review.author.name.split(' ')[0]} ${review.author.name.split('_')[1][0]}.`}
                 </Text>
                 <View
                     style={{

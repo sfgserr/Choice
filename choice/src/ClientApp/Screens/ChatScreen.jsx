@@ -56,6 +56,7 @@ const ChatScreen = ({ navigation, route }) => {
     const [mockId, setMockId] = React.useState(-1);
     const [text, setText] = React.useState('');
     const [company, setCompany] = React.useState('');
+    const [client, setClient] = React.useState('');
     const enrollmentDateRef = React.useRef(null);
     const reviewsModalRef = React.useRef(null);
     const companyReviewModalRef = React.useRef(null);
@@ -340,7 +341,7 @@ const ChatScreen = ({ navigation, route }) => {
                         </TouchableOpacity>    
                     </View>
                     <ReviewPage
-                        company={company}/>
+                        user={userStore.getUserType() == 1 ? company : client}/>
                 </View>
             </Modalize>
             <Modalize 
@@ -671,7 +672,6 @@ const ChatScreen = ({ navigation, route }) => {
                 </View>
             </Modalize>
             <TouchableOpacity
-                disabled={userStore.getUserType() == 2}
                 style={{
                     top: 0,
                     width,
@@ -680,8 +680,13 @@ const ChatScreen = ({ navigation, route }) => {
                     justifyContent: 'center'
                 }}
                 onPress={async () => {
-                    await getCompany(chat.guid);
-                    modalRef.current.open();
+                    if (userStore.getUserType() == 1) {
+                        await getCompany(chat.guid);
+                        modalRef.current.open();
+                    }
+                    else {
+
+                    }
                 }}>
                 <View
                     style={{

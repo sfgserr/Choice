@@ -61,7 +61,7 @@ const SocialMediasScreen  = ({handleState}) => {
                             position: 'absolute',
                             width: '90%',
                             alignSelf: 'center',
-                            bottom: height/14
+                            bottom: height/10
                         }}>
                         <View
                             style={{
@@ -89,7 +89,7 @@ const SocialMediasScreen  = ({handleState}) => {
                                         }}>
                                         {`Ссылка на ваш ${urlName}`}
                                     </Text>
-                                <TouchableOpacity
+                                    <TouchableOpacity
                                         onPress={() => {
                                             setModalVisible(false);
                                         }}
