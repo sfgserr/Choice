@@ -13,6 +13,8 @@ using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Infrastructure.Data;
 using Choice.Chat.Api.Services;
 using Chat.Api.Consumers;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 namespace Choice.Chat.Api
 {
@@ -134,6 +136,12 @@ namespace Choice.Chat.Api
             });
 
             var app = builder.Build();
+
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential.GetApplicationDefault(),
+                ProjectId = "choice-405509"
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

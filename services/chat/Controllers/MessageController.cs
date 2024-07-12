@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.ViewModels;
 using Choice.Chat.Api.Services;
-using static System.Net.Mime.MediaTypeNames;
+using FirebaseAdmin.Messaging;
 
 namespace Choice.Chat.Api.Controllers
 {
@@ -30,11 +30,15 @@ namespace Choice.Chat.Api.Controllers
         {
             string id = User.FindFirstValue("id")!;
 
-            Message message = new(id, receiverId, text, MessageType.Text);
+            Entities.Message message = new(id, receiverId, text, MessageType.Text);
 
             await _messageRepository.Add(message);
 
             await _chatService.SendMessage(message.ReceiverId, "send", new(message));
+
+            //FirebaseAdmin.Messaging.Message notification = new();
+
+            //await FirebaseMessaging.DefaultInstance.SendAsync(notification);
 
             return Ok(new MessageViewModel(message));
         }
@@ -44,7 +48,7 @@ namespace Choice.Chat.Api.Controllers
         {
             string id = User.FindFirstValue("id")!;
 
-            Message message = new(id, receiverId, uri, MessageType.Image);
+            Entities.Message message = new(id, receiverId, uri, MessageType.Image);
 
             await _messageRepository.Add(message);
 
@@ -56,7 +60,7 @@ namespace Choice.Chat.Api.Controllers
         [HttpPut("Read")]
         public async Task<IActionResult> Read(int id)
         {
-            Message? message = await _messageRepository.Get(id);
+            Entities.Message? message = await _messageRepository.Get(id);
 
             if (message is not null && !message.IsRead)
             {
@@ -77,7 +81,7 @@ namespace Choice.Chat.Api.Controllers
         {
             string id = User.FindFirstValue("id")!;
 
-            IList<Message> messages = await _messageRepository.GetAll(id, receiverId);
+            IList<Entities.Message> messages = await _messageRepository.GetAll(id, receiverId);
 
             return Ok(messages.Select(m => new MessageViewModel(m)));
         }
@@ -91,7 +95,7 @@ namespace Choice.Chat.Api.Controllers
 
             if (user is not null)
             {
-                IList<Message> messages = await _messageRepository.GetAll(id, userId);
+                IList<Entities.Message> messages = await _messageRepository.GetAll(id, userId);
                 messages = messages.OrderBy(m => m.CreationTime).ToList();
 
                 ChatViewModel chat = new(user.Name,
@@ -113,7 +117,7 @@ namespace Choice.Chat.Api.Controllers
         {
             string userId = User.FindFirstValue("id")!;
 
-            IList<Message> messages = await _messageRepository.GetAll();
+            IList<Entities.Message> messages = await _messageRepository.GetAll();
 
             IEnumerable<string> ids = messages.Where(m => m.SenderId == userId || m.ReceiverId == userId)
                                               .SelectMany(m => new[] { m.SenderId, m.ReceiverId })
@@ -126,7 +130,7 @@ namespace Choice.Chat.Api.Controllers
             {
                 User user = (await _userRepository.Get(id))!;
 
-                IList<Message> chatMessages = await _messageRepository.GetAll(userId, id);
+                IList<Entities.Message> chatMessages = await _messageRepository.GetAll(userId, id);
                 chatMessages = chatMessages.OrderBy(m => m.CreationTime).ToList();
 
                 chats.Add(new(user.Name, 

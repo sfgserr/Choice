@@ -2073,6 +2073,11 @@
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.11.tgz"
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
+"@types/react-native-push-notification@^8.1.4":
+  version "8.1.4"
+  resolved "https://registry.npmjs.org/@types/react-native-push-notification/-/react-native-push-notification-8.1.4.tgz"
+  integrity sha512-qXu/NcQ7YSk5ZveDMNKFBQkLt9W5FCde3be+h8fYbEnmvd5O+v5m318XGhh8AMPXURAV9pSB5Ads08Wc0KTS7A==
+
 "@types/react-native-vector-icons@^6.4.6":
   version "6.4.18"
   resolved "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.18.tgz"
@@ -6076,6 +6081,11 @@ react-native-modalize@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/react-native-modalize/-/react-native-modalize-2.1.1.tgz"
   integrity sha512-4/7EZWsrUqAAkkAVEnOsSdpAPQaEBewX7TvwFuzgvGDzxKpq3O58I9SnSeU8QtG/r91XYHJNaU5dAuDrcLjUaQ==
+
+react-native-push-notification@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz"
+  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
 react-native-quick-base64@^2.1.2:
   version "2.1.2"
