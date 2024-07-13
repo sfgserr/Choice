@@ -6,7 +6,9 @@ import env from '../env';
 global.atob = decode;
 
 const register = async (name, email, phone, street, city, password, userType) => {
-    return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}`, {
+    const token = await KeyChain.getGenericPassword();
+
+    return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}&deviceToken=${token.password}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',

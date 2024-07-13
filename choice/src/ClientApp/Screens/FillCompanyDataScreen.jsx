@@ -75,7 +75,10 @@ const FillCompanyDataScreen = ({navigation, route}) => {
 
     const fillCompanyData = async () => {
         for (let i = 0; i < 6; i++) {
-            photoUris[i] = await blobService.uploadImage(photoUris[i]);
+            let directories = photoUris[i].split('/');
+
+            let fileNameAndExtension = directories[directories.length-1].split('.');
+            photoUris[i] = fileNameAndExtension[0];
         }
 
         let status = await companyService.fillCompanyData({
@@ -91,6 +94,10 @@ const FillCompanyDataScreen = ({navigation, route}) => {
             await new Promise(r => setTimeout(r, 2000));
 
             setModalVisible(false);
+
+            for (let i = 0; i < 6; i++) {
+                await blobService.uploadImage(photoUris[i]);
+            }
 
             await authService.loginByEmail(email, password);
             await userStore.retrieveData(2);
