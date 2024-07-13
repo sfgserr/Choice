@@ -11,12 +11,18 @@ namespace Choice.ClientService.Api.Consumers
         private readonly IClientRepository _repository;
         private readonly IAddressService _addressService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<UserCreatedConsumer> _logger;
 
-        public UserCreatedConsumer(IClientRepository repository, IUnitOfWork unitOfWork, IAddressService addressService)
+        public UserCreatedConsumer(
+            IClientRepository repository, 
+            IUnitOfWork unitOfWork, 
+            IAddressService addressService, 
+            ILogger<UserCreatedConsumer> logger)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _addressService = addressService;
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<UserCreatedEvent> context)
@@ -41,9 +47,13 @@ namespace Choice.ClientService.Api.Consumers
                      "defaulturi-png",
                      @event.PhoneNumber);
 
+                _logger.LogInformation("Consuming user created event");
+
                 await _repository.Add(client);
 
-                await _unitOfWork.SaveChanges();
+                int affections = await _unitOfWork.SaveChanges();
+
+                _logger.LogInformation($"{affections}");
             }
         }
     }

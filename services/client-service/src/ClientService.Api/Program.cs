@@ -38,6 +38,8 @@ namespace Choice.ClientService.Api
 
             // Add services to the container.
 
+            builder.Logging.AddConsole();
+
             builder.Services.AddScoped<IChangeUserDataUseCase, ChangeUserDataUseCase>();
             builder.Services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             builder.Services.AddScoped<ISendOrderRequestUseCase, SendOrderRequestUseCase>();
@@ -134,6 +136,7 @@ namespace Choice.ClientService.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddLogging();
 
             var app = builder.Build();
 

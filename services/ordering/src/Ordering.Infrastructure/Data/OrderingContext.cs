@@ -11,7 +11,7 @@ namespace Choice.Ordering.Infrastructure.Data
             Database.EnsureCreated();
         }
 
-        public async Task SaveEntities() =>
+        public async Task<int> SaveEntities() => 
             await SaveChangesAsync();
 
         public DbSet<Order> Orders { get; set; }

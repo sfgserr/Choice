@@ -11,7 +11,7 @@ namespace Choice.Infrastructure.Data
             _context = context;
         }
 
-        public async Task SaveChanges() =>
+        public async Task<int> SaveChanges() =>
             await _context.SaveEntities();
     }
 }

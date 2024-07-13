@@ -3,6 +3,6 @@ namespace Choice.Infrastructure.Data
 {
     public interface IContext
     {
-        Task SaveEntities();
+        Task<int> SaveEntities();
     }
 }

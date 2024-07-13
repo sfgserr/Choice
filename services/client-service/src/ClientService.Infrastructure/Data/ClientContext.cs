@@ -13,9 +13,9 @@ namespace Choice.ClientService.Infrastructure.Data
             Database.EnsureCreated();
         }
 
-        public async Task SaveEntities()
+        public async Task<int> SaveEntities()
         {
-            await SaveChangesAsync();
+            return await SaveChangesAsync();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
