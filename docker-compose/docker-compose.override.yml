@@ -24,11 +24,14 @@ services:
       - ASPNETCORE_URLS=http://+:8088
       - ASPNETCORE_ENVIRONMENT=Development
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "FirebaseSettings:Credentials=/home/choice-405509-firebase-adminsdk-x723n-2500070790.json"
     ports:
       - "8088:8088"
     depends_on:
       - chat-db
       - rabbitmq
+    volumes:
+      - /home:/home:ro
   ordering:
     environment:
       - ASPNETCORE_URLS=http://+:8080

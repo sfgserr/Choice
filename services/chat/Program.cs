@@ -139,7 +139,7 @@ namespace Choice.Chat.Api
 
             FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.GetApplicationDefault(),
+                Credential = GoogleCredential.FromFile(builder.Configuration["FirebaseSettings:Credentials"]),
                 ProjectId = "choice-405509"
             });
 
