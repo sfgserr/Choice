@@ -4,7 +4,7 @@ namespace Choice.Infrastructure.Data
 {
     public sealed class UnitOfWorkFake : IUnitOfWork
     {
-        public async Task SaveChanges() =>
-            await Task.CompletedTask;
+        public async Task<int> SaveChanges() =>
+            await Task.FromResult(1);
     }
 }
