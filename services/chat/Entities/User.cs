@@ -2,11 +2,13 @@
 {
     public class User
     {
-        public User(string guid, string name, string iconUri)
+        public User(string guid, string name, string iconUri, string deviceToken)
         {
             Guid = guid;
             Name = name;
             IconUri = iconUri;
+
+            DeviceTokens.Add(deviceToken);
         }
 
         protected User() { }
@@ -17,6 +19,7 @@
         public UserStatus Status { get; private set; } = UserStatus.Offline;
         public DateTime? LastTimeOnline { get; private set; }
         public bool IsDeleted { get; private set; } = false;
+        public List<string> DeviceTokens { get; private set; } = [];
 
         public void ChangeIconUri(string iconUri)
         {

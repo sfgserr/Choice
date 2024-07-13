@@ -194,7 +194,7 @@ namespace Choice.Authentication.Api.Controllers
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(string email, string name, string password,
-            string street, string city, string phoneNumber, UserType type)
+            string street, string city, string phoneNumber, string deviceToken, UserType type)
         {
             if (type == UserType.Admin)
                 return BadRequest("You can not register admin account");
@@ -241,6 +241,7 @@ namespace Choice.Authentication.Api.Controllers
                      user.City,
                      user.Street,
                      user.PhoneNumber,
+                     deviceToken,
                      user.UserType.ToString()));
 
                 return Ok(user);

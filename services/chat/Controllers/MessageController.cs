@@ -36,9 +36,21 @@ namespace Choice.Chat.Api.Controllers
 
             await _chatService.SendMessage(message.ReceiverId, "send", new(message));
 
-            //FirebaseAdmin.Messaging.Message notification = new();
+            User user = (await _userRepository.Get(receiverId))!;
 
-            //await FirebaseMessaging.DefaultInstance.SendAsync(notification);
+            foreach (string deviceToken in user.DeviceTokens)
+            {
+                FirebaseAdmin.Messaging.Message notification = new()
+                {
+                    Data = new Dictionary<string, string>()
+                    {
+                        { "Сообщение", "У вас новое сообщение" }
+                    },
+                    Token = deviceToken
+                };
+
+                await FirebaseMessaging.DefaultInstance.SendAsync(notification);
+            }
 
             return Ok(new MessageViewModel(message));
         }
@@ -53,6 +65,22 @@ namespace Choice.Chat.Api.Controllers
             await _messageRepository.Add(message);
 
             await _chatService.SendMessage(message.ReceiverId, "send", new(message));
+
+            User user = (await _userRepository.Get(receiverId))!;
+
+            foreach (string deviceToken in user.DeviceTokens)
+            {
+                FirebaseAdmin.Messaging.Message notification = new()
+                {
+                    Data = new Dictionary<string, string>()
+                    {
+                        { "Сообщение", "У вас новое сообщение" }
+                    },
+                    Token = deviceToken
+                };
+
+                await FirebaseMessaging.DefaultInstance.SendAsync(notification);
+            }
 
             return Ok(new MessageViewModel(message));
         }

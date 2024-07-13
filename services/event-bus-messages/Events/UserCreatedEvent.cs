@@ -3,7 +3,7 @@
     public class UserCreatedEvent : IntegrationEvent
     {
         public UserCreatedEvent(string userGuid, string name, string email, string city,
-            string street, string phoneNumber, string userType)
+            string street, string phoneNumber, string userType, string deviceToken)
         {
             UserGuid = userGuid;
             Name = name;
@@ -12,6 +12,7 @@
             Street = street;
             PhoneNumber = phoneNumber;
             UserType = userType;
+            DeviceToken = deviceToken;
         }
 
         public string UserGuid { get; }
@@ -21,5 +22,6 @@
         public string Street { get; }
         public string PhoneNumber { get; }
         public string UserType { get; }
+        public string DeviceToken { get; }
     }
 }
