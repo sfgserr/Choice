@@ -55,6 +55,11 @@ namespace Choice.Chat.Api.Consumers
                     {
                         { "Сообщение", "Компания ответила на ваш заказ" }
                     },
+                    Notification = new Notification()
+                    {
+                        Title = "Новое сообщение",
+                        Body = "У вас новое сообщение"
+                    },
                     Token = deviceToken
                 };
 

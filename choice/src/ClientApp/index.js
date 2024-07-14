@@ -15,7 +15,12 @@ PushNotification.configure({
     },
     onNotification: function(notification) {
         console.log("NOT: ", notification);
-    }
+    },
+    onAction: function(a) {
+        console.log("e: ", a);
+    },
+    requestPermissions: true,
+    popInitialNotification: true
 });
 
 AppRegistry.registerComponent(appName, () => App);

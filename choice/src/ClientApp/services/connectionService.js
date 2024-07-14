@@ -9,6 +9,7 @@ let builder = new SignalR.HubConnectionBuilder();
 let connection = builder.withUrl(`${env.api_url}/chat`).build();
 
 const build = (token) => {
+
     connection = builder
         .withUrl(`${env.api_url}/chat`, { accessTokenFactory: () => token })
         .build();
@@ -47,6 +48,13 @@ const build = (token) => {
 
     connection.on("read", message => {
         DeviceEventEmitter.emit('read', message);
+    });
+
+    connection.onclose(async (e) => {
+        if (e != undefined) {
+            console.log(e.message);
+            DeviceEventEmitter.emit('closed');
+        }
     });
 }
 

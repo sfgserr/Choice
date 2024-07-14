@@ -69,6 +69,8 @@ const getTabLabel = (routeName) => {
 function CompanyTab() {
   const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
 
+  const { signOut } = React.useContext(AuthContext);
+
   React.useEffect(() => {
     async function getUnreadMessages() {
       let chats = await chatService.getChats();
@@ -90,13 +92,19 @@ function CompanyTab() {
     console.log('read');
   }
 
+  const onClosed = async () => {
+    await signOut();
+  }
+
   React.useEffect(() => {
     DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
     DeviceEventEmitter.addListener('tabRead', handleReadMessage);
+    DeviceEventEmitter.addListener('closed', onClosed)
 
     return () => {
       DeviceEventEmitter.removeAllListeners('tabMessageReceived');
       DeviceEventEmitter.removeAllListeners('tabRead');
+      DeviceEventEmitter.removeAllListeners('closed');
     }
   }, [handleReadMessage,handleMessage]);
 
@@ -142,6 +150,8 @@ function CompanyTab() {
 function ClientTab() {
   const [unreadMessagesCount, setUnreadMessagesCount] = React.useState(0);
 
+  const { signOut } = React.useContext(AuthContext);
+
   React.useEffect(() => {
     async function getUnreadMessages() {
       let chats = await chatService.getChats();
@@ -163,13 +173,19 @@ function ClientTab() {
     console.log('read');
   }
 
+  const onClosed = async () => {
+    await signOut();
+  }
+
   React.useEffect(() => {
     DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
     DeviceEventEmitter.addListener('tabRead', handleReadMessage);
+    DeviceEventEmitter.addListener('closed', onClosed);
 
     return () => {
       DeviceEventEmitter.removeAllListeners('tabMessageReceived');
       DeviceEventEmitter.removeAllListeners('tabRead');
+      DeviceEventEmitter.removeAllListeners('closed');
     }
   }, [handleReadMessage,handleMessage]);
 

@@ -63,6 +63,11 @@ namespace Choice.Chat.Api.Consumers
                     {
                         { "Сообщение", "В заказе изменили время записи" }
                     },
+                    Notification = new Notification()
+                    {
+                        Title = "Новое сообщение",
+                        Body = "У вас новое сообщение"
+                    },
                     Token = deviceToken
                 };
 

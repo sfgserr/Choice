@@ -46,6 +46,11 @@ namespace Choice.Chat.Api.Controllers
                     {
                         { "Сообщение", "У вас новое сообщение" }
                     },
+                    Notification = new Notification()
+                    {
+                        Title = "Новое сообщение",
+                        Body = "У вас новое сообщение"
+                    },
                     Token = deviceToken
                 };
 
@@ -75,6 +80,11 @@ namespace Choice.Chat.Api.Controllers
                     Data = new Dictionary<string, string>()
                     {
                         { "Сообщение", "У вас новое сообщение" }
+                    },
+                    Notification = new Notification()
+                    {
+                        Title = "Новое сообщение",
+                        Body = "У вас новое сообщение"
                     },
                     Token = deviceToken
                 };
