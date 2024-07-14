@@ -36,7 +36,7 @@ const FillCompanyDataScreen = ({navigation, route}) => {
     const ref = React.useRef();
 
     const { signIn } = React.useContext(AuthContext);
-    
+
     const data = [
         {
             screen: ContactDetailsScreen,
@@ -74,17 +74,19 @@ const FillCompanyDataScreen = ({navigation, route}) => {
     });
 
     const fillCompanyData = async () => {
+        const uris = photoUris;
+
         for (let i = 0; i < 6; i++) {
             let directories = photoUris[i].split('/');
 
             let fileNameAndExtension = directories[directories.length-1].split('.');
-            photoUris[i] = fileNameAndExtension[0];
+            uris[i] = fileNameAndExtension[0];
         }
 
         let status = await companyService.fillCompanyData({
             siteUrl,
             socialMedias,
-            photoUris,
+            photoUris: uris,
             categoriesId,
             prepaymentAvailable,
             description 
@@ -101,6 +103,8 @@ const FillCompanyDataScreen = ({navigation, route}) => {
 
             await authService.loginByEmail(email, password);
             await userStore.retrieveData(2);
+
+            console.log(234);
 
             await signIn(2);
         }

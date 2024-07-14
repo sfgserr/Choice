@@ -35,7 +35,7 @@ const getAdmin = async (id) => {
 
 const getOrderRequest = async (categoriesId) => {
     const token = await KeyChain.getGenericPassword();
-
+    console.log(token);
     let queryArray = categoriesId.map((id, i) => `categoriesId[${i}]=${id}`);
 
     return await fetch(`${env.api_url}/api/Client/GetOrderRequests?${queryArray.join('&')}`, {

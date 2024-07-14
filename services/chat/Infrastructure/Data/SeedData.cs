@@ -18,6 +18,7 @@ namespace Choice.Chat.Api.Infrastructure.Data
                        Status = UserStatus.Offline,
                        LastTimeOnline = DateTime.Now,
                        IsDeleted = false,
+                       DeviceTokens = new List<string>()
                    });
         }
     }
