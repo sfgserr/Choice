@@ -19,6 +19,9 @@ PushNotification.configure({
     onAction: function(a) {
         console.log("e: ", a);
     },
+    onRegistrationError: function(error) {
+        console.log(error.message);
+    },
     requestPermissions: true,
     popInitialNotification: true
 });
