@@ -36,7 +36,7 @@ const FillCompanyDataScreen = ({navigation, route}) => {
     const ref = React.useRef();
 
     const { signIn } = React.useContext(AuthContext);
-
+    
     const data = [
         {
             screen: ContactDetailsScreen,

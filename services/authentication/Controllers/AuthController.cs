@@ -241,8 +241,8 @@ namespace Choice.Authentication.Api.Controllers
                      user.City,
                      user.Street,
                      user.PhoneNumber,
-                     deviceToken,
-                     user.UserType.ToString()));
+                     user.UserType.ToString(),
+                     deviceToken));
 
                 return Ok(user);
             }
