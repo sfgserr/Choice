@@ -4,7 +4,7 @@ namespace Choice.CompanyService.Api.Repositories
 {
     public interface ICompanyRepository
     {
-        Task Add(Company company);
+        Task<int> Add(Company company);
 
         Task<Company> Get(string guid);
 

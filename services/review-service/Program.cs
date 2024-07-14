@@ -20,13 +20,14 @@ namespace Choice.ReviewService.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Logging.AddConsole();
             builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddGrpcClient<OrderingProtoService.OrderingProtoServiceClient>(o =>
             {
                 o.Address = new Uri(builder.Configuration["GrpcSettings:Url"]);
             });
+            builder.Services.AddLogging();
             builder.Services.AddScoped<OrderingService>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddDbContext<ReviewContext>(o => 

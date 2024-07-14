@@ -13,10 +13,10 @@ namespace Choice.ReviewService.Api.Repositories
             _context = context;
         }
 
-        public async Task Add(Review review)
+        public async Task<int> Add(Review review)
         {
             await _context.Reviews.AddAsync(review);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<IList<Review>> Get(string guid)

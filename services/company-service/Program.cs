@@ -8,7 +8,6 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.Text;
 
 namespace Choice.CompanyService.Api
@@ -21,6 +20,7 @@ namespace Choice.CompanyService.Api
 
             // Add services to the container.
 
+            builder.Logging.AddConsole();
             builder.Services.AddControllers();
 
             builder.Services.AddMassTransit(config =>
@@ -74,6 +74,7 @@ namespace Choice.CompanyService.Api
                 new(s.GetRequiredService<HttpClient>(), new(builder.Configuration["GoogleApi:ApiKey"])));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddLogging();
 
             var app = builder.Build();
 

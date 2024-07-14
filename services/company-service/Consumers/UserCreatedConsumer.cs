@@ -11,15 +11,22 @@ namespace Choice.CompanyService.Api.Consumers
     {
         private readonly ICompanyRepository _repository;
         private readonly IAddressService _addressService;
+        private readonly ILogger<UserCreatedConsumer> _logger;
 
-        public UserCreatedConsumer(ICompanyRepository repository, IAddressService addressService)
+        public UserCreatedConsumer(
+            ICompanyRepository repository, 
+            IAddressService addressService, 
+            ILogger<UserCreatedConsumer> logger)
         {
             _repository = repository;
             _addressService = addressService;
+            _logger = logger;
         }
 
         public async Task Consume(ConsumeContext<UserCreatedEvent> context)
         {
+            _logger.LogInformation("Consuming company created");
+
             UserCreatedEvent @event = context.Message;
 
             if (@event.UserType == "Company")
@@ -36,7 +43,9 @@ namespace Choice.CompanyService.Api.Consumers
                      address,
                      coords);
 
-                await _repository.Add(company);
+                int affections = await _repository.Add(company);
+
+                _logger.LogInformation($"{affections}");
             }
         }
     }

@@ -13,10 +13,10 @@ namespace Choice.CompanyService.Api.Repositories
             _context = context;
         }
 
-        public async Task Add(Company company)
+        public async Task<int> Add(Company company)
         {
             await _context.Companies.AddAsync(company);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<Company> Get(string guid)

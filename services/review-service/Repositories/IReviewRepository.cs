@@ -4,7 +4,7 @@ namespace Choice.ReviewService.Api.Repositories
 {
     public interface IReviewRepository
     {
-        Task Add(Review review);
+        Task<int> Add(Review review);
 
         Task<IList<Review>> Get(string guid);
 
