@@ -74,19 +74,14 @@ const FillCompanyDataScreen = ({navigation, route}) => {
     });
 
     const fillCompanyData = async () => {
-        const uris = photoUris;
-
         for (let i = 0; i < 6; i++) {
-            let directories = photoUris[i].split('/');
-
-            let fileNameAndExtension = directories[directories.length-1].split('.');
-            uris[i] = fileNameAndExtension[0];
+            photoUris[i] = await blobService.uploadImage(photoUris[i]);
         }
 
         let status = await companyService.fillCompanyData({
             siteUrl,
             socialMedias,
-            photoUris: uris,
+            photoUris,
             categoriesId,
             prepaymentAvailable,
             description 
@@ -96,15 +91,9 @@ const FillCompanyDataScreen = ({navigation, route}) => {
             await new Promise(r => setTimeout(r, 2000));
 
             setModalVisible(false);
-
-            for (let i = 0; i < 6; i++) {
-                await blobService.uploadImage(photoUris[i]);
-            }
-
+            
             await authService.loginByEmail(email, password);
             await userStore.retrieveData(2);
-
-            console.log(234);
 
             await signIn(2);
         }

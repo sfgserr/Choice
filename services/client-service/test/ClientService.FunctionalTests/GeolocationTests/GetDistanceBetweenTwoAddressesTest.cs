@@ -6,7 +6,7 @@ namespace Choice.ClientService.IntegrationalTests.GeolocationTests
 {
     public sealed class GetDistanceBetweenTwoAddressesTest
     {
-        private const string _apiKey = "AIzaSyAEjTEUxbhuwK-UN8lv-e_8Us5qiySiGnc";
+        private const string _apiKey = "AIzaSyDEzpsEb4h1E3Xv1qS0AZitSYpZ5QjmWqc";
 
         [Fact]
         public async Task GetDistance()
