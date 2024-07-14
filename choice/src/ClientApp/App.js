@@ -45,6 +45,7 @@ import EditClientScreen from './Screens/EditClientScreen';
 import ImageViewerScreen from './Screens/ImageViewerScreen';
 import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 import SetNewPasswordScreen from './Screens/SetNewPasswordScreen';
+import { PermissionsAndroid } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,6 +96,10 @@ function CompanyTab() {
   const onClosed = async () => {
     await signOut();
   }
+
+  React.useEffect(() => {
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+  });
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
