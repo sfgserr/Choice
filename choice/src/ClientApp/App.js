@@ -46,6 +46,8 @@ import ImageViewerScreen from './Screens/ImageViewerScreen';
 import ResetPasswordScreen from './Screens/ResetPasswordScreen';
 import SetNewPasswordScreen from './Screens/SetNewPasswordScreen';
 import { PermissionsAndroid } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import tokenStore from './services/tokenStore';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -96,10 +98,6 @@ function CompanyTab() {
   const onClosed = async () => {
     await signOut();
   }
-
-  React.useEffect(() => {
-    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-  });
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('tabMessageReceived', handleMessage);
@@ -270,6 +268,24 @@ function App() {
       }
     }
   }));
+
+  React.useEffect(() => {
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+  }, []);
+
+  React.useEffect(() => {
+    messaging()
+      .getToken()
+      .then(token => {
+        console.log('NEW: ', token);
+        tokenStore.set(token);
+      });
+
+    return messaging().onTokenRefresh(token => {
+      console.log('REFRESHED: ', token);
+      tokenStore.set(token);
+    });
+  }, [])
 
   const [isSignedIn, setIsSignedIn] = React.useState(false);
   const [userType, setUserType] = React.useState(0);

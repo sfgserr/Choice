@@ -1,4 +1,5 @@
-﻿using Choice.Chat.Api.Entities;
+﻿using Chat.Api.Services;
+using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Hubs;
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories;
@@ -55,24 +56,10 @@ namespace Choice.Chat.Api.Consumers
 
             User user = (await _userRepository.Get(@event.ReceiverId))!;
 
-            foreach (string deviceToken in user.DeviceTokens)
-            {
-                FirebaseAdmin.Messaging.Message notification = new()
-                {
-                    Data = new Dictionary<string, string>()
-                    {
-                        { "Сообщение", "В заказе изменили время записи" }
-                    },
-                    Notification = new Notification()
-                    {
-                        Title = "Новое сообщение",
-                        Body = "У вас новое сообщение"
-                    },
-                    Token = deviceToken
-                };
-
-                await FirebaseMessaging.DefaultInstance.SendAsync(notification);
-            }
+            await NotificationService.SendNotificationAsync(
+                "Дата записи поменялась",
+                "Дата записи поменялась", 
+                user.DeviceTokens);
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.ViewModels;
 using Choice.Chat.Api.Services;
-using FirebaseAdmin.Messaging;
+using Chat.Api.Services;
 
 namespace Choice.Chat.Api.Controllers
 {
@@ -38,24 +38,10 @@ namespace Choice.Chat.Api.Controllers
 
             User user = (await _userRepository.Get(receiverId))!;
 
-            foreach (string deviceToken in user.DeviceTokens)
-            {
-                FirebaseAdmin.Messaging.Message notification = new()
-                {
-                    Data = new Dictionary<string, string>()
-                    {
-                        { "Сообщение", "У вас новое сообщение" }
-                    },
-                    Notification = new Notification()
-                    {
-                        Title = "Новое сообщение",
-                        Body = "У вас новое сообщение"
-                    },
-                    Token = deviceToken
-                };
-
-                await FirebaseMessaging.DefaultInstance.SendAsync(notification);
-            }
+            await NotificationService.SendNotificationAsync(
+                "Новое сообщение",
+                "У вас новое сообщение в чате",
+                user.DeviceTokens);
 
             return Ok(new MessageViewModel(message));
         }
@@ -73,24 +59,10 @@ namespace Choice.Chat.Api.Controllers
 
             User user = (await _userRepository.Get(receiverId))!;
 
-            foreach (string deviceToken in user.DeviceTokens)
-            {
-                FirebaseAdmin.Messaging.Message notification = new()
-                {
-                    Data = new Dictionary<string, string>()
-                    {
-                        { "Сообщение", "У вас новое сообщение" }
-                    },
-                    Notification = new Notification()
-                    {
-                        Title = "Новое сообщение",
-                        Body = "У вас новое сообщение"
-                    },
-                    Token = deviceToken
-                };
-
-                await FirebaseMessaging.DefaultInstance.SendAsync(notification);
-            }
+            await NotificationService.SendNotificationAsync(
+                "Новое сообщение",
+                "Новое изображение в чате",
+                user.DeviceTokens);
 
             return Ok(new MessageViewModel(message));
         }

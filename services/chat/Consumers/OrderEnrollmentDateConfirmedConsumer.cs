@@ -1,4 +1,5 @@
-﻿using Choice.Chat.Api.Entities;
+﻿using Chat.Api.Services;
+using Choice.Chat.Api.Entities;
 using Choice.Chat.Api.Models;
 using Choice.Chat.Api.Repositories.Interfaces;
 using Choice.Chat.Api.Services;
@@ -27,7 +28,7 @@ namespace Choice.Chat.Api.Consumers
 
             message.Content.ChangeContent(o =>
             {
-                 Order content = (Order)o;
+                Order content = (Order)o;
 
                 content.ConfirmDate();
 

@@ -2,11 +2,12 @@ import * as KeyChain from 'react-native-keychain';
 import { jwtDecode } from 'jwt-decode';
 import { decode } from "base-64";
 import env from '../env';
+import tokenStore from './tokenStore';
 
 global.atob = decode;
 
 const register = async (name, email, phone, street, city, password, userType) => {
-    const token = await KeyChain.getGenericPassword();
+    const token = tokenStore.get();
 
     return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}&deviceToken=${token.password}`, {
         method: 'POST',
