@@ -13,9 +13,10 @@ namespace Chat.Api.Services
                     Notification = new Notification()
                     {
                         Title = title,
-                        Body = body
+                        Body = body,
+                        ImageUrl = "http://87.228.9.225/api/objects/choice-logo-png"
                     },
-                    Token = deviceToken
+                    Token = deviceToken,
                 };
 
                 await FirebaseMessaging.DefaultInstance.SendAsync(notification);
