@@ -8,8 +8,8 @@ global.atob = decode;
 
 const register = async (name, email, phone, street, city, password, userType) => {
     const token = tokenStore.get();
-
-    return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}&deviceToken=${token.password}`, {
+    
+    return await fetch(`${env.auth_url}/api/Auth/Register?email=${email}&password=${password}&name=${name}&phoneNumber=${phone}&street=${street}&city=${city}&type=${userType}&deviceToken=${token}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
