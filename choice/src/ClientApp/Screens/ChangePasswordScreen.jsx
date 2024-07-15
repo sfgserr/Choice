@@ -61,7 +61,7 @@ const ChangePasswordScreen = ({ navigation }) => {
                             borderRadius: 20,
                             alignSelf: 'center',
                             position: 'absolute',
-                            bottom: 100
+                            bottom: height/9
                         }}>
                         <View 
                             style={{

@@ -11,7 +11,8 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Modal
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import Tabs from "../Components/Tabs";
@@ -34,7 +35,7 @@ const data = Object.keys(screens).map((i) => ({
 
 export default function LoginScreen({ navigation, route }) {
     const { signIn } = React.useContext(AuthContext);
-    const actionSheetRef = React.useRef(null);
+    const [modalVisible, setModalVisible] = React.useState(false);
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
     const ref = React.useRef();
@@ -54,78 +55,97 @@ export default function LoginScreen({ navigation, route }) {
                 justifyContent: 'center', 
                 backgroundColor: 'white',
                 width,
-                position: 'absolute'
             }}>
-            <ActionSheet 
-                ref={actionSheetRef}
-                isModal={false}>
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType="slide">
                 <View
-                    style={{paddingHorizontal: 10}}>
-                    <TouchableOpacity
-                        style={[
-                            styles.button, 
-                            { 
-                                backgroundColor: 'white', 
-                                alignSelf: 'center' 
-                            }
-                        ]}
-                        onPress={() => {
-                            actionSheetRef.current?.hide();
-                            navigation.navigate('Register', {type: 'client'})
-                        }}>
-                        <Text
-                            style={{
-                                color: '#2688EB',
-                                fontSize: 20,
-                                fontWeight: '400'
-                            }}>
-                            Создать аккаунт клиента
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            styles.button, 
-                            { 
-                                backgroundColor: 'white', 
-                                alignSelf: 'center' 
-                            }
-                        ]}
-                        onPress={() => {
-                            actionSheetRef.current?.hide();
-                            navigation.navigate('Register', {type: 'company'})
-                        }}>
-                        <Text
-                            style={{
-                                color: '#2688EB',
-                                fontSize: 20,
-                                fontWeight: '400'
-                            }}>
-                            Создать аккаунт компании    
-                        </Text>
-                    </TouchableOpacity>
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        justifyContent: 'flex-end'
+                    }}>
                     <View
-                        style={{paddingTop: 20}}>
+                        style={{
+                            paddingHorizontal: 15,
+                            paddingBottom: 20
+                        }}>
                         <TouchableOpacity
-                            style={[
-                                styles.button, 
-                                { 
-                                    backgroundColor: 'white', 
-                                    alignSelf: 'center' 
-                                }
-                            ]}
-                            onPress={() => actionSheetRef.current?.hide()}>
+                            style={{
+                                height: height/13,
+                                backgroundColor: 'white',
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                                borderBottomColor: '#0000001F',
+                                borderBottomWidth: .5,
+                                justifyContent: 'center',
+                            }}
+                            activeOpacity={.8}
+                            onPress={() => {
+                                setModalVisible(false);
+                                navigation.navigate('Register', { type: 'client' })
+                            }}>
                             <Text
                                 style={{
                                     color: '#2688EB',
+                                    fontWeight: '400',
                                     fontSize: 20,
-                                    fontWeight: '400'
+                                    alignSelf: 'center'
                                 }}>
-                                Отменить    
-                            </Text>
+                                Создать аккаунт клиента
+                            </Text>    
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                height: height/13,
+                                backgroundColor: 'white',
+                                borderBottomLeftRadius: 20,
+                                borderBottomRightRadius: 20,
+                                justifyContent: 'center'
+                            }}
+                            activeOpacity={.8}
+                            onPress={() => {
+                                setModalVisible(false);
+                                navigation.navigate('Register', { type: 'company' })
+                            }}>
+                            <Text
+                                style={{
+                                    color: '#2688EB',
+                                    fontWeight: '400',
+                                    fontSize: 20,
+                                    alignSelf: 'center'
+                                }}>
+                                Создать аккаунт компании
+                            </Text>     
+                        </TouchableOpacity>
+                        <View
+                            style={{
+                                paddingTop: 10
+                            }}>
+                            <TouchableOpacity
+                                style={{
+                                    justifyContent: 'center',
+                                    backgroundColor: 'white',
+                                    borderRadius: 20,
+                                    height: height/13,
+                                }}
+                                activeOpacity={.8}
+                                onPress={() => setModalVisible(false)}>
+                                <Text
+                                    style={{
+                                        color: '#2688EB',
+                                        fontWeight: '500',
+                                        fontSize: 20,
+                                        alignSelf: 'center'
+                                    }}>
+                                    Отменить
+                                </Text>     
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-            </ActionSheet>
+            </Modal>
             <View style={{alignSelf: 'center', paddingTop: 20}}>
                 <Image style={{width: 150, height: 150, resizeMode: 'contain', alignSelf: 'center'}}
                        source={require("../assets/choice-logo.png")}/>
@@ -138,7 +158,7 @@ export default function LoginScreen({ navigation, route }) {
                 <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
                     <TouchableOpacity 
                         style={{alignSelf: 'center'}}
-                        onPress={() => actionSheetRef.current?.show()}>
+                        onPress={() => setModalVisible(true)}>
                         <Text style={{color: '#2D81E0', fontSize: 16, fontWeight: '400'}}>Создать аккаунт</Text>
                     </TouchableOpacity>
                 </View>

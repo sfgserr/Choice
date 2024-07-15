@@ -53,6 +53,7 @@ const SocialMediasScreen  = ({handleState}) => {
                         height,
                         width,
                         backgroundColor: 'rgba(0,0,0,0.5)',
+                        paddingBottom: 20
                     }}>
                     <KeyboardAvoidingView
                         behavior='position'

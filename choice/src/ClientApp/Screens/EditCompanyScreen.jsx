@@ -302,7 +302,7 @@ const EditCompanyScreen = ({navigation, route}) => {
                             borderRadius: 20,
                             alignSelf: 'center',
                             position: 'absolute',
-                            bottom: height/14
+                            bottom: height/9
                         }}>
                         <View 
                             style={{

@@ -27,7 +27,9 @@ const register = async (name, email, phone, street, city, password, userType) =>
 }
 
 const loginByEmail = async (email, password) => {
-    return await fetch(`${env.auth_url}/api/Auth/Login?email=${email}&password=${password}`, {
+    const token = tokenStore.get();
+
+    return await fetch(`${env.auth_url}/api/Auth/Login?email=${email}&password=${password}&deviceToken=${token}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
