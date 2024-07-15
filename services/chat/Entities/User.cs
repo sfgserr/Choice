@@ -42,6 +42,12 @@
             Status = status;
         }
 
+        public void AddDevice(string deviceToken)
+        {
+            if (!DeviceTokens.Contains(deviceToken))
+                DeviceTokens.Add(deviceToken);
+        }
+
         public void ChangeName(string name)
         {
             Name = name;

@@ -3,6 +3,7 @@ using Authentication.Api.Services;
 using Choice.Authentication.Api.Models;
 using Choice.Authentication.Api.Services;
 using Choice.EventBus.Messages.Events;
+using EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -133,7 +134,7 @@ namespace Choice.Authentication.Api.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(string email, string password, string deviceToken)
         {
             User? user = await _userManager.FindByEmailAsync(email);
 
@@ -151,6 +152,8 @@ namespace Choice.Authentication.Api.Controllers
                      _configuration["JwtSettings:Key"]!,
                      _configuration["JwtSettings:Issuer"]!,
                      _configuration["JwtSettings:Audience"]!);
+
+                await _endPoint.Publish(new UserAuthenticatedEvent(user.Id, deviceToken));
 
                 return Ok(token);
             }
