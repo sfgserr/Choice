@@ -50,11 +50,12 @@ export default function LoginScreen({ navigation, route }) {
             behavior="position"
             keyboardVerticalOffset={0} 
             style={{
-                flex:1, 
+                flex: 1, 
                 flexDirection: 'column', 
                 justifyContent: 'center', 
                 backgroundColor: 'white',
                 width,
+                position: 'absolute'
             }}>
             <Modal
                 visible={modalVisible}

@@ -216,8 +216,10 @@ export default function MapScreen({ navigation, route }) {
                                 color='#818C99'/>
                         </TouchableOpacity>    
                     </View>
-                    <ReviewPage
-                        user={company}/>
+                    <ScrollView>
+                        <ReviewPage
+                            user={company}/>
+                    </ScrollView>
                 </View>
             </Modalize>
             <Modalize 
@@ -272,11 +274,13 @@ export default function MapScreen({ navigation, route }) {
                             </>
                             :
                             <>
-                                <CompanyPage
-                                    navigation={navigation}
-                                    onReviewPressed={onReviewPressed}
-                                    company={company}
-                                    order={order}/>
+                                <ScrollView>
+                                    <CompanyPage
+                                        navigation={navigation}
+                                        onReviewPressed={onReviewPressed}
+                                        company={company}
+                                        order={order}/>
+                                </ScrollView>
                             </>
                         }    
                     </View>
