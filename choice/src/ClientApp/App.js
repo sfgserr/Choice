@@ -48,6 +48,9 @@ import SetNewPasswordScreen from './Screens/SetNewPasswordScreen';
 import { PermissionsAndroid } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import tokenStore from './services/tokenStore';
+import EnterCodeScreen from './Screens/EnterCodeScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -248,12 +251,11 @@ function App() {
       await categoryStore.retrieveData();
       setUserType(userType);
       setIsSignedIn(true);
+      const key = await KeyChain.getGenericPassword();
+      await AsyncStorage.setItem('api_key', key.password);
 
       if (userType != 3) {
-        const key = await KeyChain.getGenericPassword();
-
         connectionService.build(key.password);
-
         await connectionService.start();
       }
     },
@@ -266,6 +268,10 @@ function App() {
       if (userStore.getUserType() != 3) {
         await connectionService.stop();
       }
+      await AsyncStorage.clear();
+    },
+    enterCode: () => {
+      setIsCodeEntered(true);
     }
   }));
 
@@ -287,8 +293,33 @@ function App() {
     });
   }, [])
 
+  React.useEffect(() => {
+    async function getToken() {
+      const token = await AsyncStorage.getItem('api_key');
+
+      if (token != null) {
+        const decoded = jwtDecode(token);
+
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        const oneHourInSeconds = 3600;
+        const isMoreThanOneHourLeft = (decoded.exp - currentTime) > oneHourInSeconds;
+
+        if (isMoreThanOneHourLeft) {
+          await KeyChain.setGenericPassword('api_key', token);
+          let userType = decoded.type == 'Client' ? 1 : decoded.type == 'Company' ? 2 : 3;
+          await userStore.retrieveData(userType);
+          setIsSignedIn(true);
+          setUserType(userType);
+        }
+      }
+    }
+    getToken();
+  }, []);
+
   const [isSignedIn, setIsSignedIn] = React.useState(false);
   const [userType, setUserType] = React.useState(0);
+  const [isCodeEntered, setIsCodeEntered] = React.useState(false);
 
   return (
     <NavigationContainer>
@@ -311,6 +342,14 @@ function App() {
                               options={{headerShown: false}}/>
                 <Stack.Screen name="SetNewPassword"
                               component={SetNewPasswordScreen}
+                              options={{headerShown: false}}/>
+              </Stack.Navigator>
+            </>
+          ) : !isCodeEntered ? (
+            <>
+              <Stack.Navigator>
+                <Stack.Screen name="EnterCode"
+                              component={EnterCodeScreen}
                               options={{headerShown: false}}/>
               </Stack.Navigator>
             </>

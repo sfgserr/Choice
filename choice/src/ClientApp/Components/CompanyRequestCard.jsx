@@ -10,6 +10,7 @@ import { Icon } from "react-native-elements";
 import styles from "../Styles";
 import env from "../env";
 import userStore from "../services/userStore";
+import ImageRequestCard from "./ImageRequestCard";
 
 const CompanyRequestCard = ({orderRequest, navigation, button, onPress}) => {
     const [categories, setCategories] = React.useState(categoryStore.getCategories());
@@ -81,132 +82,18 @@ const CompanyRequestCard = ({orderRequest, navigation, button, onPress}) => {
                 }}>
                 {orderRequest.description}
             </Text>
-            {
-                orderRequest.photoUris[0] == '' ?
-                <>
-                </>
-                :
-                <>
-                    <View
-                        style={{flexDirection: 'row', paddingTop: 10}}>
-                        <Icon
-                            type='material'
-                            name='image'
-                            color='#2D81E0'
-                            style={{
-                                alignSelf: 'center'
-                            }}/>
-
-                        <View
-                            style={{
-                                alignSelf: 'center',
-                                paddingLeft: 5,
-                                width: '50%'
-                            }}>
-                            <TouchableOpacity
-                                style={{
-                                    borderColor: '#2D81E0',
-                                    borderBottomWidth: 1
-                                }}
-                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[0]})}>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        color: '#2D81E0',
-                                    }}
-                                    numberOfLines={1}>
-                                    {orderRequest.photoUris[0]}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>       
-                    </View>
-                </>
-            }
-            {
-                orderRequest.photoUris[1] == '' ?
-                <>
-                </>
-                :
-                <>
-                    <View
-                        style={{flexDirection: 'row', paddingTop: 10}}>
-                        <Icon
-                            type='material'
-                            name='image'
-                            color='#2D81E0'
-                            style={{
-                                alignSelf: 'center'
-                            }}/>
-
-                        <View
-                            style={{
-                                alignSelf: 'center',
-                                paddingLeft: 5,
-                                width: '50%'
-                            }}>
-                            <TouchableOpacity
-                                style={{
-                                    borderColor: '#2D81E0',
-                                    borderBottomWidth: 1
-                                }}
-                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[1]})}>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        color: '#2D81E0',
-                                    }}
-                                    numberOfLines={1}>
-                                    {orderRequest.photoUris[1]}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>       
-                    </View>
-                </>
-            }
-            {
-                orderRequest.photoUris[2] == '' ?
-                <>
-                </>
-                :
-                <>
-                    <View
-                        style={{flexDirection: 'row', paddingTop: 10}}>
-                        <Icon
-                            type='material'
-                            name='image'
-                            color='#2D81E0'
-                            style={{
-                                alignSelf: 'center'
-                            }}/>
-
-                        <View
-                            style={{
-                                alignSelf: 'center',
-                                paddingLeft: 5,
-                                width: '50%'
-                            }}>
-                            <TouchableOpacity
-                                style={{
-                                    borderColor: '#2D81E0',
-                                    borderBottomWidth: 1
-                                }}
-                                onPress={() => navigation.navigate('ImageViewer', {imageUri: orderRequest.photoUris[2]})}>
-                                <Text
-                                    style={{
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        color: '#2D81E0',
-                                    }}
-                                    numberOfLines={1}>
-                                    {orderRequest.photoUris[2]}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>       
-                    </View>
-                </>
-            }
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingTop: 10
+                }}>
+                {orderRequest.photoUris.map(u => (
+                    <ImageRequestCard
+                        navigation={navigation}
+                        imageUri={u}/>
+                ))}
+            </View>
             <View style={{paddingTop: 10}}>
                 <View
                     style={{
@@ -288,7 +175,7 @@ const CompanyRequestCard = ({orderRequest, navigation, button, onPress}) => {
                     <View
                         style={{
                             paddingTop: 5,
-                            paddingBottom: 5
+                            paddingBottom: 10
                         }}>
                         <TouchableOpacity
                             style={styles.button}
