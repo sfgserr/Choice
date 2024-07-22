@@ -15,8 +15,9 @@ import styles from "../Styles";
 import CompanyPageOrderCard from "./CompanyPageOrderCard";
 import { Modalize } from "react-native-modalize";
 
-const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
+const CompanyPage = ({navigation, company, order, onReviewPressed, mapButton}) => {
     const wh = Dimensions.get('screen');
+    mapButton = mapButton == undefined ? false : mapButton
 
     const getImageSource = (url) => {
         if (urlValidator.validateInstagramUrl(url)) {
@@ -239,7 +240,7 @@ const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
                             }}
                             resizeMode='contain'/>    
                     </TouchableOpacity>
-                ))}    
+                ))}
             </View>
             {order == '' ?
             <>
@@ -258,6 +259,33 @@ const CompanyPage = ({navigation, company, order, onReviewPressed}) => {
                 </View>
             </>
             :
+            <>
+            </>}
+            {mapButton ?
+            <>
+                <View
+                    style={{
+                        paddingTop: 10
+                    }}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            navigation.navigate('Map', {
+                                category: {
+                                    id: 1,
+                                    title: 'Автоуслуги'
+                                },
+                                orderRequest: undefined,
+                                companyId: company.guid
+                            })
+                        }}>
+                        <Text
+                            style={styles.buttonText}>
+                            Посмотреть на карте
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </> :
             <>
             </>}
         </View>

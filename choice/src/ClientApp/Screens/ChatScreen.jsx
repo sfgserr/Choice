@@ -400,7 +400,8 @@ const ChatScreen = ({ navigation, route }) => {
                                     navigation={navigation}
                                     onReviewPressed={onReviewPressed}
                                     company={company}
-                                    order={''}/>
+                                    order={''}
+                                    mapButton/>
                             </>
                         }    
                     </View>

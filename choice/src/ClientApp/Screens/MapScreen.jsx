@@ -131,14 +131,32 @@ export default function MapScreen({ navigation, route }) {
         navigation.goBack();
     }
 
+    const getLatitude = () => {
+        if (route.params.companyId != undefined && companies.length > 0) {
+            let index = companies.findIndex(c => c.company.guid == route.params.companyId);
+            return Number(companies[index].company.coords.split(',')[0]);
+        }
+
+        return userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]);
+    }
+
+    const getLongitude = () => {
+        if (route.params.companyId != undefined && companies.length > 0) {
+            let index = companies.findIndex(c => c.company.guid == route.params.companyId);
+            return Number(companies[index].company.coords.split(',')[1]);
+        }
+
+        return userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]);
+    }
+
     return (
         <View 
             style={{flex: 1, backgroundColor: 'white'}}>
             <MapView 
                 camera={{
                     center: {
-                        latitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[0]),
-                        longitude: userStore.get() == '' ? 20 : Number(userStore.get().coords.split(',')[1]),
+                        latitude: getLatitude(),
+                        longitude: getLongitude(),
                     },
                     pitch: 1,
                     heading: 1,
