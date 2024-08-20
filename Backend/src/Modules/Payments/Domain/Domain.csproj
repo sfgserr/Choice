@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Payments.Domain</RootNamespace>
+    <AssemblyName>Payments.Domain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

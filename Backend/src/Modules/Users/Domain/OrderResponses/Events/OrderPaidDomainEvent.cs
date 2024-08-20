@@ -4,7 +4,7 @@ namespace Users.Domain.OrderResponses.Events
 {
     public class OrderPaidDomainEvent : DomainEventBase
     {
-        internal OrderPaidDomainEvent(OrderResponseId responseId)
+        public OrderPaidDomainEvent(OrderResponseId responseId)
         {
             ResponseId = responseId;
         }

@@ -46,7 +46,7 @@ namespace Users.Domain.OrderResponses
             Status = status;
             IsPaid = isPaid;
 
-            AddDomainEvent(new OrderResponseCreatedDomainEvent());
+            AddDomainEvent(new OrderResponseCreatedDomainEvent(Id));
         }
 
         internal static OrderResponse Create(

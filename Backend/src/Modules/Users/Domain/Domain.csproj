@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Users.Domain</RootNamespace>
+    <AssemblyName>Users.Domain</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

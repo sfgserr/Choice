@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>BuildingBlocks.Domain</RootNamespace>
+    <AssemblyName>BuildingBlocks.Domain</AssemblyName>
   </PropertyGroup>
 
 </Project>
