@@ -1,0 +1,125 @@
+@startuml
+!include https://raw.githubusercontent.com/tmorin/plantuml-libs/master/distribution/eventstorming/single.puml
+
+together {
+    Person("Client", "Клиент")
+    Person("Client1", "Клиент")
+    Person("ClientCompany", "Клиент/Компания")
+    Person("Company", "Компания")
+}
+
+Person("Client2", "Клиент")
+
+rectangle "Пользователи" {
+    rectangle "Заказ" {
+        Command("CreateOrderRequestCommand", "Создать заказ")
+        Command("ChangeOrderRequestStatusCommand", "Изменить статус заказа")
+        Aggregate("OrderRequest", "Заказ")
+        DomainEvent("OrderRequestCreatedEvent", "Заказ создан")
+    }
+
+    IntegrationEvent("OrderResponseCreatedIntegrationEvent", "Ответ на заказ создан")
+    IntegrationEvent("EnrollmentDateChangedIntegrationEvent", "Дата записи изменена")
+    IntegrationEvent("EnrolledWithPrepaymentIntegrationEvent", "Клиент записался с предоплатой")
+    IntegrationEvent("OrderResponseChangedIntegrationEvent", "Заказ изменен")
+
+    rectangle "Ответы на заказ" {
+        Command("FinishCommand", "Завершить")
+        Command("SetOtherResponsesAsNotActiveCommand", "Сделать другие ответы не активными")
+        Command("CreateOrderResponseCommand", "Создать ответ на заказ")
+        Command("ChangeEnrollmentDateCommand", "Изменить дату записи")
+        Command("EnrollCommand", "Записаться")
+        Command("MarkAsPaidCommand", "Пометить как оплаченный")
+        Aggregate("OrderResponse", "Ответ на заказ")
+        DomainEvent("EnrollmentDateChangedEvent", "Дата записи изменена")
+        DomainEvent("OrderResponseCreatedEvent", "Ответ на заказ создан")
+        DomainEvent("EnrolledWithPrepaymentEvent", "Клиент записался с предоплатой")
+        DomainEvent("OrderResponsePaidEvent", "Заказ оплачен")
+        DomainEvent("OrderResponseStatusChangedEvent", "Статус изменился")
+        Comment("EnrollCommandComment") [
+            Если компания принимает предоплату, то создает платеж
+        ]
+        Comment("SetOtherResponsesAsNotActiveComment") [
+            Если клиент записался, то сделать все ответы неактивными
+        ]
+    }
+}
+
+rectangle "Чат" {
+    rectangle "Сообщении" {
+        Command("CreateOrderMessageCommand", "Создать заказ-сообщение")
+        Command("ChangeOrderMessageCommand", "Изменить заказ-сообщение")
+        Command("ChangeOrderMessageEnrollmentDateCommand", "Изменить дату записи")
+        Aggregate("Message", "Сообщение")
+        DomainEvent("MessageCreated", "Сообщение создано")
+        DomainEvent("OrderMessageEnrollmentDateChangedEvent", "Дата записи изменена")
+        DomainEvent("MessageChangedEvent", "Сообщение изменено")
+        Command("NotifyMessageCreatedCommand", "Уведомить о созданом сообщении")
+        Command("NotifyMessageChangedCommand", "Уведомить о изменении сообщении")
+        Command("NotifyOrderMessageEnrollmentDateChangedCommand", "Уведомить о изменении даты записи")
+    }
+}
+
+rectangle "Платежи" {
+    IntegrationEvent("EnrollmentPaymentPaidIntegrationEvent", "Платеж оплачен")
+
+    rectangle "Оплата записи" {
+        Command("CreateEnrollmentPaymentCommand", "Создать оплату записи")
+        Command("PayEnrollmentPaymentCommand", "Оплатить")
+        Aggregate("EnrollmentPayment", "Оплата записи")
+        DomainEvent("EnrollmentPaymentCreated", "Оплата создана")
+        DomainEvent("EnrollmentPaymentPaidEvent", "Платеж оплачен")
+        System("PaymentSystem", "API Банк <<Точка>>")
+    }
+}
+
+Client --> CreateOrderRequestCommand : 1
+CreateOrderRequestCommand .- OrderRequest
+CreateOrderRequestCommand --> OrderRequestCreatedEvent
+ClientCompany --> ChangeEnrollmentDateCommand : 3*
+OrderResponse .- ChangeEnrollmentDateCommand
+ChangeEnrollmentDateCommand --> EnrollmentDateChangedEvent
+EnrollmentDateChangedEvent --> EnrollmentDateChangedIntegrationEvent
+EnrollmentDateChangedIntegrationEvent --> ChangeOrderMessageEnrollmentDateCommand
+CreateOrderMessageCommand .l- Message
+CreateOrderMessageCommand --> MessageCreated
+MessageCreated --> NotifyMessageCreatedCommand 
+OrderResponse .- CreateOrderResponseCommand
+CreateOrderResponseCommand --> OrderResponseCreatedEvent
+OrderResponseCreatedEvent --> OrderResponseCreatedIntegrationEvent
+OrderResponseCreatedIntegrationEvent --> CreateOrderMessageCommand
+Company --> CreateOrderResponseCommand : 2
+EnrollmentPayment .r- CreateEnrollmentPaymentCommand
+CreateEnrollmentPaymentCommand --> EnrollmentPaymentCreated
+OrderResponse .- EnrollCommand
+Client1 --> EnrollCommand : 4
+EnrollCommandComment .- EnrollCommand
+EnrollCommand --> EnrolledWithPrepaymentEvent
+EnrolledWithPrepaymentEvent --> EnrolledWithPrepaymentIntegrationEvent 
+EnrolledWithPrepaymentIntegrationEvent --> CreateEnrollmentPaymentCommand
+EnrollmentPayment .- PayEnrollmentPaymentCommand
+PayEnrollmentPaymentCommand --> PaymentSystem : 5.1
+Client2 --> PayEnrollmentPaymentCommand : 5
+PayEnrollmentPaymentCommand --> EnrollmentPaymentPaidEvent : 5.2
+EnrollmentPaymentPaidEvent --> EnrollmentPaymentPaidIntegrationEvent
+EnrollmentPaymentPaidIntegrationEvent --> MarkAsPaidCommand
+OrderResponse .- MarkAsPaidCommand
+MarkAsPaidCommand --> OrderResponsePaidEvent
+OrderResponsePaidEvent --> OrderResponseChangedIntegrationEvent
+ChangeOrderMessageEnrollmentDateCommand .r- Message
+ChangeOrderMessageEnrollmentDateCommand --> OrderMessageEnrollmentDateChangedEvent
+OrderMessageEnrollmentDateChangedEvent --> NotifyOrderMessageEnrollmentDateChangedCommand
+OrderResponseChangedIntegrationEvent --> ChangeOrderMessageCommand
+ChangeOrderMessageCommand .- Message
+ChangeOrderMessageCommand --> MessageChangedEvent
+MessageChangedEvent --> NotifyMessageChangedCommand
+OrderResponsePaidEvent --> SetOtherResponsesAsNotActiveCommand
+SetOtherResponsesAsNotActiveComment .- SetOtherResponsesAsNotActiveCommand
+ClientCompany --> FinishCommand : 6
+OrderResponse .- FinishCommand
+FinishCommand --> OrderResponseStatusChangedEvent
+OrderResponseStatusChangedEvent --> OrderResponseChangedIntegrationEvent
+OrderResponseStatusChangedEvent --> ChangeOrderRequestStatusCommand
+OrderRequest .- ChangeOrderRequestStatusCommand
+
+@enduml

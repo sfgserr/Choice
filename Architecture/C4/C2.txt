@@ -1,0 +1,28 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+
+Person(clientAlias, "Клиент")
+Person(companyAlias, "Компания")
+Person(adminAlias, "Админ")
+System_Boundary(systemAlias, "Выбор") {
+    Container(webApi, "WebApi", "C#, ASP.NET Core", "Позволяет регистрироваться и авторизироватся. Создавать и отвечать на заказы, оставлять отзывы, отправлять графические и текстовые сообщения.")
+    Container(clientApp, "Мобильное приложение", "Javascript, React native", "Предоставляет красивый пользовательский интерфейс для взаимодействия с API")
+    ContainerDb(db, "База данных", "Sql Server", "Хранит все данные")
+}
+System_Ext(googleAlias, "Google maps Api", "Позволяет визуализировать карту в мобильном приложение и предоставляет функционал для геокодирования")
+System_Ext(email, "Gmail Service", "Позволяет отправлять сообщение на почту пользователей")
+System_Ext(firebase, "Firebase", "Позволяет отправлять пуш-уведомления")
+
+Rel(clientAlias, clientApp, "Создает заказы", "UI")
+Rel(companyAlias, clientApp, "Отвечает на заказы", "UI")
+Rel(adminAlias, clientApp, "Управляет аккаунтами и пользовательскими данными", "UI")
+Rel(webApi, googleAlias, "использует", "HTTP")
+Rel(webApi, firebase, "использует", "HTTP")
+Rel(firebase, clientApp, "Отправляет пуш-уведомление")
+Rel(clientApp, googleAlias, "использует", "react-native-maps")
+Rel(clientApp, webApi, "использует", "HTTP")
+Rel(webApi, db, "Читает/Записывает")
+Rel(webApi, email, "Использует", "SMTP")
+@enduml

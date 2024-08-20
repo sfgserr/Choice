@@ -1,0 +1,77 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(webApi, "WebApi") {
+    Boundary(chatModule, "Chat Module") {
+        Boundary(chatDomain, Chat.Domain) {
+            rectangle "Message Aggregate Root" {
+                class Message <<Entity, AR>> {
+                    +MessageId Id
+                    +MessageType Type
+                    +string Body
+                    +OrderMessage? Order
+                    +ChatUserId FromUserId
+                    +ChatUserId ToUserId
+                    +bool IsActive
+                    +DateTime CreationTime
+                    +Message Create(..)
+                }
+
+                class OrderMessage <<VO>> {
+                    +ChatUserId ClientId
+                    +ChatUserId CompanyId
+                    +OrderRequest Request
+                    +double Price
+                    +int Deadline
+                    +DateTime EnrollmentDate
+                    +bool IsEnrollmentDateConfirmed
+                }
+
+                class MessageId <<VO>> {
+
+                }
+
+                class MessageType <<VO>> {
+                    +string Type
+                    +MessageType Image
+                    +MessageType Text
+                    +MessageType Order
+                }
+
+                interface IMessageRepository {
+
+                }
+            }
+
+            rectangle "ChatUser Aggregate Root" {
+                class ChatUser <<Entity, AR>> {
+                    +ChatUserId Id
+                    +UserStatus Status
+                    +DateTime? LastTimeOnline
+                    +bool IsDeleted
+                    +void Delete()
+                    +SetStatus(UserStatus status)
+                }
+
+                class ChatUserId <<VO>> {
+
+                }
+
+                class UserStatus <<VO>> {
+                    +string Value
+                    +UserStatus Online
+                    +UserStatus Offline
+                }
+            }
+        }
+    }
+
+    ChatUser *-- ChatUserId
+    ChatUser *-- UserStatus
+    Message *-- MessageId
+    Message *-- OrderMessage
+    Message *-- MessageType
+}
+
+@enduml

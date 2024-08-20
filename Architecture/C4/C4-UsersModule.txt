@@ -1,0 +1,193 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(WebApi, "WebApi") {
+    Boundary(userModule, "User Module") {
+        Boundary(userDomain, "Users.Domain") {
+            rectangle "User Aggregate Root" {
+                Boundary(users, "Users") {
+                    class User <<Entity>> {
+                        +UserId Id
+                        +string Name
+                        +string Email
+                        +string PhoneNumber
+                        +string HashedPassword
+                        +string IconUri
+                        +Address Address
+                        +UserRole Role
+                        ~void ChangeIconUri(string iconUri)
+                        ~void ChangeData(string email, string phoneNumber, Address address)
+                    }
+
+                    class UserId <<VO>> {
+
+                    }
+            
+                    interface IUserContext {
+                        +UserId Id
+                    }
+
+                    class Address <<VO>> {
+                        +string City
+                        +string Street
+                        +Coords Coords
+                    }
+
+                    class UserRole <<VO>> {
+                        +string Value
+                        +UserRole Company
+                        +UserRole Client
+                        +UserRole Admin
+                    }
+
+                    class Coords <<VO>> {
+                        +string Latitude
+                        +string Longitude
+                    }
+                }
+
+                Boundary(clients, "Clients") {
+                    class Client <<Entity, AR>> {
+                        +ClientId Id
+                        +User User
+                        +Client Create(..)
+                        +OrderRequest CreateOrderRequest(..)
+                    }
+
+                    class ClientId <<VO>> {
+
+                    }
+
+                    interface IClientRepository {
+
+                    }
+                }
+
+                Boundary(companies, "Companies") {
+                    class Company <<Entity, AR>> {
+                        +CompanyId Id
+                        +User User
+                        +string Description
+                        +List<CategoryId> Categories
+                        +List<string> PhotoUris
+                        +bool IsDataFilled
+                        +bool IsPrepaymentAvailable
+                        +Company CreateCompany(..)
+                        +void FillData(..)
+                        +void ChangeData(..)
+                    }
+
+                    class CompanyId <<VO>> {
+                        
+                    }
+
+                    interface ICompanyRepository {
+
+                    }
+                }
+            }
+            
+            rectangle "Order Response Aggregate Root" {
+                class OrderResponse <<Entity>> {
+                    +OrderResponseId Id
+                    +ClientId ClientId
+                    +CompanyId CompanyId
+                    +OrderRequestId RequestId
+                    +double Price
+                    +int Deadline
+                    +double Prepayment
+                    +DateTime? EnrollmentDate
+                    +OrderStatus Status
+                    +bool IsEnrolled
+                    +bool IsPaid
+                    +UserId? UserChangedEnrollmentDateId
+                    +bool IsEnrollmentDateConfirmed
+                    +bool IsActive
+                    ~OrderResponse Create(..)
+                    +void EnrollWithPrepayment(ClientId enrollingClientId)
+                    +void Enroll(ClientId enrollingClientId)
+                    +void Finish(UserId finishingUserId)
+                    +void Cancel(UserId cancellingUserId)
+                    +OrderResponse ChangeEnrollmentDate(UserId changingUserId, DateTime enrollmentDate)
+                    +void Confirm(CompanyId confirmingCompanyId)
+                    +void MarkAsPaid()
+                }
+
+                class OrderReponseId <<VO>> {
+
+                }
+
+                OrderResponse *-- OrderReponseId
+            }
+
+            rectangle "Order Request Aggregate Root" {
+                class OrderRequest <<Entity, AR>> {
+                    +OrderRequestId Id
+                    +ClientId CreatedClientId
+                    +bool ToKnowPrice
+                    +bool ToKnowDeadline
+                    +bool ToKnowEnrollmentDate
+                    +int Distance
+                    +List<string> PhotoUris
+                    +List<Review> Reviews
+                    +DateTime CreationDate
+                    +string Description
+                    +OrderStatus Status
+                    +CategoryId CategoryId
+                    +DateTime CreationDate
+                    +OrderResponse Response(..)
+                    +void Review(..)
+                    ~OrderRequest Create(..)
+                    ~void SetStatus(OrderStatus)
+                    +void ChangeData(..)
+                }
+
+                class Review <<Entity>> {
+                    +OrderRequestId RequestId
+                    +UserId AuthorId
+                    +UserId ToUserId
+                    +string Description
+                    +int Grade
+                    +List<string> PhotoUris
+                    ~Review CreateReview(..)
+                }
+
+                class OrderStatus <<VO>> {
+                    +string Status
+                    +OrderStatus Finished
+                    +OrderStatus Active
+                    +OrderStatus Canceled
+                }
+
+                class OrderRequestId <<VO>> {
+
+                }
+            }
+        }
+    }  
+
+    rectangle "Categories" {
+        class CategoryId <<VO>> {
+
+        }
+    }
+
+    User *-- UserRole
+    User *-- UserId
+    User *-- Address
+    Client *-- User
+    Client *-- ClientId
+    Company *-- User
+    Company *-- CompanyId
+    Client "1" *-- "*" OrderRequest
+    Address *-- Coords
+    OrderRequest "1" *-- "0..2" Review
+    OrderResponse *-- OrderStatus
+    OrderRequest *-- OrderStatus
+    OrderRequest *-- OrderRequestId
+    OrderRequest *-- CategoryId
+    Company *-- CategoryId 
+}
+
+@enduml

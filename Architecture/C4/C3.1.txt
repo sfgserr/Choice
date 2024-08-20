@@ -1,0 +1,41 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+
+AddElementTag("admin", $fontColor="#c1121f")
+AddRelTag("admin", $lineColor="#c1121f", $textColor="#c1121f")
+
+System_Boundary(systemAlias, "Выбор") {
+    Container_Boundary(webApi, "WebApi") {
+        Component(admin, "Administration Module", ".NET Libraries", $tags="admin")
+        Component(user, "User Module", ".NET Libraries") 
+        Component(chat, "Chat Module", ".NET Libraries")
+        Component(payment, "Payments Module", ".NET Libraries")
+        Component(api, "Api", .NET WebApi")
+        Component_Ext(eventbus, "In-Memory Eventbus", "Masstransit")
+    }
+    Container(clientApp, "Мобильное приложение", "Javascript, React native", "Предоставляет красивый пользовательский интерфейс для взаимодействия с API")
+    Container_Boundary(db, "База данных") {
+        ComponentDb(userData, "User Data", "scheme")
+        ComponentDb(chatData, "Chat Data", "scheme")
+        ComponentDb(paymentData, "Payment Data", "scheme")
+    }
+
+    Rel(api, user, "использует")
+    Rel(api, chat, "использует")
+    Rel(api, payment, "использует")
+    Rel(api, admin, "использует", $tags="admin")
+    Rel(user, eventbus, "Отправляет/Получает")
+    Rel(chat, eventbus, "Отправляет/Получает")
+    Rel(payment, eventbus, "Отправляет/Получает")
+    Rel(user, userData, "Читает/Записывает")
+    Rel(chat, chatData, "Читает/Записывает")
+    Rel(payment, paymentData, "Читает/Записывает")
+    Rel(admin, db, "Читает/Записывает", $tags="admin")
+    Rel(clientApp, api, "использует", "HTTP")
+}
+
+SHOW_LEGEND()
+
+@enduml

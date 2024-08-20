@@ -1,0 +1,88 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+
+AddElementTag("users", $bgColor="#7ae582")
+AddElementTag("chat", $bgColor="#4361ee")
+AddElementTag("payments", $bgColor="#c1121f")
+AddElementTag("eventbus", $bgColor="#3a0ca3")
+AddElementTag("admin", $bgColor="#3c6e71")
+
+System_Boundary(system, "Выбор") {
+    Container(mobile, "Мобильное приложение", "Javascript, React-native", "Предоставляет красивый пользовательский интерфейс для взаимодействия с API")
+    Boundary(webApi, "WebApi") {
+        Component(api, "Api", ".NET WebApi")
+        Boundary(user, "Users Module") {
+            Component(userDomain, "Users.Domain", ".NET Library", $tags="users")
+            Component(userApplication, "Users.Application", ".NET Library", $tags="users")
+            Component(userInfr, "Users.Infrastructure", ".NET Library", $tags="users")
+            Component(userEvent, "Users.IntegrationEvents", ".NET Library", $tags="users")
+            ComponentDb(userData, "User Data", "schema", $tags="users")
+
+            Rel(userApplication, userDomain, "использует")
+            Rel(userInfr, userApplication, "использует")
+            Rel(userInfr, userDomain, "использует")
+            Rel(userInfr, userEvent, "использует")
+            Rel(userInfr, userData, "использует")
+        }
+
+        ContainerQueue(eventbus, "In-Memory Eventbus", "Masstransit", $tags="eventbus")
+
+        Boundary(chat, "Chat Module") {
+            Component(chatDomain, "Chat.Domain", ".NET Library", $tags="chat")
+            Component(chatApplication, "Chat.Application", ".NET Library", $tags="chat")
+            Component(chatInfr, "Chat.Infrastructure", ".NET Library", $tags="chat")
+            Component(chatEvent, "Chat.IntegrationEvents", ".NET Library", $tags="chat")
+            ComponentDb(chatData, "Chat Data", "schema", $tags="chat")
+
+            Rel(chatApplication, chatDomain, "использует")
+            Rel(chatInfr, chatApplication, "использует")
+            Rel(chatInfr, chatDomain, "использует")
+            Rel(chatInfr, chatEvent, "использует")
+            Rel(chatInfr, chatData, "использует")
+        }
+
+        Boundary(payment, "Payments Module") {
+            Component(paymentDomain, "Payments.Domain", ".NET Library", $tags="payments")
+            Component(paymentApplication, "Payments.Application", ".NET Library", $tags="payments")
+            Component(paymentInfr, "Payments.Infrastructure", ".NET Library", $tags="payments")
+            Component(paymentEvent, "Payments.IntegrationEvents", ".NET Library", $tags="payments")
+            ComponentDb(paymentData, "Payment Data", "schema", $tags="payments")
+
+            Rel(paymentApplication, paymentDomain, "использует")
+            Rel(paymentInfr, paymentApplication, "использует")
+            Rel(paymentInfr, paymentDomain, "использует")
+            Rel(paymentInfr, paymentEvent, "использует")
+            Rel(paymentInfr, paymentData, "использует")
+        }
+
+        Boundary(admin, "Administration Module") {
+            Component(adminDomain, "Administration.Domain", ".NET Library", $tags="admin")
+            Component(adminApplication, "Administration.Application", ".NET Library", $tags="admin")
+            Component(adminInfr, "Administration.Infrastructure", ".NET Library", $tags="admin")
+
+            Rel(adminApplication, adminDomain, "использует")
+            Rel(adminInfr, adminApplication, "использует")
+            Rel(adminInfr, adminDomain, "использует")
+        }
+    }
+}
+
+Rel(userInfr, eventbus, "отправляет")
+Rel(chatInfr, eventbus, "получает")
+Rel(paymentInfr, eventbus, "получает")
+Rel(chatInfr, userEvent, "использует")
+Rel(paymentInfr, userEvent, "использует")
+Rel(mobile, api, "использует", "HTTP")
+Rel(api, userInfr, "использует")
+Rel(api, userApplication, "использует")
+Rel(api, chatInfr, "использует")
+Rel(api, chatApplication, "использует")
+Rel(api, paymentInfr, "использует")
+Rel(api, paymentApplication, "использует")
+Rel(api, adminInfr, "использует")
+Rel(api, adminApplication, "использует")
+
+@enduml

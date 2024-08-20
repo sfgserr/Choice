@@ -1,0 +1,122 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(WebApi, "WebApi") {
+    Boundary(paymentModule, "PaymentsModule") {
+        Boundary(paymentDomain, "Payments.Domain") {
+            rectangle "SubscriptionPayment Aggregate Root" {
+                class SubscriptionPayment <SubscriptionPaymentId> <<Entity, AR>> {
+                    +SubscriptionPeriod Period
+                    +PayerId Id
+                    +DateTime ExpireDate
+                    +PaymentStatus Status
+                    +SubscriptionPayment Buy(..)
+                    +void Expire()
+                    +void Pay()
+                }
+
+                class SubscriptionPaymentId <<VO>> {
+                    
+                }
+
+                SubscriptionPayment *-- SubscriptionPaymentId
+            }
+
+            rectangle "Subscription Aggregate Root" {
+                class Subscription <<Entity, AR>> {
+                    +SubscriptionId Id
+                    +SubscriberId SubscriberId
+                    +SubscriptionPeriod Period
+                    +SubscriptionStatus Status
+                    +DateTime ExpirationDate
+                    +Subscription Create(..)
+                    +void Expire()    
+                }
+
+                class SubscriptionId <<VO>> {
+
+                }
+
+                class SubscriptionPeriod <<VO>> {
+                    +string Value
+                    +MoneyValue Cost
+                    +SubscriptionPeriod Month
+                    +SubscriptionPeriod HalfYear
+                    +SubscriptionPeriod Year
+                }
+
+                class SubscriptionStatus <<VO>> {
+                    +string Value
+                    +SubscriptionStatus Active
+                    +SubscriptionStatus Expired
+                }
+
+                class SubscriberId <<VO>> {
+
+                }
+
+                Subscription *-- SubscriptionPeriod
+                Subscription *-- SubscriptionStatus
+                SubscriptionPayment *-- SubscriptionPeriod
+                Subscription *-- SubscriberId
+            }
+
+            rectangle "Payer Aggregate Root" {
+                class PayerId <<VO>> {
+
+                }
+
+                interface IPayerContext {
+                    +PayerId Id
+                }
+
+                IPayerContext *-- PayerId
+            }
+
+            rectangle "EnrollmentPayment Aggregate Root" {
+                class EnrollmentPayment <EnrollmentPaymentId> <<Entity, AR>> {
+                    +EnrollmentPaymentId Id
+                    +PayerId PayerId
+                    +OrderResponseId ResponseId
+                    +PaymentStatus Status
+                    +MoneyValue Cost
+                    +EnrollmentPayment Buy(..)
+                    +void Pay()
+                }
+
+                class EnrollmentPaymentId <<VO>> {
+
+                }
+
+                class OrderResponseId <<VO>> {
+
+                }
+
+                EnrollmentPayment *-- EnrollmentPaymentId
+                EnrollmentPayment *-- OrderResponseId
+            }
+
+            rectangle "SeedWork" {
+                class MoneyValue <<VO>> {
+                    +double Amount
+                    +string Currency
+                }
+
+                class PaymentStatus <<VO>> {
+                    +string Value
+                    +PaymentStatus WaitingForPayment
+                    +PaymentStatus Expired
+                    +PaymentStatus Paid
+                }
+
+                SubscriptionPeriod *-- MoneyValue
+                MoneyValue --* EnrollmentPayment
+                EnrollmentPayment *-- PaymentStatus
+                PaymentStatus --* SubscriptionPayment
+            }
+        }
+    }
+}
+
+@enduml

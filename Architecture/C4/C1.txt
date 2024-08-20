@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(clientAlias, "Клиент")
+Person(companyAlias, "Компания")
+Person(adminAlias, "Админ")
+System(systemAlias, "Выбор", "Позволяет пользователям регистрироваться как компания или как клиент. Создавать заказы и отвечать на них(клиент/компания), оставлять отзывы и отправлять сообщения.")
+System_Ext(googleAlias, "Google maps Api", "Позволяет визуализировать карту в мобильном приложение и предоставляет функционал для геокодирования")
+System_Ext(email, "Gmail Service", "Позволяет отправлять сообщение на почту пользователей")
+System_Ext(firebase, "Firebase", "Позволяет отправлять пуш-уведомления")
+
+Rel(clientAlias, systemAlias, "Создает заказы")
+Rel(companyAlias, systemAlias, "Отвечает на заказы")
+Rel(adminAlias, systemAlias, "Использует функционал для управление аккаунтами и пользовательскими данными")
+Rel(systemAlias, googleAlias, "использует", "HTTP")
+Rel(systemAlias, email, "использует", "SMTP")
+BiRel(systemAlias, firebase, "использует", "HTTP")
+@enduml

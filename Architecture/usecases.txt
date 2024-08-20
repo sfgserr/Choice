@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+
+rectangle "Клиент" as client { 
+    usecase "Создать заказ" as createOrderRequest
+    usecase "Записаться" as enroll
+    usecase "Изменить заказ" as changeOrderRequest
+}
+
+rectangle "Компания" as company {
+    usecase "Ответить на заказ" as createOrderResponse
+    usecase "Подтвердить время записи" as confirmEnrollmentDate
+    usecase "Заполнить данные компании" as fillCompanyData
+}
+
+rectangle "Клиент/Компания" as clientCompany {
+    usecase "Оставить отзыв" as createReview
+    usecase "Отменить запись" as cancel
+    usecase "Изменить время записи" as changeEnrollmentDate
+    usecase "Завершить заказ" as finish
+    usecase "Изменить аватар" as changeIconUri
+    usecase "Изменить информацию" as changeData
+    usecase "Сбросить пароль" as resetPassword
+    usecase "Отправить сообщение" as sendMessage
+    usecase "Отправить фотографию" as sendImage
+}
+
+rectangle "Администрация"  {
+    usecase "Создать категорию" as createCategory
+    usecase "Отредактировать категорию" as editCategory
+    usecase "Удалить категорию" as deleteCategory
+    usecase "Изменить клиента/компанию" as changeUser
+    usecase "Изменить отзыв" as changeReview    
+}
+
+client -- clientCompany
+clientCompany -- company
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(webApi, "WebApi") {
+    Boundary(admin, "Administration Module") {
+        rectangle "Category Aggregate Root" {
+            class Category <<Entity, AR>> {
+                +CategoryId Id
+                +string Title
+                +string IconUri
+                +void Create(..)
+                +void Edit(..)
+            }
+
+            class CategoryId <<VO>> {
+
+            }
+
+            Category *-- CategoryId
+        }
+    }
+}
+
+@enduml
