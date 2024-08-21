@@ -158,13 +158,16 @@ namespace Users.Domain.OrderResponses
                 UserChangedEnrollmentDate,
                 new UserId(changingClientId.Value)));
 
+            var oldEnrollmentDate = EnrollmentDate;
+
             EnrollmentDate = newEnrollmentDate;
             IsEnrollmentDateConfirmed = false;
             UserChangedEnrollmentDate = new UserId(changingClientId.Value);
 
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id, 
-                EnrollmentDate, 
+                oldEnrollmentDate,
+                EnrollmentDate,
                 UserChangedEnrollmentDate, 
                 IsEnrollmentDateConfirmed));
         }
@@ -180,12 +183,15 @@ namespace Users.Domain.OrderResponses
                 UserChangedEnrollmentDate, 
                 new UserId(changingCompanyId.Value)));
 
+            var oldEnrollmentDate = EnrollmentDate;
+
             EnrollmentDate = newEnrollmentDate;
             IsEnrollmentDateConfirmed = true;
             UserChangedEnrollmentDate = new UserId(changingCompanyId.Value);
 
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id,
+                oldEnrollmentDate,
                 EnrollmentDate,
                 UserChangedEnrollmentDate,
                 IsEnrollmentDateConfirmed));

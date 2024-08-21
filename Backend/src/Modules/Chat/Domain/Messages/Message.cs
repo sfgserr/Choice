@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Domain;
 using Chat.Domain.ChatUsers;
 using Chat.Domain.Messages.Events;
+using Chat.Domain.Messages.OrderMessages;
 using Chat.Domain.Messages.Rules;
 
 namespace Chat.Domain.Messages
@@ -16,23 +17,21 @@ namespace Chat.Domain.Messages
             MessageId id, 
             MessageType type, 
             string? body,
-            OrderResponseId? resonseId, 
+            OrderMessage? orderMessage, 
             ChatUserId fromUserId, 
             ChatUserId toUserId, 
-            bool isActive, 
             DateTime creationDate)
         {
             CheckRule(new CannotSendMessageToYourselfRule(fromUserId, toUserId));
-            CheckRule(new OrderResponseIdMustBeProvidedIfTypeOrderRule(type, resonseId));
+            CheckRule(new OrderMessageMustBeProvidedIfTypeOrderRule(type, orderMessage));
             CheckRule(new BodyMustBeProvidedIfTypeTextOrImageRule(type, body));
 
             Id = id;
             Type = type;
             Body = body;
-            ResonseId = resonseId;
+            OrderMessage = orderMessage;
             FromUserId = fromUserId;
             ToUserId = toUserId;
-            IsActive = isActive;
             CreationDate = creationDate;
 
             AddDomainEvent(new MessageCreatedDomainEvent(Id));
@@ -50,7 +49,6 @@ namespace Chat.Domain.Messages
                 null,
                 fromUserId,
                 toUserId,
-                true,
                 DateTime.Now);
         }
 
@@ -66,23 +64,24 @@ namespace Chat.Domain.Messages
                 null,
                 fromUserId,
                 toUserId,
-                true,
                 DateTime.Now);
         }
 
         public static Message CreateOrder(
             OrderResponseId responseId,
+            DateTime? enrollmentDate,
             ChatUserId fromUserId,
             ChatUserId toUserId)
         {
+            var id = new MessageId(Guid.NewGuid());
+
             return new Message(
-                new(Guid.NewGuid()),
+                id,
                 MessageType.Order,
                 null,
-                responseId,
+                OrderMessage.Create(responseId, id, enrollmentDate),
                 fromUserId,
                 toUserId,
-                true,
                 DateTime.Now);
         }
 
@@ -92,13 +91,11 @@ namespace Chat.Domain.Messages
 
         public string? Body { get; }
 
-        public OrderResponseId? ResonseId { get; }
+        public OrderMessage? OrderMessage { get; }
 
         public ChatUserId FromUserId { get; }
 
         public ChatUserId ToUserId { get; }
-
-        public bool IsActive { get; private set; }
 
         public DateTime CreationDate { get; }
     }

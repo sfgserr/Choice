@@ -6,7 +6,8 @@ namespace Users.Domain.OrderResponses.Events
     public class EnrollmentDateChangedDomainEvent : DomainEventBase
     {
         public EnrollmentDateChangedDomainEvent(
-            OrderResponseId responseId, 
+            OrderResponseId responseId,
+            DateTime? oldEnrollmentDate,
             DateTime? enrollmentDate, 
             UserId userChangedEnrollmentDateId, 
             bool isEnrollmentDateConfirmed)
@@ -18,6 +19,8 @@ namespace Users.Domain.OrderResponses.Events
         }
 
         public OrderResponseId ResponseId { get; }
+
+        public DateTime? OldEnrollmentDate { get; }
 
         public DateTime? EnrollmentDate { get; }
 

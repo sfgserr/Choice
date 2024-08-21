@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Domain;
 
-namespace Chat.Domain.Messages
+namespace Chat.Domain.Messages.OrderMessages
 {
     public class OrderResponseId : TypedIdValueBase
     {
