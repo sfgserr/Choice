@@ -22,7 +22,6 @@ namespace Users.Domain.Users.Clients
             string email,
             string phoneNumber,
             string hashedPassword,
-            string iconUri,
             Address address,
             IUsersCounter counter)
         {
@@ -31,7 +30,6 @@ namespace Users.Domain.Users.Clients
                 email,
                 phoneNumber,
                 hashedPassword,
-                iconUri,
                 address,
                 UserRole.Client,
                 counter);

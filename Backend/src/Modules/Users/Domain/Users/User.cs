@@ -44,7 +44,6 @@ namespace Users.Domain.Users
             string email, 
             string phoneNumber, 
             string hashedPassword, 
-            string iconUri,
             Address address,
             UserRole role,
             IUsersCounter counter)
@@ -54,8 +53,8 @@ namespace Users.Domain.Users
                 name, 
                 email, 
                 phoneNumber, 
-                hashedPassword, 
-                iconUri, 
+                hashedPassword,
+                "defaulturi",
                 address, 
                 role,
                 counter);

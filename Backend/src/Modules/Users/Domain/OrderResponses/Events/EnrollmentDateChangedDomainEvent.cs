@@ -7,22 +7,19 @@ namespace Users.Domain.OrderResponses.Events
     {
         public EnrollmentDateChangedDomainEvent(
             OrderResponseId responseId,
-            DateTime? oldEnrollmentDate,
-            DateTime? enrollmentDate, 
+            DateTime? previousEnrollmentDate,
             UserId userChangedEnrollmentDateId, 
             bool isEnrollmentDateConfirmed)
         {
             ResponseId = responseId;
-            EnrollmentDate = enrollmentDate;
+            PreviousEnrollmentDate = previousEnrollmentDate;
             UserChangedEnrollmentDateId = userChangedEnrollmentDateId;
             IsEnrollmentDateConfirmed = isEnrollmentDateConfirmed;
         }
 
         public OrderResponseId ResponseId { get; }
 
-        public DateTime? OldEnrollmentDate { get; }
-
-        public DateTime? EnrollmentDate { get; }
+        public DateTime? PreviousEnrollmentDate { get; }
 
         public UserId UserChangedEnrollmentDateId { get; }
 
