@@ -1,10 +1,9 @@
-﻿using Application.Users.Clients.Commands.Create;
-using BuildingBlocks.Application.Contracts;
-using BuildingBlocks.Application.Cqrs.Commands;
+﻿using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.GeoCoding;
 using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 
-namespace Application.Users.Clients.Commands.CreateClient
+namespace Users.Application.Users.Clients.Commands.CreateClient
 {
     internal class CreateClientCommandHandler : ICommandHandler<CreateClientCommand>
     {

@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Application.Users.Clients.Commands.ChangIconUri
+namespace Users.Application.Users.Clients.Commands.ChangIconUri
 {
     public class ChangeIconUriCommand : ICommand
     {

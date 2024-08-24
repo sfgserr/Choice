@@ -33,11 +33,12 @@ namespace Users.Domain.OrderRequests
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
             Distance = distance;
-            _photoUris = photoUris;
             Description = description;
             Status = status;
             CategoryId = categoryId;
             CreationDate = creationDate;
+
+            _photoUris = photoUris;
         }
 
         internal static OrderRequest Create(

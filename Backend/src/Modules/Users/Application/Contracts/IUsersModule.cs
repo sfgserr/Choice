@@ -1,9 +1,9 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Cqrs.Queries;
 
-namespace BuildingBlocks.Application.Contracts
+namespace Users.Application.Contracts
 {
-    public interface IModule
+    public interface IUsersModule
     {
         Task ExecuteCommand<TCommand>(TCommand command) where TCommand : ICommand;
 

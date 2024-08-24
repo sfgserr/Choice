@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Users.Clients.Commands.ChangeData
+namespace Users.Application.Users.Clients.Commands.ChangeData
 {
     internal class ChangeDataValidator : AbstractValidator<ChangeDataCommand>
     {

@@ -1,9 +1,9 @@
-﻿using BuildingBlocks.Application.Contracts;
-using BuildingBlocks.Application.Cqrs.Commands;
+﻿using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.GeoCoding;
 using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 
-namespace Application.Users.Clients.Commands.ChangeData
+namespace Users.Application.Users.Clients.Commands.ChangeData
 {
     internal class ChangeDataCommandHandler : ICommandHandler<ChangeDataCommand>
     {

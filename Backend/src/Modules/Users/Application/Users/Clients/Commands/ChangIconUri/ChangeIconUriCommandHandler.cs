@@ -2,7 +2,7 @@
 using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 
-namespace Application.Users.Clients.Commands.ChangIconUri
+namespace Users.Application.Users.Clients.Commands.ChangIconUri
 {
     internal class ChangeIconUriCommandHandler : ICommandHandler<ChangeIconUriCommand>
     {

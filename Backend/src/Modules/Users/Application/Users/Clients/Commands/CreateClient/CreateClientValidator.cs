@@ -1,7 +1,6 @@
-﻿using Application.Users.Clients.Commands.Create;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Application.Users.Clients.Commands.CreateClient
+namespace Users.Application.Users.Clients.Commands.CreateClient
 {
     internal class CreateClientValidator : AbstractValidator<CreateClientCommand>
     {

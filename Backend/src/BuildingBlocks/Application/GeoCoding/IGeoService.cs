@@ -1,5 +1,4 @@
-﻿
-namespace BuildingBlocks.Application.Contracts
+﻿namespace BuildingBlocks.Application.GeoCoding
 {
     public interface IGeoService
     {

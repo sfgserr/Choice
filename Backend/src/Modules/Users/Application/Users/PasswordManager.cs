@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Application.Users
+namespace Users.Application.Users
 {
     public class PasswordManager
     {

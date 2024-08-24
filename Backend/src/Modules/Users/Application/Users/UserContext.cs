@@ -1,7 +1,7 @@
-﻿using BuildingBlocks.Application.Contracts;
+﻿using BuildingBlocks.Application.Authentication;
 using Users.Domain.Users;
 
-namespace Application.Users
+namespace Users.Application.Users
 {
     public class UserContext : IUserContext
     {

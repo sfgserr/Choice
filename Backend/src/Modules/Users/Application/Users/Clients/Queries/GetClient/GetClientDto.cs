@@ -1,28 +1,31 @@
-﻿using BuildingBlocks.Application.Cqrs.Commands;
-
-namespace Users.Application.Users.Clients.Commands.CreateClient
+﻿
+namespace Users.Application.Users.Clients.Queries.GetClient
 {
-    public class CreateClientCommand : ICommand
+    public class GetClientDto
     {
-        public CreateClientCommand(
+        public GetClientDto(
+            Guid id, 
+            string iconUri, 
             string name, 
-            string password, 
             string email, 
             string phoneNumber, 
             string city, 
             string street)
         {
+            Id = id;
+            IconUri = iconUri;
             Name = name;
-            Password = password;
             Email = email;
             PhoneNumber = phoneNumber;
             City = city;
             Street = street;
         }
 
-        public string Name { get; }
+        public Guid Id { get; }
 
-        public string Password { get; }
+        public string IconUri { get; }
+
+        public string Name { get; }
 
         public string Email { get; }
 

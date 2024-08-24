@@ -1,5 +1,4 @@
-﻿
-namespace BuildingBlocks.Application.Contracts
+﻿namespace BuildingBlocks.Application.Authentication
 {
     public interface IUserService
     {

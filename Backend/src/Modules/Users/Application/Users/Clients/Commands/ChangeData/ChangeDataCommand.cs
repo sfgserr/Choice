@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Application.Users.Clients.Commands.ChangeData
+namespace Users.Application.Users.Clients.Commands.ChangeData
 {
     public class ChangeDataCommand : ICommand
     {
