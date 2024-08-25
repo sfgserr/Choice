@@ -30,7 +30,7 @@ namespace Users.Application.Users.Clients.Queries.GetClient
                     [User].PhoneNumber as [{nameof(GetClientDto.PhoneNumber)}]
                     [User].City as [{nameof(GetClientDto.City)}]
                     [User].Street as [{nameof(GetClientDto.Street)}]
-                FROM [users].User as [User]
+                FROM [users].Users as [User]
                 WHERE [User].Id = @Id
                 """;
 
