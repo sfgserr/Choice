@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Infrastructure.InternalCommands;
+using BuildingBlocks.Infrastructure.Outbox;
+using Microsoft.EntityFrameworkCore;
 using Users.Domain.OrderRequests;
 using Users.Domain.OrderResponses;
 using Users.Domain.Users;
@@ -9,6 +11,8 @@ using Users.Infrastructure.Data.Domain.Companies;
 using Users.Infrastructure.Data.Domain.OrderRequests;
 using Users.Infrastructure.Data.Domain.OrderResponses;
 using Users.Infrastructure.Data.Domain.Users;
+using Users.Infrastructure.Data.InternalCommands;
+using Users.Infrastructure.Data.Outbox;
 
 namespace Users.Infrastructure.Data
 {
@@ -24,6 +28,10 @@ namespace Users.Infrastructure.Data
 
         public DbSet<OrderResponse> OrderResponses { get; set; }
 
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
+
+        public DbSet<InternalCommand> InternalCommands { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -33,6 +41,8 @@ namespace Users.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new OrderRequestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OrderResponseEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
         }
     }
 }

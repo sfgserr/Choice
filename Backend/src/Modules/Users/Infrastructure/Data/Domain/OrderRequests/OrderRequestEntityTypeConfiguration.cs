@@ -8,6 +8,8 @@ namespace Users.Infrastructure.Data.Domain.OrderRequests
     {
         public void Configure(EntityTypeBuilder<OrderRequest> builder)
         {
+            builder.ToTable("OrderRequests", "users");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.ClientCreatedId).HasColumnName("ClientCreatedId");

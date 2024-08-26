@@ -3,13 +3,11 @@ namespace BuildingBlocks.Infrastructure.InternalCommands
 {
     public class InternalCommand
     {
-        public InternalCommand(Guid id, string type, string data, DateTime? processedDate, string? error)
+        public InternalCommand(Guid id, string type, string data)
         {
             Id = id;
             Type = type;
             Data = data;
-            ProcessedDate = processedDate;
-            Error = error;
         }
 
         public Guid Id { get; }

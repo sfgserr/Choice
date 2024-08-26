@@ -11,6 +11,8 @@ namespace Users.Infrastructure.Data.Domain.Companies
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
+            builder.ToTable("Companies", "users");
+
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.User)

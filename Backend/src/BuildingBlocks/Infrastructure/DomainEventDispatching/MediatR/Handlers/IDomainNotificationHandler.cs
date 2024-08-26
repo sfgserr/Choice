@@ -2,9 +2,9 @@
 
 namespace BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers
 {
-    public interface IDomainNotificationHandler<TDomainNotification> : 
+    public interface IDomainNotificationHandler<TDomainNotification> :
         INotificationHandler<TDomainNotification> where TDomainNotification : IDomainNotification
     {
-        
+
     }
 }

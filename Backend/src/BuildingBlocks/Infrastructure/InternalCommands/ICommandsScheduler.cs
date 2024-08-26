@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers
+namespace BuildingBlocks.Infrastructure.InternalCommands
 {
     public interface ICommandsScheduler
     {
