@@ -35,7 +35,7 @@ namespace Users.Domain.Users.Companies
                 phoneNumber,
                 hashedPassword,
                 address,
-                UserRole.Company,
+                UserRole.User,
                 counter);
 
             return new Company(user);
@@ -46,8 +46,6 @@ namespace Users.Domain.Users.Companies
         public User User { get; }
 
         public string Description { get; private set; } = string.Empty;
-
-        public IReadOnlyCollection<string> PhotoUris => _photoUris.AsReadOnly();
 
         public bool IsDataFilled => User.IsDataFilled;
 

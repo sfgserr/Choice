@@ -77,8 +77,6 @@ namespace Users.Domain.OrderRequests
 
         public int Distance { get; private set; }
 
-        public IReadOnlyCollection<string> PhotoUris => _photoUris.AsReadOnly();
-
         public string Description { get; private set; }
 
         public OrderStatus Status { get; private set; }

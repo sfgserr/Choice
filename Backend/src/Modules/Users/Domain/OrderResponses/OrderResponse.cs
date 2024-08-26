@@ -12,6 +12,11 @@ namespace Users.Domain.OrderResponses
     {
         private readonly List<Review> _reviews = [];
 
+        private OrderResponse()
+        {
+
+        }
+
         private OrderResponse(
             OrderResponseId id,
             ClientId clientId,

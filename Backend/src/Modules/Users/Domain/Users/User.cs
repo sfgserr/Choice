@@ -60,7 +60,7 @@ namespace Users.Domain.Users
                 counter);
         }
 
-        internal UserId Id { get; }
+        public UserId Id { get; }
 
         internal string Name { get; private set; }
 
@@ -76,7 +76,7 @@ namespace Users.Domain.Users
 
         internal Address Address { get; private set; }
 
-        internal UserRole Role { get; }
+        internal UserRole Role { get; private set; }
 
         internal void ChangeIconUri(string iconUri)
         {
@@ -104,7 +104,11 @@ namespace Users.Domain.Users
 
         internal void FillData()
         {
+            CheckRule(new UserRoleMustBeUserToFillDataRule(Role));
+
             IsDataFilled = true;
+
+            Role = UserRole.Company;
         }
     }
 }
