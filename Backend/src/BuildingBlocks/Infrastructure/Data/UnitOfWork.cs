@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BuildingBlocks.Infrastructure.Data
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
 
         private IDbContextTransaction? _currentTransaction;
 
-        internal UnitOfWork(DbContext dbContext)
+        public UnitOfWork(DbContext dbContext)
         {
             _dbContext = dbContext;
         }

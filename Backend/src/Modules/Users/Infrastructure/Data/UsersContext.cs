@@ -18,6 +18,11 @@ namespace Users.Infrastructure.Data
 {
     public class UsersContext : DbContext
     {
+        public UsersContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Client> Clients { get; set; }

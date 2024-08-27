@@ -4,12 +4,12 @@ using FluentValidation;
 
 namespace BuildingBlocks.Infrastructure.Processing
 {
-    internal class ValidationCommandHandlerWithResultDecorator<T, TResult> : ICommandHandlerWithResult<T, TResult> where T : ICommandWithResult<TResult>
+    public class ValidationCommandHandlerWithResultDecorator<T, TResult> : ICommandHandlerWithResult<T, TResult> where T : ICommandWithResult<TResult>
     {
         private readonly IList<IValidator<T>> _validators;
         private readonly ICommandHandlerWithResult<T, TResult> _decorated;
 
-        internal ValidationCommandHandlerWithResultDecorator(
+        public ValidationCommandHandlerWithResultDecorator(
             IList<IValidator<T>> validators, 
             ICommandHandlerWithResult<T, TResult> decorated)
         {

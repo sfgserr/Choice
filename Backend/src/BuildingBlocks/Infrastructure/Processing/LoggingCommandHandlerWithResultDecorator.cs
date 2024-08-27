@@ -6,13 +6,13 @@ using Serilog.Events;
 
 namespace BuildingBlocks.Infrastructure.Processing
 {
-    internal class LogginCommandHandlerWithResultDecorator<T, TResult> :
+    public class LoggingCommandHandlerWithResultDecorator<T, TResult> :
         ICommandHandlerWithResult<T, TResult> where T : ICommandWithResult<TResult>
     {
         private readonly ILogger _logger;
         private readonly ICommandHandlerWithResult<T, TResult> _decorated;
 
-        internal LogginCommandHandlerWithResultDecorator(
+        public LoggingCommandHandlerWithResultDecorator(
             ILogger logger, 
             ICommandHandlerWithResult<T, TResult> decorated)
         {

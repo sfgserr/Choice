@@ -2,9 +2,10 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Cqrs.Queries;
 using Users.Application.Contracts;
+using Users.Infrastructure.Configuration;
 using Users.Infrastructure.Processing;
 
-namespace Users.Infrastructure.Configuration
+namespace Users.Infrastructure
 {
     internal class UsersModule : IUsersModule
     {

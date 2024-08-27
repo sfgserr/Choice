@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Backend\src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Backend\src\BuildingBlocks\Infrastructure\Infrastructure.csproj", "{E5996DFF-3ABA-438B-868C-DD51C904F087}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Backend\src\Modules\Users\Infrastructure\Infrastructure.csproj", "{562C5D18-E4F0-4173-B07D-D37E9446C987}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Backend\src\Modules\Users\Infrastructure\Infrastructure.csproj", "{562C5D18-E4F0-4173-B07D-D37E9446C987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "Backend\src\WebApi\WebApi.csproj", "{D65AEBF1-F69A-4588-B85A-1844E84FE1F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{562C5D18-E4F0-4173-B07D-D37E9446C987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{562C5D18-E4F0-4173-B07D-D37E9446C987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{562C5D18-E4F0-4173-B07D-D37E9446C987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{944EDC50-7924-497F-93BD-C960F4490486} = {8C980AEB-F2BD-454F-86C0-08EB33650799}
 		{E5996DFF-3ABA-438B-868C-DD51C904F087} = {6820D5E5-937E-4E7D-8F1F-1E253A4D85DB}
 		{562C5D18-E4F0-4173-B07D-D37E9446C987} = {8C980AEB-F2BD-454F-86C0-08EB33650799}
+		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0} = {CE0FB4F3-7358-4FD1-852D-BA59DF1C8046}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF3E3CEC-7558-4B47-8F36-9803500A74DD}

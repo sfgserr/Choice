@@ -1,0 +1,52 @@
+﻿using Autofac;
+using BuildingBlocks.Application.Data;
+using BuildingBlocks.Infrastructure.Configuration;
+using BuildingBlocks.Infrastructure.Data;
+using BuildingBlocks.Infrastructure.Data.ValueConversion;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Users.Infrastructure.Data;
+
+namespace Users.Infrastructure.Configuration.Data
+{
+    internal class DataAccessModule : Module
+    {
+        private readonly string _connectionString;
+
+        internal DataAccessModule(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.Register(c =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder();
+                optionsBuilder.UseSqlServer(_connectionString);
+
+                optionsBuilder.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
+
+                return new UsersContext(optionsBuilder.Options);
+            })
+            .As<DbContext>()
+            .AsSelf()
+            .InstancePerLifetimeScope();
+
+            builder.RegisterType<UnitOfWork>()
+                .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<SqlConnectionFactory>()
+                .As<ISqlConnectionFactory>()
+                .WithParameter("connectionString", _connectionString)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(typeof(UsersContext).Assembly)
+                .AsImplementedInterfaces()
+                .Where(t => t.Name.EndsWith("Repository"))
+                .InstancePerLifetimeScope()
+                .FindConstructorsWith(new AllConstructorFinder());
+        }
+    }
+}

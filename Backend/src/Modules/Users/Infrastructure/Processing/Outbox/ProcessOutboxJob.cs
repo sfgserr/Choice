@@ -2,11 +2,12 @@
 
 namespace Users.Infrastructure.Processing.Outbox
 {
+    [DisallowConcurrentExecution]
     internal class ProcessOutboxJob : IJob
     {
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            throw new NotImplementedException();
+            await CommandsExecutor.ExecuteCommandAsync(new ProcessOutboxCommand());
         }
     }
 }
