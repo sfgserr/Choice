@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 
 namespace BuildingBlocks.Infrastructure.Authorization
 {
-    public class HasPermissionPolicyProvider : DefaultAuthorizationPolicyProvider
+    public class HasPermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {
-        public HasPermissionPolicyProvider(IOptions<AuthorizationOptions> options) : base(options)
+        public HasPermissionAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options) : base(options)
         {
         }
 

@@ -7,6 +7,8 @@ namespace BuildingBlocks.Infrastructure.Authorization
 {
     public class JwtProvider
     {
+        private readonly Dictionary<Guid, RefreshToken> _refreshTokens = [];
+
         private readonly JwtOptions _jwtOptions;
 
         public JwtProvider(JwtOptions jwtOptions)
@@ -25,10 +27,39 @@ namespace BuildingBlocks.Infrastructure.Authorization
                 _jwtOptions.Audience,
                 claims,
                 null,
-                DateTime.UtcNow.AddDays(1),
+                DateTime.UtcNow.AddHours(12),
                 signingCredentials);
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
+
+        public Guid GetOrAddRefreshToken(Guid userId)
+        {
+            bool isExist = _refreshTokens.TryGetValue(userId, out var refreshToken);
+
+            if (isExist && refreshToken.ExpireDate < DateTime.Now)
+            {
+                return refreshToken.Token;
+            }
+            else
+            {
+                _refreshTokens.Add(userId, new(Guid.NewGuid(), DateTime.Now.AddHours(18)));
+
+                return _refreshTokens[userId].Token;
+            }
+        }
+    }
+
+    public struct RefreshToken
+    {
+        public RefreshToken(Guid token, DateTime expireDate)
+        {
+            Token = token;
+            ExpireDate = expireDate;
+        }
+
+        public Guid Token { get; }
+
+        public DateTime ExpireDate { get; }
     }
 }
