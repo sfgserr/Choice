@@ -62,21 +62,21 @@ namespace Users.Domain.Users
 
         public UserId Id { get; }
 
-        internal string Name { get; private set; }
+        public string Name { get; private set; }
 
-        internal string Email { get; private set; }
+        public string Email { get; private set; }
 
-        internal string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; private set; }
 
-        internal string HashedPassword { get; private set; }
+        public string HashedPassword { get; private set; }
 
-        internal string IconUri { get; private set; }
+        public string IconUri { get; private set; }
 
-        internal bool IsDataFilled { get; private set; }
+        public bool IsDataFilled { get; private set; }
 
-        internal Address Address { get; private set; }
+        public Address Address { get; private set; }
 
-        internal UserRole Role { get; private set; }
+        public UserRole Role { get; private set; }
 
         internal void ChangeIconUri(string iconUri)
         {
