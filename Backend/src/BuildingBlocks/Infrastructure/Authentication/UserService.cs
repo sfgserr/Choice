@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BuildingBlocks.Application.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildingBlocks.Infrastructure.Authentication
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _contextAccessor;
 

@@ -1,4 +1,4 @@
-CREATE TABLE payments.Subscriptions (
+CREATE TABLE payments.SubscriptionPayments (
     Id uuid PRIMARY KEY,
     PeriodName text NOT NULL,
     PeriodCost text NOT NULL,

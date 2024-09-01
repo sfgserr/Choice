@@ -5,7 +5,7 @@ namespace BuildingBlocks.Infrastructure.DomainEventDispatching
     {
         private readonly Dictionary<string, Type> _mappings;
 
-        internal DomainEventsMapper(Dictionary<string, Type> mappings)
+        public DomainEventsMapper(Dictionary<string, Type> mappings)
         {
             _mappings = mappings;
         }

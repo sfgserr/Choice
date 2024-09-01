@@ -1,4 +1,4 @@
-CREATE TABLE Users (
+CREATE TABLE users.Users (
     Id uuid PRIMARY KEY,
     Name text NOT NULL,
     Email text NOT NULL,
@@ -7,5 +7,5 @@ CREATE TABLE Users (
     IconUri text NOT NULL,
     IsDataFilled boolean NOT NULL,
     Address text NOT NULL,
-    UserRole text REFERENCES users.Roles (Code),
+    UserRole text REFERENCES users.Roles (Code)
 );

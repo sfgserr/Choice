@@ -23,7 +23,7 @@ namespace Users.Infrastructure.Configuration.Data
             builder.Register(c =>
             {
                 var optionsBuilder = new DbContextOptionsBuilder();
-                optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseNpgsql(_connectionString);
 
                 optionsBuilder.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
 

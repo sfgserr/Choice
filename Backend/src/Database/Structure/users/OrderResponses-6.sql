@@ -11,6 +11,6 @@ CREATE TABLE users.OrderResponses (
     IsPaid boolean NOT NULL,
     UserChangedEnrollmentDate uuid,
     IsEnrollmentDateConfirmed boolean NOT NULL,
-    IsActive boolean NOT NULL
+    IsActive boolean NOT NULL,
     PRIMARY KEY (Id)
 );

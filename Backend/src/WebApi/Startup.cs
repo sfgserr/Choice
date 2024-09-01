@@ -86,6 +86,8 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
