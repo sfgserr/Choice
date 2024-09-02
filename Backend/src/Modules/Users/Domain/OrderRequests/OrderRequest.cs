@@ -11,6 +11,11 @@ namespace Users.Domain.OrderRequests
     {
         private readonly List<string> _photoUris = [];
 
+        private OrderRequest()
+        {
+
+        }
+
         private OrderRequest(
             OrderRequestId id,
             ClientId clientCreatedId,

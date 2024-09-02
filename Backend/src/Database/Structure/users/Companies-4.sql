@@ -3,5 +3,6 @@ CREATE TABLE users.Companies (
     UserId uuid REFERENCES users.Users (Id),
     Description text NOT NULL,
     IsDataFilled boolean NOT NULL,
-    IsPrepaymentAvailable boolean NOT NULL
+    IsPrepaymentAvailable boolean NOT NULL,
+    CategoriesId integer[] NOT NULL
 );

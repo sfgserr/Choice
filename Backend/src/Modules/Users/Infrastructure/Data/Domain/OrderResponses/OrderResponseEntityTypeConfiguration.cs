@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Users.Domain.OrderRequests;
 using Users.Domain.OrderResponses;
 
 namespace Users.Infrastructure.Data.Domain.OrderResponses
@@ -17,9 +18,13 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
             builder.Property(x => x.ClientId).HasColumnName("ClientId");
             builder.Property(x => x.CompanyId).HasColumnName("CompanyId");
             builder.Property(x => x.Deadline).HasColumnName("Deadline");
+            builder.Property(x => x.Status)
+                .HasConversion(x => x.Value, x => OrderStatus.Parse(x));
 
             builder.OwnsMany(x => x.Reviews, b =>
             {
+                b.ToTable("Reviews", "users");
+
                 b.HasKey(x => new { x.ResponseId, x.AuthorId, x.ToUserId });
 
                 b.Property(x => x.Text).HasColumnName("Text");

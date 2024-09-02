@@ -1,4 +1,4 @@
-﻿namespace WebApi.Modules.Clients
+﻿namespace WebApi.Modules.Users.Clients
 {
     public class CreateClientRequest
     {

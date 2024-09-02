@@ -9,7 +9,7 @@ namespace Users.Infrastructure.Processing
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICommandHandlerWithResult<T, TResult> _decorated;
 
-        internal UnitOfWorkCommandHandlerWithResultDecorator(
+        public UnitOfWorkCommandHandlerWithResultDecorator(
             IUnitOfWork unitOfWork, 
             ICommandHandlerWithResult<T, TResult> decorated)
         {

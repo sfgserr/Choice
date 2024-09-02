@@ -6,6 +6,9 @@ CREATE TABLE users.Users (
     HashedPassword text NOT NULL,
     IconUri text NOT NULL,
     IsDataFilled boolean NOT NULL,
-    Address text NOT NULL,
+    Street text NOT NULL,
+    City text NOT NULL,
+    Latitude text NOT NULL,
+    Longitude text NOT NULL,
     UserRole text REFERENCES users.Roles (Code)
 );

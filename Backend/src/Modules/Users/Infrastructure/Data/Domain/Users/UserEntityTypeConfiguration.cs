@@ -15,6 +15,18 @@ namespace Users.Infrastructure.Data.Domain.Users
 
             builder.Property<UserRole>("Role")
                 .HasConversion(new UserRoleToStringValueConverter());
+
+            builder.OwnsOne(x => x.Address, b =>
+            {
+                b.Property(x => x.Street).HasColumnName("Street");
+                b.Property(x => x.City).HasColumnName("City");
+
+                b.OwnsOne(x => x.Coords, b =>
+                {
+                    b.Property(x => x.Latitude).HasColumnName("Latitude");
+                    b.Property(x => x.Longitude).HasColumnName("Longitude");
+                });
+            });
         }
     }
 }

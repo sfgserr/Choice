@@ -13,6 +13,8 @@ using System.Text;
 using Hellang.Middleware.ProblemDetails;
 using WebApi.Configuration.Authorization;
 using WebApi.Configuration.Validation;
+using Autofac;
+using WebApi.Modules.Users;
 
 namespace WebApi
 {
@@ -70,6 +72,11 @@ namespace WebApi
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
             services.AddScoped<IClaimsTransformation, CustomClaimsTransformation>();
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new UsersAutofacModule());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

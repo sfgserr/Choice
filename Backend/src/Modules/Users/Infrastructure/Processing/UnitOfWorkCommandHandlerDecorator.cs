@@ -11,7 +11,7 @@ namespace Users.Infrastructure.Processing
         private readonly ICommandHandler<T> _decorated;
         private readonly UsersContext _usersContext;
 
-        internal UnitOfWorkCommandHandlerDecorator(
+        public UnitOfWorkCommandHandlerDecorator(
             IUnitOfWork unitOfWork, 
             ICommandHandler<T> decorated, 
             UsersContext usersContext)

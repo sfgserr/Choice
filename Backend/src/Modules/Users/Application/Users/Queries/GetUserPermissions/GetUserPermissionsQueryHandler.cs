@@ -23,11 +23,11 @@ namespace Users.Application.Users.Queries.GetUserPermissions
             const string sql =
                 $"""
                 SELECT 
-                    [Permission].Code as [{nameof(PermissionDto.Code)}]
-                FROM [users].Users as [User]
-                JOIN [users].RolePermissions as [RolePermission] ON [RolePermission].RoleCode = [User].RoleCode
-                JOIN [users].Permissions as [Permission] ON [Permission].Code = [RolePermission].PermissionCode
-                WHERE [User].Id = @Id
+                    Permission.Code as [{nameof(PermissionDto.Code)}]
+                FROM users.Users as User
+                JOIN users.RolePermissions as RolePermission ON RolePermission.RoleCode = User.UserRole
+                JOIN users.Permissions as Permission ON Permission.Code = RolePermission.PermissionCode
+                WHERE User.Id = @Id
                 """;
 
             var permissions = await connection.QueryAsync<PermissionDto>(

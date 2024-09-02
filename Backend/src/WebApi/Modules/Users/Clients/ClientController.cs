@@ -2,7 +2,7 @@
 using Users.Application.Contracts;
 using Users.Application.Users.Clients.Commands.CreateClient;
 
-namespace WebApi.Modules.Clients
+namespace WebApi.Modules.Users.Clients
 {
     [ApiController]
     [Route("api/clients")]

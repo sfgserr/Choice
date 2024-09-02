@@ -11,6 +11,11 @@ namespace Users.Domain.Users
             Coords = coords;
         }
 
+        private Address()
+        {
+
+        }
+
         public string City { get; }
 
         public string Street { get; }

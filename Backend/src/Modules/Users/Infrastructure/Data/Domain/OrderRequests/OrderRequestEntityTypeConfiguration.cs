@@ -14,6 +14,10 @@ namespace Users.Infrastructure.Data.Domain.OrderRequests
 
             builder.Property(x => x.ClientCreatedId).HasColumnName("ClientCreatedId");
             builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
+            builder.Property(x => x.CategoryId)
+                .HasConversion(i => i.Value, i => new(i));
+            builder.Property(x => x.Status)
+                .HasConversion(x => x.Value, x => OrderStatus.Parse(x));
         }
     }
 }

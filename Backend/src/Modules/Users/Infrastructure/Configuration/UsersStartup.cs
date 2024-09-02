@@ -3,6 +3,7 @@ using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
 using Users.Infrastructure.Configuration.Data;
 using Users.Infrastructure.Configuration.DomainEventsDispatching;
+using Users.Infrastructure.Configuration.GeoCoding;
 using Users.Infrastructure.Configuration.Logging;
 using Users.Infrastructure.Configuration.Mediation;
 using Users.Infrastructure.Configuration.Outbox;
@@ -36,6 +37,7 @@ namespace Users.Infrastructure.Configuration
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
+            containerBuilder.RegisterModule(new GeoCodingModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Users")));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());

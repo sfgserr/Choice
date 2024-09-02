@@ -17,6 +17,14 @@ namespace Users.Domain.OrderRequests
 
         public static OrderStatus Cancelled { get; } = new OrderStatus("Cancelled");
 
+        public static OrderStatus Parse(string status) => status switch
+        {
+            "Active" => Active,
+            "Finished" => Finished,
+            "Cancelled" => Cancelled,
+            _ => throw new ArgumentException("")
+        };
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

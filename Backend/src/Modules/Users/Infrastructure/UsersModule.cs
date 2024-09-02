@@ -7,7 +7,7 @@ using Users.Infrastructure.Processing;
 
 namespace Users.Infrastructure
 {
-    internal class UsersModule : IUsersModule
+    public class UsersModule : IUsersModule
     {
         public async Task ExecuteCommand<TCommand>(TCommand command) where TCommand : ICommand
         {

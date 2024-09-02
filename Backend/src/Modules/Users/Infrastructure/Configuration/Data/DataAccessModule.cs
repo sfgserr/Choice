@@ -5,6 +5,8 @@ using BuildingBlocks.Infrastructure.Data;
 using BuildingBlocks.Infrastructure.Data.ValueConversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Users.Application.Users;
+using Users.Domain.Users;
 using Users.Infrastructure.Data;
 
 namespace Users.Infrastructure.Configuration.Data
@@ -47,6 +49,10 @@ namespace Users.Infrastructure.Configuration.Data
                 .Where(t => t.Name.EndsWith("Repository"))
                 .InstancePerLifetimeScope()
                 .FindConstructorsWith(new AllConstructorFinder());
+
+            builder.RegisterType<UsersCounter>()
+                .As<IUsersCounter>()
+                .InstancePerLifetimeScope();
         }
     }
 }
