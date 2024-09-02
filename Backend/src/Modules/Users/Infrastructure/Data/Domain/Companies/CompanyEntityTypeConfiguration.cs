@@ -16,7 +16,8 @@ namespace Users.Infrastructure.Data.Domain.Companies
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.User)
-                .WithOne();
+                .WithOne()
+                .HasForeignKey<Company>(x => x.UserId);
 
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
 

@@ -13,7 +13,8 @@ namespace Users.Infrastructure.Data.Domain.Clients
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.User)
-                .WithOne();
+                .WithOne()
+                .HasForeignKey<Client>(x => x.UserId);
         }
     }
 }
