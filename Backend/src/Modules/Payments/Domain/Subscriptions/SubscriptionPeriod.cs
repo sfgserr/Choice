@@ -21,6 +21,14 @@ namespace Payments.Domain.Subscriptions
 
         public static SubscriptionPeriod Year = new("Year", new(7776, "RUB"));
 
+        public static SubscriptionPeriod Parse(string s) => s switch
+        {
+            "Month" => Month,
+            "HalfYear" => HalfYear,
+            "Year" => Year,
+            _ => throw new ArgumentException("No such period")
+        };
+        
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

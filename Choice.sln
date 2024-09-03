@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Administration", "Administr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Backend\src\Modules\Administration\Domain\Domain.csproj", "{0D65AD02-68B9-4944-8527-503495525A44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Backend\src\Modules\Payments\Application\Application.csproj", "{2FCC5487-FA8D-4784-9924-2B651951BE09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{0D65AD02-68B9-4944-8527-503495525A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D65AD02-68B9-4944-8527-503495525A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D65AD02-68B9-4944-8527-503495525A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FCC5487-FA8D-4784-9924-2B651951BE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FCC5487-FA8D-4784-9924-2B651951BE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FCC5487-FA8D-4784-9924-2B651951BE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FCC5487-FA8D-4784-9924-2B651951BE09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +116,7 @@ Global
 		{D65AEBF1-F69A-4588-B85A-1844E84FE1F0} = {CE0FB4F3-7358-4FD1-852D-BA59DF1C8046}
 		{FE3B8CD8-161A-4AB7-80EC-DB4580405B61} = {50C7774C-1661-4362-AE69-71CF336C3352}
 		{0D65AD02-68B9-4944-8527-503495525A44} = {FE3B8CD8-161A-4AB7-80EC-DB4580405B61}
+		{2FCC5487-FA8D-4784-9924-2B651951BE09} = {1FBE9DA2-2F75-494C-994F-13F5E91D0A6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF3E3CEC-7558-4B47-8F36-9803500A74DD}
