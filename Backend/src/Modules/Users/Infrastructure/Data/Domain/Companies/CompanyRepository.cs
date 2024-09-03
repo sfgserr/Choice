@@ -17,6 +17,11 @@ namespace Users.Infrastructure.Data.Domain.Companies
             await _usersContext.Companies.AddAsync(company);
         }
 
+        public async Task<Company> Get(CompanyId id)
+        {
+            return await _usersContext.Companies.FindAsync(id);
+        }
+        
         public async Task<IList<Company>> GetAll()
         {
             return await _usersContext.Companies.ToListAsync();
