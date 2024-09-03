@@ -20,8 +20,8 @@ namespace Users.Application.Users
             const string sql = 
                 $"""
                 SELECT COUNT(*)
-                FROM users.Users as User
-                WHERE User.Email = @Email
+                FROM users."Users"
+                WHERE users."Users"."Email" = @Email
                 """;
 
             return connection.QuerySingle<int>(sql, new { Email = email });
@@ -34,8 +34,8 @@ namespace Users.Application.Users
             const string sql =
                 $"""
                 SELECT COUNT(*)
-                FROM users.Users as User
-                WHERE User.PhoneNumber = @PhoneNumber
+                FROM users."Users"
+                WHERE users."Users"."PhoneNumber" = @PhoneNumber
                 """;
 
             return connection.QuerySingle<int>(sql, new { PhoneNumber = phoneNumber });

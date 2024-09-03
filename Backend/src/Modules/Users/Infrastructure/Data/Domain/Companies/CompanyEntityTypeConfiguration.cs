@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Data;
 using Users.Domain.Categories;
 using Users.Domain.Users.Companies;
 using Users.Infrastructure.Data.ValueConversion;
@@ -24,8 +23,6 @@ namespace Users.Infrastructure.Data.Domain.Companies
             builder.Property<List<CategoryId>>("_categoriesId")
                 .HasConversion(new CategoryIdCollectionToIntCollectionValueConverter())
                 .HasColumnName("CategoriesId");
-
-            builder.Property(x => x.IsDataFilled).HasColumnName("IsDataFilled");
         }
     }
 }

@@ -1,3 +1,3 @@
-CREATE TABLE users.Roles (
-    Code text PRIMARY KEY
+CREATE TABLE users."Roles" (
+    "Code" text PRIMARY KEY
 );

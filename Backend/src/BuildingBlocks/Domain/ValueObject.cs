@@ -27,7 +27,7 @@ namespace BuildingBlocks.Domain
                 return false;
             }
 
-            var other = (TypedIdValueBase)obj;
+            var other = (ValueObject)obj;
 
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }

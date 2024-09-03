@@ -35,4 +35,10 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\..\..\..\..\.nuget\packages\npgsql\8.0.3\lib\net8.0\Npgsql.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

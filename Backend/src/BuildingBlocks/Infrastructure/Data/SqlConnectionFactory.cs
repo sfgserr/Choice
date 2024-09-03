@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Application.Data;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
+using Npgsql;
 
 namespace BuildingBlocks.Infrastructure.Data
 {
@@ -20,7 +20,7 @@ namespace BuildingBlocks.Infrastructure.Data
         {
             if (_connection == null || _connection.State != ConnectionState.Open)
             {
-                _connection = new SqlConnection(_connectionString);
+                _connection = new NpgsqlConnection(_connectionString);
                 _connection.Open();
             }
             
