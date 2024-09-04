@@ -1,9 +1,9 @@
 ﻿
 namespace Users.Application.Users.Clients.Queries.GetClient
 {
-    public class GetClientDto
+    public class ClientDto
     {
-        public GetClientDto(
+        public ClientDto(
             Guid id, 
             string iconUri, 
             string name, 

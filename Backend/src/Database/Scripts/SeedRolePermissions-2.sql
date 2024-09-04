@@ -10,4 +10,6 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeCompanyIconUri');
 
-INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Buy');
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'BuySubscriptionPayment');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetCompany')

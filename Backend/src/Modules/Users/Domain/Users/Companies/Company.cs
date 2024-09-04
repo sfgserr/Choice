@@ -107,5 +107,11 @@ namespace Users.Domain.Users.Companies
 
             User.FillData();
         }
+
+        public List<string> GetPhotoUris() =>
+            _photoUris;
+
+        public List<CategoryId> GetCategories() =>
+            _categories;
     }
 }

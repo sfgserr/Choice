@@ -8,6 +8,7 @@ namespace WebApi.Modules
         public const string ChangeCompanyData = "ChangeClientIconUri";
         public const string ChangeCompanyIconUri = "ChangeCompanyIconUri";
         public const string FillData = "FillData";
-        public const string Buy = "Buy";
+        public const string Buy = "BuySubscriptionPayment";
+        public const string GetCompany = "GetCompany";
     }
 }

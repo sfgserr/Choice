@@ -2,7 +2,7 @@
 
 namespace Users.Application.Users.Clients.Queries.GetClient
 {
-    public class GetClientQuery : IQuery<GetClientDto>
+    public class GetClientQuery : IQuery<ClientDto>
     {
 
     }
