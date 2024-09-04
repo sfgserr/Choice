@@ -2,11 +2,11 @@
 
 namespace Users.Domain.Users.Rules
 {
-    internal class UserRoleMustBeUserToFillDataRule : IBusinessRule
+    internal class UserRoleMustBeCompanyToFillDataRule : IBusinessRule
     {
         private readonly UserRole _role;
 
-        internal UserRoleMustBeUserToFillDataRule(UserRole role)
+        internal UserRoleMustBeCompanyToFillDataRule(UserRole role)
         {
             _role = role;
         }

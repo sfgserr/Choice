@@ -104,7 +104,7 @@ namespace Users.Domain.Users
 
         internal void FillData()
         {
-            CheckRule(new UserRoleMustBeUserToFillDataRule(Role));
+            CheckRule(new UserRoleMustBeCompanyToFillDataRule(Role));
 
             IsDataFilled = true;
 
