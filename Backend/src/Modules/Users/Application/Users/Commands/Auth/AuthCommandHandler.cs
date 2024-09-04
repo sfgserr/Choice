@@ -18,7 +18,7 @@ namespace Users.Application.Users.Commands.Auth
 
             if (user is not null && PasswordManager.VerifyHashedPassword(user.HashedPassword, command.Password))
             {
-                return new AuthResult(user.Id.Value);
+                return new AuthResult(user.Id.Value, user.Role.Value);
             }
 
             return new AuthResult("Email or password is wrong");

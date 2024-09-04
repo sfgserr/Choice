@@ -77,7 +77,16 @@ namespace Users.Domain.Users
         public Address Address { get; private set; }
 
         public UserRole Role { get; private set; }
+        
+        public int ReviewsCount { get; private set; }
+        
+        public double AverageGrade { get; private set; }
 
+        public void Review(double grade)
+        {
+            AverageGrade = (AverageGrade * ReviewsCount + AverageGrade) / ++ReviewsCount;
+        }
+        
         internal void ChangeIconUri(string iconUri)
         {
             CheckRule(new FieldsMustBeProvidedRule([iconUri]));

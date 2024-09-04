@@ -13,3 +13,5 @@ INSERT INTO users."Permissions" ("Code") VALUES ('BuySubscriptionPayment');
 INSERT INTO users."Permissions" ("Code") VALUES ('FillData');
 
 INSERT INTO users."Permissions" ("Code") VALUES ('GetCompany');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('GetCompanies');

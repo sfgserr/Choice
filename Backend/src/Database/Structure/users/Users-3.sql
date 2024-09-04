@@ -10,5 +10,7 @@ CREATE TABLE users."Users" (
     "City" text NOT NULL,
     "Latitude" text NOT NULL,
     "Longitude" text NOT NULL,
+    "ReviewsCount" integer NOT NULL,
+    "AverageGrade" real NOT NULL,
     "UserRole" text REFERENCES users."Roles" ("Code")
 );
