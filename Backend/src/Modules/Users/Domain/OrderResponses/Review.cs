@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using Users.Domain.OrderResponses.Events;
 using Users.Domain.Users;
 
 namespace Users.Domain.OrderResponses
@@ -17,6 +18,8 @@ namespace Users.Domain.OrderResponses
             ToUserId = toUserId;
             Text = text;
             Grade = grade;
+            
+            AddDomainEvent(new ReviewCreatedDomainEvent(grade, toUserId));
         }
 
         internal static Review Create(
