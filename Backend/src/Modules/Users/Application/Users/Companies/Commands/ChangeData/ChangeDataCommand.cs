@@ -14,6 +14,7 @@ namespace Users.Application.Users.Companies.Commands.ChangeData
             string description,
             List<CategoryId> categories,
             List<string> photoUris,
+            List<string> socialMediaUris,
             bool isPrepaymentAvailable)
         {
             Name = name;
@@ -23,6 +24,7 @@ namespace Users.Application.Users.Companies.Commands.ChangeData
             Description = description;
             Categories = categories;
             PhotoUris = photoUris;
+            SocialMediaUris = socialMediaUris;
             IsPrepaymentAvailable = isPrepaymentAvailable;
         }
         
@@ -39,7 +41,9 @@ namespace Users.Application.Users.Companies.Commands.ChangeData
         public List<CategoryId> Categories { get; }
         
         public List<string> PhotoUris { get; }
-        
+
+        public List<string> SocialMediaUris { get; }
+
         public bool IsPrepaymentAvailable { get; }
     }
 }

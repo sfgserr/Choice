@@ -23,6 +23,7 @@ namespace Users.Application.Users.Companies.Commands.FillData
                 command.Description,
                 command.CategoryIds,
                 command.PhotoUris,
+                command.SocialMediaUris,
                 command.IsPrepaymentAvailable);
         }
     }

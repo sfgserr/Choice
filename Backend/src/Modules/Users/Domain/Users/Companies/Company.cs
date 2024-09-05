@@ -8,6 +8,7 @@ namespace Users.Domain.Users.Companies
     public class Company : Entity, IAggregateRoot
     {
         private readonly List<string> _photoUris = [];
+        private readonly List<string> _socialMediaUris = [];
         private readonly List<CategoryId> _categories = [];
 
         private Company()
@@ -68,12 +69,14 @@ namespace Users.Domain.Users.Companies
             string description,
             List<CategoryId> categories,
             List<string> photoUris,
+            List<string> socialMediaUris,
             bool isPrepaymentAvailable)
         {
             CheckRule(new CannotChangeDataWhenDataIsNotFilledRule(IsDataFilled));
             CheckRule(new FieldsMustBeProvidedRule([description]));
             CheckRule(new CategoriesCannotBeEmptyRule(categories));
-
+            CheckRule(new AtLeastOneLinkToSocialMediaMustBeProvidedRule(socialMediaUris));
+            
             IsPrepaymentAvailable = isPrepaymentAvailable;
 
             _photoUris.Clear();
@@ -81,7 +84,10 @@ namespace Users.Domain.Users.Companies
 
             _categories.Clear();
             _categories.AddRange(categories);
-
+            
+            _socialMediaUris.Clear();
+            _socialMediaUris.AddRange(socialMediaUris);
+            
             User.ChangeData(
                 name,
                 email,
@@ -93,18 +99,21 @@ namespace Users.Domain.Users.Companies
         public void FillData(
             string description,
             List<CategoryId> categories,
-            List<string> photoUris, 
+            List<string> photoUris,
+            List<string> socialMediaUris,
             bool isPrepaymentAvailable)
         {
             CheckRule(new FieldsMustBeProvidedRule([description]));
             CheckRule(new CategoriesCannotBeEmptyRule(categories));
-
+            CheckRule(new AtLeastOneLinkToSocialMediaMustBeProvidedRule(socialMediaUris));
+            
             Description = description;
             IsPrepaymentAvailable = isPrepaymentAvailable;
 
             _photoUris.AddRange(photoUris);
             _categories.AddRange(categories);
-
+            _socialMediaUris.AddRange(socialMediaUris);
+            
             User.FillData();
         }
 

@@ -19,7 +19,7 @@ namespace Users.Infrastructure.Data.Domain.Companies
                 .HasForeignKey<Company>(x => x.UserId);
 
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
-
+            builder.Property<List<string>>("_socialMediaUris").HasColumnName("SocialMediaUris");
             builder.Property<List<CategoryId>>("_categoriesId")
                 .HasConversion(new CategoryIdCollectionToIntCollectionValueConverter())
                 .HasColumnName("CategoriesId");

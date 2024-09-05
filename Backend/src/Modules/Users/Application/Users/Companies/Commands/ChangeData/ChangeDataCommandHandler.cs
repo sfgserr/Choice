@@ -33,6 +33,7 @@ namespace Users.Application.Users.Companies.Commands.ChangeData
                 command.Description,
                 command.Categories,
                 command.PhotoUris,
+                command.SocialMediaUris,
                 command.IsPrepaymentAvailable);
         }
     }
