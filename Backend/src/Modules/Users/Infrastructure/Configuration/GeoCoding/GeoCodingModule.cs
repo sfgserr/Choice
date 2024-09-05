@@ -1,6 +1,7 @@
 ﻿using Autofac;
-using BuildingBlocks.Application.GeoCoding;
-using BuildingBlocks.Infrastructure.GeoCoding;
+using BuildingBlocks.Infrastructure.Configuration;
+using Users.Application.Contracts;
+using Users.Infrastructure.GeoCoding;
 
 namespace Users.Infrastructure.Configuration.GeoCoding
 {
@@ -10,7 +11,8 @@ namespace Users.Infrastructure.Configuration.GeoCoding
         {
             builder.RegisterType<GeoService>()
                 .As<IGeoService>()
-                .SingleInstance();
+                .SingleInstance()
+                .FindConstructorsWith(new AllConstructorFinder());
         }
     }
 }

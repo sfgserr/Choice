@@ -14,19 +14,21 @@ namespace BuildingBlocks.Infrastructure.Authentication
 
         public Guid GetUserId()
         {
-            string? id = _contextAccessor.HttpContext?.User?.FindFirst("id")?.Value;
+            var id = GetAttribute("id");
 
-            if (id is not null)
-            {
-                bool isParsed = Guid.TryParse(id, out Guid guid);
+            var result = Guid.TryParse(id, out var parsedId);
 
-                if (isParsed)
-                    return guid;
+            return result ? parsedId : throw new ArgumentException("User id is not guid");
+        }
 
-                throw new ArgumentException("User id is not guid");
-            }
+        public string GetAttribute(string attributeName)
+        {
+            var attributeValue = _contextAccessor.HttpContext?.User?.FindFirst(attributeName)?.Value;
 
-            throw new ApplicationException("User context in unavailable");
+            if (attributeValue is null)
+                throw new ApplicationException("User context in unavailable");
+
+            return attributeValue;
         }
     }
 }

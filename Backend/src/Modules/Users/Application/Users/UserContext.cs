@@ -13,5 +13,13 @@ namespace Users.Application.Users
         }
 
         public UserId Id => new(_userService.GetUserId());
+
+        public Address Address => 
+            new(
+                _userService.GetAttribute("City"), 
+                _userService.GetAttribute("Street"),
+                new(
+                    _userService.GetAttribute("latitude"), 
+                    _userService.GetAttribute("longitude")));
     }
 }

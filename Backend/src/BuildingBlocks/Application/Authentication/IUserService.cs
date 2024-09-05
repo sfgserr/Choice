@@ -3,5 +3,7 @@
     public interface IUserService
     {
         Guid GetUserId();
+        
+        string GetAttribute(string city);
     }
 }

@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.GeoCoding;
+using Users.Application.Contracts;
 using Users.Domain.Users;
 using Users.Domain.Users.Companies;
 

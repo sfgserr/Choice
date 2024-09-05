@@ -122,5 +122,8 @@ namespace Users.Domain.Users.Companies
 
         public List<CategoryId> GetCategories() =>
             _categories;
+
+        public List<string> GetSocialMediaUris() =>
+            _socialMediaUris;
     }
 }
