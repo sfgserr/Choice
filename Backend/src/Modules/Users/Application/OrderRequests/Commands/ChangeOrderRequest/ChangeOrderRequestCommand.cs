@@ -1,20 +1,21 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
+namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
 {
-    public class CreateOrderRequestCommand : ICommand
+    public class ChangeOrderRequestCommand : ICommand
     {
-        public CreateOrderRequestCommand(
-            Guid clientCreatedId,
+        public ChangeOrderRequestCommand(
+            Guid requestId,
             bool toKnowPrice,
             bool toKnowDeadline,
             bool toKnowEnrollmentDate,
             int distance,
             List<string> photoUris,
             string description,
-            int categoryId)
+            int categoryId,
+            Guid changingClientId)
         {
-            ClientCreatedId = clientCreatedId;
+            RequestId = requestId;
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -22,9 +23,10 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
             PhotoUris = photoUris;
             Description = description;
             CategoryId = categoryId;
+            ChangingClientId = changingClientId;
         }
         
-        public Guid ClientCreatedId { get; }
+        public Guid RequestId { get; }
         
         public bool ToKnowPrice { get; }
         
@@ -39,5 +41,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
         public string Description { get; }
         
         public int CategoryId { get; }
+        
+        public Guid ChangingClientId { get; }
     }
 }
