@@ -1,4 +1,4 @@
-namespace Users.Application.OrderRequests.Queries.GetOrderRequestsQuery
+namespace Users.Application.OrderRequests.Queries.GetOrderRequests
 {
     public class OrderRequestDto
     {

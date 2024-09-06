@@ -15,3 +15,13 @@ INSERT INTO users."Permissions" ("Code") VALUES ('FillData');
 INSERT INTO users."Permissions" ("Code") VALUES ('GetCompany');
 
 INSERT INTO users."Permissions" ("Code") VALUES ('GetCompanies');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('GetCompanyOnMap');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('CreateOrderRequest');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('ChangeOrderRequest');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('GetOrderRequests');
+
+INSERT INTO users."Permissions" ('Code') VALUES ('GetOrderRequest');

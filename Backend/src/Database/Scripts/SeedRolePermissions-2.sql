@@ -15,3 +15,15 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetCompany');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCompanies');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCompanyOnMap')
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'CreateOrderRequest');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeOrderRequest');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetOrderRequest');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetOrderRequests');
+
+

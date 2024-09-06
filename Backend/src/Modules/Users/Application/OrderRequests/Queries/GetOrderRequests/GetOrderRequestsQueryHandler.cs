@@ -3,7 +3,7 @@ using BuildingBlocks.Application.Data;
 using Dapper;
 using Users.Domain.Users;
 
-namespace Users.Application.OrderRequests.Queries.GetOrderRequestsQuery
+namespace Users.Application.OrderRequests.Queries.GetOrderRequests
 {
     internal class GetOrderRequestsQueryHandler : IQueryHandler<GetOrderRequestsQuery, IEnumerable<OrderRequestDto>>
     {
