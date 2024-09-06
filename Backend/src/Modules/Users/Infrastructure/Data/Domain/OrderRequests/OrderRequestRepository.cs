@@ -21,5 +21,10 @@ namespace Users.Infrastructure.Data.Domain.OrderRequests
         {
             return await _usersContext.OrderRequests.ToListAsync();
         }
+
+        public async Task<OrderRequest> Get(OrderRequestId id)
+        {
+            return await _usersContext.OrderRequests.FindAsync(id);
+        }
     }
 }
