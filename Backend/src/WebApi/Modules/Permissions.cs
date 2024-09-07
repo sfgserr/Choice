@@ -17,5 +17,6 @@ namespace WebApi.Modules
         public const string GetOrderRequest = "GetOrderRequest";
         public const string GetOrderRequests = "GetOrderRequests";
         public const string GetOrderRequestsInRadius = "GetOrderRequestsInRadius";
+        public const string Response = "Response";
     }
 }

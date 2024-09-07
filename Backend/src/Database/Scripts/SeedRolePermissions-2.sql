@@ -28,4 +28,6 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Clie
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetOrderRequestsInRadius');
 
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Response');
+
 
