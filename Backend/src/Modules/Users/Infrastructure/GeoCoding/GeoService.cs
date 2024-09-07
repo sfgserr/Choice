@@ -8,7 +8,7 @@ namespace Users.Infrastructure.GeoCoding
         public async Task<string[]> GetCoords(string city, string street) =>
             await Task.Run<string[]>(() => ["55.749531", "37.591352"]);
 
-        public async Task<int> GetDistance(Address address1, Address address2) =>
+        public async Task<int> GetDistance(Coords coords1, Coords coords2) =>
             await Task.Run(() => 250);
     }
 }

@@ -16,8 +16,8 @@ namespace Users.Application.Users
 
         public Address Address => 
             new(
-                _userService.GetAttribute("City"), 
-                _userService.GetAttribute("Street"),
+                _userService.GetAttribute("city"), 
+                _userService.GetAttribute("street"),
                 new(
                     _userService.GetAttribute("latitude"), 
                     _userService.GetAttribute("longitude")));

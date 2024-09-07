@@ -25,7 +25,9 @@ namespace Users.Application.Users.Companies.Queries.GetCompanyOnMap
         {
             var company = await _repository.Get(new(query.CompanyId));
 
-            var distance = await _geoService.GetDistance(_userContext.Address, company.User.Address);
+            var distance = await _geoService.GetDistance(
+                _userContext.Address.Coords, 
+                company.User.Address.Coords);
 
             return new CompanyDto()
             {
