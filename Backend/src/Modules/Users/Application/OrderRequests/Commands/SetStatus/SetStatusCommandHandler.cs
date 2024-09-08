@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
 
@@ -16,9 +16,8 @@ namespace Users.Application.OrderRequests.Commands.SetStatus
 
         public async Task Execute(SetStatusCommand command)
         {
-            var request = await _dbContext.OrderRequests.FindAsync(new OrderRequestId(command.RequestId));
-
-            if (request == null) throw new InvalidCommandException(["OrderRequest is not found"]);
+            var request = await _dbContext.OrderRequests.Get(r => 
+                r.Equals(new OrderRequestId(command.RequestId)));
             
             request.SetStatus(OrderStatus.Parse(command.OrderStatus));
         }

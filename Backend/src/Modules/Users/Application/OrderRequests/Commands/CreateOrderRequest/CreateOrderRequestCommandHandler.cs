@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.Users;
 
@@ -20,9 +20,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 
         public async Task Execute(CreateOrderRequestCommand command)
         {
-            var client = await _dbContext.Clients.FindAsync(_userContext.Id);
-
-            if (client == null) throw new InvalidCommandException(["Client is not found"]);
+            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.Id));
             
             var orderRequest = client.CreateRequest(
                 command.ToKnowPrice,

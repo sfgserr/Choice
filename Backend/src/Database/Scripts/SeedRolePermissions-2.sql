@@ -1,6 +1,6 @@
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetClient');
 
-INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeClientData')
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeClientData');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'FillData');
 
@@ -16,7 +16,7 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCompanies');
 
-INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCompanyOnMap')
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCompanyOnMap');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'CreateOrderRequest');
 
@@ -32,5 +32,6 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Enroll');
 
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Finish');
 
-
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Finish');

@@ -1,9 +1,8 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
-using Users.Domain.OrderRequests.OrderResponses;
+using Users.Domain.OrderRequests;
 using Users.Domain.Users;
-using Users.Domain.Users.Companies;
 
 namespace Users.Application.OrderResponses.Commands.Response
 {
@@ -22,12 +21,10 @@ namespace Users.Application.OrderResponses.Commands.Response
 
         public async Task Execute(ResponseCommand command)
         {
-            var orderRequest = await _dbContext.OrderRequests.FindAsync(new OrderResponseId(command.RequestId));
+            var orderRequest = await _dbContext.OrderRequests.Get(r => 
+                r.Id.Equals(new OrderRequestId(command.RequestId)));
 
-            var company = await _dbContext.Companies.FindAsync(_userContext.Id.Value);
-
-            if (orderRequest == null || company == null)
-                throw new InvalidCommandException(["OrderRequest or Company are not found"]);
+            var company = await _dbContext.Companies.Get(c => c.Id.Equals(_userContext.Id));
             
             var orderResponse = orderRequest.Response(
                 company,

@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.Users;
 
@@ -16,9 +16,7 @@ namespace Users.Application.Users.Commands.Review
 
         public async Task Execute(ReviewCommand command)
         {
-            var user = await _dbContext.Users.FindAsync(new UserId(command.ToUserId));
-
-            if (user == null) throw new InvalidCommandException(["User is not found"]);
+            var user = await _dbContext.Users.Get(c => c.Id.Equals(new UserId(command.ToUserId)));
             
             user.Review(command.Grade);
         }

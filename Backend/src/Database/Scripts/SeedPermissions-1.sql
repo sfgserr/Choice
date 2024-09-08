@@ -24,10 +24,13 @@ INSERT INTO users."Permissions" ("Code") VALUES ('ChangeOrderRequest');
 
 INSERT INTO users."Permissions" ("Code") VALUES ('GetOrderRequests');
 
-INSERT INTO users."Permissions" ('Code') VALUES ('GetOrderRequest');
+INSERT INTO users."Permissions" ("Code") VALUES ('GetOrderRequest');
 
-INSERT INTO users."Permissions" ('Code') VALUES ('GetOrderRequestsInRadius');
+INSERT INTO users."Permissions" ("Code") VALUES ('GetOrderRequestsInRadius');
 
-INSERT INTO users."Permissions" ('Code') VALUES ('Response');
+INSERT INTO users."Permissions" ("Code") VALUES ('Response');
 
-INSERT INTO users."Permissions" ('Code') VALUES ('Enroll');
+INSERT INTO users."Permissions" ("Code") VALUES ('Enroll');
+
+INSERT INTO users."Permissions" ("Code") VALUES ('Finish');
+

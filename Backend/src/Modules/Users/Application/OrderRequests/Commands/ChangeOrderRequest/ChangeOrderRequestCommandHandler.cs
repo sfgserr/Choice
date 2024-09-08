@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
 using Users.Domain.Users;
@@ -19,9 +19,8 @@ namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
 
         public async Task Execute(ChangeOrderRequestCommand command)
         {
-            var request = await _dbContext.OrderRequests.FindAsync(new OrderRequestId(command.RequestId));
-
-            if (request == null) throw new InvalidCommandException(["OrderRequest is not found"]);
+            var request = await _dbContext.OrderRequests.Get(r => 
+                r.Id.Equals(new OrderRequestId(command.RequestId)));
             
             request.Change(
                 command.ToKnowPrice,

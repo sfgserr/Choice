@@ -43,7 +43,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
                     users."OrderRequests"."AverageGrade" as [{nameof(OrderRequestDto.AverageGrade)}]
                     users."OrderRequests"."Distance" as [{nameof(OrderRequestDto.Distance)}]
                 FROM users."OrderRequests"
-                JOIN users."OrderRequests"."ClientCreatedId" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"            
+                JOIN users."OrderRequests" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"            
                 """;
 
             var orderRequests = await connection.QueryAsync<OrderRequestDto>(sql);

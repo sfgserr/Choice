@@ -29,7 +29,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequests
                     users."OrderRequests"."CreationDate" as [{nameof(OrderRequestDto.CreationDate)}]
                     administration."Categories"."Title" as [{nameof(OrderRequestDto.CategoryTitle)}]
                 FROM "users"."OrderRequests"
-                JOIN "users"."OrderRequests"."CategoryId" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
+                JOIN "users"."OrderRequests" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
                 WHERE "users"."OrderRequests"."ClientCreatedId" = @Id    
                 """;
 

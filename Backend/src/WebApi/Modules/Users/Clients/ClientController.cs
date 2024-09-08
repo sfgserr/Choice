@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Users.Application.Clients.Commands.CreateClient;
 using Users.Application.Contracts;
-using Users.Application.Users.Clients.Commands.CreateClient;
 
 namespace WebApi.Modules.Users.Clients
 {
