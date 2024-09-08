@@ -18,6 +18,7 @@ namespace Users.Infrastructure.Data.Domain.OrderRequests
                 .HasConversion(i => i.Value, i => new(i));
             builder.Property(x => x.Status)
                 .HasConversion(x => x.Value, x => OrderStatus.Parse(x));
+            builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
         }
     }
 }

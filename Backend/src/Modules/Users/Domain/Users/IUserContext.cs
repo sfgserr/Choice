@@ -6,5 +6,7 @@ namespace Users.Domain.Users
         UserId Id { get; }
 
         Address Address { get; }
+        
+        UserRole Role { get; }
     }
 }

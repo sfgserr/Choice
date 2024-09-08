@@ -1,8 +1,9 @@
 ﻿using BuildingBlocks.Infrastructure.InternalCommands;
 using BuildingBlocks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
+using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
-using Users.Domain.OrderResponses;
+using Users.Domain.OrderRequests.OrderResponses;
 using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 using Users.Domain.Users.Companies;
@@ -16,7 +17,7 @@ using Users.Infrastructure.Data.Outbox;
 
 namespace Users.Infrastructure.Data
 {
-    public class UsersContext : DbContext
+    public class UsersContext : DbContext, IUsersDbContext
     {
         public UsersContext(DbContextOptions options) : base(options)
         {

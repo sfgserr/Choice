@@ -1,20 +1,24 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.Exceptions;
+using Users.Application.Contracts;
 using Users.Domain.Users;
 
 namespace Users.Application.Users.Commands.Review
 {
     internal class ReviewCommandHandler : ICommandHandler<ReviewCommand>
     {
-        private readonly IUserRepository _repository;
+        private readonly IUsersDbContext _dbContext;
 
-        internal ReviewCommandHandler(IUserRepository repository)
+        internal ReviewCommandHandler(IUsersDbContext dbContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public async Task Execute(ReviewCommand command)
         {
-            var user = await _repository.Get(new(command.ToUserId));
+            var user = await _dbContext.Users.FindAsync(new UserId(command.ToUserId));
+
+            if (user == null) throw new InvalidCommandException(["User is not found"]);
             
             user.Review(command.Grade);
         }

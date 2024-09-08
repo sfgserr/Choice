@@ -1,4 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using Payments.Application.Contracts;
 using Payments.Domain.Payers;
 using Payments.Domain.Subscriptions;
 using Payments.Domain.SubscritpionPayments;
@@ -7,16 +8,16 @@ namespace Payments.Application.SubscriptionPayments.Commands.Buy
 {
     internal class BuyCommandHandler : ICommandHandler<BuyCommand>
     {
-        private readonly ISubscriptionPaymentRepository _repository;
+        private readonly IPaymentsDbContext _dbContext;
         private readonly IPayerContext _payerContext;
         private readonly ISubscriptionsCounter _counter;
         
         internal BuyCommandHandler(
-            ISubscriptionPaymentRepository repository, 
+            IPaymentsDbContext dbContext, 
             IPayerContext payerContext, 
             ISubscriptionsCounter counter)
         {
-            _repository = repository;
+            _dbContext = dbContext;
             _payerContext = payerContext;
             _counter = counter;
         }
@@ -28,7 +29,7 @@ namespace Payments.Application.SubscriptionPayments.Commands.Buy
                 SubscriptionPeriod.Parse(command.Period),
                 _counter);
 
-            await _repository.Add(subscriptionPayment);
+            await _dbContext.SubscriptionPayments.AddAsync(subscriptionPayment);
         }
     }
 }

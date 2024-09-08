@@ -30,4 +30,7 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Response');
 
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Enroll');
+
+
 

@@ -1,6 +1,7 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using Users.Domain.OrderRequests;
-using Users.Domain.OrderResponses;
+using BuildingBlocks.Application.Exceptions;
+using Users.Application.Contracts;
+using Users.Domain.OrderRequests.OrderResponses;
 using Users.Domain.Users;
 using Users.Domain.Users.Companies;
 
@@ -8,27 +9,25 @@ namespace Users.Application.OrderResponses.Commands.Response
 {
     internal class ResponseCommandHandler : ICommandHandler<ResponseCommand>
     {
-        private readonly IOrderRequestRepository _requestRepository;
-        private readonly ICompanyRepository _companyRepository;
         private readonly IUserContext _userContext;
-        private readonly IOrderResponseRepository _responseRepository;
+        private readonly IUsersDbContext _dbContext;
         
-        internal ResponseCommandHandler(
-            IOrderRequestRepository requestRepository, 
-            ICompanyRepository companyRepository, 
-            IUserContext userContext, IOrderResponseRepository responseRepository)
+        internal ResponseCommandHandler( 
+            IUserContext userContext,
+            IUsersDbContext dbContext)
         {
-            _requestRepository = requestRepository;
-            _companyRepository = companyRepository;
             _userContext = userContext;
-            _responseRepository = responseRepository;
+            _dbContext = dbContext;
         }
 
         public async Task Execute(ResponseCommand command)
         {
-            var orderRequest = await _requestRepository.Get(new(command.RequestId));
+            var orderRequest = await _dbContext.OrderRequests.FindAsync(new OrderResponseId(command.RequestId));
 
-            var company = await _companyRepository.Get(new(_userContext.Id.Value));
+            var company = await _dbContext.Companies.FindAsync(_userContext.Id.Value);
+
+            if (orderRequest == null || company == null)
+                throw new InvalidCommandException(["OrderRequest or Company are not found"]);
             
             var orderResponse = orderRequest.Response(
                 company,
@@ -37,7 +36,7 @@ namespace Users.Application.OrderResponses.Commands.Response
                 command.EnrollmentDate,
                 command.Prepayment);
 
-            await _responseRepository.Add(orderResponse);
+            await _dbContext.OrderResponses.AddAsync(orderResponse);
         }
     }
 }

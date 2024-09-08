@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Users.Domain.OrderRequests;
-using Users.Domain.OrderResponses;
+using Users.Domain.OrderRequests.OrderResponses;
 
 namespace Users.Infrastructure.Data.Domain.OrderResponses
 {
@@ -25,6 +25,8 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
             {
                 b.ToTable("Reviews", "users");
 
+                b.WithOwner().HasForeignKey(x => x.ResponseId);
+                
                 b.HasKey(x => new { x.ResponseId, x.AuthorId, x.ToUserId });
 
                 b.Property(x => x.Text).HasColumnName("Text");

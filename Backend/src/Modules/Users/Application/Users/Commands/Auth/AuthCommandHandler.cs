@@ -1,20 +1,22 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
+using Microsoft.EntityFrameworkCore;
+using Users.Application.Contracts;
 using Users.Domain.Users;
 
 namespace Users.Application.Users.Commands.Auth
 {
     internal class AuthCommandHandler : ICommandHandlerWithResult<AuthCommand, AuthResult>
     {
-        private readonly IUserRepository _repository;
+        private readonly IUsersDbContext _dbContext;
 
-        internal AuthCommandHandler(IUserRepository repository)
+        internal AuthCommandHandler(IUsersDbContext dbContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         public async Task<AuthResult> Execute(AuthCommand command)
         {
-            var user = await _repository.GetByEmail(command.Email);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == command.Email);
 
             if (user is not null && PasswordManager.VerifyHashedPassword(user.HashedPassword, command.Password))
             {

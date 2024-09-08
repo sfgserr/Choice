@@ -1,5 +1,5 @@
 CREATE TABLE users."OrderResponses" (
-    "Id" uuid REFERENCES users."OrderRequests" ("Id"),
+    "Id" uuid PRIMARY KEY,
     "ClientId" uuid REFERENCES users."Clients" ("Id"),
     "CompanyId" uuid REFERENCES users."Companies" ("Id"),
     "Price" real NOT NULL,
@@ -11,6 +11,5 @@ CREATE TABLE users."OrderResponses" (
     "IsPaid" boolean NOT NULL,
     "UserChangedEnrollmentDate" uuid,
     "IsEnrollmentDateConfirmed" boolean NOT NULL,
-    "IsActive" boolean NOT NULL,
-    PRIMARY KEY ("Id")
+    "IsActive" boolean NOT NULL
 );

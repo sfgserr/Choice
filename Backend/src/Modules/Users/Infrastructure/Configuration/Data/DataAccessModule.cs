@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Data;
-using BuildingBlocks.Infrastructure.Configuration;
 using BuildingBlocks.Infrastructure.Data;
 using BuildingBlocks.Infrastructure.Data.ValueConversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Users.Application.Contracts;
 using Users.Application.Users;
 using Users.Domain.Users;
 using Users.Infrastructure.Data;
@@ -32,6 +32,7 @@ namespace Users.Infrastructure.Configuration.Data
                 return new UsersContext(optionsBuilder.Options);
             })
             .As<DbContext>()
+            .As<IUsersDbContext>()
             .AsSelf()
             .InstancePerLifetimeScope();
 
@@ -43,12 +44,6 @@ namespace Users.Infrastructure.Configuration.Data
                 .As<ISqlConnectionFactory>()
                 .WithParameter("connectionString", _connectionString)
                 .InstancePerLifetimeScope();
-
-            builder.RegisterAssemblyTypes(typeof(UsersContext).Assembly)
-                .AsImplementedInterfaces()
-                .Where(t => t.Name.EndsWith("Repository"))
-                .InstancePerLifetimeScope()
-                .FindConstructorsWith(new AllConstructorFinder());
 
             builder.RegisterType<UsersCounter>()
                 .As<IUsersCounter>()

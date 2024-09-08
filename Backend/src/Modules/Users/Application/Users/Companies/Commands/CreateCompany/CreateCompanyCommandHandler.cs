@@ -7,23 +7,23 @@ namespace Users.Application.Users.Companies.Commands.CreateCompany
 {
     internal class CreateCompanyCommandHandler : ICommandHandler<CreateCompanyCommand>
     {
-        private readonly ICompanyRepository _repository;
+        private readonly IUsersDbContext _dbContext;
         private readonly IUsersCounter _usersCounter;
         private readonly IGeoService _geoService;
         
         internal CreateCompanyCommandHandler(
-            ICompanyRepository repository, 
+            IUsersDbContext dbContext, 
             IUsersCounter usersCounter, 
             IGeoService geoService)
         {
-            _repository = repository;
+            _dbContext = dbContext;
             _usersCounter = usersCounter;
             _geoService = geoService;
         }
 
         public async Task Execute(CreateCompanyCommand command)
         {
-            string[] coords = await _geoService.GetCoords(command.City, command.Street);
+            var coords = await _geoService.GetCoords(command.City, command.Street);
             
             var company = Company.Create(
                 command.Name,
@@ -33,7 +33,7 @@ namespace Users.Application.Users.Companies.Commands.CreateCompany
                 new(command.City, command.Street, new(coords[0], coords[1])),
                 _usersCounter);
 
-            await _repository.Add(company);
+            await _dbContext.Companies.AddAsync(company);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Domain;
 using Users.Domain.Categories;
+using Users.Domain.OrderRequests.OrderResponses;
 using Users.Domain.OrderRequests.Rules;
-using Users.Domain.OrderResponses;
 using Users.Domain.Users.Clients;
 using Users.Domain.Users.Companies;
 
@@ -10,7 +10,7 @@ namespace Users.Domain.OrderRequests
     public class OrderRequest : Entity, IAggregateRoot
     {
         private readonly List<string> _photoUris = [];
-
+        
         private OrderRequest()
         {
 
@@ -96,13 +96,13 @@ namespace Users.Domain.OrderRequests
             int deadline,
             DateTime? enrollmentDate,
             double prepayment)
-        {
+        { 
             return OrderResponse.Create(
-                this,
-                company,
-                price,
-                deadline,
-                enrollmentDate,
+                this, 
+                company, 
+                price, 
+                deadline, 
+                enrollmentDate, 
                 prepayment);
         }
 

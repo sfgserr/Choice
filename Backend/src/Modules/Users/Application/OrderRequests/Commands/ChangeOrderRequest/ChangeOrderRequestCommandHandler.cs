@@ -1,4 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.Exceptions;
+using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
 using Users.Domain.Users;
 
@@ -6,18 +8,20 @@ namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
 {
     internal class ChangeOrderRequestCommandHandler : ICommandHandler<ChangeOrderRequestCommand>
     {
-        private readonly IOrderRequestRepository _repository;
+        private readonly IUsersDbContext _dbContext;
         private readonly IUserContext _userContext;
 
-        internal ChangeOrderRequestCommandHandler(IOrderRequestRepository repository, IUserContext userContext)
+        internal ChangeOrderRequestCommandHandler(IUsersDbContext dbContext, IUserContext userContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
             _userContext = userContext;
         }
 
         public async Task Execute(ChangeOrderRequestCommand command)
         {
-            var request = await _repository.Get(new(command.RequestId));
+            var request = await _dbContext.OrderRequests.FindAsync(new OrderRequestId(command.RequestId));
+
+            if (request == null) throw new InvalidCommandException(["OrderRequest is not found"]);
             
             request.Change(
                 command.ToKnowPrice,

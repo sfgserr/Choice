@@ -21,5 +21,7 @@ namespace Users.Application.Users
                 new(
                     _userService.GetAttribute("latitude"), 
                     _userService.GetAttribute("longitude")));
+
+        public UserRole Role => UserRole.Parse(_userService.GetAttribute("role"));
     }
 }

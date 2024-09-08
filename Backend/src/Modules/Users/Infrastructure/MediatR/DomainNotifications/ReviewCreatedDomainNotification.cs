@@ -1,5 +1,5 @@
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
-using Users.Domain.OrderResponses.Events;
+using Users.Domain.OrderRequests.OrderResponses.Events;
 
 namespace Users.Infrastructure.MediatR.DomainNotifications
 {
