@@ -22,7 +22,7 @@ namespace BuildingBlocks.Domain
 
         public override bool Equals(object? obj)
         {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj == null)
             {
                 return false;
             }
