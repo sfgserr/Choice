@@ -5,7 +5,6 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
     public class CreateOrderRequestCommand : ICommand
     {
         public CreateOrderRequestCommand(
-            Guid clientCreatedId,
             bool toKnowPrice,
             bool toKnowDeadline,
             bool toKnowEnrollmentDate,
@@ -14,7 +13,6 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
             string description,
             int categoryId)
         {
-            ClientCreatedId = clientCreatedId;
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -23,8 +21,6 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
             Description = description;
             CategoryId = categoryId;
         }
-        
-        public Guid ClientCreatedId { get; }
         
         public bool ToKnowPrice { get; }
         

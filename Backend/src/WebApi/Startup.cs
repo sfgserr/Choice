@@ -14,6 +14,8 @@ using Hellang.Middleware.ProblemDetails;
 using WebApi.Configuration.Authorization;
 using WebApi.Configuration.Validation;
 using Autofac;
+using BuildingBlocks.Application.Authentication;
+using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
 
 namespace WebApi
@@ -52,6 +54,7 @@ namespace WebApi
                         ValidAudience = audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
+                    o.IncludeErrorDetails = true;
                 });
 
             services.AddSignalR();
@@ -71,7 +74,8 @@ namespace WebApi
             services.AddSingleton<JwtProvider>(x => new(new(issuer, audience, secretKey)));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
-            services.AddScoped<IClaimsTransformation, CustomClaimsTransformation>();
+            services.AddSingleton<IClaimsTransformation, CustomClaimsTransformation>();
+            services.AddSingleton<IUserService, UserService>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -85,7 +89,7 @@ namespace WebApi
 
             string connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
 
-            UsersStartup.Initialize(connectionString, _logger);
+            UsersStartup.Initialize(connectionString, _logger, container.Resolve<IUserService>());
 
             if (env.IsDevelopment())
             {
@@ -98,6 +102,7 @@ namespace WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseProblemDetails();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

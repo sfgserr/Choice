@@ -15,8 +15,9 @@ namespace WebApi.Configuration.Authorization
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
-        {
-            var permissions = await _usersModule.Query<GetUserPermissionsQuery, IList<PermissionDto>>(new());
+        {   
+            var permissions = await _usersModule
+                .Query<GetUserPermissionsQuery, IList<PermissionDto>>(new(GetId(principal)));
 
             var identity = new ClaimsIdentity();
 
@@ -26,6 +27,19 @@ namespace WebApi.Configuration.Authorization
             principal.AddIdentity(identity);
 
             return principal;
+        }
+
+        private Guid GetId(ClaimsPrincipal principal)
+        {
+            var id = principal.Claims.FirstOrDefault(c => c.Type == "id");
+
+            if (id is null)
+            {
+                throw new ApplicationException("No Id in claims");
+            }
+
+            return Guid.TryParse(id.Value, out var parsedId) ? 
+                parsedId : throw new ApplicationException("User Id is not guid");
         }
     }
 }

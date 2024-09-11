@@ -1,4 +1,5 @@
 using Users.Domain.Users;
+using Users.Domain.Users.Clients;
 using Users.Domain.Users.Companies;
 
 namespace UnitTests.BuildingBlocks
@@ -12,9 +13,9 @@ namespace UnitTests.BuildingBlocks
             
             var userId = new UserId(guid);
 
-            var companyId = new CompanyId(guid);
+            var companyId = new ClientId(guid);
             
-            Assert.True(userId.Equals(companyId));
+            Assert.True(companyId.Equals(userId));
         }
     }
 }

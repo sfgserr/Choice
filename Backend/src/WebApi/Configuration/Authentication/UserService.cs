@@ -1,7 +1,6 @@
 ﻿using BuildingBlocks.Application.Authentication;
-using Microsoft.AspNetCore.Http;
 
-namespace BuildingBlocks.Infrastructure.Authentication
+namespace WebApi.Configuration.Authentication
 {
     public class UserService : IUserService
     {
@@ -26,7 +25,7 @@ namespace BuildingBlocks.Infrastructure.Authentication
             var attributeValue = _contextAccessor.HttpContext?.User?.FindFirst(attributeName)?.Value;
 
             if (attributeValue is null)
-                throw new ApplicationException("User context in unavailable");
+                throw new ApplicationException("User context is unavailable");
 
             return attributeValue;
         }

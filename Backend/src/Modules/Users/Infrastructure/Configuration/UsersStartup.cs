@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using BuildingBlocks.Application.Authentication;
 using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
 using Users.Infrastructure.Configuration.Data;
@@ -17,18 +18,24 @@ namespace Users.Infrastructure.Configuration
     {
         private static IContainer _container;
 
-        public static void Initialize(string connectionString, ILogger logger)
+        public static void Initialize(
+            string connectionString, 
+            ILogger logger, 
+            IUserService userService)
         {
-            ConfigureCompositionRoot(connectionString, logger);
+            ConfigureCompositionRoot(connectionString, logger, userService);
 
             QuartzStartup.Initialize();
         }
 
-        private static void ConfigureCompositionRoot(string connectionString, ILogger logger)
+        private static void ConfigureCompositionRoot(
+            string connectionString, 
+            ILogger logger, 
+            IUserService userService)
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.RegisterModule(new AuthenticationModule());
+            containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
 
             var mappings = new Dictionary<string, Type>()

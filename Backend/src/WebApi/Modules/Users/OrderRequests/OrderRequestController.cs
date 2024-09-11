@@ -18,10 +18,9 @@ namespace WebApi.Modules.Users.OrderRequests
         
         [HasPermission(Permissions.CreateOrderRequest)]
         [HttpPost()]
-        public async Task<IActionResult> Create(CreateOrderRequestRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateOrderRequestRequest request)
         {
             await _usersModule.ExecuteCommand(new CreateOrderRequestCommand(
-                request.ClientCreatedId,
                 request.ToKnowPrice,
                 request.ToKnowDeadline,
                 request.ToKnowEnrollmentDate,

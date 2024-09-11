@@ -67,7 +67,7 @@ namespace Users.Domain.OrderRequests
                 description,
                 OrderStatus.Active,
                 categoryId,
-                DateTime.Now);
+                DateTime.UtcNow);
         }
 
         public OrderRequestId Id { get; }

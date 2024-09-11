@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using BuildingBlocks.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,24 +6,28 @@ namespace BuildingBlocks.Application.Extensions
 {
     public static class DbSetExtensions
     {
-        public static async Task<TEntity> Get<TEntity>(this DbSet<TEntity> dbSet, Func<TEntity, bool> predicate) 
+        public static async Task<TEntity> Get<TEntity>(
+            this DbSet<TEntity> dbSet, 
+            Expression<Func<TEntity, bool>> expression) 
             where TEntity : class
         {
-            var entity = await dbSet.FirstOrDefaultAsync(e => predicate(e));
+            var entity = await dbSet.FirstOrDefaultAsync(expression);
 
-            if (entity == null)
-            {
-                throw new InvalidCommandException([$"Entity of type {typeof(TEntity).Name} is not found"]);
-            }
-
-            return entity;
+            return ValidateEntity(entity);
         }
         
-        public static async Task<TEntity> GetAsNoTracking<TEntity>(this DbSet<TEntity> dbSet, Func<TEntity, bool> predicate) 
+        public static async Task<TEntity> GetAsNoTracking<TEntity>(
+            this DbSet<TEntity> dbSet, 
+            Expression<Func<TEntity, bool>> expression) 
             where TEntity : class
         {
-            var entity = await dbSet.AsNoTracking().FirstOrDefaultAsync(e => predicate(e));
+            var entity = await dbSet.AsNoTracking().FirstOrDefaultAsync(expression);
 
+            return ValidateEntity(entity);
+        }
+
+        private static TEntity ValidateEntity<TEntity>(TEntity? entity) where TEntity : class
+        {
             if (entity == null)
             {
                 throw new InvalidCommandException([$"Entity of type {typeof(TEntity).Name} is not found"]);

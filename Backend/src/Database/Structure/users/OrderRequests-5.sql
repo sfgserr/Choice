@@ -8,5 +8,6 @@ CREATE TABLE users."OrderRequests" (
     "Description" text NOT NULL,
     "Status" text NOT NULL,
     "CategoryId" integer NOT NULL,
-    "CreationDate" timestamp NOT NULL
+    "CreationDate" timestamp NOT NULL,
+    "PhotoUris" text[] NOT NULL
 );
