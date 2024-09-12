@@ -35,3 +35,8 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Clie
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Finish');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Finish');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Cancel');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Cancel');
+

@@ -34,3 +34,5 @@ INSERT INTO users."Permissions" ("Code") VALUES ('Enroll');
 
 INSERT INTO users."Permissions" ("Code") VALUES ('Finish');
 
+INSERT INTO users."Permissions" ("Code") VALUES ('Cancel');
+

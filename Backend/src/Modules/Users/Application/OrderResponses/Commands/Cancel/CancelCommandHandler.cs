@@ -1,32 +1,28 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests.OrderResponses;
 using Users.Domain.Users;
 
-namespace Users.Application.OrderResponses.Commands.Enroll
+namespace Users.Application.OrderResponses.Commands.Cancel
 {
-    internal class EnrollCommandHandler : ICommandHandler<EnrollCommand>
+    internal class CancelCommandHandler : ICommandHandler<CancelCommand>
     {
         private readonly IUsersDbContext _dbContext;
         private readonly IUserContext _userContext;
-
-        internal EnrollCommandHandler(IUsersDbContext dbContext, IUserContext userContext)
+        
+        internal CancelCommandHandler(IUsersDbContext dbContext, IUserContext userContext)
         {
             _dbContext = dbContext;
             _userContext = userContext;
         }
 
-        public async Task Execute(EnrollCommand command)
+        public async Task Execute(CancelCommand command)
         {
             var response = await _dbContext.OrderResponses.Get(r => 
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
             
-            if (response.Prepayment > 0)
-                response.EnrollWithPrepayment(new(_userContext.Id.Value));
-            else
-                response.Enroll(new(_userContext.Id.Value));
+            response.Cancel(_userContext.Id);
         }
     }
 }
