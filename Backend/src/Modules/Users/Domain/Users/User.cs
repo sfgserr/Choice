@@ -84,7 +84,7 @@ namespace Users.Domain.Users
 
         public void Review(double grade)
         {
-            AverageGrade = (AverageGrade * ReviewsCount + AverageGrade) / ++ReviewsCount;
+            AverageGrade = (AverageGrade * ReviewsCount + grade) / ++ReviewsCount;
         }
         
         internal void ChangeIconUri(string iconUri)
