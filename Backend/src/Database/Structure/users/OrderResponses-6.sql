@@ -1,5 +1,6 @@
 CREATE TABLE users."OrderResponses" (
     "Id" uuid PRIMARY KEY,
+    "RequestId" uuid REFERENCES users."OrderRequests" ("Id"),
     "ClientId" uuid REFERENCES users."Clients" ("Id"),
     "CompanyId" uuid REFERENCES users."Companies" ("Id"),
     "Price" real NOT NULL,

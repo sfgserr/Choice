@@ -18,6 +18,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         private OrderResponse(
             OrderResponseId id,
+            OrderRequestId requestId,
             ClientId clientId,
             CompanyId companyId,
             double price,
@@ -63,6 +64,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             return new OrderResponse(
                 new(Guid.NewGuid()),
+                request.Id,
                 request.ClientCreatedId,
                 company.Id,
                 price,
@@ -77,6 +79,8 @@ namespace Users.Domain.OrderRequests.OrderResponses
         }
 
         public OrderResponseId Id { get; }
+
+        public OrderRequestId RequestId { get; }
 
         public ClientId ClientId { get; }
         
@@ -137,7 +141,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Finished;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(Id, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Status));
         }
 
         public void Cancel(UserId cancellingUserId)
@@ -148,7 +152,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Cancelled;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(Id, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Status));
         }
 
         public void ChangeEnrollmentDateByClient(ClientId changingClientId, DateTime newEnrollmentDate)

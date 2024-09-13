@@ -13,6 +13,7 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
 
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.RequestId).HasColumnName("RequestId");
             builder.Property(x => x.Prepayment).HasColumnName("Prepayment");
             builder.Property(x => x.Price).HasColumnName("Price");
             builder.Property(x => x.ClientId).HasColumnName("ClientId");

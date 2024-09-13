@@ -4,13 +4,13 @@ namespace Users.Domain.OrderRequests.OrderResponses.Events
 {
     public class OrderStatusChangedDomainEvent : DomainEventBase
     {
-        public OrderStatusChangedDomainEvent(OrderResponseId responseId, OrderStatus status)
+        public OrderStatusChangedDomainEvent(OrderRequestId requestId, OrderStatus status)
         {
-            ResponseId = responseId;
+            RequestId = requestId;
             Status = status;
         }
 
-        public OrderResponseId ResponseId { get; }
+        public OrderRequestId RequestId { get; }
 
         public OrderStatus Status { get; }
     }
