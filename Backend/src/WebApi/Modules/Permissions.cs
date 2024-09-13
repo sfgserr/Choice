@@ -20,6 +20,7 @@ namespace WebApi.Modules
         public const string Response = "Response";
         public const string Enroll = "Enroll";
         public const string Finish = "Finish";
-	public const string Cancel = "Cancel";
+	    public const string Cancel = "Cancel";
+        public const string ChangeEnrollmentDate = "ChangeEnrollmentDate";
     }
 }
