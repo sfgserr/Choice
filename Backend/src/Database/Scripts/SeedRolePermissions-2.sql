@@ -43,3 +43,7 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Comp
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeEnrollmentDate');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeEnrollmentDate');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ConfirmDate');
+
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ConfirmDate');
