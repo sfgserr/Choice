@@ -16,6 +16,7 @@ using WebApi.Configuration.Validation;
 using Autofac;
 using BuildingBlocks.Application.Authentication;
 using WebApi.Configuration.Authentication;
+using WebApi.Configuration.Eventbus;
 using WebApi.Modules.Users;
 
 namespace WebApi
@@ -71,6 +72,8 @@ namespace WebApi
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
 
+            services.AddEventBus();
+            
             services.AddSingleton<JwtProvider>(x => new(new(issuer, audience, secretKey)));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();

@@ -1,5 +1,4 @@
-﻿
-using Quartz.Impl;
+﻿using Quartz.Impl;
 using Quartz;
 using System.Collections.Specialized;
 using Users.Infrastructure.Processing.Outbox;
