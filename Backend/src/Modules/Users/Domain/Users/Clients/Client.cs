@@ -30,7 +30,6 @@ namespace Users.Domain.Users.Clients
                 name,
                 email,
                 phoneNumber,
-                hashedPassword,
                 address,
                 UserRole.Client,
                 counter);

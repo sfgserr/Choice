@@ -15,7 +15,7 @@ namespace Users.Infrastructure.Data.Domain.Users
 
             builder.Property<UserRole>("Role")
                 .HasConversion(new UserRoleToStringValueConverter())
-                .HasColumnName("UserRole");
+                .HasColumnName("Role");
             
             builder.OwnsOne(x => x.Address, b =>
             {

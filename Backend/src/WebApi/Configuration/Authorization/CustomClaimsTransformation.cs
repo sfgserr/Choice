@@ -1,29 +1,35 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using Users.Application.Contracts;
-using Users.Application.Users.Queries.GetUserPermissions;
+using Identity.Application.Authorization.GetUser;
+using Identity.Application.Contracts;
 
 namespace WebApi.Configuration.Authorization
 {
     public class CustomClaimsTransformation : IClaimsTransformation
     {
-        private readonly IUsersModule _usersModule;
+        private readonly IIdentityModule _identityModule;
 
-        public CustomClaimsTransformation(IUsersModule usersModule)
+        public CustomClaimsTransformation(IIdentityModule identityModule)
         {
-            _usersModule = usersModule;
+            _identityModule = identityModule;
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {   
-            var permissions = await _usersModule
-                .Query<GetUserPermissionsQuery, IList<PermissionDto>>(new(GetId(principal)));
+            var user = await _identityModule
+                .Query<GetUserQuery, UserDto>(new(GetId(principal)));
 
             var identity = new ClaimsIdentity();
 
-            foreach (var permission in permissions)
-                identity.AddClaim(new Claim("Permission", permission.Code));
-
+            foreach (var permission in user.Permissions)
+                identity.AddClaim(new Claim("permission", permission));
+            
+            identity.AddClaim(new Claim("role", user.RoleCode));
+            identity.AddClaim(new Claim("city", user.City));
+            identity.AddClaim(new Claim("street", user.Street));
+            identity.AddClaim(new Claim("latitude", user.Latitude));
+            identity.AddClaim(new Claim("longitude", user.Longitude));
+            
             principal.AddIdentity(identity);
 
             return principal;

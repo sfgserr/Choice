@@ -15,8 +15,7 @@ namespace Users.Domain.Users
             UserId id, 
             string name, 
             string email, 
-            string phoneNumber, 
-            string hashedPassword, 
+            string phoneNumber,  
             string iconUri, 
             Address address, 
             UserRole role,
@@ -29,7 +28,6 @@ namespace Users.Domain.Users
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
-            HashedPassword = hashedPassword;
             IconUri = iconUri;
             Role = role;
             IsDataFilled = !role.Equals(UserRole.Company);
@@ -42,8 +40,7 @@ namespace Users.Domain.Users
         internal static User Create(
             string name, 
             string email, 
-            string phoneNumber, 
-            string hashedPassword, 
+            string phoneNumber,  
             Address address,
             UserRole role,
             IUsersCounter counter)
@@ -53,7 +50,6 @@ namespace Users.Domain.Users
                 name, 
                 email, 
                 phoneNumber, 
-                hashedPassword,
                 "defaulturi",
                 address, 
                 role,
@@ -67,8 +63,6 @@ namespace Users.Domain.Users
         public string Email { get; private set; }
 
         public string PhoneNumber { get; private set; }
-
-        public string HashedPassword { get; private set; }
 
         public string IconUri { get; private set; }
 

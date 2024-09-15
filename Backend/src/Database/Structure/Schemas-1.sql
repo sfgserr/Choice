@@ -5,3 +5,5 @@ CREATE SCHEMA chat;
 CREATE SCHEMA payments;
 
 CREATE SCHEMA administration;
+
+CREATE SCHEMA identity;
