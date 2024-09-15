@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
+using BuildingBlocks.Application.Events;
 using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
 using Users.Infrastructure.Configuration.Data;
 using Users.Infrastructure.Configuration.DomainEventsDispatching;
+using Users.Infrastructure.Configuration.EventBus;
 using Users.Infrastructure.Configuration.GeoCoding;
 using Users.Infrastructure.Configuration.Logging;
 using Users.Infrastructure.Configuration.Mediation;
@@ -21,9 +23,10 @@ namespace Users.Infrastructure.Configuration
         public static void Initialize(
             string connectionString, 
             ILogger logger, 
-            IUserService userService)
+            IUserService userService,
+            IEventBus eventBus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService);
+            ConfigureCompositionRoot(connectionString, logger, userService, eventBus);
 
             QuartzStartup.Initialize();
         }
@@ -31,7 +34,8 @@ namespace Users.Infrastructure.Configuration
         private static void ConfigureCompositionRoot(
             string connectionString, 
             ILogger logger, 
-            IUserService userService)
+            IUserService userService,
+            IEventBus eventBus)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -44,6 +48,7 @@ namespace Users.Infrastructure.Configuration
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
+            containerBuilder.RegisterModule(new EventBusModule(eventBus));
             containerBuilder.RegisterModule(new GeoCodingModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Users")));
             containerBuilder.RegisterModule(new MediationModule());

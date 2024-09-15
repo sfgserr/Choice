@@ -22,11 +22,8 @@ namespace BuildingBlocks.Infrastructure.Events
 
             var integrationEvent = JsonConvert.DeserializeObject(
                 @event.Content, 
-                Type.GetType(@event.Type)!);
+                Type.GetType(@event.Type)!) ?? throw new ApplicationException($"Cannot convert {@event.Type}");
 
-            if (integrationEvent == null)
-                throw new ApplicationException($"Cannot convert {@event.Type}");
-            
             await _endpoint.Publish(integrationEvent);
         }
     }

@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Backend\src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Backend\tests\UnitTests\UnitTests.csproj", "{50D6493C-B386-464F-95F8-98402E3319F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEvents", "Backend\src\Modules\Users\IntegrationEvents\IntegrationEvents.csproj", "{522FF22B-A361-4532-B9C0-A627509BEF8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEvents", "Backend\src\Modules\Users\IntegrationEvents\IntegrationEvents.csproj", "{522FF22B-A361-4532-B9C0-A627509BEF8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

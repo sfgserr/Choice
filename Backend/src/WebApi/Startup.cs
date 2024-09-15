@@ -18,6 +18,7 @@ using BuildingBlocks.Application.Authentication;
 using WebApi.Configuration.Authentication;
 using WebApi.Configuration.Eventbus;
 using WebApi.Modules.Users;
+using BuildingBlocks.Application.Events;
 
 namespace WebApi
 {
@@ -92,7 +93,11 @@ namespace WebApi
 
             string connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
 
-            UsersStartup.Initialize(connectionString, _logger, container.Resolve<IUserService>());
+            UsersStartup.Initialize(
+                connectionString, 
+                _logger, 
+                container.Resolve<IUserService>(),
+                container.Resolve<IEventBus>());
 
             if (env.IsDevelopment())
             {
