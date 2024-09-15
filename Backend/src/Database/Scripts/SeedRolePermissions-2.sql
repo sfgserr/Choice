@@ -2,7 +2,7 @@ INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Clie
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeClientData');
 
-INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'FillData');
+INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('User', 'FillData');
 
 INSERT INTO users."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangeClientIconUri');
 

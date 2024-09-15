@@ -141,7 +141,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Finished;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Id, Status));
         }
 
         public void Cancel(UserId cancellingUserId)
@@ -152,7 +152,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Cancelled;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Id, Status));
         }
 
         public void ChangeEnrollmentDateByClient(ClientId changingClientId, DateTime newEnrollmentDate)
