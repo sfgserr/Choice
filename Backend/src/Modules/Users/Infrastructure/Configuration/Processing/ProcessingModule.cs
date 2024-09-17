@@ -14,7 +14,7 @@ namespace Users.Infrastructure.Configuration.Processing
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<CommandsScheduler>()
-                .As<ICommandsScheduler>()
+                .AsSelf()
                 .InstancePerLifetimeScope()
                 .FindConstructorsWith(new AllConstructorFinder());
 

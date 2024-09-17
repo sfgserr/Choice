@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers;
-using BuildingBlocks.Infrastructure.InternalCommands;
 using Users.Application.OrderRequests.Commands.SetStatus;
+using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.MediatR.DomainNotifications;
 
 namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
@@ -8,9 +8,9 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
     internal class OrderStatusChangedDomainNotificationHandler :
         IDomainNotificationHandler<OrderStatusChangedDomainNotification>
     {
-        private readonly ICommandsScheduler _scheduler;
+        private readonly CommandsScheduler _scheduler;
 
-        internal OrderStatusChangedDomainNotificationHandler(ICommandsScheduler scheduler)
+        internal OrderStatusChangedDomainNotificationHandler(CommandsScheduler scheduler)
         {
             _scheduler = scheduler;
         }

@@ -8,7 +8,7 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeCompanyData');
 
-INSERT INTO identiy."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeCompanyIconUri');
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeCompanyIconUri');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'BuySubscriptionPayment');
 

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Identity.Infrastructure.Data.InternalCommands
 {
-    internal class CommandsScheduler : ICommandsScheduler
+    internal class CommandsScheduler
     {
         private readonly IdentityContext _identityContext;
 

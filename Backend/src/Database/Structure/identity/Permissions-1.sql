@@ -1,3 +1,3 @@
-CREATE TABLE users."Permissions" (
+CREATE TABLE identity."Permissions" (
     "Code" text PRIMARY KEY
 );

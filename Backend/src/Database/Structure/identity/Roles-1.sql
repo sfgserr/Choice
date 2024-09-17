@@ -1,3 +1,3 @@
-CREATE TABLE users."Roles" (
+CREATE TABLE identity."Roles" (
     "Code" text PRIMARY KEY
 );

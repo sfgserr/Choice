@@ -1,15 +1,15 @@
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers;
-using BuildingBlocks.Infrastructure.InternalCommands;
 using Users.Application.Users.Commands.Review;
+using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.MediatR.DomainNotifications;
 
 namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
 {
     internal class ReviewCreatedDomainNotificationHandler : IDomainNotificationHandler<ReviewCreatedDomainNotification>
     {
-        private readonly ICommandsScheduler _scheduler;
+        private readonly CommandsScheduler _scheduler;
 
-        internal ReviewCreatedDomainNotificationHandler(ICommandsScheduler scheduler)
+        internal ReviewCreatedDomainNotificationHandler(CommandsScheduler scheduler)
         {
             _scheduler = scheduler;
         }
