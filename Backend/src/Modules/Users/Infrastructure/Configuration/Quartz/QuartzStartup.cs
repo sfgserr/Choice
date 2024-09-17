@@ -17,7 +17,7 @@ namespace Users.Infrastructure.Configuration.Quartz
 
             var factory = new StdSchedulerFactory(configuration);
 
-            IScheduler scheduler = factory.GetScheduler().GetAwaiter().GetResult();
+            var scheduler = factory.GetScheduler().GetAwaiter().GetResult();
 
             scheduler.Start().GetAwaiter().GetResult();
 

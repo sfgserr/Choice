@@ -9,6 +9,11 @@ namespace Identity.Infrastructure.Data
 {
     public class IdentityContext : DbContext, IIdentityDbContext
     {
+        public IdentityContext(DbContextOptions options) : base(options)
+        {
+            
+        }
+        
         public DbSet<User> Users { get; set; }
 
         public DbSet<InternalCommand> InternalCommands { get; set; }

@@ -1,7 +1,8 @@
-﻿using Autofac;
+using Autofac;
 using BuildingBlocks.Application.Events;
+using Serilog;
 
-namespace Users.Infrastructure.Configuration.EventBus
+namespace Identity.Infrastructure.Configuration.EventBus
 {
     internal class EventBusModule : Module
     {
@@ -15,7 +16,7 @@ namespace Users.Infrastructure.Configuration.EventBus
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(_eventBus)
-                .AsSelf()
+                .As<IEventBus>()
                 .SingleInstance();
         }
     }

@@ -11,7 +11,7 @@ namespace Identity.Infrastructure.Processing
         private readonly ICommandHandler<T> _decorated;
         private readonly IdentityContext _identityContext;
         
-        internal UnitOfWorkCommandHandlerDecorator(
+        public UnitOfWorkCommandHandlerDecorator(
             IUnitOfWork unitOfWork, 
             ICommandHandler<T> decorated, 
             IdentityContext identityContext)

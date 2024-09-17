@@ -19,6 +19,8 @@ using WebApi.Configuration.Authentication;
 using WebApi.Configuration.Eventbus;
 using WebApi.Modules.Users;
 using BuildingBlocks.Application.Events;
+using Identity.Infrastructure.Configuration;
+using WebApi.Modules.Identity;
 
 namespace WebApi
 {
@@ -85,20 +87,29 @@ namespace WebApi
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new UsersAutofacModule());
+            builder.RegisterModule(new IdentityAutofacModule());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var container = app.ApplicationServices.GetAutofacRoot();
 
-            string connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
-
+            var connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
+            var userService = container.Resolve<IUserService>();
+            var eventBus = container.Resolve<IEventBus>();
+            
             UsersStartup.Initialize(
                 connectionString, 
                 _logger, 
-                container.Resolve<IUserService>(),
-                container.Resolve<IEventBus>());
-
+                userService,
+                eventBus);
+            
+            IdentityStartup.Initialize(
+                connectionString,
+                _logger,
+                userService,
+                eventBus);
+            
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
