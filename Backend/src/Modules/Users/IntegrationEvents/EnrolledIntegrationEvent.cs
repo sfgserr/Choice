@@ -2,9 +2,9 @@
 
 namespace Users.IntegrationEvents
 {
-    public class EnrolledIntegrationEvent : IIntegrationEvent
+    public class EnrolledIntegrationEvent : IntegrationEventBase
     {
-        public EnrolledIntegrationEvent(Guid responseId)
+        public EnrolledIntegrationEvent(Guid responseId) : base(Guid.NewGuid())
         {
             ResponseId = responseId;
         }

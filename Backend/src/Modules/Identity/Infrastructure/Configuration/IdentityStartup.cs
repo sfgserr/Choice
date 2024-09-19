@@ -3,8 +3,10 @@ using BuildingBlocks.Application.Authentication;
 using BuildingBlocks.Application.Events;
 using Identity.Infrastructure.Configuration.Authentication;
 using Identity.Infrastructure.Configuration.Data;
+using Identity.Infrastructure.Configuration.DomainEventsDispatching;
 using Identity.Infrastructure.Configuration.EventBus;
 using Identity.Infrastructure.Configuration.Logging;
+using Identity.Infrastructure.Configuration.Outbox;
 using Identity.Infrastructure.Configuration.Processing;
 using Identity.Infrastructure.Configuration.Quartz;
 using Serilog;
@@ -36,8 +38,10 @@ namespace Identity.Infrastructure.Configuration
 
             builder.RegisterModule(new AuthenticationModule(userService));
             builder.RegisterModule(new DataAccessModule(connectionString));
+            builder.RegisterModule(new DomainEventsDispatchingModule([]));
             builder.RegisterModule(new EventBusModule(eventBus));
             builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Identity")));
+            builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new ProcessingModule());
             builder.RegisterModule(new QuartzModule());
 

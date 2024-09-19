@@ -47,7 +47,7 @@ namespace Identity.Infrastructure.Processing
                     .FirstOrDefaultAsync(i => i.Id == internalCommandBase.Id);
 
                 if (internalCommand != null)
-                    internalCommand.ProcessedDate = DateTime.Now;
+                    internalCommand.Processed = DateTime.Now;
             }
         }
     }

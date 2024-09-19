@@ -19,6 +19,6 @@ namespace BuildingBlocks.Infrastructure.Outbox
 
         public DateTime OccuredOn { get; }
 
-        public DateTime? Proccessed { get; set; }
+        public DateTime? Processed { get; set; }
     }
 }

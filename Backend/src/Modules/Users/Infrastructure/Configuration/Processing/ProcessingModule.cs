@@ -2,7 +2,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Cqrs.Queries;
 using BuildingBlocks.Infrastructure.Configuration;
-using BuildingBlocks.Infrastructure.InternalCommands;
 using BuildingBlocks.Infrastructure.Processing;
 using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.Processing;
@@ -14,7 +13,6 @@ namespace Users.Infrastructure.Configuration.Processing
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<CommandsScheduler>()
-                .AsSelf()
                 .InstancePerLifetimeScope()
                 .FindConstructorsWith(new AllConstructorFinder());
 

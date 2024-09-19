@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Infrastructure.DomainEventDispatching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BuildingBlocks.Infrastructure.Data
@@ -6,12 +7,14 @@ namespace BuildingBlocks.Infrastructure.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DbContext _dbContext;
-
+        private readonly DomainEventsDispatcher _dispatcher;
+        
         private IDbContextTransaction? _currentTransaction;
 
-        public UnitOfWork(DbContext dbContext)
+        public UnitOfWork(DbContext dbContext, DomainEventsDispatcher dispatcher)
         {
             _dbContext = dbContext;
+            _dispatcher = dispatcher;
         }
 
         public bool HasActiveTransaction => _currentTransaction != null;
@@ -27,6 +30,8 @@ namespace BuildingBlocks.Infrastructure.Data
 
         public async Task SaveChangesAsync(IDbContextTransaction transaction)
         {
+            _dispatcher.DispatchDomainEvents();
+            
             await CommitAsync(transaction);   
         }
 

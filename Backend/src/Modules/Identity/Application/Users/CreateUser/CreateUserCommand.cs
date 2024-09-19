@@ -1,10 +1,11 @@
-﻿using BuildingBlocks.Application.Events;
+using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Users.IntegrationEvents
+namespace Identity.Application.Users.CreateUser
 {
-    public class UserCreatedIntegrationEvent : IntegrationEventBase 
+    public class CreateUserCommand : InternalCommandBase
     {
-        public UserCreatedIntegrationEvent(
+        public CreateUserCommand(
+            Guid id,
             Guid userId, 
             string email, 
             string password, 
@@ -13,7 +14,7 @@ namespace Users.IntegrationEvents
             string city, 
             string street, 
             string latitude, 
-            string longitude) : base(Guid.NewGuid())
+            string longitude) : base(id)
         {
             UserId = userId;
             Email = email;

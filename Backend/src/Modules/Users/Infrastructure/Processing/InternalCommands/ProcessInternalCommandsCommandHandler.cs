@@ -20,7 +20,7 @@ namespace Users.Infrastructure.Processing.InternalCommands
         public async Task Execute(ProcessInternalCommandsCommand command)
         {
             var internalCommands = await _usersContext.InternalCommands
-                .Where(c => c.ProcessedDate == null)
+                .Where(c => c.Processed == null)
                 .ToListAsync();
 
             var policy = Policy.Handle<Exception>()
@@ -41,7 +41,7 @@ namespace Users.Infrastructure.Processing.InternalCommands
 
                 if (result.Outcome == OutcomeType.Failure)
                 {
-                    internalCommand.ProcessedDate = DateTime.Now;
+                    internalCommand.Processed = DateTime.UtcNow;
                     internalCommand.Error = result.FinalException.Message;
                 }
             }

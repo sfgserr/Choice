@@ -27,13 +27,14 @@ namespace Users.Domain.Users.Companies
             string name,
             string email,
             string phoneNumber,
-            string hashedPassword,
+            string password,
             Address address,
             IUsersCounter counter)
         {
             User user = User.Create(
                 name,
                 email,
+                password,
                 phoneNumber,
                 address,
                 UserRole.User,

@@ -8,12 +8,17 @@ namespace BuildingBlocks.Infrastructure.DomainEventDispatching
     public class DomainEventsDispatcher
     {
         private readonly DomainEventsAccessor _domainEventsAccessor;
+        private readonly DomainEventsMapper _mapper;
         private readonly IOutbox _outbox;
 
-        public DomainEventsDispatcher(DomainEventsAccessor domainEventsAccessor, IOutbox outbox)
+        public DomainEventsDispatcher(
+            DomainEventsAccessor domainEventsAccessor, 
+            DomainEventsMapper mapper,
+            IOutbox outbox)
         {
             _domainEventsAccessor = domainEventsAccessor;
             _outbox = outbox;
+            _mapper = mapper;
         }
 
         public void DispatchDomainEvents()
@@ -24,17 +29,18 @@ namespace BuildingBlocks.Infrastructure.DomainEventDispatching
 
             foreach (var domainEvent in domainEvents)
             {
-                Type notificationType = domainEvent.GetNotificationType();
+                var notificationType = _mapper
+                    .GetType(domainEvent.GetType().Name.Replace("DomainEvent", "DomainNotification"));
 
-                string json = JsonConvert.SerializeObject(
+                var json = JsonConvert.SerializeObject(
                     Activator.CreateInstance(notificationType, domainEvent),
                     new JsonSerializerSettings() { ContractResolver = new AllPropertiesContractResolver() });
 
-                OutboxMessage message = new(
+                var message = new OutboxMessage(
                     domainEvent.Id,
                     notificationType.Name,
                     json,
-                    DateTime.Now);
+                    DateTime.UtcNow);
 
                 _outbox.Add(message);
             }

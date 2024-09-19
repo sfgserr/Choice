@@ -1,7 +1,7 @@
-﻿using Autofac;
+using Autofac;
 using BuildingBlocks.Infrastructure.DomainEventDispatching;
 
-namespace Users.Infrastructure.Configuration.DomainEventsDispatching
+namespace Identity.Infrastructure.Configuration.DomainEventsDispatching
 {
     internal class DomainEventsDispatchingModule : Module
     {

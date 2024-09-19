@@ -5,7 +5,7 @@ namespace Users.Infrastructure.MediatR.DomainNotifications
 {
     internal class ReviewCreatedDomainNotification : DomainNotificationBase<ReviewCreatedDomainEvent>
     {
-        internal ReviewCreatedDomainNotification(ReviewCreatedDomainEvent domainEvent) : base(domainEvent)
+        public ReviewCreatedDomainNotification(ReviewCreatedDomainEvent domainEvent) : base(domainEvent)
         {
         }
     }

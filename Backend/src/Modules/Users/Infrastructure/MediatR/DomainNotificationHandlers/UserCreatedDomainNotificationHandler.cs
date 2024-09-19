@@ -16,7 +16,18 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
 
         public async Task Handle(UserCreatedDomainNotification notification, CancellationToken cancellationToken)
         {
-            await _eventBus.PublishAsync(new UserCreatedIntegrationEvent(notification.DomainEvent.Id));
+            var domainEvent = notification.DomainEvent;
+            
+            await _eventBus.PublishAsync(new UserCreatedIntegrationEvent(
+                domainEvent.UserId.Value,
+                domainEvent.Email,
+                domainEvent.Password,
+                domainEvent.PhoneNumber,
+                domainEvent.UserRole.Value,
+                domainEvent.Address.City,
+                domainEvent.Address.Street,
+                domainEvent.Address.Coords.Latitude,
+                domainEvent.Address.Coords.Longitude));
         }
     }
 }

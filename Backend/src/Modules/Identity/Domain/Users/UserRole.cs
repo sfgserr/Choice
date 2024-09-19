@@ -9,6 +9,11 @@ namespace Identity.Domain.Users
             Value = value;
         }
 
+        private UserRole()
+        {
+            
+        }
+        
         public string Value { get; }
 
         public static UserRole Admin { get; } = new UserRole("Admin");

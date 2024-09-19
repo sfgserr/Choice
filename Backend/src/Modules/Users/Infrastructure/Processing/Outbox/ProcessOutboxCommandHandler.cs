@@ -24,17 +24,17 @@ namespace Users.Infrastructure.Processing.Outbox
 
         public async Task Execute(ProcessOutboxCommand command)
         {
-            List<OutboxMessage> messages = await _usersContext.OutboxMessages.Where(m => m.Proccessed == null)
+            var messages = await _usersContext.OutboxMessages.Where(m => m.Processed == null)
                 .ToListAsync();
 
-            foreach (OutboxMessage message in messages)
+            foreach (var message in messages)
             {
                 var notification = JsonConvert.DeserializeObject(message.Message, _mapper.GetType(message.Type))
                     as IDomainNotification;
 
                 await _mediator.Publish(notification!);
 
-                message.Proccessed = DateTime.Now;
+                message.Processed = DateTime.UtcNow;
             }
         }
     }

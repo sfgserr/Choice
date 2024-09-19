@@ -14,7 +14,8 @@ namespace Users.Domain.Users
         private User(
             UserId id, 
             string name, 
-            string email, 
+            string email,
+            string password,
             string phoneNumber,  
             string iconUri, 
             Address address, 
@@ -34,12 +35,19 @@ namespace Users.Domain.Users
             Address = address;
             Role = role;
 
-            AddDomainEvent(new UserCreatedDomainEvent(id));
+            AddDomainEvent(new UserCreatedDomainEvent(
+                id,
+                email,
+                password,
+                phoneNumber,
+                role,
+                address));
         }
 
         internal static User Create(
             string name, 
-            string email, 
+            string email,
+            string password,
             string phoneNumber,  
             Address address,
             UserRole role,
@@ -49,6 +57,7 @@ namespace Users.Domain.Users
                 new(Guid.NewGuid()), 
                 name, 
                 email, 
+                password,
                 phoneNumber, 
                 "defaulturi",
                 address, 

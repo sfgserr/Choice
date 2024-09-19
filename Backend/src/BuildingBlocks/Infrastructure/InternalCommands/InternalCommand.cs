@@ -16,7 +16,7 @@ namespace BuildingBlocks.Infrastructure.InternalCommands
 
         public string Data { get; }
 
-        public DateTime? ProcessedDate { get; set; }
+        public DateTime? Processed { get; set; }
 
         public string? Error { get; set; }
     }

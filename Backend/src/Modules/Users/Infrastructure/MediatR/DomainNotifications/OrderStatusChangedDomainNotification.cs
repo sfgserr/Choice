@@ -5,7 +5,7 @@ namespace Users.Infrastructure.MediatR.DomainNotifications
 {
     internal class OrderStatusChangedDomainNotification : DomainNotificationBase<OrderStatusChangedDomainEvent>
     {
-        internal OrderStatusChangedDomainNotification(OrderStatusChangedDomainEvent domainEvent) : base(domainEvent)
+        public OrderStatusChangedDomainNotification(OrderStatusChangedDomainEvent domainEvent) : base(domainEvent)
         {
         }
     }

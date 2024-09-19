@@ -1,6 +1,8 @@
 using BuildingBlocks.Application.Events;
 using BuildingBlocks.Infrastructure.Events;
+using Identity.Infrastructure.Configuration.EventBus;
 using MassTransit;
+using Quartz;
 
 namespace WebApi.Configuration.Eventbus
 {
@@ -14,11 +16,27 @@ namespace WebApi.Configuration.Eventbus
             
             services.AddMassTransit(o =>
             {
-                o.UsingInMemory();
+                o.AddIdentityConsumers();
+                
+                o.UsingInMemory((context, cfg) =>
+                {
+                    cfg.ConfigureEndpoints(context);
+                });
             });
-            
-            EventBusStartup.Initialize();
 
+            services.AddQuartz(q =>
+            {
+                var jobKey = new JobKey("ProcessEventJob");
+                q.AddJob<ProcessEventJob>(opt => opt.WithIdentity(jobKey));
+
+                q.AddTrigger(opt => opt
+                    .ForJob(jobKey)
+                    .StartNow()
+                    .WithCronSchedule("0/2 * * ? * *"));
+            });
+
+            services.AddQuartzHostedService(opt => opt.WaitForJobsToComplete = true);
+            
             return services;
         }
     }

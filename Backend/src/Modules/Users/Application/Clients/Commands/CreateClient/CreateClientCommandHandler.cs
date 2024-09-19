@@ -30,7 +30,7 @@ namespace Users.Application.Clients.Commands.CreateClient
                 command.Name,
                 command.Email,
                 command.PhoneNumber,
-                PasswordManager.HashPassword(command.Password),
+                command.Password,
                 new(command.City, command.Street, new(coords[0], coords[1])),
                 _usersCounter);
 

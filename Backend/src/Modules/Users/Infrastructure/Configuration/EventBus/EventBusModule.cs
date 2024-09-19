@@ -15,7 +15,7 @@ namespace Users.Infrastructure.Configuration.EventBus
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterInstance(_eventBus)
-                .AsSelf()
+                .As<IEventBus>()
                 .SingleInstance();
         }
     }

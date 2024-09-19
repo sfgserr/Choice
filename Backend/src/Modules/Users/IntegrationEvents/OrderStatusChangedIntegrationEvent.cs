@@ -2,9 +2,9 @@ using BuildingBlocks.Application.Events;
 
 namespace Users.IntegrationEvents
 {
-    public class OrderStatusChangedIntegrationEvent : IIntegrationEvent
+    public class OrderStatusChangedIntegrationEvent : IntegrationEventBase
     {
-        public OrderStatusChangedIntegrationEvent(Guid responseId, string status)
+        public OrderStatusChangedIntegrationEvent(Guid responseId, string status) : base(Guid.NewGuid())
         {
             ResponseId = responseId;
             Status = status;
