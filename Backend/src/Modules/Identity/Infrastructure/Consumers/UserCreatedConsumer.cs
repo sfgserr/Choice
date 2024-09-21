@@ -1,11 +1,11 @@
+using BuildingBlocks.Application.Events;
 using Identity.Application.Users.CreateUser;
 using Identity.Infrastructure.Data.InternalCommands;
-using MassTransit;
 using Users.IntegrationEvents;
 
 namespace Identity.Infrastructure.Consumers
 {
-    internal class UserCreatedConsumer : IConsumer<UserCreatedIntegrationEvent>
+    internal class UserCreatedConsumer : IBusConsumer<UserCreatedIntegrationEvent>
     {
         private readonly CommandsScheduler _scheduler;
 
@@ -14,10 +14,8 @@ namespace Identity.Infrastructure.Consumers
             _scheduler = scheduler;
         }
 
-        public async Task Consume(ConsumeContext<UserCreatedIntegrationEvent> context)
+        public async Task Consume(UserCreatedIntegrationEvent @event)
         {
-            var @event = context.Message;
-
             await _scheduler.EnqueueAsync(new CreateUserCommand(
                 @event.Id,
                 @event.UserId,

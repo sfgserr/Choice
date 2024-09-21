@@ -40,7 +40,7 @@ namespace Users.Domain.Users
                 email,
                 password,
                 phoneNumber,
-                role,
+                role.Value,
                 address));
         }
 

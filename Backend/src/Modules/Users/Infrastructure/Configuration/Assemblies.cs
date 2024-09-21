@@ -5,6 +5,6 @@ namespace Users.Infrastructure.Configuration
 {
     internal static class Assemblies
     {
-        public static Assembly Application { get; } = typeof(IUsersModule).Assembly;
+        public static readonly Assembly Application = typeof(IUsersModule).Assembly;
     }
 }

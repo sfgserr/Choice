@@ -16,10 +16,13 @@ using WebApi.Configuration.Validation;
 using Autofac;
 using BuildingBlocks.Application.Authentication;
 using WebApi.Configuration.Authentication;
-using WebApi.Configuration.Eventbus;
 using WebApi.Modules.Users;
 using BuildingBlocks.Application.Events;
+using BuildingBlocks.Infrastructure.Events;
 using Identity.Infrastructure.Configuration;
+using Identity.Infrastructure.Configuration.EventBus;
+using MassTransit;
+using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 
 namespace WebApi
@@ -74,9 +77,8 @@ namespace WebApi
                 x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
-
-            services.AddEventBus();
             
+            services.AddSingleton<IEventBus, EventBus>();
             services.AddSingleton<JwtProvider>(x => new(new(issuer, audience, secretKey)));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
@@ -88,6 +90,7 @@ namespace WebApi
         {
             builder.RegisterModule(new UsersAutofacModule());
             builder.RegisterModule(new IdentityAutofacModule());
+            builder.RegisterModule(new EventBusModule());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -97,6 +100,7 @@ namespace WebApi
             var connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
             var userService = container.Resolve<IUserService>();
             var eventBus = container.Resolve<IEventBus>();
+            var bus = container.Resolve<IBusControl>();
             
             UsersStartup.Initialize(
                 connectionString, 
@@ -109,6 +113,8 @@ namespace WebApi
                 _logger,
                 userService,
                 eventBus);
+
+            bus.StartAsync().GetAwaiter().GetResult();
             
             if (env.IsDevelopment())
             {

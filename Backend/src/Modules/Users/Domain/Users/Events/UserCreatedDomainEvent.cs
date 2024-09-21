@@ -9,14 +9,14 @@ namespace Users.Domain.Users.Events
             string email, 
             string password, 
             string phoneNumber, 
-            UserRole userRole, 
+            string role, 
             Address address)
         {
             UserId = userId;
             Email = email;
             Password = password;
             PhoneNumber = phoneNumber;
-            UserRole = userRole;
+            Role = role;
             Address = address;
         }
 
@@ -28,7 +28,7 @@ namespace Users.Domain.Users.Events
 
         public string PhoneNumber { get; }
 
-        public UserRole UserRole { get; }
+        public string Role { get; }
 
         public Address Address { get; }
     }

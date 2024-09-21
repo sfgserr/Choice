@@ -1,28 +1,22 @@
 using BuildingBlocks.Application.Events;
 using BuildingBlocks.Infrastructure.Serialization;
+using MassTransit;
 using Newtonsoft.Json;
 
 namespace BuildingBlocks.Infrastructure.Events
 {
     public class EventBus : IEventBus
     {
-        private readonly InMemoryQueue _queue;
+        private readonly IBus _bus;
 
-        public EventBus(InMemoryQueue queue)
+        public EventBus(IBus bus)
         {
-            _queue = queue;
+            _bus = bus;
         }
 
-        public async Task PublishAsync(IIntegrationEvent integrationEvent)
+        public async Task PublishAsync<T>(T integrationEvent) where T : IIntegrationEvent
         {
-            var type = integrationEvent.GetType().FullName!;
-
-            var content = JsonConvert.SerializeObject(integrationEvent, new JsonSerializerSettings()
-            {
-                ContractResolver = new AllPropertiesContractResolver()
-            });
-
-            await _queue.Writer.WriteAsync(new IntegrationEventBase(type, content));
+            await _bus.Publish(integrationEvent);
         }
     }
 }

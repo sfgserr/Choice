@@ -1,6 +1,7 @@
 using Autofac;
 using BuildingBlocks.Application.Events;
-using Serilog;
+using Identity.Infrastructure.Consumers;
+using Users.IntegrationEvents;
 
 namespace Identity.Infrastructure.Configuration.EventBus
 {

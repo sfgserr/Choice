@@ -23,7 +23,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
                 domainEvent.Email,
                 domainEvent.Password,
                 domainEvent.PhoneNumber,
-                domainEvent.UserRole.Value,
+                domainEvent.Role,
                 domainEvent.Address.City,
                 domainEvent.Address.Street,
                 domainEvent.Address.Coords.Latitude,

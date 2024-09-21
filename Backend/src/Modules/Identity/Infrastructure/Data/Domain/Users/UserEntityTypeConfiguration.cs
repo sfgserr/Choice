@@ -11,7 +11,10 @@ namespace Identity.Infrastructure.Data.Domain.Users
             builder.ToTable("Users", "identity");
 
             builder.HasKey(x => x.Id);
-
+            builder.Property(x => x.Role)
+                .HasConversion(x => x.Value, x => UserRole.Parse(x))
+                .HasColumnName("Role");
+            
             builder.OwnsOne(x => x.Address, b =>
             {
                 b.Property(x => x.City).HasColumnName("City");

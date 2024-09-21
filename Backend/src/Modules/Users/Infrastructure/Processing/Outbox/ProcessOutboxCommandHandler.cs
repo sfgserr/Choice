@@ -2,6 +2,7 @@
 using BuildingBlocks.Infrastructure.DomainEventDispatching;
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR;
 using BuildingBlocks.Infrastructure.Outbox;
+using BuildingBlocks.Infrastructure.Serialization;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -29,8 +30,7 @@ namespace Users.Infrastructure.Processing.Outbox
 
             foreach (var message in messages)
             {
-                var notification = JsonConvert.DeserializeObject(message.Message, _mapper.GetType(message.Type))
-                    as IDomainNotification;
+                var notification = JsonConvert.DeserializeObject(message.Message, _mapper.GetType(message.Type)) as IDomainNotification;
 
                 await _mediator.Publish(notification!);
 
