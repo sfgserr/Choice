@@ -7,11 +7,13 @@ namespace Identity.Infrastructure.Configuration.EventBus
 {
     public static class MassTransitExtensions
     {
-        public static void AddIdentityConsumers(this IReceiveEndpointConfigurator cfg, IComponentContext context)
+        public static void AddIdentityConsumers(this IReceiveEndpointConfigurator cfg)
         {
             cfg.Handler<UserCreatedIntegrationEvent>(async c =>
             {
-                var consumer = context.Resolve<IBusConsumer<UserCreatedIntegrationEvent>>();
+                using var scope = IdentityCompositionRoot.BeginLifetimeScope();
+                
+                var consumer = scope.Resolve<IBusConsumer<UserCreatedIntegrationEvent>>();
 
                 await consumer.Consume(c.Message);
             });

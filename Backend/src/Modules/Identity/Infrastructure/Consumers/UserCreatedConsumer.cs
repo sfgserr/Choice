@@ -9,7 +9,7 @@ namespace Identity.Infrastructure.Consumers
     {
         private readonly CommandsScheduler _scheduler;
 
-        public UserCreatedConsumer(CommandsScheduler scheduler)
+        internal UserCreatedConsumer(CommandsScheduler scheduler)
         {
             _scheduler = scheduler;
         }

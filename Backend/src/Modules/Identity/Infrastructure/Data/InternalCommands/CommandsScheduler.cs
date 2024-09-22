@@ -1,31 +1,40 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Infrastructure.InternalCommands;
+using BuildingBlocks.Application.Data;
 using BuildingBlocks.Infrastructure.Serialization;
+using Dapper;
 using Newtonsoft.Json;
 
 namespace Identity.Infrastructure.Data.InternalCommands
 {
     internal class CommandsScheduler
     {
-        private readonly IdentityContext _identityContext;
+        private readonly ISqlConnectionFactory _connectionFactory;
 
-        internal CommandsScheduler(IdentityContext identityContext)
+        internal CommandsScheduler(ISqlConnectionFactory connectionFactory)
         {
-            _identityContext = identityContext;
+            _connectionFactory = connectionFactory;
         }
 
         public async Task EnqueueAsync(InternalCommandBase command)
         {
-            var type = command.GetType().FullName!;
+            using var connection = _connectionFactory.GetConnection();
+            
+            const string sql = 
+                $"""
+                INSERT INTO identity."InternalCommands" ("Id", "Type", "Data") VALUES (@Id, @Type, @Data); 
+                """;
 
-            var json = JsonConvert.SerializeObject(command, new JsonSerializerSettings()
-            {
-                ContractResolver = new AllPropertiesContractResolver()
-            });
-
-            var internalCommand = new InternalCommand(command.Id, type, json);
-
-            await _identityContext.InternalCommands.AddAsync(internalCommand);
+            await connection.ExecuteAsync(
+                sql,
+                new
+                {
+                    command.Id,
+                    Type = command.GetType().FullName,
+                    Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings()
+                    {
+                        ContractResolver = new AllPropertiesContractResolver()
+                    })
+                });
         }
     }
 }

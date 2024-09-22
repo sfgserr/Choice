@@ -2,7 +2,6 @@ using Autofac;
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Cqrs.Queries;
 using BuildingBlocks.Infrastructure.Configuration;
-using BuildingBlocks.Infrastructure.InternalCommands;
 using BuildingBlocks.Infrastructure.Processing;
 using Identity.Infrastructure.Data.InternalCommands;
 using Identity.Infrastructure.Processing;

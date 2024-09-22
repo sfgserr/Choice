@@ -33,10 +33,6 @@ namespace Identity.Infrastructure.Processing.InternalCommands
 
             foreach (var internalCommand in internalCommands)
             {
-                var internalCommandBase = JsonSerializer.Deserialize(
-                    internalCommand.Data, 
-                    Type.GetType(internalCommand.Type)!);
-
                 var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommand(internalCommand));
 
                 if (result.Outcome == OutcomeType.Failure)
