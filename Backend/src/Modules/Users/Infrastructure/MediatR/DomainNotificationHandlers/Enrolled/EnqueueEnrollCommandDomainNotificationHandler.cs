@@ -3,7 +3,7 @@ using Users.Application.OrderRequests.Commands.Enroll;
 using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.MediatR.DomainNotifications;
 
-namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
+namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.Enrolled
 {
     internal class EnqueueEnrollCommandDomainNotificationHandler :
         IDomainNotificationHandler<EnrolledDomainNotification>

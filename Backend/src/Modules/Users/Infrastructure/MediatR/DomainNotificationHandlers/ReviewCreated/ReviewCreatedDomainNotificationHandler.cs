@@ -3,7 +3,7 @@ using Users.Application.Users.Commands.Review;
 using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.MediatR.DomainNotifications;
 
-namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
+namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.ReviewCreated
 {
     internal class ReviewCreatedDomainNotificationHandler : IDomainNotificationHandler<ReviewCreatedDomainNotification>
     {

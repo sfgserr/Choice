@@ -3,7 +3,7 @@ using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers;
 using Users.Infrastructure.MediatR.DomainNotifications;
 using Users.IntegrationEvents;
 
-namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
+namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderStatusChanged
 {
     internal class PublishOrderStatusChangedEventDomainNotificationHandler :
         IDomainNotificationHandler<OrderStatusChangedDomainNotification>

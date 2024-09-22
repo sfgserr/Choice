@@ -3,7 +3,7 @@ using Users.Application.OrderRequests.Commands.SetStatus;
 using Users.Infrastructure.Data.InternalCommands;
 using Users.Infrastructure.MediatR.DomainNotifications;
 
-namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
+namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderStatusChanged
 {
     internal class OrderStatusChangedDomainNotificationHandler :
         IDomainNotificationHandler<OrderStatusChangedDomainNotification>

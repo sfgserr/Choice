@@ -3,7 +3,7 @@ using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers;
 using Users.Infrastructure.MediatR.DomainNotifications;
 using Users.IntegrationEvents;
 
-namespace Users.Infrastructure.MediatR.DomainNotificationHandlers
+namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserCreated
 {
     internal class UserCreatedDomainNotificationHandler : IDomainNotificationHandler<UserCreatedDomainNotification>
     {
