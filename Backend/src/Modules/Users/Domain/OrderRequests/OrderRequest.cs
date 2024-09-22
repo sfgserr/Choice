@@ -84,6 +84,8 @@ namespace Users.Domain.OrderRequests
 
         public string Description { get; private set; }
 
+        public bool IsEnrolled { get; private set; } = false;
+
         public OrderStatus Status { get; private set; }
 
         public CategoryId CategoryId { get; private set; }
@@ -97,6 +99,9 @@ namespace Users.Domain.OrderRequests
             DateTime? enrollmentDate,
             double prepayment)
         { 
+            CheckRule(new CannotChangeInactiveRequestRule(Status));
+            CheckRule(new CannotResponseIfUserEnrolledRule(IsEnrolled));
+            
             return OrderResponse.Create(
                 this, 
                 company, 
@@ -120,7 +125,7 @@ namespace Users.Domain.OrderRequests
             CheckRule(new CannotChangeInactiveRequestRule(Status));
             CheckRule(new AtLeastOneRequirementMustBeTrueRule([toKnowDeadline, toKnowEnrollmentDate, toKnowPrice]));
             CheckRule(new DescriptionMustBeProvidedRule(description));
-
+            
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -132,6 +137,11 @@ namespace Users.Domain.OrderRequests
             _photoUris.AddRange(photoUris);
         }
 
+        public void Enroll()
+        {
+            IsEnrolled = true;
+        }
+        
         public void SetStatus(OrderStatus status)
         {
             Status = status;

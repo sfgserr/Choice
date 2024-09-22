@@ -6,6 +6,7 @@ CREATE TABLE users."OrderRequests" (
     "ToKnowEnrollmentDate" boolean NOT NULL,
     "Distance" integer NOT NULL,
     "Description" text NOT NULL,
+    "IsEnrolled" boolean NOT NULL,
     "Status" text NOT NULL,
     "CategoryId" integer NOT NULL,
     "CreationDate" timestamp NOT NULL,

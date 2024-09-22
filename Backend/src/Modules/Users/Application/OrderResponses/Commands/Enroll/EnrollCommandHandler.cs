@@ -1,5 +1,4 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Application.Exceptions;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests.OrderResponses;

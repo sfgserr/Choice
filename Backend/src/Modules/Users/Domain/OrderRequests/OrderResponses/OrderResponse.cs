@@ -130,7 +130,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             IsEnrolled = true;
 
-            AddDomainEvent(new EnrolledDomainEvent(Id));
+            AddDomainEvent(new EnrolledDomainEvent(Id, RequestId));
         }
 
         public void Finish(UserId cancellingUserId)
