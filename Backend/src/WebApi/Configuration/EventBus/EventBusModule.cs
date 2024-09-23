@@ -1,6 +1,4 @@
 using Autofac;
-using BuildingBlocks.Application.Events;
-using BuildingBlocks.Infrastructure.Configuration;
 using Identity.Infrastructure.Configuration.EventBus;
 using MassTransit;
 

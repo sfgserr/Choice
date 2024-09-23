@@ -218,7 +218,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             IsPaid = true;
 
-            AddDomainEvent(new OrderPaidDomainEvent(Id));
+            AddDomainEvent(new OrderPaidDomainEvent(Id, RequestId));
         }
 
         public void AddReview(
