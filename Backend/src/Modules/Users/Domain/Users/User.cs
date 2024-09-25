@@ -112,6 +112,13 @@ namespace Users.Domain.Users
             Email = email;
             PhoneNumber = phoneNumber;
             Address = address;
+
+            AddDomainEvent(new UserDataChangedDomainEvent(
+                Id,
+                Name,
+                Email,
+                PhoneNumber,
+                Address));
         }
 
         internal void FillData()
