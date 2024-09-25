@@ -1,8 +1,8 @@
 namespace WebApi.Modules.Users.OrderResponses
 {
-    public class ResponseRequest
+    public class CreateOrderResponseRequest
     {
-        public ResponseRequest(
+        public CreateOrderResponseRequest(
             Guid requestId, 
             int price, 
             int deadline, 

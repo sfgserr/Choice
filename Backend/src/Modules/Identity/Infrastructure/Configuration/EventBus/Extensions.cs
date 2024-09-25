@@ -9,12 +9,13 @@ namespace Identity.Infrastructure.Configuration.EventBus
     {
         public static void AddIdentityConsumers(this IReceiveEndpointConfigurator cfg)
         {
-            cfg.AddHandler<UserCreatedIntegrationEvent>();
-
-            cfg.AddHandler<UserDataChangedIntegrationEvent>();
+            cfg.AddHandler<UserCreatedIntegrationEvent>()
+               .AddHandler<UserDataChangedIntegrationEvent>()
+               .AddHandler<UserRoleChangedIntegrationEvent>();
         }
 
-        private static void AddHandler<T> (this IReceiveEndpointConfigurator cfg) where T : IntegrationEventBase
+        private static IReceiveEndpointConfigurator AddHandler<T> (this IReceiveEndpointConfigurator cfg) 
+            where T : IntegrationEventBase
         {
             cfg.Handler<T>(async c =>
             {
@@ -27,6 +28,8 @@ namespace Identity.Infrastructure.Configuration.EventBus
 
                 await consumer.Consume(c.Message);
             });
+
+            return cfg;
         }
     }
 }

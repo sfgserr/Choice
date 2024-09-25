@@ -1,7 +1,5 @@
 using BuildingBlocks.Application.Events;
-using BuildingBlocks.Infrastructure.Serialization;
 using MassTransit;
-using Newtonsoft.Json;
 
 namespace BuildingBlocks.Infrastructure.Events
 {

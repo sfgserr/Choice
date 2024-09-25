@@ -18,7 +18,7 @@ namespace WebApi.Modules.Users.OrderResponses
         
         [HasPermission(Permissions.Response)]
         [HttpPost()]
-        public async Task<IActionResult> Response(ResponseRequest request)
+        public async Task<IActionResult> CreateOrderResponse(CreateOrderResponseRequest request)
         {
             await _usersModule.ExecuteCommand(new ResponseCommand(
                 request.RequestId,

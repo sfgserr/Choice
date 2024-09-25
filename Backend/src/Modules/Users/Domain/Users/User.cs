@@ -128,6 +128,8 @@ namespace Users.Domain.Users
             IsDataFilled = true;
 
             Role = UserRole.Company;
+
+            AddDomainEvent(new UserRoleChangedDomainEvent(Id, Role));
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Users.Application.Clients.Queries.GetClient
     {
         public ClientDto(
             Guid id, 
-            string iconUri, 
             string name, 
+            string iconUri, 
             string email, 
             string phoneNumber, 
             string city, 

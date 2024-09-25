@@ -21,12 +21,12 @@ namespace Identity.Application.Authorization.GetUser
                 $"""
                 SELECT 
                     identity."Users"."Role" as {nameof(UserDto.RoleCode)},
-                    identity."Users"."City" as {nameof(UserDto.City)}
-                    identity."Users"."Street" as {nameof(UserDto.Street)}
-                    identity."Users"."Latitude" as {nameof(UserDto.Latitude)}
+                    identity."Users"."City" as {nameof(UserDto.City)},
+                    identity."Users"."Street" as {nameof(UserDto.Street)},
+                    identity."Users"."Latitude" as {nameof(UserDto.Latitude)},
                     identity."Users"."Longitude" as {nameof(UserDto.Longitude)}
                 FROM identity."Users"
-                WHERE identity."Users"."Id" = @Id 
+                WHERE identity."Users"."Id" = @Id; 
                 """;
             
             const string sql2 =
@@ -36,7 +36,7 @@ namespace Identity.Application.Authorization.GetUser
                 FROM identity."Users"
                 JOIN identity."RolePermissions" ON identity."RolePermissions"."RoleCode" = identity."Users"."Role"
                 JOIN identity."Permissions" ON identity."Permissions"."Code" = identity."RolePermissions"."PermissionCode"
-                WHERE identity."Users"."Id" = @Id 
+                WHERE identity."Users"."Id" = @Id; 
                 """;
 
             var result = await connection.QueryMultipleAsync(

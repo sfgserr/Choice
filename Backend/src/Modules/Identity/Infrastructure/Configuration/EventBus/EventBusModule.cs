@@ -1,8 +1,6 @@
 using Autofac;
 using BuildingBlocks.Application.Events;
 using BuildingBlocks.Infrastructure.Configuration;
-using Identity.Infrastructure.Consumers;
-using Users.IntegrationEvents;
 
 namespace Identity.Infrastructure.Configuration.EventBus
 {

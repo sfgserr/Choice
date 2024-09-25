@@ -23,18 +23,18 @@ namespace Users.Application.Clients.Queries.GetClient
             const string sql = 
                 $"""
                 SELECT 
-                    [User].Id as {nameof(ClientDto.Id)}
-                    [User].Name as {nameof(ClientDto.Name)}
-                    [User].IconUri as {nameof(ClientDto.IconUri)}
-                    [User].Email as {nameof(ClientDto.Email)}
-                    [User].PhoneNumber as {nameof(ClientDto.PhoneNumber)}
-                    [User].City as {nameof(ClientDto.City)}
-                    [User].Street as {nameof(ClientDto.Street)}
-                FROM [users].Users as [User]
-                WHERE [User].Id = @Id
+                    users."Users"."Id" as {nameof(ClientDto.Id)},
+                    users."Users"."Name" as {nameof(ClientDto.Name)},
+                    users."Users"."IconUri" as {nameof(ClientDto.IconUri)},
+                    users."Users"."Email" as {nameof(ClientDto.Email)},
+                    users."Users"."PhoneNumber" as {nameof(ClientDto.PhoneNumber)},
+                    users."Users"."City" as {nameof(ClientDto.City)},
+                    users."Users"."Street" as {nameof(ClientDto.Street)}
+                FROM users."Users"
+                WHERE users."Users"."Id" = @Id
                 """;
 
-            return await connection.QuerySingleAsync<ClientDto>(sql, new { _userContext.Id });
+            return await connection.QuerySingleAsync<ClientDto>(sql, new { Id = _userContext.Id.Value });
         }
     }
 }
