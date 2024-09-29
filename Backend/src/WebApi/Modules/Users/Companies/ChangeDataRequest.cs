@@ -1,10 +1,8 @@
-using BuildingBlocks.Application.Cqrs.Commands;
-
-namespace Users.Application.Companies.Commands.ChangeData
+namespace WebApi.Modules.Users.Companies
 {
-    public class ChangeDataCommand : ICommand
+    public class ChangeDataRequest
     {
-        public ChangeDataCommand(
+        public ChangeDataRequest(
             string name,
             string email,
             string phoneNumber,

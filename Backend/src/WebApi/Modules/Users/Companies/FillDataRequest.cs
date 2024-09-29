@@ -1,10 +1,8 @@
-using BuildingBlocks.Application.Cqrs.Commands;
-
-namespace Users.Application.Companies.Commands.FillData
+namespace WebApi.Modules.Users.Companies
 {
-    public class FillDataCommand : ICommand
+    public class FillDataRequest
     {
-        public FillDataCommand(
+        public FillDataRequest(
             string description, 
             List<int> categoryIds, 
             List<string> photoUris,

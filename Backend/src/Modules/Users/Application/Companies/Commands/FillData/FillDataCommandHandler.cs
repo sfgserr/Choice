@@ -1,6 +1,7 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
+using Users.Domain.Categories;
 using Users.Domain.Users;
 
 namespace Users.Application.Companies.Commands.FillData
@@ -22,7 +23,7 @@ namespace Users.Application.Companies.Commands.FillData
             
             company.FillData(
                 command.Description,
-                command.CategoryIds,
+                command.CategoryIds.Select(c => new CategoryId(c)).ToList(),
                 command.PhotoUris,
                 command.SocialMediaUris,
                 command.IsPrepaymentAvailable);
