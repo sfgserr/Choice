@@ -6,9 +6,11 @@ using Users.Application.Companies.Commands.CreateCompany;
 using Users.Application.Companies.Commands.FillData;
 using Users.Application.Companies.Queries.GetCompanies;
 using Users.Application.Companies.Queries.GetCompany;
+using Users.Application.Companies.Queries.GetCompanyOnMap;
 using Users.Application.Contracts;
 using GetCompaniesDto = Users.Application.Companies.Queries.GetCompanies.CompanyDto;
 using GetCompanyDto = Users.Application.Companies.Queries.GetCompany.CompanyDto;
+using GetCompanyOnMapDto = Users.Application.Companies.Queries.GetCompanyOnMap.CompanyDto;
 
 namespace WebApi.Modules.Users.Companies
 {
@@ -102,7 +104,8 @@ namespace WebApi.Modules.Users.Companies
         [HasPermission(Permissions.GetCompanyOnMap)]
         public async Task<IActionResult> GetCompanyOnMap(Guid companyId)
         {
-            var company = await _usersModule.Query<GetCompanyQuery, GetCompanyDto>(new GetCompanyQuery());
+            var company = await _usersModule
+                .Query<GetCompanyOnMapQuery, GetCompanyOnMapDto>(new GetCompanyOnMapQuery(companyId));
 
             return Ok(company);
         }

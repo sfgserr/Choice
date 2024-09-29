@@ -1,11 +1,8 @@
-using BuildingBlocks.Application.Cqrs.Commands;
-
-namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
+namespace WebApi.Modules.Users.OrderRequests
 {
-    public class ChangeOrderRequestCommand : ICommand
+    public class CreateOrderRequest
     {
-        public ChangeOrderRequestCommand(
-            Guid requestId,
+        public CreateOrderRequest(
             bool toKnowPrice,
             bool toKnowDeadline,
             bool toKnowEnrollmentDate,
@@ -14,7 +11,6 @@ namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
             string description,
             int categoryId)
         {
-            RequestId = requestId;
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -23,8 +19,6 @@ namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
             Description = description;
             CategoryId = categoryId;
         }
-        
-        public Guid RequestId { get; }
         
         public bool ToKnowPrice { get; }
         

@@ -1,8 +1,9 @@
 namespace WebApi.Modules.Users.OrderRequests
 {
-    public class CreateOrderRequestRequest
+    public class ChangeOrderRequest
     {
-        public CreateOrderRequestRequest(
+        public ChangeOrderRequest(
+            Guid requestId,
             bool toKnowPrice,
             bool toKnowDeadline,
             bool toKnowEnrollmentDate,
@@ -11,6 +12,7 @@ namespace WebApi.Modules.Users.OrderRequests
             string description,
             int categoryId)
         {
+            RequestId = requestId;
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
@@ -19,6 +21,8 @@ namespace WebApi.Modules.Users.OrderRequests
             Description = description;
             CategoryId = categoryId;
         }
+        
+        public Guid RequestId { get; }
         
         public bool ToKnowPrice { get; }
         
