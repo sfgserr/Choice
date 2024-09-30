@@ -4,11 +4,11 @@ namespace Payments.Application.EnrollmentPayments.Commands.Pay
 {
     public class PayCommand : ICommand
     {
-        public PayCommand(Guid paymentId)
+        public PayCommand(Guid responseId)
         {
-            PaymentId = paymentId;
+            ResponseId = responseId;
         }
 
-        public Guid PaymentId { get; }
+        public Guid ResponseId { get; }
     }
 }

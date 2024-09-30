@@ -51,7 +51,7 @@ namespace Payments.Domain.SubscritpionPayments
 
             AddDomainEvent(new SubscriptionPaymentPaidDomainEvent(PayerId));
         }
-
+        
         public SubscrtipionPaymentId Id { get; }
 
         public SubscriptionPeriod Period { get; }
