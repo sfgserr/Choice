@@ -41,3 +41,11 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('ChangeEnrollmentDate');
 INSERT INTO identity."Permissions" ("Code") VALUES ('ConfirmDate');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('AddReview');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('BuySubscriptionPayment');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('PaySubscriptionPayment');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('PayEnrollmentPayment');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetSubscriptionPayment');
