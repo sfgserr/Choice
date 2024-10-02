@@ -64,7 +64,5 @@ namespace WebApi.Modules.Users.Clients
 
             return Ok(client);
         }
-        
-        
     }
 }

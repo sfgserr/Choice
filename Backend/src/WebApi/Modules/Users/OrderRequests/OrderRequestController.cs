@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Users.Application.Contracts;
 using Users.Application.OrderRequests.Commands.ChangeOrderRequest;
 using Users.Application.OrderRequests.Commands.CreateOrderRequest;
+using Users.Application.OrderRequests.Queries.GetOrderRequest;
+using Users.Application.OrderRequests.Queries.GetOrderRequests;
+using Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius;
+using GetOrderRequestDto = Users.Application.OrderRequests.Queries.GetOrderRequest.OrderRequestDto;
+using GetOrderRequestsDto = Users.Application.OrderRequests.Queries.GetOrderRequests.OrderRequestDto;
+using GetOrderRequestsInRadiusDto = Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius.OrderRequestDto;
 
 namespace WebApi.Modules.Users.OrderRequests
 {
@@ -48,6 +54,36 @@ namespace WebApi.Modules.Users.OrderRequests
                 request.CategoryId));
 
             return Ok();
+        }
+        
+        [HttpGet("{id:guid}")]
+        [HasPermission(Permissions.GetOrderRequest)]
+        public async Task<IActionResult> GetOrderRequest(Guid id)
+        {
+            var request = await _usersModule.Query<GetOrderRequestQuery, GetOrderRequestDto>(new GetOrderRequestQuery(id));
+
+            return Ok(request);
+        }
+        
+        [HttpGet()]
+        [HasPermission(Permissions.GetOrderRequests)]
+        public async Task<IActionResult> GetOrderRequests()
+        {
+            var requests = await 
+                _usersModule.Query<GetOrderRequestsQuery, IEnumerable<GetOrderRequestsDto>>(new GetOrderRequestsQuery());
+
+            return Ok(requests);
+        }
+        
+        [HttpGet()]
+        [HasPermission(Permissions.GetOrderRequestsInRadius)]
+        public async Task<IActionResult> GetOrderRequestsInRadius(Guid id)
+        {
+            var requests = await _usersModule
+                .Query<GetOrderRequestsInRadiusQuery, IEnumerable<GetOrderRequestsInRadiusDto>>(
+                    new GetOrderRequestsInRadiusQuery());
+
+            return Ok(requests);
         }
     }
 }
