@@ -10,8 +10,8 @@ namespace Users.Application.OrderResponses.Commands.MarkResponsesAsInactive
             RequestId = requestId;
         }
 
-        public Guid ResponseId { get; }
+        internal Guid ResponseId { get; }
 
-        public Guid RequestId { get; }
+        internal Guid RequestId { get; }
     }
 }

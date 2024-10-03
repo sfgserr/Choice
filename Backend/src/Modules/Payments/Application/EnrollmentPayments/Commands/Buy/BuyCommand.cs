@@ -11,10 +11,10 @@ namespace Payments.Application.EnrollmentPayments.Commands.Buy
             Currency = currency;
         }
 
-        public Guid ResponseId { get; }
+        internal Guid ResponseId { get; }
         
-        public double Cost { get; }
+        internal double Cost { get; }
 
-        public string Currency { get; }
+        internal string Currency { get; }
     }
 }

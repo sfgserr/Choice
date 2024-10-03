@@ -10,8 +10,8 @@ namespace Users.Application.Users.Commands.Review
             ToUserId = toUserId;
         }
         
-        public int Grade { get; }
+        internal int Grade { get; }
         
-        public Guid ToUserId { get; }
+        internal Guid ToUserId { get; }
     }
 }

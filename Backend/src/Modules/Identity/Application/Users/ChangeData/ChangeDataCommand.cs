@@ -23,18 +23,18 @@ namespace Identity.Application.Users.ChangeData
             Longitude = longitude;
         }
         
-        public Guid UserId { get; }
+        internal Guid UserId { get; }
         
-        public string Email { get; }
+        internal string Email { get; }
 
-        public string PhoneNumber { get; }
+        internal string PhoneNumber { get; }
 
-        public string City { get; }
+        internal string City { get; }
 
-        public string Street { get; }
+        internal string Street { get; }
 
-        public string Latitude { get; }
+        internal string Latitude { get; }
 
-        public string Longitude { get; }
+        internal string Longitude { get; }
     }
 }

@@ -10,8 +10,8 @@ namespace Identity.Application.Users.ChangeRole
             UserRole = userRole;
         }
         
-        public Guid UserId { get; }
+        internal Guid UserId { get; }
         
-        public string UserRole { get; }
+        internal string UserRole { get; }
     }
 }

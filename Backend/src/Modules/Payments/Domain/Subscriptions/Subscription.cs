@@ -11,20 +11,23 @@ namespace Payments.Domain.Subscriptions
 
         private Subscription(
             SubscriptionId id,
+            SubscriberId subscriberId,
             SubscriptionPeriod period,
             SubscriptionStatus status,
             DateTime exprirationDate)
         {
             Id = id;
+            SubscriberId = subscriberId;
             Period = period;
             Status = status;
             ExpirationDate = exprirationDate;
         }
 
-        public static Subscription Create(SubscriptionPeriod period)
+        public static Subscription Create(SubscriberId subscriberId, SubscriptionPeriod period)
         {
             return new Subscription(
                 new(Guid.NewGuid()),
+                subscriberId,
                 period,
                 SubscriptionStatus.Active,
                 DateCalculator.CalculateExpirationDateForSubscription(period.Value));
@@ -36,6 +39,8 @@ namespace Payments.Domain.Subscriptions
         }
 
         public SubscriptionId Id { get; }
+
+        public SubscriberId SubscriberId { get; }
 
         public SubscriptionPeriod Period { get; }
 

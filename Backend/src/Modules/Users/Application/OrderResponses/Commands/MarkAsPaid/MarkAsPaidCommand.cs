@@ -9,6 +9,6 @@ namespace Users.Application.OrderResponses.Commands.MarkAsPaid
             ResponseId = responseId;
         }
 
-        public Guid ResponseId { get; }
+        internal Guid ResponseId { get; }
     }
 }

@@ -10,8 +10,8 @@ namespace Users.Application.OrderRequests.Commands.SetStatus
             OrderStatus = orderStatus;
         }
 
-        public Guid RequestId { get; }
+        internal Guid RequestId { get; }
         
-        public string OrderStatus { get; }
+        internal string OrderStatus { get; }
     }
 }

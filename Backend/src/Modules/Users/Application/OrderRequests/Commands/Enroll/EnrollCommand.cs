@@ -9,6 +9,6 @@ namespace Users.Application.OrderRequests.Commands.Enroll
             RequestId = requestId;
         }
         
-        public Guid RequestId { get; }
+        internal Guid RequestId { get; }
     }
 }
