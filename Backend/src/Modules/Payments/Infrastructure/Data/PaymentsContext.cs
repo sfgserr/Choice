@@ -4,7 +4,7 @@ using Payments.Domain.EnrollmentPayments;
 using Payments.Domain.Subscriptions;
 using Payments.Domain.SubscritpionPayments;
 using Payments.Infrastructure.Data.Domain.EnrollmentPayments;
-using Payments.Infrastructure.Data.Domain.SubscriptionPayments;
+using Payments.Infrastructure.Data.Domain.Subscriptions;
 
 namespace Payments.Infrastructure.Data
 {

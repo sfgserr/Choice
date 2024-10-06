@@ -1,18 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Payments.Domain.Subscriptions;
+using Payments.Domain.SeedWork;
+using Payments.Domain.SubscritpionPayments;
 
 namespace Payments.Infrastructure.Data.Domain.SubscriptionPayments
 {
-    internal class SubscriptionEntityTypeConfiguration : IEntityTypeConfiguration<Subscription>
+    internal class SubscriptionPaymentEntityTypeConfiguration : IEntityTypeConfiguration<SubscriptionPayment>
     {
-        public void Configure(EntityTypeBuilder<Subscription> builder)
+        public void Configure(EntityTypeBuilder<SubscriptionPayment> builder)
         {
-            builder.ToTable("Subscriptions", "payments");
+            builder.ToTable("SubscriptionPayments", "payments");
+
+            builder.HasKey(x => x.Id);
 
             builder.HasKey(s => s.Id);
             builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate");
-            builder.Property(e => e.Status).HasConversion(e => e.Value, e => SubscriptionStatus.Parse(e));
+            builder.Property(e => e.Status).HasConversion(e => e.Value, e => PaymentStatus.Parse(e));
 
             builder.OwnsOne(e => e.Period, b =>
             {
