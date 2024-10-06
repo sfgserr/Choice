@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 using Payments.Application.Contracts;
-using Payments.Domain.Subscriptions;
+using Payments.Domain.SeedWork;
 
-namespace Payments.Application.Subscriptions.Commands.Expire
+namespace Payments.Application.SubscriptionPayments.Commands.Expire
 {
     internal class ExpireCommandHandler : ICommandHandler<ExpireCommand>
     {
@@ -15,12 +15,14 @@ namespace Payments.Application.Subscriptions.Commands.Expire
 
         public Task Execute(ExpireCommand command)
         {
-            var subscriptions = _dbContext.Subscriptions.Where(s => s.Status.Equals(SubscriptionStatus.Active));
+            var payments = _dbContext.SubscriptionPayments
+                .Where(s => s.Status.Equals(PaymentStatus.WaitingForPayment))
+                .AsEnumerable();
 
-            foreach (var subscription in subscriptions) 
+            foreach (var payment in payments) 
             {
-                if (subscription.ExpirationDate > DateTime.UtcNow)
-                    subscription.Expire();
+                if (payment.ExpirationDate > DateTime.UtcNow)
+                    payment.Expire();
             }
 
             return Task.CompletedTask;

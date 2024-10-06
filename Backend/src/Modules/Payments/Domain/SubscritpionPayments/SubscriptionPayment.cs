@@ -47,11 +47,16 @@ namespace Payments.Domain.SubscritpionPayments
 
         public void Pay()
         {
-            Status = PaymentStatus.WaitingForPayment;
+            Status = PaymentStatus.Paid;
 
             AddDomainEvent(new SubscriptionPaymentPaidDomainEvent(PayerId));
         }
-        
+
+        public void Expire()
+        {
+            Status = PaymentStatus.Expired;
+        }
+
         public SubscrtipionPaymentId Id { get; }
 
         public SubscriptionPeriod Period { get; }
