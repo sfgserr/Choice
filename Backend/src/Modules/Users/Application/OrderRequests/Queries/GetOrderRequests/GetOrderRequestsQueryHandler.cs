@@ -28,9 +28,9 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequests
                     users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)}
                     users."OrderRequests"."CreationDate" as {nameof(OrderRequestDto.CreationDate)}
                     administration."Categories"."Title" as {nameof(OrderRequestDto.CategoryTitle)}
-                FROM "users"."OrderRequests"
-                JOIN "users"."OrderRequests" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
-                WHERE "users"."OrderRequests"."ClientCreatedId" = @Id    
+                FROM users."OrderRequests"
+                JOIN users."OrderRequests" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
+                WHERE users."OrderRequests"."ClientCreatedId" = @Id    
                 """;
 
             return await connection.QueryAsync<OrderRequestDto>(
