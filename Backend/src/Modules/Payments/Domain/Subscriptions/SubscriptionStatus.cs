@@ -19,5 +19,10 @@ namespace Payments.Domain.Subscriptions
         {
             yield return Value;
         }
+
+        public static SubscriptionStatus Parse(string e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

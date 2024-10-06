@@ -21,5 +21,13 @@ namespace Payments.Domain.SeedWork
         {
             yield return Value;
         }
+
+        public static PaymentStatus Parse(string s) => s switch
+        {
+            "WaitingForPayment" => WaitingForPayment,
+            "Expired" => Expired,
+            "Paid" => Paid,
+            _ => throw new ArgumentException("No such status")
+        };
     }
 }
