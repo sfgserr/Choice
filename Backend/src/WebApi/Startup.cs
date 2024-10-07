@@ -24,6 +24,7 @@ using Identity.Infrastructure.Configuration.EventBus;
 using MassTransit;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
+using Payments.Infrastructure.Configuration;
 
 namespace WebApi
 {
@@ -109,6 +110,12 @@ namespace WebApi
                 eventBus);
             
             IdentityStartup.Initialize(
+                connectionString,
+                _logger,
+                userService,
+                eventBus);
+
+            PaymentsStartup.Initialize(
                 connectionString,
                 _logger,
                 userService,

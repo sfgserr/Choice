@@ -2,10 +2,8 @@
 
 namespace Payments.Application.Subscriptions.Commands.Expire
 {
-    public class ExpireCommand : InternalCommandBase
+    public class ExpireCommand : ICommand
     {
-        public ExpireCommand(Guid id) : base(id)
-        {
-        }
+        
     }
 }

@@ -17,9 +17,13 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrolledWithPr
 
         public async Task Handle(EnrolledWithPrepaymentDomainNotification notification, CancellationToken cancellationToken)
         {
+            var domainEvent = notification.DomainEvent;
+
             await _eventBus.PublishAsync(new EnrolledWithPrepaymentIntegrationEvent(
                 Guid.NewGuid(),
-                notification.DomainEvent.ResponseId.Value));
+                domainEvent.ResponseId.Value,
+                domainEvent.Cost,
+                "RUB"));
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using BuildingBlocks.Application.Cqrs.Commands;
+﻿using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.InternalCommands;
 using BuildingBlocks.Infrastructure.Serialization;
 using Newtonsoft.Json;

@@ -117,7 +117,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             IsEnrolled = true;
 
-            AddDomainEvent(new EnrolledWithPrepaymentDomainEvent(Id));
+            AddDomainEvent(new EnrolledWithPrepaymentDomainEvent(Id, Prepayment));
         }
 
         public void Enroll(ClientId enrollingClientId)

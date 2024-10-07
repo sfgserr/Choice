@@ -14,7 +14,7 @@ namespace Payments.Domain.SubscritpionPayments.Rules
             _payerId = payerId;
         }
 
-        public bool IsBroken => _subscriptionsCounter.GetSubscriptionCounter(_payerId) > 0;
+        public bool IsBroken => _subscriptionsCounter.Count(_payerId) > 0;
 
         public string Message { get; } = "You have active subscriptions or payments";
     }

@@ -1,4 +1,6 @@
 ﻿using BuildingBlocks.Domain;
+using Payments.Domain.EnrollmentPayments.Events;
+using Payments.Domain.EnrollmentPayments.Rules;
 using Payments.Domain.Payers;
 using Payments.Domain.SeedWork;
 
@@ -40,7 +42,11 @@ namespace Payments.Domain.EnrollmentPayments
 
         public void Pay()
         {
+            CheckRule(new CannotPayForPaidOrExpiredPaymentRule(Status));
+
             Status = PaymentStatus.Paid;
+
+            AddDomainEvent(new EnrollmentPaymentPaidDomainEvent(ResponseId));
         }
 
         public EnrollmentPaymentId Id { get; }
@@ -52,6 +58,5 @@ namespace Payments.Domain.EnrollmentPayments
         public PaymentStatus Status { get; private set; }
 
         public MoneyValue Cost { get; }
-
     }
 }

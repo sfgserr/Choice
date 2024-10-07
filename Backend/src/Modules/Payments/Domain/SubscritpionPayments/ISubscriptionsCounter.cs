@@ -4,6 +4,6 @@ namespace Payments.Domain.SubscritpionPayments
 {
     public interface ISubscriptionsCounter
     {
-        int GetSubscriptionCounter(PayerId payerId);
+        int Count(PayerId payerId);
     }
 }

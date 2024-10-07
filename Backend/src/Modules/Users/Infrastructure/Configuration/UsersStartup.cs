@@ -44,7 +44,17 @@ namespace Users.Infrastructure.Configuration
 
             var mappings = new Dictionary<string, Type>()
             {
-                [nameof(UserCreatedDomainNotification)] = typeof(UserCreatedDomainNotification)
+                [nameof(EnrolledDomainNotification)] = typeof(EnrolledDomainNotification),
+                [nameof(EnrolledWithPrepaymentDomainNotification)] = typeof(EnrolledWithPrepaymentDomainNotification),
+                [nameof(EnrollmentDateChangedDomainNotification)] = typeof(EnrollmentDateChangedDomainNotification),
+                [nameof(EnrollmentDateConfirmedDomainNotification)] = typeof(EnrollmentDateConfirmedDomainNotification),
+                [nameof(OrderPaidDomainNotification)] = typeof(OrderPaidDomainNotification),
+                [nameof(OrderResponseCreatedDomainNotification)] = typeof(OrderResponseCreatedDomainNotification),
+                [nameof(OrderStatusChangedDomainNotification)] = typeof(OrderStatusChangedDomainNotification),
+                [nameof(ReviewCreatedDomainNotification)] = typeof(ReviewCreatedDomainNotification),
+                [nameof(UserCreatedDomainNotification)] = typeof(UserCreatedDomainNotification),
+                [nameof(UserDataChangedDomainNotification)] = typeof(UserDataChangedDomainNotification),
+                [nameof(UserRoleChangedDomainNotification)] = typeof(UserRoleChangedDomainNotification),
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
