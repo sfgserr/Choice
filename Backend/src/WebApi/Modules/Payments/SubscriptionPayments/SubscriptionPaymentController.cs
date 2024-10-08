@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments.Commands.Buy;
+using Payments.Application.SubscriptionPayments.Commands.Pay;
+using Payments.Application.SubscriptionPayments.Queries.GetPayment;
 
 namespace WebApi.Modules.Payments.SubscriptionPayments
 {
@@ -23,6 +25,24 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
             await _module.ExecuteCommand(new BuyCommand(period));
 
             return Ok();
+        }
+
+        [HasPermission(Permissions.PaySubscriptionPayment)]
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Pay(Guid id)
+        {
+            await _module.ExecuteCommand(new PayCommand(id));
+
+            return Ok();
+        }
+
+        [HasPermission(Permissions.GetSubscriptionPayment)]
+        [HttpGet]
+        public async Task<IActionResult> GetPayment()
+        {
+            var payment = await _module.Query<GetPaymentQuery, PaymentDto>(new GetPaymentQuery());
+
+            return Ok(payment);
         }
     }
 }
