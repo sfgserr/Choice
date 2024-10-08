@@ -2,7 +2,7 @@
 
 namespace Payments.Infrastructure.Configuration.Mediation
 {
-    internal class ServiceProviderWrapper
+    internal class ServiceProviderWrapper : IServiceProvider
     {
         private readonly ILifetimeScope _scope;
 

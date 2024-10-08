@@ -8,8 +8,6 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('ChangeCompanyData');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('ChangeCompanyIconUri');
 
-INSERT INTO identity."Permissions" ("Code") VALUES ('BuySubscriptionPayment');
-
 INSERT INTO identity."Permissions" ("Code") VALUES ('FillData');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetCompany');
