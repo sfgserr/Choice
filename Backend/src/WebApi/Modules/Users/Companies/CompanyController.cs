@@ -50,7 +50,7 @@ namespace WebApi.Modules.Users.Companies
         
         [HttpPut()]
         [HasPermission(Permissions.ChangeCompanyData)]
-        public async Task<IActionResult> ChangeData(ChangeDataRequest request)
+        public async Task<IActionResult> ChangeData(ChangeCompanyDataRequest request)
         {
             await _usersModule.ExecuteCommand(new ChangeDataCommand(
                 request.Name,

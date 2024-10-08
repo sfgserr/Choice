@@ -39,8 +39,6 @@ namespace Identity.Infrastructure.Processing.InternalCommands
                 {
                     internalCommand.Processed = DateTime.UtcNow;
                     internalCommand.Error = result.FinalException.Message;
-
-                    _identityContext.InternalCommands.Update(internalCommand);  
                 }
             }
         }

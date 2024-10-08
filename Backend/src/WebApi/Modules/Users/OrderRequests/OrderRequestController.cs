@@ -75,9 +75,9 @@ namespace WebApi.Modules.Users.OrderRequests
             return Ok(requests);
         }
         
-        [HttpGet()]
+        [HttpGet("radius")]
         [HasPermission(Permissions.GetOrderRequestsInRadius)]
-        public async Task<IActionResult> GetOrderRequestsInRadius(Guid id)
+        public async Task<IActionResult> GetOrderRequestsInRadius()
         {
             var requests = await _usersModule
                 .Query<GetOrderRequestsInRadiusQuery, IEnumerable<GetOrderRequestsInRadiusDto>>(

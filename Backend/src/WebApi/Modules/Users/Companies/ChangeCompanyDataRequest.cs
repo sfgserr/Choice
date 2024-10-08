@@ -1,8 +1,8 @@
 namespace WebApi.Modules.Users.Companies
 {
-    public class ChangeDataRequest
+    public class ChangeCompanyDataRequest
     {
-        public ChangeDataRequest(
+        public ChangeCompanyDataRequest(
             string name,
             string email,
             string phoneNumber,

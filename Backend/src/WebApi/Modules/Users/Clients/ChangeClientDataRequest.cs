@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Modules.Users.Clients
 {
-    public class ChangeDataRequest
+    public class ChangeClientDataRequest
     {
-        public ChangeDataRequest(string name, string email, string phoneNumber, string city, string street)
+        public ChangeClientDataRequest(string name, string email, string phoneNumber, string city, string street)
         {
             Name = name;
             Email = email;

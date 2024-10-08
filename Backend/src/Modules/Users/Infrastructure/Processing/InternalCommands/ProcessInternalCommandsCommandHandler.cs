@@ -49,9 +49,9 @@ namespace Users.Infrastructure.Processing.InternalCommands
 
         private async Task ProcessCommand(InternalCommand command)
         {
-            Type commandType = Assemblies.Application.GetType(command.Type)!;
+            Type type = Assemblies.Application.GetType(command.Type)!;
 
-            dynamic internalCommandBase = JsonSerializer.Deserialize(command.Data, commandType)!;
+            dynamic internalCommandBase = JsonSerializer.Deserialize(command.Data, type)!;
             
             await CommandsExecutor.ExecuteCommandAsync(internalCommandBase);
         }

@@ -11,6 +11,11 @@ namespace Payments.Domain.Subscriptions
             Cost = cost;
         }
 
+        private SubscriptionPeriod()
+        {
+
+        }
+
         public string Value { get; }
 
         public MoneyValue Cost { get; }

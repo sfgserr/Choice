@@ -35,7 +35,7 @@ namespace WebApi.Modules.Users.Clients
 
         [HasPermission(Permissions.ChangeClientData)]
         [HttpPut()]
-        public async Task<IActionResult> ChangeData(ChangeDataRequest request)
+        public async Task<IActionResult> ChangeData(ChangeClientDataRequest request)
         {
             await _usersModule.ExecuteCommand(new ChangeDataCommand(
                 request.Name,
