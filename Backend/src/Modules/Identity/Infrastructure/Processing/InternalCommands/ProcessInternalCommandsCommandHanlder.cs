@@ -1,9 +1,9 @@
-using System.Text.Json;
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.InternalCommands;
 using Identity.Infrastructure.Configuration;
 using Identity.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Polly;
 
 namespace Identity.Infrastructure.Processing.InternalCommands
@@ -47,7 +47,7 @@ namespace Identity.Infrastructure.Processing.InternalCommands
         {
             var commandType = Assemblies.Application.GetType(command.Type)!;
 
-            dynamic internalCommandBase = JsonSerializer.Deserialize(command.Data, commandType)!;
+            dynamic internalCommandBase = JsonConvert.DeserializeObject(command.Data, commandType)!;
             
             await CommandsExecutor.ExecuteCommandAsync(internalCommandBase);
         }

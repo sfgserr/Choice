@@ -1,13 +1,14 @@
-﻿using BuildingBlocks.Infrastructure.InternalCommands;
+﻿using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Infrastructure.InternalCommands;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Payments.Infrastructure.Configuration;
 using Payments.Infrastructure.Data;
 using Polly;
-using System.Text.Json;
 
 namespace Payments.Infrastructure.Processing.InternalCommands
 {
-    internal class ProcessInternalCommandsCommandHandler
+    internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
     {
         private readonly PaymentsContext _paymentsContext;
 
@@ -32,10 +33,6 @@ namespace Payments.Infrastructure.Processing.InternalCommands
 
             foreach (var internalCommand in internalCommands)
             {
-                var internalCommandBase = JsonSerializer.Deserialize(
-                    internalCommand.Data,
-                    Type.GetType(internalCommand.Type)!);
-
                 var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommand(internalCommand));
 
                 if (result.Outcome == OutcomeType.Failure)
@@ -50,7 +47,7 @@ namespace Payments.Infrastructure.Processing.InternalCommands
         {
             Type commandType = Assemblies.Application.GetType(command.Type)!;
 
-            dynamic internalCommandBase = JsonSerializer.Deserialize(command.Data, commandType)!;
+            dynamic internalCommandBase = JsonConvert.DeserializeObject(command.Data, commandType)!;
 
             await CommandsExecutor.ExecuteCommandAsync(internalCommandBase);
         }

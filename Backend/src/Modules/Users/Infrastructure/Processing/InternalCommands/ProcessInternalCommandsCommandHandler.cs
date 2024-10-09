@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.InternalCommands;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Polly;
-using System.Text.Json;
 using Users.Infrastructure.Configuration;
 using Users.Infrastructure.Data;
 
@@ -33,10 +33,6 @@ namespace Users.Infrastructure.Processing.InternalCommands
 
             foreach (var internalCommand in internalCommands)
             {
-                var internalCommandBase = JsonSerializer.Deserialize(
-                    internalCommand.Data, 
-                    Type.GetType(internalCommand.Type)!);
-
                 var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommand(internalCommand));
 
                 if (result.Outcome == OutcomeType.Failure)
@@ -51,7 +47,7 @@ namespace Users.Infrastructure.Processing.InternalCommands
         {
             Type type = Assemblies.Application.GetType(command.Type)!;
 
-            dynamic internalCommandBase = JsonSerializer.Deserialize(command.Data, type)!;
+            dynamic internalCommandBase = JsonConvert.DeserializeObject(command.Data, type)!;
             
             await CommandsExecutor.ExecuteCommandAsync(internalCommandBase);
         }
