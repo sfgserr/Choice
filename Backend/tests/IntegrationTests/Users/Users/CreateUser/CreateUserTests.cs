@@ -1,12 +1,13 @@
-using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
+using WebApi;
 
 namespace IntegrationTests.Users.Users.CreateUser
 {
-    public class CreateUserTests : IClassFixture<ChoiceWebApplicationFactory>
+    public class CreateUserTests : IClassFixture<WebApplicationFactory<Program>>
     {
-        private readonly ChoiceWebApplicationFactory _factory;
+        private readonly WebApplicationFactory<Program> _factory;
 
-        public CreateUserTests(ChoiceWebApplicationFactory factory)
+        public CreateUserTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
         }
@@ -17,8 +18,8 @@ namespace IntegrationTests.Users.Users.CreateUser
             var client = _factory.CreateClient();
 
             var result = await client.PostAsync(
-                "/api/users",
-                new StringContent(JsonSerializer.Serialize(new 
+                "/api/clients",
+                JsonContent.Create(new 
                 {
                     Name = "string",
                     Email = "string",
@@ -26,7 +27,7 @@ namespace IntegrationTests.Users.Users.CreateUser
                     PhoneNumber = "string",
                     City = "string",
                     Street = "string"
-                })));
+                }));
 
             Assert.True(result.IsSuccessStatusCode);
         }

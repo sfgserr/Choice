@@ -2,7 +2,7 @@ using Autofac.Extensions.DependencyInjection;
 
 namespace WebApi
 {
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {
