@@ -3,6 +3,7 @@ using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.Categories;
 using Users.Domain.Users;
+using Users.Domain.Users.Companies;
 
 namespace Users.Application.Companies.Commands.FillData
 {
@@ -19,7 +20,8 @@ namespace Users.Application.Companies.Commands.FillData
 
         public async Task Execute(FillDataCommand command)
         {
-            var company = await _dbContext.Companies.Get(c => c.Id.Equals(_usersContext.Id));
+            var company = await _dbContext.Companies.Get(c => 
+                c.Id.Equals(new CompanyId(_usersContext.Id.Value)));
             
             company.FillData(
                 command.Description,

@@ -18,9 +18,11 @@ namespace Users.Infrastructure.Data.Domain.Companies
                 .WithOne()
                 .HasForeignKey<Company>(x => x.UserId);
 
+            builder.Navigation(x => x.User).AutoInclude();
+
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
             builder.Property<List<string>>("_socialMediaUris").HasColumnName("SocialMediaUris");
-            builder.Property<List<CategoryId>>("_categoriesId")
+            builder.Property<List<CategoryId>>("_categories")
                 .HasConversion(new CategoryIdCollectionToIntCollectionValueConverter())
                 .HasColumnName("CategoriesId");
         }

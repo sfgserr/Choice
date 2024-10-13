@@ -12,12 +12,6 @@ TRUNCATE chat."ChatUsers" CASCADE;
 
 TRUNCATE identity."Users" CASCADE;
 
-TRUNCATE identity."RolePermissions" CASCADE;
-
-TRUNCATE identity."Permissions" CASCADE;
-
-TRUNCATE identity."Roles" CASCADE;
-
 TRUNCATE identity."InternalCommands" CASCADE;
 
 TRUNCATE payments."EnrollmentPayments" CASCADE;

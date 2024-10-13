@@ -30,20 +30,20 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
             const string sql = 
                 $"""
                 SELECT
-                    users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)}
-                    users."OrderRequests"."CategoryId" as {nameof(OrderRequestDto.CategoryId)}
-                    users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)}
-                    users."OrderRequests"."PhotoUris" as {nameof(OrderRequestDto.PhotoUris)}
-                    users."Users"."Name" as {nameof(OrderRequestDto.ClientName)}
-                    users."OrderRequests"."ClientCreatedId" as {nameof(OrderRequestDto.Description)}
-                    users."Users"."IconUri" as {nameof(OrderRequestDto.IconUri)}
-                    users."Users"."Latitude" as {nameof(OrderRequestDto.Latitude)}
-                    users."Users"."Longitude" as {nameof(OrderRequestDto.Longitude)}
-                    users."Users"."ReviewsCount" as {nameof(OrderRequestDto.ReviewCount)}
-                    users."OrderRequests"."AverageGrade" as {nameof(OrderRequestDto.AverageGrade)}
+                    users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)},
+                    users."OrderRequests"."CategoryId" as {nameof(OrderRequestDto.CategoryId)},
+                    users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)},
+                    users."OrderRequests"."PhotoUris" as {nameof(OrderRequestDto.PhotoUris)},
+                    users."Users"."Name" as {nameof(OrderRequestDto.ClientName)},
+                    users."OrderRequests"."ClientCreatedId" as {nameof(OrderRequestDto.ClientCreatedId)},
+                    users."Users"."IconUri" as {nameof(OrderRequestDto.IconUri)},
+                    users."Users"."Latitude" as {nameof(OrderRequestDto.Latitude)},
+                    users."Users"."Longitude" as {nameof(OrderRequestDto.Longitude)},
+                    users."Users"."ReviewsCount" as {nameof(OrderRequestDto.ReviewsCount)},
+                    users."Users"."AverageGrade" as {nameof(OrderRequestDto.AverageGrade)},
                     users."OrderRequests"."Distance" as {nameof(OrderRequestDto.Distance)}
                 FROM users."OrderRequests"
-                JOIN users."OrderRequests" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"            
+                JOIN users."Users" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"            
                 """;
 
             var orderRequests = await connection.QueryAsync<OrderRequestDto>(sql);

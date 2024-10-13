@@ -8,7 +8,7 @@ namespace Users.Infrastructure.Data.ValueConversion
         ValueConverter<List<CategoryId>, IEnumerable<int>>
     {
         public CategoryIdCollectionToIntCollectionValueConverter(ConverterMappingHints? mappingHints = null) : 
-            base(x => x.Select(id => id.Value), x => x.Select(id => new CategoryId(id)).ToList(), mappingHints)
+            base(x => x.Select(id => id.Value).ToArray(), x => x.Select(id => new CategoryId(id)).ToList(), mappingHints)
         {
         }
     }

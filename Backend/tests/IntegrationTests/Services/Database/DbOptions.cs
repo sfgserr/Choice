@@ -1,4 +1,4 @@
-namespace IntegrationTests.SeedWork
+namespace IntegrationTests.Services.Database
 {
     public class DbOptions
     {

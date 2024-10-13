@@ -1,4 +1,4 @@
-namespace IntegrationTests.SeedWork
+namespace IntegrationTests.SeedWork.Probes
 {
     public interface IProbe
     {

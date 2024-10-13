@@ -1,3 +1,5 @@
+using IntegrationTests.Services;
+using IntegrationTests.Services.Database;
 using Microsoft.AspNetCore.Mvc.Testing;
 using WebApi;
 using Xunit.Microsoft.DependencyInjection;
@@ -9,8 +11,9 @@ namespace IntegrationTests.SeedWork
     {
         protected override void AddServices(IServiceCollection services, IConfiguration? configuration)
         {
-            services.AddScoped<WebApplicationFactory<Program>>();
-            services.AddSingleton(s => new DbOptions(configuration["ConnectionString"]!));
+            services.AddSingleton<WebApplicationFactory<Program>>();
+            services.AddSingleton(s => new DbService(new(configuration["ConnectionString"]!)));
+            services.AddSingleton(s => new AuthService(s.GetService<WebApplicationFactory<Program>>()!.CreateClient()));
         }
 
         protected override ValueTask DisposeAsyncCore() => new();

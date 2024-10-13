@@ -12,7 +12,7 @@ using GetOrderRequestsInRadiusDto = Users.Application.OrderRequests.Queries.GetO
 
 namespace WebApi.Modules.Users.OrderRequests
 {
-    [Controller]
+    [ApiController]
     [Route("api/orderRequests")]
     public class OrderRequestController : Controller
     {
