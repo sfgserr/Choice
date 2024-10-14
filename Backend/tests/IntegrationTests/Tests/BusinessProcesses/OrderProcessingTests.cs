@@ -33,7 +33,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
-                using var client = factory.CreateClient();
+                using var client = factory.CreateClient("Default");
 
                 var request = new HttpRequestMessage(
                     HttpMethod.Put,
@@ -61,7 +61,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
-                using var client = factory.CreateClient();
+                using var client = factory.CreateClient("Default");
 
                 var request = new HttpRequestMessage(HttpMethod.Post, "api/orderRequests")
                 {
@@ -89,7 +89,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                using var client = factory.CreateClient();
+                using var client = factory.CreateClient("Default");
 
                 var getOrdersRequest = new HttpRequestMessage(
                     HttpMethod.Get,

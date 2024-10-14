@@ -1,8 +1,6 @@
 using IntegrationTests.SeedWork.Probes;
 using IntegrationTests.Services;
 using IntegrationTests.Services.Database;
-using Microsoft.AspNetCore.Mvc.Testing;
-using WebApi;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
 
@@ -10,20 +8,19 @@ namespace IntegrationTests.SeedWork
 {
     public class Sut : TestBed<Fixture>
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly IHttpClientFactory _factory;
         private readonly AuthService _authService;
         private readonly DbService _dbService;
 
         public Sut(ITestOutputHelper outputHelper, Fixture testBed) : base(outputHelper, testBed)
         {
-            _factory = testBed.GetService<WebApplicationFactory<Program>>(outputHelper)!;
+            _factory = testBed.GetService<IHttpClientFactory>(outputHelper)!;
             _dbService = testBed.GetService<DbService>(outputHelper)!;
 
-            _authService = testBed.GetService<AuthService>(outputHelper)!;
-        }
+            _authService = testBed.GetService<AuthService>(outputHelper)!;        }
 
         protected async Task<bool> ExecuteAuthorizedTest(
-            Func<WebApplicationFactory<Program>,string,Task<IProbe>> testExecution,
+            Func<IHttpClientFactory,string,Task<IProbe>> testExecution,
             int delayAfterProbe = 0,
             bool reset = false,
             bool companyToken = false)
@@ -54,7 +51,7 @@ namespace IntegrationTests.SeedWork
         }
 
         protected async Task<bool> ExecuteTest(
-            Func<WebApplicationFactory<Program>,Task<IProbe>> testExecution,
+            Func<IHttpClientFactory,Task<IProbe>> testExecution,
             int delayAfterProbe = 0,
             bool reset = false)
         {

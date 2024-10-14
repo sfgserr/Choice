@@ -18,7 +18,7 @@ namespace IntegrationTests.Tests.Users
         {
             var result = await ExecuteAuthorizedTest(async (factory, token) => 
             {
-                var client = factory.CreateClient();
+                var client = factory.CreateClient("Default");
 
                 var request = new HttpRequestMessage(
                     HttpMethod.Get,
