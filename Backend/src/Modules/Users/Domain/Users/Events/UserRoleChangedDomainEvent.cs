@@ -4,14 +4,14 @@ namespace Users.Domain.Users.Events
 {
     public class UserRoleChangedDomainEvent : DomainEventBase
     {
-        public UserRoleChangedDomainEvent(UserId userId, UserRole iconUri)
+        public UserRoleChangedDomainEvent(UserId userId, string userRole)
         {
             UserId = userId;
-            UserRole = iconUri;
+            UserRole = userRole;
         }
 
         public UserId UserId { get; }
 
-        public UserRole UserRole { get; }
+        public string UserRole { get; }
     }
 }

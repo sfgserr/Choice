@@ -129,7 +129,7 @@ namespace Users.Domain.Users
 
             Role = UserRole.Company;
 
-            AddDomainEvent(new UserRoleChangedDomainEvent(Id, Role));
+            AddDomainEvent(new UserRoleChangedDomainEvent(Id, Role.Value));
         }
     }
 }

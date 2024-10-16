@@ -21,7 +21,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserRoleChange
             await _eventBus.PublishAsync(new UserRoleChangedIntegrationEvent(
                 Guid.NewGuid(),
                 domainEvent.UserId.Value,
-                domainEvent.UserRole.Value));
+                domainEvent.UserRole));
         }
     }
 }

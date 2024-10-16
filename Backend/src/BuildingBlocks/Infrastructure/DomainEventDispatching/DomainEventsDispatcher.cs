@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR;
 using BuildingBlocks.Infrastructure.Outbox;
 using BuildingBlocks.Infrastructure.Serialization;
 using Newtonsoft.Json;
@@ -32,8 +33,10 @@ namespace BuildingBlocks.Infrastructure.DomainEventDispatching
                 var notificationType = _mapper
                     .GetType(domainEvent.GetType().Name.Replace("DomainEvent", "DomainNotification"));
 
+                var notification =  Activator.CreateInstance(notificationType, domainEvent) as IDomainNotification;
+
                 var json = JsonConvert.SerializeObject(
-                    Activator.CreateInstance(notificationType, domainEvent),
+                    notification,
                     new JsonSerializerSettings() { ContractResolver = new AllPropertiesContractResolver() });
 
                 var message = new OutboxMessage(
