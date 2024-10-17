@@ -9,16 +9,19 @@ namespace IntegrationTests.SeedWork
     {
         protected override void AddServices(IServiceCollection services, IConfiguration? configuration)
         {
-            services.AddHttpClient("Default", o => o.BaseAddress = new("http://localhost:5271"));
-            services.AddSingleton(s => new DbService(new(configuration["ConnectionString"]!)));
-            services.AddSingleton(s => new AuthService(s.GetRequiredService<IHttpClientFactory>().CreateClient("Default")));
+            if (configuration is not null)
+            {
+                services.AddHttpClient("Default", o => o.BaseAddress = new("http://localhost:5271"));
+                services.AddSingleton(s => new DbService(new(configuration["ConnectionString"]!)));
+                services.AddSingleton<AuthService>();
+            }
         }
 
         protected override ValueTask DisposeAsyncCore() => new();
 
         protected override IEnumerable<TestAppSettings> GetTestAppSettings()
         {
-            yield return new() { Filename = "dbsettings.json", IsOptional = false };
+            yield return new() { Filename = "appsettings.json", IsOptional = false };
         }
     }
 }

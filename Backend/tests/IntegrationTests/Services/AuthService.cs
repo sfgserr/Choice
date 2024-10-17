@@ -2,63 +2,49 @@ namespace IntegrationTests.Services
 {
     public class AuthService
     {
-        private readonly HttpClient _client;
+        private readonly IHttpClientFactory _factory;
 
         private string? _clientToken;
         private string? _companyToken;
 
-        public AuthService(HttpClient client)
+        public AuthService(IHttpClientFactory factory)
         {
-            _client = client;
+            _factory = factory;
         }
 
-        public async Task<string?> GetClientToken()
+        public async Task<string?> GetToken(TokenType tokenType)
         {
-            if (_clientToken is null)
+            var token = tokenType == TokenType.Client ? _clientToken : _companyToken;
+
+            if (token is null)
             {
-                _clientToken = await LoginAsClient();
-                return _clientToken;
+                return tokenType switch
+                {
+                    TokenType.Client => _clientToken = await Login(tokenType),
+                    TokenType.Company => _companyToken = await Login(tokenType),
+                    _ => throw new ArgumentException()
+                };
             }
 
-            return _clientToken;
+            return token;
         }
 
-        public async Task<string?> GetCompanyToken()
+        private async Task<string?> Login(TokenType tokenType)
         {
-            if (_companyToken is null)
-            {
-                _companyToken = await LoginAsCompany();
-                return _companyToken;
-            }
+            var isTokenCreated = tokenType == TokenType.Client ? await CreateClient() : await CreateCompany();
 
-            return _companyToken;
-        }
-
-        private async Task<string?> LoginAsClient()
-        {
-            var clientCreated = await CreateClient();
-
-            if (!clientCreated) return null;
+            if (!isTokenCreated) return null;
 
             await Task.Delay(20000);
 
-            return await Login("client", "string");
-        }
-
-        private async Task<string?> LoginAsCompany()
-        {
-            var companyCreated = await CreateCompany();
-
-            if (!companyCreated) return null;
-
-            await Task.Delay(20000);
-
-            return await Login("company", "string");       
+            return await Login(tokenType.ToString().ToLower(), "string");
         }
 
         private async Task<string?> Login(string email, string password)
         {
-            var authResponse = await _client.PostAsync(
+            using var client = _factory.CreateClient("Default");
+
+            var authResponse = await client.PostAsync(
                 "api/auth/login",
                 JsonContent.Create(
                 new
@@ -79,7 +65,9 @@ namespace IntegrationTests.Services
 
         private async Task<bool> CreateClient()
         {
-            var clientCreatedResponse = await _client.PostAsync(
+            using var client = _factory.CreateClient("Default");
+
+            var clientCreatedResponse = await client.PostAsync(
                 "api/clients",
                 JsonContent.Create(
                 new
@@ -97,7 +85,9 @@ namespace IntegrationTests.Services
 
         private async Task<bool> CreateCompany()
         {
-            var companyCreatedResponse = await _client.PostAsync(
+            using var client = _factory.CreateClient("Default");
+
+            var companyCreatedResponse = await client.PostAsync(
                 "api/companies",
                 JsonContent.Create(
                 new
@@ -118,5 +108,11 @@ namespace IntegrationTests.Services
             _clientToken = null;
             _companyToken = null;
         }
+    }
+
+    public enum TokenType
+    {
+        Client,
+        Company
     }
 }

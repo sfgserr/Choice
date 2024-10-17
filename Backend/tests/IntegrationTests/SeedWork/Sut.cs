@@ -23,9 +23,9 @@ namespace IntegrationTests.SeedWork
             Func<IHttpClientFactory,string,Task<IProbe>> testExecution,
             int delayAfterProbe = 0,
             bool reset = false,
-            bool companyToken = false)
+            TokenType tokenType = TokenType.Client)
         {
-            var token = companyToken ? await _authService.GetCompanyToken() : await _authService.GetClientToken();
+            var token = await _authService.GetToken(tokenType);
             
             if (token is null) 
             {

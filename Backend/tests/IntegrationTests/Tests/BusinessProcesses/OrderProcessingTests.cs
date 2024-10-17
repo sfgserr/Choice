@@ -1,5 +1,6 @@
 using IntegrationTests.SeedWork;
 using IntegrationTests.SeedWork.Probes;
+using IntegrationTests.Services;
 using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
 
@@ -54,7 +55,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
  
                 return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
-            }, 10000, false, true);
+            }, 10000, false, TokenType.Company);
         }
 
         private async Task<bool> CreateOrderRequestReturnsOk()
@@ -121,7 +122,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
-            }, 0, false, true);
+            }, 0, true, TokenType.Company);
         }
     }
 }
