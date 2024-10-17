@@ -3,6 +3,7 @@ using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
 using Users.Domain.Users;
+using Users.Domain.Users.Companies;
 
 namespace Users.Application.OrderResponses.Commands.Response
 {
@@ -24,7 +25,8 @@ namespace Users.Application.OrderResponses.Commands.Response
             var orderRequest = await _dbContext.OrderRequests.Get(r => 
                 r.Id.Equals(new OrderRequestId(command.RequestId)));
 
-            var company = await _dbContext.Companies.Get(c => c.Id.Equals(_userContext.Id));
+            var company = await _dbContext.Companies.Get(c => 
+                c.Id.Equals(new CompanyId(_userContext.Id.Value)));
             
             var orderResponse = orderRequest.Response(
                 company,

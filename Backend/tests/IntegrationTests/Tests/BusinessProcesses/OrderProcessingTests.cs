@@ -102,15 +102,14 @@ namespace IntegrationTests.Tests.BusinessProcesses
                     return new CheckSuccessStatusCodeProbe(false);
 
                 var content = await orderRequests.Content.ReadAsStringAsync();
-
-                var jObject = JObject.Parse(content);
+                var jObject = JArray.Parse(content);
 
                 var request = new HttpRequestMessage(HttpMethod.Post, "api/orderResponses")
                 {
                     Content = JsonContent.Create(
                         new
                         {
-                            RequestId = jObject.SelectToken("$[0].requestId")!.Value<string>(),
+                            RequestId = jObject[0]!.Value<string>("id"),
                             Price = 2000,
                             Deadline = 100,
                             EnrollmentDate = DateTime.UtcNow,
