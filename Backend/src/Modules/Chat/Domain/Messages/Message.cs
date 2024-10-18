@@ -37,30 +37,16 @@ namespace Chat.Domain.Messages
             AddDomainEvent(new MessageCreatedDomainEvent(Id));
         }
 
-        public static Message CreateTextMessage(
+        public static Message CreateMessage(
             string text,
             ChatUserId fromUserId,
-            ChatUserId toUserId)
+            ChatUserId toUserId,
+            MessageType type)
         {
             return new Message(
                 new(Guid.NewGuid()),
-                MessageType.Text,
+                type,
                 text,
-                null,
-                fromUserId,
-                toUserId,
-                DateTime.Now);
-        }
-
-        public static Message CreateImageMessage(
-            string uri,
-            ChatUserId fromUserId,
-            ChatUserId toUserId)
-        {
-            return new Message(
-                new(Guid.NewGuid()),
-                MessageType.Image,
-                uri,
                 null,
                 fromUserId,
                 toUserId,

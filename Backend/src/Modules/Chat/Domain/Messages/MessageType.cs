@@ -21,5 +21,13 @@ namespace Chat.Domain.Messages
         {
             yield return Value;
         }
+
+        public static MessageType Parse(string type) => type switch
+        {
+            "Text" => Text,
+            "Image" => Image,
+            "Order" => Order,
+            _ => throw new ArgumentException()
+        };
     }
 }

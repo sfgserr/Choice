@@ -27,5 +27,6 @@ namespace WebApi.Modules
         public const string ChangeEnrollmentDate = "ChangeEnrollmentDate";
         public const string ConfirmEnrollmentDate = "ConfirmEnrollmentDate";
         public const string AddReview = "AddReview";
+        public const string CreateMessage = "CreateMessage";
     }
 }

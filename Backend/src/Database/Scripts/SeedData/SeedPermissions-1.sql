@@ -47,3 +47,5 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('PaySubscriptionPayment');
 INSERT INTO identity."Permissions" ("Code") VALUES ('PayEnrollmentPayment');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetSubscriptionPayment');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('CreateMessage');
