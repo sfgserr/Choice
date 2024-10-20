@@ -1,15 +1,19 @@
 using BuildingBlocks.Application.Cqrs.Queries;
 using BuildingBlocks.Application.Data;
+using Chat.Domain.ChatUsers;
+using Dapper;
 
 namespace Chat.Application.Messages.Queries.GetChat
 {
     internal class GetChatQueryHandler : IQueryHandler<GetChatQuery, IEnumerable<MessageDto>>
     {
         private readonly ISqlConnectionFactory _factory;
+        private readonly IUserContext _userContext;
 
-        internal GetChatQueryHandler(ISqlConnectionFactory factory)
+        internal GetChatQueryHandler(ISqlConnectionFactory factory, IUserContext userContext)
         {
             _factory = factory;
+            _userContext = userContext;
         }
 
         public async Task<IEnumerable<MessageDto>> Handle(GetChatQuery query)
@@ -30,7 +34,21 @@ namespace Chat.Application.Messages.Queries.GetChat
                 chat."OrderMessages"."EnrollmentDate" as {nameof(MessageDto.EnrollmentDate)}
             FROM chat."Messages"
             JOIN chat."OrderMessages" ON chat."OrderMessages"."MessageId" = chat."Messages"."Id"
+            WHERE 
+                (chat."Messages"."ToUserId" = @Id1 AND chat."Messages"."FromUserId" = @Id2) OR
+                (chat."Messages"."ToUserId" = @Id2 AND chat."Messages"."FromUserId" = @Id1)
+            ORDER BY {nameof(MessageDto.CreationDate)}
             """;
+
+            var messages = await connection.QueryAsync<MessageDto>(
+                sql,
+                new
+                {
+                    Id1 = _userContext.Id.Value,
+                    Id2 = query.UserId
+                });
+
+            return messages;
         }
     }
 }
