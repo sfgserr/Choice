@@ -26,26 +26,38 @@ namespace Chat.Application.Messages.Queries.GetChats
         {
             using var connection = _factory.GetConnection();
 
-            const string sql = 
+            const string usersSql = 
             $"""
-            SELECT 
-                chat."ChatUsers"."Id" as {nameof(ChatDto.UserId)},
-                chat."ChatUsers"."IconUri" as {nameof(ChatDto.IconUri)},
-                chat."ChatUsers"."Name" as {nameof(ChatDto.UserName)},
-                chat."Messages"."Body" as {nameof(ChatDto.LastMessage)},
-                chat."Messages"."Id" as {nameof(ChatDto.LastMessageId)},
-                chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}
-            FROM chat."ChatUsers"
-            JOIN chat."Messages" ON chat."Messages"."ToUserId" = chat."ChatUsers"."Id" OR chat."Messages"."FromUserId" = chat."ChatUsers"."Id"
-            WHERE chat."ChatUsers"."Id" = @Id
+            WITH LastMessage AS (
+                SELECT 
+                    chat."Messages"."Id" as {nameof(ChatDto.LastMessageId)},
+                    CASE 
+                        WHEN chat."Messages"."FromUserId" = @Id THEN chat."Messages"."ToUserId"
+                        ELSE chat."Messages"."ToUserId"
+                    END AS {nameof(ChatDto.UserId)},
+                    chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}
+                FROM chat."Messages"
+                WHERE @Id IN (chat."Messages"."FromUserId", chat."Messages"."ToUserId")
+            )
+            SELECT DISTINCT ON ({nameof(ChatDto.UserId)})
+                {nameof(ChatDto.LastMessageId)},
+                {nameof(ChatDto.UserId)},
+                {nameof(ChatDto.LastMessageCreationDate)}
+            FROM LastMessage
+            WHERE {nameof(ChatDto.UserId)} <> @Id
+            ORDER BY {nameof(ChatDto.LastMessageCreationDate)} DESC;
             """;
 
             var chats = await connection.QueryAsync<ChatDto>(
-                sql,
+                usersSql,
                 new
                 {
                     Id = _userContext.Id.Value
                 });
+
+            foreach (var chat in chats) chat.IsOnline = _chatService.IsUserOnline(chat.UserId);
+
+            return chats;
         }
     }
 }
