@@ -29,5 +29,6 @@ namespace WebApi.Modules
         public const string AddReview = "AddReview";
         public const string CreateMessage = "CreateMessage";
         public const string GetChat = "GetChat";
+        public const string GetChats = "GetChats";
     }
 }

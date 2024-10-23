@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Infrastructure.DomainEventDispatching;
+﻿using System.Data;
+using BuildingBlocks.Infrastructure.DomainEventDispatching;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -23,7 +24,7 @@ namespace BuildingBlocks.Infrastructure.Data
         {
             if (_currentTransaction != null) return _currentTransaction;
             
-            _currentTransaction = await _dbContext.Database.BeginTransactionAsync();
+            _currentTransaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
             return _currentTransaction;
         }

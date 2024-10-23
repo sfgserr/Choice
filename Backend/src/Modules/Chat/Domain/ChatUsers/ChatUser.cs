@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Domain;
-using Chat.Domain.ChatUsers.Events;
 
 namespace Chat.Domain.ChatUsers
 {
@@ -12,39 +11,35 @@ namespace Chat.Domain.ChatUsers
 
         private ChatUser(
             ChatUserId id,
-            UserStatus status,
+            string iconUri,
             bool isDeleted)
         {
             Id = id;
-            Status = status;
+            IconUri = iconUri;
             IsDeleted = isDeleted;
         }
 
         public static ChatUser Create(
-            ChatUserId id)
+            ChatUserId id,
+            string iconUri)
         {
-            return new ChatUser(id, UserStatus.Online, false);
+            return new ChatUser(id, iconUri, false);
         }
 
         public ChatUserId Id { get; }
 
-        public UserStatus Status { get; private set; }
-        
-        public DateTime? LastTimeOnline { get; private set; }
+        public string IconUri { get; private set; }
 
         public bool IsDeleted { get; private set; }
+
+        public void ChangeIconUri(string iconUri)
+        {
+            IconUri = iconUri;
+        }
 
         public void Delete()
         {
             IsDeleted = true;
-        }
-
-        public void ChangeStatus()
-        {
-            Status = Status.Equals(UserStatus.Online) ? UserStatus.Offline : UserStatus.Online;
-            LastTimeOnline = DateTime.Now;
-
-            AddDomainEvent(new UserStatusChangedDomainEvent(Id, Status, LastTimeOnline));
         }
     }
 }

@@ -49,3 +49,7 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('PayEnrollmentPayment');
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetSubscriptionPayment');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('CreateMessage');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetChat');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetChats');

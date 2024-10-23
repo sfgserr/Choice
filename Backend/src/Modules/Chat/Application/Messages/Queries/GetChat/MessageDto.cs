@@ -11,7 +11,7 @@ namespace Chat.Application.Messages.Queries.GetChat
             Guid? orderResponseId, 
             DateTime creationDate,
             DateTime? enrollmentDate,
-            bool? isActive)
+            bool isActive)
         {
             Id = id;
             ToUserId = toUserId;
@@ -40,6 +40,6 @@ namespace Chat.Application.Messages.Queries.GetChat
 
         internal DateTime? EnrollmentDate { get; private set; }
 
-        internal bool? IsActive { get; private set; }
+        internal bool IsActive { get; private set; }
     }
 }
