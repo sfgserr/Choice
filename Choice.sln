@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "Backend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Backend\src\Modules\Chat\Application\Application.csproj", "{1399B218-7857-4FB6-B2E9-3CEE0634C9DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Backend\src\Modules\Chat\Infrastructure\Infrastructure.csproj", "{F542879B-7D76-4833-B0F9-E9F6A751B74C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{1399B218-7857-4FB6-B2E9-3CEE0634C9DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1399B218-7857-4FB6-B2E9-3CEE0634C9DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1399B218-7857-4FB6-B2E9-3CEE0634C9DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F542879B-7D76-4833-B0F9-E9F6A751B74C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F542879B-7D76-4833-B0F9-E9F6A751B74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F542879B-7D76-4833-B0F9-E9F6A751B74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F542879B-7D76-4833-B0F9-E9F6A751B74C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +189,7 @@ Global
 		{052EF456-E148-4496-9931-5B502D0613BC} = {1FBE9DA2-2F75-494C-994F-13F5E91D0A6E}
 		{E9689FEC-F76C-40E2-950D-0A07FE117DD6} = {5E4454D2-BFB4-4DCE-8F4D-80DE9010913E}
 		{1399B218-7857-4FB6-B2E9-3CEE0634C9DC} = {8CE22D18-5181-4FA3-A289-7AF7D5CA995E}
+		{F542879B-7D76-4833-B0F9-E9F6A751B74C} = {8CE22D18-5181-4FA3-A289-7AF7D5CA995E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF3E3CEC-7558-4B47-8F36-9803500A74DD}

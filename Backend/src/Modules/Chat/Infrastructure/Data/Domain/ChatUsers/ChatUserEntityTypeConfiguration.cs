@@ -1,0 +1,16 @@
+using Chat.Domain.ChatUsers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Chat.Infrastructure.Data.Domain.ChatUsers
+{
+    internal class ChatUserEntityTypeConfiguration : IEntityTypeConfiguration<ChatUser>
+    {
+        public void Configure(EntityTypeBuilder<ChatUser> builder)
+        {
+            builder.ToTable("ChatUsers", "chat");
+
+            builder.HasKey(x => x.Id);
+        }
+    }
+}

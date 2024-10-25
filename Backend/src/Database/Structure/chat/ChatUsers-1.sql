@@ -1,6 +1,5 @@
 CREATE TABLE chat."ChatUsers" (
     "Id" uuid PRIMARY KEY,
-    "Status" text NOT NULL,
-    "LastTimeOnline" timestamp,
+    "IconUri" text NOT NULL,
     "IsDeleted" boolean NOT NULL
 );
