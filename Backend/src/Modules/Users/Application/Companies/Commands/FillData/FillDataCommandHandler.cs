@@ -21,7 +21,7 @@ namespace Users.Application.Companies.Commands.FillData
         public async Task Execute(FillDataCommand command)
         {
             var company = await _dbContext.Companies.Get(c => 
-                c.Id.Equals(new CompanyId(_usersContext.Id.Value)));
+                c.Id.Equals(_usersContext.Id));
             
             company.FillData(
                 command.Description,

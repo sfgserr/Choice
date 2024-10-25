@@ -24,12 +24,12 @@ namespace Chat.Domain.Messages.OrderMessages
                 enrollmentDate is null);
         }
 
-        internal OrderResponseId ResponseId { get; }
+        public OrderResponseId ResponseId { get; }
 
-        internal MessageId MessageId { get; }
+        public MessageId MessageId { get; }
 
-        internal DateTime? EnrollmentDate { get; private set; }
+        public DateTime? EnrollmentDate { get; private set; }
 
-        internal bool IsActive { get; private set; }
+        public bool IsActive { get; private set; }
     }
 }

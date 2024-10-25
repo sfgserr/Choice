@@ -2,6 +2,7 @@ using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.Users;
+using Users.Domain.Users.Clients;
 
 namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 {
@@ -20,7 +21,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 
         public async Task Execute(CreateOrderRequestCommand command)
         {
-            var client = await _dbContext.Clients.Get(c => c.UserId.Equals(_userContext.Id));
+            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.Id));
             
             var orderRequest = client.CreateRequest(
                 command.ToKnowPrice,

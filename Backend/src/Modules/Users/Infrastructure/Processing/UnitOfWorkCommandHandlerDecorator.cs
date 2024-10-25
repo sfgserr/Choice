@@ -1,5 +1,4 @@
-﻿using System.Data;
-using BuildingBlocks.Application.Cqrs.Commands;
+﻿using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Users.Infrastructure.Data;

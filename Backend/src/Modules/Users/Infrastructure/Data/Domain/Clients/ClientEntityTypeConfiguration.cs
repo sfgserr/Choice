@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 
 namespace Users.Infrastructure.Data.Domain.Clients
@@ -11,10 +12,11 @@ namespace Users.Infrastructure.Data.Domain.Clients
             builder.ToTable("Clients", "users");
 
             builder.HasKey(x => x.Id);
-
+            
             builder.HasOne(x => x.User)
                 .WithOne()
-                .HasForeignKey<Client>(x => x.UserId);
+                .HasForeignKey<Client>(x => x.Id)
+                .HasPrincipalKey<User>(x => x.Id);
         }
     }
 }

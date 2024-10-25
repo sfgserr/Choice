@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Users.Domain.Categories;
+using Users.Domain.Users;
 using Users.Domain.Users.Companies;
 using Users.Infrastructure.Data.ValueConversion;
 
@@ -16,7 +17,8 @@ namespace Users.Infrastructure.Data.Domain.Companies
 
             builder.HasOne(x => x.User)
                 .WithOne()
-                .HasForeignKey<Company>(x => x.UserId);
+                .HasForeignKey<Company>(x => x.Id)
+                .HasPrincipalKey<User>(x => x.Id);
 
             builder.Navigation(x => x.User).AutoInclude();
 

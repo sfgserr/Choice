@@ -83,7 +83,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
-            }, 5000, false);
+            }, 5000);
         }
 
         private async Task<bool> CreateOrderResponseReturnsOk()
