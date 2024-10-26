@@ -25,8 +25,7 @@ namespace Users.Application.OrderResponses.Commands.Response
             var orderRequest = await _dbContext.OrderRequests.Get(r => 
                 r.Id.Equals(new OrderRequestId(command.RequestId)));
 
-            var company = await _dbContext.Companies.Get(c => 
-                c.Id.Equals(new CompanyId(_userContext.Id.Value)));
+            var company = await _dbContext.Companies.Get(c => c.Id.Equals(_userContext.CompanyId));
             
             var orderResponse = orderRequest.Response(
                 company,

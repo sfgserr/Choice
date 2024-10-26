@@ -23,9 +23,9 @@ namespace Users.Application.OrderResponses.Commands.Enroll
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
             
             if (response.Prepayment > 0)
-                response.EnrollWithPrepayment(new(_userContext.Id.Value));
+                response.EnrollWithPrepayment(_userContext.ClientId);
             else
-                response.Enroll(new(_userContext.Id.Value));
+                response.Enroll(_userContext.ClientId);
         }
     }
 }

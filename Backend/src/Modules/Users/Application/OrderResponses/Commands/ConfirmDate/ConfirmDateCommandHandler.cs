@@ -22,7 +22,7 @@ namespace Users.Application.OrderResponses.Commands.ConfirmDate
             var response = await _dbContext.OrderResponses.Get(r => 
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
 
-            response.ConfirmEnrollmentDate(new(_userContext.Id.Value));
+            response.ConfirmEnrollmentDate(_userContext.CompanyId);
         }
     }
 }

@@ -17,8 +17,7 @@ namespace Users.Infrastructure.Data.Domain.Companies
 
             builder.HasOne(x => x.User)
                 .WithOne()
-                .HasForeignKey<Company>(x => x.Id)
-                .HasPrincipalKey<User>(x => x.Id);
+                .HasForeignKey<Company>(x => x.UserId);
 
             builder.Navigation(x => x.User).AutoInclude();
 

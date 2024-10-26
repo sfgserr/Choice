@@ -1,4 +1,5 @@
 CREATE TABLE users."Clients" (
     "Id" uuid PRIMARY KEY,
-    FOREIGN KEY ("Id") REFERENCES users."Users" ("Id")
+    "UserId" uuid NOT NULL,
+    FOREIGN KEY ("UserId") REFERENCES users."Users" ("Id")
 );

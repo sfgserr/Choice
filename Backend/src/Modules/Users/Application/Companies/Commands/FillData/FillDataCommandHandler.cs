@@ -20,8 +20,7 @@ namespace Users.Application.Companies.Commands.FillData
 
         public async Task Execute(FillDataCommand command)
         {
-            var company = await _dbContext.Companies.Get(c => 
-                c.Id.Equals(_usersContext.Id));
+            var company = await _dbContext.Companies.Get(c => c.Id.Equals(_usersContext.CompanyId));
             
             company.FillData(
                 command.Description,

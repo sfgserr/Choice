@@ -19,6 +19,7 @@ namespace Users.Domain.Users.Companies
         private Company(User user)
         {
             Id = new(user.Id.Value);
+            UserId = user.Id;
             User = user;
         }
 
@@ -43,7 +44,9 @@ namespace Users.Domain.Users.Companies
         }
 
         public CompanyId Id { get; }
-
+        
+        public UserId UserId { get; }
+        
         public User User { get; }
 
         public string Description { get; private set; } = string.Empty;

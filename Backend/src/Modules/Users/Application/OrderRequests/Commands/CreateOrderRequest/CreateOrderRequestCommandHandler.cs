@@ -21,7 +21,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 
         public async Task Execute(CreateOrderRequestCommand command)
         {
-            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.Id));
+            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.ClientId));
             
             var orderRequest = client.CreateRequest(
                 command.ToKnowPrice,

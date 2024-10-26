@@ -30,7 +30,7 @@ namespace Users.Application.OrderRequests.Commands.ChangeOrderRequest
                 command.PhotoUris,
                 command.Description,
                 new(command.CategoryId),
-                new(_userContext.Id.Value));
+                _userContext.ClientId);
         }
     }
 }

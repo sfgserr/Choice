@@ -18,8 +18,7 @@ namespace Users.Application.Clients.Commands.ChangeIconUri
 
         public async Task Execute(ChangeIconUriCommand command)
         {
-            var client = await _dbContext.Clients.Get(c => 
-                c.Id.Equals(_userContext.Id));
+            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.ClientId));
             
             client.ChangeIconUri(command.IconUri);
         }

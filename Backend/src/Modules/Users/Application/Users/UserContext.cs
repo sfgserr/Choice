@@ -1,5 +1,7 @@
 ﻿using BuildingBlocks.Application.Authentication;
 using Users.Domain.Users;
+using Users.Domain.Users.Clients;
+using Users.Domain.Users.Companies;
 
 namespace Users.Application.Users
 {
@@ -11,9 +13,13 @@ namespace Users.Application.Users
         {
             _userService = userService;
         }
-
+        
         public UserId Id => new(_userService.GetUserId());
+        
+        public CompanyId CompanyId => new(_userService.GetUserId());
 
+        public ClientId ClientId => new(_userService.GetUserId());
+        
         public Address Address => 
             new(
                 _userService.GetAttribute("city"), 

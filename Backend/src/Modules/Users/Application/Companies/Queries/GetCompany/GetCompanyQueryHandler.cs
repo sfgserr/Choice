@@ -19,7 +19,7 @@ namespace Users.Application.Companies.Queries.GetCompany
         public async Task<CompanyDto> Handle(GetCompanyQuery query)
         {
             var company = await _dbContext.Companies.GetAsNoTracking(c => 
-                c.Id.Equals(_userContext.Id));
+                c.Id.Equals(_userContext.CompanyId));
             
             return new CompanyDto(
                 company.Id.Value,
