@@ -20,7 +20,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrollmentDate
             var domainEvent = notification.DomainEvent;
             
             await _eventBus.PublishAsync(new EnrollmentDateChangedIntegrationEvent(
-                Guid.NewGuid(),
+                domainEvent.Id,
                 domainEvent.ResponseId.Value,
                 domainEvent.PreviousEnrollmentDate,
                 domainEvent.UserChangedEnrollmentDateId.Value,

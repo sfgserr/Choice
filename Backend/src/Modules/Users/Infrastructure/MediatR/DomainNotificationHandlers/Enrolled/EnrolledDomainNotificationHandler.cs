@@ -16,7 +16,11 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.Enrolled
 
         public async Task Handle(EnrolledDomainNotification notification, CancellationToken cancellationToken)
         {
-            await _eventBus.PublishAsync(new EnrolledIntegrationEvent(notification.DomainEvent.ResponseId.Value));
+            var domainEvent = notification.DomainEvent;
+            
+            await _eventBus.PublishAsync(new EnrolledIntegrationEvent(
+                domainEvent.Id,
+                domainEvent.ResponseId.Value));
         }
     }
 }

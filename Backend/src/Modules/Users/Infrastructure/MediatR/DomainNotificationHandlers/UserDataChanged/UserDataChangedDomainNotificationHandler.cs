@@ -19,7 +19,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserDataChange
             var domainEvent = notification.DomainEvent;
 
             await _eventBus.PublishAsync(new UserDataChangedIntegrationEvent(
-                Guid.NewGuid(),
+                domainEvent.Id,
                 domainEvent.UserId.Value,
                 domainEvent.Name,
                 domainEvent.Email,

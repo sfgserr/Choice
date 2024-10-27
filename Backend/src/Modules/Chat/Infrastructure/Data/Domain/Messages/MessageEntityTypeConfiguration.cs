@@ -12,6 +12,8 @@ namespace Chat.Infrastructure.Data.Domain.Messages
 
             builder.HasKey(x => x.Id);
 
+            builder.Navigation(x => x.OrderMessage).AutoInclude();
+            
             builder.Property(x => x.Type).HasColumnName("Type");
             builder.Property(x => x.Body).HasColumnName("Body");
             builder.Property(x => x.FromUserId).HasColumnName("FromUserId");

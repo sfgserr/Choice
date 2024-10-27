@@ -55,9 +55,11 @@ namespace Chat.Application.Messages.Queries.GetChats
                     Id = _userContext.Id.Value
                 });
 
-            foreach (var chat in chats) chat.IsOnline = _chatService.IsUserOnline(chat.UserId);
-
-            return chats;
+            var chatArray = chats.ToArray();
+            
+            foreach (var chat in chatArray) chat.IsOnline = _chatService.IsUserOnline(chat.UserId);
+            
+            return chatArray;
         }
     }
 }

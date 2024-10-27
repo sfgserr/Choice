@@ -5,6 +5,7 @@ namespace Users.IntegrationEvents
     public class UserCreatedIntegrationEvent : IntegrationEventBase 
     {
         public UserCreatedIntegrationEvent(
+            Guid id,
             Guid userId, 
             string email, 
             string password, 
@@ -13,7 +14,7 @@ namespace Users.IntegrationEvents
             string city, 
             string street, 
             string latitude, 
-            string longitude) : base(Guid.NewGuid())
+            string longitude) : base(id)
         {
             UserId = userId;
             Email = email;

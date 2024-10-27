@@ -16,10 +16,12 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.ReviewCreated
 
         public async Task Handle(ReviewCreatedDomainNotification notification, CancellationToken cancellationToken)
         {
+            var domainEvent = notification.DomainEvent;
+            
             await _scheduler.EnqueueAsync(new ReviewCommand(
-                Guid.NewGuid(),
-                notification.DomainEvent.Grade,
-                notification.DomainEvent.ToUserId.Value));
+                domainEvent.Id,
+                domainEvent.Grade,
+                domainEvent.ToUserId.Value));
         }
     }
 }

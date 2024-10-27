@@ -19,6 +19,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserCreated
             var domainEvent = notification.DomainEvent;
             
             await _eventBus.PublishAsync(new UserCreatedIntegrationEvent(
+                domainEvent.Id,
                 domainEvent.UserId.Value,
                 domainEvent.Email,
                 domainEvent.Password,

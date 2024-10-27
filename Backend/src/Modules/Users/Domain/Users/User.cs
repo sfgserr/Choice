@@ -95,6 +95,8 @@ namespace Users.Domain.Users
             CheckRule(new FieldsMustBeProvidedRule([iconUri]));
 
             IconUri = iconUri;
+            
+            AddDomainEvent(new UserIconUriChangedDomainEvent(Id, IconUri));
         }
 
         internal void ChangeData(

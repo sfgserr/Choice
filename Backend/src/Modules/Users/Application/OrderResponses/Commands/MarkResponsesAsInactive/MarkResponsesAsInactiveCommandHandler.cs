@@ -20,7 +20,7 @@ namespace Users.Application.OrderResponses.Commands.MarkResponsesAsInactive
             const string sql = 
                 $"""
                 UPDATE users."OrderRequests"
-                SET "IsActive" = false WHERE "RequestId" = @RequestId AND "Id" != @Id
+                SET "IsActive" = false WHERE "RequestId" = @RequestId AND "Id" <> @Id
                 """;
 
             await connection.ExecuteAsync(

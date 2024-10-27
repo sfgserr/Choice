@@ -38,8 +38,8 @@ namespace Chat.Application.Messages.Queries.GetChat
 
         public DateTime CreationDate { get; }
 
-        internal DateTime? EnrollmentDate { get; private set; }
+        public DateTime? EnrollmentDate { get; }
 
-        internal bool IsActive { get; private set; }
+        public bool? IsActive { get; }
     }
 }

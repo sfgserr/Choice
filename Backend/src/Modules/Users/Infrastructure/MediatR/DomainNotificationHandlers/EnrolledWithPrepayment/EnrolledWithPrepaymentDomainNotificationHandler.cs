@@ -20,7 +20,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrolledWithPr
             var domainEvent = notification.DomainEvent;
 
             await _eventBus.PublishAsync(new EnrolledWithPrepaymentIntegrationEvent(
-                Guid.NewGuid(),
+                domainEvent.Id,
                 domainEvent.ResponseId.Value,
                 domainEvent.Cost,
                 "RUB"));

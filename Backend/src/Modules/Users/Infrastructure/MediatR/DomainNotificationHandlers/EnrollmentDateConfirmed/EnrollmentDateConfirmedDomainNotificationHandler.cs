@@ -17,9 +17,11 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrollmentDate
 
         public async Task Handle(EnrollmentDateConfirmedDomainNotification notification, CancellationToken cancellationToken)
         {
+            var domainEvent = notification.DomainEvent;
+            
             await _eventBus.PublishAsync(new EnrollmentDateConfirmedIntegrationEvent(
-                Guid.NewGuid(),
-                notification.DomainEvent.ResponseId.Value));
+                domainEvent.Id,
+                domainEvent.ResponseId.Value));
         }
     }
 }

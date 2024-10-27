@@ -20,6 +20,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderStatusCha
             var domainEvent = notification.DomainEvent;
             
             await _eventBus.PublishAsync(new OrderStatusChangedIntegrationEvent(
+                domainEvent.Id,
                 domainEvent.ResponseId.Value,
                 domainEvent.Status.Value));
         }

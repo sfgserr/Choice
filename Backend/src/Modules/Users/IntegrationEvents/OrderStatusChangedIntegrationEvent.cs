@@ -4,7 +4,7 @@ namespace Users.IntegrationEvents
 {
     public class OrderStatusChangedIntegrationEvent : IntegrationEventBase
     {
-        public OrderStatusChangedIntegrationEvent(Guid responseId, string status) : base(Guid.NewGuid())
+        public OrderStatusChangedIntegrationEvent(Guid id, Guid responseId, string status) : base(id)
         {
             ResponseId = responseId;
             Status = status;

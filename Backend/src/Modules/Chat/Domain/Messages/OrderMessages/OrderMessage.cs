@@ -28,8 +28,13 @@ namespace Chat.Domain.Messages.OrderMessages
 
         public MessageId MessageId { get; }
 
-        public DateTime? EnrollmentDate { get; private set; }
+        public DateTime? EnrollmentDate { get; }
 
         public bool IsActive { get; private set; }
+
+        public void SetAsInactive()
+        {
+            IsActive = false;
+        }
     }
 }

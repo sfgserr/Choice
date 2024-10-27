@@ -4,7 +4,7 @@ namespace Users.IntegrationEvents
 {
     public class EnrolledIntegrationEvent : IntegrationEventBase
     {
-        public EnrolledIntegrationEvent(Guid responseId) : base(Guid.NewGuid())
+        public EnrolledIntegrationEvent(Guid id, Guid responseId) : base(id)
         {
             ResponseId = responseId;
         }

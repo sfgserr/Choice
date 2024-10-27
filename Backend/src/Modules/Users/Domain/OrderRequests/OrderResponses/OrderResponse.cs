@@ -98,7 +98,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 
-        public bool IsEnrolled { get; private set; } = false;
+        public bool IsEnrolled { get; private set; }
 
         public bool IsPaid { get; private set; }
 
@@ -106,7 +106,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public bool IsEnrollmentDateConfirmed { get; private set; } = true;
 
-        public bool IsActive { get; private set; } = true;
+        public bool IsActive { get; } = true;
 
         public void EnrollWithPrepayment(ClientId enrollingClientId)
         {
