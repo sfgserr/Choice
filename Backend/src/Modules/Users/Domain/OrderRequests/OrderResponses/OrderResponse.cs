@@ -51,7 +51,10 @@ namespace Users.Domain.OrderRequests.OrderResponses
             Status = status;
             IsPaid = isPaid;
 
-            AddDomainEvent(new OrderResponseCreatedDomainEvent(Id));
+            AddDomainEvent(new OrderResponseCreatedDomainEvent(
+                Id,
+                CompanyId,
+                ClientId));
         }
 
         internal static OrderResponse Create(
@@ -130,7 +133,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             IsEnrolled = true;
 
-            AddDomainEvent(new EnrolledDomainEvent(Id, RequestId));
+            AddDomainEvent(new EnrolledDomainEvent(Id, RequestId, CompanyId));
         }
 
         public void Finish(UserId cancellingUserId)
@@ -218,7 +221,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             IsPaid = true;
 
-            AddDomainEvent(new OrderPaidDomainEvent(Id, RequestId));
+            AddDomainEvent(new OrderPaidDomainEvent(Id, RequestId, CompanyId));
         }
 
         public void AddReview(

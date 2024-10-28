@@ -84,7 +84,7 @@ namespace Users.Domain.OrderRequests
 
         public string Description { get; private set; }
 
-        public bool IsEnrolled { get; private set; } = false;
+        public bool IsEnrolled { get; private set; }
 
         public OrderStatus Status { get; private set; }
 

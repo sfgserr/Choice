@@ -20,7 +20,9 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderResponseC
             
             await _eventBus.PublishAsync(new OrderResponseCreatedIntegrationEvent(
                 domainEvent.Id,
-                domainEvent.ResponseId.Value));
+                domainEvent.ResponseId.Value,
+                domainEvent.CompanyId.Value,
+                domainEvent.ClientId.Value));
         }
     }
 }

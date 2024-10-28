@@ -20,7 +20,8 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.Enrolled
             
             await _eventBus.PublishAsync(new EnrolledIntegrationEvent(
                 domainEvent.Id,
-                domainEvent.ResponseId.Value));
+                domainEvent.ResponseId.Value,
+                domainEvent.CompanyId.Value));
         }
     }
 }
