@@ -169,7 +169,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 UserChangedEnrollmentDate,
                 new UserId(changingClientId.Value)));
 
-            var previousEnrollmentDate = EnrollmentDate;
+            var previousEnrollmentDate = EnrollmentDate!.Value;
 
             EnrollmentDate = newEnrollmentDate;
             IsEnrollmentDateConfirmed = false;
@@ -193,7 +193,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 UserChangedEnrollmentDate, 
                 new UserId(changingCompanyId.Value)));
 
-            var previousEnrollmentDate = EnrollmentDate;
+            var previousEnrollmentDate = EnrollmentDate!.Value;
 
             EnrollmentDate = newEnrollmentDate;
             IsEnrollmentDateConfirmed = true;

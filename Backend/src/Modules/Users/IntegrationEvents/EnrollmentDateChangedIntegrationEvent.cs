@@ -7,7 +7,7 @@ namespace Users.IntegrationEvents
         public EnrollmentDateChangedIntegrationEvent(
             Guid id,
             Guid responseId,
-            DateTime? previousEnrollmentDate,
+            DateTime previousEnrollmentDate,
             Guid userChangedEnrollmentDateId,
             bool isEnrollmentDateConfirmed) : base(id)
         {
@@ -19,7 +19,7 @@ namespace Users.IntegrationEvents
 
         public Guid ResponseId { get; }
 
-        public DateTime? PreviousEnrollmentDate { get; }
+        public DateTime PreviousEnrollmentDate { get; }
 
         public Guid UserChangedEnrollmentDateId { get; }
 
