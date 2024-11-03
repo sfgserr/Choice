@@ -144,7 +144,11 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Finished;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Id, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(
+                RequestId, 
+                Id, 
+                Status, 
+                !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
         }
 
         public void Cancel(UserId cancellingUserId)
@@ -155,7 +159,11 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             Status = OrderStatus.Cancelled;
 
-            AddDomainEvent(new OrderStatusChangedDomainEvent(RequestId, Id, Status));
+            AddDomainEvent(new OrderStatusChangedDomainEvent(
+                RequestId, 
+                Id, 
+                Status, 
+                !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
         }
 
         public void ChangeEnrollmentDateByClient(ClientId changingClientId, DateTime newEnrollmentDate)
@@ -214,7 +222,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             IsEnrollmentDateConfirmed = true;
             
-            AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id));
+            AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id, ClientId));
         }
 
         public void MarkAsPaid()

@@ -7,6 +7,7 @@ namespace Users.IntegrationEvents
         public UserCreatedIntegrationEvent(
             Guid id,
             Guid userId, 
+            string userName,
             string email, 
             string password, 
             string phoneNumber, 
@@ -17,6 +18,7 @@ namespace Users.IntegrationEvents
             string longitude) : base(id)
         {
             UserId = userId;
+            UserName = userName;
             Email = email;
             Password = password;
             PhoneNumber = phoneNumber;
@@ -28,7 +30,9 @@ namespace Users.IntegrationEvents
         }
 
         public Guid UserId { get; }
-
+        
+        public string UserName { get; }
+        
         public string Email { get; }
         
         public string Password { get; }

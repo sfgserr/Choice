@@ -11,6 +11,7 @@ namespace Chat.Domain.ChatUsers
 
         private ChatUser(
             ChatUserId id,
+            string name,
             string iconUri,
             bool isDeleted)
         {
@@ -21,17 +22,25 @@ namespace Chat.Domain.ChatUsers
 
         public static ChatUser Create(
             ChatUserId id,
+            string name,
             string iconUri)
         {
-            return new ChatUser(id, iconUri, false);
+            return new ChatUser(id, name, iconUri, false);
         }
 
         public ChatUserId Id { get; }
+
+        public string Name { get; private set; }
 
         public string IconUri { get; private set; }
 
         public bool IsDeleted { get; private set; }
 
+        public void ChangeName(string name)
+        {
+            Name = name;
+        }
+        
         public void ChangeIconUri(string iconUri)
         {
             IconUri = iconUri;

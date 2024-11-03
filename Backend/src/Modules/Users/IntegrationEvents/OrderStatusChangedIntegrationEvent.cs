@@ -4,14 +4,14 @@ namespace Users.IntegrationEvents
 {
     public class OrderStatusChangedIntegrationEvent : IntegrationEventBase
     {
-        public OrderStatusChangedIntegrationEvent(Guid id, Guid responseId, string status) : base(id)
+        public OrderStatusChangedIntegrationEvent(Guid id, Guid responseId, Guid toUserId) : base(id)
         {
             ResponseId = responseId;
-            Status = status;
+            ToUserId = toUserId;
         }
 
         public Guid ResponseId { get; }
         
-        public string Status { get; }
+        public Guid ToUserId { get; }
     }
 }

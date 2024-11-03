@@ -37,6 +37,7 @@ namespace Users.Domain.Users
 
             AddDomainEvent(new UserCreatedDomainEvent(
                 id,
+                name,
                 email,
                 password,
                 phoneNumber,

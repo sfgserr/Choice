@@ -6,6 +6,7 @@ namespace Users.Domain.Users.Events
     {
         public UserCreatedDomainEvent(
             UserId userId, 
+            string userName,
             string email, 
             string password, 
             string phoneNumber, 
@@ -13,6 +14,7 @@ namespace Users.Domain.Users.Events
             Address address)
         {
             UserId = userId;
+            UserName = userName;
             Email = email;
             Password = password;
             PhoneNumber = phoneNumber;
@@ -22,6 +24,8 @@ namespace Users.Domain.Users.Events
 
         public UserId UserId { get; }
 
+        public string UserName { get; }
+        
         public string Email { get; }
         
         public string Password { get; }

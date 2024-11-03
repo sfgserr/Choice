@@ -21,7 +21,8 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrollmentDate
             
             await _eventBus.PublishAsync(new EnrollmentDateConfirmedIntegrationEvent(
                 domainEvent.Id,
-                domainEvent.ResponseId.Value));
+                domainEvent.ResponseId.Value,
+                domainEvent.ToUserId.Value));
         }
     }
 }

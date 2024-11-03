@@ -1,10 +1,10 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Chat.Application.ChatUsers.Commands.CreateChatUser
+namespace Chat.Application.ChatUsers.Commands.ChangeName
 {
-    public class CreateChatUserCommand : InternalCommandBase
+    public class ChangeNameCommand : InternalCommandBase
     {
-        public CreateChatUserCommand(Guid id, Guid userId, string name) : base(id)
+        public ChangeNameCommand(Guid id, Guid userId, string name) : base(id)
         {
             UserId = userId;
             Name = name;

@@ -21,6 +21,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserCreated
             await _eventBus.PublishAsync(new UserCreatedIntegrationEvent(
                 domainEvent.Id,
                 domainEvent.UserId.Value,
+                domainEvent.UserName,
                 domainEvent.Email,
                 domainEvent.Password,
                 domainEvent.PhoneNumber,

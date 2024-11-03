@@ -35,8 +35,12 @@ namespace Chat.Application.Messages.Queries.GetChats
                         WHEN chat."Messages"."FromUserId" = @Id THEN chat."Messages"."ToUserId"
                         ELSE chat."Messages"."ToUserId"
                     END AS {nameof(ChatDto.UserId)},
-                    chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}
+                    chat."Messages"."Body" as {nameof(ChatDto.LastMessage)},
+                    chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)},
+                    chat."ChatUsers"."Name" as {nameof(ChatDto.UserName)},
+                    chat."ChatUsers"."IconUri" as {nameof(ChatDto.IconUri)}
                 FROM chat."Messages"
+                JOIN chat."ChatUsers" ON chat."ChatUsers"."Id" = {nameof(ChatDto.UserId)}
                 WHERE @Id IN (chat."Messages"."FromUserId", chat."Messages"."ToUserId")
             )
             SELECT DISTINCT ON ({nameof(ChatDto.UserId)})
