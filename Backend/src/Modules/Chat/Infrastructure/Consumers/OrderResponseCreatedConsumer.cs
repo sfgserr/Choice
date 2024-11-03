@@ -1,6 +1,6 @@
 using BuildingBlocks.Application.Events;
 using Chat.Application.Messages.Commands.CreateOrderMessage;
-using Chat.Infrastructure.Data.Domain.InternalCommands;
+using Chat.Infrastructure.Data.InternalCommands;
 using Users.IntegrationEvents;
 
 namespace Chat.Infrastructure.Consumers

@@ -3,7 +3,7 @@ using BuildingBlocks.Infrastructure.InternalCommands;
 using BuildingBlocks.Infrastructure.Serialization;
 using Newtonsoft.Json;
 
-namespace Chat.Infrastructure.Data.Domain.InternalCommands
+namespace Chat.Infrastructure.Data.InternalCommands
 {
     internal class CommandsScheduler
     {

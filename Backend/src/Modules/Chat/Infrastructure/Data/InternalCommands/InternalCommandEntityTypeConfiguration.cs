@@ -2,7 +2,7 @@ using BuildingBlocks.Infrastructure.InternalCommands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Chat.Infrastructure.Data.Domain.InternalCommands
+namespace Chat.Infrastructure.Data.InternalCommands
 {
     internal class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<InternalCommand>
     {

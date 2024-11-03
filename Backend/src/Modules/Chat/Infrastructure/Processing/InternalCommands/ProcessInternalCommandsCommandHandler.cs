@@ -1,0 +1,55 @@
+using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Infrastructure.InternalCommands;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Polly;
+using Chat.Infrastructure.Configuration;
+using Chat.Infrastructure.Data;
+
+namespace Chat.Infrastructure.Processing.InternalCommands
+{
+    internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
+    {
+        private readonly ChatContext _chatContext;
+
+        internal ProcessInternalCommandsCommandHandler(ChatContext chatContext)
+        {
+            _chatContext = chatContext;
+        }
+
+        public async Task Execute(ProcessInternalCommandsCommand command)
+        {
+            var internalCommands = await _chatContext.InternalCommands
+                .Where(c => c.Processed == null)
+                .ToListAsync();
+
+            var policy = Policy.Handle<Exception>()
+                .WaitAndRetryAsync(
+                [
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(3),
+                ]);
+
+            foreach (var internalCommand in internalCommands)
+            {
+                var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommand(internalCommand));
+
+                if (result.Outcome == OutcomeType.Failure)
+                {
+                    internalCommand.Processed = DateTime.UtcNow;
+                    internalCommand.Error = result.FinalException.Message;
+                }
+            }
+        }
+
+        private async Task ProcessCommand(InternalCommand command)
+        {
+            Type type = Assemblies.Application.GetType(command.Type)!;
+
+            dynamic internalCommandBase = JsonConvert.DeserializeObject(command.Data, type)!;
+            
+            await CommandsExecutor.ExecuteCommandAsync(internalCommandBase);
+        }
+    }
+}
