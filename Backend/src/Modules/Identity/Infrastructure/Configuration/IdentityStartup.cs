@@ -4,11 +4,12 @@ using BuildingBlocks.Application.Events;
 using Identity.Infrastructure.Configuration.Authentication;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.DomainEventsDispatching;
-using Identity.Infrastructure.Configuration.EventBus;
+using Identity.Infrastructure.Configuration.Events;
 using Identity.Infrastructure.Configuration.Logging;
 using Identity.Infrastructure.Configuration.Outbox;
 using Identity.Infrastructure.Configuration.Processing;
 using Identity.Infrastructure.Configuration.Quartz;
+using MassTransit;
 using Serilog;
 
 namespace Identity.Infrastructure.Configuration
@@ -21,9 +22,9 @@ namespace Identity.Infrastructure.Configuration
             string connectionString, 
             ILogger logger,
             IUserService userService, 
-            IEventBus eventBus)
+            IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, eventBus);
+            ConfigureCompositionRoot(connectionString, logger, userService, bus);
             
             QuartzStartup.Initialize();
         }
@@ -32,7 +33,7 @@ namespace Identity.Infrastructure.Configuration
             string connectionString, 
             ILogger logger,
             IUserService userService, 
-            IEventBus eventBus)
+            IBus eventBus)
         {
             var builder = new ContainerBuilder();
 

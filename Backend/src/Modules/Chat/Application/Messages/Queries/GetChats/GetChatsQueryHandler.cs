@@ -10,16 +10,16 @@ namespace Chat.Application.Messages.Queries.GetChats
     {
         private readonly ISqlConnectionFactory _factory;
         private readonly IUserContext _userContext;
-        private readonly IChatService _chatService;
+        private readonly IChatUsersStore _usersStore;
 
         internal GetChatsQueryHandler(
             ISqlConnectionFactory factory,
             IUserContext userContext, 
-            IChatService chatService)
+            IChatUsersStore usersStore)
         {
             _factory = factory;
             _userContext = userContext;
-            _chatService = chatService;
+            _usersStore = usersStore;
         }
 
         public async Task<IEnumerable<ChatDto>> Handle(GetChatsQuery query)
@@ -61,7 +61,7 @@ namespace Chat.Application.Messages.Queries.GetChats
 
             var chatArray = chats.ToArray();
             
-            foreach (var chat in chatArray) chat.IsOnline = _chatService.IsUserOnline(chat.UserId);
+            foreach (var chat in chatArray) chat.IsOnline = _usersStore.IsUserOnline(chat.UserId);
             
             return chatArray;
         }

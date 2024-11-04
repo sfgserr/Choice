@@ -3,11 +3,11 @@ using BuildingBlocks.Application.Events;
 using MassTransit;
 using Users.IntegrationEvents;
 
-namespace Payments.Infrastructure.Configuration.EventBus
+namespace Payments.Infrastructure.Configuration.Events
 {
-    internal static class Extensions
+    public static class Extensions
     {
-        public static void AddIdentityConsumers(this IReceiveEndpointConfigurator cfg)
+        public static void AddPaymentsConsumers(this IReceiveEndpointConfigurator cfg)
         {
             cfg.AddHandler<EnrolledWithPrepaymentIntegrationEvent>();
         }

@@ -3,7 +3,7 @@ using BuildingBlocks.Application.Events;
 using MassTransit;
 using Users.IntegrationEvents;
 
-namespace Identity.Infrastructure.Configuration.EventBus
+namespace Identity.Infrastructure.Configuration.Events
 {
     public static class Extensions
     {

@@ -1,6 +1,8 @@
 using Autofac;
-using Identity.Infrastructure.Configuration.EventBus;
+using Identity.Infrastructure.Configuration.Events;
 using MassTransit;
+using Payments.Infrastructure.Configuration.Events;
+using Users.Infrastructure.Configuration.Events;
 
 namespace WebApi.Configuration.EventBus
 {
@@ -15,6 +17,8 @@ namespace WebApi.Configuration.EventBus
                     cfg.ReceiveEndpoint(x =>
                     {
                         x.AddIdentityConsumers();
+                        x.AddUsersConsumers();
+                        x.AddPaymentsConsumers();
                     });
                 });
             })

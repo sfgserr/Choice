@@ -1,11 +1,12 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
 using BuildingBlocks.Application.Events;
+using MassTransit;
 using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
 using Users.Infrastructure.Configuration.Data;
 using Users.Infrastructure.Configuration.DomainEventsDispatching;
-using Users.Infrastructure.Configuration.EventBus;
+using Users.Infrastructure.Configuration.Events;
 using Users.Infrastructure.Configuration.GeoCoding;
 using Users.Infrastructure.Configuration.Logging;
 using Users.Infrastructure.Configuration.Mediation;
@@ -16,7 +17,7 @@ using Users.Infrastructure.MediatR.DomainNotifications;
 
 namespace Users.Infrastructure.Configuration
 {
-    public class UsersStartup
+    public static class UsersStartup
     {
         private static IContainer _container;
 
@@ -24,9 +25,9 @@ namespace Users.Infrastructure.Configuration
             string connectionString, 
             ILogger logger, 
             IUserService userService,
-            IEventBus eventBus)
+            IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, eventBus);
+            ConfigureCompositionRoot(connectionString, logger, userService, bus);
 
             QuartzStartup.Initialize();
         }
@@ -35,7 +36,7 @@ namespace Users.Infrastructure.Configuration
             string connectionString, 
             ILogger logger, 
             IUserService userService,
-            IEventBus eventBus)
+            IBus bus)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -58,7 +59,7 @@ namespace Users.Infrastructure.Configuration
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
-            containerBuilder.RegisterModule(new EventBusModule(eventBus));
+            containerBuilder.RegisterModule(new EventBusModule(bus));
             containerBuilder.RegisterModule(new GeoCodingModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Users")));
             containerBuilder.RegisterModule(new MediationModule());

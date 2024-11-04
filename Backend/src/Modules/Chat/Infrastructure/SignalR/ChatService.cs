@@ -1,53 +1,41 @@
 using Chat.Application.Contracts;
-using Chat.Domain.ChatUsers;
 using Chat.Domain.Messages;
 using Microsoft.AspNetCore.SignalR;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Infrastructure.SignalR
 {
-    internal class ChatService : Hub, IChatService
+    public class ChatService<T> : IChatService where T : Hub
     {
-        private readonly Dictionary<Guid, string> _users;
-        private readonly IUserContext _userContext;
+        private readonly IChatUsersStore _usersStore;
+        private readonly IHubContext<T> _hubContext;
 
-        internal ChatService(IUserContext userContext)
+        public ChatService(IChatUsersStore usersStore, IHubContext<T> hubContext)
         {
-            _users = new();
-            _userContext = userContext;
-        }
-
-        public override Task OnConnectedAsync()
-        {
-            _users.Add(_userContext.Id.Value, Context.ConnectionId);
-
-            return Task.CompletedTask;
-        }
-
-        public override Task OnDisconnectedAsync(Exception? exception)
-        {
-            _users.Remove(_userContext.Id.Value);
-
-            return Task.CompletedTask;
-        }
-
-        public bool IsUserOnline(Guid userId)
-        {
-            return _users.ContainsKey(userId);
+            _usersStore = usersStore;
+            _hubContext = hubContext;
         }
 
         public async Task SendMessage(Message message)
         {
             var toUserId = message.ToUserId.Value;
 
-            if (IsUserOnline(toUserId))
-                await Clients.User(_users[toUserId]).SendAsync("messageSent", message);
+            if (_usersStore.IsUserOnline(toUserId))
+            {
+                await _hubContext.Clients
+                    .User(_usersStore.GetConnectionId(toUserId))
+                    .SendAsync("messageSent", message);
+            }
         }
 
         public async Task SendOrder(OrderResponseDto response, Guid toUserId)
         {
-            if (IsUserOnline(toUserId))
-                await Clients.User(_users[toUserId]).SendAsync("orderSent", response);
+            if (_usersStore.IsUserOnline(toUserId))
+            {
+                await _hubContext.Clients
+                    .User(_usersStore.GetConnectionId(toUserId))
+                    .SendAsync("orderSent", response);
+            }
         }
     }
 }

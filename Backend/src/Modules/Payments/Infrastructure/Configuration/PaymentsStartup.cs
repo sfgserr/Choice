@@ -1,10 +1,11 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
 using BuildingBlocks.Application.Events;
+using MassTransit;
 using Payments.Infrastructure.Configuration.Authentication;
 using Payments.Infrastructure.Configuration.Data;
 using Payments.Infrastructure.Configuration.DomainEventsDispatching;
-using Payments.Infrastructure.Configuration.EventBus;
+using Payments.Infrastructure.Configuration.Events;
 using Payments.Infrastructure.Configuration.Logging;
 using Payments.Infrastructure.Configuration.Mediation;
 using Payments.Infrastructure.Configuration.Outbox;
@@ -23,9 +24,9 @@ namespace Payments.Infrastructure.Configuration
             string connectionString,
             ILogger logger,
             IUserService userService,
-            IEventBus eventBus)
+            IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, eventBus);
+            ConfigureCompositionRoot(connectionString, logger, userService, bus);
 
             QuartzStartup.Initialize();
         }
@@ -34,7 +35,7 @@ namespace Payments.Infrastructure.Configuration
             string connectionString,
             ILogger logger,
             IUserService userService,
-            IEventBus eventBus)
+            IBus bus)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -47,7 +48,7 @@ namespace Payments.Infrastructure.Configuration
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
-            containerBuilder.RegisterModule(new EventBusModule(eventBus));
+            containerBuilder.RegisterModule(new EventBusModule(bus));
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Payments")));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());

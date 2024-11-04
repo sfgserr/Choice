@@ -17,14 +17,16 @@ using Autofac;
 using BuildingBlocks.Application.Authentication;
 using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
-using BuildingBlocks.Application.Events;
-using BuildingBlocks.Infrastructure.Events;
 using Identity.Infrastructure.Configuration;
-using Identity.Infrastructure.Configuration.EventBus;
+using Chat.Infrastructure.Configuration;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
+using WebApi.Configuration.Chat;
+using WebApi.Modules.Chat;
+using WebApi.Modules.Payments;
 
 namespace WebApi
 {
@@ -79,7 +81,6 @@ namespace WebApi
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
             
-            services.AddSingleton<IEventBus, EventBus>();
             services.AddSingleton<JwtProvider>(x => new(new(issuer, audience, secretKey)));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
@@ -90,7 +91,9 @@ namespace WebApi
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new UsersAutofacModule());
+            builder.RegisterModule(new PaymentsAutofacModule());
             builder.RegisterModule(new IdentityAutofacModule());
+            builder.RegisterModule(new ChatAutofacModule());
             builder.RegisterModule(new EventBusModule());
         }
 
@@ -100,8 +103,9 @@ namespace WebApi
 
             var connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
             var userService = container.Resolve<IUserService>();
-            var eventBus = container.Resolve<IEventBus>();
+            var eventBus = container.Resolve<IBus>();
             var bus = container.Resolve<IBusControl>();
+            var hub = container.Resolve<IHubContext<ChatHub>>();
             
             UsersStartup.Initialize(
                 connectionString, 
@@ -120,7 +124,14 @@ namespace WebApi
                 _logger,
                 userService,
                 eventBus);
-
+            
+            ChatStartup<ChatHub>.Initialize(
+                connectionString,
+                _logger,
+                userService,
+                eventBus,
+                hub);
+            
             bus.StartAsync().GetAwaiter().GetResult();
             
             if (env.IsDevelopment())
@@ -138,6 +149,7 @@ namespace WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<ChatHub>("chat");
             });
         }
 
