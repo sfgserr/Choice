@@ -18,8 +18,7 @@ namespace Chat.Infrastructure.Consumers
         {
             await _scheduler.EnqueueAsync(new ChangeEnrollmentDateCommand(
                     @event.Id,
-                    @event.ResponseId,
-                    @event.PreviousEnrollmentDate));
+                    @event.ResponseId));
         }
     }
 }

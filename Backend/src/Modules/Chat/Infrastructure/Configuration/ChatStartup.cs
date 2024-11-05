@@ -9,6 +9,7 @@ using Chat.Infrastructure.Configuration.Outbox;
 using Chat.Infrastructure.Configuration.Processing;
 using Chat.Infrastructure.Configuration.Quartz;
 using Chat.Infrastructure.Configuration.SignalR;
+using Chat.Infrastructure.Configuration.Users;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
@@ -48,6 +49,7 @@ namespace Chat.Infrastructure.Configuration
             containerBuilder.RegisterModule(new ProcessingModule());
             containerBuilder.RegisterModule(new QuartzModule());
             containerBuilder.RegisterModule(new SignalRModule<T>(hubContext));
+            containerBuilder.RegisterModule(new UsersAutofacModule());
             
             _container = containerBuilder.Build();
 
