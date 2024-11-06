@@ -24,6 +24,7 @@ namespace Payments.Domain.EnrollmentPayments
             PayerId = payerId;
             ResponseId = responseId;
             Status = status;
+            ExpirationDate = DateCalculator.CalculateExpirationDateForPayment();
             Cost = cost;
         }
 
@@ -49,6 +50,13 @@ namespace Payments.Domain.EnrollmentPayments
             AddDomainEvent(new EnrollmentPaymentPaidDomainEvent(ResponseId));
         }
 
+        public void Expire()
+        {
+            Status = PaymentStatus.Expired;
+            
+            AddDomainEvent(new EnrollmentPaymentExpiredDomainEvent(ResponseId));
+        }
+        
         public EnrollmentPaymentId Id { get; }
 
         public PayerId PayerId { get; }
@@ -56,6 +64,8 @@ namespace Payments.Domain.EnrollmentPayments
         public OrderResponseId ResponseId { get; }
 
         public PaymentStatus Status { get; private set; }
+        
+        public DateTime ExpirationDate { get; }
 
         public MoneyValue Cost { get; }
     }

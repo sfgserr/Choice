@@ -19,7 +19,7 @@ namespace Users.Application.OrderResponses.Commands.MarkResponsesAsInactive
             
             const string sql = 
                 $"""
-                UPDATE users."OrderRequests"
+                UPDATE users."OrderResponses"
                 SET "IsActive" = false WHERE "RequestId" = @RequestId AND "Id" <> @Id
                 """;
 
