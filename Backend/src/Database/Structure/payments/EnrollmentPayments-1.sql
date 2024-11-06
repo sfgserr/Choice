@@ -4,5 +4,6 @@ CREATE TABLE payments."EnrollmentPayments" (
     "ResponseId" uuid NOT NULL,
     "Status" text NOT NULL,
     "Cost" decimal NOT NULL,
+    "ExpirationDate" timestamp NOT NULL,
     "Currency" text NOT NULL
 );

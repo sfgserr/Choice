@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Administration.Application</AssemblyName>
+        <RootNamespace>Administration.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Application\Application.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlocks\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Dapper">
+        <HintPath>..\..\..\..\..\..\..\.nuget\packages\dapper\2.1.35\lib\net7.0\Dapper.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

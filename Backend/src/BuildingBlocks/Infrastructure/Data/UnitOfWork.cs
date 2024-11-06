@@ -48,7 +48,7 @@ namespace BuildingBlocks.Infrastructure.Data
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
             finally
