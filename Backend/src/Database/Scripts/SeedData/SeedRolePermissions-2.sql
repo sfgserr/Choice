@@ -69,3 +69,23 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetChats');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetChats');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'CreateCategory');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'EditCategory');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetCategories');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'DeleteClient');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'EditClient');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'EditCompany');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetClientAdmin');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetCompanyAdmin');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetClients');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetCompaniesAdmin');

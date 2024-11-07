@@ -15,10 +15,10 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
             ToUserId = toUserId;
         }
 
-        public Guid ResponseId { get; }
+        internal Guid ResponseId { get; }
         
-        public Guid FromUserId { get; }
+        internal Guid FromUserId { get; }
         
-        public Guid ToUserId { get; }
+        internal Guid ToUserId { get; }
     }
 }

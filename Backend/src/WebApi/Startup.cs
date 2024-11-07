@@ -10,6 +10,7 @@ using Users.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Administration.Infrastructure.Configuration;
 using Hellang.Middleware.ProblemDetails;
 using WebApi.Configuration.Authorization;
 using WebApi.Configuration.Validation;
@@ -25,6 +26,7 @@ using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
 using WebApi.Configuration.Chat;
+using WebApi.Modules.Admin;
 using WebApi.Modules.Chat;
 using WebApi.Modules.Payments;
 
@@ -94,6 +96,7 @@ namespace WebApi
             builder.RegisterModule(new PaymentsAutofacModule());
             builder.RegisterModule(new IdentityAutofacModule());
             builder.RegisterModule(new ChatAutofacModule());
+            builder.RegisterModule(new AdminAutofacModule());
             builder.RegisterModule(new EventBusModule());
         }
 
@@ -103,7 +106,6 @@ namespace WebApi
 
             var connectionString = Configuration["PostgreSqlSettings:ConnectionString"]!;
             var userService = container.Resolve<IUserService>();
-            var eventBus = container.Resolve<IBus>();
             var bus = container.Resolve<IBusControl>();
             var hub = container.Resolve<IHubContext<ChatHub>>();
             
@@ -111,26 +113,31 @@ namespace WebApi
                 connectionString, 
                 _logger, 
                 userService,
-                eventBus);
+                bus);
             
             IdentityStartup.Initialize(
                 connectionString,
                 _logger,
                 userService,
-                eventBus);
+                bus);
 
             PaymentsStartup.Initialize(
                 connectionString,
                 _logger,
                 userService,
-                eventBus);
+                bus);
             
             ChatStartup<ChatHub>.Initialize(
                 connectionString,
                 _logger,
                 userService,
-                eventBus,
+                bus,
                 hub);
+
+            AdminStartup.Initialize(
+                connectionString,
+                _logger,
+                bus);
             
             bus.StartAsync().GetAwaiter().GetResult();
             

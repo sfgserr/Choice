@@ -1,3 +1,4 @@
+using Administration.IntegrationEvents;
 using Autofac;
 using BuildingBlocks.Application.Events;
 using MassTransit;
@@ -17,7 +18,8 @@ namespace Chat.Infrastructure.Configuration.Events
                 .AddHandler<OrderStatusChangedIntegrationEvent>()
                 .AddHandler<UserCreatedIntegrationEvent>()
                 .AddHandler<UserDataChangedIntegrationEvent>()
-                .AddHandler<UserIconUriChangedIntegrationEvent>();
+                .AddHandler<UserIconUriChangedIntegrationEvent>()
+                .AddHandler<ClientDeletedIntegrationEvent>();
         }
 
         private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg)

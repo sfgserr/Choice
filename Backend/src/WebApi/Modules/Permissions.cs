@@ -30,5 +30,15 @@ namespace WebApi.Modules
         public const string CreateMessage = "CreateMessage";
         public const string GetChat = "GetChat";
         public const string GetChats = "GetChats";
+        public const string CreateCategory = "CreateCategory";
+        public const string EditCategory = "EditCategory";
+        public const string GetCategories = "GetCategories";
+        public const string DeleteClient = "DeleteClient";
+        public const string EditClient = "EditClient";
+        public const string EditCompany = "EditCompany";
+        public const string GetClientAdmin = "GetClientAdmin";
+        public const string GetCompanyAdmin = "GetCompanyAdmin";
+        public const string GetClients = "GetClients";
+        public const string GetCompaniesAdmin = "GetCompaniesAdmin";
     }
 }

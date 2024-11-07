@@ -22,10 +22,9 @@ namespace Administration.Application.Queries.GetClients
                 SELECT
                     users."Users"."Id" as {nameof(ClientDto.Id)},
                     users."Users"."IconUri" as {nameof(ClientDto.IconUri)},
-                    users."Users"."AverageGrade" as {nameof(ClientDto.AverageGrade)},
                     users."Users"."Name" as {nameof(ClientDto.Name)},
-                    users."Users"."PhoneNumber" as {nameof(ClientDto.PhoneNumber)},
-                    users."Users"."Email" as {nameof(ClientDto.Email)}
+                    users."Users"."City" as {nameof(ClientDto.City)},
+                    users."Users"."Street" as {nameof(ClientDto.Street)},
                 FROM users."Users" 
                 """;
 

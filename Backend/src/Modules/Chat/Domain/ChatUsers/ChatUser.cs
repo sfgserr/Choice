@@ -48,6 +48,9 @@ namespace Chat.Domain.ChatUsers
 
         public void Delete()
         {
+            Name = "Deleted user";
+            IconUri = "deleted";
+            
             IsDeleted = true;
         }
     }

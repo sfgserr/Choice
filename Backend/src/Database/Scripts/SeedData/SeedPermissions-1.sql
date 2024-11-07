@@ -53,3 +53,23 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('CreateMessage');
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetChat');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetChats');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('CreateCategory');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('EditCategory');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetCategories');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('DeleteClient');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('EditClient');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('EditCompany');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetClientAdmin');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetCompanyAdmin');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetClients');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetCompaniesAdmin');

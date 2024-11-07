@@ -1,4 +1,5 @@
 using Autofac;
+using Chat.Infrastructure.Configuration.Events;
 using Identity.Infrastructure.Configuration.Events;
 using MassTransit;
 using Payments.Infrastructure.Configuration.Events;
@@ -19,6 +20,7 @@ namespace WebApi.Configuration.EventBus
                         x.AddIdentityConsumers();
                         x.AddUsersConsumers();
                         x.AddPaymentsConsumers();
+                        x.AddChatConsumers();
                     });
                 });
             })

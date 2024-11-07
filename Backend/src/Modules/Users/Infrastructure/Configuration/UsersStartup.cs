@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
-using BuildingBlocks.Application.Events;
 using MassTransit;
 using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
