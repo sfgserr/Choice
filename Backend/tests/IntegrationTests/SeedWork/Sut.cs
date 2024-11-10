@@ -1,4 +1,3 @@
-using IntegrationTests.SeedWork.Probes;
 using IntegrationTests.Services;
 using IntegrationTests.Services.Database;
 using Xunit.Abstractions;
@@ -17,11 +16,12 @@ namespace IntegrationTests.SeedWork
             _factory = testBed.GetService<IHttpClientFactory>(outputHelper)!;
             _dbService = testBed.GetService<DbService>(outputHelper)!;
 
-            _authService = testBed.GetService<AuthService>(outputHelper)!;        }
+            _authService = testBed.GetService<AuthService>(outputHelper)!;        
+        }
 
-        protected async Task<bool> ExecuteAuthorizedTest(
-            Func<IHttpClientFactory,string,Task<IProbe>> testExecution,
-            int delayAfterProbe = 0,
+        protected async Task<TestResult> ExecuteAuthorizedTest(
+            Func<IHttpClientFactory,string,Task<TestResult>> testExecution,
+            int delayAfterTestExecution = 0,
             bool reset = false,
             TokenType tokenType = TokenType.Client)
         {
@@ -30,16 +30,16 @@ namespace IntegrationTests.SeedWork
             if (token is null) 
             {
                 _dbService.ClearDatabase();
-                return false;
+                return new TestResult(false);
             }
 
             try
             {
-                var probe = await testExecution(_factory, token);
+                var result = await testExecution(_factory, token);
+                
+                if (reset || !result.IsSuccessful) Reset();
 
-                var result = await ProbeTest(probe, delayAfterProbe);
-
-                if (reset || !result) Reset();
+                await Task.Delay(delayAfterTestExecution);
 
                 return result;
             }
@@ -49,20 +49,20 @@ namespace IntegrationTests.SeedWork
                 throw;
             }
         }
-
-        protected async Task<bool> ExecuteTest(
-            Func<IHttpClientFactory,Task<IProbe>> testExecution,
-            int delayAfterProbe = 0,
+        
+        protected async Task<TestResult> ExecuteTest(
+            Func<IHttpClientFactory,Task<TestResult>> testExecution,
+            int delayAfterExecution = 0,
             bool reset = false)
         {
             try
             {
-                var probe = await testExecution(_factory);
+                var result = await testExecution(_factory);
+                
+                if (reset || !result.IsSuccessful) Reset();
 
-                var result = await ProbeTest(probe, delayAfterProbe);
-
-                if (reset || !result) Reset();
-
+                await Task.Delay(delayAfterExecution);
+                
                 return result;
             }
             catch
@@ -70,15 +70,6 @@ namespace IntegrationTests.SeedWork
                 Reset();
                 throw;
             }
-        }
-
-        private async Task<bool> ProbeTest(IProbe probe, int delay)
-        {
-            var result = probe.Test();
-
-            await Task.Delay(delay);
-
-            return result;
         }
 
         private void Reset()

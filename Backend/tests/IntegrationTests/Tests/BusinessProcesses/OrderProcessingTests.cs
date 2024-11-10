@@ -1,5 +1,4 @@
 using IntegrationTests.SeedWork;
-using IntegrationTests.SeedWork.Probes;
 using IntegrationTests.Services;
 using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
@@ -20,17 +19,25 @@ namespace IntegrationTests.Tests.BusinessProcesses
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
             var createOrderRequest = new TestChain(CreateOrderRequestReturnsOk);
+            var getOrderRequests = new TestChain(GetOrderRequestsReturnsOk);
             var createOrderResponse = new TestChain(CreateOrderResponseReturnsOk);
-
+            var getChats = new TestChain(GetChatsReturnsOk);
+            var getChat = new TestChain(GetChatReturnsOk);
+            var enroll = new TestChain(EnrollReturnsOk);
+            
             fillData.SetNext(createOrderRequest);
-            createOrderRequest.SetNext(createOrderResponse);
-
-            var result = fillData.Execute();
+            createOrderRequest.SetNext(getOrderRequests);
+            getOrderRequests.SetNext(createOrderResponse);
+            createOrderResponse.SetNext(getChats);
+            getChats.SetNext(getChat);
+            getChat.SetNext(enroll);
+            
+            var result = fillData.Execute(null);
 
             Assert.True(result);
         }
 
-        private async Task<bool> CompanyFillDataReturnsOk()
+        private async Task<TestResult> CompanyFillDataReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -54,11 +61,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode);
             }, 10000, false, TokenType.Company);
         }
 
-        private async Task<bool> CreateOrderRequestReturnsOk()
+        private async Task<TestResult> CreateOrderRequestReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -82,16 +89,16 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 
                 var response = await client.SendAsync(request);
 
-                return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode);
             }, 5000);
         }
 
-        private async Task<bool> CreateOrderResponseReturnsOk()
+        private async Task<TestResult> GetOrderRequestsReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
                 using var client = factory.CreateClient("Default");
-
+                
                 var getOrdersRequest = new HttpRequestMessage(
                     HttpMethod.Get,
                     "api/orderRequests/radius");
@@ -100,17 +107,29 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var orderRequests = await client.SendAsync(getOrdersRequest);
 
                 if (!orderRequests.IsSuccessStatusCode)
-                    return new CheckSuccessStatusCodeProbe(false);
+                    return new TestResult(false);
 
                 var content = await orderRequests.Content.ReadAsStringAsync();
-                var jObject = JArray.Parse(content);
+                var array = JArray.Parse(content);
 
+                return new TestResult(true, array[0].Value<string>("id"));
+            }, 0, false, TokenType.Company);
+        }
+        
+        private async Task<TestResult> CreateOrderResponseReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+                
                 var request = new HttpRequestMessage(HttpMethod.Post, "api/orderResponses")
                 {
                     Content = JsonContent.Create(
                         new
                         {
-                            RequestId = jObject[0]!.Value<string>("id"),
+                            RequestId = id,
                             Price = 2000,
                             Deadline = 100,
                             EnrollmentDate = DateTime.UtcNow,
@@ -121,8 +140,69 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
-            }, 0, true, TokenType.Company);
+                return new TestResult(response.IsSuccessStatusCode);
+            }, 5000, false, TokenType.Company);
+        }
+
+        private async Task<TestResult> GetChatsReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                using var client = factory.CreateClient("Default");
+                
+                var getChatsRequest = new HttpRequestMessage(HttpMethod.Get, "api/messages");
+                getChatsRequest.Headers.Add("Authorization", $"Bearer {token}");
+
+                var chatsResponse = await client.SendAsync(getChatsRequest);
+
+                if (!chatsResponse.IsSuccessStatusCode)
+                    return new TestResult(false);
+
+                var content = await chatsResponse.Content.ReadAsStringAsync();
+                var array = JArray.Parse(content);
+
+                return new TestResult(true, array[0].Value<string>("userId"));
+            });
+        }
+    
+        private async Task<TestResult> GetChatReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+
+                using var client = factory.CreateClient("Default");
+                
+                var getChatsRequest = new HttpRequestMessage(HttpMethod.Get, $"api/messages/{id}");
+                getChatsRequest.Headers.Add("Authorization", $"Bearer {token}");
+
+                var chatsResponse = await client.SendAsync(getChatsRequest);
+
+                if (!chatsResponse.IsSuccessStatusCode)
+                    return new TestResult(false);
+
+                var content = await chatsResponse.Content.ReadAsStringAsync();
+                var array = JArray.Parse(content);
+
+                return new TestResult(true, array[0].Value<string>("orderResponseId"));
+            });
+        }
+        
+        private async Task<TestResult> EnrollReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"api/orderResponses/enroll/{id}");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, id);
+            }, 0, true);
         }
     }
 }

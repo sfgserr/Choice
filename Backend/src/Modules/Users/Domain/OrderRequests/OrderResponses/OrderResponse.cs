@@ -125,9 +125,9 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public void Enroll(ClientId enrollingClientId)
         {
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
             CheckRule(new CannotEnrollMoreThanOnceRule(IsEnrolled));
             CheckRule(new CannotEnrollIfOrderIsNotPaidRule(IsPaid));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, CompanyId, ClientId));
             CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(IsEnrollmentDateConfirmed));
 

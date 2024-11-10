@@ -1,11 +1,16 @@
+using BuildingBlocks.Infrastructure.Quartz;
 using Quartz;
+using Serilog;
 
 namespace Chat.Infrastructure.Processing.InternalCommands
 {
-    [DisallowConcurrentExecution]
-    internal class ProcessInternalCommandsJob : IJob
+    internal class ProcessInternalCommandsJob : JobBase
     {
-        public async Task Execute(IJobExecutionContext context)
+        public ProcessInternalCommandsJob(ILogger logger) : base(logger)
+        {
+        }
+
+        protected override async Task ExecuteJob(IJobExecutionContext context)
         {
             await CommandsExecutor.ExecuteCommandAsync(new ProcessInternalCommandsCommand());
         }

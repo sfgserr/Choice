@@ -23,9 +23,7 @@ namespace Users.Infrastructure.Processing.Outbox
 
         public async Task Execute(ProcessOutboxCommand command)
         {
-            try
-            {
-                var messages = await _usersContext.OutboxMessages.Where(m => m.Processed == null)
+            var messages = await _usersContext.OutboxMessages.Where(m => m.Processed == null)
                 .ToListAsync();
 
             foreach (var message in messages)
@@ -35,11 +33,6 @@ namespace Users.Infrastructure.Processing.Outbox
                 await _mediator.Publish(notification!);
 
                 message.Processed = DateTime.UtcNow;
-            }
-            }
-            catch(Exception ex)
-            {
-                System.Console.WriteLine(ex.Message);
             }
         }
     }

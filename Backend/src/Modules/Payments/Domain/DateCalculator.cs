@@ -15,7 +15,7 @@
 
         internal static DateTime CalculateExpirationDateForPayment()
         {
-            return DateTime.Now.AddMinutes(10);
+            return DateTime.UtcNow.AddMinutes(10);
         }
     }
 }

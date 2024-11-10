@@ -16,7 +16,8 @@ namespace Payments.Infrastructure.Data.Domain.EnrollmentPayments
             builder.Property(e => e.ResponseId).HasColumnName("ResponseId");
             builder.Property(e => e.PayerId).HasColumnName("PayerId");
             builder.Property(e => e.Status).HasConversion(e => e.Value, e => PaymentStatus.Parse(e));
-
+            builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationName");    
+            
             builder.OwnsOne(e => e.Cost, b =>
             {
                 b.Property(x => x.Currency).HasColumnName("Currency");

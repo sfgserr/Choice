@@ -34,22 +34,33 @@ namespace Chat.Application.Messages.Queries.GetChats
                     CASE 
                         WHEN chat."Messages"."FromUserId" = @Id THEN chat."Messages"."ToUserId"
                         ELSE chat."Messages"."ToUserId"
-                    END AS {nameof(ChatDto.UserId)},
+                    END as {nameof(ChatDto.UserId)},
                     chat."Messages"."Body" as {nameof(ChatDto.LastMessage)},
-                    chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)},
-                    chat."ChatUsers"."Name" as {nameof(ChatDto.UserName)},
-                    chat."ChatUsers"."IconUri" as {nameof(ChatDto.IconUri)}
+                    chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}
                 FROM chat."Messages"
-                JOIN chat."ChatUsers" ON chat."ChatUsers"."Id" = {nameof(ChatDto.UserId)}
                 WHERE @Id IN (chat."Messages"."FromUserId", chat."Messages"."ToUserId")
+            ),
+            LastMessageWithUser AS (
+            	SELECT
+            		{nameof(ChatDto.LastMessageId)},
+            		{nameof(ChatDto.UserId)},
+            		{nameof(ChatDto.LastMessage)},
+            		{nameof(ChatDto.LastMessageCreationDate)},
+            		chat."ChatUsers"."Name" as {nameof(ChatDto.UserName)},
+            		chat."ChatUsers"."IconUri" as {nameof(ChatDto.IconUri)}
+            	FROM LastMessage
+            	JOIN chat."ChatUsers" ON chat."ChatUsers"."Id" = {nameof(ChatDto.UserId)}
             )
             SELECT DISTINCT ON ({nameof(ChatDto.UserId)})
                 {nameof(ChatDto.LastMessageId)},
                 {nameof(ChatDto.UserId)},
-                {nameof(ChatDto.LastMessageCreationDate)}
-            FROM LastMessage
+                {nameof(ChatDto.LastMessageCreationDate)},
+                {nameof(ChatDto.UserName)},
+                {nameof(ChatDto.IconUri)},
+                {nameof(ChatDto.LastMessage)}
+            FROM LastMessageWithUser
             WHERE {nameof(ChatDto.UserId)} <> @Id
-            ORDER BY {nameof(ChatDto.LastMessageCreationDate)} DESC;
+            ORDER BY {nameof(ChatDto.UserId)}, {nameof(ChatDto.LastMessageCreationDate)} DESC;
             """;
 
             var chats = await connection.QueryAsync<ChatDto>(

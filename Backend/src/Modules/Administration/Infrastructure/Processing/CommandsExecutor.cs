@@ -15,7 +15,7 @@ namespace Administration.Infrastructure.Processing
             var handler = scope.Resolve(handlerType) as ICommandHandler<TCommand>;
 
             await handler!.Execute(command);
-        }
+        } 
 
         internal static async Task<TResult> ExecuteCommandAsync<TCommand, TResult>(TCommand command)
             where TCommand : ICommandWithResult<TResult>

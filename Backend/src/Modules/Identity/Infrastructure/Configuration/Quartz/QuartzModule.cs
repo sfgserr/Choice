@@ -9,9 +9,10 @@ namespace Identity.Infrastructure.Configuration.Quartz
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(x => x.IsAssignableFrom(typeof(IJob)))
+                .Where(x => typeof(IJob).IsAssignableFrom(x))
                 .InstancePerDependency()
-                .FindConstructorsWith(new AllConstructorFinder());
+                .FindConstructorsWith(new AllConstructorFinder())
+                .AsSelf();
         }
     }
 }

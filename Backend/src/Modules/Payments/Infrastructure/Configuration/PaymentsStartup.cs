@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
-using BuildingBlocks.Application.Events;
 using MassTransit;
 using Payments.Infrastructure.Configuration.Authentication;
 using Payments.Infrastructure.Configuration.Data;
@@ -26,9 +25,11 @@ namespace Payments.Infrastructure.Configuration
             IUserService userService,
             IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, bus);
+            var paymentsLogger = logger.ForContext("Module", "Payments");
+            
+            ConfigureCompositionRoot(connectionString, paymentsLogger, userService, bus);
 
-            QuartzStartup.Initialize();
+            QuartzStartup.Initialize(paymentsLogger);
         }
 
         private static void ConfigureCompositionRoot(

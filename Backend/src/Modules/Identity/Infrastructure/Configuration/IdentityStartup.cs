@@ -24,9 +24,11 @@ namespace Identity.Infrastructure.Configuration
             IUserService userService, 
             IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, bus);
+            var identityLogger = logger.ForContext("Module", "Identity");
             
-            QuartzStartup.Initialize();
+            ConfigureCompositionRoot(connectionString, identityLogger, userService, bus);
+            
+            QuartzStartup.Initialize(identityLogger);
         }
         
         private static void ConfigureCompositionRoot(
@@ -41,7 +43,7 @@ namespace Identity.Infrastructure.Configuration
             builder.RegisterModule(new DataAccessModule(connectionString));
             builder.RegisterModule(new DomainEventsDispatchingModule([]));
             builder.RegisterModule(new EventBusModule(eventBus));
-            builder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Identity")));
+            builder.RegisterModule(new LoggingModule(logger));
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new ProcessingModule());
             builder.RegisterModule(new QuartzModule());

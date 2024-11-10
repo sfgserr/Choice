@@ -1,10 +1,11 @@
 using Autofac;
 using BuildingBlocks.Application.Authentication;
-using BuildingBlocks.Application.Events;
 using Chat.Infrastructure.Configuration.Authentication;
 using Chat.Infrastructure.Configuration.Data;
+using Chat.Infrastructure.Configuration.DomainEventsDispatching;
 using Chat.Infrastructure.Configuration.Events;
 using Chat.Infrastructure.Configuration.Logging;
+using Chat.Infrastructure.Configuration.Mediation;
 using Chat.Infrastructure.Configuration.Outbox;
 using Chat.Infrastructure.Configuration.Processing;
 using Chat.Infrastructure.Configuration.Quartz;
@@ -27,9 +28,11 @@ namespace Chat.Infrastructure.Configuration
             IBus bus,
             IHubContext<T> hubContext)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, bus, hubContext);
+            var chatLogger = logger.ForContext("Module", "Chat");
+            
+            ConfigureCompositionRoot(connectionString, chatLogger, userService, bus, hubContext);
 
-            QuartzStartup.Initialize();
+            QuartzStartup.Initialize(chatLogger);
         }
 
         private static void ConfigureCompositionRoot(
@@ -43,8 +46,10 @@ namespace Chat.Infrastructure.Configuration
 
             containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
+            containerBuilder.RegisterModule(new DomainEventsDispatchingModule([]));
             containerBuilder.RegisterModule(new EventBusModule(bus));
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Chat")));
+            containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
             containerBuilder.RegisterModule(new QuartzModule());

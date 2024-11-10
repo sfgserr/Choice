@@ -11,7 +11,8 @@ namespace Users.Infrastructure.Configuration.Quartz
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(x => typeof(IJob).IsAssignableFrom(x))
                 .InstancePerDependency()
-                .FindConstructorsWith(new AllConstructorFinder());
+                .FindConstructorsWith(new AllConstructorFinder())
+                .AsSelf();
         }
     }
 }

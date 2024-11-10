@@ -1,31 +1,40 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using BuildingBlocks.Infrastructure.InternalCommands;
+using BuildingBlocks.Application.Data;
 using BuildingBlocks.Infrastructure.Serialization;
+using Dapper;
 using Newtonsoft.Json;
 
 namespace Chat.Infrastructure.Data.InternalCommands
 {
     internal class CommandsScheduler
     {
-        private readonly ChatContext _chatContext;
+        private readonly ISqlConnectionFactory _connectionFactory;
 
-        internal CommandsScheduler(ChatContext chatContext)
+        internal CommandsScheduler(ISqlConnectionFactory connectionFactory)
         {
-            _chatContext = chatContext;
+            _connectionFactory = connectionFactory;
         }
 
         public async Task EnqueueAsync(InternalCommandBase command)
         {
-            string type = command.GetType().FullName!;
+            using var connection = _connectionFactory.GetConnection();
+            
+            const string sql = 
+                $"""
+                 INSERT INTO chat."InternalCommands" ("Id", "Type", "Data") VALUES (@Id, @Type, @Data); 
+                 """;
 
-            string json = JsonConvert.SerializeObject(command, new JsonSerializerSettings()
-            {
-                ContractResolver = new AllPropertiesContractResolver()
-            });
-
-            var internalCommand = new InternalCommand(command.Id, type, json);
-
-            await _chatContext.InternalCommands.AddAsync(internalCommand);
+            await connection.ExecuteAsync(
+                sql,
+                new
+                {
+                    command.Id,
+                    Type = command.GetType().FullName,
+                    Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings()
+                    {
+                        ContractResolver = new AllPropertiesContractResolver()
+                    })
+                });
         }
     }
 }

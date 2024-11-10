@@ -6,7 +6,7 @@ namespace Users.Infrastructure.Processing
 {
     internal static class CommandsExecutor
     {
-        internal async static Task ExecuteCommandAsync<TCommand>(TCommand command) where TCommand : ICommand
+        internal static async Task ExecuteCommandAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
             using var scope = UsersCompositionRoot.BeginLifetimeScope();
 
@@ -17,7 +17,7 @@ namespace Users.Infrastructure.Processing
             await handler!.Execute(command);
         }
 
-        internal async static Task<TResult> ExecuteCommandAsync<TCommand, TResult>(TCommand command)
+        internal static async Task<TResult> ExecuteCommandAsync<TCommand, TResult>(TCommand command)
             where TCommand : ICommandWithResult<TResult>
         {
             using var scope = UsersCompositionRoot.BeginLifetimeScope();

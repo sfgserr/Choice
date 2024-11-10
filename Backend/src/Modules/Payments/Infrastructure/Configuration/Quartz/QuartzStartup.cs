@@ -1,15 +1,18 @@
 ﻿using Quartz.Impl;
 using Quartz;
 using System.Collections.Specialized;
+using Autofac;
+using BuildingBlocks.Infrastructure.Quartz;
 using Payments.Infrastructure.Processing.Outbox;
 using Payments.Infrastructure.Processing.InternalCommands;
 using Payments.Infrastructure.Configuration.Quartz.Jobs;
+using Serilog;
 
 namespace Payments.Infrastructure.Configuration.Quartz
 {
     internal class QuartzStartup
     {
-        public static void Initialize()
+        public static void Initialize(ILogger logger)
         {
             var configuration = new NameValueCollection
             {
@@ -19,7 +22,8 @@ namespace Payments.Infrastructure.Configuration.Quartz
             var factory = new StdSchedulerFactory(configuration);
 
             var scheduler = factory.GetScheduler().GetAwaiter().GetResult();
-
+            scheduler.JobFactory = new AutofacJobFactory(logger);
+            
             scheduler.Start().GetAwaiter().GetResult();
 
             ScheduleProcessOutboxJob(scheduler);
@@ -34,7 +38,7 @@ namespace Payments.Infrastructure.Configuration.Quartz
 
             var expireJobTrigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithCronSchedule("0/59 * * ? * *")
+                .WithCronSchedule("0/0 0/5 * ? * *")
                 .Build();
 
             scheduler.ScheduleJob(expireJob, expireJobTrigger).GetAwaiter().GetResult();
@@ -46,7 +50,7 @@ namespace Payments.Infrastructure.Configuration.Quartz
 
             var expireJobTrigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithCronSchedule("0/59 * * ? * *")
+                .WithCronSchedule("0/0 0/5 * ? * *")
                 .Build();
 
             scheduler.ScheduleJob(expireJob, expireJobTrigger).GetAwaiter().GetResult();
@@ -58,7 +62,7 @@ namespace Payments.Infrastructure.Configuration.Quartz
 
             var outboxJobTrigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithCronSchedule("0/2 * * ? * *")
+                .WithCronSchedule("0/4 * * ? * *")
                 .Build();
 
             scheduler.ScheduleJob(outboxJob, outboxJobTrigger).GetAwaiter().GetResult();
@@ -70,7 +74,7 @@ namespace Payments.Infrastructure.Configuration.Quartz
 
             var internalCommandsTrigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithCronSchedule("0/2 * * ? * *")
+                .WithCronSchedule("0/4 * * ? * *")
             .Build();
 
             scheduler.ScheduleJob(internalCommandsJob, internalCommandsTrigger).GetAwaiter().GetResult();

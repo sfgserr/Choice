@@ -4,6 +4,7 @@ using Chat.Application.Contracts;
 using Chat.Domain.ChatUsers;
 using Chat.Domain.Messages;
 using Chat.Infrastructure.Data.Domain.ChatUsers;
+using Chat.Infrastructure.Data.Domain.Messages;
 using Chat.Infrastructure.Data.Domain.Outbox;
 using Chat.Infrastructure.Data.InternalCommands;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace Chat.Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ChatUserEntityTypeConfiguration());
+            builder.ApplyConfiguration(new MessageEntityTypeConfiguration());
             builder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
             builder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         }

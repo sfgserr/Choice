@@ -26,9 +26,11 @@ namespace Users.Infrastructure.Configuration
             IUserService userService,
             IBus bus)
         {
-            ConfigureCompositionRoot(connectionString, logger, userService, bus);
+            var usersLogger = logger.ForContext("Module", "Users");
+            
+            ConfigureCompositionRoot(connectionString, usersLogger, userService, bus);
 
-            QuartzStartup.Initialize();
+            QuartzStartup.Initialize(usersLogger);
         }
 
         private static void ConfigureCompositionRoot(
@@ -60,7 +62,7 @@ namespace Users.Infrastructure.Configuration
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
             containerBuilder.RegisterModule(new EventBusModule(bus));
             containerBuilder.RegisterModule(new GeoCodingModule());
-            containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Users")));
+            containerBuilder.RegisterModule(new LoggingModule(logger));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());

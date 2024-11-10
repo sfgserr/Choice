@@ -1,5 +1,6 @@
 using Autofac;
 using BuildingBlocks.Infrastructure.Configuration;
+using BuildingBlocks.Infrastructure.Quartz;
 using Quartz;
 
 namespace Chat.Infrastructure.Configuration.Quartz
@@ -11,7 +12,8 @@ namespace Chat.Infrastructure.Configuration.Quartz
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(x => typeof(IJob).IsAssignableFrom(x))
                 .InstancePerDependency()
-                .FindConstructorsWith(new AllConstructorFinder());
+                .FindConstructorsWith(new AllConstructorFinder())
+                .AsSelf();
         }
     }
 }

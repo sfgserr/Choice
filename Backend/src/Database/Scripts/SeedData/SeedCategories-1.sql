@@ -1,1 +1,1 @@
-INSERT INTO administration."Categories" ("Id", "Title") VALUES (1, 'Авто');
+INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (1, 'Авто', 'auto');

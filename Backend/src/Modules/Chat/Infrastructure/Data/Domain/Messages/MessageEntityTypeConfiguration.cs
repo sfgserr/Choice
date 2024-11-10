@@ -9,12 +9,11 @@ namespace Chat.Infrastructure.Data.Domain.Messages
         public void Configure(EntityTypeBuilder<Message> builder)
         {
             builder.ToTable("Messages", "chat");
-
             builder.HasKey(x => x.Id);
-
-            builder.Navigation(x => x.OrderMessage).AutoInclude();
             
-            builder.Property(x => x.Type).HasColumnName("Type");
+            builder.Property(x => x.Type)
+                .HasColumnName("Type")
+                .HasConversion(x => x.Value, x => MessageType.Parse(x));
             builder.Property(x => x.Body).HasColumnName("Body");
             builder.Property(x => x.FromUserId).HasColumnName("FromUserId");
             builder.Property(x => x.ToUserId).HasColumnName("ToUserId");
@@ -23,9 +22,10 @@ namespace Chat.Infrastructure.Data.Domain.Messages
             builder.OwnsOne(x => x.OrderMessage, x =>
             {
                 x.ToTable("OrderMessages", "chat");
-                x.WithOwner().HasForeignKey(y => y.MessageId);
                 x.HasKey(y => new { y.ResponseId, y.MessageId });
             });
+            
+            builder.Navigation(x => x.OrderMessage).AutoInclude();
         }
     }
 }

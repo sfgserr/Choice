@@ -1,11 +1,16 @@
-﻿using Quartz;
+﻿using BuildingBlocks.Infrastructure.Quartz;
+using Quartz;
+using Serilog;
 
 namespace Users.Infrastructure.Processing.Outbox
 {
-    [DisallowConcurrentExecution]
-    internal class ProcessOutboxJob : IJob
+    internal class ProcessOutboxJob : JobBase
     {
-        public async Task Execute(IJobExecutionContext context)
+        public ProcessOutboxJob(ILogger logger) : base(logger)
+        {
+        }
+
+        protected override async Task ExecuteJob(IJobExecutionContext context)
         {
             await CommandsExecutor.ExecuteCommandAsync(new ProcessOutboxCommand());
         }

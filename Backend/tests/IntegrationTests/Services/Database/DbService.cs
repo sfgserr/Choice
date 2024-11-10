@@ -15,15 +15,6 @@ namespace IntegrationTests.Services.Database
             _options = options;
         }
 
-        public bool Match<T>(string sql, T toMatch)
-        {
-            using var connection = new NpgsqlConnection(_options.ConnectionString);
-
-            var t = connection.QuerySingle<T>(sql);
-
-            return toMatch != null && toMatch.Equals(t);
-        }
-
         public void ClearDatabase()
         {
             var upgrader =

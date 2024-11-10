@@ -1,5 +1,4 @@
 using IntegrationTests.SeedWork;
-using IntegrationTests.SeedWork.Probes;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.Tests.Users
@@ -28,10 +27,10 @@ namespace IntegrationTests.Tests.Users
 
                 var response = await client.SendAsync(request);
 
-                return new CheckSuccessStatusCodeProbe(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode);
             }, 0, true);
 
-            Assert.True(result); 
+            Assert.True(result.IsSuccessful); 
         }
     }
 }

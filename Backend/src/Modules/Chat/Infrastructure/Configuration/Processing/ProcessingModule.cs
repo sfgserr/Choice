@@ -22,11 +22,6 @@ namespace Chat.Infrastructure.Configuration.Processing
                 .FindConstructorsWith(new AllConstructorFinder());
 
             builder.RegisterAssemblyTypes(Assemblies.Application, ThisAssembly)
-                .AsClosedTypesOf(typeof(ICommandHandlerWithResult<,>))
-                .InstancePerDependency()
-                .FindConstructorsWith(new AllConstructorFinder());
-
-            builder.RegisterAssemblyTypes(Assemblies.Application, ThisAssembly)
                 .AsClosedTypesOf(typeof(IQueryHandler<,>))
                 .InstancePerDependency()
                 .FindConstructorsWith(new AllConstructorFinder());

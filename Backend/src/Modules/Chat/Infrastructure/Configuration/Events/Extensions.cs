@@ -35,6 +35,7 @@ namespace Chat.Infrastructure.Configuration.Events
                                throw new ApplicationException($"No Bus Consumer registered for {typeof(T).Name}");
 
                 await consumer.Consume(c.Message);
+                
             });
 
             return cfg;

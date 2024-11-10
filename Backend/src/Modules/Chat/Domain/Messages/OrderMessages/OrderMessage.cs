@@ -12,6 +12,11 @@ namespace Chat.Domain.Messages.OrderMessages
             IsActive = isActive;
         }
 
+        private OrderMessage()
+        {
+            
+        }
+
         internal static OrderMessage Create(
             OrderResponseId responseId,
             MessageId messageId,
