@@ -4,32 +4,6 @@ namespace Chat.Application.Messages.Queries.GetChat
 {
     public class MessageDto
     {
-        public MessageDto(
-            Guid id, 
-            Guid toUserId,
-            string toUserIconUri,
-            string toUserName,
-            Guid fromUserId, 
-            string? content, 
-            string type,
-            Guid? orderResponseId, 
-            DateTime creationDate,
-            DateTime? enrollmentDate,
-            bool? isActive)
-        {
-            Id = id;
-            ToUserId = toUserId;
-            ToUserIconUri = toUserIconUri;
-            ToUserName = toUserName;
-            FromUserId = fromUserId;
-            Content = content;
-            Type = type;
-            OrderResponseId = orderResponseId;
-            CreationDate = creationDate;
-            EnrollmentDate = enrollmentDate;
-            IsActive = isActive;
-        }
-
         public Guid Id { get; }
 
         public Guid ToUserId { get; }

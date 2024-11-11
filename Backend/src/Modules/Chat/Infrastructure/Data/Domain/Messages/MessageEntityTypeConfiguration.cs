@@ -18,11 +18,13 @@ namespace Chat.Infrastructure.Data.Domain.Messages
             builder.Property(x => x.FromUserId).HasColumnName("FromUserId");
             builder.Property(x => x.ToUserId).HasColumnName("ToUserId");
             builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
-
             builder.OwnsOne(x => x.OrderMessage, x =>
             {
                 x.ToTable("OrderMessages", "chat");
-                x.HasKey(y => new { y.ResponseId, y.MessageId });
+                
+                x.HasKey(y => y.MessageId);
+                x.WithOwner().HasForeignKey(y => y.MessageId);
+                x.Property(y => y.ResponseId).HasColumnName("ResponseId");
             });
             
             builder.Navigation(x => x.OrderMessage).AutoInclude();

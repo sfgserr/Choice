@@ -16,6 +16,7 @@ namespace Chat.Domain.ChatUsers
             bool isDeleted)
         {
             Id = id;
+            Name = name;
             IconUri = iconUri;
             IsDeleted = isDeleted;
         }

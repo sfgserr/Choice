@@ -46,7 +46,6 @@ namespace Identity.Infrastructure.Configuration
             builder.RegisterModule(new LoggingModule(logger));
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new ProcessingModule());
-            builder.RegisterModule(new QuartzModule());
             
             _container = builder.Build();
             IdentityCompositionRoot.SetContainer(_container);

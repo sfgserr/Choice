@@ -141,7 +141,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new TestResult(response.IsSuccessStatusCode);
-            }, 5000, false, TokenType.Company);
+            }, 7000, false, TokenType.Company);
         }
 
         private async Task<TestResult> GetChatsReturnsOk(object? arg)

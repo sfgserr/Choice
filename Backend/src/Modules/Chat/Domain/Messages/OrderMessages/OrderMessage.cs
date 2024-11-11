@@ -26,7 +26,7 @@ namespace Chat.Domain.Messages.OrderMessages
                 responseId,
                 messageId,
                 enrollmentDate,
-                enrollmentDate is null);
+                true);
         }
 
         public OrderResponseId ResponseId { get; }

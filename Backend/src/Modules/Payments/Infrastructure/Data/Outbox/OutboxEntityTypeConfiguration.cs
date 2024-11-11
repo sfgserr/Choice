@@ -8,7 +8,7 @@ namespace Payments.Infrastructure.Data.Outbox
     {
         public void Configure(EntityTypeBuilder<OutboxMessage> builder)
         {
-            builder.ToTable("OutboxMessages", "users");
+            builder.ToTable("OutboxMessages", "payments");
 
             builder.HasKey(x => x.Id);
 

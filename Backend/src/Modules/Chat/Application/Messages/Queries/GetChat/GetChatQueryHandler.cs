@@ -34,16 +34,16 @@ namespace Chat.Application.Messages.Queries.GetChat
                 chat."Messages"."Type" as {nameof(MessageDto.Type)},
                 chat."Messages"."Body" as {nameof(MessageDto.Content)},
                 chat."Messages"."ToUserId" as {nameof(MessageDto.ToUserId)},
-                chat."ChatMessages"."IconUri" as {nameof(MessageDto.ToUserIconUri)},
-                chat."ChatMessages"."Name" as {nameof(MessageDto.ToUserName)}
+                chat."ChatUsers"."IconUri" as {nameof(MessageDto.ToUserIconUri)},
+                chat."ChatUsers"."Name" as {nameof(MessageDto.ToUserName)},
                 chat."Messages"."FromUserId" as {nameof(MessageDto.FromUserId)},
                 chat."Messages"."CreationDate" as {nameof(MessageDto.CreationDate)},
-                chat."Messages"."OrderResponseId" as {nameof(MessageDto.OrderResponseId)},
+                chat."OrderMessages"."ResponseId" as {nameof(MessageDto.OrderResponseId)},
                 chat."OrderMessages"."IsActive" as {nameof(MessageDto.IsActive)},
                 chat."OrderMessages"."EnrollmentDate" as {nameof(MessageDto.EnrollmentDate)}
             FROM chat."Messages"
             JOIN chat."OrderMessages" ON chat."OrderMessages"."MessageId" = chat."Messages"."Id"
-            JOIN chat."ChatMessages" ON chat."OrderMessages"."ToUserId" = {nameof(MessageDto.ToUserId)}
+            JOIN chat."ChatUsers" ON chat."ChatUsers"."Id" = chat."Messages"."ToUserId"
             WHERE 
                 (chat."Messages"."ToUserId" = @Id1 AND chat."Messages"."FromUserId" = @Id2) OR
                 (chat."Messages"."ToUserId" = @Id2 AND chat."Messages"."FromUserId" = @Id1)

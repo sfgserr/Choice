@@ -54,7 +54,6 @@ namespace Payments.Infrastructure.Configuration
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
-            containerBuilder.RegisterModule(new QuartzModule());
 
             _container = containerBuilder.Build();
 

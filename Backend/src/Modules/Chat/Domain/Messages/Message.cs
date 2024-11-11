@@ -47,7 +47,7 @@ namespace Chat.Domain.Messages
                 null,
                 fromUserId,
                 toUserId,
-                DateTime.Now);
+                DateTime.UtcNow);
         }
 
         public static Message CreateOrder(
@@ -65,7 +65,7 @@ namespace Chat.Domain.Messages
                 OrderMessage.Create(responseId, id, enrollmentDate),
                 fromUserId,
                 toUserId,
-                DateTime.Now);
+                DateTime.UtcNow);
         }
 
         public MessageId Id { get; }

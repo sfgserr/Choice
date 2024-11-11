@@ -33,7 +33,7 @@ namespace Chat.Application.Messages.Queries.GetChats
                     chat."Messages"."Id" as {nameof(ChatDto.LastMessageId)},
                     CASE 
                         WHEN chat."Messages"."FromUserId" = @Id THEN chat."Messages"."ToUserId"
-                        ELSE chat."Messages"."ToUserId"
+                        ELSE chat."Messages"."FromUserId"
                     END as {nameof(ChatDto.UserId)},
                     chat."Messages"."Body" as {nameof(ChatDto.LastMessage)},
                     chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}

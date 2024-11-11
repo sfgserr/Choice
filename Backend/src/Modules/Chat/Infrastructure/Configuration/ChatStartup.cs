@@ -52,7 +52,6 @@ namespace Chat.Infrastructure.Configuration
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
-            containerBuilder.RegisterModule(new QuartzModule());
             containerBuilder.RegisterModule(new SignalRModule<T>(hubContext));
             containerBuilder.RegisterModule(new UsersAutofacModule());
             
