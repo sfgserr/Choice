@@ -1,8 +1,6 @@
 using System.Reflection;
-using Dapper;
 using DbUp;
 using DbUp.Helpers;
-using Npgsql;
 
 namespace IntegrationTests.Services.Database
 {

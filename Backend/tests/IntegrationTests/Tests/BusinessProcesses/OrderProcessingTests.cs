@@ -24,6 +24,8 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var getChats = new TestChain(GetChatsReturnsOk);
             var getChat = new TestChain(GetChatReturnsOk);
             var enroll = new TestChain(EnrollReturnsOk);
+            var payEnrollment = new TestChain(PayEnrollment);
+            var finish = new TestChain(Finish);
             
             fillData.SetNext(createOrderRequest);
             createOrderRequest.SetNext(getOrderRequests);
@@ -31,6 +33,8 @@ namespace IntegrationTests.Tests.BusinessProcesses
             createOrderResponse.SetNext(getChats);
             getChats.SetNext(getChat);
             getChat.SetNext(enroll);
+            enroll.SetNext(payEnrollment);
+            payEnrollment.SetNext(finish);
             
             var result = fillData.Execute(null);
 
@@ -141,7 +145,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new TestResult(response.IsSuccessStatusCode);
-            }, 7000, false, TokenType.Company);
+            }, 9000, false, TokenType.Company);
         }
 
         private async Task<TestResult> GetChatsReturnsOk(object? arg)
@@ -202,7 +206,41 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new TestResult(response.IsSuccessStatusCode, id);
-            }, 0, true);
+            }, 8000);
+        }
+
+        private async Task<TestResult> PayEnrollment(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"api/enrollmentPayments/{id}");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, id);
+            }, 10000);
+        }
+        
+        private async Task<TestResult> Finish(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"api/orderResponses/finish/{id}");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, id);
+            }, 0, true, TokenType.Company);
         }
     }
 }

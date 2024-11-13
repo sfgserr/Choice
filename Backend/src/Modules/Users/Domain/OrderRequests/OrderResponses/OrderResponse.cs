@@ -42,6 +42,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 toKnowEnrollmentDate));
 
             Id = id;
+            RequestId = requestId;
             ClientId = clientId;
             CompanyId = companyId;
             Price = price;
@@ -120,7 +121,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
             IsEnrolled = true;
 
-            AddDomainEvent(new EnrolledWithPrepaymentDomainEvent(Id, Prepayment));
+            AddDomainEvent(new EnrolledWithPrepaymentDomainEvent(Id, ClientId, Prepayment));
         }
 
         public void Enroll(ClientId enrollingClientId)

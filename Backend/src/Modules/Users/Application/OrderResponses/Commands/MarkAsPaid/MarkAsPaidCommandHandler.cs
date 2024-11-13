@@ -17,7 +17,7 @@ namespace Users.Application.OrderResponses.Commands.MarkAsPaid
         public async Task Execute(MarkAsPaidCommand command)
         {
             var response = await _dbContext.OrderResponses.Get(r => 
-                r.Id.Equals(new OrderResponseId(command.Id)));
+                r.Id.Equals(new OrderResponseId(command.ResponseId)));
 
             response.MarkAsPaid();
         }

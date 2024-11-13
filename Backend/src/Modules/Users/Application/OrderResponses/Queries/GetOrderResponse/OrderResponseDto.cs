@@ -2,36 +2,6 @@ namespace Users.Application.OrderResponses.Queries.GetOrderResponse
 {
     public class OrderResponseDto
     {
-        public OrderResponseDto(
-            Guid id, 
-            Guid requestId, 
-            Guid clientId, 
-            Guid companyId, 
-            double price, 
-            int deadline, 
-            DateTime? enrollmentDate, 
-            double prepayment, 
-            string status, 
-            bool isEnrolled, 
-            bool isPaid, 
-            bool isEnrollmentDateConfirmed, 
-            bool isActive)
-        {
-            Id = id;
-            RequestId = requestId;
-            ClientId = clientId;
-            CompanyId = companyId;
-            Price = price;
-            Deadline = deadline;
-            EnrollmentDate = enrollmentDate;
-            Prepayment = prepayment;
-            Status = status;
-            IsEnrolled = isEnrolled;
-            IsPaid = isPaid;
-            IsEnrollmentDateConfirmed = isEnrollmentDateConfirmed;
-            IsActive = isActive;
-        }
-
         public Guid Id { get; }
 
         public Guid RequestId { get; }

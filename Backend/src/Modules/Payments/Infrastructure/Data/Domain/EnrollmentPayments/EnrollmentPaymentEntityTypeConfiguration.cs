@@ -9,14 +9,14 @@ namespace Payments.Infrastructure.Data.Domain.EnrollmentPayments
     {
         public void Configure(EntityTypeBuilder<EnrollmentPayment> builder)
         {
-            builder.ToTable("EnrollmentTables", "payments");
+            builder.ToTable("EnrollmentPayments", "payments");
 
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.ResponseId).HasColumnName("ResponseId");
             builder.Property(e => e.PayerId).HasColumnName("PayerId");
             builder.Property(e => e.Status).HasConversion(e => e.Value, e => PaymentStatus.Parse(e));
-            builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationName");    
+            builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate");    
             
             builder.OwnsOne(e => e.Cost, b =>
             {

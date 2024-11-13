@@ -22,6 +22,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrolledWithPr
             await _eventBus.PublishAsync(new EnrolledWithPrepaymentIntegrationEvent(
                 domainEvent.Id,
                 domainEvent.ResponseId.Value,
+                domainEvent.ClientId.Value,
                 domainEvent.Cost,
                 "RUB"));
         }

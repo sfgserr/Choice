@@ -19,6 +19,7 @@ namespace Payments.Infrastructure.Consumers
             await _commandsScheduler.EnqueueAsync(new BuyCommand(
                 integrationEvent.Id,
                 integrationEvent.ResponseId,
+                integrationEvent.ClientId,
                 integrationEvent.Cost,
                 integrationEvent.Currency));
         }

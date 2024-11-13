@@ -11,7 +11,7 @@ namespace Users.Domain.OrderRequests.OrderResponses.Rules
             _isEnrolled = isEnrolled;
         }
 
-        public bool IsBroken => !_isEnrolled;
+        public bool IsBroken => _isEnrolled;
 
         public string Message => "You are already enrolled";
     }

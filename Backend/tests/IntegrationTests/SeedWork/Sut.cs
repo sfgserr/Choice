@@ -25,16 +25,16 @@ namespace IntegrationTests.SeedWork
             bool reset = false,
             TokenType tokenType = TokenType.Client)
         {
-            var token = await _authService.GetToken(tokenType);
-            
-            if (token is null) 
-            {
-                _dbService.ClearDatabase();
-                return new TestResult(false);
-            }
-
             try
             {
+                var token = await _authService.GetToken(tokenType);
+            
+                if (token is null) 
+                {
+                    _dbService.ClearDatabase();
+                    return new TestResult(false);
+                }
+                
                 var result = await testExecution(_factory, token);
                 
                 if (reset || !result.IsSuccessful) Reset();
