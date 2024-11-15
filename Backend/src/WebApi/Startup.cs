@@ -20,6 +20,7 @@ using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
 using Identity.Infrastructure.Configuration;
 using Chat.Infrastructure.Configuration;
+using Identity.Infrastructure.Configuration.Identity;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Configuration.EventBus;
@@ -77,13 +78,19 @@ namespace WebApi
             services.AddControllers();
             services.AddSwaggerGen();
 
+            services.AddHttpsRedirection(o => o.HttpsPort = 6473);
+            
             services.AddProblemDetails(x =>
             {
                 x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
+
+            var jwtOptions = new JwtOptions(issuer, audience, secretKey);
             
-            services.AddSingleton<JwtProvider>(x => new(new(issuer, audience, secretKey)));
+            services.AddIdentity(jwtOptions);
+            
+            services.AddSingleton<JwtProvider>(x => new(jwtOptions));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
             services.AddSingleton<IClaimsTransformation, CustomClaimsTransformation>();
@@ -147,6 +154,9 @@ namespace WebApi
                 app.UseSwaggerUI();
             }
 
+            app.UseHsts();
+            app.UseHttpsRedirection();
+            
             app.UseRouting();
 
             app.UseAuthentication();

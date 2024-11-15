@@ -1,8 +1,10 @@
 using System.Security.Claims;
-using BuildingBlocks.Infrastructure.Authorization;
 using Identity.Application.Authentication.Authenticate;
 using Identity.Application.Contracts;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using OpenIddict.Abstractions;
+using OpenIddict.Server.AspNetCore;
 
 namespace WebApi.Modules.Identity
 {
@@ -10,25 +12,34 @@ namespace WebApi.Modules.Identity
     public class IdentityController : Controller
     {
         private readonly IIdentityModule _identityModule;
-        private readonly JwtProvider _jwtProvider;
         
-        public IdentityController(IIdentityModule identityModule, JwtProvider jwtProvider)
+        public IdentityController(IIdentityModule identityModule)
         {
             _identityModule = identityModule;
-            _jwtProvider = jwtProvider;
         }
         
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login()
         {
-            var result = await _identityModule.ExecuteCommand<AuthenticateCommand, AuthenticationResult>(
-                new AuthenticateCommand(
-                    request.Email,
-                    request.Password));
+            var request = HttpContext.GetOpenIddictServerRequest();
 
-            return result.IsSuccessfull
-                ? Ok(_jwtProvider.GenerateToken([new Claim("id", result.UserId.ToString()!)]))
-                : Unauthorized(result.ErrorMessage);
+            if (request is not null && request.IsPasswordGrantType())
+            {
+                var result = await _identityModule.ExecuteCommand<AuthenticateCommand, AuthenticationResult>(
+                    new AuthenticateCommand(
+                        request.Username,
+                        request.Password));
+
+                if (!result.IsSuccessful)
+                    return Unauthorized();
+                    
+                var identity = new ClaimsIdentity();
+                identity.SetClaim(OpenIddictConstants.Claims.Subject, result.UserId!.ToString());
+                
+                return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
+
+            throw new NotImplementedException("Other grant types are not implemented");
         }
     }
 }

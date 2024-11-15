@@ -5,19 +5,17 @@ namespace Identity.Application.Authentication.Authenticate
         public AuthenticationResult(Guid userId)
         {
             UserId = userId;
-            IsSuccessfull = true;
         }
 
         public AuthenticationResult(string errorMessage)
         {
             ErrorMessage = errorMessage;
-            IsSuccessfull = false;
         }
         
         public Guid? UserId { get; }
         
         public string? ErrorMessage { get; }
-        
-        public bool IsSuccessfull { get; }
+
+        public bool IsSuccessful => UserId is not null;
     }
 }
