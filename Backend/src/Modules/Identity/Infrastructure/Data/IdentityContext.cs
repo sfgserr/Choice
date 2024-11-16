@@ -4,10 +4,11 @@ using Identity.Domain.Users;
 using Identity.Infrastructure.Data.Domain.Users;
 using Identity.Infrastructure.Data.InternalCommands;
 using Microsoft.EntityFrameworkCore;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace Identity.Infrastructure.Data
 {
-    public class IdentityContext : DbContext, IIdentityDbContext
+    public sealed class IdentityContext : DbContext, IIdentityDbContext
     {
         public IdentityContext(DbContextOptions options) : base(options)
         {
@@ -24,6 +25,7 @@ namespace Identity.Infrastructure.Data
 
             builder.ApplyConfiguration(new UserEntityTypeConfiguration());
             builder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+            //builder.ApplyConfiguration(new ClientEntityTypeConfiguration());
         }
     }
 }

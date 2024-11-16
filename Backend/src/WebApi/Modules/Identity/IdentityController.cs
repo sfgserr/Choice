@@ -3,6 +3,7 @@ using Identity.Application.Authentication.Authenticate;
 using Identity.Application.Contracts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
@@ -33,8 +34,11 @@ namespace WebApi.Modules.Identity
                 if (!result.IsSuccessful)
                     return Unauthorized();
                     
-                var identity = new ClaimsIdentity();
+                var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
+                
                 identity.SetClaim(OpenIddictConstants.Claims.Subject, result.UserId!.ToString());
+                identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
+                identity.SetScopes(request.GetScopes());
                 
                 return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }

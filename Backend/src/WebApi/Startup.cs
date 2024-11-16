@@ -20,9 +20,11 @@ using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
 using Identity.Infrastructure.Configuration;
 using Chat.Infrastructure.Configuration;
+using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using OpenIddict.Abstractions;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
@@ -55,21 +57,6 @@ namespace WebApi
             string audience = Configuration["JwtSettings:Audience"]!;
             string secretKey = Configuration["JwtSettings:SecretKey"]!;
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = issuer,
-                        ValidAudience = audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
-                    };
-                    o.IncludeErrorDetails = true;
-                });
-
             services.AddSignalR();
             services.AddAuthorization();
 
@@ -95,6 +82,8 @@ namespace WebApi
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
             services.AddSingleton<IClaimsTransformation, CustomClaimsTransformation>();
             services.AddSingleton<IUserService, UserService>();
+            services.Configure<ClientsOption>(Configuration);
+            services.AddSingleton<SeedClients>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -105,6 +94,7 @@ namespace WebApi
             builder.RegisterModule(new ChatAutofacModule());
             builder.RegisterModule(new AdminAutofacModule());
             builder.RegisterModule(new EventBusModule());
+            builder.RegisterModule(new DataAccessModule(Configuration["PostgreSqlSettings:ConnectionString"]!));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -115,6 +105,7 @@ namespace WebApi
             var userService = container.Resolve<IUserService>();
             var bus = container.Resolve<IBusControl>();
             var hub = container.Resolve<IHubContext<ChatHub>>();
+            var seed = container.Resolve<SeedClients>();
             
             UsersStartup.Initialize(
                 connectionString, 
@@ -147,6 +138,7 @@ namespace WebApi
                 bus);
             
             bus.StartAsync().GetAwaiter().GetResult();
+            seed.Seed().GetAwaiter().GetResult();
             
             if (env.IsDevelopment())
             {

@@ -1,6 +1,8 @@
 using BuildingBlocks.Infrastructure.Authorization;
+using Identity.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace Identity.Infrastructure.Configuration.Identity
 {
@@ -9,7 +11,11 @@ namespace Identity.Infrastructure.Configuration.Identity
         public static void AddIdentity(this IServiceCollection services, JwtOptions jwtOptions)
         {
             services.AddOpenIddict()
-                .AddCore();
+                .AddCore(options =>
+                {
+                    options.UseEntityFrameworkCore()
+                           .UseDbContext<IdentityContext>();
+                });
             
             services.AddOpenIddict()
                 .AddServer(options =>

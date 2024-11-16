@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Identity.Infrastructure.Configuration.Data
 {
-    internal class DataAccessModule : Module
+    public class DataAccessModule : Module
     {
         private readonly string _connectionString;
 
-        internal DataAccessModule(string connectionString)
+        public DataAccessModule(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -26,7 +26,8 @@ namespace Identity.Infrastructure.Configuration.Data
 
                 optionsBuilder.UseNpgsql(_connectionString);
                 optionsBuilder.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
-
+                optionsBuilder.UseOpenIddict();
+                
                 return new IdentityContext(optionsBuilder.Options);
             })
             .AsSelf()
