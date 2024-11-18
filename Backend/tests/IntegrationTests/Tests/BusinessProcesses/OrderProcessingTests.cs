@@ -1,5 +1,5 @@
 using IntegrationTests.SeedWork;
-using IntegrationTests.Services;
+using IntegrationTests.Services.Auth;
 using Newtonsoft.Json.Linq;
 using Xunit.Abstractions;
 

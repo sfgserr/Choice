@@ -1,15 +1,20 @@
-namespace IntegrationTests.Services
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+
+namespace IntegrationTests.Services.Auth
 {
     public class AuthService
     {
         private readonly IHttpClientFactory _factory;
-
+        private readonly AppOptions _appOptions;
+        
         private string? _clientToken;
         private string? _companyToken;
-
-        public AuthService(IHttpClientFactory factory)
+        
+        public AuthService(IHttpClientFactory factory, IOptions<AppOptions> appOptions)
         {
             _factory = factory;
+            _appOptions = appOptions.Value;
         }
 
         public async Task<string?> GetToken(TokenType tokenType)
@@ -35,7 +40,7 @@ namespace IntegrationTests.Services
 
             if (!isTokenCreated) return null;
 
-            await Task.Delay(20000);
+            await Task.Delay(10000);
 
             return await Login(tokenType.ToString().ToLower(), "string");
         }
@@ -43,24 +48,30 @@ namespace IntegrationTests.Services
         private async Task<string?> Login(string email, string password)
         {
             using var client = _factory.CreateClient("Default");
-
-            var authResponse = await client.PostAsync(
-                "api/auth/login",
-                JsonContent.Create(
-                new
-                {
-                    email,
-                    password
-                }));
+            
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/auth/login");
+            request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["grant_type"] = "password",
+                ["username"] = email,
+                ["password"] = password,
+                ["scope"] = "offline_access",
+                ["client_id"] = _appOptions.ClientId,
+                ["client_secret"] = _appOptions.ClientSecret,
+            });
+            
+            var authResponse = await client.SendAsync(request);
 
             if (authResponse.IsSuccessStatusCode)
             {
-                return await authResponse.Content.ReadAsStringAsync();
+                var content = await authResponse.Content.ReadAsStringAsync();
+                
+                var jObject = JObject.Parse(content);
+                
+                return jObject.SelectToken("access_token")!.Value<string>();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private async Task<bool> CreateClient()

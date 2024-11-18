@@ -1,4 +1,4 @@
-using IntegrationTests.Services;
+using IntegrationTests.Services.Auth;
 using IntegrationTests.Services.Database;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
