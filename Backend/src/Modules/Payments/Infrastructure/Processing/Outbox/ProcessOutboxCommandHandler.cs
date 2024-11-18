@@ -5,6 +5,7 @@ using MediatR;
 using Payments.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
 
 namespace Payments.Infrastructure.Processing.Outbox
 {

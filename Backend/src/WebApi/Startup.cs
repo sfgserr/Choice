@@ -1,15 +1,11 @@
 ﻿using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.Application.Exceptions;
 using BuildingBlocks.Domain;
-using BuildingBlocks.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using ILogger = Serilog.ILogger;
 using Serilog;
 using Users.Infrastructure.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Administration.Infrastructure.Configuration;
 using Hellang.Middleware.ProblemDetails;
 using WebApi.Configuration.Authorization;
@@ -20,11 +16,14 @@ using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
 using Identity.Infrastructure.Configuration;
 using Chat.Infrastructure.Configuration;
+using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
-using OpenIddict.Abstractions;
+using OpenIddict.Server.AspNetCore;
+using OpenIddict.Validation.AspNetCore;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
@@ -32,6 +31,7 @@ using WebApi.Configuration.Chat;
 using WebApi.Modules.Admin;
 using WebApi.Modules.Chat;
 using WebApi.Modules.Payments;
+using WebApi.Seed;
 
 namespace WebApi
 {
@@ -58,8 +58,11 @@ namespace WebApi
             string secretKey = Configuration["JwtSettings:SecretKey"]!;
 
             services.AddSignalR();
+            
             services.AddAuthorization();
-
+            services.AddAuthentication(options => 
+                options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+            
             services.AddHttpContextAccessor();
 
             services.AddControllers();

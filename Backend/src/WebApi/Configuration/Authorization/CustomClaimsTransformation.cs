@@ -37,7 +37,7 @@ namespace WebApi.Configuration.Authorization
 
         private Guid GetId(ClaimsPrincipal principal)
         {
-            var id = principal.Claims.FirstOrDefault(c => c.Type == "id");
+            var id = principal.Claims.FirstOrDefault(c => c.Type == "sub");
 
             if (id is null)
             {

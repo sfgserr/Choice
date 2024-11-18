@@ -1,4 +1,4 @@
-namespace Identity.Infrastructure.Configuration.Identity
+namespace WebApi.Seed
 {
     public class ClientsOption
     {

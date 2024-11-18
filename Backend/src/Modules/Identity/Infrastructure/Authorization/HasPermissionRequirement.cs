@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace BuildingBlocks.Infrastructure.Authorization
+namespace Identity.Infrastructure.Authorization
 {
     public class HasPermissionRequirement : IAuthorizationRequirement
     {

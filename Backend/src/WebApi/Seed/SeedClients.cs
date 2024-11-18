@@ -1,8 +1,7 @@
-using Identity.Infrastructure.Configuration.Identity;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 
-namespace WebApi
+namespace WebApi.Seed
 {
     public class SeedClients
     {

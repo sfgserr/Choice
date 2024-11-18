@@ -1,8 +1,7 @@
-using BuildingBlocks.Infrastructure.Authorization;
+using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using OpenIddict.EntityFrameworkCore.Models;
 
 namespace Identity.Infrastructure.Configuration.Identity
 {

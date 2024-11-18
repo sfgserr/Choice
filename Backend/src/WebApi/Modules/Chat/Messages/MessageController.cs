@@ -1,8 +1,8 @@
-using BuildingBlocks.Infrastructure.Authorization;
 using Chat.Application.Contracts;
 using Chat.Application.Messages.Commands.CreateMessage;
 using Chat.Application.Messages.Queries.GetChat;
 using Chat.Application.Messages.Queries.GetChats;
+using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Modules.Chat.Messages

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace BuildingBlocks.Infrastructure.Authorization
+namespace Identity.Infrastructure.Authorization
 {
     public class HasPermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {

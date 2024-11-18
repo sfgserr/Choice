@@ -5,8 +5,8 @@ using Chat.Domain.ChatUsers;
 using Chat.Domain.Messages;
 using Chat.Infrastructure.Data.Domain.ChatUsers;
 using Chat.Infrastructure.Data.Domain.Messages;
-using Chat.Infrastructure.Data.Domain.Outbox;
 using Chat.Infrastructure.Data.InternalCommands;
+using Chat.Infrastructure.Data.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.Data

@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Infrastructure.Authorization;
+﻿using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.EnrollmentPayments.Commands.Pay;

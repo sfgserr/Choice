@@ -13,7 +13,7 @@ namespace WebApi.Configuration.Authentication
 
         public Guid GetUserId()
         {
-            var id = GetAttribute("id");
+            var id = GetAttribute("sub");
 
             var result = Guid.TryParse(id, out var parsedId);
 

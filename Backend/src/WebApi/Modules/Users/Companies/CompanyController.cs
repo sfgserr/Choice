@@ -1,4 +1,4 @@
-using BuildingBlocks.Infrastructure.Authorization;
+using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Users.Application.Companies.Commands.ChangeData;
 using Users.Application.Companies.Commands.ChangeIconUri;

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR
+namespace BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications
 {
     public interface IDomainNotification : INotification
     {

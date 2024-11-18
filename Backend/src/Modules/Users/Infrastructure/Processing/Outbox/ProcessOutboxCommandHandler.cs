@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.DomainEventDispatching;
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR;
+using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

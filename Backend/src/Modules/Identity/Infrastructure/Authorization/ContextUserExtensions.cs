@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace BuildingBlocks.Infrastructure.Authorization
+namespace Identity.Infrastructure.Authorization
 {
     internal static class ContextUserExtensions
     {

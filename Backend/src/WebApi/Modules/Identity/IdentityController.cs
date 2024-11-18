@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Identity.Application.Authentication.Authenticate;
 using Identity.Application.Contracts;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
@@ -24,7 +25,7 @@ namespace WebApi.Modules.Identity
         {
             var request = HttpContext.GetOpenIddictServerRequest();
 
-            if (request is not null && request.IsPasswordGrantType())
+            if (request.IsPasswordGrantType())
             {
                 var result = await _identityModule.ExecuteCommand<AuthenticateCommand, AuthenticationResult>(
                     new AuthenticateCommand(
@@ -37,6 +38,18 @@ namespace WebApi.Modules.Identity
                 var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
                 
                 identity.SetClaim(OpenIddictConstants.Claims.Subject, result.UserId!.ToString());
+                identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
+                identity.SetScopes(request.GetScopes());
+                
+                return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
+            
+            if (request.IsRefreshTokenGrantType())
+            {
+                var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                
+                var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
+                identity.SetClaim(OpenIddictConstants.Claims.Subject, result.Principal.GetClaim(OpenIddictConstants.Claims.Subject));
                 identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
                 identity.SetScopes(request.GetScopes());
                 

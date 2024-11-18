@@ -2,7 +2,7 @@ using BuildingBlocks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Chat.Infrastructure.Data.Domain.Outbox
+namespace Chat.Infrastructure.Data.Outbox
 {
     internal class OutboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<OutboxMessage>
     {

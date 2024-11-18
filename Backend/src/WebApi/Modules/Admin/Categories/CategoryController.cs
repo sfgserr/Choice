@@ -2,7 +2,7 @@ using Administration.Application.Commands.CreateCategory;
 using Administration.Application.Commands.EditCategory;
 using Administration.Application.Contracts;
 using Administration.Application.Queries.GetCategories;
-using BuildingBlocks.Infrastructure.Authorization;
+using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Modules.Admin.Categories

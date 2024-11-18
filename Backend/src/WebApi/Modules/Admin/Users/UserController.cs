@@ -6,7 +6,7 @@ using Administration.Application.Queries.GetClient;
 using Administration.Application.Queries.GetClients;
 using Administration.Application.Queries.GetCompanies;
 using Administration.Application.Queries.GetCompany;
-using BuildingBlocks.Infrastructure.Authorization;
+using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GetCompanyDto = Administration.Application.Queries.GetCompany.CompanyDto;
 using GetClientDto = Administration.Application.Queries.GetClient.ClientDto;

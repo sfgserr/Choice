@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
+using MediatR;
 
 namespace BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Handlers
 {
