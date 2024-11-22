@@ -25,18 +25,14 @@ namespace Identity.Infrastructure.Configuration.Identity
                            .UseAspNetCore()
                            .EnableTokenEndpointPassthrough();
 
-                    options.AddEncryptionKey(
-                        new SymmetricSecurityKey(Convert.FromBase64String(jwtOptions.SecretKey)));
-
                     options.AddDevelopmentSigningCertificate()
                            .AddDevelopmentEncryptionCertificate();
+                    
+                    options.DisableAccessTokenEncryption();
                 })
                 .AddValidation(options =>
                 {
                     options.SetIssuer(jwtOptions.Issuer);
-                    
-                    options.AddEncryptionKey(
-                        new SymmetricSecurityKey(Convert.FromBase64String(jwtOptions.SecretKey)));
 
                     options.UseLocalServer();
                     
