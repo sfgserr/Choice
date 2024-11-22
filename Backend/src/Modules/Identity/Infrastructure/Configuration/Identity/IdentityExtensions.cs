@@ -27,8 +27,9 @@ namespace Identity.Infrastructure.Configuration.Identity
 
                     options.AddEncryptionKey(
                         new SymmetricSecurityKey(Convert.FromBase64String(jwtOptions.SecretKey)));
-                    
-                    options.AddDevelopmentSigningCertificate();
+
+                    options.AddDevelopmentSigningCertificate()
+                           .AddDevelopmentEncryptionCertificate();
                 })
                 .AddValidation(options =>
                 {
