@@ -5,9 +5,9 @@ import {UserType} from './models/User.ts';
 import AccountManager, {Status} from './AccountManager.ts';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Login from './screens/Login.tsx';
-import Categories from './screens/Categories.tsx';
-import {Text, View} from 'react-native';
+import CategoriesScreen from './screens/CategoriesScreen.tsx';
+import LoginScreen from './screens/LoginScreen.tsx';
+import LoadingScreen from './screens/LoadingScreen.tsx';
 
 const storage = new MMKVLoader().withEncryption().initialize();
 
@@ -17,6 +17,12 @@ type Auth = {
 }
 
 export const AuthContext = React.createContext<Auth | null>(null);
+
+export type StackProps = {
+  Login: undefined,
+  Categories: undefined,
+  Loading: undefined
+}
 
 enum State {
   SignOut,
@@ -29,7 +35,6 @@ enum State {
 function App(): React.JSX.Element {
   const [accessToken, setAccessToken] = useMMKVStorage('accessToken', storage, 'token');
   const [refreshToken, setRefreshToken] = useMMKVStorage('refreshToken', storage, 'refresh');
-
   const [state, setState] = React.useState(State.Restoring);
 
   const authContext = React.useMemo(
@@ -72,15 +77,7 @@ function App(): React.JSX.Element {
     }
 
     fetchAccount();
-  }, [accessToken, refreshToken, setAccessToken, setRefreshToken]);
-
-  type StackProps = {
-    Login: undefined,
-    Categories: undefined,
-    RegisterClient: undefined,
-    RegisterCompany: undefined,
-    Admin: undefined,
-  }
+  }, [accessToken, refreshToken, setAccessToken, setRefreshToken, state, setState]);
 
   const Stack = createNativeStackNavigator<StackProps>();
 
@@ -89,24 +86,17 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <Stack.Navigator>
           {state == State.SignOut ? (
-            <Stack.Screen name={'Login'} component={Login}/>
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+            </>
           ) : state == State.Client ? (
-            <Stack.Screen name={'Categories'} component={Categories}/>
+            <>
+              <Stack.Screen name="Categories" component={CategoriesScreen} options={{headerShown: false}}/>
+            </>
           ) : (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'white',
-              }}>
-              <Text
-                style={{
-                  alignSelf: 'center',
-                  fontSize: 20,
-                  color: 'black'
-                }}>
-                Loading
-              </Text>
-            </View>
+            <>
+              <Stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

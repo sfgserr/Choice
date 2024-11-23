@@ -1,10 +1,14 @@
 import * as React from 'react';
 import {
+  Text,
   View,
-  Text
 } from 'react-native';
+import {StackProps} from '../App.tsx';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-export default function Login(): React.JSX.Element {
+type Props = NativeStackScreenProps<StackProps, 'Categories'>
+
+export default function CategoriesScreen() {
   return (
     <View>
       <Text
@@ -13,7 +17,7 @@ export default function Login(): React.JSX.Element {
           fontSize: 30,
           color: 'black'
         }}>
-        Login
+        Categories
       </Text>
     </View>
   )
