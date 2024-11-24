@@ -19,9 +19,9 @@ export default function TabBar({tabs}: TabBarProps) {
   const {width, height} = Dimensions.get('screen');
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
-
   const onViewableItemsChanged = React.useCallback((info: { viewableItems: ViewToken<TabsType>[], changed: ViewToken<TabsType>[] }) => {
-    setCurrentIndex(+info.viewableItems[0].item.key);
+    if (info.viewableItems.length > 0)
+      setCurrentIndex(+info.viewableItems[info.viewableItems.length-1].item.key);
   });
 
   type TabsType = {
@@ -86,11 +86,11 @@ export default function TabBar({tabs}: TabBarProps) {
     const inputRange = data.map((_, i) => i*width);
     const indicatorWidth = scrollX.interpolate({
       inputRange,
-      outputRange: measures.map((m) => m.width)
+      outputRange: measures.map((m) => m.width*2.0)
     });
     const translateX = scrollX.interpolate({
       inputRange,
-      outputRange: measures.map((m) => m.x)
+      outputRange: measures.map((m) => m.x-m.width*0.5)
     });
 
     return (
@@ -170,35 +170,35 @@ export default function TabBar({tabs}: TabBarProps) {
   return (
     <View
       style={{
-        flex: 1
+        flex: 1,
       }}>
-      <View
-        style={{paddingTop: 20}}>
-        <Tabs
-          data={data}
-          scrollX={scrollX}
-          onItemPress={onItemPress}/>
+      <View style={{paddingTop: 20}}>
+        <Tabs data={data} scrollX={scrollX} onItemPress={onItemPress} />
       </View>
       <Animated.FlatList
         ref={ref}
         data={data}
-        keyExtractor={(item) => item.key}
+        keyExtractor={item => item.key}
         onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{viewAreaCoveragePercentThreshold: 100}}
         pagingEnabled
         horizontal
         showsHorizontalScrollIndicator={false}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: false},
         )}
         renderItem={({item}) => {
-          return <View
-            style={{
-              width
-            }}>
-            {item.tab}
-          </View>
-        }}/>
+          return (
+            <View
+              style={{
+                width,
+              }}>
+              {item.tab}
+            </View>
+          );
+        }}
+      />
     </View>
-  )
+  );
 }
