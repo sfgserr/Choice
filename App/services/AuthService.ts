@@ -3,20 +3,22 @@ type TokenResponse = {
   refresh_token: string;
 }
 
+const tokenEndpoint = `${process.env.API_URL}/api/auth/login`;
+
 async function login(login: string, password: string, clientId: string, clientSecret: string): Promise<TokenResponse | null> {
-  var response = await fetch('https://localhost:6932/api/auth/login', {
+  var response = await fetch(tokenEndpoint, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
-      'username': login,
-      'password': password,
-      'grant_type': 'password',
-      'scope': 'offline_access',
-      'client_id': clientId,
-      'clientSecret': clientSecret
-    }).toString()
+      username: login,
+      password: password,
+      grant_type: 'password',
+      scope: 'offline_access',
+      client_id: clientId,
+      clientSecret: clientSecret,
+    }).toString(),
   });
 
   if (response.status == 401) {
@@ -27,7 +29,7 @@ async function login(login: string, password: string, clientId: string, clientSe
 }
 
 async function refresh(refreshToken: string, clientId: string, clientSecret: string): Promise<TokenResponse | null> {
-  var response = await fetch('https://localhost:6932/api/auth/login', {
+  var response = await fetch(tokenEndpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
