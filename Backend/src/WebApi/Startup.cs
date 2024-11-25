@@ -27,6 +27,8 @@ using OpenIddict.Validation.AspNetCore;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
+using WebApi.Configuration.Authentication.GrantTypeHandling;
+using WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandlers;
 using WebApi.Configuration.Chat;
 using WebApi.Modules.Admin;
 using WebApi.Modules.Chat;
@@ -87,6 +89,9 @@ namespace WebApi
             services.AddSingleton<IUserService, UserService>();
             services.Configure<ClientsOption>(Configuration);
             services.AddSingleton<SeedClients>();
+            services.AddSingleton<IGrantTypeHandler, PasswordGrantTypeHandler>();
+            services.AddSingleton<IGrantTypeHandler, RefreshTokenGrantTypeHandler>();
+            services.AddSingleton<GrantTypeHandlerFactory>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -147,10 +152,9 @@ namespace WebApi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseHsts();
+                app.UseHttpsRedirection();
             }
-
-            app.UseHsts();
-            app.UseHttpsRedirection();
             
             app.UseRouting();
 

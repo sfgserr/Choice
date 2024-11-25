@@ -1,23 +1,17 @@
-using System.Security.Claims;
-using Identity.Application.Authentication.Authenticate;
-using Identity.Application.Contracts;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using OpenIddict.Abstractions;
-using OpenIddict.Server.AspNetCore;
+using WebApi.Configuration.Authentication.GrantTypeHandling;
 
 namespace WebApi.Modules.Identity
 {
     [Route("api/auth")]
     public class IdentityController : Controller
     {
-        private readonly IIdentityModule _identityModule;
+        private readonly GrantTypeHandlerFactory _factory;
         
-        public IdentityController(IIdentityModule identityModule)
+        public IdentityController(GrantTypeHandlerFactory factory)
         {
-            _identityModule = identityModule;
+            _factory = factory;
         }
         
         [HttpPost("login")]
@@ -25,38 +19,12 @@ namespace WebApi.Modules.Identity
         {
             var request = HttpContext.GetOpenIddictServerRequest();
 
-            if (request.IsPasswordGrantType())
-            {
-                var result = await _identityModule.ExecuteCommand<AuthenticateCommand, AuthenticationResult>(
-                    new AuthenticateCommand(
-                        request.Username,
-                        request.Password));
+            if (request is null)
+                return BadRequest();
 
-                if (!result.IsSuccessful)
-                    return Unauthorized();
-                    
-                var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
-                
-                identity.SetClaim(OpenIddictConstants.Claims.Subject, result.UserId!.ToString());
-                identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
-                identity.SetScopes(request.GetScopes());
-                
-                return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-            }
-            
-            if (request.IsRefreshTokenGrantType())
-            {
-                var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-                
-                var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
-                identity.SetClaim(OpenIddictConstants.Claims.Subject, result.Principal.GetClaim(OpenIddictConstants.Claims.Subject));
-                identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
-                identity.SetScopes(request.GetScopes());
-                
-                return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-            }
+            var handler = _factory.GetHandler(request);
 
-            throw new NotImplementedException("Other grant types are not implemented");
+            return await handler.Handle(request, this);
         }
     }
 }
