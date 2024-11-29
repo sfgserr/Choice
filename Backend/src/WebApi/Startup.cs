@@ -21,6 +21,7 @@ using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
 using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
@@ -65,12 +66,16 @@ namespace WebApi
             services.AddAuthentication(options => 
                 options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
             
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+            
             services.AddHttpContextAccessor();
 
             services.AddControllers();
             services.AddSwaggerGen();
-
-            services.AddHttpsRedirection(o => o.HttpsPort = 6473);
             
             services.AddProblemDetails(x =>
             {
@@ -152,15 +157,14 @@ namespace WebApi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseHsts();
-                app.UseHttpsRedirection();
             }
-            
-            app.UseRouting();
 
+            app.UseForwardedHeaders();
+            app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseProblemDetails();
             app.UseEndpoints(endpoints =>
             {

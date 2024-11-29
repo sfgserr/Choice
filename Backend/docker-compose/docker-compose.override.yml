@@ -1,4 +1,9 @@
 services:
+  nginx:
+    ports:
+      - 8080:80
+      - 8081:443
+  
   db:
     image: postgres
     container_name: "db"
@@ -8,25 +13,11 @@ services:
       POSTGRES_DB: Choice
     ports:
       - 5432:5432
-    networks:
-      - network
-  
+    
   api:
-    image: ${DOCKER_REGISTRY-}api
-    container_name: "api"
-    build:
-      context: ../
-      dockerfile: src/WebApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - PostgreSqlSettings__ConnectionString=User Id=root;Password=pgadminchoice;Host=db;Port=5432;Database=Choice;
-    ports:
-      - 8080:80
+      - JwtSettings__Issuer=https://choice.local:8081
     depends_on:
       - db
-    networks:
-      - network
-  
-networks:
-  network:
-    driver: bridge

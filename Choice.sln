@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{B9B25AF3-E948-4695-BA9A-3AAD48291F42}"
-	ProjectSection(SolutionItems) = preProject
-		Backend\docker-compose\docker-compose.yaml = Backend\docker-compose\docker-compose.yaml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE0FB4F3-7358-4FD1-852D-BA59DF1C8046}"
 EndProject
@@ -75,6 +72,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Backend\src\Modules\Administration\Infrastructure\Infrastructure.csproj", "{F932F0A4-5DCB-433F-BBE6-14C94604A089}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{CD4177E2-7640-4EA8-86E0-45E9BDB8DE8D}"
+	ProjectSection(SolutionItems) = preProject
+		Backend\docker-compose\docker-compose.override.yml = Backend\docker-compose\docker-compose.override.yml
+		Backend\docker-compose\docker-compose.yml = Backend\docker-compose\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{F260D3D4-5F4E-4C4F-B944-B70A9047C7CF}"
+	ProjectSection(SolutionItems) = preProject
+		Backend\nginx\nginx.conf = Backend\nginx\nginx.conf
+		Backend\nginx\Dockerfile = Backend\nginx\Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +224,7 @@ Global
 		{59D330CF-98B7-41F6-95C2-1587C570630A} = {FE3B8CD8-161A-4AB7-80EC-DB4580405B61}
 		{F932F0A4-5DCB-433F-BBE6-14C94604A089} = {FE3B8CD8-161A-4AB7-80EC-DB4580405B61}
 		{CD4177E2-7640-4EA8-86E0-45E9BDB8DE8D} = {B9B25AF3-E948-4695-BA9A-3AAD48291F42}
+		{F260D3D4-5F4E-4C4F-B944-B70A9047C7CF} = {B9B25AF3-E948-4695-BA9A-3AAD48291F42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF3E3CEC-7558-4B47-8F36-9803500A74DD}
