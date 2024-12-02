@@ -4,14 +4,14 @@ services:
       context: ../nginx/
     container_name: nginx
     volumes:
-      - /etc/ssl/choice/localhost.crt:/certs/localhost.crt:ro
-      - /etc/ssl/choice/localhost.key:/private/localhost.key:ro
+      - ../.docker/https/localhost.crt:/certs/localhost.crt:ro
+      - ../.docker/https/localhost.key:/private/localhost.key:ro
     depends_on:
-      - api
+      - webapi
   
-  api:
-    image: ${DOCKER_REGISTRY-}api
-    container_name: "api"
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: "webapi"
     build:
       context: ../
       dockerfile: src/WebApi/Dockerfile
@@ -21,6 +21,4 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=MyCertificatePassword
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
     volumes:
-      - /etc/ssl/choice:/https:ro
-    depends_on:
-      - db
+      - ../.docker/https:/https:ro

@@ -14,7 +14,7 @@ services:
     ports:
       - 5432:5432
     
-  api:
+  webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - PostgreSqlSettings__ConnectionString=User Id=root;Password=pgadminchoice;Host=db;Port=5432;Database=Choice;
