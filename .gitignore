@@ -5,6 +5,7 @@
 
 # Docker
 */.docker
+Backend/docker-compose/sudo
 
 # Vs Code
 .vscode
