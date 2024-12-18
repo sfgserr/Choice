@@ -17,6 +17,16 @@ const Styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     flex: 1
+  },
+  styledButton: {
+    height: height*0.054,
+    backgroundColor: '#2D81E0',
+    borderRadius: 10
+  },
+  styledButtonContent: {
+    fontWeight: '500',
+    fontSize: 17,
+    color: 'white'
   }
 });
 

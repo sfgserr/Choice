@@ -1,9 +1,37 @@
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
+import Styles from '../constants/Styles.tsx';
+import React from 'react';
 
-export function StyledButton() {
+type StyledButtonProps = {
+  content: string,
+  top: number,
+  bottom: number,
+  isDisabled: boolean,
+  pressed: () => Promise<void>;
+}
+
+export function StyledButton({content, top, bottom, isDisabled, pressed}: StyledButtonProps) {
   return (
-    <TouchableOpacity>
-
-    </TouchableOpacity>
+    <View
+      style={{
+        top,
+        bottom,
+      }}>
+      <TouchableOpacity
+        style={[Styles.styledButton, {
+          justifyContent: 'center',
+          alignItems: 'baseline',
+          backgroundColor: isDisabled ? '#abcdf3' : '#2D81E0'
+        }]}
+        disabled={isDisabled}
+        onPress={async () => await pressed()}>
+        <Text
+          style={[Styles.styledButtonContent, {
+            alignSelf: 'center'
+          }]}>
+          {content}
+        </Text>
+      </TouchableOpacity>
+    </View>
   )
 }

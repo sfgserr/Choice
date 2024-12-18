@@ -92,6 +92,30 @@
           "isPureCxxDependency": false
         }
       }
+    },
+    "rn-fetch-blob": {
+      "root": "/home/sfgserr/Projects/Choice/App/node_modules/rn-fetch-blob",
+      "name": "rn-fetch-blob",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/home/sfgserr/Projects/Choice/App/node_modules/rn-fetch-blob/rn-fetch-blob.podspec",
+          "version": "0.12.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/home/sfgserr/Projects/Choice/App/node_modules/rn-fetch-blob/android",
+          "packageImportPath": "import com.RNFetchBlob.RNFetchBlobPackage;",
+          "packageInstance": "new RNFetchBlobPackage()",
+          "buildTypes": [],
+          "componentDescriptors": [],
+          "cmakeListsPath": "/home/sfgserr/Projects/Choice/App/node_modules/rn-fetch-blob/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
     }
   },
   "commands": [

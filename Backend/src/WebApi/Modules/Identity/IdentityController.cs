@@ -14,8 +14,8 @@ namespace WebApi.Modules.Identity
             _factory = factory;
         }
         
-        [HttpPost("login")]
-        public async Task<IActionResult> Login()
+        [HttpPost("token")]
+        public async Task<IActionResult> Token()
         {
             var request = HttpContext.GetOpenIddictServerRequest();
 

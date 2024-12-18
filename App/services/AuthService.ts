@@ -1,56 +1,64 @@
+import RNFetchBlob from 'rn-fetch-blob';
+
 type TokenResponse = {
   access_token: string;
   refresh_token: string;
 }
 
-const tokenEndpoint = `${process.env.API_URL}/api/auth/login`;
+export class AuthService {
+  private readonly clientId: string;
+  private readonly clientSecret: string;
+  private readonly tokenEndpoint: string;
 
-async function login(login: string, password: string, clientId: string, clientSecret: string): Promise<TokenResponse | null> {
-  var response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      username: login,
-      password: password,
-      grant_type: 'password',
-      scope: 'offline_access',
-      client_id: clientId,
-      clientSecret: clientSecret,
-    }).toString(),
-  });
-
-  if (response.status == 401) {
-    return null;
+  constructor(tokenEndpoint: string, clientId: string, clientSecret: string) {
+    this.tokenEndpoint = tokenEndpoint;
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
   }
 
-  return response.json();
-}
+  async login(email: string, password: string): Promise<TokenResponse | null> {
+    var response = await fetch(this.tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        username: email,
+        password: password,
+        grant_type: 'password',
+        scope: 'offline_access',
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+      }).toString(),
+    });
 
-async function refresh(refreshToken: string, clientId: string, clientSecret: string): Promise<TokenResponse | null> {
-  var response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({
-      'refresh_token': refreshToken,
-      'grant_type': 'refresh_token',
-      'scope': 'offline_access',
-      'client_id': clientId,
-      'clientSecret': clientSecret
-    }).toString()
-  });
+    const status = response.status;
 
-  if (response.status != 200) {
-    return null;
+    if (status == 401) {
+      return null;
+    }
+
+    return response.json();
   }
 
-  return response.json();
-}
+  async refresh(refreshToken: string): Promise<TokenResponse | null> {
+    var response = await RNFetchBlob.config({trusty: true}).fetch('POST', this.tokenEndpoint,
+      {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      new URLSearchParams({
+        refresh_token: refreshToken,
+        grant_type: 'refresh_token',
+        scope: 'offline_access',
+        client_id: this.clientId,
+        clientSecret: this.clientSecret
+      }).toString()
+    );
 
-export default {
-  login,
-  refresh
+    if (response.info().status != 200) {
+      return null;
+    }
+
+    return response.json();
+  }
 }

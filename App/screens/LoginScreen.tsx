@@ -3,12 +3,16 @@ import {View, Dimensions, Image, Text, Animated} from 'react-native';
 import TextButton from '../components/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackProps} from '../App.tsx';
 
-export default function LoginScreen() {
+type Props = NativeStackScreenProps<StackProps, 'Login'>;
+
+export default function LoginScreen({route, navigation}: Props) {
   const {width, height} = Dimensions.get('screen');
 
   const tabs = [
-    {element: <LoginByEmailScreen />, title: 'E-mail'},
+    {element: <LoginByEmailScreen userService={route.params.userService}/>, title: 'E-mail'},
     {element: <View><Text>Phone</Text></View>, title: 'Телефон'}
   ]
 

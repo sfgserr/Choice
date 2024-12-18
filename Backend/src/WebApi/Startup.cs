@@ -42,14 +42,17 @@ namespace WebApi
     {
         private ILogger _logger;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnvironment)
         {
             Configuration = configuration;
-
+            CurrentEnvironment = currentEnvironment;
+            
             ConfigureLogger();
         }
 
         public IConfiguration Configuration { get; }
+
+        private IWebHostEnvironment CurrentEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -85,7 +88,7 @@ namespace WebApi
 
             var jwtOptions = new JwtOptions(issuer, audience, secretKey);
             
-            services.AddIdentity(jwtOptions);
+            services.AddIdentity(jwtOptions, CurrentEnvironment);
             
             services.AddSingleton<JwtProvider>(x => new(jwtOptions));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
@@ -160,7 +163,6 @@ namespace WebApi
             }
 
             app.UseForwardedHeaders();
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

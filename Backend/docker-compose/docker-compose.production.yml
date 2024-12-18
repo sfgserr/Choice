@@ -3,6 +3,16 @@ services:
     ports:
       - 80:80
       - 443:443
+    volumes:
+      - <path_to_cert>:/certs/localhost.crt:ro
+      - <path_to_key>:/private/localhost.key:ro
+    environment:
+      - LISTEN_PORT=443 ssl
+      - HOST_NAME=<host_name>
+      - |
+        SSL_DIRECTIVES=\
+        ssl_certificate /certs/localhost.crt;
+        ssl_certificate_key /private/localhost.key;
   
   webapi:
     environment:

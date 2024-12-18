@@ -5,10 +5,26 @@ import {
 import BorderedTextInput from '../components/BorderedTextInput.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import PasswordBox from '../components/PasswordBox.tsx';
+import {StyledButton} from '../components/StyledButton.tsx';
+import {UserService} from '../services/UserService.ts';
+import {AuthContext} from '../App.tsx';
 
-export default function LoginByEmailScreen() {
+export default function LoginByEmailScreen({userService}: {userService: UserService}) {
+  const { signIn } = React.useContext(AuthContext);
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isDisabled, setIsDisabled] = React.useState(true);
+
+  const onEmailChanged = (text: string) => {
+    setEmail(text);
+    setIsDisabled(text == '' || password == '');
+  };
+
+  const onPasswordChanged = (text: string) => {
+    setPassword(text);
+    setIsDisabled(text == '' || email == '');
+  };
 
   return (
     <ScrollView
@@ -23,7 +39,7 @@ export default function LoginByEmailScreen() {
         bottom={5}/>
       <BorderedTextInput
         value={email}
-        onChanged={setEmail}
+        onChanged={onEmailChanged}
         placeholder={'Введите E-mail'}/>
       <TextInputTitle
         s={'Пароль'}
@@ -31,7 +47,17 @@ export default function LoginByEmailScreen() {
         bottom={5}/>
       <PasswordBox
         value={password}
-        onChanged={setPassword}/>
+        onChanged={onPasswordChanged}/>
+      <StyledButton
+        content={'Войти'}
+        top={20}
+        bottom={0}
+        isDisabled={isDisabled}
+        pressed={async () => {
+          let result = await userService.login(email, password);
+
+          signIn(result[0], result[1]);
+        }}/>
     </ScrollView>
   )
 }

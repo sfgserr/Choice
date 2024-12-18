@@ -10,8 +10,10 @@ add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-mm
 add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-safe-area-context/android/src/main/jni/" safeareacontext_autolinked_build)
 add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-screens/android/src/main/jni/" rnscreens_autolinked_build)
 
+
 set(AUTOLINKED_LIBRARIES
   react_codegen_MMKVStorageSpec
   react_codegen_safeareacontext
   react_codegen_rnscreens
+  
 )

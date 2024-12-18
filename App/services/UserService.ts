@@ -1,61 +1,61 @@
 import {User, UserType} from '../models/User.ts';
-import AuthService from './AuthService.ts';
-import UserStore from '../stores/UserStore.ts';
+import {AuthService} from './AuthService.ts';
+import {UserStore} from '../stores/UserStore.ts';
 import {jwtDecode} from 'jwt-decode';
-
-const store = new UserStore();
 
 type Claims = {
   sub: string;
   type: string;
 };
 
-function getUser(): User {
-  return store.state;
-}
+export class UserService {
+  private readonly store: UserStore;
+  private readonly authService: AuthService;
 
-async function login(login: string, password: string, clientId: string, clientSecret: string): Promise<string[]> {
-  let result = await AuthService.login(login, password, clientId, clientSecret);
-
-  if (result != null) {
-    setUser(result.access_token);
-
-    return [result.access_token, result.refresh_token];
+  constructor(store: UserStore, authService: AuthService) {
+    this.store = store;
+    this.authService = authService;
   }
 
-  throw new Error();
-}
-
-function setUser(accessToken: string) {
-  const token = jwtDecode<Claims>(accessToken);
-
-  if (token.sub != undefined) {
-    store.setUser(new User(token.sub, convertStringToUserType(token.type)));
+  getUser(): User {
+    return this.store.state;
   }
-}
 
-function signOut() {
-  store.setUser(new User('0', UserType.User));
-}
+  async login(email: string, password: string): Promise<string[]> {
+    let result = await this.authService.login(email, password);
 
-function convertStringToUserType(type: string): UserType {
-  switch (type) {
-    case 'admin':
-      return UserType.Admin;
-    case 'user':
-      return UserType.User;
-    case 'client':
-      return UserType.Client;
-    case 'company':
-      return UserType.Company;
-    default:
-      throw new Error();
+    if (result != null) {
+      this.setUser(result.access_token);
+
+      return [result.access_token, result.refresh_token];
+    }
+
+    throw new Error();
   }
-}
+  setUser(accessToken: string) {
+    const token = jwtDecode<Claims>(accessToken);
 
-export default {
-  login,
-  getUser,
-  setUser,
-  signOut
+    if (token.sub != undefined) {
+      this.store.setUser(new User(token.sub, this.convertStringToUserType(token.type)));
+    }
+  }
+
+  signOut() {
+    this.store.setUser(new User('0', UserType.User));
+  }
+
+  private convertStringToUserType(type: string): UserType {
+    switch (type) {
+      case 'admin':
+        return UserType.Admin;
+      case 'user':
+        return UserType.User;
+      case 'client':
+        return UserType.Client;
+      case 'company':
+        return UserType.Company;
+      default:
+        throw new Error();
+    }
+  }
 }

@@ -1,13 +1,14 @@
 using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Hosting;
 
 namespace Identity.Infrastructure.Configuration.Identity
 {
     public static class IdentityExtensions
     {
-        public static void AddIdentity(this IServiceCollection services, JwtOptions jwtOptions)
+        public static void AddIdentity(this IServiceCollection services, JwtOptions jwtOptions, IWebHostEnvironment env)
         {
             services.AddOpenIddict()
                 .AddCore(options =>
@@ -19,12 +20,22 @@ namespace Identity.Infrastructure.Configuration.Identity
             services.AddOpenIddict()
                 .AddServer(options =>
                 {
-                    options.SetTokenEndpointUris("api/auth/login")
+                    options.SetTokenEndpointUris("api/auth/token")
                            .AllowPasswordFlow()
-                           .AllowRefreshTokenFlow()
-                           .UseAspNetCore()
-                           .EnableTokenEndpointPassthrough();
+                           .AllowRefreshTokenFlow();
 
+                    if (env.IsDevelopment())
+                    {
+                        options.UseAspNetCore()
+                               .EnableTokenEndpointPassthrough()
+                               .DisableTransportSecurityRequirement();
+                    }
+                    else
+                    {
+                        options.UseAspNetCore()
+                            .EnableTokenEndpointPassthrough();
+                    }
+                    
                     options.AddDevelopmentSigningCertificate()
                            .AddDevelopmentEncryptionCertificate();
                     

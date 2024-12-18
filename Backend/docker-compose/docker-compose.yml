@@ -3,11 +3,10 @@ services:
     build:
       context: ../nginx/
     container_name: nginx
-    volumes:
-      - ../.docker/https/localhost.crt:/certs/localhost.crt:ro
-      - ../.docker/https/localhost.key:/private/localhost.key:ro
     depends_on:
       - webapi
+    volumes:
+      - ../.docker/templates:/etc/nginx/templates
   
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
@@ -16,9 +15,6 @@ services:
       context: ../
       dockerfile: src/WebApi/Dockerfile
     environment:
-      - ASPNETCORE_URLS=http://+;https://+
-      - ASPNETCORE_HTTPS_PORT=443
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=MyCertificatePassword
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
-    volumes:
-      - ../.docker/https:/https:ro
+      - ASPNETCORE_URLS=http://+
+    ports:
+      - 80
