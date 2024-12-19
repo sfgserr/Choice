@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  ScrollView
+  ScrollView, Text,
 } from 'react-native';
 import BorderedTextInput from '../components/BorderedTextInput.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
@@ -15,13 +15,16 @@ export default function LoginByEmailScreen({userService}: {userService: UserServ
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isDisabled, setIsDisabled] = React.useState(true);
+  const [isError, setIsError] = React.useState(false);
 
   const onEmailChanged = (text: string) => {
+    setIsError(false);
     setEmail(text);
     setIsDisabled(text == '' || password == '');
   };
 
   const onPasswordChanged = (text: string) => {
+    setIsError(false);
     setPassword(text);
     setIsDisabled(text == '' || email == '');
   };
@@ -40,14 +43,28 @@ export default function LoginByEmailScreen({userService}: {userService: UserServ
       <BorderedTextInput
         value={email}
         onChanged={onEmailChanged}
-        placeholder={'Введите E-mail'}/>
+        placeholder={'Введите E-mail'}
+        isError={isError}/>
       <TextInputTitle
         s={'Пароль'}
         top={20}
         bottom={5}/>
       <PasswordBox
         value={password}
-        onChanged={onPasswordChanged}/>
+        onChanged={onPasswordChanged}
+        isError={isError}/>
+      {isError ? (
+        <>
+          <Text
+            style={{
+              color: '#E64646',
+              fontWeight: '400',
+              fontSize: 13
+            }}>
+            Логин или пароль неверны
+          </Text>
+        </>
+      ) : (<></>)}
       <StyledButton
         content={'Войти'}
         top={20}
@@ -56,7 +73,10 @@ export default function LoginByEmailScreen({userService}: {userService: UserServ
         pressed={async () => {
           let result = await userService.login(email, password);
 
-          signIn(result[0], result[1]);
+          if (result != null)
+            signIn(result[0], result[1]);
+          else
+            setIsError(true);
         }}/>
     </ScrollView>
   )

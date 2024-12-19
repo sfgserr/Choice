@@ -3,12 +3,15 @@ import {
   Text,
   View,
 } from 'react-native';
-import {StackProps} from '../App.tsx';
+import {AuthContext, StackProps} from '../App.tsx';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StyledButton} from '../components/StyledButton.tsx';
 
 type Props = NativeStackScreenProps<StackProps, 'Categories'>
 
 export default function CategoriesScreen() {
+  const { signOut } = React.useContext(AuthContext);
+
   return (
     <View>
       <Text
@@ -17,7 +20,12 @@ export default function CategoriesScreen() {
           fontSize: 30,
           color: 'black'
         }}>
-        Categories
+        <StyledButton
+          pressed={async () => signOut()}
+          content={'Выйти'}
+          top={0}
+          bottom={0}
+          isDisabled={false}/>
       </Text>
     </View>
   )

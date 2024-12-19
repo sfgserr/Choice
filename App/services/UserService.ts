@@ -21,7 +21,7 @@ export class UserService {
     return this.store.state;
   }
 
-  async login(email: string, password: string): Promise<string[]> {
+  async login(email: string, password: string) {
     let result = await this.authService.login(email, password);
 
     if (result != null) {
@@ -30,8 +30,21 @@ export class UserService {
       return [result.access_token, result.refresh_token];
     }
 
-    throw new Error();
+    return null;
   }
+
+  async refresh(refreshToken: string) {
+    let result = await this.authService.refresh(refreshToken);
+
+    if (result != null) {
+      this.setUser(result.access_token);
+
+      return [result.access_token, result.refresh_token];
+    }
+
+    return null;
+  }
+
   setUser(accessToken: string) {
     const token = jwtDecode<Claims>(accessToken);
 
@@ -46,13 +59,13 @@ export class UserService {
 
   private convertStringToUserType(type: string): UserType {
     switch (type) {
-      case 'admin':
+      case 'Admin':
         return UserType.Admin;
-      case 'user':
+      case 'User':
         return UserType.User;
-      case 'client':
+      case 'Client':
         return UserType.Client;
-      case 'company':
+      case 'Company':
         return UserType.Company;
       default:
         throw new Error();

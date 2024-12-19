@@ -13,15 +13,13 @@ type Result = {
 };
 
 export class AccountManager {
-  private readonly authService: AuthService;
   private readonly userService: UserService;
 
-  constructor(authService: AuthService, userService: UserService) {
-    this.authService = authService;
+  constructor(userService: UserService) {
     this.userService = userService;
   }
 
-  public async fetchAccount(
+  async fetchAccount(
     accessToken: string,
     refreshToken: string,
   ): Promise<Result> {
@@ -32,18 +30,17 @@ export class AccountManager {
     const token = jwtDecode(accessToken);
 
     if (token.exp != undefined) {
-      if (Date.now() > token.exp) {
-        let response = await this.authService.refresh(refreshToken);
+      if (Date.now()/1000 > token.exp) {
+        let response = await this.userService.refresh(refreshToken);
 
         if (response != null) {
-          this.userService.setUser(response.access_token);
-
           return {status: Status.Successful, tokens: [accessToken, refreshToken]};
         }
         else {
           return {status: Status.Unsuccessful, tokens: []};
         }
       } else {
+        this.userService.setUser(accessToken);
         return {status: Status.Successful, tokens: [accessToken, refreshToken]};
       }
     }

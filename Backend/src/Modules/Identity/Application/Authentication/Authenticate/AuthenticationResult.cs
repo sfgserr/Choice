@@ -1,21 +1,25 @@
+using Identity.Domain.Users;
+
 namespace Identity.Application.Authentication.Authenticate
 {
     public class AuthenticationResult 
     {
-        public AuthenticationResult(Guid userId)
+        public AuthenticationResult(UserDto user)
         {
-            UserId = userId;
+            User = user;
+            IsSuccessful = true;
         }
 
         public AuthenticationResult(string errorMessage)
         {
             ErrorMessage = errorMessage;
+            IsSuccessful = false;
         }
         
-        public Guid? UserId { get; }
+        public UserDto? User { get; }
         
         public string? ErrorMessage { get; }
 
-        public bool IsSuccessful => UserId is not null;
+        public bool IsSuccessful { get; }
     }
 }

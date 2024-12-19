@@ -35,7 +35,7 @@ export class ObjectGraph {
       process.env.CLIENT_SECRET);
     const userStore = new UserStore();
     const userService = new UserService(userStore, authService);
-    const accountManager = new AccountManager(authService, userService);
+    const accountManager = new AccountManager(userService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;

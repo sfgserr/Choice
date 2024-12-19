@@ -27,11 +27,12 @@ namespace WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandler
                     request.Password));
 
             if (!result.IsSuccessful)
-                return controller.Unauthorized();
+                return controller.Unauthorized(result.ErrorMessage);
                     
             var identity = new ClaimsIdentity(authenticationType: TokenValidationParameters.DefaultAuthenticationType);
                 
-            identity.SetClaim(OpenIddictConstants.Claims.Subject, result.UserId!.ToString());
+            identity.SetClaim(OpenIddictConstants.Claims.Subject, result.User.UserId.ToString());
+            identity.SetClaim("type", result.User.UserType);
             identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
             identity.SetScopes(request.GetScopes());
                 

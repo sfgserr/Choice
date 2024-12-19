@@ -6,17 +6,22 @@ import { Icon } from '@rneui/themed';
 type PasswordBoxProps = {
   value: string,
   onChanged: (s: string) => void,
+  isError: boolean
 }
 
-export default function PasswordBox({value, onChanged}: PasswordBoxProps) {
+export default function PasswordBox({value, onChanged, isError}: PasswordBoxProps) {
   const [isFocused, setIsFocused] = React.useState(false);
   const [isPassword, setIsPassword] = React.useState(true);
+
+  const borderColor = () => {
+    return isFocused ? Styles.borderedTextInputFocused : Styles.borderedTextInputUnfocused;
+  }
 
   return (
     <View
       style={[
         Styles.borderedTextInputView,
-        {borderColor: isFocused ? '#3F8AE0' : '#d5d6d8'},
+        !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError
       ]}>
       <TextInput
         value={value}

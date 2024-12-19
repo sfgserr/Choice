@@ -5,15 +5,23 @@ import Styles from '../constants/Styles.tsx';
 type BorderedTextInputProps = {
   value: string,
   onChanged: (s: string) => void,
-  placeholder: string
+  placeholder: string,
+  isError: boolean
 }
 
-export default function BorderedTextInput({ value, onChanged, placeholder }: BorderedTextInputProps) {
+export default function BorderedTextInput({ value, onChanged, placeholder, isError }: BorderedTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);
+
+  const borderColor = () => {
+    return isFocused ? Styles.borderedTextInputFocused : Styles.borderedTextInputUnfocused;
+  }
 
   return (
     <View
-      style={[Styles.borderedTextInputView, { borderColor: isFocused ? '#3F8AE0' : '#d5d6d8' }]}>
+      style={[
+        Styles.borderedTextInputView,
+        !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError
+      ]}>
       <TextInput
         value={value}
         onChangeText={onChanged}

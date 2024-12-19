@@ -1,5 +1,3 @@
-import RNFetchBlob from 'rn-fetch-blob';
-
 type TokenResponse = {
   access_token: string;
   refresh_token: string;
@@ -42,20 +40,21 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string): Promise<TokenResponse | null> {
-    var response = await RNFetchBlob.config({trusty: true}).fetch('POST', this.tokenEndpoint,
-      {
-        'Content-Type': 'application/x-www-form-urlencoded'
+    var response = await fetch(this.tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/x-www-form-urlencoded'
       },
-      new URLSearchParams({
+      body: new URLSearchParams({
         refresh_token: refreshToken,
         grant_type: 'refresh_token',
         scope: 'offline_access',
         client_id: this.clientId,
-        clientSecret: this.clientSecret
+        client_secret: this.clientSecret,
       }).toString()
-    );
+    });
 
-    if (response.info().status != 200) {
+    if (response.status != 200) {
       return null;
     }
 
