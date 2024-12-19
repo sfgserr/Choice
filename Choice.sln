@@ -84,6 +84,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{F260D3D4
 		Backend\nginx\Dockerfile = Backend\nginx\Dockerfile
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{18EE778E-20D1-4652-9B1E-DFDDFEF8E77D}"
+	ProjectSection(SolutionItems) = preProject
+		Backend\nginx\templates\default.conf.template = Backend\nginx\templates\default.conf.template
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -226,6 +231,7 @@ Global
 		{F932F0A4-5DCB-433F-BBE6-14C94604A089} = {FE3B8CD8-161A-4AB7-80EC-DB4580405B61}
 		{CD4177E2-7640-4EA8-86E0-45E9BDB8DE8D} = {B9B25AF3-E948-4695-BA9A-3AAD48291F42}
 		{F260D3D4-5F4E-4C4F-B944-B70A9047C7CF} = {B9B25AF3-E948-4695-BA9A-3AAD48291F42}
+		{18EE778E-20D1-4652-9B1E-DFDDFEF8E77D} = {F260D3D4-5F4E-4C4F-B944-B70A9047C7CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF3E3CEC-7558-4B47-8F36-9803500A74DD}

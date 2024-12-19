@@ -22,7 +22,9 @@ services:
   minio:
     image: quay.io/minio/minio
     container_name: "minio"
+    command: server --address 0.0.0.0:80 --console-address 0.0.0.0:81 /data
     volumes:
       - ../minio/data:/data
     ports:
       - 80
+      - 81

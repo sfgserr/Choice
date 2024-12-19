@@ -18,8 +18,13 @@ services:
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - 127.0.0.1:8080:80
         
   minio:
     environment:
       - MINIO_ROOT_USER=<RootName>
       - MINIO_ROOT_PASSWORD=<Password>
+    ports:
+      - 127.0.0.1:9000:80
+      - 127.0.0.1:9001:81
