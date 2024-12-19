@@ -6,7 +6,7 @@ services:
     depends_on:
       - webapi
     volumes:
-      - ../.docker/templates:/etc/nginx/templates
+      - ../nginx/templates:/etc/nginx/templates
   
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
@@ -16,5 +16,13 @@ services:
       dockerfile: src/WebApi/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+
+    ports:
+      - 80
+  
+  minio:
+    image: quay.io/minio/minio
+    container_name: "minio"
+    volumes:
+      - ../minio/data:/data
     ports:
       - 80

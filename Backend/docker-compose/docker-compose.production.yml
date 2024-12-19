@@ -9,6 +9,7 @@ services:
     environment:
       - LISTEN_PORT=443 ssl
       - HOST_NAME=<host_name>
+      - MINIO_HOST_NAME=<minio_host_name>
       - |
         SSL_DIRECTIVES=\
         ssl_certificate /certs/localhost.crt;
@@ -17,3 +18,8 @@ services:
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+        
+  minio:
+    environment:
+      - MINIO_ROOT_USER=<RootName>
+      - MINIO_ROOT_PASSWORD=<Password>
