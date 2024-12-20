@@ -2,6 +2,8 @@ import {AuthService} from '../services/AuthService.ts';
 import {AccountManager} from '../AccountManager.ts';
 import {UserStore} from '../stores/UserStore.ts';
 import {UserService} from '../services/UserService.ts';
+import {HttpService} from '../services/HttpService.ts';
+import {CategoriesService} from '../services/CategoriesService.ts';
 
 type Object = {
   [name: string]: object,
@@ -36,11 +38,15 @@ export class ObjectGraph {
     const userStore = new UserStore();
     const userService = new UserService(userStore, authService);
     const accountManager = new AccountManager(userService);
+    const httpService = new HttpService(process.env.API_URL);
+    const categoriesService = new CategoriesService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
     this.objects["UserStore"] = userStore;
     this.objects["UserService"] = userService;
+    this.objects["CategoriesService"] = categoriesService;
+    this.objects["HttpService"] = httpService;
 
     this.isInitialized = true;
   }

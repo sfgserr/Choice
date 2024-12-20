@@ -24,7 +24,7 @@ services:
     container_name: "minio"
     command: server --address 0.0.0.0:80 --console-address 0.0.0.0:81 /data
     volumes:
-      - ../minio/data:/data
+      - ../.docker/minio/data:/data
     ports:
       - 80
       - 81

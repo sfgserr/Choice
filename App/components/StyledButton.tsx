@@ -1,14 +1,7 @@
 import {TouchableOpacity, Text, View} from 'react-native';
 import Styles from '../constants/Styles.tsx';
 import React from 'react';
-
-type StyledButtonProps = {
-  content: string,
-  top: number,
-  bottom: number,
-  isDisabled: boolean,
-  pressed: () => Promise<void>;
-}
+import {StyledButtonProps} from '../types/ComponentTypes.ts';
 
 export function StyledButton({content, top, bottom, isDisabled, pressed}: StyledButtonProps) {
   return (

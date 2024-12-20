@@ -1,7 +1,8 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
+import {TextButtonProps} from '../types/ComponentTypes.ts';
 
-export default function TextButton() {
+export default function TextButton({text}: TextButtonProps) {
   return (
     <TouchableOpacity
       style={{
@@ -14,7 +15,7 @@ export default function TextButton() {
           fontSize: 16,
           fontWeight: '400'
         }}>
-        Создать аккаунт
+        {text}
       </Text>
     </TouchableOpacity>
   )

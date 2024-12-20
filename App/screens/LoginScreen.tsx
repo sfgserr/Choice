@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {View, Dimensions, Image, Text, Animated} from 'react-native';
+import {View, Dimensions, Image, Text} from 'react-native';
 import TextButton from '../components/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackProps} from '../App.tsx';
+import {StackProps} from '../types/NavigationTypes.ts';
 
 type Props = NativeStackScreenProps<StackProps, 'Login'>;
 
@@ -67,7 +67,7 @@ export default function LoginScreen({route, navigation}: Props) {
           }}>
           Авторизация
         </Text>
-        <TextButton/>
+        <TextButton text={'Создать аккаунт'}/>
       </View>
       <TabBar tabs={tabs}/>
     </View>

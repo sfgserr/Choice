@@ -76,6 +76,10 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('A
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetCategories');
 
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetCategories');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetCategories');
+
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'DeleteClient');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'EditClient');

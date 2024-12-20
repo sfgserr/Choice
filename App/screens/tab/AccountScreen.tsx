@@ -3,13 +3,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import {AuthContext, StackProps} from '../App.tsx';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StyledButton} from '../components/StyledButton.tsx';
+import {AuthContext, ClientTabProps} from '../../App.tsx';
+import {StyledButton} from '../../components/StyledButton.tsx';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 
-type Props = NativeStackScreenProps<StackProps, 'Categories'>
+type Props = BottomTabScreenProps<ClientTabProps, 'Account'>
 
-export default function CategoriesScreen() {
+export default function AccountScreen({route, navigation}: Props) {
   const { signOut } = React.useContext(AuthContext);
 
   return (

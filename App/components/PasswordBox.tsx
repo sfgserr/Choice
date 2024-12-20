@@ -2,12 +2,7 @@ import {TextInput, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Styles from '../constants/Styles.tsx';
 import { Icon } from '@rneui/themed';
-
-type PasswordBoxProps = {
-  value: string,
-  onChanged: (s: string) => void,
-  isError: boolean
-}
+import {PasswordBoxProps} from '../types/ComponentTypes.ts';
 
 export default function PasswordBox({value, onChanged, isError}: PasswordBoxProps) {
   const [isFocused, setIsFocused] = React.useState(false);
