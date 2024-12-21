@@ -7,12 +7,14 @@ import { AuthContext } from '../../App.tsx';
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const { signOut } = React.useContext(AuthContext);
+  const { changeState } = React.useContext(AuthContext);
 
   React.useEffect(() => {
    async function getCategories() {
-     let c = await route.params.categoriesService.getCategories(signOut);
-     setCategories(c);
+     let c = await route.params.categoriesService.getCategories(changeState);
+
+     if (c != null)
+      setCategories(c);
    }
    getCategories();
   });

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {MMKVLoader, useMMKVStorage} from 'react-native-mmkv-storage';
 import {UserService} from './services/UserService.ts';
-import { AccountManager } from './AccountManager.ts';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CategoriesScreen from './screens/tab/CategoriesScreen.tsx';
@@ -21,22 +19,19 @@ import {
 import {CategoriesService} from './services/CategoriesService.ts';
 import {Auth} from './types/AppTypes.ts';
 import {State} from './enums/AppEnums.ts';
-import {Status} from './enums/AccountManagerEnums.ts';
-import {UserType} from './enums/ModelEnums.ts';
-import {TokenStorageService} from './services/TokenStorageService.ts';
+import {StateManager} from './StateManager.ts';
+
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
   signOut: () => {},
-  restore: () => {}
+  changeState: (state: State) => {}
 });
 
 function App(): React.JSX.Element {
   const graph = new ObjectGraph();
   graph.initialize();
 
-  const userService: UserService = graph.resolve<UserService>("UserService");
-  const accountManager: AccountManager = graph.resolve<AccountManager>("AccountManager");
-  const tokenStorageService: TokenStorageService = graph.resolve<TokenStorageService>("TokenStorageService");
+  const stateManager: StateManager = graph.resolve<StateManager>("StateManager");
 
   const [state, setState] = React.useState(State.Restoring);
 
@@ -44,32 +39,28 @@ function App(): React.JSX.Element {
     () => ({
       signIn: (accessToken: string, refreshToken: string) => {
         async function setTokens() {
-          await tokenStorageService.setTokensToStorage(accessToken, refreshToken);
+          const state = await stateManager.signIn(accessToken, refreshToken);
+          setState(state);
         }
         setTokens();
-        let user = userService.getUser();
-
-        setState(user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin)
       },
       signOut: () => {
         async function setTokens() {
-          await tokenStorageService.setTokensToStorage('token', 'token');
+          const state = await stateManager.signOut();
+          setState(state);
         }
         setTokens();
-        userService.signOut();
-
-        setState(State.SignOut);
       },
-      restore: () => {
-        setState(State.Restoring);
+      changeState: (state: State) => {
+        setState(state);
       }
     }),
-    [userService, tokenStorageService]
+    [stateManager]
   );
 
   React.useEffect(() => {
     const getState = async () => {
-      const state = await accountManager.getState();
+      const state = await stateManager.getState();
       setState(state);
     }
 
@@ -104,7 +95,7 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              initialParams={{userService}}
+              initialParams={{userService: graph.resolve<UserService>("UserService")}}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

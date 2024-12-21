@@ -1,5 +1,7 @@
+import {State} from '../enums/AppEnums.ts';
+
 export type Auth = {
   signIn: (accessToken: string, refreshToken: string) => void;
   signOut: () => void;
-  restore: () => void;
+  changeState: (state: State) => void;
 }

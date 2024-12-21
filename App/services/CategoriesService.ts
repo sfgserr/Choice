@@ -1,12 +1,17 @@
 import {Category} from '../types/DomainTypes.ts';
-import {HttpService} from './HttpService.ts';
+import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
+import {State} from '../enums/AppEnums.ts';
 
 export class CategoriesService {
-  async getCategories(signOut: () => void): Promise<Category[]> {
-    const httpService = HttpService.getInstance();
+  private readonly httpService: RefreshTokenHttpServiceDecorator;
 
-    let response = await httpService.request('categories', 'GET', undefined, signOut);
+  constructor(httpService: RefreshTokenHttpServiceDecorator) {
+    this.httpService = httpService;
+  }
 
-    return response.json();
+  async getCategories(setState: (state: State) => void): Promise<Category[] | null> {
+    let response = await this.httpService.request('categories', 'GET', undefined, setState);
+
+    return response?.json();
   }
 }
