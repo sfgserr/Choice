@@ -10,7 +10,7 @@ import {UserService} from '../services/UserService.ts';
 import {AuthContext} from '../App.tsx';
 
 export default function LoginByEmailScreen({userService}: {userService: UserService}) {
-  const { signIn, restore } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');

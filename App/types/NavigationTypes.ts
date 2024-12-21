@@ -1,5 +1,7 @@
 import {UserService} from '../services/UserService.ts';
 import {CategoriesService} from '../services/CategoriesService.ts';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 
 export type StackProps = {
   Login: {userService: UserService};
@@ -12,3 +14,13 @@ export type ClientTabProps = {
   Chat: undefined;
   Account: undefined;
 };
+
+export type LoginScreenProps = NativeStackScreenProps<StackProps, 'Login'>;
+
+export type OrderRequestsScreenProps = BottomTabScreenProps<ClientTabProps, 'OrderRequests'>;
+
+export type ChatScreenProps = BottomTabScreenProps<ClientTabProps, 'Chat'>;
+
+export type CategoriesScreenProps = BottomTabScreenProps<ClientTabProps, 'Categories'>;
+
+export type AccountScreenProps = BottomTabScreenProps<ClientTabProps, 'Account'>;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   View,
-  Text, ActivityIndicator,
+  ActivityIndicator,
 } from 'react-native';
 
 export default function LoginScreen() {

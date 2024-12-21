@@ -1,7 +1,4 @@
-type TokenResponse = {
-  access_token: string;
-  refresh_token: string;
-}
+import {TokenResponse} from '../types/ServiceTypes.ts';
 
 export class AuthService {
   private readonly clientId: string;

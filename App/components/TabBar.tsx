@@ -5,15 +5,14 @@ import {
   View, ViewToken,
 } from 'react-native';
 import {ForwardedRef} from 'react';
-
-type Tab = {
-  element: React.JSX.Element,
-  title: string
-}
-
-export type TabBarProps = {
-  tabs: Tab[]
-}
+import {TabBarProps} from '../types/ComponentTypes.ts';
+import {
+  IndicatorProps,
+  MeasuresType,
+  TabProps,
+  TabsProps,
+  TabsType,
+} from '../types/TabTypes.ts';
 
 export default function TabBar({tabs}: TabBarProps) {
   const {width, height} = Dimensions.get('screen');
@@ -23,37 +22,6 @@ export default function TabBar({tabs}: TabBarProps) {
     if (info.viewableItems.length > 0)
       setCurrentIndex(+info.viewableItems[info.viewableItems.length-1].item.key);
   });
-
-  type TabsType = {
-    name: string,
-    key: string,
-    tab: React.JSX.Element,
-    ref: React.RefObject<View>
-  }
-
-  type TabProps = {
-    item: TabsType,
-    onItemPress: Function,
-    isPressed: boolean
-  }
-
-  type TabsProps = {
-    scrollX: Animated.Value,
-    data: TabsType[],
-    onItemPress: Function
-  }
-
-  type MeasuresType = {
-    x: number,
-    y: number,
-    height: number,
-    width: number
-  }
-
-  type IndicatorProps = {
-    measures: MeasuresType[],
-    scrollX: Animated.Value
-  }
 
   const data = Object.keys(tabs).map<TabsType>((v, i) => ({
     name: tabs[i].title,

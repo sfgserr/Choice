@@ -1,11 +1,19 @@
-
 export class HttpService {
+  private static instance: HttpService;
+
   private readonly baseUrl: string;
   private accessToken: string;
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  private constructor(baseUrl: string) {
     this.accessToken = '';
+    this.baseUrl = baseUrl;
+  }
+
+  public static getInstance() {
+    if (!this.instance)
+      this.instance = new HttpService(`${process.env.API_URL}/api`);
+
+    return this.instance;
   }
 
   setToken(accessToken: string) {
@@ -16,14 +24,20 @@ export class HttpService {
     endPoint: string,
     method: string,
     body: BodyInit_ | undefined,
+    signOut: () => void
   ) {
     const token = `Bearer ${this.accessToken}`;
-    return await fetch(`${this.baseUrl}/${endPoint}`, {
+    const response = await fetch(`${this.baseUrl}/${endPoint}`, {
       method,
       headers: {
         'Authorization': token,
         'Content-Type': 'application/json'
       },
       body});
+
+    if (response.status == 401)
+      signOut();
+
+    return response;
   }
 }

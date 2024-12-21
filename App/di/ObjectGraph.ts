@@ -4,6 +4,8 @@ import {UserStore} from '../stores/UserStore.ts';
 import {UserService} from '../services/UserService.ts';
 import {HttpService} from '../services/HttpService.ts';
 import {CategoriesService} from '../services/CategoriesService.ts';
+import {TokenStorageService} from '../services/TokenStorageService.ts';
+import {SingletonHttpService} from './SingletonHttpService.ts';
 
 type Object = {
   [name: string]: object,
@@ -37,16 +39,16 @@ export class ObjectGraph {
       process.env.CLIENT_SECRET);
     const userStore = new UserStore();
     const userService = new UserService(userStore, authService);
-    const accountManager = new AccountManager(userService);
-    const httpService = new HttpService(process.env.API_URL);
-    const categoriesService = new CategoriesService(httpService);
+    const categoriesService = new CategoriesService();
+    const tokenStorageService = new TokenStorageService();
+    const accountManager = new AccountManager(userService, tokenStorageService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
     this.objects["UserStore"] = userStore;
     this.objects["UserService"] = userService;
     this.objects["CategoriesService"] = categoriesService;
-    this.objects["HttpService"] = httpService;
+    this.objects["TokenStorageService"] = tokenStorageService;
 
     this.isInitialized = true;
   }

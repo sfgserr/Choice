@@ -29,6 +29,8 @@ namespace Identity.Infrastructure.Configuration.Identity
                         options.UseAspNetCore()
                                .EnableTokenEndpointPassthrough()
                                .DisableTransportSecurityRequirement();
+
+                        options.SetAccessTokenLifetime(TimeSpan.FromMinutes(1));
                     }
                     else
                     {

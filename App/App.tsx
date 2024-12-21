@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {MMKVLoader, useMMKVStorage} from 'react-native-mmkv-storage';
 import {UserService} from './services/UserService.ts';
-import {UserType} from './models/User.ts';
-import { AccountManager, Status } from './AccountManager.ts';
+import { AccountManager } from './AccountManager.ts';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CategoriesScreen from './screens/tab/CategoriesScreen.tsx';
@@ -10,7 +9,6 @@ import LoginScreen from './screens/LoginScreen.tsx';
 import LoadingScreen from './screens/LoadingScreen.tsx';
 import {ObjectGraph} from './di/ObjectGraph.ts';
 import {
-  BottomTabNavigationOptions,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import OrderRequestsScreen from './screens/tab/OrderRequestsScreen.tsx';
@@ -20,64 +18,44 @@ import {ClientTabProps, StackProps} from './types/NavigationTypes.ts';
 import {
   Image
 } from 'react-native';
-import {HttpService} from './services/HttpService.ts';
 import {CategoriesService} from './services/CategoriesService.ts';
-
-const storage = new MMKVLoader().withEncryption().initialize();
-
-type Auth = {
-  signIn: (accessToken: string, refreshToken: string) => void;
-  signOut: () => void;
-  restore: () => void;
-}
-
+import {Auth} from './types/AppTypes.ts';
+import {State} from './enums/AppEnums.ts';
+import {Status} from './enums/AccountManagerEnums.ts';
+import {UserType} from './enums/ModelEnums.ts';
+import {TokenStorageService} from './services/TokenStorageService.ts';
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
   signOut: () => {},
   restore: () => {}
 });
 
-enum State {
-  SignOut,
-  Restoring,
-  Client,
-  Company,
-  Admin
-}
-
-function start(): ObjectGraph {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED='0';
-
+function App(): React.JSX.Element {
   const graph = new ObjectGraph();
   graph.initialize();
 
-  return graph;
-}
-
-function App(): React.JSX.Element {
-  const graph = start();
-
   const userService: UserService = graph.resolve<UserService>("UserService");
   const accountManager: AccountManager = graph.resolve<AccountManager>("AccountManager");
+  const tokenStorageService: TokenStorageService = graph.resolve<TokenStorageService>("TokenStorageService");
 
-  const [accessToken, setAccessToken] = useMMKVStorage('accessToken', storage, 'token');
-  const [refreshToken, setRefreshToken] = useMMKVStorage('refreshToken', storage, 'refresh');
   const [state, setState] = React.useState(State.Restoring);
 
   const authContext = React.useMemo(
     () => ({
       signIn: (accessToken: string, refreshToken: string) => {
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        graph.resolve<HttpService>("HttpService").setToken(accessToken);
+        async function setTokens() {
+          await tokenStorageService.setTokensToStorage(accessToken, refreshToken);
+        }
+        setTokens();
         let user = userService.getUser();
 
         setState(user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin)
       },
       signOut: () => {
-        setAccessToken('token');
-        setRefreshToken('refresh');
-
+        async function setTokens() {
+          await tokenStorageService.setTokensToStorage('token', 'token');
+        }
+        setTokens();
         userService.signOut();
 
         setState(State.SignOut);
@@ -86,29 +64,17 @@ function App(): React.JSX.Element {
         setState(State.Restoring);
       }
     }),
-    [setAccessToken, setRefreshToken, userService]
+    [userService, tokenStorageService]
   );
 
   React.useEffect(() => {
-    const fetchAccount = async () => {
-      let result = await accountManager.fetchAccount(accessToken, refreshToken);
-
-      if (result.status == Status.Successful) {
-        let user = userService.getUser();
-
-        setState(user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin)
-
-        setAccessToken(result.tokens[0]);
-        setRefreshToken(result.tokens[1]);
-        graph.resolve<HttpService>("HttpService").setToken(result.tokens[0]);
-      }
-      else {
-        setState(State.SignOut);
-      }
+    const getState = async () => {
+      const state = await accountManager.getState();
+      setState(state);
     }
 
-    fetchAccount();
-  }, [accessToken, refreshToken, setAccessToken, setRefreshToken, state, setState, accountManager, userService]);
+    getState();
+  }, []);
 
   const Stack = createNativeStackNavigator<StackProps>();
   const ClientTab = createBottomTabNavigator<ClientTabProps>();

@@ -3,13 +3,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import {AuthContext, ClientTabProps} from '../../App.tsx';
-import {StyledButton} from '../../components/StyledButton.tsx';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {AuthContext} from '../../App.tsx';
+import {OrderRequestsScreenProps} from '../../types/NavigationTypes.ts';
 
-type Props = BottomTabScreenProps<ClientTabProps, 'OrderRequests'>
-
-export default function OrderRequestsScreen({route, navigation}: Props) {
+export default function OrderRequestsScreen({route, navigation}: OrderRequestsScreenProps) {
   const { signOut } = React.useContext(AuthContext);
 
   return (

@@ -1,9 +1,4 @@
-export enum UserType {
-  User,
-  Client,
-  Company,
-  Admin
-}
+import {UserType} from '../enums/ModelEnums.ts';
 
 export class User {
   id: string;

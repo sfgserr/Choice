@@ -3,12 +3,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {ClientTabProps} from '../../types/NavigationTypes.ts';
+import {ChatScreenProps} from '../../types/NavigationTypes.ts';
 
-type Props = BottomTabScreenProps<ClientTabProps, 'Chat'>
-
-export default function ChatScreen({route, navigation}: Props) {
+export default function ChatScreen({route, navigation}: ChatScreenProps) {
   return (
     <View>
       <Text

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {TextInputTitleProps} from '../types/ComponentTypes.ts';
 
-export default function TextInputTitle({s, top, bottom}: {s: string, top: number, bottom: number}) {
+export default function TextInputTitle({s, top, bottom}: TextInputTitleProps) {
   return (
     <View
       style={{

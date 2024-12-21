@@ -1,15 +1,11 @@
-import {HttpService} from './HttpService.ts';
 import {Category} from '../types/DomainTypes.ts';
+import {HttpService} from './HttpService.ts';
 
 export class CategoriesService {
-  private readonly httpService: HttpService;
+  async getCategories(signOut: () => void): Promise<Category[]> {
+    const httpService = HttpService.getInstance();
 
-  constructor(httpService: HttpService) {
-    this.httpService = httpService;
-  }
-
-  async getCategories(): Promise<Category[]> {
-    let response = await this.httpService.request('api/categories', 'GET', undefined);
+    let response = await httpService.request('categories', 'GET', undefined, signOut);
 
     return response.json();
   }

@@ -5,7 +5,6 @@ import {
   Dimensions, Image,
 } from 'react-native';
 import {Category} from '../types/DomainTypes.ts';
-import {Icon} from '@rneui/themed';
 
 export default function CategoryItem({category}: {category: Category}) {
   const { width, height } = Dimensions.get('screen');
@@ -30,13 +29,16 @@ export default function CategoryItem({category}: {category: Category}) {
             width: height*0.054,
             height: height*0.054,
             borderRadius: 10,
-            backgroundColor: '#47A4F9'
+            backgroundColor: '#47A4F9',
+            justifyContent: 'center'
           }}>
           <Image
-            source={{uri: `http://172.17.0.1:8080/app-files/${category.iconUri}`}}
+            source={{uri: `${process.env.MINIO_URL}/app-files/${category.iconUri}`}}
             style={{
               width: 20,
               height: 20,
+              alignSelf: 'center',
+              resizeMode: 'contain'
             }}/>
         </View>
         <Text

@@ -1,12 +1,9 @@
-import {User, UserType} from '../models/User.ts';
+import {User} from '../models/User.ts';
 import {AuthService} from './AuthService.ts';
 import {UserStore} from '../stores/UserStore.ts';
 import {jwtDecode} from 'jwt-decode';
-
-type Claims = {
-  sub: string;
-  type: string;
-};
+import {UserClaims} from '../types/ServiceTypes.ts';
+import {UserType} from '../enums/ModelEnums.ts';
 
 export class UserService {
   private readonly store: UserStore;
@@ -46,7 +43,7 @@ export class UserService {
   }
 
   setUser(accessToken: string) {
-    const token = jwtDecode<Claims>(accessToken);
+    const token = jwtDecode<UserClaims>(accessToken);
 
     if (token.sub != undefined) {
       this.store.setUser(new User(token.sub, this.convertStringToUserType(token.type)));

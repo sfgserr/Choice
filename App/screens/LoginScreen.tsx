@@ -3,12 +3,9 @@ import {View, Dimensions, Image, Text} from 'react-native';
 import TextButton from '../components/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackProps} from '../types/NavigationTypes.ts';
+import {LoginScreenProps} from '../types/NavigationTypes.ts';
 
-type Props = NativeStackScreenProps<StackProps, 'Login'>;
-
-export default function LoginScreen({route, navigation}: Props) {
+export default function LoginScreen({route, navigation}: LoginScreenProps) {
   const {width, height} = Dimensions.get('screen');
 
   const tabs = [

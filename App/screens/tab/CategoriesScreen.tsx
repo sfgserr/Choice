@@ -1,19 +1,17 @@
 import * as React from 'react';
 import {FlatList, Text, View} from 'react-native';
-
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {ClientTabProps} from '../../types/NavigationTypes.ts';
 import CategoryItem from '../../components/CategoryItem.tsx';
 import {Category} from '../../types/DomainTypes.ts';
+import {CategoriesScreenProps} from '../../types/NavigationTypes.ts';
+import { AuthContext } from '../../App.tsx';
 
-type Props = BottomTabScreenProps<ClientTabProps, 'Categories'>
-
-export default function CategoriesScreen({route, navigation}: Props) {
+export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const { signOut } = React.useContext(AuthContext);
 
   React.useEffect(() => {
    async function getCategories() {
-     let c = await route.params.categoriesService.getCategories();
+     let c = await route.params.categoriesService.getCategories(signOut);
      setCategories(c);
    }
    getCategories();
