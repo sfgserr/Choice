@@ -5,8 +5,10 @@ import {
   Dimensions, Image,
 } from 'react-native';
 import {Category} from '../types/DomainTypes.ts';
+import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {ClientTabProps} from '../types/NavigationTypes.ts';
 
-export default function CategoryItem({category}: {category: Category}) {
+export default function CategoryItem({category, navigation}: {category: Category, navigation: BottomTabNavigationProp<ClientTabProps, 'Categories', undefined>}) {
   const { width, height } = Dimensions.get('screen');
 
   return (
@@ -23,6 +25,9 @@ export default function CategoryItem({category}: {category: Category}) {
           borderBottomWidth: .5,
           borderColor: '#e9e9e9',
           flex: 1
+        }}
+        onPress={() => {
+          navigation.navigate('Map', {category});
         }}>
         <View
           style={{

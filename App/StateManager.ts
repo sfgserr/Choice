@@ -3,17 +3,20 @@ import {Status} from './enums/AccountManagerEnums.ts';
 import {UserType} from './enums/ModelEnums.ts';
 import {TokenStorageService} from './services/TokenStorageService.ts';
 import {AccountManager} from './AccountManager.ts';
-import {UserService} from './services/UserService.ts';
+import {TokenService} from './services/TokenService.ts';
 
 export class StateManager {
   private readonly tokenStorageService: TokenStorageService;
   private readonly accountManager: AccountManager;
-  private readonly userService: UserService;
+  private readonly tokenService: TokenService;
 
-  constructor(tokenStorageService: TokenStorageService, accountManager: AccountManager, userService: UserService) {
+  constructor(
+    tokenStorageService: TokenStorageService,
+    accountManager: AccountManager,
+    tokenService: TokenService) {
     this.tokenStorageService = tokenStorageService;
     this.accountManager = accountManager;
-    this.userService = userService;
+    this.tokenService = tokenService;
   }
 
   async getState(): Promise<State> {
@@ -25,7 +28,7 @@ export class StateManager {
     let result = await this.accountManager.fetchAccount(tokens[0], tokens[1]);
 
     if (result.status == Status.Successful) {
-      let user = this.userService.getUser();
+      let user = this.tokenService.getUser();
 
       await this.tokenStorageService.setTokensToStorage(result.tokens[0], result.tokens[1]);
 
@@ -38,14 +41,14 @@ export class StateManager {
 
   async signIn(accessToken: string, refreshToken: string) {
     await this.tokenStorageService.setTokensToStorage(accessToken, refreshToken);
-    let user = this.userService.getUser();
+    let user = this.tokenService.getUser();
 
     return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin;
   }
 
   async signOut() {
     await this.tokenStorageService.setTokensToStorage('token', 'token');
-    this.userService.signOut();
+    this.tokenService.signOut();
 
     return State.SignOut;
   }

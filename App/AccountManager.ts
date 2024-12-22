@@ -1,13 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
-import {UserService} from './services/UserService.ts';
+import {TokenService} from './services/TokenService.ts';
 import {FetchAccountResult} from './types/AccountManagerTypes.ts';
 import {Status} from './enums/AccountManagerEnums.ts';
 
 export class AccountManager {
-  private readonly userService: UserService;
+  private readonly tokenService: TokenService;
 
-  constructor(userService: UserService) {
-    this.userService = userService;
+  constructor(tokenService: TokenService) {
+    this.tokenService = tokenService;
   }
 
   async fetchAccount(
@@ -22,17 +22,17 @@ export class AccountManager {
 
     if (token.exp != undefined) {
       if (Date.now()/1000 > token.exp) {
-        let response = await this.userService.refresh(refreshToken);
+        let response = await this.tokenService.refresh(refreshToken);
 
         if (response != null) {
-          this.userService.setUser(accessToken);
+          this.tokenService.setUser(accessToken);
           return {status: Status.Successful, tokens: response};
         }
         else {
           return {status: Status.Unsuccessful, tokens: []};
         }
       } else {
-        this.userService.setUser(accessToken);
+        this.tokenService.setUser(accessToken);
         return {status: Status.Successful, tokens: [accessToken, refreshToken]};
       }
     }

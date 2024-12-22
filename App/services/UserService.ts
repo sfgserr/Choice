@@ -1,71 +1,32 @@
-import {User} from '../models/User.ts';
-import {AuthService} from './AuthService.ts';
+import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
 import {UserStore} from '../stores/UserStore.ts';
-import {jwtDecode} from 'jwt-decode';
-import {UserClaims} from '../types/ServiceTypes.ts';
+import {State} from '../enums/AppEnums.ts';
+import {TokenService} from './TokenService.ts';
 import {UserType} from '../enums/ModelEnums.ts';
 
 export class UserService {
-  private readonly store: UserStore;
-  private readonly authService: AuthService;
+  private readonly httpService: RefreshTokenHttpServiceDecorator;
+  private readonly userStore: UserStore;
+  private readonly tokenService: TokenService;
 
-  constructor(store: UserStore, authService: AuthService) {
-    this.store = store;
-    this.authService = authService;
+  constructor(
+    httpService: RefreshTokenHttpServiceDecorator,
+    userStore: UserStore,
+    tokenStore: TokenService,
+  ) {
+    this.httpService = httpService;
+    this.userStore = userStore;
+    this.tokenService = tokenStore;
   }
 
-  getUser(): User {
-    return this.store.state;
-  }
+  async fetchUser(changeState: (state: State) => void) {
+    const response = await this.httpService.request(
+      this.tokenService.getUser().userType == UserType.Client ? 'clients' : 'companies',
+      'GET',
+      undefined,
+      changeState,
+    );
 
-  async login(email: string, password: string) {
-    let result = await this.authService.login(email, password);
-
-    if (result != null) {
-      this.setUser(result.access_token);
-
-      return [result.access_token, result.refresh_token];
-    }
-
-    return null;
-  }
-
-  async refresh(refreshToken: string) {
-    let result = await this.authService.refresh(refreshToken);
-
-    if (result != null) {
-      this.setUser(result.access_token);
-
-      return [result.access_token, result.refresh_token];
-    }
-
-    return null;
-  }
-
-  setUser(accessToken: string) {
-    const token = jwtDecode<UserClaims>(accessToken);
-
-    if (token.sub != undefined) {
-      this.store.setUser(new User(token.sub, this.convertStringToUserType(token.type)));
-    }
-  }
-
-  signOut() {
-    this.store.setUser(new User('0', UserType.User));
-  }
-
-  private convertStringToUserType(type: string): UserType {
-    switch (type) {
-      case 'Admin':
-        return UserType.Admin;
-      case 'User':
-        return UserType.User;
-      case 'Client':
-        return UserType.Client;
-      case 'Company':
-        return UserType.Company;
-      default:
-        throw new Error();
-    }
+    if (response != null) this.userStore.setUser(response.json());
   }
 }

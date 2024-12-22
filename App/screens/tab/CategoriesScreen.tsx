@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FlatList, Text, View} from 'react-native';
+import {FlatList, RefreshControl, Text, View} from 'react-native';
 import CategoryItem from '../../components/CategoryItem.tsx';
 import {Category} from '../../types/DomainTypes.ts';
 import {CategoriesScreenProps} from '../../types/NavigationTypes.ts';
@@ -7,17 +7,30 @@ import { AuthContext } from '../../App.tsx';
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [refreshing, setRefreshing] = React.useState(false);
   const { changeState } = React.useContext(AuthContext);
 
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    const categories = await route.params.categoriesService.getCategories(changeState);
+
+    if (categories != null)
+      setCategories(categories);
+    else
+      setCategories([]);
+
+    setRefreshing(false);
+  }, []);
+
   React.useEffect(() => {
-   async function getCategories() {
+    async function getCategories() {
      let c = await route.params.categoriesService.getCategories(changeState);
 
      if (c != null)
       setCategories(c);
    }
    getCategories();
-  });
+  }, []);
 
   return (
     <View
@@ -38,13 +51,20 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
       </Text>
       <FlatList
         data={categories}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}/>
+        }
         style={{
           paddingTop: 20
         }}
         renderItem={(item) => {
           return (
             <View>
-              <CategoryItem category={item.item}/>
+              <CategoryItem
+                category={item.item}
+                navigation={navigation}/>
             </View>
           )
         }}/>

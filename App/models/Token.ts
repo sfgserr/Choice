@@ -1,6 +1,6 @@
 import {UserType} from '../enums/ModelEnums.ts';
 
-export class User {
+export class Token {
   id: string;
   userType: UserType;
 

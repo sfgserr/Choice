@@ -1,25 +1,16 @@
 import * as React from 'react';
-import {UserService} from './services/UserService.ts';
+import {TokenService} from './services/TokenService.ts';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import CategoriesScreen from './screens/tab/CategoriesScreen.tsx';
 import LoginScreen from './screens/LoginScreen.tsx';
 import LoadingScreen from './screens/LoadingScreen.tsx';
 import {ObjectGraph} from './di/ObjectGraph.ts';
-import {
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
-import OrderRequestsScreen from './screens/tab/OrderRequestsScreen.tsx';
-import ChatScreen from './screens/tab/ChatScreen.tsx';
-import AccountScreen from './screens/tab/AccountScreen.tsx';
-import {ClientTabProps, StackProps} from './types/NavigationTypes.ts';
-import {
-  Image
-} from 'react-native';
-import {CategoriesService} from './services/CategoriesService.ts';
+import {StackProps} from './types/NavigationTypes.ts';
 import {Auth} from './types/AppTypes.ts';
 import {State} from './enums/AppEnums.ts';
 import {StateManager} from './StateManager.ts';
+import MapScreen from './screens/MapScreen.tsx';
+import ClientTabComponent from './Tabs/ClientTabComponent.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -68,24 +59,6 @@ function App(): React.JSX.Element {
   }, []);
 
   const Stack = createNativeStackNavigator<StackProps>();
-  const ClientTab = createBottomTabNavigator<ClientTabProps>();
-
-  const getTabBarIcon = ({size, focused, color, source} : {
-    size: number,
-    focused: boolean,
-    color: string,
-    source: any,
-
-  }) => {
-    return <Image
-      source={source}
-      style={{
-        width: 20,
-        height: 20,
-        tintColor: focused ? '#2975CC' : '#99A2AD',
-        resizeMode: 'contain'
-      }}/>
-  };
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -95,79 +68,23 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              initialParams={{userService: graph.resolve<UserService>("UserService")}}
+              initialParams={{tokenService: graph.resolve<TokenService>("TokenService")}}
               options={{headerShown: false}}
             />
           </Stack.Navigator>
         ) : state == State.Client ? (
           <>
-            <ClientTab.Navigator>
-              <ClientTab.Screen
-                name={'Categories'}
-                component={CategoriesScreen}
-                initialParams={{categoriesService: graph.resolve<CategoriesService>("CategoriesService")}}
-                options={{
-                  headerShown: false,
-                  tabBarLabel: 'Услуги',
-                  tabBarActiveTintColor: '#2975CC',
-                  tabBarInactiveTintColor: '#99A2AD',
-                  tabBarLabelStyle: {
-                    fontSize: 10,
-                    fontWeight:'500'
-                  },
-                  tabBarIcon: ({size, focused, color}) =>
-                    getTabBarIcon({size, focused, color, source: require('./assets/images/categories.png')}),
-                }}
-              />
-              <ClientTab.Screen
-                name={'OrderRequests'}
-                component={OrderRequestsScreen}
-                options={{
-                  headerShown: false,
-                  tabBarLabel: 'Заказы',
-                  tabBarActiveTintColor: '#2975CC',
-                  tabBarInactiveTintColor: '#99A2AD',
-                  tabBarLabelStyle: {
-                    fontSize: 10,
-                    fontWeight:'500'
-                  },
-                  tabBarIcon: ({size, focused, color}) =>
-                    getTabBarIcon({size, focused, color, source: require('./assets/images/orders.png')}),
-                }}
-              />
-              <ClientTab.Screen
-                name={'Chat'}
-                component={ChatScreen}
-                options={{
-                  headerShown: false,
-                  tabBarLabel: 'Чат',
-                  tabBarActiveTintColor: '#2975CC',
-                  tabBarInactiveTintColor: '#99A2AD',
-                  tabBarLabelStyle: {
-                    fontSize: 10,
-                    fontWeight:'500'
-                  },
-                  tabBarIcon: ({size, focused, color}) =>
-                    getTabBarIcon({size, focused, color, source: require('./assets/images/chat.png')}),
-                }}
-              />
-              <ClientTab.Screen
-                name={'Account'}
-                component={AccountScreen}
-                options={{
-                  headerShown: false,
-                  tabBarLabel: 'Аккаунт',
-                  tabBarActiveTintColor: '#2975CC',
-                  tabBarInactiveTintColor: '#99A2AD',
-                  tabBarLabelStyle: {
-                    fontSize: 10,
-                    fontWeight:'500'
-                  },
-                  tabBarIcon: ({size, focused, color}) =>
-                    getTabBarIcon({size, focused, color, source: require('./assets/images/account.png')}),
-                }}
-              />
-            </ClientTab.Navigator>
+            <Stack.Navigator>
+              <Stack.Screen
+                name={'Tab'}
+                component={ClientTabComponent}
+                initialParams={{graph}}
+                options={{headerShown: false}}/>
+              <Stack.Screen
+                name={'Map'}
+                component={MapScreen}
+                options={{headerShown: false}}/>
+            </Stack.Navigator>
           </>
         ) : (
           <>

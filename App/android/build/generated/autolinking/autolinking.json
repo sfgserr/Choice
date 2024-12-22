@@ -93,6 +93,30 @@
         }
       }
     },
+    "react-native-yamap": {
+      "root": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-yamap",
+      "name": "react-native-yamap",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-yamap/RNYamap.podspec",
+          "version": "4.8.3",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-yamap/android",
+          "packageImportPath": "import ru.vvdev.yamap.RNYamapPackage;",
+          "packageInstance": "new RNYamapPackage()",
+          "buildTypes": [],
+          "componentDescriptors": [],
+          "cmakeListsPath": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-yamap/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "rn-fetch-blob": {
       "root": "/home/sfgserr/Projects/Choice/App/node_modules/rn-fetch-blob",
       "name": "rn-fetch-blob",

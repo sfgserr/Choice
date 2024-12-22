@@ -9,7 +9,7 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
   const {width, height} = Dimensions.get('screen');
 
   const tabs = [
-    {element: <LoginByEmailScreen userService={route.params.userService}/>, title: 'E-mail'},
+    {element: <LoginByEmailScreen tokenService={route.params.tokenService}/>, title: 'E-mail'},
     {element: <View><Text>Phone</Text></View>, title: 'Телефон'}
   ]
 

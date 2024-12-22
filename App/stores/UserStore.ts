@@ -1,11 +1,9 @@
 import IStore from './IStore.ts';
-import {User} from '../models/User.ts';
-import {UserType} from '../enums/ModelEnums.ts';
 
-export class UserStore implements IStore<User> {
-  state: User = new User('0', UserType.User);
+export class UserStore implements IStore<any> {
+  state: any;
 
-  setUser(user: User): void {
-    this.state = user;
+  setUser(state: any) {
+    this.state = state;
   }
 }

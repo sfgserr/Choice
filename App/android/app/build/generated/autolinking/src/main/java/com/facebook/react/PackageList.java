@@ -16,6 +16,8 @@ import com.ammarahmed.mmkv.RNMMKVPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
+// react-native-yamap
+import ru.vvdev.yamap.RNYamapPackage;
 // rn-fetch-blob
 import com.RNFetchBlob.RNFetchBlobPackage;
 
@@ -66,6 +68,7 @@ public class PackageList {
       new RNMMKVPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
+      new RNYamapPackage(),
       new RNFetchBlobPackage()
     ));
   }

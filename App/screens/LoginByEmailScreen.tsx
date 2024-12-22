@@ -6,10 +6,10 @@ import BorderedTextInput from '../components/BorderedTextInput.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import PasswordBox from '../components/PasswordBox.tsx';
 import {StyledButton} from '../components/StyledButton.tsx';
-import {UserService} from '../services/UserService.ts';
+import {TokenService} from '../services/TokenService.ts';
 import {AuthContext} from '../App.tsx';
 
-export default function LoginByEmailScreen({userService}: {userService: UserService}) {
+export default function LoginByEmailScreen({tokenService}: {tokenService: TokenService}) {
   const { signIn } = React.useContext(AuthContext);
 
   const [email, setEmail] = React.useState('');
@@ -71,7 +71,7 @@ export default function LoginByEmailScreen({userService}: {userService: UserServ
         bottom={0}
         isDisabled={isDisabled}
         pressed={async () => {
-          let result = await userService.login(email, password);
+          let result = await tokenService.login(email, password);
 
           if (result != null)
             signIn(result[0], result[1]);

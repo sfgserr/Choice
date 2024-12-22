@@ -60,7 +60,7 @@ namespace Users.Domain.Users
                 email, 
                 password,
                 phoneNumber, 
-                "defaulturi",
+                "default.png",
                 address, 
                 role,
                 counter);

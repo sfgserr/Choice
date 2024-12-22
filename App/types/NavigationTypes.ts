@@ -1,11 +1,15 @@
-import {UserService} from '../services/UserService.ts';
+import {TokenService} from '../services/TokenService.ts';
 import {CategoriesService} from '../services/CategoriesService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {ObjectGraph} from '../di/ObjectGraph.ts';
+import {Category} from './DomainTypes.ts';
 
 export type StackProps = {
-  Login: {userService: UserService};
+  Login: {tokenService: TokenService};
   Loading: undefined;
+  Map: {category: Category};
+  Tab: {graph: ObjectGraph};
 };
 
 export type ClientTabProps = {
@@ -24,3 +28,7 @@ export type ChatScreenProps = BottomTabScreenProps<ClientTabProps, 'Chat'>;
 export type CategoriesScreenProps = BottomTabScreenProps<ClientTabProps, 'Categories'>;
 
 export type AccountScreenProps = BottomTabScreenProps<ClientTabProps, 'Account'>;
+
+export type TabScreenProps = NativeStackScreenProps<StackProps, 'Tab'>;
+
+export type MapScreenProps = NativeStackScreenProps<StackProps, 'Map'>;
