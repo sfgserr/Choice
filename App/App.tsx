@@ -109,6 +109,12 @@ function App(): React.JSX.Element {
                 options={{
                   headerShown: false,
                   tabBarLabel: 'Услуги',
+                  tabBarActiveTintColor: '#2975CC',
+                  tabBarInactiveTintColor: '#99A2AD',
+                  tabBarLabelStyle: {
+                    fontSize: 10,
+                    fontWeight:'500'
+                  },
                   tabBarIcon: ({size, focused, color}) =>
                     getTabBarIcon({size, focused, color, source: require('./assets/images/categories.png')}),
                 }}
@@ -119,6 +125,12 @@ function App(): React.JSX.Element {
                 options={{
                   headerShown: false,
                   tabBarLabel: 'Заказы',
+                  tabBarActiveTintColor: '#2975CC',
+                  tabBarInactiveTintColor: '#99A2AD',
+                  tabBarLabelStyle: {
+                    fontSize: 10,
+                    fontWeight:'500'
+                  },
                   tabBarIcon: ({size, focused, color}) =>
                     getTabBarIcon({size, focused, color, source: require('./assets/images/orders.png')}),
                 }}
@@ -129,6 +141,12 @@ function App(): React.JSX.Element {
                 options={{
                   headerShown: false,
                   tabBarLabel: 'Чат',
+                  tabBarActiveTintColor: '#2975CC',
+                  tabBarInactiveTintColor: '#99A2AD',
+                  tabBarLabelStyle: {
+                    fontSize: 10,
+                    fontWeight:'500'
+                  },
                   tabBarIcon: ({size, focused, color}) =>
                     getTabBarIcon({size, focused, color, source: require('./assets/images/chat.png')}),
                 }}
@@ -139,6 +157,12 @@ function App(): React.JSX.Element {
                 options={{
                   headerShown: false,
                   tabBarLabel: 'Аккаунт',
+                  tabBarActiveTintColor: '#2975CC',
+                  tabBarInactiveTintColor: '#99A2AD',
+                  tabBarLabelStyle: {
+                    fontSize: 10,
+                    fontWeight:'500'
+                  },
                   tabBarIcon: ({size, focused, color}) =>
                     getTabBarIcon({size, focused, color, source: require('./assets/images/account.png')}),
                 }}
