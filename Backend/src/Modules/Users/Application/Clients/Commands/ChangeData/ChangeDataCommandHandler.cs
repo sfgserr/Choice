@@ -34,7 +34,7 @@ namespace Users.Application.Clients.Commands.ChangeData
                 command.Name,
                 command.Email,
                 command.PhoneNumber,
-                new(command.City, command.Street, new(coords[0], coords[1])),
+                new(command.City, command.Street, new(coords[1], coords[0])),
                 _usersCounter);
         }
     }

@@ -27,7 +27,7 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
             var company = await _dbContext.Companies.GetAsNoTracking(c => 
                 c.Id.Equals(new CompanyId(query.CompanyId)));
             
-            var distance = await _geoService.GetDistance(
+            var distance = _geoService.GetDistance(
                 _userContext.Address.Coords, 
                 company.User.Address.Coords);
 

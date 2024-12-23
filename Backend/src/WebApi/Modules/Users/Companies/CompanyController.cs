@@ -81,12 +81,12 @@ namespace WebApi.Modules.Users.Companies
             return Ok();
         }
         
-        [HttpGet("all")]
+        [HttpGet("{categoryId:int}")]
         [HasPermission(Permissions.GetCompanies)]
-        public async Task<IActionResult> GetCompanies()
+        public async Task<IActionResult> GetCompanies(int categoryId)
         {
             var companies = await _usersModule
-                .Query<GetCompaniesQuery, IList<GetCompaniesDto>>(new GetCompaniesQuery());
+                .Query<GetCompaniesQuery, IList<GetCompaniesDto>>(new GetCompaniesQuery(categoryId));
 
             return Ok(companies);
         }

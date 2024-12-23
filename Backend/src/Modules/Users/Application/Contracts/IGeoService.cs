@@ -6,6 +6,6 @@ namespace Users.Application.Contracts
     {
         Task<string[]> GetCoords(string city, string street);
         
-        Task<int> GetDistance(Coords coords1, Coords coords2);
+        int GetDistance(Coords coords1, Coords coords2);
     }
 }

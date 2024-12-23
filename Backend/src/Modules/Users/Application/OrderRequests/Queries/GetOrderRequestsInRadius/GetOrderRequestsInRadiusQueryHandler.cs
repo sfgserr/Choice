@@ -52,7 +52,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
 
             foreach (var request in orderRequests)
             {
-                var distance = await _geoService.GetDistance(
+                var distance = _geoService.GetDistance(
                     new(request.Latitude, request.Latitude),
                     _userContext.Address.Coords);
 

@@ -31,7 +31,7 @@ namespace Users.Application.Companies.Commands.CreateCompany
                 command.Email,
                 command.PhoneNumber,
                 command.Password,
-                new(command.City, command.Street, new(coords[0], coords[1])),
+                new(command.City, command.Street, new(coords[1], coords[0])),
                 _usersCounter);
 
             await _dbContext.Companies.AddAsync(company);

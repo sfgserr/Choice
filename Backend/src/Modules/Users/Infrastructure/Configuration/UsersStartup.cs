@@ -24,11 +24,13 @@ namespace Users.Infrastructure.Configuration
             string connectionString, 
             ILogger logger, 
             IUserService userService,
-            IBus bus)
+            IBus bus,
+            IHttpClientFactory factory,
+            string apiKey)
         {
             var usersLogger = logger.ForContext("Module", "Users");
             
-            ConfigureCompositionRoot(connectionString, usersLogger, userService, bus);
+            ConfigureCompositionRoot(connectionString, usersLogger, userService, bus, factory, apiKey);
 
             QuartzStartup.Initialize(usersLogger);
         }
@@ -37,7 +39,9 @@ namespace Users.Infrastructure.Configuration
             string connectionString, 
             ILogger logger, 
             IUserService userService,
-            IBus bus)
+            IBus bus,
+            IHttpClientFactory factory,
+            string apiKey)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -61,7 +65,7 @@ namespace Users.Infrastructure.Configuration
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
             containerBuilder.RegisterModule(new EventBusModule(bus));
-            containerBuilder.RegisterModule(new GeoCodingModule());
+            containerBuilder.RegisterModule(new GeoCodingModule(factory, apiKey));
             containerBuilder.RegisterModule(new LoggingModule(logger));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());

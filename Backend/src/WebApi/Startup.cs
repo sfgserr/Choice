@@ -76,7 +76,11 @@ namespace WebApi
             });
             
             services.AddHttpContextAccessor();
-
+            services.AddHttpClient("Geocode", options =>
+            {
+                options.BaseAddress = new(Configuration["YandexGeocoder:BaseUrl"]!);
+            });
+            
             services.AddControllers();
             services.AddSwaggerGen();
             
@@ -122,12 +126,15 @@ namespace WebApi
             var bus = container.Resolve<IBusControl>();
             var hub = container.Resolve<IHubContext<ChatHub>>();
             var seed = container.Resolve<SeedClients>();
+            var clientFactory = container.Resolve<IHttpClientFactory>();
             
             UsersStartup.Initialize(
                 connectionString, 
                 _logger, 
                 userService,
-                bus);
+                bus,
+                clientFactory,
+                Configuration["YandexGeocoder:ApiKey"]!);
             
             IdentityStartup.Initialize(
                 connectionString,
