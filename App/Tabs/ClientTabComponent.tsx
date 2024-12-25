@@ -1,5 +1,5 @@
 import CategoriesScreen from '../screens/tab/CategoriesScreen.tsx';
-import {CategoriesService} from '../services/CategoriesService.ts';
+import {CategoryService} from '../services/CategoryService.ts';
 import OrderRequestsScreen from '../screens/tab/OrderRequestsScreen.tsx';
 import ChatScreen from '../screens/tab/ChatScreen.tsx';
 import AccountScreen from '../screens/tab/AccountScreen.tsx';
@@ -35,7 +35,7 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
       <ClientTab.Screen
         name={'Categories'}
         component={CategoriesScreen}
-        initialParams={{categoriesService: graph.resolve<CategoriesService>("CategoriesService")}}
+        initialParams={{categoryService: graph.resolve<CategoryService>("CategoryService")}}
         options={{
           headerShown: false,
           tabBarLabel: 'Услуги',

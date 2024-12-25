@@ -1,19 +1,20 @@
 import {TokenService} from '../services/TokenService.ts';
-import {CategoriesService} from '../services/CategoriesService.ts';
+import {CategoryService} from '../services/CategoryService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ObjectGraph} from '../di/ObjectGraph.ts';
 import {Category} from './DomainTypes.ts';
+import {CompanyService} from '../services/CompanyService.ts';
 
 export type StackProps = {
   Login: {tokenService: TokenService};
   Loading: undefined;
-  Map: {category: Category};
+  Map: {category: Category, companyService: CompanyService};
   Tab: {graph: ObjectGraph};
 };
 
 export type ClientTabProps = {
-  Categories: {categoriesService: CategoriesService};
+  Categories: {categoryService: CategoryService};
   OrderRequests: undefined;
   Chat: undefined;
   Account: undefined;

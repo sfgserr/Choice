@@ -2,13 +2,14 @@ import {AuthService} from '../services/AuthService.ts';
 import {AccountManager} from '../AccountManager.ts';
 import {TokenStore} from '../stores/TokenStore.ts';
 import {TokenService} from '../services/TokenService.ts';
-import {CategoriesService} from '../services/CategoriesService.ts';
+import {CategoryService} from '../services/CategoryService.ts';
 import {TokenStorageService} from '../services/TokenStorageService.ts';
 import {StateManager} from '../StateManager.ts';
 import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
 import YaMap from 'react-native-yamap';
 import {UserStore} from '../stores/UserStore.ts';
 import {UserService} from '../services/UserService.ts';
+import {CompanyService} from '../services/CompanyService.ts';
 
 
 type Object = {
@@ -50,19 +51,21 @@ export class ObjectGraph {
     const accountManager = new AccountManager(tokenService);
     const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
     const httpService = new RefreshTokenHttpServiceDecorator(stateManager);
-    const categoriesService = new CategoriesService(httpService);
+    const categoryService = new CategoryService(httpService);
     const userStore = new UserStore();
     const userService = new UserService(httpService, userStore, tokenService);
+    const companyService = new CompanyService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
     this.objects["TokenStore"] = tokenStore;
     this.objects["TokenService"] = tokenService;
-    this.objects["CategoriesService"] = categoriesService;
+    this.objects["CategoryService"] = categoryService;
     this.objects["TokenStorageService"] = tokenStorageService;
     this.objects["StateManager"] = stateManager;
     this.objects["HttpService"] = httpService;
     this.objects["UserService"] = userService;
+    this.objects["CompanyService"] = companyService;
 
     this.isInitialized = true;
   }

@@ -7,9 +7,26 @@ import YaMap from 'react-native-yamap';
 import NavigateBackButton from '../components/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
 import {StyledButton} from '../components/StyledButton.tsx';
+import React from 'react';
+import {AuthContext} from '../App.tsx';
+import {CompanyMapMarker} from '../types/DomainTypes.ts';
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
+  const { changeState } = React.useContext(AuthContext);
+
   const d = Dimensions.get('screen');
+  const [companies, setCompanies] = React.useState<CompanyMapMarker[]>([]);
+
+  React.useEffect(() => {
+    async function getCompanies() {
+      let companies = await route.params.companyService.getCompanies(
+        route.params.category.id,
+        changeState);
+
+      setCompanies(companies);
+    }
+    getCompanies();
+  }, []);
 
   return (
     <>
@@ -24,8 +41,10 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           azimuth: 80,
           tilt: 100,
         }}
-        style={{flex: 1}}
-      />
+        style={{flex: 1}}>
+
+
+      </YaMap>
       <View
         style={{
           position: 'absolute',

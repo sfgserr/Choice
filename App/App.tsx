@@ -11,6 +11,7 @@ import {State} from './enums/AppEnums.ts';
 import {StateManager} from './StateManager.ts';
 import MapScreen from './screens/MapScreen.tsx';
 import ClientTabComponent from './Tabs/ClientTabComponent.tsx';
+import {CompanyService} from './services/CompanyService.ts';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -83,7 +84,8 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name={'Map'}
                 component={MapScreen}
-                options={{headerShown: false}}/>
+                options={{headerShown: false}}
+                initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
             </Stack.Navigator>
           </>
         ) : (

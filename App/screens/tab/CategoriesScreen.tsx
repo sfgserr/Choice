@@ -12,7 +12,7 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    const categories = await route.params.categoriesService.getCategories(changeState);
+    const categories = await route.params.categoryService.getCategories(changeState);
 
     if (categories != null)
       setCategories(categories);
@@ -24,7 +24,7 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
 
   React.useEffect(() => {
     async function getCategories() {
-     let c = await route.params.categoriesService.getCategories(changeState);
+     let c = await route.params.categoryService.getCategories(changeState);
 
      if (c != null)
       setCategories(c);
