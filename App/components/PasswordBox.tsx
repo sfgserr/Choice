@@ -16,6 +16,7 @@ export default function PasswordBox({value, onChanged, isError}: PasswordBoxProp
     <View
       style={[
         Styles.borderedTextInputView,
+        Styles.borderedTextInputHeight,
         !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError
       ]}>
       <TextInput

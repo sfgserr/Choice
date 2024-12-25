@@ -8,7 +8,7 @@ import {Category} from '../types/DomainTypes.ts';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {ClientTabProps} from '../types/NavigationTypes.ts';
 
-export default function CategoryItem({category, navigation}: {category: Category, navigation: BottomTabNavigationProp<ClientTabProps, 'Categories', undefined>}) {
+export default function CategoryItem({categoryId, categories, navigation}: {categoryId: number, categories: Category[], navigation: BottomTabNavigationProp<ClientTabProps, 'Categories', undefined>}) {
   const { width, height } = Dimensions.get('screen');
 
   return (
@@ -27,7 +27,10 @@ export default function CategoryItem({category, navigation}: {category: Category
           flex: 1
         }}
         onPress={() => {
-          navigation.navigate('Map', {category});
+          navigation.navigate('Map', {
+            categoryId,
+            categories
+          });
         }}>
         <View
           style={{
@@ -38,7 +41,7 @@ export default function CategoryItem({category, navigation}: {category: Category
             justifyContent: 'center'
           }}>
           <Image
-            source={{uri: `${process.env.MINIO_URL}/app-files/${category.iconUri}`}}
+            source={{uri: `${process.env.MINIO_URL}/app-files/${categories[categoryId].iconUri}`}}
             style={{
               width: 20,
               height: 20,
@@ -54,7 +57,7 @@ export default function CategoryItem({category, navigation}: {category: Category
             alignSelf: 'center',
             paddingLeft: 20
           }}>
-          {category.title}
+          {categories[categoryId].title}
         </Text>
         <View
           style={{

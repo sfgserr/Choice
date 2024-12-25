@@ -1,11 +1,12 @@
 export type Category = {
-  id: number,
+  categoryId: number,
   title: string,
   iconUri: string
 };
 
 export type CompanyMapMarker = {
-  iconUri: string
+  id: string,
+  iconUri: string,
   averageGrade: number,
   latitude: string,
   longitude: string

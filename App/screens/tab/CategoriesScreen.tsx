@@ -63,7 +63,8 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
           return (
             <View>
               <CategoryItem
-                category={item.item}
+                categoryId={item.index}
+                categories={categories}
                 navigation={navigation}/>
             </View>
           )

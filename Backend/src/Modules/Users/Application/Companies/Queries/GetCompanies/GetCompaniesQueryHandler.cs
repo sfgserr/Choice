@@ -22,7 +22,8 @@ namespace Users.Application.Companies.Queries.GetCompanies
             
             const string sql = 
                 $"""
-                SELECT 
+                SELECT
+                    users."Users"."Id" as {nameof(CompanyDto.Id)},
                     users."Users"."IconUri" as {nameof(CompanyDto.IconUri)},
                     users."Users"."AverageGrade" as {nameof(CompanyDto.AverageGrade)},
                     users."Users"."Latitude" as {nameof(CompanyDto.Latitude)},
@@ -34,6 +35,7 @@ namespace Users.Application.Companies.Queries.GetCompanies
                 UNION
                 
                 SELECT 
+                    users."Users"."Id" as {nameof(CompanyDto.Id)},
                     users."Users"."IconUri" as {nameof(CompanyDto.IconUri)},
                     users."Users"."AverageGrade" as {nameof(CompanyDto.AverageGrade)},
                     users."Users"."Latitude" as {nameof(CompanyDto.Latitude)},

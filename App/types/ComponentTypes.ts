@@ -4,7 +4,8 @@ export type BorderedTextInputProps = {
   value: string,
   onChanged: (s: string) => void,
   placeholder: string,
-  isError: boolean
+  isError: boolean,
+  isBig: boolean | undefined
 };
 
 export type PasswordBoxProps = {

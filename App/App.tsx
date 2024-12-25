@@ -12,6 +12,7 @@ import {StateManager} from './StateManager.ts';
 import MapScreen from './screens/MapScreen.tsx';
 import ClientTabComponent from './Tabs/ClientTabComponent.tsx';
 import {CompanyService} from './services/CompanyService.ts';
+import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -86,6 +87,10 @@ function App(): React.JSX.Element {
                 component={MapScreen}
                 options={{headerShown: false}}
                 initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
+              <Stack.Screen
+                name={'CreateOrderRequestScreen'}
+                component={CreateOrderRequestScreen}
+                options={{headerShown: false}}/>
             </Stack.Navigator>
           </>
         ) : (

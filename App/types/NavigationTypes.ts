@@ -7,17 +7,18 @@ import {Category} from './DomainTypes.ts';
 import {CompanyService} from '../services/CompanyService.ts';
 
 export type StackProps = {
-  Login: {tokenService: TokenService};
-  Loading: undefined;
-  Map: {category: Category, companyService: CompanyService};
-  Tab: {graph: ObjectGraph};
+  Login: {tokenService: TokenService}
+  Loading: undefined
+  Map: {categoryId: number; categories: Category[]; companyService: CompanyService}
+  Tab: {graph: ObjectGraph}
+  CreateOrderRequestScreen: {categories: Category[]; categoryIndex: number}
 };
 
 export type ClientTabProps = {
-  Categories: {categoryService: CategoryService};
-  OrderRequests: undefined;
-  Chat: undefined;
-  Account: undefined;
+  Categories: {categoryService: CategoryService}
+  OrderRequests: undefined
+  Chat: undefined
+  Account: undefined
 };
 
 export type LoginScreenProps = NativeStackScreenProps<StackProps, 'Login'>;
@@ -33,3 +34,5 @@ export type AccountScreenProps = BottomTabScreenProps<ClientTabProps, 'Account'>
 export type TabScreenProps = NativeStackScreenProps<StackProps, 'Tab'>;
 
 export type MapScreenProps = NativeStackScreenProps<StackProps, 'Map'>;
+
+export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderRequestScreen'>;
