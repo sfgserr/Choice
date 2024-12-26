@@ -5,7 +5,7 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
-  Image,
+  Image, ScrollView,
 } from 'react-native';
 import NavigateBackButton from '../components/NavigateBackButton.tsx';
 import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
@@ -13,6 +13,7 @@ import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import {Category} from '../types/DomainTypes.ts';
 import Checkbox from '../components/Checkbox.tsx';
+import ImageBox from '../components/ImageBox.tsx';
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const d = Dimensions.get('screen');
@@ -41,7 +42,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   ];
 
   return (
-    <View
+    <ScrollView
       style={{
         flex: 1,
         backgroundColor: 'white',
@@ -176,7 +177,20 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             </View>
           )
         })}
+        <TextInputTitle
+          s={'Приложите файлы или фото к заказу'}
+          top={20}
+          bottom={5}/>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}>
+          <ImageBox/>
+          <ImageBox/>
+          <ImageBox/>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
