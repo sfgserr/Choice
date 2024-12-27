@@ -9,6 +9,7 @@
 #include "autolinking.h"
 #include <RNImagePickerSpec.h>
 #include <MMKVStorageSpec.h>
+#include <rnreanimated.h>
 #include <safeareacontext.h>
 #include <react/renderer/components/safeareacontext/ComponentDescriptors.h>
 #include <rnscreens.h>
@@ -25,6 +26,10 @@ return module_RNImagePickerSpec;
 auto module_MMKVStorageSpec = MMKVStorageSpec_ModuleProvider(moduleName, params);
 if (module_MMKVStorageSpec != nullptr) {
 return module_MMKVStorageSpec;
+}
+auto module_rnreanimated = rnreanimated_ModuleProvider(moduleName, params);
+if (module_rnreanimated != nullptr) {
+return module_rnreanimated;
 }
 auto module_safeareacontext = safeareacontext_ModuleProvider(moduleName, params);
 if (module_safeareacontext != nullptr) {

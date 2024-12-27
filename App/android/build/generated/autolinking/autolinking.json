@@ -53,6 +53,31 @@
         }
       }
     },
+    "react-native-reanimated": {
+      "root": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-reanimated",
+      "name": "react-native-reanimated",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-reanimated/RNReanimated.podspec",
+          "version": "3.16.6",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-reanimated/android",
+          "packageImportPath": "import com.swmansion.reanimated.ReanimatedPackage;",
+          "packageInstance": "new ReanimatedPackage()",
+          "buildTypes": [],
+          "libraryName": "rnreanimated",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "react-native-safe-area-context": {
       "root": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-safe-area-context",
       "name": "react-native-safe-area-context",

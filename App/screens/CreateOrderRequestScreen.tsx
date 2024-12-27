@@ -16,6 +16,9 @@ import Checkbox from '../components/Checkbox.tsx';
 import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Slider} from '@miblanchard/react-native-slider';
+import {StyledButton} from '../components/StyledButton.tsx';
+import {useSharedValue} from 'react-native-reanimated';
+import BottomSheet from '../components/BottomSheet.tsx';
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const d = Dimensions.get('screen');
@@ -26,6 +29,12 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
   const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
   const [radius, setRadius] = React.useState<number>(5);
+
+  const isOpen = useSharedValue(false);
+
+  const toggleSheet = () => {
+    isOpen.value = !isOpen.value;
+  }
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -46,18 +55,15 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     });
   }
 
-  const data= [
-    {
+  const data= [{
       title: 'Узнать стоимость',
       checked: toKnowPrice,
       pressed: () => setToKnowPrice(p => !p)
-    },
-    {
+    }, {
       title: 'Узнать время выполнения работ',
       checked: toKnowDeadline,
       pressed: () => setToKnowDeadline(p => !p)
-    },
-    {
+    }, {
       title: 'Узнать время записи',
       checked: toKnowEnrollmentDate,
       pressed: () => setToKnowEnrollmentDate(p => !p)
@@ -69,7 +75,8 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       style={{
         flex: 1,
         backgroundColor: 'white',
-      }}>
+      }}
+      showsVerticalScrollIndicator={false}>
       <View
         style={{
           height: d.height * 0.086,
@@ -110,7 +117,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             value={route.params.categories[route.params.categoryIndex].title}
             readOnly
           />
-          <TouchableOpacity style={{alignSelf: 'center', paddingRight: 10}}>
+          <TouchableOpacity
+            style={{alignSelf: 'center', paddingRight: 10}}
+            onPress={toggleSheet}>
             <Image
               style={{
                 resizeMode: 'contain',
@@ -238,11 +247,50 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               fontSize: 14,
               color: 'black'
             }}>
-            {`${radius} км`}
+            {`${Math.floor(radius)} км`}
           </Text>
         </View>
-        <Slider/>
+        <View style={{paddingTop: 10}}>
+          <Slider
+            minimumValue={5}
+            maximumValue={25}
+            value={radius}
+            onValueChange={(value) => setRadius(value[0])}
+            thumbTintColor={'white'}
+            minimumTrackTintColor={'#007AFF'}
+            maximumTrackTintColor={'#e4e4e6'}
+            thumbStyle={{
+              shadowColor: 'red',
+              elevation: 1,
+              shadowRadius: 50,
+              shadowOpacity: 0.5,
+              shadowOffset: {
+                width: 0,
+                height: 2
+              }
+            }}/>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingTop: 10
+          }}>
+          <Text style={Styles.title}>от 5 км</Text>
+          <Text style={Styles.title}>до 25 км</Text>
+        </View>
       </View>
+      <View style={{paddingHorizontal: 15, paddingTop: 30, paddingBottom: 5}}>
+        <StyledButton
+          content={'Создать заказ'}
+          top={0}
+          bottom={0}
+          isDisabled={false}
+          pressed={() => {}}/>
+      </View>
+      <BottomSheet
+        isOpen={isOpen}
+        toggleSheet={toggleSheet}/>
     </ScrollView>
   );
 }
