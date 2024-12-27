@@ -44,7 +44,8 @@ export default function LoginByEmailScreen({tokenService}: {tokenService: TokenS
         value={email}
         onChanged={onEmailChanged}
         placeholder={'Введите E-mail'}
-        isError={isError}/>
+        isError={isError}
+        isBig={false}/>
       <TextInputTitle
         s={'Пароль'}
         top={20}

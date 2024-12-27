@@ -14,6 +14,8 @@ import Styles from '../constants/Styles.tsx';
 import {Category} from '../types/DomainTypes.ts';
 import Checkbox from '../components/Checkbox.tsx';
 import ImageBox from '../components/ImageBox.tsx';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Slider} from '@miblanchard/react-native-slider';
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const d = Dimensions.get('screen');
@@ -22,6 +24,27 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
   const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
   const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
+  const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
+  const [radius, setRadius] = React.useState<number>(5);
+
+  const onImageBoxPressed = async (index: number) => {
+    let response = await launchImageLibrary({mediaType: 'photo'});
+
+    setPhotos(prev => {
+      if (response.assets == undefined)
+        return prev;
+
+      prev[index] = response.assets[0].uri;
+      return [...prev];
+    })
+  };
+
+  const onRemoveImagePressed = (index: number) => {
+    setPhotos(prev => {
+      prev[index] = '';
+      return [...prev];
+    });
+  }
 
   const data= [
     {
@@ -186,10 +209,39 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             flexDirection: 'row',
             justifyContent: 'space-between'
           }}>
-          <ImageBox/>
-          <ImageBox/>
-          <ImageBox/>
+          <ImageBox
+            uri={photos[0]}
+            onPress={async () => await onImageBoxPressed(0)}
+            onRemovePress={() => onRemoveImagePressed(0)}/>
+          <ImageBox
+            uri={photos[1]}
+            onPress={async () => await onImageBoxPressed(1)}
+            onRemovePress={() => onRemoveImagePressed(1)}/>
+          <ImageBox
+            uri={photos[2]}
+            onPress={async () => await onImageBoxPressed(2)}
+            onRemovePress={() => onRemoveImagePressed(2)}/>
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingTop: 20,
+            justifyContent: 'space-between'
+          }}>
+          <Text
+            style={Styles.title}>
+            Радиус поиска
+          </Text>
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 14,
+              color: 'black'
+            }}>
+            {`${radius} км`}
+          </Text>
+        </View>
+        <Slider/>
       </View>
     </ScrollView>
   );

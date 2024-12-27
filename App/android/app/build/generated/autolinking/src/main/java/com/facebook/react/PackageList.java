@@ -10,6 +10,8 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// react-native-image-picker
+import com.imagepicker.ImagePickerPackage;
 // react-native-mmkv-storage
 import com.ammarahmed.mmkv.RNMMKVPackage;
 // react-native-safe-area-context
@@ -65,6 +67,7 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
+      new ImagePickerPackage(),
       new RNMMKVPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),

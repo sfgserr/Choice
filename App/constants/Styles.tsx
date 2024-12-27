@@ -45,6 +45,11 @@ const Styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 17,
     color: 'white'
+  },
+  title: {
+    color: '#6D7885',
+    fontSize: 14,
+    fontWeight: '400',
   }
 });
 

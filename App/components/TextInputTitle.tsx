@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {TextInputTitleProps} from '../types/ComponentTypes.ts';
+import Styles from '../constants/Styles.tsx';
 
 export default function TextInputTitle({s, top, bottom}: TextInputTitleProps) {
   return (
@@ -10,11 +11,7 @@ export default function TextInputTitle({s, top, bottom}: TextInputTitleProps) {
         paddingBottom: bottom,
       }}>
       <Text
-        style={{
-          color: '#6D7885',
-          fontSize: 14,
-          fontWeight: '400',
-        }}>
+        style={Styles.title}>
         {s}
       </Text>
     </View>

@@ -35,7 +35,7 @@ export type TextInputTitleProps = {
 type Tab = {
   element: React.JSX.Element
   title: string
-}
+};
 
 export type TabBarProps = {
   tabs: Tab[]
@@ -44,4 +44,10 @@ export type TabBarProps = {
 export type CheckboxProps = {
   checked: boolean
   pressed: () => void
-}
+};
+
+export type ImageBoxProps = {
+  uri: string
+  onPress: () => void
+  onRemovePress: () => void
+};
