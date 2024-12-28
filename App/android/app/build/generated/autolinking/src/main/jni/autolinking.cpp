@@ -7,6 +7,8 @@
  */
 
 #include "autolinking.h"
+#include <rngesturehandler_codegen.h>
+#include <react/renderer/components/rngesturehandler_codegen/ComponentDescriptors.h>
 #include <RNImagePickerSpec.h>
 #include <MMKVStorageSpec.h>
 #include <rnreanimated.h>
@@ -19,6 +21,10 @@ namespace facebook {
 namespace react {
 
 std::shared_ptr<TurboModule> autolinking_ModuleProvider(const std::string moduleName, const JavaTurboModule::InitParams &params) {
+auto module_rngesturehandler_codegen = rngesturehandler_codegen_ModuleProvider(moduleName, params);
+if (module_rngesturehandler_codegen != nullptr) {
+return module_rngesturehandler_codegen;
+}
 auto module_RNImagePickerSpec = RNImagePickerSpec_ModuleProvider(moduleName, params);
 if (module_RNImagePickerSpec != nullptr) {
 return module_RNImagePickerSpec;
@@ -48,6 +54,8 @@ std::shared_ptr<TurboModule> autolinking_cxxModuleProvider(const std::string mod
 }
 
 void autolinking_registerProviders(std::shared_ptr<ComponentDescriptorProviderRegistry const> providerRegistry) {
+providerRegistry->add(concreteComponentDescriptorProvider<RNGestureHandlerButtonComponentDescriptor>());
+providerRegistry->add(concreteComponentDescriptorProvider<RNGestureHandlerRootViewComponentDescriptor>());
 providerRegistry->add(concreteComponentDescriptorProvider<RNCSafeAreaProviderComponentDescriptor>());
 providerRegistry->add(concreteComponentDescriptorProvider<RNCSafeAreaViewComponentDescriptor>());
 providerRegistry->add(concreteComponentDescriptorProvider<RNSFullWindowOverlayComponentDescriptor>());

@@ -10,6 +10,7 @@ import YaMap from 'react-native-yamap';
 import {UserStore} from '../stores/UserStore.ts';
 import {UserService} from '../services/UserService.ts';
 import {CompanyService} from '../services/CompanyService.ts';
+import {OrderRequestService} from '../services/OrderRequestService.ts';
 
 
 type Object = {
@@ -55,6 +56,7 @@ export class ObjectGraph {
     const userStore = new UserStore();
     const userService = new UserService(httpService, userStore, tokenService);
     const companyService = new CompanyService(httpService);
+    const orderRequestService = new OrderRequestService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
@@ -66,6 +68,7 @@ export class ObjectGraph {
     this.objects["HttpService"] = httpService;
     this.objects["UserService"] = userService;
     this.objects["CompanyService"] = companyService;
+    this.objects["OrderRequestService"] = orderRequestService;
 
     this.isInitialized = true;
   }

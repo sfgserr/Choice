@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {RefObject} from 'react';
 import {
   Text,
   View,
   Dimensions,
   TextInput,
   TouchableOpacity,
-  Image, ScrollView,
+  Image, ScrollView, Pressable, FlatList, Switch,
 } from 'react-native';
 import NavigateBackButton from '../components/NavigateBackButton.tsx';
 import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
@@ -17,8 +17,10 @@ import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Slider} from '@miblanchard/react-native-slider';
 import {StyledButton} from '../components/StyledButton.tsx';
-import {useSharedValue} from 'react-native-reanimated';
-import BottomSheet from '../components/BottomSheet.tsx';
+import Animated, {useSharedValue} from 'react-native-reanimated';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import BottomSheet, {BottomSheetBackdrop, BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const d = Dimensions.get('screen');
@@ -30,11 +32,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
   const [radius, setRadius] = React.useState<number>(5);
 
-  const isOpen = useSharedValue(false);
+  const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
 
-  const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
-  }
+  const sheetRef = React.useRef<BottomSheet>(null);
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -70,227 +70,240 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     },
   ];
 
+  const ref = React.useRef<BottomSheet>(null);
+
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}
-      showsVerticalScrollIndicator={false}>
-      <View
-        style={{
-          height: d.height * 0.086,
-          width: '100%',
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'baseline',
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <NavigateBackButton navigation={navigation} />
-        </View>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 21,
-            fontWeight: '600',
-            alignSelf: 'center',
-            position: 'absolute',
-          }}>
-          Создание заказа
-        </Text>
-      </View>
-      <View
+    <GestureHandlerRootView>
+      <ScrollView
         style={{
           flex: 1,
-          paddingHorizontal: 15,
-        }}>
-        <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
-        <View
-          style={[
-            Styles.borderedTextInputView,
-            Styles.borderedTextInputHeight,
-            Styles.borderedTextInputViewColor,
-            Styles.borderedTextInputUnfocused,
-          ]}>
-          <TextInput
-            style={Styles.borderedTextInput}
-            value={route.params.categories[route.params.categoryIndex].title}
-            readOnly
-          />
-          <TouchableOpacity
-            style={{alignSelf: 'center', paddingRight: 10}}
-            onPress={toggleSheet}>
-            <Image
-              style={{
-                resizeMode: 'contain',
-                width: 15,
-                height: 15,
-              }}
-              source={require('../assets/images/chevron-down.png')}
-            />
-          </TouchableOpacity>
-        </View>
-        <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
-        <View
-          style={[
-            Styles.borderedTextInputView,
-            Styles.borderedTextInputBigHeight,
-            Styles.borderedTextInputViewColor,
-            Styles.borderedTextInputUnfocused,
-          ]}>
-          <TextInput
-            style={Styles.borderedTextInput}
-            value={description}
-            placeholder={
-              'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
-            }
-            onChangeText={setDescription}
-            multiline
-          />
-        </View>
+          backgroundColor: 'white',
+        }}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
-            paddingTop: 10,
+            height: d.height * 0.086,
+            width: '100%',
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'baseline',
           }}>
-          <TouchableOpacity
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputHeight,
-            ]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('../assets/images/micro.png')}
-                style={{
-                  resizeMode: 'contain',
-                  width: 20,
-                  height: 20,
-                  alignSelf: 'center',
-                }}
-              />
-              <Text
-                style={{
-                  color: '#2688EB',
-                  fontWeight: '500',
-                  fontSize: 17,
-                  alignSelf: 'center',
-                }}>
-                Записать голосом
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
-        {data.map((item, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                flexDirection: 'row',
-                paddingTop: 10
-              }}>
-              <Checkbox
-                checked={item.checked}
-                pressed={item.pressed}
-              />
-              <Text
-                style={{
-                  alignSelf: 'center',
-                  fontWeight: '400',
-                  fontSize: 15,
-                  paddingLeft: 10,
-                }}>
-                {item.title}
-              </Text>
-            </View>
-          )
-        })}
-        <TextInputTitle
-          s={'Приложите файлы или фото к заказу'}
-          top={20}
-          bottom={5}/>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between'
-          }}>
-          <ImageBox
-            uri={photos[0]}
-            onPress={async () => await onImageBoxPressed(0)}
-            onRemovePress={() => onRemoveImagePressed(0)}/>
-          <ImageBox
-            uri={photos[1]}
-            onPress={async () => await onImageBoxPressed(1)}
-            onRemovePress={() => onRemoveImagePressed(1)}/>
-          <ImageBox
-            uri={photos[2]}
-            onPress={async () => await onImageBoxPressed(2)}
-            onRemovePress={() => onRemoveImagePressed(2)}/>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingTop: 20,
-            justifyContent: 'space-between'
-          }}>
-          <Text
-            style={Styles.title}>
-            Радиус поиска
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <NavigateBackButton navigation={navigation} />
+          </View>
           <Text
             style={{
+              color: 'black',
+              fontSize: 21,
               fontWeight: '600',
-              fontSize: 14,
-              color: 'black'
+              alignSelf: 'center',
+              position: 'absolute',
             }}>
-            {`${Math.floor(radius)} км`}
+            Создание заказа
           </Text>
-        </View>
-        <View style={{paddingTop: 10}}>
-          <Slider
-            minimumValue={5}
-            maximumValue={25}
-            value={radius}
-            onValueChange={(value) => setRadius(value[0])}
-            thumbTintColor={'white'}
-            minimumTrackTintColor={'#007AFF'}
-            maximumTrackTintColor={'#e4e4e6'}
-            thumbStyle={{
-              shadowColor: 'red',
-              elevation: 1,
-              shadowRadius: 50,
-              shadowOpacity: 0.5,
-              shadowOffset: {
-                width: 0,
-                height: 2
-              }
-            }}/>
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingTop: 10
+            flex: 1,
+            paddingHorizontal: 15,
           }}>
-          <Text style={Styles.title}>от 5 км</Text>
-          <Text style={Styles.title}>до 25 км</Text>
+          <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
+          <View
+            style={[
+              Styles.borderedTextInputView,
+              Styles.borderedTextInputHeight,
+              Styles.borderedTextInputViewColor,
+              Styles.borderedTextInputUnfocused,
+            ]}>
+            <TextInput
+              style={Styles.borderedTextInput}
+              value={categories[categoryIndex].title}
+              readOnly
+            />
+            <TouchableOpacity
+              style={{alignSelf: 'center', paddingRight: 10}}
+              onPress={() => sheetRef.current?.expand()}>
+              <Image
+                style={{
+                  resizeMode: 'contain',
+                  width: 15,
+                  height: 15,
+                }}
+                source={require('../assets/images/chevron-down.png')}
+              />
+            </TouchableOpacity>
+          </View>
+          <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
+          <View
+            style={[
+              Styles.borderedTextInputView,
+              Styles.borderedTextInputBigHeight,
+              Styles.borderedTextInputViewColor,
+              Styles.borderedTextInputUnfocused,
+            ]}>
+            <TextInput
+              style={Styles.borderedTextInput}
+              value={description}
+              placeholder={
+                'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
+              }
+              onChangeText={setDescription}
+              multiline
+            />
+          </View>
+          <View
+            style={{
+              paddingTop: 10,
+            }}>
+            <TouchableOpacity
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputHeight,
+              ]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  source={require('../assets/images/micro.png')}
+                  style={{
+                    resizeMode: 'contain',
+                    width: 20,
+                    height: 20,
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text
+                  style={{
+                    color: '#2688EB',
+                    fontWeight: '500',
+                    fontSize: 17,
+                    alignSelf: 'center',
+                  }}>
+                  Записать голосом
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
+          {data.map((item, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flexDirection: 'row',
+                  paddingTop: 10,
+                }}>
+                <Checkbox checked={item.checked} pressed={item.pressed} />
+                <Text
+                  style={{
+                    alignSelf: 'center',
+                    fontWeight: '400',
+                    fontSize: 15,
+                    paddingLeft: 10,
+                  }}>
+                  {item.title}
+                </Text>
+              </View>
+            );
+          })}
+          <TextInputTitle
+            s={'Приложите файлы или фото к заказу'}
+            top={20}
+            bottom={5}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <ImageBox
+              uri={photos[0]}
+              onPress={async () => await onImageBoxPressed(0)}
+              onRemovePress={() => onRemoveImagePressed(0)}
+            />
+            <ImageBox
+              uri={photos[1]}
+              onPress={async () => await onImageBoxPressed(1)}
+              onRemovePress={() => onRemoveImagePressed(1)}
+            />
+            <ImageBox
+              uri={photos[2]}
+              onPress={async () => await onImageBoxPressed(2)}
+              onRemovePress={() => onRemoveImagePressed(2)}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingTop: 20,
+              justifyContent: 'space-between',
+            }}>
+            <Text style={Styles.title}>Радиус поиска</Text>
+            <Text
+              style={{
+                fontWeight: '600',
+                fontSize: 14,
+                color: 'black',
+              }}>
+              {`${radius} км`}
+            </Text>
+          </View>
+          <View style={{paddingTop: 10}}>
+            <Slider
+              minimumValue={5}
+              maximumValue={25}
+              value={radius}
+              onValueChange={value => setRadius(Math.floor(value[0]))}
+              thumbTintColor={'white'}
+              minimumTrackTintColor={'#007AFF'}
+              maximumTrackTintColor={'#e4e4e6'}
+              thumbStyle={{
+                shadowColor: 'red',
+                elevation: 1,
+                shadowRadius: 50,
+                shadowOpacity: 0.5,
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: 10,
+            }}>
+            <Text style={Styles.title}>от 5 км</Text>
+            <Text style={Styles.title}>до 25 км</Text>
+          </View>
         </View>
-      </View>
-      <View style={{paddingHorizontal: 15, paddingTop: 30, paddingBottom: 5}}>
-        <StyledButton
-          content={'Создать заказ'}
-          top={0}
-          bottom={0}
-          isDisabled={false}
-          pressed={() => {}}/>
-      </View>
-      <BottomSheet
-        isOpen={isOpen}
-        toggleSheet={toggleSheet}/>
-    </ScrollView>
+        <View style={{paddingHorizontal: 15, paddingTop: 30, paddingBottom: 5}}>
+          <StyledButton
+            content={'Создать заказ'}
+            top={0}
+            bottom={0}
+            isDisabled={description == '' || (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) || photos.every(p => p == '')}
+            pressed={() => {
+
+            }}
+          />
+        </View>
+        <CategoriesBottomSheet
+          options={{
+            categories,
+            categoryIndex,
+            onIndexChange: (val, index) => {
+              if (val)
+                setCategoryIndex(index);
+            }
+          }}
+          ref={ref}/>
+      </ScrollView>
+    </GestureHandlerRootView>
   );
 }

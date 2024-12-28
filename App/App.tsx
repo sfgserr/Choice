@@ -13,6 +13,7 @@ import MapScreen from './screens/MapScreen.tsx';
 import ClientTabComponent from './Tabs/ClientTabComponent.tsx';
 import {CompanyService} from './services/CompanyService.ts';
 import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -89,7 +90,7 @@ function App(): React.JSX.Element {
                 initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
               <Stack.Screen
                 name={'CreateOrderRequestScreen'}
-                component={CreateOrderRequestScreen}
+                component={gestureHandlerRootHOC(CreateOrderRequestScreen)}
                 options={{headerShown: false}}/>
             </Stack.Navigator>
           </>

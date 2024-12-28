@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {Category} from './DomainTypes.ts';
+import {RefObject} from 'react';
+import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
 export type BorderedTextInputProps = {
   value: string
@@ -50,4 +53,15 @@ export type ImageBoxProps = {
   uri: string
   onPress: () => void
   onRemovePress: () => void
+};
+
+export type CategoriesBottomSheetListProps = {
+  categories: Category[]
+  categoryIndex: number
+  onIndexChange: (val: boolean, index: number) => void
+};
+
+export type CategoriesBottomSheetProps = {
+  options: CategoriesBottomSheetListProps
+  ref: RefObject<BottomSheetMethods>
 };
