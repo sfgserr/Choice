@@ -25,7 +25,7 @@ export default function CategoriesBottomSheetList({categories, categoryIndex, on
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 10,
+    paddingBottom: 15,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },

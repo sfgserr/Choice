@@ -3,6 +3,7 @@ import CategoriesBottomSheetList from './CategoriesBottomSheetList.tsx';
 import {ForwardedRef} from 'react';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import * as React from 'react';
+import {View} from 'react-native';
 
 const CategoriesBottomSheet = React.forwardRef(({options, close}: any, ref: ForwardedRef<BottomSheetMethods>)=> {
   return (

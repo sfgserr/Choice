@@ -22,11 +22,10 @@ import {StyledButton} from '../components/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
-import Animated, {
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue, withDelay, withSpring, withTiming,
+import {
+  useSharedValue
 } from 'react-native-reanimated';
+import SuccessfulRequestModal from '../components/SuccessfulRequestModal.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -83,31 +82,16 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
 
   const handlePress = () => {
     if (!isToggled) {
-      translateY.value -= d.height*0.2+60;
+      translateY.value -= d.height*0.312+60;
       progress.value++;
     }
     else {
-      translateY.value += d.height*0.2+60;
+      translateY.value += d.height*0.312+60;
       progress.value--;
     }
 
     setIsToggled(prev => !prev);
   }
-
-  const duration = 1800;
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(translateY.value) }],
-  }));
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withSpring(progress.value, {duration}),
-      zIndex: isToggled
-        ? 1
-        : withDelay(duration, withTiming(-1, { duration: 0 })),
-    };
-  });
 
   const ref = React.useRef<BottomSheet>(null);
 
@@ -261,37 +245,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           ref={ref}
           close={() => ref.current?.close()}
         />
-        <Animated.View
-          style={[
-            {
-              ...StyleSheet.absoluteFillObject,
-              backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            },
-            animatedStyle,
-          ]}>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => {
-              if (isToggled)
-                handlePress();
-            }}
-          />
-        </Animated.View>
-        <Animated.View
-          style={[
-            {
-              height: d.height * 0.2,
-              width: d.width * 0.9,
-              backgroundColor: '#b58df1',
-              borderRadius: 20,
-              position: 'absolute',
-              alignSelf: 'center',
-              zIndex: 2,
-              bottom: -d.height * 0.2 - 10,
-            },
-            animatedStyles,
-          ]}
-        />
+        <SuccessfulRequestModal
+          isToggled={isToggled}
+          handlePress={handlePress}/>
       </ScrollView>
     </GestureHandlerRootView>
   );
