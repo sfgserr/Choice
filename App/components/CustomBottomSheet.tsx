@@ -20,7 +20,8 @@ const CustomBottomSheet = React.forwardRef(({title, children, close}: any, ref: 
     <BottomSheet
       ref={ref}
       backdropComponent={renderBackdrop}
-      snapPoints={snapPoints}>
+      snapPoints={snapPoints}
+      index={-1}>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <TouchableOpacity

@@ -1,11 +1,13 @@
-import React, {RefObject} from 'react';
+import React from 'react';
 import {
   Text,
   View,
   Dimensions,
   TextInput,
   TouchableOpacity,
-  Image, ScrollView, Pressable, FlatList, Switch,
+  Image,
+  ScrollView,
+  StyleSheet,
 } from 'react-native';
 import NavigateBackButton from '../components/NavigateBackButton.tsx';
 import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
@@ -17,13 +19,18 @@ import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Slider} from '@miblanchard/react-native-slider';
 import {StyledButton} from '../components/StyledButton.tsx';
-import Animated, {useSharedValue} from 'react-native-reanimated';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import BottomSheet, {BottomSheetBackdrop, BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue, withDelay, withSpring, withTiming,
+} from 'react-native-reanimated';
+
+const d = Dimensions.get('screen');
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
-  const d = Dimensions.get('screen');
   const [categories, setCategories] = React.useState<Category[]>(route.params.categories);
   const [description, setDescription] = React.useState('');
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
@@ -33,8 +40,6 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [radius, setRadius] = React.useState<number>(5);
 
   const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
-
-  const sheetRef = React.useRef<BottomSheet>(null);
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -70,43 +75,52 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     },
   ];
 
+  const translateY = useSharedValue(0);
+
+  const [isToggled, setIsToggled] = React.useState(false);
+
+  const progress = useSharedValue(0);
+
+  const handlePress = () => {
+    if (!isToggled) {
+      translateY.value -= d.height*0.2+60;
+      progress.value++;
+    }
+    else {
+      translateY.value += d.height*0.2+60;
+      progress.value--;
+    }
+
+    setIsToggled(prev => !prev);
+  }
+
+  const duration = 1800;
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: withSpring(translateY.value) }],
+  }));
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withSpring(progress.value, {duration}),
+      zIndex: isToggled
+        ? 1
+        : withDelay(duration, withTiming(-1, { duration: 0 })),
+    };
+  });
+
   const ref = React.useRef<BottomSheet>(null);
 
   return (
     <GestureHandlerRootView>
-      <ScrollView
-        style={{
-          flex: 1,
-          backgroundColor: 'white',
-        }}
-        showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            height: d.height * 0.086,
-            width: '100%',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'baseline',
-          }}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.titleView}>
           <View style={{flexDirection: 'row'}}>
             <NavigateBackButton navigation={navigation} />
           </View>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: 21,
-              fontWeight: '600',
-              alignSelf: 'center',
-              position: 'absolute',
-            }}>
-            Создание заказа
-          </Text>
+          <Text style={styles.title}>Создание заказа</Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: 15,
-          }}>
+        <View style={styles.contentContainer}>
           <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
           <View
             style={[
@@ -121,14 +135,10 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               readOnly
             />
             <TouchableOpacity
-              style={{alignSelf: 'center', paddingRight: 10}}
-              onPress={() => sheetRef.current?.expand()}>
+              style={styles.chevronDown}
+              onPress={() => ref.current?.expand()}>
               <Image
-                style={{
-                  resizeMode: 'contain',
-                  width: 15,
-                  height: 15,
-                }}
+                style={styles.image}
                 source={require('../assets/images/chevron-down.png')}
               />
             </TouchableOpacity>
@@ -151,61 +161,29 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               multiline
             />
           </View>
-          <View
-            style={{
-              paddingTop: 10,
-            }}>
+          <View style={{paddingTop: 10}}>
             <TouchableOpacity
               style={[
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
-              ]}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}>
+              ]}
+              onPress={handlePress}>
+              <View style={styles.voiceButton}>
                 <Image
                   source={require('../assets/images/micro.png')}
-                  style={{
-                    resizeMode: 'contain',
-                    width: 20,
-                    height: 20,
-                    alignSelf: 'center',
-                  }}
+                  style={styles.voiceButtonImage}
                 />
-                <Text
-                  style={{
-                    color: '#2688EB',
-                    fontWeight: '500',
-                    fontSize: 17,
-                    alignSelf: 'center',
-                  }}>
-                  Записать голосом
-                </Text>
+                <Text style={styles.voiceButtonContent}>Записать голосом</Text>
               </View>
             </TouchableOpacity>
           </View>
           <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
           {data.map((item, index) => {
             return (
-              <View
-                key={index}
-                style={{
-                  flexDirection: 'row',
-                  paddingTop: 10,
-                }}>
+              <View key={index} style={styles.checkBoxContainer}>
                 <Checkbox checked={item.checked} pressed={item.pressed} />
-                <Text
-                  style={{
-                    alignSelf: 'center',
-                    fontWeight: '400',
-                    fontSize: 15,
-                    paddingLeft: 10,
-                  }}>
-                  {item.title}
-                </Text>
+                <Text style={styles.checkBoxTitle}>{item.title}</Text>
               </View>
             );
           })}
@@ -214,11 +192,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             top={20}
             bottom={5}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
+          <View style={styles.horizontalSpread}>
             <ImageBox
               uri={photos[0]}
               onPress={async () => await onImageBoxPressed(0)}
@@ -235,12 +209,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               onRemovePress={() => onRemoveImagePressed(2)}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingTop: 20,
-              justifyContent: 'space-between',
-            }}>
+          <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
             <Text
               style={{
@@ -260,37 +229,25 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               thumbTintColor={'white'}
               minimumTrackTintColor={'#007AFF'}
               maximumTrackTintColor={'#e4e4e6'}
-              thumbStyle={{
-                shadowColor: 'red',
-                elevation: 1,
-                shadowRadius: 50,
-                shadowOpacity: 0.5,
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-              }}
+              thumbStyle={styles.thumbStyle}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingTop: 10,
-            }}>
+          <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
             <Text style={Styles.title}>от 5 км</Text>
             <Text style={Styles.title}>до 25 км</Text>
           </View>
         </View>
-        <View style={{paddingHorizontal: 15, paddingTop: 30, paddingBottom: 5}}>
+        <View style={styles.buttonContainer}>
           <StyledButton
             content={'Создать заказ'}
             top={0}
             bottom={0}
-            isDisabled={description == '' || (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) || photos.every(p => p == '')}
-            pressed={() => {
-
-            }}
+            isDisabled={
+              description == '' ||
+              (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
+              photos.every(p => p == '')
+            }
+            pressed={() => {}}
           />
         </View>
         <CategoriesBottomSheet
@@ -298,12 +255,123 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             categories,
             categoryIndex,
             onIndexChange: (val, index) => {
-              if (val)
-                setCategoryIndex(index);
-            }
+              if (val) setCategoryIndex(index);
+            },
           }}
-          ref={ref}/>
+          ref={ref}
+          close={() => ref.current?.close()}
+        />
+        <Animated.View
+          style={[
+            {
+              ...StyleSheet.absoluteFillObject,
+              backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            },
+            animatedStyle,
+          ]}>
+          <TouchableOpacity
+            style={{flex: 1}}
+            onPress={() => {
+              if (isToggled)
+                handlePress();
+            }}
+          />
+        </Animated.View>
+        <Animated.View
+          style={[
+            {
+              height: d.height * 0.2,
+              width: d.width * 0.9,
+              backgroundColor: '#b58df1',
+              borderRadius: 20,
+              position: 'absolute',
+              alignSelf: 'center',
+              zIndex: 2,
+              bottom: -d.height * 0.2 - 10,
+            },
+            animatedStyles,
+          ]}
+        />
       </ScrollView>
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  titleView: {
+    height: d.height * 0.086,
+    width: '100%',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'baseline',
+  },
+  title: {
+    color: 'black',
+    fontSize: 21,
+    fontWeight: '600',
+    alignSelf: 'center',
+    position: 'absolute',
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
+  chevronDown: {
+    alignSelf: 'center',
+    paddingRight: 10
+  },
+  image: {
+    resizeMode: 'contain',
+    width: 15,
+    height: 15,
+  },
+  voiceButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  voiceButtonImage: {
+    resizeMode: 'contain',
+    width: 20,
+    height: 20,
+    alignSelf: 'center',
+  },
+  voiceButtonContent: {
+    color: '#2688EB',
+    fontWeight: '500',
+    fontSize: 17,
+    alignSelf: 'center',
+  },
+  checkBoxContainer: {
+    flexDirection: 'row',
+    paddingTop: 10,
+  },
+  checkBoxTitle: {
+    alignSelf: 'center',
+    fontWeight: '400',
+    fontSize: 15,
+    paddingLeft: 10,
+  },
+  horizontalSpread: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  thumbStyle: {
+    shadowColor: 'red',
+    elevation: 1,
+    shadowRadius: 50,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  buttonContainer: {
+    paddingHorizontal: 15,
+    paddingTop: 30,
+    paddingBottom: 5
+  },
+});
