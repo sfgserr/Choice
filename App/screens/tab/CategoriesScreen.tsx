@@ -14,8 +14,8 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
     setRefreshing(true);
     const categories = await route.params.categoryService.getCategories(changeState);
 
-    if (categories != null)
-      setCategories(categories);
+    if (categories.content != null)
+      setCategories(categories.content);
     else
       setCategories([]);
 
@@ -26,8 +26,8 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
     async function getCategories() {
      let c = await route.params.categoryService.getCategories(changeState);
 
-     if (c != null)
-      setCategories(c);
+     if (c.content != null)
+      setCategories(c.content);
    }
    getCategories();
   }, []);

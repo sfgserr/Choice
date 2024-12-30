@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withDelay,
@@ -6,10 +6,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import React from 'react';
+import CloseButton from './CloseButton.tsx';
+import {AnimatedModalProps} from '../types/ComponentTypes.ts';
 
 const d = Dimensions.get("window");
 
-export default function AnimatedModal({isToggled, handlePress, children}) {
+export default function AnimatedModal({isToggled, handlePress, children}: AnimatedModalProps) {
   const duration = 1800;
 
   const animatedStyles = useAnimatedStyle(() => ({
@@ -30,13 +32,14 @@ export default function AnimatedModal({isToggled, handlePress, children}) {
       <Animated.View style={[styles.backdrop, animatedStyle]}>
         <TouchableOpacity
           style={{flex: 1}}
-          onPress={() => {
-            if (isToggled)
-              handlePress();
-          }}
-        />
+          onPress={() => handlePress()}
+          disabled={!isToggled}/>
       </Animated.View>
       <Animated.View style={[styles.popup, animatedStyles,]}>
+        <View style={styles.closeButtonContainer}>
+          <CloseButton
+            close={() => handlePress()}/>
+        </View>
         {children}
       </Animated.View>
     </>
@@ -58,4 +61,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
     bottom: 0,
   },
+  closeButtonContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10
+  }
 });

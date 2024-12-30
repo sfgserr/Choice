@@ -32,7 +32,7 @@ const CustomBottomSheet = React.forwardRef(({title, children, close}: any, ref: 
           style={styles.title}>
           {title}
         </Text>
-        <View style={{paddingTop: 20}}>
+        <View style={styles.childrenContainer}>
           {children}
         </View>
       </View>
@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center'
   },
+  childrenContainer: {
+    paddingTop: 20
+  }
 });
 
 export default CustomBottomSheet;

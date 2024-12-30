@@ -23,12 +23,14 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
       let companies = await route.params.companyService.getCompanies(
         route.params.categoryId,
         changeState);
+      if (companies.result == 'successful') {
 
-      map.current?.setCenter(
-        {lat: +companies[0].latitude, lon: +companies[0].longitude},
-        8,
-        Animation.SMOOTH);
-      setCompanies(companies);
+        map.current?.setCenter(
+          {lat: +companies.content[0].latitude, lon: +companies.content[0].longitude},
+          8,
+          Animation.SMOOTH);
+        setCompanies(companies.content);
+      }
     }
     getCompanies();
   }, []);

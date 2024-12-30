@@ -22,9 +22,6 @@ import {StyledButton} from '../components/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
-import {
-  useSharedValue
-} from 'react-native-reanimated';
 import SuccessfulRequestModal from '../components/SuccessfulRequestModal.tsx';
 
 const d = Dimensions.get('screen');
@@ -74,22 +71,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     },
   ];
 
-  const translateY = useSharedValue(0);
-
   const [isToggled, setIsToggled] = React.useState(false);
 
-  const progress = useSharedValue(0);
-
   const handlePress = () => {
-    if (!isToggled) {
-      translateY.value -= d.height*0.312+60;
-      progress.value++;
-    }
-    else {
-      translateY.value += d.height*0.312+60;
-      progress.value--;
-    }
-
     setIsToggled(prev => !prev);
   }
 
@@ -97,7 +81,10 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
 
   return (
     <GestureHandlerRootView>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={!isToggled}>
         <View style={styles.titleView}>
           <View style={{flexDirection: 'row'}}>
             <NavigateBackButton navigation={navigation} />
@@ -195,12 +182,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           </View>
           <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
-            <Text
-              style={{
-                fontWeight: '600',
-                fontSize: 14,
-                color: 'black',
-              }}>
+            <Text style={styles.radius}>
               {`${radius} км`}
             </Text>
           </View>
@@ -247,7 +229,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
         />
         <SuccessfulRequestModal
           isToggled={isToggled}
-          handlePress={handlePress}/>
+          handlePress={handlePress}
+          title={'Заказ создан'}
+          text={'Тысячи компаний увидят ваш заказ и ответят вам в самое ближайшее время'}/>
       </ScrollView>
     </GestureHandlerRootView>
   );
@@ -314,6 +298,11 @@ const styles = StyleSheet.create({
   horizontalSpread: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  radius: {
+    fontWeight: '600',
+    fontSize: 14,
+    color: 'black',
   },
   thumbStyle: {
     shadowColor: 'red',

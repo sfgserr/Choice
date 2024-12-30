@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Category} from './DomainTypes.ts';
-import {RefObject} from 'react';
+import {ReactNode, RefObject} from 'react';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 
 export type BorderedTextInputProps = {
@@ -61,7 +61,19 @@ export type CategoriesBottomSheetListProps = {
   onIndexChange: (val: boolean, index: number) => void
 };
 
-export type CategoriesBottomSheetProps = {
-  options: CategoriesBottomSheetListProps
-  ref: RefObject<BottomSheetMethods>
+export type SuccessfulRequestModalProps = {
+  isToggled: boolean
+  handlePress: () => void
+  title: string
+  text: string | undefined
+};
+
+export type AnimatedModalProps = {
+  isToggled: boolean
+  handlePress: () => void
+  children: ReactNode
+};
+
+export type CloseButtonProps = {
+  close: () => void
 };

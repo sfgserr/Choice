@@ -1,16 +1,39 @@
 import AnimatedModal from './AnimatedModal.tsx';
-import {StyleSheet, View} from 'react-native';
-import CloseButton from './CloseButton.tsx';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyledButton} from './StyledButton.tsx';
+import {SuccessfulRequestModalProps} from '../types/ComponentTypes.ts';
 
-export default function SuccessfulRequestModal({isToggled, handlePress}) {
+export default function SuccessfulRequestModal({isToggled, handlePress, title, text}: SuccessfulRequestModalProps) {
   return (
     <AnimatedModal
       isToggled={isToggled}
       handlePress={handlePress}>
-      <View style={{flex: 1}}>
-        <View style={styles.closeButtonContainer}>
-          <CloseButton
-            close={() => handlePress()}/>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../assets/images/thumb-up.png')}
+            style={styles.image}/>
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>
+            {title}
+          </Text>
+          {text != undefined ? (
+            <>
+              <Text style={styles.text}>
+                {text}
+              </Text>
+            </>
+          ) : (<></>)}
+        </View>
+        <View style={styles.buttonContainer}>
+          <StyledButton
+            content={'Ok'}
+            top={0}
+            bottom={0}
+            isDisabled={false}
+            pressed={async () => handlePress()}/>
         </View>
       </View>
     </AnimatedModal>
@@ -18,9 +41,41 @@ export default function SuccessfulRequestModal({isToggled, handlePress}) {
 }
 
 const styles = StyleSheet.create({
-  closeButtonContainer: {
+  container: {
+    flex: 1,
+  },
+  imageContainer: {
+    paddingTop: 30
+  },
+  image: {
+    alignSelf: 'center',
+    width: 40,
+    height: 40,
+    resizeMode: 'contain'
+  },
+  titleContainer: {
+    alignItems: 'baseline'
+  },
+  title: {
+    fontWeight: '500',
+    fontSize: 20,
+    color: 'black',
+    paddingTop: 10,
+    alignSelf: 'center',
+  },
+  text: {
+    paddingTop: 10,
+    fontWeight: '400',
+    fontSize: 14,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: '#6D7885'
+  },
+  buttonContainer: {
+    flex: 1,
     position: 'absolute',
-    top: 10,
-    right: 10
+    width: '85%',
+    bottom: 10,
+    alignSelf: 'center',
   }
 })
