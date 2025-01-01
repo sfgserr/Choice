@@ -12,7 +12,6 @@ import {UserService} from '../services/UserService.ts';
 import {CompanyService} from '../services/CompanyService.ts';
 import {OrderRequestService} from '../services/OrderRequestService.ts';
 
-
 type Object = {
   [name: string]: object,
 };

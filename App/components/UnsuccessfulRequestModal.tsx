@@ -1,10 +1,11 @@
 import AnimatedModal from './AnimatedModal.tsx';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {StyledButton} from './StyledButton.tsx';
-import {SuccessfulRequestModalProps} from '../types/ComponentTypes.ts';
+import {UnsuccessfulRequestModalProps} from '../types/ComponentTypes.ts';
+import {Icon} from '@rneui/themed';
 
-export default function SuccessfulRequestModal({isToggled, handlePress, title, text}: SuccessfulRequestModalProps) {
+export default function UnsuccessfulRequestModal({isToggled, handlePress}: UnsuccessfulRequestModalProps) {
   return (
     <AnimatedModal
       isToggled={isToggled}
@@ -12,21 +13,16 @@ export default function SuccessfulRequestModal({isToggled, handlePress, title, t
       withBackdrop={true}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image
-            source={require('../assets/images/thumb-up.png')}
-            style={styles.image}/>
+          <Icon
+            type={'material'}
+            name={'error'}
+            size={50}
+            color={'red'}/>
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
-            {title}
+            Неизвестная ошибка
           </Text>
-          {text != undefined ? (
-            <>
-              <Text style={styles.text}>
-                {text}
-              </Text>
-            </>
-          ) : (<></>)}
         </View>
         <View style={styles.buttonContainer}>
           <StyledButton
@@ -63,14 +59,6 @@ const styles = StyleSheet.create({
     color: 'black',
     paddingTop: 10,
     alignSelf: 'center',
-  },
-  text: {
-    paddingTop: 10,
-    fontWeight: '400',
-    fontSize: 14,
-    alignSelf: 'center',
-    textAlign: 'center',
-    color: '#6D7885'
   },
   buttonContainer: {
     flex: 1,

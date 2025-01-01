@@ -10,4 +10,4 @@ export type CompanyMapMarker = {
   averageGrade: number,
   latitude: string,
   longitude: string
-}
+};

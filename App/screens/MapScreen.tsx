@@ -10,6 +10,8 @@ import {StyledButton} from '../components/StyledButton.tsx';
 import React from 'react';
 import {AuthContext} from '../App.tsx';
 import {CompanyMapMarker} from '../types/DomainTypes.ts';
+import {OrderRequestPopup} from '../types/ComponentTypes.ts';
+import OrderRequestModal from '../components/OrderRequestModal.tsx';
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
   const { changeState } = React.useContext(AuthContext);
@@ -17,6 +19,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const d = Dimensions.get('screen');
   const [companies, setCompanies] = React.useState<CompanyMapMarker[]>([]);
+  const [orderRequest, setOrderRequest] = React.useState<OrderRequestPopup>(null);
+  const [isToggled, setIsToggled] = React.useState(false);
 
   React.useEffect(() => {
     async function getCompanies() {
@@ -27,13 +31,19 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
         map.current?.setCenter(
           {lat: +companies.content[0].latitude, lon: +companies.content[0].longitude},
-          8,
+          15,
           Animation.SMOOTH);
         setCompanies(companies.content);
       }
     }
     getCompanies();
   }, []);
+
+  const onOrderRequestCreated = async (orderRequest: OrderRequestPopup) => {
+    setOrderRequest(orderRequest);
+    await new Promise(f => setTimeout(f, 1000));
+    setIsToggled(true);
+  };
 
   return (
     <>
@@ -94,30 +104,39 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           {route.params.categories[route.params.categoryId].title}
         </Text>
       </View>
-      <View
-        style={{
-          position: 'absolute',
-          height: d.height * 0.086,
-          width: '100%',
-          backgroundColor: 'white',
-          bottom: 0,
-          justifyContent: 'center',
-          paddingHorizontal: 10
-        }}>
-        <View style={{flex: 1}}>
-          <StyledButton
-            content={'Создать заказ'}
-            top={10}
-            bottom={0}
-            isDisabled={false}
-            pressed={async () => {
-              navigation.navigate('CreateOrderRequestScreen', {
-                categories: route.params.categories,
-                categoryIndex: route.params.categoryId
-              });
-            }}/>
-        </View>
-      </View>
+      {orderRequest == null ? (
+        <>
+          <View
+            style={{
+              position: 'absolute',
+              height: d.height * 0.086,
+              width: '100%',
+              backgroundColor: 'white',
+              bottom: 0,
+              justifyContent: 'center',
+              paddingHorizontal: 10
+            }}>
+            <View style={{flex: 1}}>
+              <StyledButton
+                content={'Создать заказ'}
+                top={10}
+                bottom={0}
+                isDisabled={false}
+                pressed={async () => {
+                  navigation.navigate('CreateOrderRequestScreen', {
+                    categories: route.params.categories,
+                    categoryIndex: route.params.categoryId,
+                    onGoBack: onOrderRequestCreated
+                  });
+                }}/>
+            </View>
+          </View>
+        </>) : (
+          <>
+            <OrderRequestModal
+              isToggled={isToggled}
+              orderRequest={orderRequest}/>
+          </>)}
     </>
   );
 }

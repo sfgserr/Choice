@@ -8,8 +8,12 @@ export type TokenResponse = {
   refresh_token: string;
 };
 
-export type HttpResponse<T> = {
+export type HttpResponseWithContent<T> = {
   content: T | null,
   result: 'successful' | 'unauthorized' | 'bad_request'
-}
+};
+
+export type HttpResponse = {
+  result: 'successful' | 'unauthorized' | 'bad_request'
+};
 

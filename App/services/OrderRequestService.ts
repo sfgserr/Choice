@@ -1,4 +1,6 @@
 import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
+import {State} from '../enums/AppEnums.ts';
+import {OrderRequest} from '../types/DomainTypes.ts';
 
 export class OrderRequestService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -13,10 +15,10 @@ export class OrderRequestService {
     toKnowPrice: boolean,
     toKnowDeadline: boolean,
     toKnowEnrollmentDate: boolean,
-    photos: string[],
-    radius: number,
-    changeState: () => void) {
-    var response = await this.httpService.request(
+    photoUris: string[],
+    distance: number,
+    changeState: (state: State) => void) {
+    let response = await this.httpService.requestWithContent<OrderRequest>(
       'orderRequests',
       'POST',
       JSON.stringify({
@@ -25,11 +27,11 @@ export class OrderRequestService {
         toKnowPrice,
         toKnowDeadline,
         toKnowEnrollmentDate,
-        photos,
-        radius
+        photoUris,
+        distance
       }),
       changeState);
 
-    return response?.json();
+    return response;
   }
 }

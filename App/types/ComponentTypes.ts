@@ -68,12 +68,34 @@ export type SuccessfulRequestModalProps = {
   text: string | undefined
 };
 
+export type UnsuccessfulRequestModalProps = {
+  isToggled: boolean
+  handlePress: () => void
+};
+
 export type AnimatedModalProps = {
   isToggled: boolean
   handlePress: () => void
   children: ReactNode
+  withBackdrop: boolean
 };
 
 export type CloseButtonProps = {
   close: () => void
+};
+
+export type OrderRequestPopup = {
+  id: string
+  description: string
+  creationTime: Date
+  categoryTitle: string
+};
+
+export type OrderRequestModalProps = {
+  isToggled: boolean
+  orderRequest: OrderRequestPopup
+};
+
+export type OrderRequestCardProps = {
+  orderRequest: OrderRequestPopup
 };

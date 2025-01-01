@@ -23,10 +23,15 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/SuccessfulRequestModal.tsx';
+import {AuthContext} from '../App.tsx';
+import UnsuccessfulRequestModal from '../components/UnsuccessfulRequestModal.tsx';
+import {OrderRequestPopup} from '../types/ComponentTypes.ts';
 
 const d = Dimensions.get('screen');
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
+  const { changeState } = React.useContext(AuthContext);
+
   const [categories, setCategories] = React.useState<Category[]>(route.params.categories);
   const [description, setDescription] = React.useState('');
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
@@ -36,6 +41,8 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [radius, setRadius] = React.useState<number>(5);
 
   const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
+
+  const [orderRequest, setOrderRequest] = React.useState<OrderRequestPopup>();
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -72,10 +79,41 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   ];
 
   const [isToggled, setIsToggled] = React.useState(false);
+  const [isErrorToggled, setIsErrorToggled] = React.useState(false);
 
-  const handlePress = () => {
+  const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
+    navigation.goBack();
+    if (orderRequest != undefined) {
+      orderRequest.categoryTitle = categories[categoryIndex].title;
+      await route.params.onGoBack(orderRequest);
+    }
   }
+
+  const toggleErrorModal = () => {
+    setIsErrorToggled(prev => !prev);
+  }
+
+  const createOrderRequest = async () => {
+    const response = await route.params.orderRequestService.create(
+      categories[categoryIndex].categoryId,
+      description,
+      toKnowPrice,
+      toKnowDeadline,
+      toKnowEnrollmentDate,
+      photos,
+      radius,
+      changeState
+    );
+
+    if (response.result == 'successful' && response.content != null) {
+      setIsToggled(prev => !prev);
+      setOrderRequest(response.content);
+    }
+    else {
+      toggleErrorModal();
+    }
+  };
 
   const ref = React.useRef<BottomSheet>(null);
 
@@ -139,7 +177,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
               ]}
-              onPress={handlePress}>
+              onPress={() => {}}>
               <View style={styles.voiceButton}>
                 <Image
                   source={require('../assets/images/micro.png')}
@@ -213,7 +251,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
               photos.every(p => p == '')
             }
-            pressed={() => {}}
+            pressed={createOrderRequest}
           />
         </View>
         <CategoriesBottomSheet
@@ -229,9 +267,12 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
         />
         <SuccessfulRequestModal
           isToggled={isToggled}
-          handlePress={handlePress}
+          handlePress={toggleSuccessfulModal}
           title={'Заказ создан'}
           text={'Тысячи компаний увидят ваш заказ и ответят вам в самое ближайшее время'}/>
+        <UnsuccessfulRequestModal
+          isToggled={isErrorToggled}
+          handlePress={() => setIsErrorToggled(prev => !prev)}/>
       </ScrollView>
     </GestureHandlerRootView>
   );

@@ -5,13 +5,24 @@ import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ObjectGraph} from '../di/ObjectGraph.ts';
 import {Category} from './DomainTypes.ts';
 import {CompanyService} from '../services/CompanyService.ts';
+import {OrderRequestService} from '../services/OrderRequestService.ts';
+import {OrderRequestPopup} from './ComponentTypes.ts';
 
 export type StackProps = {
   Login: {tokenService: TokenService}
   Loading: undefined
-  Map: {categoryId: number; categories: Category[]; companyService: CompanyService}
+  Map: {
+    categoryId: number
+    categories: Category[]
+    companyService: CompanyService
+  }
   Tab: {graph: ObjectGraph}
-  CreateOrderRequestScreen: {categories: Category[]; categoryIndex: number}
+  CreateOrderRequestScreen: {
+    categories: Category[]
+    categoryIndex: number
+    orderRequestService: OrderRequestService
+    onGoBack: (orderRequest: OrderRequestPopup) => Promise<void>
+  }
 };
 
 export type ClientTabProps = {

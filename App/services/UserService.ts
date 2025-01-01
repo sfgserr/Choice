@@ -20,7 +20,7 @@ export class UserService {
   }
 
   async fetchUser(changeState: (state: State) => void) {
-    const response = await this.httpService.request(
+    const response = await this.httpService.requestWithContent(
       this.tokenService.getUser().userType == UserType.Client ? 'clients' : 'companies',
       'GET',
       undefined,
