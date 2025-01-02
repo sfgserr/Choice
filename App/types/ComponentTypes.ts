@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Category} from './DomainTypes.ts';
-import {ReactNode, RefObject} from 'react';
-import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
+import {Category, OrderRequest} from './DomainTypes.ts';
+import {ReactNode} from 'react';
 
 export type BorderedTextInputProps = {
   value: string
@@ -63,7 +62,7 @@ export type CategoriesBottomSheetListProps = {
 
 export type SuccessfulRequestModalProps = {
   isToggled: boolean
-  handlePress: () => void
+  handlePress: () => Promise<void>
   title: string
   text: string | undefined
 };
@@ -84,18 +83,11 @@ export type CloseButtonProps = {
   close: () => void
 };
 
-export type OrderRequestPopup = {
-  id: string
-  description: string
-  creationTime: Date
-  categoryTitle: string
-};
-
 export type OrderRequestModalProps = {
   isToggled: boolean
-  orderRequest: OrderRequestPopup
+  orderRequest: OrderRequest
 };
 
 export type OrderRequestCardProps = {
-  orderRequest: OrderRequestPopup
+  orderRequest: OrderRequest
 };

@@ -9,23 +9,23 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import NavigateBackButton from '../components/NavigateBackButton.tsx';
+import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import {Category} from '../types/DomainTypes.ts';
-import Checkbox from '../components/Checkbox.tsx';
+import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Slider} from '@miblanchard/react-native-slider';
-import {StyledButton} from '../components/StyledButton.tsx';
+import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
-import CategoriesBottomSheet from '../components/CategoriesBottomSheet.tsx';
-import SuccessfulRequestModal from '../components/SuccessfulRequestModal.tsx';
+import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
+import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {AuthContext} from '../App.tsx';
-import UnsuccessfulRequestModal from '../components/UnsuccessfulRequestModal.tsx';
-import {OrderRequestPopup} from '../types/ComponentTypes.ts';
+import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
+import {OrderRequest} from '../types/DomainTypes.ts';
 
 const d = Dimensions.get('screen');
 
@@ -42,7 +42,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
 
   const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
 
-  const [orderRequest, setOrderRequest] = React.useState<OrderRequestPopup>();
+  const [orderRequest, setOrderRequest] = React.useState<OrderRequest>();
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -86,6 +86,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     navigation.goBack();
     if (orderRequest != undefined) {
       orderRequest.categoryTitle = categories[categoryIndex].title;
+      orderRequest.orderStatus = 'Active';
       await route.params.onGoBack(orderRequest);
     }
   }

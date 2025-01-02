@@ -2,11 +2,11 @@ import * as React from 'react';
 import {
   ScrollView, Text,
 } from 'react-native';
-import BorderedTextInput from '../components/BorderedTextInput.tsx';
+import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
-import PasswordBox from '../components/PasswordBox.tsx';
-import {StyledButton} from '../components/StyledButton.tsx';
-import {TokenService} from '../services/TokenService.ts';
+import PasswordBox from '../components/inputs/PasswordBox.tsx';
+import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {TokenService} from '../services/auth/TokenService.ts';
 import {AuthContext} from '../App.tsx';
 
 export default function LoginByEmailScreen({tokenService}: {tokenService: TokenService}) {

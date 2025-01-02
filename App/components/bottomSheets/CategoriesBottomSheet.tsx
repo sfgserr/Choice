@@ -1,5 +1,5 @@
 import CustomBottomSheet from './CustomBottomSheet.tsx';
-import CategoriesBottomSheetList from './CategoriesBottomSheetList.tsx';
+import CategoriesBottomSheetList from '../CategoriesBottomSheetList.tsx';
 import {ForwardedRef} from 'react';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import * as React from 'react';

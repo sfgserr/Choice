@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View } from 'react-native';
-import Styles from '../constants/Styles.tsx';
-import {BorderedTextInputProps} from '../types/ComponentTypes.ts';
+import Styles from '../../constants/Styles.tsx';
+import {BorderedTextInputProps} from '../../types/ComponentTypes.ts';
 
 export default function BorderedTextInput({ value, onChanged, placeholder, isError, isBig }: BorderedTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);

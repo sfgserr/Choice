@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import {TextButtonProps} from '../types/ComponentTypes.ts';
+import {TextButtonProps} from '../../types/ComponentTypes.ts';
 
 export default function TextButton({text}: TextButtonProps) {
   return (

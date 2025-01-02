@@ -4,14 +4,14 @@ import {
   Dimensions
 } from 'react-native';
 import YaMap, {Animation, Marker} from 'react-native-yamap';
-import NavigateBackButton from '../components/NavigateBackButton.tsx';
+import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
-import {StyledButton} from '../components/StyledButton.tsx';
+import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import React from 'react';
 import {AuthContext} from '../App.tsx';
 import {CompanyMapMarker} from '../types/DomainTypes.ts';
-import {OrderRequestPopup} from '../types/ComponentTypes.ts';
-import OrderRequestModal from '../components/OrderRequestModal.tsx';
+import {OrderRequest} from '../types/DomainTypes.ts';
+import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
   const { changeState } = React.useContext(AuthContext);
@@ -19,7 +19,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const d = Dimensions.get('screen');
   const [companies, setCompanies] = React.useState<CompanyMapMarker[]>([]);
-  const [orderRequest, setOrderRequest] = React.useState<OrderRequestPopup>(null);
+  const [orderRequest, setOrderRequest] = React.useState<OrderRequest>(null);
   const [isToggled, setIsToggled] = React.useState(false);
 
   React.useEffect(() => {
@@ -39,7 +39,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     getCompanies();
   }, []);
 
-  const onOrderRequestCreated = async (orderRequest: OrderRequestPopup) => {
+  const onOrderRequestCreated = async (orderRequest: OrderRequest) => {
     setOrderRequest(orderRequest);
     await new Promise(f => setTimeout(f, 1000));
     setIsToggled(true);

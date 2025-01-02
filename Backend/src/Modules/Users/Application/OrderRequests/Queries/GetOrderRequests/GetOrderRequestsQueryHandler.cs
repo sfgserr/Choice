@@ -23,13 +23,13 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequests
             const string sql = 
                 $"""
                 SELECT
-                    users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)}
-                    users."OrderRequests"."Status" as {nameof(OrderRequestDto.OrderStatus)}
-                    users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)}
-                    users."OrderRequests"."CreationDate" as {nameof(OrderRequestDto.CreationDate)}
+                    users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)},
+                    users."OrderRequests"."Status" as {nameof(OrderRequestDto.OrderStatus)},
+                    users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)},
+                    users."OrderRequests"."CreationDate" as {nameof(OrderRequestDto.CreationDate)},
                     administration."Categories"."Title" as {nameof(OrderRequestDto.CategoryTitle)}
                 FROM users."OrderRequests"
-                JOIN users."OrderRequests" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
+                JOIN "administration"."Categories" ON "users"."OrderRequests"."CategoryId" = "administration"."Categories"."Id"
                 WHERE users."OrderRequests"."ClientCreatedId" = @Id    
                 """;
 
@@ -37,7 +37,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequests
                 sql,
                 new
                 {
-                    _userContext.Id
+                    Id = _userContext.Id.Value
                 });
         }
     }

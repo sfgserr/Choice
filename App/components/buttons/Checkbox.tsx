@@ -1,4 +1,4 @@
-import {CheckboxProps} from '../types/ComponentTypes.ts';
+import {CheckboxProps} from '../../types/ComponentTypes.ts';
 import {
   View,
   Dimensions,
@@ -22,7 +22,7 @@ export default function Checkbox({checked, pressed}: CheckboxProps) {
       {checked ? (
         <>
           <Image
-            source={require('../assets/images/checkbox.png')}
+            source={require('../../assets/images/checkbox.png')}
             style={{
               width: d.height*0.023,
               height: d.height*0.023

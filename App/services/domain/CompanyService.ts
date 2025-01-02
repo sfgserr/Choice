@@ -1,7 +1,7 @@
-import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../enums/AppEnums.ts';
-import {CompanyMapMarker} from '../types/DomainTypes.ts';
-import {HttpResponseWithContent} from '../types/ServiceTypes.ts';
+import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {CompanyMapMarker} from '../../types/DomainTypes.ts';
+import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 
 export class CompanyService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;

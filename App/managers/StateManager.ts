@@ -1,9 +1,9 @@
-import {State} from './enums/AppEnums.ts';
-import {Status} from './enums/AccountManagerEnums.ts';
-import {UserType} from './enums/ModelEnums.ts';
-import {TokenStorageService} from './services/TokenStorageService.ts';
+import {State} from '../enums/AppEnums.ts';
+import {Status} from '../enums/AccountManagerEnums.ts';
+import {UserType} from '../enums/ModelEnums.ts';
+import {TokenStorageService} from '../services/object/TokenStorageService.ts';
 import {AccountManager} from './AccountManager.ts';
-import {TokenService} from './services/TokenService.ts';
+import {TokenService} from '../services/auth/TokenService.ts';
 
 export class StateManager {
   private readonly tokenStorageService: TokenStorageService;

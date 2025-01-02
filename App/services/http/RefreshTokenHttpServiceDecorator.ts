@@ -1,7 +1,7 @@
-import {StateManager} from '../StateManager.ts';
-import {HttpService} from '../services/HttpService.ts';
-import {State} from '../enums/AppEnums.ts';
-import {HttpResponse, HttpResponseWithContent} from '../types/ServiceTypes.ts';
+import {StateManager} from '../../managers/StateManager.ts';
+import {HttpService} from './HttpService.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {HttpResponse, HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 
 export class RefreshTokenHttpServiceDecorator {
   private readonly stateManager: StateManager;

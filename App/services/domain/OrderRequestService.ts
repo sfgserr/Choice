@@ -1,6 +1,6 @@
-import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../enums/AppEnums.ts';
-import {OrderRequest} from '../types/DomainTypes.ts';
+import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {OrderRequest} from '../../types/DomainTypes.ts';
 
 export class OrderRequestService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -18,7 +18,7 @@ export class OrderRequestService {
     photoUris: string[],
     distance: number,
     changeState: (state: State) => void) {
-    let response = await this.httpService.requestWithContent<OrderRequest>(
+    return await this.httpService.requestWithContent<OrderRequest>(
       'orderRequests',
       'POST',
       JSON.stringify({
@@ -31,7 +31,14 @@ export class OrderRequestService {
         distance
       }),
       changeState);
+  }
 
-    return response;
+  async getOrderRequests(changeState: (state: State) => void) {
+    return await this.httpService.requestWithContent<OrderRequest[]>(
+      'orderRequests',
+      'GET',
+      undefined,
+      changeState
+    );
   }
 }

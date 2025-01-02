@@ -2,7 +2,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import React, {ForwardedRef} from 'react';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
-import CloseButton from './CloseButton.tsx';
+import CloseButton from '../buttons/CloseButton.tsx';
 
 const CustomBottomSheet = React.forwardRef(({title, children, close}: any, ref: ForwardedRef<BottomSheetMethods>) => {
   const renderBackdrop = React.useCallback(

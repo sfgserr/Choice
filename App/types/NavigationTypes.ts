@@ -1,12 +1,12 @@
-import {TokenService} from '../services/TokenService.ts';
-import {CategoryService} from '../services/CategoryService.ts';
+import {TokenService} from '../services/auth/TokenService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ObjectGraph} from '../di/ObjectGraph.ts';
 import {Category} from './DomainTypes.ts';
-import {CompanyService} from '../services/CompanyService.ts';
-import {OrderRequestService} from '../services/OrderRequestService.ts';
-import {OrderRequestPopup} from './ComponentTypes.ts';
+import {CompanyService} from '../services/domain/CompanyService.ts';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
+import {OrderRequest} from './DomainTypes.ts';
 
 export type StackProps = {
   Login: {tokenService: TokenService}
@@ -21,13 +21,13 @@ export type StackProps = {
     categories: Category[]
     categoryIndex: number
     orderRequestService: OrderRequestService
-    onGoBack: (orderRequest: OrderRequestPopup) => Promise<void>
+    onGoBack: (orderRequest: OrderRequest) => Promise<void>
   }
 };
 
 export type ClientTabProps = {
   Categories: {categoryService: CategoryService}
-  OrderRequests: undefined
+  OrderRequests: {orderRequestService: OrderRequestService}
   Chat: undefined
   Account: undefined
 };

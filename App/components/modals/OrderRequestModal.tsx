@@ -1,6 +1,6 @@
-import {OrderRequestModalProps} from '../types/ComponentTypes.ts';
+import {OrderRequestModalProps} from '../../types/ComponentTypes.ts';
 import AnimatedModal from './AnimatedModal.tsx';
-import OrderRequestCard from './OrderRequestCard.tsx';
+import OrderRequestCard from '../OrderRequestCard.tsx';
 
 export default function OrderRequestModal({isToggled, orderRequest}: OrderRequestModalProps) {
   return (

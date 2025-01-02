@@ -14,7 +14,7 @@ export default function NavigateBackButton({navigation}) {
           height: 20,
           paddingLeft: 30
         }}
-        source={require('../assets/images/chevron-left.png')}/>
+        source={require('../../assets/images/chevron-left.png')}/>
     </TouchableOpacity>
   )
 }

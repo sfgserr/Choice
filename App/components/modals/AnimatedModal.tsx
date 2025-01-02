@@ -6,8 +6,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import React from 'react';
-import CloseButton from './CloseButton.tsx';
-import {AnimatedModalProps} from '../types/ComponentTypes.ts';
+import CloseButton from '../buttons/CloseButton.tsx';
+import {AnimatedModalProps} from '../../types/ComponentTypes.ts';
 
 const d = Dimensions.get("window");
 

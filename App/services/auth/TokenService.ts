@@ -1,9 +1,9 @@
-import {Token} from '../models/Token.ts';
+import {Token} from '../../models/Token.ts';
 import {AuthService} from './AuthService.ts';
-import {TokenStore} from '../stores/TokenStore.ts';
+import {TokenStore} from '../../stores/TokenStore.ts';
 import {jwtDecode} from 'jwt-decode';
-import {UserClaims} from '../types/ServiceTypes.ts';
-import {UserType} from '../enums/ModelEnums.ts';
+import {UserClaims} from '../../types/ServiceTypes.ts';
+import {UserType} from '../../enums/ModelEnums.ts';
 
 export class TokenService {
   private readonly store: TokenStore;

@@ -1,7 +1,7 @@
-import {Category} from '../types/DomainTypes.ts';
-import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../enums/AppEnums.ts';
-import {HttpResponseWithContent} from '../types/ServiceTypes.ts';
+import {Category} from '../../types/DomainTypes.ts';
+import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 
 export class CategoryService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;

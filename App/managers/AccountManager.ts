@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
-import {TokenService} from './services/TokenService.ts';
-import {FetchAccountResult} from './types/AccountManagerTypes.ts';
-import {Status} from './enums/AccountManagerEnums.ts';
+import {TokenService} from '../services/auth/TokenService.ts';
+import {FetchAccountResult} from '../types/AccountManagerTypes.ts';
+import {Status} from '../enums/AccountManagerEnums.ts';
 
 export class AccountManager {
   private readonly tokenService: TokenService;

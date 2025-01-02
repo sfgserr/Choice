@@ -4,9 +4,9 @@ import {
   View,
   Dimensions, Image,
 } from 'react-native';
-import {Category} from '../types/DomainTypes.ts';
+import {Category} from '../../types/DomainTypes.ts';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {ClientTabProps} from '../types/NavigationTypes.ts';
+import {ClientTabProps} from '../../types/NavigationTypes.ts';
 
 export default function CategoryItem({categoryId, categories, navigation}: {categoryId: number, categories: Category[], navigation: BottomTabNavigationProp<ClientTabProps, 'Categories', undefined>}) {
   const { width, height } = Dimensions.get('screen');
@@ -66,7 +66,7 @@ export default function CategoryItem({categoryId, categories, navigation}: {cate
             justifyContent: 'flex-end'
           }}>
           <Image
-            source={require('./../assets/images/chevron-right.png')}
+            source={require('../../assets/images/chevron-right.png')}
             style={{
               alignSelf: 'center',
               resizeMode: 'contain',

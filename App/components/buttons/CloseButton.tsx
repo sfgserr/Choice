@@ -1,6 +1,6 @@
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {CloseButtonProps} from '../types/ComponentTypes.ts';
+import {CloseButtonProps} from '../../types/ComponentTypes.ts';
 
 export default function CloseButton({close}: CloseButtonProps) {
   return (
@@ -9,7 +9,7 @@ export default function CloseButton({close}: CloseButtonProps) {
       onPress={() => close()}>
       <Image
         style={styles.image}
-        source={require('../assets/images/cross.png')}
+        source={require('../../assets/images/cross.png')}
       />
     </TouchableOpacity>
   )

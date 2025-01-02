@@ -1,8 +1,8 @@
 import AnimatedModal from './AnimatedModal.tsx';
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {StyledButton} from './StyledButton.tsx';
-import {UnsuccessfulRequestModalProps} from '../types/ComponentTypes.ts';
+import {StyledButton} from '../buttons/StyledButton.tsx';
+import {UnsuccessfulRequestModalProps} from '../../types/ComponentTypes.ts';
 import {Icon} from '@rneui/themed';
 
 export default function UnsuccessfulRequestModal({isToggled, handlePress}: UnsuccessfulRequestModalProps) {

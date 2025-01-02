@@ -1,5 +1,5 @@
 import CategoriesScreen from '../screens/tab/CategoriesScreen.tsx';
-import {CategoryService} from '../services/CategoryService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 import OrderRequestsScreen from '../screens/tab/OrderRequestsScreen.tsx';
 import ChatScreen from '../screens/tab/ChatScreen.tsx';
 import AccountScreen from '../screens/tab/AccountScreen.tsx';
@@ -7,6 +7,7 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ClientTabProps, TabScreenProps} from '../types/NavigationTypes.ts';
 import {Image} from 'react-native';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 
 export default function ClientTabComponent({route, navigation}: TabScreenProps) {
   const ClientTab = createBottomTabNavigator<ClientTabProps>();
@@ -52,6 +53,7 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
       <ClientTab.Screen
         name={'OrderRequests'}
         component={OrderRequestsScreen}
+        initialParams={{orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService")}}
         options={{
           headerShown: false,
           tabBarLabel: 'Заказы',

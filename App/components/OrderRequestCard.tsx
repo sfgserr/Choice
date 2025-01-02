@@ -8,64 +8,39 @@ export default function OrderRequestCard({orderRequest}: OrderRequestCardProps) 
     <View style={styles.container}>
       <View style={styles.categoryTitleContainer}>
         <View>
-          <Text
-            style={{
-              fontSize: 9,
-              color: '#8E8E93',
-              fontWeight: '400'
-            }}>
-            {orderRequest.id}
-          </Text>
-          <Text style={styles.categoryTitle}>
-            {orderRequest.categoryTitle}
-          </Text>
+          <Text style={styles.id}>{orderRequest.id}</Text>
+          <Text style={styles.categoryTitle}>{orderRequest.categoryTitle}</Text>
         </View>
-        <View style={styles.statusContainer}>
+        <View style={[
+          styles.statusContainer,
+          orderRequest.orderStatus == 'Active' ?
+            styles.activeColor : orderRequest.orderStatus == 'Canceled' ?
+              styles.canceledColor : styles.finishedColor
+        ]}>
           <Text style={styles.status}>
-            Активен
+            {orderRequest.orderStatus == 'Active' ?
+              'Активен' : orderRequest.orderStatus == 'Canceled' ?
+                'Отменен' : 'Завершен'}
           </Text>
         </View>
       </View>
-      <Text style={styles.description}
-            numberOfLines={3}>
+      <Text style={styles.description} numberOfLines={3}>
         {orderRequest.description}
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingBottom: 10
-        }}>
+      <View style={styles.dateTimeContainer}>
         <Image
-          style={{
-            width: 18,
-            height: 18,
-            alignSelf: 'center'
-          }}
-          source={require('../assets/images/calendar.png')}/>
-        <Text
-          style={{
-            color: '#313131',
-            fontWeight: '500',
-            fontSize: 15,
-            alignSelf: 'center',
-            paddingLeft: 10
-          }}>
-          {DateUtils.formatDate(orderRequest.creationTime)}
-        </Text>
+          style={styles.image}
+          source={require('../assets/images/calendar.png')}
+        />
+        <Text style={styles.creationDate}>{DateUtils.formatDate(orderRequest.creationDate)}</Text>
       </View>
       <View style={styles.detailsButtonContainer}>
-        <TouchableOpacity
-          style={[
-            Styles.styledButton,
-            styles.detailsButton
-          ]}>
-          <Text style={styles.detailsButtonContent}>
-            Подробнее
-          </Text>
+        <TouchableOpacity style={[Styles.styledButton, styles.detailsButton]}>
+          <Text style={styles.detailsButtonContent}>Подробнее</Text>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -78,13 +53,26 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     justifyContent: 'space-between'
   },
+  id: {
+    fontSize: 9,
+    color: '#8E8E93',
+    fontWeight: '400',
+  },
   categoryTitle: {
     color: 'black',
     fontWeight: '600',
     fontSize: 14,
   },
+  activeColor: {
+    backgroundColor: '#6DC876'
+  },
+  finishedColor: {
+    backgroundColor: '#2D81E0'
+  },
+  canceledColor: {
+    backgroundColor: '#AEAEB2'
+  },
   statusContainer: {
-    backgroundColor: '#6DC876',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -96,6 +84,22 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     color: '#313131',
+  },
+  dateTimeContainer: {
+    flexDirection: 'row',
+    paddingBottom: 10,
+  },
+  image: {
+    width: 18,
+    height: 18,
+    alignSelf: 'center',
+  },
+  creationDate: {
+    color: '#313131',
+    fontWeight: '500',
+    fontSize: 15,
+    alignSelf: 'center',
+    paddingLeft: 10,
   },
   status: {
     fontWeight: '500',

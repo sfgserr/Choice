@@ -1,5 +1,5 @@
 import {MMKVInstance, MMKVLoader} from 'react-native-mmkv-storage';
-import {HttpService} from './HttpService.ts';
+import {HttpService} from '../http/HttpService.ts';
 
 export class TokenStorageService {
   private readonly loader: MMKVInstance;

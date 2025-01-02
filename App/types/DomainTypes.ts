@@ -11,3 +11,13 @@ export type CompanyMapMarker = {
   latitude: string,
   longitude: string
 };
+
+export type OrderStatus = 'Active' | 'Canceled' | 'Finished';
+
+export type OrderRequest = {
+  id: string
+  description: string
+  creationDate: Date
+  categoryTitle: string
+  orderStatus: OrderStatus
+};

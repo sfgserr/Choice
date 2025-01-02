@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TokenService} from './services/TokenService.ts';
+import {TokenService} from './services/auth/TokenService.ts';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen.tsx';
@@ -8,13 +8,13 @@ import {ObjectGraph} from './di/ObjectGraph.ts';
 import {StackProps} from './types/NavigationTypes.ts';
 import {Auth} from './types/AppTypes.ts';
 import {State} from './enums/AppEnums.ts';
-import {StateManager} from './StateManager.ts';
+import {StateManager} from './managers/StateManager.ts';
 import MapScreen from './screens/MapScreen.tsx';
 import ClientTabComponent from './Tabs/ClientTabComponent.tsx';
-import {CompanyService} from './services/CompanyService.ts';
+import {CompanyService} from './services/domain/CompanyService.ts';
 import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
-import {OrderRequestService} from './services/OrderRequestService.ts';
+import {OrderRequestService} from './services/domain/OrderRequestService.ts';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},

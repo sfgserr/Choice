@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {View, Dimensions, Image, Text} from 'react-native';
-import TextButton from '../components/TextButton.tsx';
+import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {LoginScreenProps} from '../types/NavigationTypes.ts';

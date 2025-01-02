@@ -1,4 +1,4 @@
-import {TokenResponse} from '../types/ServiceTypes.ts';
+import {TokenResponse} from '../../types/ServiceTypes.ts';
 
 export class AuthService {
   private readonly clientId: string;

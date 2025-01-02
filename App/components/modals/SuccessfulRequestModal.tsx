@@ -1,8 +1,8 @@
 import AnimatedModal from './AnimatedModal.tsx';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {StyledButton} from './StyledButton.tsx';
-import {SuccessfulRequestModalProps} from '../types/ComponentTypes.ts';
+import {StyledButton} from '../buttons/StyledButton.tsx';
+import {SuccessfulRequestModalProps} from '../../types/ComponentTypes.ts';
 
 export default function SuccessfulRequestModal({isToggled, handlePress, title, text}: SuccessfulRequestModalProps) {
   return (
@@ -13,7 +13,7 @@ export default function SuccessfulRequestModal({isToggled, handlePress, title, t
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
-            source={require('../assets/images/thumb-up.png')}
+            source={require('../../assets/images/thumb-up.png')}
             style={styles.image}/>
         </View>
         <View style={styles.titleContainer}>

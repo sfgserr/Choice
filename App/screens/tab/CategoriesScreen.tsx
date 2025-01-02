@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FlatList, RefreshControl, Text, View} from 'react-native';
-import CategoryItem from '../../components/CategoryItem.tsx';
+import CategoryItem from '../../components/listItems/CategoryItem.tsx';
 import {Category} from '../../types/DomainTypes.ts';
 import {CategoriesScreenProps} from '../../types/NavigationTypes.ts';
 import { AuthContext } from '../../App.tsx';

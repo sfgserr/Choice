@@ -1,8 +1,8 @@
-import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
-import {UserStore} from '../stores/UserStore.ts';
-import {State} from '../enums/AppEnums.ts';
-import {TokenService} from './TokenService.ts';
-import {UserType} from '../enums/ModelEnums.ts';
+import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
+import {UserStore} from '../../stores/UserStore.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {TokenService} from '../auth/TokenService.ts';
+import {UserType} from '../../enums/ModelEnums.ts';
 
 export class UserService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -27,6 +27,6 @@ export class UserService {
       changeState,
     );
 
-    if (response != null) this.userStore.setUser(response.json());
+    if (response != null) this.userStore.setUser(response.content);
   }
 }

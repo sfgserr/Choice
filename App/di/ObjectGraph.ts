@@ -1,16 +1,16 @@
-import {AuthService} from '../services/AuthService.ts';
-import {AccountManager} from '../AccountManager.ts';
+import {AuthService} from '../services/auth/AuthService.ts';
+import {AccountManager} from '../managers/AccountManager.ts';
 import {TokenStore} from '../stores/TokenStore.ts';
-import {TokenService} from '../services/TokenService.ts';
-import {CategoryService} from '../services/CategoryService.ts';
-import {TokenStorageService} from '../services/TokenStorageService.ts';
-import {StateManager} from '../StateManager.ts';
-import {RefreshTokenHttpServiceDecorator} from '../decorators/RefreshTokenHttpServiceDecorator.ts';
+import {TokenService} from '../services/auth/TokenService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
+import {TokenStorageService} from '../services/object/TokenStorageService.ts';
+import {StateManager} from '../managers/StateManager.ts';
+import {RefreshTokenHttpServiceDecorator} from '../services/http/RefreshTokenHttpServiceDecorator.ts';
 import YaMap from 'react-native-yamap';
 import {UserStore} from '../stores/UserStore.ts';
-import {UserService} from '../services/UserService.ts';
-import {CompanyService} from '../services/CompanyService.ts';
-import {OrderRequestService} from '../services/OrderRequestService.ts';
+import {UserService} from '../services/domain/UserService.ts';
+import {CompanyService} from '../services/domain/CompanyService.ts';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 
 type Object = {
   [name: string]: object,

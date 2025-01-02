@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 import {AuthContext} from '../../App.tsx';
-import {StyledButton} from '../../components/StyledButton.tsx';
+import {StyledButton} from '../../components/buttons/StyledButton.tsx';
 import {AccountScreenProps} from '../../types/NavigationTypes.ts';
 
 export default function AccountScreen({route, navigation}: AccountScreenProps) {

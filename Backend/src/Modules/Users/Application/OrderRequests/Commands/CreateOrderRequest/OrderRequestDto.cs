@@ -2,12 +2,12 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 {
     public class OrderRequestDto
     {
-        public OrderRequestDto(Guid id, int categoryId, string description, DateTime creationTime)
+        public OrderRequestDto(Guid id, int categoryId, string description, DateTime creationDate)
         {
             Id = id;
             CategoryId = categoryId;
             Description = description;
-            CreationTime = creationTime;
+            CreationDate = creationDate;
         }
 
         public Guid Id { get; }
@@ -16,6 +16,6 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
         
         public string Description { get; }
 
-        public DateTime CreationTime { get; }
+        public DateTime CreationDate { get; }
     }
 }
