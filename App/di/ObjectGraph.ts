@@ -11,6 +11,7 @@ import {UserStore} from '../stores/UserStore.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 
 type Object = {
   [name: string]: object,
@@ -55,7 +56,8 @@ export class ObjectGraph {
     const userStore = new UserStore();
     const userService = new UserService(httpService, userStore, tokenService);
     const companyService = new CompanyService(httpService);
-    const orderRequestService = new OrderRequestService(httpService);
+    const objectStorageService = new ObjectStorageService(`${process.env.MINIO_URL}`, 'UOgXEbrJuXeReGnPkPr8', 'E1YneX8flLvuj5hZpbICP5rHzY5mgoE805sQJF6n');
+    const orderRequestService = new OrderRequestService(httpService, objectStorageService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;

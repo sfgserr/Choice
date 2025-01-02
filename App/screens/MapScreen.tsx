@@ -12,6 +12,7 @@ import {AuthContext} from '../App.tsx';
 import {CompanyMapMarker} from '../types/DomainTypes.ts';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
+import CustomMarker from '../components/CustomMarker.tsx';
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
   const { changeState } = React.useContext(AuthContext);
@@ -28,7 +29,6 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         route.params.categoryId,
         changeState);
       if (companies.result == 'successful') {
-
         map.current?.setCenter(
           {lat: +companies.content[0].latitude, lon: +companies.content[0].longitude},
           15,
@@ -56,25 +56,15 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           tilt: 100,
         }}
         style={{flex: 1}}>
+
         {companies.length > 0 ? (
           <>
             {companies.map((company, index) => {
               return (
-                <Marker
-                  point={{lat: +company.latitude, lon: +company.longitude}}
-                  key={index}>
-                  <Image
-                    source={{uri: `${process.env.MINIO_URL}/app-files/${company.iconUri}`}}
-                    style={{
-                      resizeMode: 'contain',
-                      borderRadius: 15,
-                      width: 30,
-                      height: 30,
-                      overflow: 'hidden',
-                      borderWidth: 2,
-                      borderColor: 'white'
-                    }}/>
-                </Marker>
+                <CustomMarker
+                  company={company}
+                  index={index}
+                  key={index}/>
               )
             })}
           </>

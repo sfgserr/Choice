@@ -6,6 +6,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)
 # or link against a old prefab target (this is needed for React Native 0.76 on).
 set(REACTNATIVE_MERGED_SO true)
 
+add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/@dr.pogodin/react-native-fs/android/generated/jni/" RNReactNativeFsSpec_autolinked_build)
 add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-gesture-handler/android/build/generated/source/codegen/jni/" rngesturehandler_codegen_autolinked_build)
 add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-image-picker/android/build/generated/source/codegen/jni/" RNImagePickerSpec_autolinked_build)
 add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-mmkv-storage/android/generated/jni/" MMKVStorageSpec_autolinked_build)
@@ -16,6 +17,7 @@ add_subdirectory("/home/sfgserr/Projects/Choice/App/node_modules/react-native-sc
 
 
 set(AUTOLINKED_LIBRARIES
+  react_codegen_RNReactNativeFsSpec
   react_codegen_rngesturehandler_codegen
   react_codegen_RNImagePickerSpec
   react_codegen_MMKVStorageSpec

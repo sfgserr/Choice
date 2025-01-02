@@ -15,6 +15,7 @@ import {CompanyService} from './services/domain/CompanyService.ts';
 import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import {OrderRequestService} from './services/domain/OrderRequestService.ts';
+import {Image} from 'react-native';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},

@@ -1,15 +1,17 @@
-import * as Minio from 'minio';
+import AWS from 'aws-sdk';
+import RNFS from '@dr.pogodin/react-native-fs';
 
 export class ObjectStorageService {
-  private readonly minioClient: Minio.Client;
+  private readonly minioClient: AWS.S3;
 
   constructor(endPoint: string, accessKey: string, secretKey: string) {
-    this.minioClient = new Minio.Client({
-      endPoint,
-      accessKey,
-      secretKey,
-      useSSL: false,
-      port:8080
+    this.minioClient = new AWS.S3({
+      credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
+      },
+      endpoint: endPoint,
+      s3ForcePathStyle: true
     });
   }
 
@@ -17,8 +19,15 @@ export class ObjectStorageService {
     const bucketName = "user-files";
 
     const objectName = sourceFile.split('\\').pop().split('/').pop();
+    const fileContent = await RNFS.readFile(sourceFile);
 
-    if (objectName != undefined)
-      await this.minioClient.fPutObject(bucketName, objectName, sourceFile);
+    console.log(objectName);
+    /*if (objectName != undefined) {
+      this.minioClient.upload({
+        Bucket: bucketName,
+        Body: fileContent,
+        Key: objectName
+      });
+    }*/
   }
 }

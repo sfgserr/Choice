@@ -3,6 +3,31 @@
   "reactNativePath": "/home/sfgserr/Projects/Choice/App/node_modules/react-native",
   "reactNativeVersion": "0.76",
   "dependencies": {
+    "@dr.pogodin/react-native-fs": {
+      "root": "/home/sfgserr/Projects/Choice/App/node_modules/@dr.pogodin/react-native-fs",
+      "name": "@dr.pogodin/react-native-fs",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/home/sfgserr/Projects/Choice/App/node_modules/@dr.pogodin/react-native-fs/dr-pogodin-react-native-fs.podspec",
+          "version": "2.30.2",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/home/sfgserr/Projects/Choice/App/node_modules/@dr.pogodin/react-native-fs/android",
+          "packageImportPath": "import com.drpogodin.reactnativefs.ReactNativeFsPackage;",
+          "packageInstance": "new ReactNativeFsPackage()",
+          "buildTypes": [],
+          "libraryName": "RNReactNativeFsSpec",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/home/sfgserr/Projects/Choice/App/node_modules/@dr.pogodin/react-native-fs/android/generated/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "react-native-gesture-handler": {
       "root": "/home/sfgserr/Projects/Choice/App/node_modules/react-native-gesture-handler",
       "name": "react-native-gesture-handler",

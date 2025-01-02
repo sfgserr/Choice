@@ -10,6 +10,8 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// @dr.pogodin/react-native-fs
+import com.drpogodin.reactnativefs.ReactNativeFsPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 // react-native-image-picker
@@ -71,6 +73,7 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
+      new ReactNativeFsPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
       new RNMMKVPackage(),

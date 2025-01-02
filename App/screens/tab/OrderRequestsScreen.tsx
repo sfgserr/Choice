@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   itemContainer: {
-    paddingBottom: 10
+    paddingTop: 5,
+    paddingBottom: 5
   }
 });
