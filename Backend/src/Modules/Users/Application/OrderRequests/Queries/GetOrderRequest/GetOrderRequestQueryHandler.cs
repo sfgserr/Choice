@@ -23,14 +23,16 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequest
             const string sql = 
                 $"""
                     SELECT 
-                        users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)}
-                        users."OrderRequests"."CategoryId" as {nameof(OrderRequestDto.CategoryId)}
-                        users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)}
-                        users."OrderRequests"."ToKnowPrice" as {nameof(OrderRequestDto.ToKnowPrice)}
-                        users."OrderRequests"."ToKnowDeadline" as {nameof(OrderRequestDto.ToKnowDeadline)}
-                        users."OrderRequests"."ToKnowEnrollmentDate" as {nameof(OrderRequestDto.ToKnowEnrollmentDate)}
-                        users."OrderRequests"."PhotoUris" as {nameof(OrderRequestDto.PhotoUris)}
-                        users."OrderRequests"."Distance" as {nameof(OrderRequestDto.Distance)}
+                        users."OrderRequests"."Id" as {nameof(OrderRequestDto.Id)},
+                        users."OrderRequests"."Status" as {nameof(OrderRequestDto.Status)},
+                        users."OrderRequests"."CategoryId" as {nameof(OrderRequestDto.CategoryId)},
+                        users."OrderRequests"."Description" as {nameof(OrderRequestDto.Description)},
+                        users."OrderRequests"."ToKnowPrice" as {nameof(OrderRequestDto.ToKnowPrice)},
+                        users."OrderRequests"."ToKnowDeadline" as {nameof(OrderRequestDto.ToKnowDeadline)},
+                        users."OrderRequests"."ToKnowEnrollmentDate" as {nameof(OrderRequestDto.ToKnowEnrollmentDate)},
+                        users."OrderRequests"."PhotoUris" as {nameof(OrderRequestDto.PhotoUris)},
+                        users."OrderRequests"."Distance" as {nameof(OrderRequestDto.Distance)},
+                        users."OrderRequests"."CreationDate" as {nameof(OrderRequestDto.CreationDate)}
                     FROM users."OrderRequests"
                     WHERE users."OrderRequests"."Id" = @RequestId AND users."OrderRequests"."ClientCreatedId" = @Id 
                 """;
@@ -40,7 +42,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequest
                 new
                 {
                     query.RequestId,
-                    _userContext.Id
+                    Id = _userContext.Id.Value
                 });
         }
     }

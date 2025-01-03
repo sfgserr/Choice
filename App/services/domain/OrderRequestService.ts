@@ -1,7 +1,8 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {State} from '../../enums/AppEnums.ts';
-import {OrderRequest} from '../../types/DomainTypes.ts';
+import {OrderRequest, OrderRequestDetails} from '../../types/DomainTypes.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
+import {FilePathUtils} from '../../utils/FilePathUtils.ts';
 
 export class OrderRequestService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -21,6 +22,14 @@ export class OrderRequestService {
     photoUris: string[],
     distance: number,
     changeState: (state: State) => void) {
+    const sources = ['', '', ''];
+    for (let i = 0; i < 3; i++) {
+      sources[i] = photoUris[i];
+      let path = FilePathUtils.getFileName(photoUris[i]);
+
+      photoUris[i] = path == undefined ? '' : path;
+    }
+
     const response = await this.httpService.requestWithContent<OrderRequest>(
       'orderRequests',
       'POST',
@@ -36,10 +45,57 @@ export class OrderRequestService {
       changeState);
 
     if (response.result == 'successful') {
-      await this.objectStorageService.upload(photoUris[0]);
+      for (let i = 0; i < 3; i++) {
+        if (sources[i] != '')
+          await this.objectStorageService.upload(sources[i], photoUris[i]);
+      }
     }
 
     return response;
+  }
+
+  async edit(
+    requestId: string,
+    categoryId: number,
+    description: string,
+    toKnowPrice: boolean,
+    toKnowDeadline: boolean,
+    toKnowEnrollmentDate: boolean,
+    photoUris: string[],
+    distance: number,
+    changeState: (state: State) => void) {
+    const toUpload = ['', '', ''];
+
+    for (let i = 0; i < 3; i++) {
+      if (photoUris[i].includes('file:///')) {
+        toUpload[i] = photoUris[i];
+        let path = FilePathUtils.getFileName(photoUris[i]);
+
+        photoUris[i] = path == undefined ? '' : path;
+      }
+    }
+
+    const response = await this.httpService.requestWithContent<OrderRequest>(
+      'orderRequests',
+      'PUT',
+      JSON.stringify({
+        requestId,
+        categoryId,
+        description,
+        toKnowPrice,
+        toKnowDeadline,
+        toKnowEnrollmentDate,
+        photoUris,
+        distance
+      }),
+      changeState);
+
+    if (response.result == 'successful') {
+      for (let i = 0; i < 3; i++) {
+        if (toUpload[i] != '')
+          await this.objectStorageService.upload(toUpload[i], photoUris[i]);
+      }
+    }
   }
 
   async getOrderRequests(changeState: (state: State) => void) {
@@ -49,5 +105,13 @@ export class OrderRequestService {
       undefined,
       changeState
     );
+  }
+
+  async getOrderRequest(id: string, changeState: (state: State) => void) {
+    return await this.httpService.requestWithContent<OrderRequestDetails>(
+      `orderRequests/${id}`,
+      'GET',
+      undefined,
+      changeState);
   }
 }

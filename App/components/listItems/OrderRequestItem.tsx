@@ -4,10 +4,12 @@ import {OrderRequestCardProps} from '../../types/ComponentTypes.ts';
 
 const d = Dimensions.get('screen');
 
-export default function OrderRequestItem({orderRequest}: OrderRequestCardProps) {
+export default function OrderRequestItem({orderRequest, navigation}: OrderRequestCardProps) {
   return (
     <View style={styles.container}>
-      <OrderRequestCard orderRequest={orderRequest}/>
+      <OrderRequestCard
+        orderRequest={orderRequest}
+        navigation={navigation}/>
     </View>
   )
 }

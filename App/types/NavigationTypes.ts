@@ -17,17 +17,22 @@ export type StackProps = {
     companyService: CompanyService
   }
   Tab: {graph: ObjectGraph}
-  CreateOrderRequestScreen: {
+  CreateOrderRequest: {
     categories: Category[]
     categoryIndex: number
     orderRequestService: OrderRequestService
     onGoBack: (orderRequest: OrderRequest) => Promise<void>
+  },
+  EditOrderRequest: {
+    orderRequestId: string
+    orderRequestService: OrderRequestService
+    categoryService: CategoryService
   }
 };
 
 export type ClientTabProps = {
   Categories: {categoryService: CategoryService}
-  OrderRequests: {orderRequestService: OrderRequestService}
+  OrderRequests: {orderRequestService: OrderRequestService, categoryService: CategoryService}
   Chat: undefined
   Account: undefined
 };
@@ -46,4 +51,6 @@ export type TabScreenProps = NativeStackScreenProps<StackProps, 'Tab'>;
 
 export type MapScreenProps = NativeStackScreenProps<StackProps, 'Map'>;
 
-export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderRequestScreen'>;
+export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderRequest'>;
+
+export type EditOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'EditOrderRequest'>;

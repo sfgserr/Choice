@@ -53,7 +53,10 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
       <ClientTab.Screen
         name={'OrderRequests'}
         component={OrderRequestsScreen}
-        initialParams={{orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService")}}
+        initialParams={{
+          orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService"),
+          categoryService: graph.resolve<CategoryService>("CategoryService")
+        }}
         options={{
           headerShown: false,
           tabBarLabel: 'Заказы',

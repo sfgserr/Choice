@@ -10,10 +10,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
-import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
+import {CreateOrderRequestScreenProps, EditOrderRequestScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
-import {Category} from '../types/DomainTypes.ts';
+import {Category, OrderRequestDetails, OrderStatus} from '../types/DomainTypes.ts';
 import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -25,25 +25,58 @@ import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSh
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {AuthContext} from '../App.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
-import {OrderRequest} from '../types/DomainTypes.ts';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import {DateUtils} from '../utils/DateUtils.ts';
 
 const d = Dimensions.get('screen');
 
-export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
+export default function EditOrderRequestScreen({route, navigation}: EditOrderRequestScreenProps) {
   const { changeState } = React.useContext(AuthContext);
 
-  const [categories, setCategories] = React.useState<Category[]>(route.params.categories);
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [status, setStatus] = React.useState<OrderStatus>();
   const [description, setDescription] = React.useState('');
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
   const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
   const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
   const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
   const [radius, setRadius] = React.useState<number>(5);
+  const [creationDate, setCreationDate] = React.useState<Date>(new Date());
+  const [categoryIndex, setCategoryIndex] = React.useState(0);
 
-  const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
+  const set = (orderRequest: OrderRequestDetails) => {
+    setStatus(orderRequest.status);
+    setDescription(orderRequest.description);
+    setToKnowPrice(orderRequest.toKnowPrice);
+    setToKnowDeadline(orderRequest.toKnowDeadline);
+    setToKnowEnrollmentDate(orderRequest.toKnowEnrollmentDate);
+    setPhotos(orderRequest.photoUris);
+    setRadius(orderRequest.distance);
+    setCreationDate(orderRequest.creationDate);
+  }
 
-  const [orderRequest, setOrderRequest] = React.useState<OrderRequest>();
+  React.useEffect(() => {
+    async function getData() {
+      let response = await route.params.orderRequestService
+        .getOrderRequest(route.params.orderRequestId, changeState);
+
+      if (response.result == 'successful' && response.content != null) {
+        let categoriesResponse = await route.params.categoryService
+          .getCategories(changeState);
+
+        if (categoriesResponse.result == 'successful' && categoriesResponse.content != null) {
+          setCategories(categoriesResponse.content);
+
+          setCategoryIndex(categoriesResponse.content.findIndex(c =>
+            c.categoryId == response.content.categoryId));
+
+          set(response.content);
+        }
+      }
+    }
+
+    getData();
+  }, []);
 
   const onImageBoxPressed = async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
@@ -65,18 +98,18 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   }
 
   const data= [{
-      title: 'Узнать стоимость',
-      checked: toKnowPrice,
-      pressed: () => setToKnowPrice(p => !p)
-    }, {
-      title: 'Узнать время выполнения работ',
-      checked: toKnowDeadline,
-      pressed: () => setToKnowDeadline(p => !p)
-    }, {
-      title: 'Узнать время записи',
-      checked: toKnowEnrollmentDate,
-      pressed: () => setToKnowEnrollmentDate(p => !p)
-    },
+    title: 'Узнать стоимость',
+    checked: toKnowPrice,
+    pressed: () => setToKnowPrice(p => !p)
+  }, {
+    title: 'Узнать время выполнения работ',
+    checked: toKnowDeadline,
+    pressed: () => setToKnowDeadline(p => !p)
+  }, {
+    title: 'Узнать время записи',
+    checked: toKnowEnrollmentDate,
+    pressed: () => setToKnowEnrollmentDate(p => !p)
+  },
   ];
 
   const [isToggled, setIsToggled] = React.useState(false);
@@ -86,11 +119,6 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
     navigation.goBack();
-    if (orderRequest != undefined) {
-      orderRequest.categoryTitle = categories[categoryIndex].title;
-      orderRequest.orderStatus = 'Active';
-      await route.params.onGoBack(orderRequest);
-    }
   }
 
   const toggleErrorModal = () => {
@@ -115,7 +143,6 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
 
     if (response.result == 'successful' && response.content != null) {
       setIsToggled(prev => !prev);
-      setOrderRequest(response.content);
     }
     else {
       toggleErrorModal();
@@ -137,6 +164,38 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           <Text style={styles.title}>Создание заказа</Text>
         </View>
         <View style={styles.contentContainer}>
+          <TextInputTitle s={'Создан'} top={20} bottom={5} />
+          <View
+            style={[
+              Styles.borderedTextInputView,
+              Styles.borderedTextInputHeight,
+              Styles.borderedTextInputViewColor,
+              Styles.borderedTextInputUnfocused,
+            ]}>
+            <TextInput
+              style={Styles.borderedTextInput}
+              value={DateUtils.formatDate(creationDate)}
+              readOnly
+            />
+            <View
+              style={{
+                justifyContent: 'center',
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderRadius: 10,
+                backgroundColor: status == 'Active' ? '#6DC876' : status == 'Finished' ? '#2D81E0' : '#AEAEB2'
+              }}>
+              <Text
+                style={{
+                  alignSelf: 'center',
+                  fontSize: 14,
+                  fontWeight: '500',
+                  color: 'white'
+                }}>
+                {status == 'Active' ? 'Активен' : status == 'Finished' ? 'Завершен' : 'Отменен'}
+              </Text>
+            </View>
+          </View>
           <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
           <View
             style={[
@@ -147,7 +206,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
-              value={categories[categoryIndex].title}
+              value={categories.length == 0 ? 'Услуга' : categories[categoryIndex].title}
               readOnly
             />
             <TouchableOpacity
@@ -250,7 +309,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
         </View>
         <View style={styles.buttonContainer}>
           <StyledButton
-            content={'Создать заказ'}
+            content={'Сохранить изменения'}
             top={0}
             bottom={0}
             isDisabled={
@@ -275,8 +334,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
         <SuccessfulRequestModal
           isToggled={isToggled}
           handlePress={toggleSuccessfulModal}
-          title={'Заказ создан'}
-          text={'Тысячи компаний увидят ваш заказ и ответят вам в самое ближайшее время'}/>
+          title={'Изменения сохранены'}/>
         <UnsuccessfulRequestModal
           isToggled={isErrorToggled}
           handlePress={() => setIsErrorToggled(prev => !prev)}/>

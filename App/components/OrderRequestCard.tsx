@@ -3,7 +3,7 @@ import Styles from '../constants/Styles.tsx';
 import {OrderRequestCardProps} from '../types/ComponentTypes.ts';
 import {DateUtils} from '../utils/DateUtils.ts';
 
-export default function OrderRequestCard({orderRequest}: OrderRequestCardProps) {
+export default function OrderRequestCard({orderRequest, navigation}: OrderRequestCardProps) {
   return (
     <View style={styles.container}>
       <View style={styles.categoryTitleContainer}>
@@ -35,7 +35,9 @@ export default function OrderRequestCard({orderRequest}: OrderRequestCardProps) 
         <Text style={styles.creationDate}>{DateUtils.formatDate(orderRequest.creationDate)}</Text>
       </View>
       <View style={styles.detailsButtonContainer}>
-        <TouchableOpacity style={[Styles.styledButton, styles.detailsButton]}>
+        <TouchableOpacity
+          style={[Styles.styledButton, styles.detailsButton]}
+          onPress={() => navigation.navigate('EditOrderRequest', {orderRequestId: orderRequest.id})}>
           <Text style={styles.detailsButtonContent}>Подробнее</Text>
         </TouchableOpacity>
       </View>

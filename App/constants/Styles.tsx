@@ -7,7 +7,7 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   borderedTextInputHeight: {
     height: height*0.054,
@@ -28,7 +28,8 @@ const Styles = StyleSheet.create({
   },
   borderedTextInputError: {
     backgroundColor: '#FAEBEB',
-    borderColor: '#E64646'
+    borderColor: '#E64646',
+    borderWidth: 0.5,
   },
   borderedTextInput: {
     color: 'black',

@@ -1,33 +1,44 @@
 import AWS from 'aws-sdk';
-import RNFS from '@dr.pogodin/react-native-fs';
+import {
+  readFile
+} from '@dr.pogodin/react-native-fs';
+import {Buffer} from 'buffer';
 
 export class ObjectStorageService {
   private readonly minioClient: AWS.S3;
 
   constructor(endPoint: string, accessKey: string, secretKey: string) {
+    AWS.config.update({logger: console});
     this.minioClient = new AWS.S3({
       credentials: {
         accessKeyId: accessKey,
         secretAccessKey: secretKey
       },
       endpoint: endPoint,
-      s3ForcePathStyle: true
+      s3ForcePathStyle: true,
+      sslEnabled: false
     });
   }
 
-  async upload(sourceFile: string) {
-    const bucketName = "user-files";
+  async upload(sourceFile: string, objectName: string) {
+    const bucketName = "app-files";
 
-    const objectName = sourceFile.split('\\').pop().split('/').pop();
-    const fileContent = await RNFS.readFile(sourceFile);
+    try {
+      const fileContent = await readFile(sourceFile, 'base64');
+      const buffer = Buffer.from(fileContent, 'base64');
 
-    console.log(objectName);
-    /*if (objectName != undefined) {
-      this.minioClient.upload({
+      if (fileContent.length > 5e6)
+        return;
+
+      await this.minioClient.upload({
         Bucket: bucketName,
-        Body: fileContent,
-        Key: objectName
-      });
-    }*/
+        Body: buffer,
+        Key: objectName,
+        ContentType: 'image/png'
+      }).promise();
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
 }

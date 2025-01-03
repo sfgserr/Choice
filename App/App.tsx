@@ -16,6 +16,8 @@ import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import {OrderRequestService} from './services/domain/OrderRequestService.ts';
 import {Image} from 'react-native';
+import EditOrderRequestScreen from './screens/EditOrderRequestScreen.tsx';
+import {CategoryService} from './services/domain/CategoryService.ts';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -91,9 +93,17 @@ function App(): React.JSX.Element {
                 options={{headerShown: false}}
                 initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
               <Stack.Screen
-                name={'CreateOrderRequestScreen'}
+                name={'CreateOrderRequest'}
                 component={gestureHandlerRootHOC(CreateOrderRequestScreen)}
                 initialParams={{orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService")}}
+                options={{headerShown: false}}/>
+              <Stack.Screen
+                name={'EditOrderRequest'}
+                component={gestureHandlerRootHOC(EditOrderRequestScreen)}
+                initialParams={{
+                  orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService"),
+                  categoryService: graph.resolve<CategoryService>("CategoryService")
+                }}
                 options={{headerShown: false}}/>
             </Stack.Navigator>
           </>

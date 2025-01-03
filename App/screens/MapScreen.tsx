@@ -113,7 +113,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
                 bottom={0}
                 isDisabled={false}
                 pressed={async () => {
-                  navigation.navigate('CreateOrderRequestScreen', {
+                  navigation.navigate('CreateOrderRequest', {
                     categories: route.params.categories,
                     categoryIndex: route.params.categoryId,
                     onGoBack: onOrderRequestCreated
@@ -125,7 +125,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           <>
             <OrderRequestModal
               isToggled={isToggled}
-              orderRequest={orderRequest}/>
+              orderRequest={orderRequest}
+              navigation={navigation}/>
           </>)}
     </>
   );

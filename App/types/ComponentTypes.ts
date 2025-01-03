@@ -86,8 +86,10 @@ export type CloseButtonProps = {
 export type OrderRequestModalProps = {
   isToggled: boolean
   orderRequest: OrderRequest
+  navigation: any
 };
 
 export type OrderRequestCardProps = {
   orderRequest: OrderRequest
+  navigation: any
 };

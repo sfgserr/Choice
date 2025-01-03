@@ -21,3 +21,16 @@ export type OrderRequest = {
   categoryTitle: string
   orderStatus: OrderStatus
 };
+
+export type OrderRequestDetails = {
+  id: string
+  status: OrderStatus
+  categoryId: number
+  description: string
+  toKnowPrice: boolean
+  toKnowDeadline: boolean
+  toKnowEnrollmentDate: boolean
+  photoUris: string[]
+  distance: number
+  creationDate: Date
+};
