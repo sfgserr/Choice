@@ -13,6 +13,7 @@ import {CompanyMapMarker} from '../types/DomainTypes.ts';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
 import CustomMarker from '../components/CustomMarker.tsx';
+import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
   const { changeState } = React.useContext(AuthContext);
@@ -127,6 +128,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
               isToggled={isToggled}
               orderRequest={orderRequest}
               navigation={navigation}/>
+            <LongRunningOperationIndicator isRefreshing={false}/>
           </>)}
     </>
   );

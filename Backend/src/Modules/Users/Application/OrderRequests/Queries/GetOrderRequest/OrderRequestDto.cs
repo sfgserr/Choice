@@ -16,7 +16,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequest
 
         public bool ToKnowEnrollmentDate { get; }
 
-        public List<string> PhotoUris { get; }
+        public string[] PhotoUris { get; }
         
         public int Distance { get; }
 

@@ -43,6 +43,8 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const [radius, setRadius] = React.useState<number>(5);
   const [creationDate, setCreationDate] = React.useState<Date>(new Date());
   const [categoryIndex, setCategoryIndex] = React.useState(0);
+  const [uriChanged, setUriChanged] = React.useState<boolean[]>([false, false, false]);
+  const [isChanged, setIsChanged] = React.useState(false);
 
   const set = (orderRequest: OrderRequestDetails) => {
     setStatus(orderRequest.status);
@@ -87,7 +89,11 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
 
       prev[index] = response.assets[0].uri;
       return [...prev];
-    })
+    });
+    setUriChanged(prev => {
+      prev[index] = true;
+      return [...prev];
+    });
   };
 
   const onRemoveImagePressed = (index: number) => {
@@ -95,20 +101,30 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       prev[index] = '';
       return [...prev];
     });
+    setIsChanged(true);
   }
 
   const data= [{
     title: 'Узнать стоимость',
     checked: toKnowPrice,
-    pressed: () => setToKnowPrice(p => !p)
+    pressed: () => {
+      setToKnowPrice(p => !p);
+      setIsChanged(true);
+    }
   }, {
     title: 'Узнать время выполнения работ',
     checked: toKnowDeadline,
-    pressed: () => setToKnowDeadline(p => !p)
+    pressed: () => {
+      setToKnowDeadline(p => !p);
+      setIsChanged(true);
+    }
   }, {
     title: 'Узнать время записи',
     checked: toKnowEnrollmentDate,
-    pressed: () => setToKnowEnrollmentDate(p => !p)
+    pressed: () => {
+      setToKnowEnrollmentDate(p => !p);
+      setIsChanged(true);
+    }
   },
   ];
 
@@ -125,10 +141,11 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
     setIsErrorToggled(prev => !prev);
   }
 
-  const createOrderRequest = async () => {
+  const editOrderRequest = async () => {
     setIsRefreshing(true);
 
-    const response = await route.params.orderRequestService.create(
+    const response = await route.params.orderRequestService.edit(
+      route.params.orderRequestId,
       categories[categoryIndex].categoryId,
       description,
       toKnowPrice,
@@ -141,7 +158,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
 
     setIsRefreshing(false);
 
-    if (response.result == 'successful' && response.content != null) {
+    if (response.result == 'successful') {
       setIsToggled(prev => !prev);
     }
     else {
@@ -161,7 +178,10 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
           <View style={{flexDirection: 'row'}}>
             <NavigateBackButton navigation={navigation} />
           </View>
-          <Text style={styles.title}>Создание заказа</Text>
+          <Text
+            style={
+              styles.title
+            }>{`Заказ №${route.params.orderRequestId.substring(0, 8)}`}</Text>
         </View>
         <View style={styles.contentContainer}>
           <TextInputTitle s={'Создан'} top={20} bottom={5} />
@@ -171,29 +191,32 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               Styles.borderedTextInputHeight,
               Styles.borderedTextInputViewColor,
               Styles.borderedTextInputUnfocused,
+              {alignItems: 'baseline'},
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
               value={DateUtils.formatDate(creationDate)}
               readOnly
             />
-            <View
-              style={{
-                justifyContent: 'center',
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderRadius: 10,
-                backgroundColor: status == 'Active' ? '#6DC876' : status == 'Finished' ? '#2D81E0' : '#AEAEB2'
-              }}>
-              <Text
+            <View style={styles.statusBoxContainer}>
+              <View
                 style={{
-                  alignSelf: 'center',
-                  fontSize: 14,
-                  fontWeight: '500',
-                  color: 'white'
+                  ...styles.statusBox,
+                  backgroundColor:
+                    status == 'Active'
+                      ? '#6DC876'
+                      : status == 'Finished'
+                      ? '#2D81E0'
+                      : '#AEAEB2',
                 }}>
-                {status == 'Active' ? 'Активен' : status == 'Finished' ? 'Завершен' : 'Отменен'}
-              </Text>
+                <Text style={styles.status}>
+                  {status == 'Active'
+                    ? 'Активен'
+                    : status == 'Finished'
+                    ? 'Завершен'
+                    : 'Отменен'}
+                </Text>
+              </View>
             </View>
           </View>
           <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
@@ -206,7 +229,11 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
-              value={categories.length == 0 ? 'Услуга' : categories[categoryIndex].title}
+              value={
+                categories.length == 0
+                  ? 'Услуга'
+                  : categories[categoryIndex].title
+              }
               readOnly
             />
             <TouchableOpacity
@@ -232,7 +259,10 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               placeholder={
                 'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
               }
-              onChangeText={setDescription}
+              onChangeText={val => {
+                setDescription(val);
+                setIsChanged(true);
+              }}
               multiline
             />
           </View>
@@ -269,33 +299,46 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
           />
           <View style={styles.horizontalSpread}>
             <ImageBox
-              uri={photos[0]}
+              uri={
+                !uriChanged[0] && photos[0] != ''
+                  ? `${process.env.MINIO_URL}/app-files/${photos[0]}`
+                  : photos[0]
+              }
               onPress={async () => await onImageBoxPressed(0)}
               onRemovePress={() => onRemoveImagePressed(0)}
             />
             <ImageBox
-              uri={photos[1]}
+              uri={
+                !uriChanged[1] && photos[1] != ''
+                  ? `${process.env.MINIO_URL}/app-files/${photos[1]}`
+                  : photos[1]
+              }
               onPress={async () => await onImageBoxPressed(1)}
               onRemovePress={() => onRemoveImagePressed(1)}
             />
             <ImageBox
-              uri={photos[2]}
+              uri={
+                !uriChanged[2] && photos[2] != ''
+                  ? `${process.env.MINIO_URL}/app-files/${photos[2]}`
+                  : photos[2]
+              }
               onPress={async () => await onImageBoxPressed(2)}
               onRemovePress={() => onRemoveImagePressed(2)}
             />
           </View>
           <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
-            <Text style={styles.radius}>
-              {`${radius} км`}
-            </Text>
+            <Text style={styles.radius}>{`${radius} км`}</Text>
           </View>
           <View style={{paddingTop: 10}}>
             <Slider
               minimumValue={5}
               maximumValue={25}
               value={radius}
-              onValueChange={value => setRadius(Math.floor(value[0]))}
+              onValueChange={value => {
+                setRadius(Math.floor(value[0]));
+                setIsChanged(true);
+              }}
               thumbTintColor={'white'}
               minimumTrackTintColor={'#007AFF'}
               maximumTrackTintColor={'#e4e4e6'}
@@ -307,25 +350,34 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
             <Text style={Styles.title}>до 25 км</Text>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <StyledButton
-            content={'Сохранить изменения'}
-            top={0}
-            bottom={0}
-            isDisabled={
-              description == '' ||
-              (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
-              photos.every(p => p == '')
-            }
-            pressed={createOrderRequest}
-          />
-        </View>
+        {isChanged ? (
+          <>
+            <View style={styles.buttonContainer}>
+              <StyledButton
+                content={'Сохранить изменения'}
+                top={0}
+                bottom={0}
+                isDisabled={
+                  description == '' ||
+                  (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
+                  photos.every(p => p == '')
+                }
+                pressed={editOrderRequest}
+              />
+            </View>
+          </>
+        ) : (
+          <></>
+        )}
         <CategoriesBottomSheet
           options={{
             categories,
             categoryIndex,
             onIndexChange: (val, index) => {
-              if (val) setCategoryIndex(index);
+              if (val) {
+                setCategoryIndex(index);
+                setIsChanged(true);
+              }
             },
           }}
           ref={ref}
@@ -334,11 +386,13 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         <SuccessfulRequestModal
           isToggled={isToggled}
           handlePress={toggleSuccessfulModal}
-          title={'Изменения сохранены'}/>
+          title={'Изменения сохранены'}
+        />
         <UnsuccessfulRequestModal
           isToggled={isErrorToggled}
-          handlePress={() => setIsErrorToggled(prev => !prev)}/>
-        <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
+          handlePress={() => setIsErrorToggled(prev => !prev)}
+        />
+        <LongRunningOperationIndicator isRefreshing={isRefreshing} />
       </ScrollView>
     </GestureHandlerRootView>
   );
@@ -366,6 +420,22 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingHorizontal: 15,
+  },
+  statusBoxContainer: {
+    paddingRight: 10,
+    alignSelf: 'center'
+  },
+  statusBox: {
+    justifyContent: 'center',
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    borderRadius: 5,
+  },
+  status: {
+    alignSelf: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+    color: 'white'
   },
   chevronDown: {
     alignSelf: 'center',

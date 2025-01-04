@@ -75,7 +75,7 @@ export class OrderRequestService {
       }
     }
 
-    const response = await this.httpService.requestWithContent<OrderRequest>(
+    const response = await this.httpService.request(
       'orderRequests',
       'PUT',
       JSON.stringify({
@@ -96,6 +96,8 @@ export class OrderRequestService {
           await this.objectStorageService.upload(toUpload[i], photoUris[i]);
       }
     }
+
+    return response;
   }
 
   async getOrderRequests(changeState: (state: State) => void) {
