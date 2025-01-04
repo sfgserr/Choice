@@ -4,9 +4,12 @@ import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {LoginScreenProps} from '../types/NavigationTypes.ts';
+import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
 
 export default function LoginScreen({route, navigation}: LoginScreenProps) {
   const {width, height} = Dimensions.get('screen');
+
+  const [isToggled, setIsToggled] = React.useState(false);
 
   const tabs = [
     {element: <LoginByEmailScreen tokenService={route.params.tokenService}/>, title: 'E-mail'},
@@ -64,9 +67,14 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
           }}>
           Авторизация
         </Text>
-        <TextButton text={'Создать аккаунт'}/>
+        <TextButton
+          text={'Создать аккаунт'}
+          onPress={() => setIsToggled(prev => !prev)}/>
       </View>
       <TabBar tabs={tabs}/>
+      <CreateAccountModal
+        isToggled={isToggled}
+        handlePress={() => setIsToggled(prev => !prev)}/>
     </View>
   )
 }

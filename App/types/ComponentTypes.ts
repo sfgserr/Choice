@@ -25,7 +25,8 @@ export type StyledButtonProps = {
 };
 
 export type TextButtonProps = {
-  text: string
+  text: string,
+  onPress: () => void
 };
 
 export type TextInputTitleProps = {
