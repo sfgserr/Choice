@@ -7,10 +7,11 @@ import {
   View,
 } from 'react-native';
 import Animated, {useAnimatedStyle, withDelay, withSpring, withTiming} from 'react-native-reanimated';
+import {CreateAccountModalProps} from '../../types/ComponentTypes.ts';
 
 const d = Dimensions.get('screen');
 
-export default function CreateAccountModal({isToggled, handlePress}: {isToggled: boolean, handlePress: () => void}) {
+export default function CreateAccountModal({isToggled, handlePress, navigation}: CreateAccountModalProps) {
   const duration = 1800;
 
   const animatedStyles = useAnimatedStyle(() => ({
@@ -48,6 +49,10 @@ export default function CreateAccountModal({isToggled, handlePress}: {isToggled:
             justifyContent: 'center',
             borderBottomColor: '#e0e0e0',
             borderBottomWidth: 1
+          }}
+          onPress={() => {
+            handlePress();
+            navigation.navigate('RegisterClient');
           }}>
           <Text
             style={{

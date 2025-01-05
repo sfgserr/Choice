@@ -94,3 +94,9 @@ export type OrderRequestCardProps = {
   orderRequest: OrderRequest
   navigation: any
 };
+
+export type CreateAccountModalProps = {
+  isToggled: boolean
+  handlePress: () => void
+  navigation: any
+};

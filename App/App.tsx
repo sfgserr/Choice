@@ -18,6 +18,7 @@ import {OrderRequestService} from './services/domain/OrderRequestService.ts';
 import {Image} from 'react-native';
 import EditOrderRequestScreen from './screens/EditOrderRequestScreen.tsx';
 import {CategoryService} from './services/domain/CategoryService.ts';
+import RegisterClientScreen from './screens/RegisterClientScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -78,6 +79,10 @@ function App(): React.JSX.Element {
               initialParams={{tokenService: graph.resolve<TokenService>("TokenService")}}
               options={{headerShown: false}}
             />
+            <Stack.Screen
+              name={'RegisterClient'}
+              component={RegisterClientScreen}
+              options={{headerShown: false}}/>
           </Stack.Navigator>
         ) : state == State.Client ? (
           <>

@@ -74,7 +74,8 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
       <TabBar tabs={tabs}/>
       <CreateAccountModal
         isToggled={isToggled}
-        handlePress={() => setIsToggled(prev => !prev)}/>
+        handlePress={() => setIsToggled(prev => !prev)}
+        navigation={navigation}/>
     </View>
   )
 }

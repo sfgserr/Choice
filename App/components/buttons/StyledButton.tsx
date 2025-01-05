@@ -7,8 +7,8 @@ export function StyledButton({content, top, bottom, isDisabled, pressed}: Styled
   return (
     <View
       style={{
-        top,
-        bottom,
+        paddingTop: top,
+        paddingBottom: bottom,
       }}>
       <TouchableOpacity
         style={[

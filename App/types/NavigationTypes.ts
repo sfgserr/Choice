@@ -27,7 +27,8 @@ export type StackProps = {
     orderRequestId: string
     orderRequestService: OrderRequestService
     categoryService: CategoryService
-  }
+  },
+  RegisterClient: undefined
 };
 
 export type ClientTabProps = {
@@ -54,3 +55,5 @@ export type MapScreenProps = NativeStackScreenProps<StackProps, 'Map'>;
 export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderRequest'>;
 
 export type EditOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'EditOrderRequest'>;
+
+export type RegisterClientScreenProps = NativeStackScreenProps<StackProps, 'RegisterClient'>;
