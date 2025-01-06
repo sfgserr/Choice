@@ -14,6 +14,6 @@ namespace Users.Domain.Users.Companies.Rules
 
         public bool IsBroken => _categories.Count == 0;
 
-        public string Message => "Categories cannot be empty";
+        public string Message => "Выберите хотя бы одну категорию";
     }
 }

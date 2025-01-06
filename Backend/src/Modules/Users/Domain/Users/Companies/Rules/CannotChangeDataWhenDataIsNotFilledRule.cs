@@ -13,6 +13,6 @@ namespace Users.Domain.Users.Companies.Rules
 
         public bool IsBroken => !_isDataFilled;
 
-        public string Message => "Data is not filled";
+        public string Message => "Данные не заполнены";
     }
 }

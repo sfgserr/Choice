@@ -16,6 +16,6 @@ namespace Users.Domain.OrderRequests.Rules
 
         public bool IsBroken => !_changingClientId.Equals(_clientCreatedId);
 
-        public string Message => "You are not the creator of this order request";
+        public string Message => "У вас нет прав изменять этот заказ";
     }
 }

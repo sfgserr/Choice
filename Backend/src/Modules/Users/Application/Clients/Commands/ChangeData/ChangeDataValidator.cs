@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.Application.Extensions;
+using FluentValidation;
 
 namespace Users.Application.Clients.Commands.ChangeData
 {
@@ -9,17 +10,30 @@ namespace Users.Application.Clients.Commands.ChangeData
             RuleFor(c => c.Name)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Имя обязательное поле");
 
             RuleFor(c => c.City)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Город обязательное поле");
 
             RuleFor(c => c.Street)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Улица обязательное поле");
+
+            RuleFor(c => c.Email)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("E-mail обязательное поле")
+                .EmailAddress()
+                .WithMessage("Неправильный формат e-mail'а");
+            
+            RuleFor(c => c.PhoneNumber)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Номер телефона обязательное поле")
+                .PhoneNumber();
         }
     }
 }

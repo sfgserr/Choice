@@ -5,6 +5,7 @@ import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {LoginScreenProps} from '../types/NavigationTypes.ts';
 import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
+import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 
 export default function LoginScreen({route, navigation}: LoginScreenProps) {
   const {width, height} = Dimensions.get('screen');

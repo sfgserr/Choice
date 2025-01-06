@@ -11,6 +11,6 @@ namespace Users.Domain.OrderRequests.Rules
 
         public bool IsBroken { get; }
 
-        public string Message => "User is enrolled to another response";
+        public string Message => "Клиент записался у другой компании";
     }
 }

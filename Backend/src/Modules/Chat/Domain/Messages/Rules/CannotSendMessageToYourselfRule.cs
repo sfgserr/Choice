@@ -16,6 +16,6 @@ namespace Chat.Domain.Messages.Rules
 
         public bool IsBroken => _fromUserId.Equals(_toUserId);
 
-        public string Message { get; } = "You can't send messages to yourself";
+        public string Message { get; } = "Нельзя отправить сообщение самому же";
     }
 }

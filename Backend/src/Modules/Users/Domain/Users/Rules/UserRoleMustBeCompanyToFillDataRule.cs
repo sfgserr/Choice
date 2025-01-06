@@ -13,6 +13,6 @@ namespace Users.Domain.Users.Rules
 
         public bool IsBroken => !_role.Equals(UserRole.User);
 
-        public string Message { get; } = "Data is already filled";
+        public string Message { get; } = "Вы уже заполнили информацию";
     }
 }

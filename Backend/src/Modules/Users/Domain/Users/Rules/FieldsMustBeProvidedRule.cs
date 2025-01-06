@@ -13,6 +13,6 @@ namespace Users.Domain.Users.Rules
 
         public bool IsBroken => _fields.Any(string.IsNullOrEmpty);
 
-        public string Message => "All fields must be provided";
+        public string Message => "Поля должны быть заполнены";
     }
 }

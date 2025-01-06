@@ -13,6 +13,6 @@ namespace Users.Domain.OrderRequests.Rules
 
         public bool IsBroken => string.IsNullOrEmpty(_description);
 
-        public string Message => "Description is not provided";
+        public string Message => "Описание должно быть заполнено";
     }
 }

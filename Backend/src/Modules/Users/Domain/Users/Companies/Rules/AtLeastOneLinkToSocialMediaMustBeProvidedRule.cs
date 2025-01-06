@@ -13,6 +13,6 @@ namespace Users.Domain.Users.Companies.Rules
 
         public bool IsBroken => _socialMediaUris.Count == 0;
 
-        public string Message { get; } = "At least one link to social media must be provided";
+        public string Message { get; } = "Укажите хотя бы одну социальную сеть";
     }
 }

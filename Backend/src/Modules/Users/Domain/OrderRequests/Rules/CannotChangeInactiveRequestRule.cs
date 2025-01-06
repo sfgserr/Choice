@@ -13,6 +13,6 @@ namespace Users.Domain.OrderRequests.Rules
 
         public bool IsBroken => !_requestStatus.Equals(OrderStatus.Active);
 
-        public string Message => "Order is inactive";
+        public string Message => "Заказ неактивен";
     }
 }

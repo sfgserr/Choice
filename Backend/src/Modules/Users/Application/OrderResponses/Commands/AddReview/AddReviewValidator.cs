@@ -9,7 +9,7 @@ namespace Users.Application.OrderResponses.Commands.AddReview
             RuleFor(c => c.Text)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("Text must be provided");
+                .WithMessage("Текст обязательное поле");
         }
     }
 }

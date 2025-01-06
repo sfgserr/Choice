@@ -16,6 +16,6 @@ namespace Chat.Domain.Messages.Rules
 
         public bool IsBroken => _messageType.Equals(MessageType.Order) && _orderMessage is null;
 
-        public string Message { get; } = "Response id must be provided";
+        public string Message { get; } = "Id заказа должно быть указано";
     }
 }

@@ -13,6 +13,6 @@ namespace Users.Domain.OrderRequests.Rules
 
         public bool IsBroken => _requirements.All(r => !r);
 
-        public string Message => "All requirements are false";
+        public string Message => "Одно требование должно быть включено";
     }
 }

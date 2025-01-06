@@ -15,6 +15,6 @@ namespace Chat.Domain.Messages.Rules
 
         public bool IsBroken => !_type.Equals(MessageType.Order) && string.IsNullOrEmpty(_body);
 
-        public string Message { get; } = "Body must be provided";
+        public string Message { get; } = "Сообщение не может быть пустым";
     }
 }

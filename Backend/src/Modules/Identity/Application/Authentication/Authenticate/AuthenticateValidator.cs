@@ -9,12 +9,12 @@ namespace Identity.Application.Authentication.Authenticate
             RuleFor(c => c.Email)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("Email must be provided");
+                .WithMessage("E-mail обязательное поле");
             
             RuleFor(c => c.Password)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("Password must be provided");
+                .WithMessage("Пароль обязательное поле");
         }
     }
 }

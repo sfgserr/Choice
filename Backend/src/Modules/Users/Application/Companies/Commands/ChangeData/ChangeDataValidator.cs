@@ -1,3 +1,4 @@
+using BuildingBlocks.Application.Extensions;
 using FluentValidation;
 
 namespace Users.Application.Companies.Commands.ChangeData
@@ -9,27 +10,33 @@ namespace Users.Application.Companies.Commands.ChangeData
             RuleFor(x => x.Categories)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Company must have at least 1 category");
+                .WithMessage("Выберите хотя бы одну категорию");
             
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Имя обязательное поле");
             
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Phone number must be provided");
+                .WithMessage("Номер телефона обязательное поле");
             
             RuleFor(x => x.Description)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Description must be provided");
+                .WithMessage("Описание обязательное поле");
             
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("E-mail обязательное поле");
+            
+            RuleFor(c => c.PhoneNumber)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Номер телефона обязательное поле")
+                .PhoneNumber();
         }
     }
 }

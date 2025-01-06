@@ -9,22 +9,22 @@ namespace Users.Application.Companies.Commands.CreateCompany
             RuleFor(c => c.Name)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Имя обязательное поле");
 
             RuleFor(c => c.Password)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Пароль обязательное поле");
 
             RuleFor(c => c.City)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Город обязательное поле");
 
             RuleFor(c => c.Street)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Улица обязательное поле");
         }
     }
 }

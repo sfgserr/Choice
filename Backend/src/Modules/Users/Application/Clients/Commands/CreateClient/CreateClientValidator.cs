@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Data;
+using FluentValidation;
+using BuildingBlocks.Application.Extensions;
 
 namespace Users.Application.Clients.Commands.CreateClient
 {
@@ -9,32 +11,38 @@ namespace Users.Application.Clients.Commands.CreateClient
             RuleFor(c => c.Name)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Имя обязательное поле");
 
             RuleFor(c => c.Password)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided")
+                .WithMessage("Пароль обязательное поле")
                 .MinimumLength(8)
                 .MaximumLength(16)
-                .WithMessage("Password length should in range from 8 to 16");
+                .WithMessage("Мин. длина 8. М16акс. длина ");
 
             RuleFor(c => c.City)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Город обязательное поле");
 
             RuleFor(c => c.Street)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Name must be provided");
+                .WithMessage("Улица обязательное поле");
 
             RuleFor(c => c.Email)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Email must be provided")
+                .WithMessage("E-mail обязательное поле")
                 .EmailAddress()
-                .WithMessage("Invalid email");
+                .WithMessage("Неправильный формат e-mail'а");
+
+            RuleFor(c => c.PhoneNumber)
+                .NotEmpty()
+                .NotNull()
+                .WithMessage("Номер телефона обязательное поле")
+                .PhoneNumber();
         }
     }
 }

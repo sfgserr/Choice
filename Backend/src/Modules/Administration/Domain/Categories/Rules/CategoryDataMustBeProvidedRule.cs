@@ -15,6 +15,6 @@ namespace Administration.Domain.Categories.Rules
 
         public bool IsBroken => string.IsNullOrEmpty(_title) || string.IsNullOrEmpty(_iconUri);
 
-        public string Message => "Category data must be provided";
+        public string Message => "Заполните информацию о услуге";
     }
 }

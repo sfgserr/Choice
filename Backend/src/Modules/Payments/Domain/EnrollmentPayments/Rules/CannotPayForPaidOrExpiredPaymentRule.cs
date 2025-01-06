@@ -14,6 +14,6 @@ namespace Payments.Domain.EnrollmentPayments.Rules
 
         public bool IsBroken => !_status.Equals(PaymentStatus.WaitingForPayment);
 
-        public string Message => "Payment is inactive";
+        public string Message => "Платеж неактивен";
     }
 }

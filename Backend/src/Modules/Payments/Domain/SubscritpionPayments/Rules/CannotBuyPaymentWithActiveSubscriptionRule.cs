@@ -16,6 +16,6 @@ namespace Payments.Domain.SubscritpionPayments.Rules
 
         public bool IsBroken => _subscriptionsCounter.Count(_payerId) > 0;
 
-        public string Message { get; } = "You have active subscriptions or payments";
+        public string Message { get; } = "у вас уже есть подписка";
     }
 }

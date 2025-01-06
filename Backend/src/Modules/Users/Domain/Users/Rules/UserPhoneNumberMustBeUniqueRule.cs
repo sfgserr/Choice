@@ -15,6 +15,6 @@ namespace Users.Domain.Users.Rules
 
         public bool IsBroken => _counter.CountUsersByPhoneNumber(_phoneNumber) > 0;
 
-        public string Message { get; } = "User with such phone number already exists";
+        public string Message { get; } = "Пользователь с таким телефонным номером уже существует";
     }
 }

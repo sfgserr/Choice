@@ -13,6 +13,6 @@ namespace Administration.Domain.Categories.Rules
 
         public bool IsBroken => _categoryId.Value < 8;
 
-        public string Message { get; } = "Category is readonly";
+        public string Message { get; } = "Эту категорию нельзя изменить";
     }
 }
