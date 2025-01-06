@@ -10,59 +10,89 @@ export class RefreshTokenHttpServiceDecorator {
     this.stateManager = stateManager;
   }
 
-  async requestWithContent<T>(
+  public async requestWithContent<T>(
     endPoint: string,
     method: string,
     body: BodyInit_ | undefined,
     setState: (state: State) => void): Promise<HttpResponseWithContent<T>> {
-    const response = await HttpService.getInstance().request(endPoint, method, body);
+    const response = await this.internalRequestWithContent<T>(endPoint, method, body);
 
-    if (response.status == 401) {
+    if (response.result == 'unauthorized') {
       const state = await this.stateManager.getState();
 
       if (state != State.SignOut) {
-        let response = await HttpService.getInstance().request(endPoint, method, body);
-
-        return {
-          result: response.status == 200 ? 'successful' : 'bad_request',
-          content: response.status == 200 ? await response.json() : null
-        };
+        return await this.internalRequestWithContent<T>(endPoint, method, body);
       }
 
       setState(State.SignOut);
-      return {result: 'unauthorized', content: null};
+      return {result: 'unauthorized', content: null, error: ''};
     }
 
+    return response;
+  }
+
+  private async internalRequest(
+    endPoint: string,
+    method: string,
+    body: BodyInit_ | undefined): Promise<HttpResponse> {
+    const response = await HttpService.getInstance().request(endPoint, method, body);
+
+    if (response.status == 200) {
+      return {
+        result: 'successful',
+        error: ''
+      };
+    }
+    else if (response.status == 401) {
+      return {
+        result: 'unauthorized',
+        error: ''
+      }
+    }
+    else {
+      return {
+        result: 'bad_request',
+        error: this.getError(await response.json())
+      }
+    }
+  }
+
+  private async internalRequestWithContent<T>(
+    endPoint: string,
+    method: string,
+    body: BodyInit_ | undefined): Promise<HttpResponseWithContent<T>> {
+    const response = await HttpService.getInstance().request(endPoint, method, body);
+    let content = await response.json();
+
     return {
-      result: response.status == 200 ? 'successful' : 'bad_request',
-      content: response.status == 200 ? await response.json() : null
+      result: response.status == 200 ? 'successful' : response.status == 401 ? 'unauthorized' : 'bad_request',
+      error: response.status == 200 || response.status == 401 ? '' : this.getError(content),
+      content: response.status == 200 ? content : null
     };
   }
 
-  async request(
+  public async request(
     endPoint: string,
     method: string,
     body: BodyInit_ | undefined,
     setState: (state: State) => void): Promise<HttpResponse> {
-    const response = await HttpService.getInstance().request(endPoint, method, body);
+    const response = await this.internalRequest(endPoint, method, body);
 
-    if (response.status == 401) {
+    if (response.result == 'unauthorized') {
       const state = await this.stateManager.getState();
 
       if (state != State.SignOut) {
-        let response = await HttpService.getInstance().request(endPoint, method, body);
-
-        return {
-          result: response.status == 200 ? 'successful' : 'bad_request',
-        };
+        return await this.internalRequest(endPoint, method, body);
       }
 
       setState(State.SignOut);
-      return {result: 'unauthorized'};
+      return {result: 'unauthorized', error: ''};
     }
 
-    return {
-      result: response.status == 200 ? 'successful' : 'bad_request'
-    };
+    return response;
+  }
+
+  private getError(content: any) {
+    return content.errors != undefined ? content.errors[0] : content.detail != undefined ? content.detail : 'Неизвестная ошибка';
   }
 }

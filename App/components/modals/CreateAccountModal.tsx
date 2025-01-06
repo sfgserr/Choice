@@ -71,7 +71,8 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
             borderBottomLeftRadius: 15,
             backgroundColor: 'white',
             justifyContent: 'center',
-          }}>
+          }}
+          onPress={() => navigation.navigate('RegisterCompany')}>
           <Text
             style={{
               color: '#2688EB',

@@ -82,6 +82,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [isToggled, setIsToggled] = React.useState(false);
   const [isErrorToggled, setIsErrorToggled] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
@@ -118,6 +119,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       setOrderRequest(response.content);
     }
     else {
+      setErrorMessage(response.error);
       toggleErrorModal();
     }
   };
@@ -279,7 +281,8 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           text={'Тысячи компаний увидят ваш заказ и ответят вам в самое ближайшее время'}/>
         <UnsuccessfulRequestModal
           isToggled={isErrorToggled}
-          handlePress={() => setIsErrorToggled(prev => !prev)}/>
+          handlePress={() => setIsErrorToggled(prev => !prev)}
+          errorMessage={errorMessage}/>
         <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
       </ScrollView>
     </GestureHandlerRootView>

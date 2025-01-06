@@ -71,6 +71,7 @@ export type SuccessfulRequestModalProps = {
 export type UnsuccessfulRequestModalProps = {
   isToggled: boolean
   handlePress: () => void
+  errorMessage: string
 };
 
 export type AnimatedModalProps = {

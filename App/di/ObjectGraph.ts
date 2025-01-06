@@ -12,6 +12,7 @@ import {UserService} from '../services/domain/UserService.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import {ClientService} from '../services/domain/ClientService.ts';
 
 type Object = {
   [name: string]: object,
@@ -61,6 +62,7 @@ export class ObjectGraph {
       `${process.env.MINIO_ACCESS_KEY}`,
       `${process.env.MINIO_SECRET_KEY}`);
     const orderRequestService = new OrderRequestService(httpService, objectStorageService);
+    const clientService = new ClientService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
@@ -73,6 +75,7 @@ export class ObjectGraph {
     this.objects["UserService"] = userService;
     this.objects["CompanyService"] = companyService;
     this.objects["OrderRequestService"] = orderRequestService;
+    this.objects["ClientService"] = clientService;
 
     this.isInitialized = true;
   }

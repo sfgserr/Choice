@@ -1,16 +1,14 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {State} from '../../enums/AppEnums.ts';
-import {CompanyMapMarker} from '../../types/DomainTypes.ts';
-import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 
-export class CompanyService {
+export class ClientService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
 
   constructor(httpService: RefreshTokenHttpServiceDecorator) {
     this.httpService = httpService;
   }
 
-  async createCompany(
+  async create(
     name: string,
     password: string,
     email: string,
@@ -19,7 +17,7 @@ export class CompanyService {
     street: string,
     changeState: (state: State) => void) {
     return await this.httpService.request(
-      'companies',
+      'clients',
       'POST',
       JSON.stringify({
         name,
@@ -29,14 +27,6 @@ export class CompanyService {
         city,
         street
       }),
-      changeState);
-  }
-
-  async getCompanies(categoryId: number, changeState: (state: State) => void): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
-    return await this.httpService.requestWithContent<CompanyMapMarker[]>(
-      `companies/${categoryId}`,
-      'GET',
-      undefined,
       changeState);
   }
 }

@@ -5,7 +5,7 @@ import {StyledButton} from '../buttons/StyledButton.tsx';
 import {UnsuccessfulRequestModalProps} from '../../types/ComponentTypes.ts';
 import {Icon} from '@rneui/themed';
 
-export default function UnsuccessfulRequestModal({isToggled, handlePress}: UnsuccessfulRequestModalProps) {
+export default function UnsuccessfulRequestModal({isToggled, handlePress, errorMessage}: UnsuccessfulRequestModalProps) {
   return (
     <AnimatedModal
       isToggled={isToggled}
@@ -21,7 +21,7 @@ export default function UnsuccessfulRequestModal({isToggled, handlePress}: Unsuc
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
-            Неизвестная ошибка
+            {errorMessage}
           </Text>
         </View>
         <View style={styles.buttonContainer}>

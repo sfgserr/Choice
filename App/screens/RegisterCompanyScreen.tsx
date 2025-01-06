@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
-import {RegisterClientScreenProps} from '../types/NavigationTypes.ts';
+import {RegisterCompanyScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import PasswordBox from '../components/inputs/PasswordBox.tsx';
@@ -11,7 +11,7 @@ import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 
-export default function RegisterClientScreen({route, navigation}: RegisterClientScreenProps) {
+export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
   const { changeState } = React.useContext(AuthContext);
 
   const [name, setName] = React.useState('');
@@ -30,11 +30,11 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const createClient = async () => {
+  const createCompany = async () => {
     setRefreshing(true);
 
-    const response = await route.params.clientService.create(
-      `${name} ${surname}`,
+    const response = await route.params.companyService.createCompany(
+      name,
       password,
       email,
       phoneNumber,
@@ -42,15 +42,11 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
       street,
       changeState);
 
-    setRefreshing(false);
-
     if (response.result == 'successful') {
       setToggled(true);
     }
-    else {
-      setErrorMessage(response.error);
-      setErrorToggled(true);
-    }
+
+    setRefreshing(false);
   }
 
   return (
@@ -68,26 +64,16 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
             fontSize: 24,
             paddingTop: 30,
           }}>
-          Регистрация клиента
+          Регистрация компании
         </Text>
         <TextInputTitle
-          s={'Имя'}
+          s={'Название'}
           top={20}
           bottom={5}/>
         <BorderedTextInput
           value={name}
           onChanged={setName}
           placeholder={'Введите имя'}
-          isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'Фамилия'}
-          top={20}
-          bottom={5}/>
-        <BorderedTextInput
-          value={surname}
-          onChanged={setSurname}
-          placeholder={'Введите фамилию'}
           isError={false}
           isBig={false}/>
         <TextInputTitle
@@ -161,7 +147,7 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
             confirmPassword == '' ||
             password != confirmPassword
           }
-          pressed={createClient}/>
+          pressed={createCompany}/>
         <Text
           style={{
             fontSize: 16,

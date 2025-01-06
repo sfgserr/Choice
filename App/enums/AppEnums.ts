@@ -3,5 +3,6 @@ export enum State {
   Restoring,
   Client,
   Company,
-  Admin
+  Admin,
+  User
 }

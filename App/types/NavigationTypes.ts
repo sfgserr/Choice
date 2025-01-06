@@ -7,28 +7,30 @@ import {Category} from './DomainTypes.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {OrderRequest} from './DomainTypes.ts';
+import {ClientService} from '../services/domain/ClientService.ts';
 
 export type StackProps = {
-  Login: {tokenService: TokenService}
-  Loading: undefined
+  Login: {tokenService: TokenService};
+  Loading: undefined;
   Map: {
-    categoryId: number
-    categories: Category[]
-    companyService: CompanyService
-  }
-  Tab: {graph: ObjectGraph}
+    categoryId: number;
+    categories: Category[];
+    companyService: CompanyService;
+  };
+  Tab: {graph: ObjectGraph};
   CreateOrderRequest: {
-    categories: Category[]
-    categoryIndex: number
-    orderRequestService: OrderRequestService
-    onGoBack: (orderRequest: OrderRequest) => Promise<void>
-  },
+    categories: Category[];
+    categoryIndex: number;
+    orderRequestService: OrderRequestService;
+    onGoBack: (orderRequest: OrderRequest) => Promise<void>;
+  };
   EditOrderRequest: {
-    orderRequestId: string
-    orderRequestService: OrderRequestService
-    categoryService: CategoryService
-  },
-  RegisterClient: undefined
+    orderRequestId: string;
+    orderRequestService: OrderRequestService;
+    categoryService: CategoryService;
+  };
+  RegisterClient: {clientService: ClientService};
+  RegisterCompany: {companyService: CompanyService};
 };
 
 export type ClientTabProps = {
@@ -57,3 +59,5 @@ export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, '
 export type EditOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'EditOrderRequest'>;
 
 export type RegisterClientScreenProps = NativeStackScreenProps<StackProps, 'RegisterClient'>;
+
+export type RegisterCompanyScreenProps = NativeStackScreenProps<StackProps, 'RegisterCompany'>;

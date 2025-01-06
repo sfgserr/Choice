@@ -9,11 +9,13 @@ export type TokenResponse = {
 };
 
 export type HttpResponseWithContent<T> = {
-  content: T | null,
+  content: T | null
   result: 'successful' | 'unauthorized' | 'bad_request'
+  error: string
 };
 
 export type HttpResponse = {
-  result: 'successful' | 'unauthorized' | 'bad_request'
+  result: 'successful' | 'unauthorized' | 'bad_request',
+  error: string
 };
 

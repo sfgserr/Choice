@@ -27,6 +27,6 @@ export class UserService {
       changeState,
     );
 
-    if (response != null) this.userStore.setUser(response.content);
+    if (response.content != null) this.userStore.setUser(response.content);
   }
 }

@@ -131,6 +131,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const [isToggled, setIsToggled] = React.useState(false);
   const [isErrorToggled, setIsErrorToggled] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
@@ -162,6 +163,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       setIsToggled(prev => !prev);
     }
     else {
+      setErrorMessage(response.error);
       toggleErrorModal();
     }
   };
@@ -391,6 +393,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         <UnsuccessfulRequestModal
           isToggled={isErrorToggled}
           handlePress={() => setIsErrorToggled(prev => !prev)}
+          errorMessage={errorMessage}
         />
         <LongRunningOperationIndicator isRefreshing={isRefreshing} />
       </ScrollView>
