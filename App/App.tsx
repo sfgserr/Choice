@@ -21,6 +21,7 @@ import {CategoryService} from './services/domain/CategoryService.ts';
 import RegisterClientScreen from './screens/RegisterClientScreen.tsx';
 import {ClientService} from './services/domain/ClientService.ts';
 import RegisterCompanyScreen from './screens/RegisterCompanyScreen.tsx';
+import FillDataScreen from './screens/FillDataScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -90,7 +91,10 @@ function App(): React.JSX.Element {
               name={'RegisterCompany'}
               component={RegisterCompanyScreen}
               options={{headerShown: false}}
-              initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
+              initialParams={{
+                companyService: graph.resolve<CompanyService>("CompanyService"),
+                tokenService: graph.resolve<TokenService>("TokenService")
+              }}/>
           </Stack.Navigator>
         ) : state == State.Client ? (
           <>
@@ -120,7 +124,15 @@ function App(): React.JSX.Element {
                 options={{headerShown: false}}/>
             </Stack.Navigator>
           </>
-        ) : (
+        ) : state == State.User ? (
+          <>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="FillData"
+                component={FillDataScreen}
+                options={{headerShown: false}}/>
+            </Stack.Navigator>
+          </>) : (
           <>
             <Stack.Navigator>
               <Stack.Screen

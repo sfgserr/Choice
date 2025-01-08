@@ -32,7 +32,7 @@ export class StateManager {
 
       await this.tokenStorageService.setTokensToStorage(result.tokens[0], result.tokens[1]);
 
-      return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin;
+      return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : user.userType == UserType.User ? State.User : State.Admin;
     }
     else {
       return State.SignOut;
@@ -43,7 +43,7 @@ export class StateManager {
     await this.tokenStorageService.setTokensToStorage(accessToken, refreshToken);
     let user = this.tokenService.getUser();
 
-    return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : State.Admin;
+    return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company :  user.userType == UserType.User ? State.User : State.Admin;
   }
 
   async signOut() {

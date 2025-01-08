@@ -12,10 +12,9 @@ import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestMo
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
+  const { changeState, signIn } = React.useContext(AuthContext);
 
   const [name, setName] = React.useState('');
-  const [surname, setSurname] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [city, setCity] = React.useState('');
@@ -45,8 +44,20 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
     if (response.result == 'successful') {
       setToggled(true);
     }
+    else {
+      setErrorMessage(response.error);
+      setErrorToggled(true);
+    }
 
     setRefreshing(false);
+  }
+
+  const login = async () => {
+    let tokens = await route.params.tokenService.login(email, password);
+
+    if (tokens != null) {
+      signIn(tokens[0], tokens[1]);
+    }
   }
 
   return (
@@ -73,7 +84,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
         <BorderedTextInput
           value={name}
           onChanged={setName}
-          placeholder={'Введите имя'}
+          placeholder={'Введите название'}
           isError={false}
           isBig={false}/>
         <TextInputTitle
@@ -138,7 +149,6 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           bottom={20}
           isDisabled={
             name == '' ||
-            surname == '' ||
             email == '' ||
             phoneNumber == '' ||
             city == '' ||
@@ -169,9 +179,9 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
       </View>
       <SuccessfulRequestModal
         isToggled={toggled}
-        handlePress={() => navigation.goBack()}
-        title={'Аккаунт клиента создан'}
-        text={'Теперь вы можете создавать заказы'}/>
+        handlePress={login}
+        title={'Аккаунт компании создан'}
+        text={'Заполните информацию о вашей компании'}/>
       <UnsuccessfulRequestModal
         isToggled={errorToggled}
         handlePress={() => setErrorToggled(false)}
