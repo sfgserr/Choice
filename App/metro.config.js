@@ -9,7 +9,7 @@ const {
  *
  * @type {import('metro-config').MetroConfig}
  */
-const config = {};
+const config = {resetCache: true};
 
 const configToWrap = mergeConfig(getDefaultConfig(__dirname), config);
 

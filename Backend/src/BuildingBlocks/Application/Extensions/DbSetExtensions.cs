@@ -13,7 +13,7 @@ namespace BuildingBlocks.Application.Extensions
         {
             var entity = await dbSet.FirstOrDefaultAsync(expression);
 
-            return ValidateEntity(entity);
+            return ThrowIfNull(entity);
         }
         
         public static async Task<TEntity> GetAsNoTracking<TEntity>(
@@ -23,10 +23,10 @@ namespace BuildingBlocks.Application.Extensions
         {
             var entity = await dbSet.AsNoTracking().FirstOrDefaultAsync(expression);
 
-            return ValidateEntity(entity);
+            return ThrowIfNull(entity);
         }
 
-        private static TEntity ValidateEntity<TEntity>(TEntity? entity) where TEntity : class
+        private static TEntity ThrowIfNull<TEntity>(TEntity? entity) where TEntity : class
         {
             if (entity == null)
             {

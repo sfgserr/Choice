@@ -8,6 +8,7 @@ const Styles = StyleSheet.create({
     paddingLeft: 10,
     justifyContent: 'center',
     flexDirection: 'row',
+    alignItems: 'baseline'
   },
   borderedTextInputHeight: {
     height: height*0.054,

@@ -1,5 +1,4 @@
-﻿using System.Data;
-using FluentValidation;
+﻿using FluentValidation;
 using BuildingBlocks.Application.Extensions;
 
 namespace Users.Application.Clients.Commands.CreateClient

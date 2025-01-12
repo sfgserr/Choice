@@ -17,7 +17,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+
     ports:
-      - 80
+      - 127.0.0.1:8082:80
   
   minio:
     image: quay.io/minio/minio
@@ -26,5 +26,5 @@ services:
     volumes:
       - ../.docker/minio/data:/data
     ports:
-      - 80
-      - 81
+      - 127.0.0.1:9000:80
+      - 127.0.0.1:9001:81

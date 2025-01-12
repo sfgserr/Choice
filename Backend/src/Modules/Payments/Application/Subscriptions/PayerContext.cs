@@ -13,5 +13,7 @@ namespace Payments.Application.Subscriptions
         }
 
         public PayerId Id => new(_userService.GetUserId());
+
+        public bool Subscribed => bool.Parse(_userService.GetAttribute("subscribed"));
     }
 }

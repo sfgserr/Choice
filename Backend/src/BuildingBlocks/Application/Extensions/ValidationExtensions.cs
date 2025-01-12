@@ -12,7 +12,7 @@ namespace BuildingBlocks.Application.Extensions
         {
             return builder.Custom((c, context) =>
             {
-                if (Regex.Match(c, PhoneNumberRegex).Success)
+                if (!Regex.Match(c, PhoneNumberRegex).Success)
                 {
                     context.AddFailure("Неправильный формат телефона");
                 }

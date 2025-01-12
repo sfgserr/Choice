@@ -1,14 +1,16 @@
+using System.Security.Cryptography.X509Certificates;
 using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Infrastructure.Configuration.Identity
 {
     public static class IdentityExtensions
     {
-        public static void AddIdentity(this IServiceCollection services, JwtOptions jwtOptions, IWebHostEnvironment env)
+        public static void AddIdentity(this IServiceCollection services, IdentityOptions identityOptions, IWebHostEnvironment env)
         {
             services.AddOpenIddict()
                 .AddCore(options =>
@@ -23,30 +25,30 @@ namespace Identity.Infrastructure.Configuration.Identity
                     options.SetTokenEndpointUris("api/auth/token")
                            .AllowPasswordFlow()
                            .AllowRefreshTokenFlow();
-
+                    
+                    options.UseAspNetCore()
+                           .EnableTokenEndpointPassthrough()
+                           .DisableTransportSecurityRequirement();
+                    
                     if (env.IsDevelopment())
                     {
-                        options.UseAspNetCore()
-                               .EnableTokenEndpointPassthrough()
-                               .DisableTransportSecurityRequirement();
+                        options.AddDevelopmentSigningCertificate();
 
                         options.SetAccessTokenLifetime(TimeSpan.FromMinutes(1));
                     }
                     else
-                    {
-                        options.UseAspNetCore()
-                            .EnableTokenEndpointPassthrough();
+                    {   
+                        options.AddSigningCertificate(new X509Certificate2(identityOptions.PathToCert));
                     }
-                    
-                    options.AddDevelopmentSigningCertificate()
-                           .AddDevelopmentEncryptionCertificate();
+
+                    options.AddEncryptionKey(new SymmetricSecurityKey(Convert.FromBase64String(identityOptions.SecretKey)));
                     
                     options.DisableAccessTokenEncryption();
                 })
                 .AddValidation(options =>
                 {
-                    options.SetIssuer(jwtOptions.Issuer);
-
+                    options.SetIssuer(identityOptions.Issuer);
+                    
                     options.UseLocalServer();
                     
                     options.UseAspNetCore();

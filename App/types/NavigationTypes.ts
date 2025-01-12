@@ -8,6 +8,7 @@ import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {OrderRequest} from './DomainTypes.ts';
 import {ClientService} from '../services/domain/ClientService.ts';
+import {State} from '../enums/AppEnums.ts';
 
 export type StackProps = {
   Login: {tokenService: TokenService}
@@ -34,7 +35,10 @@ export type StackProps = {
     companyService: CompanyService
     tokenService: TokenService
   }
-  FillData: undefined
+  FillData: {
+    categoryService: CategoryService
+    companyService: CompanyService
+  }
 };
 
 export type ClientTabProps = {
@@ -43,6 +47,12 @@ export type ClientTabProps = {
   Chat: undefined
   Account: undefined
 };
+
+export type CompanyTabProps = {
+  OrderRequests: undefined
+  Chat: undefined
+  Account: undefined
+}
 
 export type LoginScreenProps = NativeStackScreenProps<StackProps, 'Login'>;
 
@@ -67,3 +77,11 @@ export type RegisterClientScreenProps = NativeStackScreenProps<StackProps, 'Regi
 export type RegisterCompanyScreenProps = NativeStackScreenProps<StackProps, 'RegisterCompany'>;
 
 export type FillDataScreenProps = NativeStackScreenProps<StackProps, 'FillData'>;
+
+export type CompanyRequestsScreenProps = BottomTabScreenProps<CompanyTabProps, 'OrderRequests'>;
+
+export type AboutScreenProps = {
+  next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>
+  categoriesTitle: string
+  onChevronPressed: () => void
+};

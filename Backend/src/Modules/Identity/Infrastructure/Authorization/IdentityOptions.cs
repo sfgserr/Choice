@@ -1,19 +1,19 @@
 ﻿
 namespace Identity.Infrastructure.Authorization
 {
-    public class JwtOptions
+    public class IdentityOptions
     {
-        public JwtOptions(string issuer, string audience, string secretKey)
+        public IdentityOptions(string issuer, string secretKey, string pathToCert)
         {
             Issuer = issuer;
-            Audience = audience;
             SecretKey = secretKey;
+            PathToCert = pathToCert;
         }
 
         public string Issuer { get; }
 
-        public string Audience { get; }
-
         public string SecretKey { get; }
+        
+        public string PathToCert { get; }
     }
 }

@@ -27,14 +27,15 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
   React.useEffect(() => {
     async function getCompanies() {
       let companies = await route.params.companyService.getCompanies(
-        route.params.categoryId,
+        route.params.categories[route.params.categoryId].categoryId,
         changeState);
       if (companies.result == 'successful') {
         map.current?.setCenter(
-          {lat: +companies.content[0].latitude, lon: +companies.content[0].longitude},
+          {lat: +companies.content[companies.content.length-1].latitude, lon: +companies.content[companies.content.length-1].longitude},
           15,
           Animation.SMOOTH);
         setCompanies(companies.content);
+        console.log(companies.content);
       }
     }
     getCompanies();

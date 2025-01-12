@@ -22,7 +22,12 @@ namespace Payments.Domain.Subscriptions
 
         public static SubscriptionStatus Parse(string e)
         {
-            throw new NotImplementedException();
+            return e switch
+            {
+                "Active" => Active,
+                "Expired" => Expired,
+                _ => throw new ArgumentException()
+            };
         }
     }
 }

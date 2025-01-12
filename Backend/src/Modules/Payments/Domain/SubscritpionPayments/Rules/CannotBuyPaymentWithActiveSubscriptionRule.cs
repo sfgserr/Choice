@@ -5,17 +5,17 @@ namespace Payments.Domain.SubscritpionPayments.Rules
 {
     internal class CannotBuyPaymentWithActiveSubscriptionRule : IBusinessRule
     {
-        private readonly ISubscriptionsCounter _subscriptionsCounter;
+        private readonly bool _subscribe;
         private readonly PayerId _payerId;
 
-        internal CannotBuyPaymentWithActiveSubscriptionRule(ISubscriptionsCounter subscriptionsCounter, PayerId payerId)
+        internal CannotBuyPaymentWithActiveSubscriptionRule(bool subscribe, PayerId payerId)
         {
-            _subscriptionsCounter = subscriptionsCounter;
+            _subscribe = subscribe;
             _payerId = payerId;
         }
 
-        public bool IsBroken => _subscriptionsCounter.Count(_payerId) > 0;
+        public bool IsBroken => _subscribe;
 
-        public string Message { get; } = "у вас уже есть подписка";
+        public string Message { get; } = "У вас уже есть подписка";
     }
 }

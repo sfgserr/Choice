@@ -19,11 +19,10 @@ using Chat.Infrastructure.Configuration;
 using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
+using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
-using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
@@ -59,9 +58,9 @@ namespace WebApi
             services.AddControllers();
             services.AddSwaggerGen();
 
-            string issuer = Configuration["JwtSettings:Issuer"]!;
-            string audience = Configuration["JwtSettings:Audience"]!;
-            string secretKey = Configuration["JwtSettings:SecretKey"]!;
+            string issuer = Configuration["IdentitySettings:Issuer"]!;
+            string secretKey = Configuration["IdentitySettings:SecretKey"]!;
+            string certificateThumbprint = Configuration["IdentitySettings:Thumbprint"]!;
 
             services.AddSignalR();
             
@@ -90,11 +89,10 @@ namespace WebApi
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
 
-            var jwtOptions = new JwtOptions(issuer, audience, secretKey);
+            var identityOptions = new IdentityOptions(issuer, secretKey, certificateThumbprint);
             
-            services.AddIdentity(jwtOptions, CurrentEnvironment);
+            services.AddIdentity(identityOptions, CurrentEnvironment);
             
-            services.AddSingleton<JwtProvider>(x => new(jwtOptions));
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
             services.AddSingleton<IClaimsTransformation, CustomClaimsTransformation>();
@@ -173,6 +171,8 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSubscriptionCheck();
             
             app.UseProblemDetails();
             app.UseEndpoints(endpoints =>

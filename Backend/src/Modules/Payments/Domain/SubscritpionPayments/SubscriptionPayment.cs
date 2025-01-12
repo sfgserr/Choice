@@ -20,9 +20,9 @@ namespace Payments.Domain.SubscritpionPayments
             PayerId payerId,
             DateTime expirationDate,
             PaymentStatus status,
-            ISubscriptionsCounter counter)
+            bool subscribe)
         {
-            CheckRule(new CannotBuyPaymentWithActiveSubscriptionRule(counter, payerId));
+            CheckRule(new CannotBuyPaymentWithActiveSubscriptionRule(subscribe, payerId));
 
             Id = id;
             Period = period;
@@ -34,7 +34,7 @@ namespace Payments.Domain.SubscritpionPayments
         public static SubscriptionPayment Buy(
             PayerId payerId, 
             SubscriptionPeriod period,
-            ISubscriptionsCounter counter)
+            bool subscribe)
         {
             return new SubscriptionPayment(
                 new(Guid.NewGuid()),
@@ -42,7 +42,7 @@ namespace Payments.Domain.SubscritpionPayments
                 payerId,
                 DateCalculator.CalculateExpirationDateForPayment(),
                 PaymentStatus.WaitingForPayment,
-                counter);
+                subscribe);
         }
 
         public void Pay()

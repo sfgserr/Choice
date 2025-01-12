@@ -1,63 +1,164 @@
 import React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {FillDataScreenProps} from '../types/NavigationTypes.ts';
-import ContactDetailsScreen from './ContactDetailsScreen.tsx';
 import SocialMediasScreen from './SocialMediasScreen.tsx';
 import AboutScreen from './AboutScreen.tsx';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {AuthContext} from '../App.tsx';
+import PickCategoriesBottomSheet from '../components/bottomSheets/PickCategoriesBottomSheet.tsx';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {Category} from '../types/DomainTypes.ts';
+import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
+import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+
+const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
-  const d = Dimensions.get('screen');
+  const { changeState, signOut } = React.useContext(AuthContext);
+
+  const [socialMediaUris, setSocialMediaUris] = React.useState<string[]>([]);
+
+  const [categories, setCategories] = React.useState<{category: Category; selected: boolean}[]>([]);
+
+  React.useEffect(() => {
+    async function getCategories() {
+      let response = await route.params.categoryService.getCategories(changeState);
+
+      if (response.content != null) {
+        setCategories(response.content.map((i) => ({category: i, selected: false})));
+      }
+    }
+
+    getCategories();
+  }, []);
+
+  const ref = React.useRef<BottomSheet>(null);
+
+  const next = () => setCurrentIndex(prev => ++prev);
+
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+
+  const [isErrorToggled, setIsErrorToggled] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  const [isToggled, setIsToggled] = React.useState(false);
+
+  const fillData = async (description: string, photoUris: string[], prepaymentAvailable: boolean) => {
+    setIsRefreshing(true);
+
+    const response = await route.params.companyService.fillData(
+      description,
+      categories
+        .filter(c => c.selected)
+        .map(c => c.category.categoryId),
+      photoUris,
+      socialMediaUris,
+      prepaymentAvailable,
+      changeState);
+
+    setIsRefreshing(false);
+
+    if (response.result == 'successful') {
+      setIsToggled(true);
+    }
+    else {
+      setErrorMessage(response.error);
+      setIsErrorToggled(true);
+    }
+  }
 
   const screens = [
-    <ContactDetailsScreen next={() => setCurrentIndex(prev => ++prev)}/>,
-    <SocialMediasScreen/>,
-    <AboutScreen/>
+    <SocialMediasScreen
+      next={(socialMediaUris: string[]) => {
+        setSocialMediaUris(socialMediaUris);
+        next();
+      }}/>,
+    <AboutScreen
+      next={async (description, photoUris, prepaymentAvailable) => {
+        await fillData(description, photoUris, prepaymentAvailable);
+      }}
+      categoriesTitle={
+        categories
+          .filter(c => c.selected)
+          .map(c => c.category.title)
+          .join(',')
+      }
+      onChevronPressed={() => {
+        ref.current?.expand();
+      }}
+    />,
   ];
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
+  const select = (index: number) => {
+    setCategories(prev => {
+      prev[index].selected = !prev[index].selected;
+
+      return [...prev];
+    })
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingTop: 20,
-        paddingHorizontal: 15
-      }}>
-      <Text
-        style={{
-          fontSize: 21,
-          fontWeight: '600',
-          alignSelf: 'center',
-          color: 'black'
-        }}>
-        Карточка компании
-      </Text>
+    <GestureHandlerRootView>
       <View
         style={{
-          justifyContent: 'space-evenly',
-          flexDirection: 'row',
+          flex: 1,
+          backgroundColor: 'white',
           paddingTop: 20,
-          paddingBottom: 20
+          paddingHorizontal: 15
         }}>
-        {screens.map((i, n) => (
-          <View
-            style={{
-              width: d.width/screens.length*0.85,
-              height: 4,
-              borderRadius: 5,
-              backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF'
-            }}
-            key={n}/>
-        ))}
+        <Text
+          style={{
+            fontSize: 21,
+            fontWeight: '600',
+            alignSelf: 'center',
+            color: 'black'
+          }}>
+          Карточка компании
+        </Text>
+        <View
+          style={{
+            justifyContent: 'space-evenly',
+            flexDirection: 'row',
+            paddingTop: 20,
+            paddingBottom: 20
+          }}>
+          {screens.map((i, n) => (
+            <View
+              style={{
+                width: d.width/screens.length*0.85,
+                height: 4,
+                borderRadius: 5,
+                backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF'
+              }}
+              key={n}/>
+          ))}
+        </View>
+        <View
+          style={{
+            backgroundColor: '#D7D8D9',
+            width: 'auto',
+            height: .25
+          }}/>
+        {screens[currentIndex]}
       </View>
-      <View
-        style={{
-          backgroundColor: '#D7D8D9',
-          width: 'auto',
-          height: .25
-        }}/>
-      {screens[currentIndex]}
-    </View>
+      <SuccessfulRequestModal
+        isToggled={isToggled}
+        handlePress={() => signOut()}
+        title={'Отлично'}
+        text={'Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы'}/>
+      <UnsuccessfulRequestModal
+        isToggled={isErrorToggled}
+        handlePress={() => setIsErrorToggled(prev => !prev)}
+        errorMessage={errorMessage}/>
+      <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
+      <PickCategoriesBottomSheet
+        ref={ref}
+        close={() => ref.current?.close()}
+        categories={categories}
+        select={select}/>
+    </GestureHandlerRootView>
   )
 }

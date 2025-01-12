@@ -17,7 +17,7 @@ namespace Identity.Infrastructure.Authorization
             {
                 return policy;
             }
-
+            
             return new AuthorizationPolicyBuilder()
                 .AddRequirements(new HasPermissionRequirement(policyName))
                 .Build();

@@ -56,11 +56,11 @@ export class ObjectGraph {
     const categoryService = new CategoryService(httpService);
     const userStore = new UserStore();
     const userService = new UserService(httpService, userStore, tokenService);
-    const companyService = new CompanyService(httpService);
     const objectStorageService = new ObjectStorageService(
       `${process.env.MINIO_URL}`,
       `${process.env.MINIO_ACCESS_KEY}`,
       `${process.env.MINIO_SECRET_KEY}`);
+    const companyService = new CompanyService(httpService, objectStorageService);
     const orderRequestService = new OrderRequestService(httpService, objectStorageService);
     const clientService = new ClientService(httpService);
 

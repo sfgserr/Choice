@@ -4,7 +4,7 @@ import OrderRequestsScreen from '../screens/tab/OrderRequestsScreen.tsx';
 import ChatScreen from '../screens/tab/ChatScreen.tsx';
 import AccountScreen from '../screens/tab/AccountScreen.tsx';
 import * as React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {BottomTabNavigationOptions, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ClientTabProps, TabScreenProps} from '../types/NavigationTypes.ts';
 import {Image} from 'react-native';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
@@ -14,13 +14,9 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
 
   const graph = route.params.graph;
 
-  const getTabBarIcon = ({size, focused, color, source} : {
-    size: number,
-    focused: boolean,
-    color: string,
-    source: any,
-
-  }) => {
+  const getTabBarIcon = ({focused, source} : {
+    focused: boolean
+    source: any}) => {
     return <Image
       source={source}
       style={{
@@ -31,24 +27,28 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
       }}/>
   };
 
+  const getOptions = ({title, source}: {title: string, source: any}): BottomTabNavigationOptions => {
+    return {
+      headerShown: false,
+      tabBarLabel: title,
+      tabBarActiveTintColor: '#2975CC',
+      tabBarInactiveTintColor: '#99A2AD',
+      tabBarLabelStyle: {
+        fontSize: 10,
+        fontWeight:'500'
+      },
+      tabBarIcon: ({size, focused, color}) =>
+        getTabBarIcon({focused, source}),
+    }
+  }
+
   return (
     <ClientTab.Navigator>
       <ClientTab.Screen
         name={'Categories'}
         component={CategoriesScreen}
         initialParams={{categoryService: graph.resolve<CategoryService>("CategoryService")}}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Услуги',
-          tabBarActiveTintColor: '#2975CC',
-          tabBarInactiveTintColor: '#99A2AD',
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontWeight:'500'
-          },
-          tabBarIcon: ({size, focused, color}) =>
-            getTabBarIcon({size, focused, color, source: require('../assets/images/categories.png')}),
-        }}
+        options={getOptions({title: 'Услуги', source: require('../assets/images/categories.png')})}
       />
       <ClientTab.Screen
         name={'OrderRequests'}
@@ -57,50 +57,17 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
           orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService"),
           categoryService: graph.resolve<CategoryService>("CategoryService")
         }}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Заказы',
-          tabBarActiveTintColor: '#2975CC',
-          tabBarInactiveTintColor: '#99A2AD',
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontWeight:'500'
-          },
-          tabBarIcon: ({size, focused, color}) =>
-            getTabBarIcon({size, focused, color, source: require('../assets/images/orders.png')}),
-        }}
+        options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}
       />
       <ClientTab.Screen
         name={'Chat'}
         component={ChatScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Чат',
-          tabBarActiveTintColor: '#2975CC',
-          tabBarInactiveTintColor: '#99A2AD',
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontWeight:'500'
-          },
-          tabBarIcon: ({size, focused, color}) =>
-            getTabBarIcon({size, focused, color, source: require('../assets/images/chat.png')}),
-        }}
+        options={getOptions({title: 'Чат', source: require('../assets/images/chat.png')})}
       />
       <ClientTab.Screen
         name={'Account'}
         component={AccountScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Аккаунт',
-          tabBarActiveTintColor: '#2975CC',
-          tabBarInactiveTintColor: '#99A2AD',
-          tabBarLabelStyle: {
-            fontSize: 10,
-            fontWeight:'500'
-          },
-          tabBarIcon: ({size, focused, color}) =>
-            getTabBarIcon({size, focused, color, source: require('../assets/images/account.png')}),
-        }}
+        options={getOptions({title: 'Аккаунт', source: require('../assets/images/account.png')})}
       />
     </ClientTab.Navigator>
   )

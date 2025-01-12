@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.EntityFrameworkCore;
 using Payments.Infrastructure.Data;
 using Payments.Application.Contracts;
-using Payments.Domain.SubscritpionPayments;
-using Payments.Application.Subscriptions;
 
 namespace Payments.Infrastructure.Configuration.Data
 {
@@ -43,10 +41,6 @@ namespace Payments.Infrastructure.Configuration.Data
             builder.RegisterType<SqlConnectionFactory>()
                 .As<ISqlConnectionFactory>()
                 .WithParameter("connectionString", _connectionString)
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<SubscriptionsCounter>()
-                .As<ISubscriptionsCounter>()
                 .InstancePerLifetimeScope();
         }
     }

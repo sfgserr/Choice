@@ -2,25 +2,39 @@
 using System.Security.Claims;
 using Identity.Application.Authorization.GetUser;
 using Identity.Application.Contracts;
+using Payments.Application.Contracts;
+using Payments.Application.Subscriptions.Queries.CheckActiveSubscription;
 
 namespace WebApi.Configuration.Authorization
 {
     public class CustomClaimsTransformation : IClaimsTransformation
     {
         private readonly IIdentityModule _identityModule;
-
-        public CustomClaimsTransformation(IIdentityModule identityModule)
+        private readonly IPaymentsModule _paymentsModule;
+        
+        public CustomClaimsTransformation(IIdentityModule identityModule, IPaymentsModule paymentsModule)
         {
             _identityModule = identityModule;
+            _paymentsModule = paymentsModule;
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
-        {   
+        {
+            var id = GetId(principal);
+            
             var user = await _identityModule
-                .Query<GetUserQuery, UserDto>(new(GetId(principal)));
+                .Query<GetUserQuery, UserDto>(new(id));
 
             var identity = new ClaimsIdentity();
 
+            if (user.RoleCode == "Company")
+            {
+                var subscribed = await _paymentsModule.Query<CheckActiveSubscriptionQuery, bool>(
+                    new CheckActiveSubscriptionQuery(id));
+                
+                identity.AddClaim(new Claim("subscribed", subscribed.ToString()));
+            }
+            
             foreach (var permission in user.Permissions)
                 identity.AddClaim(new Claim("permission", permission));
             
@@ -39,10 +53,7 @@ namespace WebApi.Configuration.Authorization
         {
             var id = principal.Claims.FirstOrDefault(c => c.Type == "sub");
 
-            if (id is null)
-            {
-                throw new ApplicationException("No Id in claims");
-            }
+            ArgumentNullException.ThrowIfNull(id);
 
             return Guid.TryParse(id.Value, out var parsedId) ? 
                 parsedId : throw new ApplicationException("User Id is not guid");

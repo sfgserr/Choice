@@ -16,36 +16,33 @@ namespace Identity.Application.Authorization.GetUser
         public async Task<UserDto> Handle(GetUserQuery query)
         {
             using var connection = _connectionFactory.GetConnection();
-            
-            const string sql1 = 
-                $"""
-                SELECT 
-                    identity."Users"."Role" as {nameof(UserDto.RoleCode)},
-                    identity."Users"."City" as {nameof(UserDto.City)},
-                    identity."Users"."Street" as {nameof(UserDto.Street)},
-                    identity."Users"."Latitude" as {nameof(UserDto.Latitude)},
-                    identity."Users"."Longitude" as {nameof(UserDto.Longitude)}
-                FROM identity."Users"
-                WHERE identity."Users"."Id" = @Id; 
-                """;
-            
-            const string sql2 =
-                $"""
-                SELECT
-                    identity."Permissions"."Code"
-                FROM identity."Users"
-                JOIN identity."RolePermissions" ON identity."RolePermissions"."RoleCode" = identity."Users"."Role"
-                JOIN identity."Permissions" ON identity."Permissions"."Code" = identity."RolePermissions"."PermissionCode"
-                WHERE identity."Users"."Id" = @Id; 
-                """;
 
+            const string sql =
+                $"""
+                 SELECT 
+                     identity."Users"."Role" as {nameof(UserDto.RoleCode)},
+                     identity."Users"."City" as {nameof(UserDto.City)},
+                     identity."Users"."Street" as {nameof(UserDto.Street)},
+                     identity."Users"."Latitude" as {nameof(UserDto.Latitude)},
+                     identity."Users"."Longitude" as {nameof(UserDto.Longitude)}
+                 FROM identity."Users"
+                 WHERE identity."Users"."Id" = @Id;
+
+                 SELECT
+                     identity."Permissions"."Code"
+                 FROM identity."Users"
+                 JOIN identity."RolePermissions" ON identity."RolePermissions"."RoleCode" = identity."Users"."Role"
+                 JOIN identity."Permissions" ON identity."Permissions"."Code" = identity."RolePermissions"."PermissionCode"
+                 WHERE identity."Users"."Id" = @Id; 
+                 """;
+                
             var result = await connection.QueryMultipleAsync(
-                sql1+sql2,
+                sql,
                 new
                 {
                     Id = query.UserId
                 });
-
+            
             var user = result.Read<UserDto>().First();
             user.Permissions.AddRange(result.Read<string>());
 

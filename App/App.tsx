@@ -22,6 +22,7 @@ import RegisterClientScreen from './screens/RegisterClientScreen.tsx';
 import {ClientService} from './services/domain/ClientService.ts';
 import RegisterCompanyScreen from './screens/RegisterCompanyScreen.tsx';
 import FillDataScreen from './screens/FillDataScreen.tsx';
+import CompanyTabComponent from './Tabs/CompanyTabComponent.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -79,22 +80,28 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              initialParams={{tokenService: graph.resolve<TokenService>("TokenService")}}
+              initialParams={{
+                tokenService: graph.resolve<TokenService>('TokenService'),
+              }}
               options={{headerShown: false}}
             />
             <Stack.Screen
               name={'RegisterClient'}
               component={RegisterClientScreen}
               options={{headerShown: false}}
-              initialParams={{clientService: graph.resolve<ClientService>("ClientService")}}/>
+              initialParams={{
+                clientService: graph.resolve<ClientService>('ClientService'),
+              }}
+            />
             <Stack.Screen
               name={'RegisterCompany'}
               component={RegisterCompanyScreen}
               options={{headerShown: false}}
               initialParams={{
-                companyService: graph.resolve<CompanyService>("CompanyService"),
-                tokenService: graph.resolve<TokenService>("TokenService")
-              }}/>
+                companyService: graph.resolve<CompanyService>('CompanyService'),
+                tokenService: graph.resolve<TokenService>('TokenService'),
+              }}
+            />
           </Stack.Navigator>
         ) : state == State.Client ? (
           <>
@@ -103,36 +110,65 @@ function App(): React.JSX.Element {
                 name={'Tab'}
                 component={ClientTabComponent}
                 initialParams={{graph}}
-                options={{headerShown: false}}/>
+                options={{headerShown: false}}
+              />
               <Stack.Screen
                 name={'Map'}
                 component={MapScreen}
                 options={{headerShown: false}}
-                initialParams={{companyService: graph.resolve<CompanyService>("CompanyService")}}/>
+                initialParams={{
+                  companyService:
+                    graph.resolve<CompanyService>('CompanyService'),
+                }}
+              />
               <Stack.Screen
                 name={'CreateOrderRequest'}
                 component={gestureHandlerRootHOC(CreateOrderRequestScreen)}
-                initialParams={{orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService")}}
-                options={{headerShown: false}}/>
+                initialParams={{
+                  orderRequestService: graph.resolve<OrderRequestService>(
+                    'OrderRequestService',
+                  ),
+                }}
+                options={{headerShown: false}}
+              />
               <Stack.Screen
                 name={'EditOrderRequest'}
                 component={gestureHandlerRootHOC(EditOrderRequestScreen)}
                 initialParams={{
-                  orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService"),
-                  categoryService: graph.resolve<CategoryService>("CategoryService")
+                  orderRequestService: graph.resolve<OrderRequestService>(
+                    'OrderRequestService',
+                  ),
+                  categoryService:
+                    graph.resolve<CategoryService>('CategoryService'),
                 }}
-                options={{headerShown: false}}/>
+                options={{headerShown: false}}
+              />
             </Stack.Navigator>
           </>
-        ) : state == State.User ? (
+        ) : state == State.Company ? (
           <>
             <Stack.Navigator>
               <Stack.Screen
-                name="FillData"
-                component={FillDataScreen}
+                name={'Tab'}
+                component={CompanyTabComponent}
+                initialParams={{graph}}
                 options={{headerShown: false}}/>
             </Stack.Navigator>
-          </>) : (
+          </>) : state == State.User ? (
+          <>
+            <Stack.Navigator>
+              <Stack.Screen
+                name={'FillData'}
+                component={gestureHandlerRootHOC(FillDataScreen)}
+                initialParams={{
+                  categoryService: graph.resolve<CategoryService>('CategoryService'),
+                  companyService: graph.resolve<CompanyService>('CompanyService')
+                }}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </>
+        ) : (
           <>
             <Stack.Navigator>
               <Stack.Screen

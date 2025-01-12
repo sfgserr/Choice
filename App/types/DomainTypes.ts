@@ -34,3 +34,7 @@ export type OrderRequestDetails = {
   distance: number
   creationDate: Date
 };
+
+export type OrderRequestRadius = {
+
+}
