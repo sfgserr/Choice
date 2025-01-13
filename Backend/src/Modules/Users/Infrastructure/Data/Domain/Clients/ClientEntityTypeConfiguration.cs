@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Users.Domain.Users;
 using Users.Domain.Users.Clients;
 
 namespace Users.Infrastructure.Data.Domain.Clients

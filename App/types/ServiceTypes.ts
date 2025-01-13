@@ -1,11 +1,12 @@
 export type UserClaims = {
-  sub: string;
-  type: string;
+  sub: string
+  type: string
+  subscribed: boolean | undefined
 };
 
 export type TokenResponse = {
-  access_token: string;
-  refresh_token: string;
+  access_token: string
+  refresh_token: string
 };
 
 export type HttpResponseWithContent<T> = {

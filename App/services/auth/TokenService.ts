@@ -46,12 +46,12 @@ export class TokenService {
     const token = jwtDecode<UserClaims>(accessToken);
 
     if (token.sub != undefined) {
-      this.store.setToken(new Token(token.sub, this.convertStringToUserType(token.type)));
+      this.store.setToken(new Token(token.sub, this.convertStringToUserType(token.type), token.subscribed));
     }
   }
 
   signOut() {
-    this.store.setToken(new Token('0', UserType.User));
+    this.store.setToken(new Token('0', UserType.User, undefined));
   }
 
   private convertStringToUserType(type: string): UserType {

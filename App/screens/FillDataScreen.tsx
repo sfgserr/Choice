@@ -11,6 +11,7 @@ import {Category} from '../types/DomainTypes.ts';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+import {State} from '../enums/AppEnums.ts';
 
 const d = Dimensions.get('screen');
 
@@ -146,7 +147,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
       </View>
       <SuccessfulRequestModal
         isToggled={isToggled}
-        handlePress={() => signOut()}
+        handlePress={() => changeState(State.Unsubscribe)}
         title={'Отлично'}
         text={'Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы'}/>
       <UnsuccessfulRequestModal

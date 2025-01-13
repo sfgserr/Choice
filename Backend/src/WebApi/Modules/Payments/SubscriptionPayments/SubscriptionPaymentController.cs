@@ -1,4 +1,5 @@
 ﻿using Identity.Infrastructure.Authorization;
+using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments.Commands.Buy;
@@ -9,6 +10,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 {
     [ApiController]
     [Route("api/subscriptionPayment")]
+    [AllowUnsubscribe]
     public class SubscriptionPaymentController : Controller
     {
         private readonly IPaymentsModule _module;

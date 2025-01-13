@@ -11,7 +11,7 @@ namespace Users.Application.Companies.Queries.GetCompany
             string phoneNumber, 
             string description, 
             List<string> photoUris, 
-            List<CategoryId> categories, 
+            List<int> categories, 
             string city, 
             string street, 
             bool isPrepaymentAvailable)
@@ -40,7 +40,7 @@ namespace Users.Application.Companies.Queries.GetCompany
 
         public List<string> PhotoUris { get; }
 
-        public List<CategoryId> Categories { get; }
+        public List<int> Categories { get; }
 
         public string City { get; }
 

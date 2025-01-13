@@ -8,37 +8,39 @@ import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {OrderRequest} from './DomainTypes.ts';
 import {ClientService} from '../services/domain/ClientService.ts';
-import {State} from '../enums/AppEnums.ts';
+import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
 
 export type StackProps = {
-  Login: {tokenService: TokenService}
-  Loading: undefined
+  Login: {tokenService: TokenService};
+  Loading: undefined;
   Map: {
-    categoryId: number
-    categories: Category[]
-    companyService: CompanyService
-  }
+    categoryId: number;
+    categories: Category[];
+    companyService: CompanyService;
+  };
   Tab: {graph: ObjectGraph};
   CreateOrderRequest: {
-    categories: Category[]
-    categoryIndex: number
-    orderRequestService: OrderRequestService
-    onGoBack: (orderRequest: OrderRequest) => Promise<void>
-  }
+    categories: Category[];
+    categoryIndex: number;
+    orderRequestService: OrderRequestService;
+    onGoBack: (orderRequest: OrderRequest) => Promise<void>;
+  };
   EditOrderRequest: {
-    orderRequestId: string
-    orderRequestService: OrderRequestService
-    categoryService: CategoryService
-  }
+    orderRequestId: string;
+    orderRequestService: OrderRequestService;
+    categoryService: CategoryService;
+  };
   RegisterClient: {clientService: ClientService};
   RegisterCompany: {
-    companyService: CompanyService
-    tokenService: TokenService
-  }
+    companyService: CompanyService;
+    tokenService: TokenService;
+  };
   FillData: {
-    categoryService: CategoryService
-    companyService: CompanyService
-  }
+    categoryService: CategoryService;
+    companyService: CompanyService;
+  };
+  SubscriptionPlans: {subscriptionPaymentService: SubscriptionPaymentService};
+  PaySubscription: {subscriptionPaymentService: SubscriptionPaymentService, price: number};
 };
 
 export type ClientTabProps = {
@@ -79,6 +81,10 @@ export type RegisterCompanyScreenProps = NativeStackScreenProps<StackProps, 'Reg
 export type FillDataScreenProps = NativeStackScreenProps<StackProps, 'FillData'>;
 
 export type CompanyRequestsScreenProps = BottomTabScreenProps<CompanyTabProps, 'OrderRequests'>;
+
+export type SubscriptionScreenProps = NativeStackScreenProps<StackProps, 'SubscriptionPlans'>;
+
+export type PaySubscriptionScreenProps = NativeStackScreenProps<StackProps, 'PaySubscription'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>

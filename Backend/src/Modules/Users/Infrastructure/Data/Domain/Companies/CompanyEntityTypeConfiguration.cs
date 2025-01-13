@@ -23,9 +23,7 @@ namespace Users.Infrastructure.Data.Domain.Companies
 
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
             builder.Property<List<string>>("_socialMediaUris").HasColumnName("SocialMediaUris");
-            builder.Property<List<CategoryId>>("_categories")
-                .HasConversion(new CategoryIdCollectionToIntCollectionValueConverter())
-                .HasColumnName("CategoriesId");
+            builder.Property<List<int>>("_categories").HasColumnName("CategoriesId");
         }
     }
 }

@@ -15,7 +15,6 @@ import {CompanyService} from './services/domain/CompanyService.ts';
 import CreateOrderRequestScreen from './screens/CreateOrderRequestScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import {OrderRequestService} from './services/domain/OrderRequestService.ts';
-import {Image} from 'react-native';
 import EditOrderRequestScreen from './screens/EditOrderRequestScreen.tsx';
 import {CategoryService} from './services/domain/CategoryService.ts';
 import RegisterClientScreen from './screens/RegisterClientScreen.tsx';
@@ -23,6 +22,9 @@ import {ClientService} from './services/domain/ClientService.ts';
 import RegisterCompanyScreen from './screens/RegisterCompanyScreen.tsx';
 import FillDataScreen from './screens/FillDataScreen.tsx';
 import CompanyTabComponent from './Tabs/CompanyTabComponent.tsx';
+import SubscriptionPlansScreen from './screens/SubscriptionPlansScreen.tsx';
+import {SubscriptionPaymentService} from './services/domain/SubscriptionPaymentService.ts';
+import PaySubscriptionScreen from './screens/PaySubscriptionScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -168,7 +170,23 @@ function App(): React.JSX.Element {
               />
             </Stack.Navigator>
           </>
-        ) : (
+        ) : state == State.Unsubscribe ? (
+          <>
+            <Stack.Navigator>
+              <Stack.Screen
+                name={'SubscriptionPlans'}
+                component={SubscriptionPlansScreen}
+                options={{headerShown: false}}
+                initialParams={{subscriptionPaymentService: graph.resolve<SubscriptionPaymentService>('SubscriptionPaymentService')}}
+              />
+              <Stack.Screen
+                name={'PaySubscription'}
+                component={PaySubscriptionScreen}
+                options={{headerShown: false}}
+                initialParams={{subscriptionPaymentService: graph.resolve<SubscriptionPaymentService>('SubscriptionPaymentService')}}
+              />
+            </Stack.Navigator>
+          </>) : (
           <>
             <Stack.Navigator>
               <Stack.Screen

@@ -9,11 +9,18 @@ export class StateManager {
   private readonly tokenStorageService: TokenStorageService;
   private readonly accountManager: AccountManager;
   private readonly tokenService: TokenService;
+  private readonly userTypeToStateMap: {[id: UserType]: State} = {
+    [UserType.User]: State.User,
+    [UserType.Client]: State.Client,
+    [UserType.Company]: State.Company,
+    [UserType.Admin]: State.Admin,
+  };
 
   constructor(
     tokenStorageService: TokenStorageService,
     accountManager: AccountManager,
-    tokenService: TokenService) {
+    tokenService: TokenService,
+  ) {
     this.tokenStorageService = tokenStorageService;
     this.accountManager = accountManager;
     this.tokenService = tokenService;
@@ -30,20 +37,37 @@ export class StateManager {
     if (result.status == Status.Successful) {
       let user = this.tokenService.getUser();
 
-      await this.tokenStorageService.setTokensToStorage(result.tokens[0], result.tokens[1]);
+      await this.tokenStorageService.setTokensToStorage(
+        result.tokens[0],
+        result.tokens[1],
+      );
 
-      return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company : user.userType == UserType.User ? State.User : State.Admin;
-    }
-    else {
+      let state = this.userTypeToStateMap[user.userType];
+
+      if (state == State.Company && !user.subscribed) {
+        return State.Unsubscribe;
+      }
+
+      return state;
+    } else {
       return State.SignOut;
     }
   }
 
   async signIn(accessToken: string, refreshToken: string) {
-    await this.tokenStorageService.setTokensToStorage(accessToken, refreshToken);
+    await this.tokenStorageService.setTokensToStorage(
+      accessToken,
+      refreshToken,
+    );
     let user = this.tokenService.getUser();
 
-    return user.userType == UserType.Client ? State.Client : user.userType == UserType.Company ? State.Company :  user.userType == UserType.User ? State.User : State.Admin;
+    return user.userType == UserType.Client
+      ? State.Client
+      : user.userType == UserType.Company
+      ? State.Company
+      : user.userType == UserType.User
+      ? State.User
+      : State.Admin;
   }
 
   async signOut() {

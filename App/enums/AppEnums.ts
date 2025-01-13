@@ -4,5 +4,6 @@ export enum State {
   Client,
   Company,
   Admin,
-  User
+  User,
+  Unsubscribe
 }

@@ -1,7 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
-using Users.Domain.Categories;
 using Users.Domain.Users;
 
 namespace Users.Application.Companies.Commands.ChangeData
@@ -38,7 +37,7 @@ namespace Users.Application.Companies.Commands.ChangeData
                 new(command.City, command.Street, new(coords[1], coords[0])),
                 _usersCounter,
                 command.Description,
-                command.Categories.Select(c => new CategoryId(c)).ToList(),
+                command.Categories,
                 command.PhotoUris,
                 command.SocialMediaUris,
                 command.IsPrepaymentAvailable);

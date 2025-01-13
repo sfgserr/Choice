@@ -9,7 +9,7 @@ namespace Users.Domain.Users.Companies
     {
         private readonly List<string> _photoUris = [];
         private readonly List<string> _socialMediaUris = [];
-        private readonly List<CategoryId> _categories = [];
+        private readonly List<int> _categories = [];
 
         private Company()
         {
@@ -67,7 +67,7 @@ namespace Users.Domain.Users.Companies
             Address address,
             IUsersCounter counter,
             string description,
-            List<CategoryId> categories,
+            List<int> categories,
             List<string> photoUris,
             List<string> socialMediaUris,
             bool isPrepaymentAvailable)
@@ -98,7 +98,7 @@ namespace Users.Domain.Users.Companies
 
         public void FillData(
             string description,
-            List<CategoryId> categories,
+            List<int> categories,
             List<string> photoUris,
             List<string> socialMediaUris,
             bool isPrepaymentAvailable)
@@ -120,7 +120,7 @@ namespace Users.Domain.Users.Companies
         public List<string> GetPhotoUris() =>
             _photoUris;
 
-        public List<CategoryId> GetCategories() =>
+        public List<int> GetCategories() =>
             _categories;
 
         public List<string> GetSocialMediaUris() =>
