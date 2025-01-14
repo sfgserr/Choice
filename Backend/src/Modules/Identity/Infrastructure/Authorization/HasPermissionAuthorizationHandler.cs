@@ -8,8 +8,8 @@ namespace Identity.Infrastructure.Authorization
         {
             var permissions = context.User.GetPermissions();
 
-            if (!Authorize(permissions, requirement.Code))
-                return Task.CompletedTask;
+            if (Authorize(permissions, requirement.Code))
+                context.Succeed(requirement);
             
             return Task.CompletedTask;
         }

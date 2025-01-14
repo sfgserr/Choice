@@ -23,7 +23,7 @@ namespace Identity.Infrastructure.Middlewares.SubscriptionCheck
                 {
                     var subscribe = context.User.FindFirst("subscribed");
 
-                    if (subscribe != null && subscribe.Value == "False")
+                    if (subscribe != null && subscribe.Value == "false")
                     {
                         await context.ForbidAsync();
                         return;

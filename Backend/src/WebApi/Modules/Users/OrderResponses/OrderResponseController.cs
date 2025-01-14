@@ -8,6 +8,7 @@ using Users.Application.OrderResponses.Commands.ConfirmDate;
 using Users.Application.OrderResponses.Commands.Enroll;
 using Users.Application.OrderResponses.Commands.Finish;
 using Users.Application.OrderResponses.Commands.Response;
+using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Users.OrderResponses
 {

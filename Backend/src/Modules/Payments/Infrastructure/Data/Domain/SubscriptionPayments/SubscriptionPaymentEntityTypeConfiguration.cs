@@ -14,6 +14,7 @@ namespace Payments.Infrastructure.Data.Domain.SubscriptionPayments
             builder.HasKey(x => x.Id);
 
             builder.HasKey(s => s.Id);
+            builder.Property(x => x.PayerId).HasColumnName("PayerId");
             builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate");
             builder.Property(e => e.Status).HasConversion(e => e.Value, e => PaymentStatus.Parse(e));
 

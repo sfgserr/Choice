@@ -4,6 +4,7 @@ using Chat.Application.Messages.Queries.GetChat;
 using Chat.Application.Messages.Queries.GetChats;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Chat.Messages
 {

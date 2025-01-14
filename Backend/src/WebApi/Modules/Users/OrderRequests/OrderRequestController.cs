@@ -6,6 +6,7 @@ using Users.Application.OrderRequests.Commands.CreateOrderRequest;
 using Users.Application.OrderRequests.Queries.GetOrderRequest;
 using Users.Application.OrderRequests.Queries.GetOrderRequests;
 using Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius;
+using WebApi.Configuration.Authorization;
 using GetOrderRequestDto = Users.Application.OrderRequests.Queries.GetOrderRequest.OrderRequestDto;
 using GetOrderRequestsDto = Users.Application.OrderRequests.Queries.GetOrderRequests.OrderRequestDto;
 using GetOrderRequestsInRadiusDto = Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius.OrderRequestDto;

@@ -8,6 +8,7 @@ using Users.Application.Companies.Queries.GetCompanies;
 using Users.Application.Companies.Queries.GetCompany;
 using Users.Application.Companies.Queries.GetCompanyOnMap;
 using Users.Application.Contracts;
+using WebApi.Configuration.Authorization;
 using GetCompaniesDto = Users.Application.Companies.Queries.GetCompanies.CompanyDto;
 using GetCompanyDto = Users.Application.Companies.Queries.GetCompany.CompanyDto;
 using GetCompanyOnMapDto = Users.Application.Companies.Queries.GetCompanyOnMap.CompanyDto;
@@ -91,8 +92,8 @@ namespace WebApi.Modules.Users.Companies
             return Ok(companies);
         }
         
-        [HttpGet()]
         [HasPermission(Permissions.GetCompany)]
+        [HttpGet()]
         public async Task<IActionResult> GetCompany()
         {
             var company = await _usersModule.Query<GetCompanyQuery, GetCompanyDto>(new GetCompanyQuery());

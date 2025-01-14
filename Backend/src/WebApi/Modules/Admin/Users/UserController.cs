@@ -8,6 +8,7 @@ using Administration.Application.Queries.GetCompanies;
 using Administration.Application.Queries.GetCompany;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Configuration.Authorization;
 using GetCompanyDto = Administration.Application.Queries.GetCompany.CompanyDto;
 using GetClientDto = Administration.Application.Queries.GetClient.ClientDto;
 using GetClientsDto = Administration.Application.Queries.GetClients.ClientDto;

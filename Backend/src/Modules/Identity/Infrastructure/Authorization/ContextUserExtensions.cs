@@ -6,7 +6,7 @@ namespace Identity.Infrastructure.Authorization
     {
         public static List<string> GetPermissions(this ClaimsPrincipal claims)
         {
-            return claims.FindAll(c => c.Type == "Permission").Select(c => c.Value).ToList();
+            return claims.Claims.Where(c => c.Type == "permission").Select(c => c.Value).ToList();
         }
     }
 }

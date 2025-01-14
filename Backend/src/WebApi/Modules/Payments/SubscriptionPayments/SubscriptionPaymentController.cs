@@ -5,12 +5,12 @@ using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments.Commands.Buy;
 using Payments.Application.SubscriptionPayments.Commands.Pay;
 using Payments.Application.SubscriptionPayments.Queries.GetPayment;
+using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Payments.SubscriptionPayments
 {
     [ApiController]
     [Route("api/subscriptionPayment")]
-    [AllowUnsubscribe]
     public class SubscriptionPaymentController : Controller
     {
         private readonly IPaymentsModule _module;
@@ -22,6 +22,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.BuySubscriptionPayment)]
         [HttpPost("{period}")]
+        [AllowUnsubscribe]
         public async Task<IActionResult> Buy(string period)
         {
             await _module.ExecuteCommand(new BuyCommand(period));
@@ -31,6 +32,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.PaySubscriptionPayment)]
         [HttpPut("{id:guid}")]
+        [AllowUnsubscribe]
         public async Task<IActionResult> Pay(Guid id)
         {
             await _module.ExecuteCommand(new PayCommand(id));
@@ -40,6 +42,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.GetSubscriptionPayment)]
         [HttpGet]
+        [AllowUnsubscribe]
         public async Task<IActionResult> GetPayment()
         {
             var payment = await _module.Query<GetPaymentQuery, PaymentDto>(new GetPaymentQuery());

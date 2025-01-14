@@ -6,9 +6,7 @@ namespace Identity.Infrastructure.Authorization
     {
         public HasPermissionAttribute(string permission)
         {
-            Permission = permission;
+            Policy = permission;
         }
-        
-        public string Permission { get; }
     }
 }
