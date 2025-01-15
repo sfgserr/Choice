@@ -11,11 +11,10 @@ namespace IntegrationTests.SeedWork
         private readonly AuthService _authService;
         private readonly DbService _dbService;
 
-        public Sut(ITestOutputHelper outputHelper, Fixture testBed) : base(outputHelper, testBed)
+        protected Sut(ITestOutputHelper outputHelper, Fixture testBed) : base(outputHelper, testBed)
         {
             _factory = testBed.GetService<IHttpClientFactory>(outputHelper)!;
             _dbService = testBed.GetService<DbService>(outputHelper)!;
-
             _authService = testBed.GetService<AuthService>(outputHelper)!;        
         }
 
@@ -46,7 +45,7 @@ namespace IntegrationTests.SeedWork
             catch
             {
                 Reset();
-                throw;
+                return new TestResult(false);
             }
         }
         

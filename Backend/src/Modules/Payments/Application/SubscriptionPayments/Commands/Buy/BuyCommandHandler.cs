@@ -10,13 +10,15 @@ namespace Payments.Application.SubscriptionPayments.Commands.Buy
     {
         private readonly IPaymentsDbContext _dbContext;
         private readonly IPayerContext _payerContext;
+        private readonly ISubscriptionPaymentsCounter _counter;
         
         internal BuyCommandHandler(
             IPaymentsDbContext dbContext, 
-            IPayerContext payerContext)
+            IPayerContext payerContext, ISubscriptionPaymentsCounter counter)
         {
             _dbContext = dbContext;
             _payerContext = payerContext;
+            _counter = counter;
         }
 
         public async Task Execute(BuyCommand command)
@@ -24,7 +26,8 @@ namespace Payments.Application.SubscriptionPayments.Commands.Buy
             var subscriptionPayment = SubscriptionPayment.Buy(
                 _payerContext.Id,
                 SubscriptionPeriod.Parse(command.Period),
-                _payerContext.Subscribed);
+                _payerContext.Subscribed,
+                _counter);
 
             await _dbContext.SubscriptionPayments.AddAsync(subscriptionPayment);
         }

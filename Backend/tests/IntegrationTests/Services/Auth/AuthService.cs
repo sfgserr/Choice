@@ -5,6 +5,8 @@ namespace IntegrationTests.Services.Auth
 {
     public class AuthService
     {
+        private const string Password = "12345678";
+        
         private readonly IHttpClientFactory _factory;
         private readonly AppOptions _appOptions;
         
@@ -42,14 +44,14 @@ namespace IntegrationTests.Services.Auth
 
             await Task.Delay(10000);
 
-            return await Login(tokenType.ToString().ToLower(), "string");
+            return await Login($"{tokenType.ToString().ToLower()}@gmail.com", Password);
         }
 
         private async Task<string?> Login(string email, string password)
         {
             using var client = _factory.CreateClient("Default");
             
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/auth/login");
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/auth/token");
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["grant_type"] = "password",
@@ -84,11 +86,11 @@ namespace IntegrationTests.Services.Auth
                 new
                 {
                     Name = "string",
-                    Email = "client",
-                    Password = "string",
-                    PhoneNumber = "client",
-                    City = "string",
-                    Street = "string"
+                    Email = "client@gmail.com",
+                    Password = "12345678",
+                    PhoneNumber = "9267339971",
+                    City = "Москва",
+                    Street = "Ангарская 21"
                 }));
 
             return clientCreatedResponse.IsSuccessStatusCode;
@@ -104,11 +106,11 @@ namespace IntegrationTests.Services.Auth
                 new
                 {
                     Name = "string",
-                    Email = "company",
-                    Password = "string",
-                    PhoneNumber = "company",
-                    City = "string",
-                    Street = "string"
+                    Email = "company@gmail.com",
+                    Password = "12345678",
+                    PhoneNumber = "9267339972",
+                    City = "Москва",
+                    Street = "Арбат 26"
                 }));
 
             return companyCreatedResponse.IsSuccessStatusCode;

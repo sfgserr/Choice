@@ -240,7 +240,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             string text)
         {
             CheckRule(new CannotReviewMoreThanOnceRule(_reviews, reviewingUserId));
-            CheckRule(new CannotReviewYourselftRule(reviewingUserId, toUserId));
+            CheckRule(new CannotReviewYourselfRule(reviewingUserId, toUserId));
             CheckRule(new CannotReviewWhileOrderActive(Status));
 
             _reviews.Add(Review.Create(

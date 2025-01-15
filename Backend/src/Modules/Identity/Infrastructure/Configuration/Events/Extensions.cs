@@ -14,7 +14,7 @@ namespace Identity.Infrastructure.Configuration.Events
                .AddHandler<UserRoleChangedIntegrationEvent>();
         }
 
-        private static IReceiveEndpointConfigurator AddHandler<T> (this IReceiveEndpointConfigurator cfg) 
+        private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg) 
             where T : IntegrationEventBase
         {
             cfg.Handler<T>(async c =>

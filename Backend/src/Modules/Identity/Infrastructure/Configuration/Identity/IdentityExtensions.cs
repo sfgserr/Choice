@@ -34,7 +34,7 @@ namespace Identity.Infrastructure.Configuration.Identity
                     {
                         options.AddDevelopmentSigningCertificate();
 
-                        options.SetAccessTokenLifetime(TimeSpan.FromMinutes(1));
+                        options.SetAccessTokenLifetime(TimeSpan.FromMinutes(2));
                     }
                     else
                     {   

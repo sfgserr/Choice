@@ -28,9 +28,9 @@ namespace Payments.Application.SubscriptionPayments.Queries.GetPayment
                     payments."SubscriptionPayments"."PeriodCost" as {nameof(PaymentDto.Cost)},
                     payments."SubscriptionPayments"."PeriodName" as {nameof(PaymentDto.Period)},
                     payments."SubscriptionPayments"."ExpirationDate" as {nameof(PaymentDto.ExpirationDate)},
-                    payments."SubscriptionPayments"."Status" as {nameof(PaymentDto.Status)},
+                    payments."SubscriptionPayments"."Status" as {nameof(PaymentDto.Status)}
                 FROM payments."SubscriptionPayments"
-                WHERE payments."SubscriptionPayments"."PayerId" = @Id 
+                WHERE payments."SubscriptionPayments"."PayerId" = @Id AND payments."SubscriptionPayments"."Status" = 'WaitingForPayment'
                 """;
 
             return await connection.QuerySingleAsync<PaymentDto>(

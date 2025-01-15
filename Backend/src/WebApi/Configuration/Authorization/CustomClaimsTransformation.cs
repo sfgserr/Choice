@@ -32,7 +32,7 @@ namespace WebApi.Configuration.Authorization
                 var subscribed = await _paymentsModule.Query<CheckActiveSubscriptionQuery, bool>(
                     new CheckActiveSubscriptionQuery(id));
                 
-                identity.AddClaim(new Claim("subscribed", subscribed.ToString()));
+                identity.AddClaim(new Claim("subscribed", subscribed.ToString().ToLower()));
             }
             
             foreach (var permission in user.Permissions)

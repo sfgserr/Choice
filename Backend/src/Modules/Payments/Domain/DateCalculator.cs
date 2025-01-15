@@ -6,9 +6,9 @@
         {
             return period switch
             {
-                "Month" => DateTime.Now.AddMonths(1),
-                "HalfYear" => DateTime.Now.AddMonths(6),
-                "Year" => DateTime.Now.AddYears(1),
+                "Month" => DateTime.UtcNow.AddMonths(1),
+                "HalfYear" => DateTime.UtcNow.AddMonths(6),
+                "Year" => DateTime.UtcNow.AddYears(1),
                 _ => throw new ArgumentException("No such period")
             };
         }

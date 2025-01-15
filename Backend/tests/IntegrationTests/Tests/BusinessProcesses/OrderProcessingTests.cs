@@ -18,6 +18,9 @@ namespace IntegrationTests.Tests.BusinessProcesses
         public void OrderProcessExecutesSuccessfully()
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
+            var buySubscription = new TestChain(BuySubscriptionPaymentReturnsOk);
+            var getSubscriptionPayment = new TestChain(GetSubscriptionPaymentReturnsOk);
+            var paySubscription = new TestChain(PaySubscriptionReturnsOk);
             var createOrderRequest = new TestChain(CreateOrderRequestReturnsOk);
             var getOrderRequests = new TestChain(GetOrderRequestsReturnsOk);
             var createOrderResponse = new TestChain(CreateOrderResponseReturnsOk);
@@ -27,7 +30,10 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var payEnrollment = new TestChain(PayEnrollment);
             var finish = new TestChain(Finish);
             
-            fillData.SetNext(createOrderRequest);
+            fillData.SetNext(buySubscription);
+            buySubscription.SetNext(getSubscriptionPayment);
+            getSubscriptionPayment.SetNext(paySubscription);
+            paySubscription.SetNext(createOrderRequest);
             createOrderRequest.SetNext(getOrderRequests);
             getOrderRequests.SetNext(createOrderResponse);
             createOrderResponse.SetNext(getChats);
@@ -68,7 +74,62 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 return new TestResult(response.IsSuccessStatusCode);
             }, 10000, false, TokenType.Company);
         }
+        
+        private async Task<TestResult> BuySubscriptionPaymentReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) => 
+            {
+                using var client = factory.CreateClient("Default");
 
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post,
+                    "api/subscriptionPayment/Month");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+ 
+                return new TestResult(response.IsSuccessStatusCode);
+            }, 0, false, TokenType.Company);
+        }
+        
+        private async Task<TestResult> GetSubscriptionPaymentReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) => 
+            {
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Get,
+                    "api/subscriptionPayment");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                var json = await response.Content.ReadAsStringAsync();
+                
+                return new TestResult(response.IsSuccessStatusCode, JObject.Parse(json).SelectToken("id")?.Value<string>());
+            }, 0, false, TokenType.Company);
+        }
+        
+        private async Task<TestResult> PaySubscriptionReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) => 
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Put,
+                    $"api/subscriptionPayment/{id}");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+                
+                return new TestResult(response.IsSuccessStatusCode);
+            }, 5000, false, TokenType.Company);
+        }
+        
         private async Task<TestResult> CreateOrderRequestReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
@@ -96,7 +157,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 return new TestResult(response.IsSuccessStatusCode);
             }, 5000);
         }
-
+        
         private async Task<TestResult> GetOrderRequestsReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>

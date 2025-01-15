@@ -21,7 +21,7 @@ namespace Payments.Application.EnrollmentPayments.Commands.Expire
 
             foreach (var payment in payments) 
             {
-                if (payment.ExpirationDate > DateTime.UtcNow)
+                if (payment.ExpirationDate < DateTime.UtcNow)
                     payment.Expire();
             }
 

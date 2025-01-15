@@ -8,7 +8,9 @@ namespace Payments.Domain.SeedWork
         {
             Value = value;
         }
-
+        
+        public PaymentStatus() {}
+        
         public string Value { get; }
 
         public static PaymentStatus WaitingForPayment { get; } = new("WaitingForPayment");

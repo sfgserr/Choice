@@ -19,7 +19,7 @@ namespace Payments.Application.Subscriptions.Commands.Expire
 
             foreach (var subscription in subscriptions) 
             {
-                if (subscription.ExpirationDate > DateTime.UtcNow)
+                if (subscription.ExpirationDate < DateTime.UtcNow)
                     subscription.Expire();
             }
 

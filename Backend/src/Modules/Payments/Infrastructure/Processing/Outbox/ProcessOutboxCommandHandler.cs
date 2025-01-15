@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR;
-using BuildingBlocks.Infrastructure.DomainEventDispatching;
+﻿using BuildingBlocks.Infrastructure.DomainEventDispatching;
 using Newtonsoft.Json;
 using MediatR;
 using Payments.Infrastructure.Data;

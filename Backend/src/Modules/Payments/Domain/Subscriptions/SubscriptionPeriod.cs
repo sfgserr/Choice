@@ -10,21 +10,18 @@ namespace Payments.Domain.Subscriptions
             Value = value;
             Cost = cost;
         }
-
-        private SubscriptionPeriod()
-        {
-
-        }
-
+        
+        private SubscriptionPeriod() {}
+        
         public string Value { get; }
 
         public MoneyValue Cost { get; }
 
-        public static SubscriptionPeriod Month = new("Month", new(800, "RUB"));
+        private static readonly SubscriptionPeriod Month = new("Month", new(800, "RUB"));
 
-        public static SubscriptionPeriod HalfYear = new("HalfYear", new(4320, "RUB"));
+        private static readonly SubscriptionPeriod HalfYear = new("HalfYear", new(4320, "RUB"));
 
-        public static SubscriptionPeriod Year = new("Year", new(7776, "RUB"));
+        private static readonly SubscriptionPeriod Year = new("Year", new(7776, "RUB"));
 
         public static SubscriptionPeriod Parse(string s) => s switch
         {
