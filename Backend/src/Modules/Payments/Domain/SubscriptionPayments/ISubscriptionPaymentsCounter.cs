@@ -1,6 +1,6 @@
 using Payments.Domain.Payers;
 
-namespace Payments.Domain.SubscritpionPayments
+namespace Payments.Domain.SubscriptionPayments
 {
     public interface ISubscriptionPaymentsCounter
     {

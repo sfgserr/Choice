@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Payments.Domain.SeedWork;
-using Payments.Domain.SubscritpionPayments;
+using Payments.Domain.SubscriptionPayments;
 
 namespace Payments.Infrastructure.Data.Domain.SubscriptionPayments
 {

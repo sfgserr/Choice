@@ -1,6 +1,6 @@
 {
     "PostgreConnectionString": "User Id=root;Password=pgadminchoice;Database=Choice;Host=localhost;Port=5432;",
-    "ServerUrl": "https://localhost:6932",
+    "ServerUrl": "http://localhost:5270",
     "App": {
         "ClientId": "mobile-app",
         "ClientSecret": "30bdfd15-5a52-4743-8e79-a4be6e104fb2"

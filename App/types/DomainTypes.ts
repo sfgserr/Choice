@@ -37,4 +37,13 @@ export type OrderRequestDetails = {
 
 export type OrderRequestRadius = {
 
+};
+
+export type SubscriptionPayment = {
+  id: string
+  period: string
+  cost: number
+  payerId: string
+  expirationDate: Date
+  status: string
 }

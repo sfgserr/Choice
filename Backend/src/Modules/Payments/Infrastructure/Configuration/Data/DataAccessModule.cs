@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Payments.Infrastructure.Data;
 using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments;
-using Payments.Domain.SubscritpionPayments;
+using Payments.Domain.SubscriptionPayments;
 
 namespace Payments.Infrastructure.Configuration.Data
 {

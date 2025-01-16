@@ -1,7 +1,7 @@
 using BuildingBlocks.Application.Data;
 using Dapper;
 using Payments.Domain.Payers;
-using Payments.Domain.SubscritpionPayments;
+using Payments.Domain.SubscriptionPayments;
 
 namespace Payments.Application.SubscriptionPayments
 {
@@ -22,7 +22,7 @@ namespace Payments.Application.SubscriptionPayments
                 $"""
                 SELECT COUNT(*)
                 FROM payments."SubscriptionPayments"
-                WHERE payments."SubscriptionPayments"."PayerId" = @PayerId AND payments."SubscriptionPayments"."Status" = 'Active'
+                WHERE payments."SubscriptionPayments"."PayerId" = @PayerId AND payments."SubscriptionPayments"."Status" = 'WaitingForPayment'
                 """;
 
             return connection.QueryFirst<int>(

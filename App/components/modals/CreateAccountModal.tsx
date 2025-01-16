@@ -33,13 +33,10 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
         <TouchableOpacity
           style={{flex: 1}}
           onPress={() => handlePress()}
-          disabled={!isToggled}/>
+          disabled={!isToggled}
+        />
       </Animated.View>
-      <Animated.View
-        style={[
-          styles.popup,
-          animatedStyles
-        ]}>
+      <Animated.View style={[styles.popup, animatedStyles]}>
         <TouchableOpacity
           style={{
             height: d.height * 0.064,
@@ -48,7 +45,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
             backgroundColor: 'white',
             justifyContent: 'center',
             borderBottomColor: '#e0e0e0',
-            borderBottomWidth: 1
+            borderBottomWidth: 1,
           }}
           onPress={() => {
             handlePress();
@@ -59,7 +56,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
               color: '#2688EB',
               fontSize: 20,
               fontWeight: '400',
-              alignSelf: 'center'
+              alignSelf: 'center',
             }}>
             Создать аккаунт клиента
           </Text>
@@ -72,20 +69,23 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
             backgroundColor: 'white',
             justifyContent: 'center',
           }}
-          onPress={() => navigation.navigate('RegisterCompany')}>
+          onPress={() => {
+            handlePress();
+            navigation.navigate('RegisterCompany');
+          }}>
           <Text
             style={{
               color: '#2688EB',
               fontSize: 20,
               fontWeight: '400',
-              alignSelf: 'center'
+              alignSelf: 'center',
             }}>
             Создать аккаунт компании
           </Text>
         </TouchableOpacity>
         <View
           style={{
-            paddingTop: 10
+            paddingTop: 10,
           }}>
           <TouchableOpacity
             style={{
@@ -100,7 +100,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
                 color: '#2688EB',
                 fontSize: 20,
                 fontWeight: '400',
-                alignSelf: 'center'
+                alignSelf: 'center',
               }}>
               Отменить
             </Text>
@@ -108,7 +108,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
         </View>
       </Animated.View>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

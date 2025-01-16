@@ -1,7 +1,7 @@
 using BuildingBlocks.Domain;
 using Payments.Domain.Payers;
 
-namespace Payments.Domain.SubscritpionPayments.Rules
+namespace Payments.Domain.SubscriptionPayments.Rules
 {
     internal class CannotBuyPaymentWithActiveSubscriptionPaymentRule : IBusinessRule
     {

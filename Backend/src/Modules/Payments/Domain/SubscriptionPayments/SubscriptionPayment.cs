@@ -1,11 +1,11 @@
 ﻿using BuildingBlocks.Domain;
 using Payments.Domain.Payers;
 using Payments.Domain.SeedWork;
+using Payments.Domain.SubscriptionPayments.Events;
+using Payments.Domain.SubscriptionPayments.Rules;
 using Payments.Domain.Subscriptions;
-using Payments.Domain.SubscritpionPayments.Events;
-using Payments.Domain.SubscritpionPayments.Rules;
 
-namespace Payments.Domain.SubscritpionPayments
+namespace Payments.Domain.SubscriptionPayments
 {
     public class SubscriptionPayment : Entity, IAggregateRoot
     {

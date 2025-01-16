@@ -1,5 +1,5 @@
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
-using Payments.Domain.SubscritpionPayments.Events;
+using Payments.Domain.SubscriptionPayments.Events;
 
 namespace Payments.Infrastructure.MediatR.DomainNotifications
 {

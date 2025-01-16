@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Domain;
 
-namespace Payments.Domain.SubscritpionPayments
+namespace Payments.Domain.SubscriptionPayments
 {
     public class SubscrtipionPaymentId : TypedIdValueBase
     {

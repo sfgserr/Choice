@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Payments.Domain.EnrollmentPayments;
+using Payments.Domain.SubscriptionPayments;
 using Payments.Domain.Subscriptions;
-using Payments.Domain.SubscritpionPayments;
 
 namespace Payments.Application.Contracts
 {

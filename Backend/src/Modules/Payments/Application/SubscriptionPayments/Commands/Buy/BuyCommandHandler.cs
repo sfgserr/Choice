@@ -1,8 +1,8 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using Payments.Application.Contracts;
 using Payments.Domain.Payers;
+using Payments.Domain.SubscriptionPayments;
 using Payments.Domain.Subscriptions;
-using Payments.Domain.SubscritpionPayments;
 
 namespace Payments.Application.SubscriptionPayments.Commands.Buy
 {

@@ -28,10 +28,7 @@ namespace BuildingBlocks.Application.Extensions
 
         private static TEntity ThrowIfNull<TEntity>(TEntity? entity) where TEntity : class
         {
-            if (entity == null)
-            {
-                throw new InvalidCommandException([$"Entity of type {typeof(TEntity).Name} is not found"]);
-            }
+            InvalidCommandException.ThrowIfNull(entity);
 
             return entity;
         }

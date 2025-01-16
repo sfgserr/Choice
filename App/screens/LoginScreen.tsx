@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Dimensions, Image, Text} from 'react-native';
+import {View, Dimensions, Image, Text, SafeAreaView} from 'react-native';
 import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
@@ -18,7 +18,7 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
   ]
 
   return (
-    <View
+    <SafeAreaView
       style={{
         backgroundColor: 'white',
         flex: 1,
@@ -77,6 +77,6 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
         isToggled={isToggled}
         handlePress={() => setIsToggled(prev => !prev)}
         navigation={navigation}/>
-    </View>
+    </SafeAreaView>
   )
 }

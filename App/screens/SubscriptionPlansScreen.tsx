@@ -92,11 +92,11 @@ export default function SubscriptionPlansScreen({route, navigation}: Subscriptio
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={async () => {
-          let response = await route.params.subscriptionPaymentService.buy(plans[planIndex].plan, changeState);
+          await route.params.subscriptionPaymentService.buy(plans[planIndex].plan, changeState);
+
           setIsToggled(prev => !prev);
 
-          if (response.result == 'successful')
-            navigation.navigate('PaySubscription', {price: plans[planIndex].price});
+          navigation.navigate('PaySubscription', {price: plans[planIndex].price});
         }}
         title={'Создать заказ?'}
         text={''}/>

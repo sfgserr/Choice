@@ -31,11 +31,11 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
         }
 
         [HasPermission(Permissions.PaySubscriptionPayment)]
-        [HttpPut("{id:guid}")]
+        [HttpPut()]
         [AllowUnsubscribe]
-        public async Task<IActionResult> Pay(Guid id)
+        public async Task<IActionResult> Pay()
         {
-            await _module.ExecuteCommand(new PayCommand(id));
+            await _module.ExecuteCommand(new PayCommand());
 
             return Ok();
         }

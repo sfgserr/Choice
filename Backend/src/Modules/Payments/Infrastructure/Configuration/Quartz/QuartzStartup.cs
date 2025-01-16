@@ -1,7 +1,6 @@
 ﻿using Quartz.Impl;
 using Quartz;
 using System.Collections.Specialized;
-using Autofac;
 using BuildingBlocks.Infrastructure.Quartz;
 using Payments.Infrastructure.Processing.Outbox;
 using Payments.Infrastructure.Processing.InternalCommands;
@@ -30,6 +29,7 @@ namespace Payments.Infrastructure.Configuration.Quartz
             ScheduleProcessInternalCommandsJob(scheduler);
             ScheduleExpireSubscriptionPaymentsJob(scheduler);
             ScheduleExpireSubscriptionsJob(scheduler);
+            ScheduleExpireEnrollmentPaymentsJob(scheduler);
         }
 
         private static void ScheduleExpireSubscriptionsJob(IScheduler scheduler)
@@ -47,6 +47,18 @@ namespace Payments.Infrastructure.Configuration.Quartz
         private static void ScheduleExpireSubscriptionPaymentsJob(IScheduler scheduler)
         {
             var expireJob = JobBuilder.Create<ExpireSubscriptionPaymentsJob>().Build();
+
+            var expireJobTrigger = TriggerBuilder.Create()
+                .StartNow()
+                .WithCronSchedule("0/0 0/5 * ? * *")
+                .Build();
+
+            scheduler.ScheduleJob(expireJob, expireJobTrigger).GetAwaiter().GetResult();
+        }
+        
+        private static void ScheduleExpireEnrollmentPaymentsJob(IScheduler scheduler)
+        {
+            var expireJob = JobBuilder.Create<ExpireEnrollmentPaymentsJob>().Build();
 
             var expireJobTrigger = TriggerBuilder.Create()
                 .StartNow()

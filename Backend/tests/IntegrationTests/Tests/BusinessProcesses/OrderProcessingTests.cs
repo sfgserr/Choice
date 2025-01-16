@@ -19,7 +19,6 @@ namespace IntegrationTests.Tests.BusinessProcesses
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
             var buySubscription = new TestChain(BuySubscriptionPaymentReturnsOk);
-            var getSubscriptionPayment = new TestChain(GetSubscriptionPaymentReturnsOk);
             var paySubscription = new TestChain(PaySubscriptionReturnsOk);
             var createOrderRequest = new TestChain(CreateOrderRequestReturnsOk);
             var getOrderRequests = new TestChain(GetOrderRequestsReturnsOk);
@@ -31,8 +30,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var finish = new TestChain(Finish);
             
             fillData.SetNext(buySubscription);
-            buySubscription.SetNext(getSubscriptionPayment);
-            getSubscriptionPayment.SetNext(paySubscription);
+            buySubscription.SetNext(paySubscription);
             paySubscription.SetNext(createOrderRequest);
             createOrderRequest.SetNext(getOrderRequests);
             getOrderRequests.SetNext(createOrderResponse);
@@ -92,36 +90,15 @@ namespace IntegrationTests.Tests.BusinessProcesses
             }, 0, false, TokenType.Company);
         }
         
-        private async Task<TestResult> GetSubscriptionPaymentReturnsOk(object? arg)
-        {
-            return await ExecuteAuthorizedTest(async (factory, token) => 
-            {
-                using var client = factory.CreateClient("Default");
-
-                var request = new HttpRequestMessage(
-                    HttpMethod.Get,
-                    "api/subscriptionPayment");
-                request.Headers.Add("Authorization", $"Bearer {token}");
-
-                var response = await client.SendAsync(request);
-
-                var json = await response.Content.ReadAsStringAsync();
-                
-                return new TestResult(response.IsSuccessStatusCode, JObject.Parse(json).SelectToken("id")?.Value<string>());
-            }, 0, false, TokenType.Company);
-        }
-        
         private async Task<TestResult> PaySubscriptionReturnsOk(object? arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
-                if (arg is not string id) return new TestResult(false);
-                
                 using var client = factory.CreateClient("Default");
 
                 var request = new HttpRequestMessage(
                     HttpMethod.Put,
-                    $"api/subscriptionPayment/{id}");
+                    $"api/subscriptionPayment");
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
                 var response = await client.SendAsync(request);

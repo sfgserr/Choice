@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import {PaySubscriptionScreenProps} from '../types/NavigationTypes.ts';
+import {SubscriptionPayment} from '../types/DomainTypes.ts';
+import {AuthContext} from '../App.tsx';
 
 export default function PaySubscriptionScreen({route, navigation}: PaySubscriptionScreenProps){
+  const { changeState } = React.useContext(AuthContext);
+
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [subscriptionPayment, setSubscriptionPayment] = React.useState<SubscriptionPayment>(null);
+
   const [cardDetails, setCardDetails] = useState({
     name: "",
     number: "",
@@ -12,21 +18,31 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
   });
   const [isValid, setIsValid] = useState(false);
 
-  // Timer logic
+  useEffect(() => {
+    const getPayment = async () => {
+      let response = await route.params.subscriptionPaymentService.get(changeState);
+
+      if (response.content != null) {
+        setSubscriptionPayment(response.content);
+        setTimeLeft((new Date(response.content.expirationDate).getTime() - Date.now()) / 1000);
+      }
+    }
+    getPayment();
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     if (timeLeft === 0) {
-      Alert.alert("Time Expired", "Your payment session has expired.");
+      Alert.alert("Время вышло", "Срок оплаты истек");
       clearInterval(timer);
     }
 
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // Format time as MM:SS
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -37,7 +53,6 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
   const handleChange = (field, value) => {
     setCardDetails((prev) => ({ ...prev, [field]: value }));
 
-    // Simple validation for demo purposes
     const { name, number, expiry, cvv } = { ...cardDetails, [field]: value };
     if (name && number.length === 16 && expiry.length === 5 && cvv.length === 3) {
       setIsValid(true);
@@ -46,39 +61,47 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
     }
   };
 
-  // Handle payment submission
   const handlePayment = () => {
     if (!isValid) {
-      Alert.alert("Invalid Details", "Please fill in all fields correctly.");
+      Alert.alert("Неправильные данные", "Пожалуйста заполните все поля корректно");
       return;
     }
 
-    Alert.alert("Payment Successful", "Your payment has been processed.");
+    Alert.alert("Оплата успешна", "Ваш платеж прошел");
   };
+
+  const getPlanTitle = (period: string) => {
+    switch (period) {
+      case 'Month':
+        return 'Начальный';
+      case 'HalfYear':
+        return 'Средний';
+      case 'Year':
+        return 'Премиум';
+      default:
+        return '';
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Subscription Payment</Text>
-
-      {/* Cardholder Name */}
+      <Text style={styles.header}>
+        {subscriptionPayment == null ? 'Оплата подписки' : `Оплата подписки: ${getPlanTitle(subscriptionPayment.period)}`}
+      </Text>
       <TextInput
         style={styles.input}
-        placeholder="Cardholder Name"
+        placeholder="Имя владельца карты"
         value={cardDetails.name}
         onChangeText={(value) => handleChange("name", value)}
       />
-
-      {/* Card Number */}
       <TextInput
         style={styles.input}
-        placeholder="Card Number (16 digits)"
+        placeholder="Номер карты"
         keyboardType="numeric"
         value={cardDetails.number}
         onChangeText={(value) => handleChange("number", value)}
         maxLength={16}
       />
-
-      {/* Expiry Date and CVV */}
       <View style={styles.row}>
         <TextInput
           style={[styles.input, styles.halfInput]}
@@ -97,21 +120,16 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
           maxLength={3}
         />
       </View>
-
-      {/* Timer */}
-      <Text style={styles.timer}>⏳ Time Remaining: {formatTime(timeLeft)}</Text>
-
-      {/* Pay Now Button */}
+      <Text style={styles.timer}>⏳ Оставшееся времени: {formatTime(timeLeft)}</Text>
       <TouchableOpacity
         style={[styles.button, isValid ? styles.buttonActive : styles.buttonDisabled]}
         disabled={!isValid}
         onPress={handlePayment}
       >
-        <Text style={styles.buttonText}>Pay Now</Text>
+        <Text style={styles.buttonText}>Оплатить</Text>
       </TouchableOpacity>
-
       <Text style={styles.footer}>
-        Note: Please complete your payment within 10 minutes, or your session will expire.
+        Заметка: Пожалуйста, завершите оплату в течение 10 минут, иначе ваш сеанс будет истечен.
       </Text>
     </View>
   );
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonActive: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#2D81E0",
   },
   buttonDisabled: {
     backgroundColor: "#ccc",

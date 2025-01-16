@@ -1,8 +1,7 @@
 ﻿using BuildingBlocks.Domain;
 using Payments.Domain.Payers;
-using Payments.Domain.Subscriptions;
 
-namespace Payments.Domain.SubscritpionPayments.Events
+namespace Payments.Domain.SubscriptionPayments.Events
 {
     public class SubscriptionPaymentPaidDomainEvent : DomainEventBase
     {
