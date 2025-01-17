@@ -15,7 +15,7 @@ export default function BorderedTextInput({ value, onChanged, placeholder, isErr
       style={[
         Styles.borderedTextInputView,
         isBig ? Styles.borderedTextInputBigHeight : Styles.borderedTextInputHeight,
-        !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError
+        !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError,
       ]}>
       <TextInput
         value={value}

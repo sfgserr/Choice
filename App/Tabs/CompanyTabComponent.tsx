@@ -5,10 +5,14 @@ import {Image} from 'react-native';
 import * as React from 'react';
 import ChatScreen from '../screens/tab/ChatScreen.tsx';
 import CompanyAccountScreen from '../screens/tab/CompanyAccountScreen.tsx';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 
 
 export default function CompanyTabComponent({route, navigation}: TabScreenProps) {
   const CompanyTab = createBottomTabNavigator<CompanyTabProps>();
+
+  const graph = route.params.graph;
 
   const getTabBarIcon = ({focused, source} : {
     focused: boolean
@@ -43,7 +47,11 @@ export default function CompanyTabComponent({route, navigation}: TabScreenProps)
       <CompanyTab.Screen
         name={'OrderRequests'}
         component={CompanyRequestsScreen}
-        options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}/>
+        options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}
+        initialParams={{
+          orderRequestService: graph.resolve<OrderRequestService>('OrderRequestService'),
+          categoryService: graph.resolve<CategoryService>('CategoryService')
+        }}/>
       <CompanyTab.Screen
         name={'Chat'}
         component={ChatScreen}

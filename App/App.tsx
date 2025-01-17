@@ -25,6 +25,7 @@ import CompanyTabComponent from './Tabs/CompanyTabComponent.tsx';
 import SubscriptionPlansScreen from './screens/SubscriptionPlansScreen.tsx';
 import {SubscriptionPaymentService} from './services/domain/SubscriptionPaymentService.ts';
 import PaySubscriptionScreen from './screens/PaySubscriptionScreen.tsx';
+import ImageViewScreen from './screens/ImageViewScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -154,6 +155,10 @@ function App(): React.JSX.Element {
                 name={'Tab'}
                 component={CompanyTabComponent}
                 initialParams={{graph}}
+                options={{headerShown: false}}/>
+              <Stack.Screen
+                name={'ImageView'}
+                component={ImageViewScreen}
                 options={{headerShown: false}}/>
             </Stack.Navigator>
           </>) : state == State.User ? (

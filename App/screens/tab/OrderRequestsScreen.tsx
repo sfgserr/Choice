@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   FlatList,
   Image,
-  RefreshControl,
+  RefreshControl, ScrollView,
   StyleSheet,
   Text,
   View,
@@ -75,7 +75,11 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
           />
         </>) : (
           <>
-            <View style={styles.stubContainer}>
+            <ScrollView
+              style={styles.stubContainer}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
               <Image
                 source={require('../../assets/images/sad.png')}
                 style={styles.image}/>
@@ -97,7 +101,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
                     onGoBack: (orderRequest: OrderRequest) => {}
                   })}/>
               </View>
-            </View>
+            </ScrollView>
           </>)}
     </View>
   );
@@ -124,7 +128,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   stubContainer: {
-    justifyContent: 'center',
     flex: 1
   },
   image: {

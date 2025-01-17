@@ -36,7 +36,18 @@ export type OrderRequestDetails = {
 };
 
 export type OrderRequestRadius = {
-
+  id: string
+  categoryId: number
+  description: string
+  photoUris: string[]
+  clientCreatedId: string
+  iconUri: string
+  clientName: string
+  latitude: number
+  longitude: number
+  reviewsCount: number
+  averageGrade: number
+  distance: number
 };
 
 export type SubscriptionPayment = {

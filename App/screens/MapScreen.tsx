@@ -35,7 +35,6 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           15,
           Animation.SMOOTH);
         setCompanies(companies.content);
-        console.log(companies.content);
       }
     }
     getCompanies();

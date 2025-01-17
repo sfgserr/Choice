@@ -168,6 +168,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               Styles.borderedTextInputBigHeight,
               Styles.borderedTextInputViewColor,
               Styles.borderedTextInputUnfocused,
+              {alignItems: 'baseline'}
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
@@ -185,9 +186,10 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
+                {justifyContent: 'center'}
               ]}
               onPress={() => {}}>
-              <View style={styles.voiceButton}>
+              <View style={[styles.voiceButton]}>
                 <Image
                   source={require('../assets/images/micro.png')}
                   style={styles.voiceButtonImage}

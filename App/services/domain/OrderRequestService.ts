@@ -1,6 +1,6 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {State} from '../../enums/AppEnums.ts';
-import {OrderRequest, OrderRequestDetails} from '../../types/DomainTypes.ts';
+import {OrderRequest, OrderRequestDetails, OrderRequestRadius} from '../../types/DomainTypes.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
 import {FilePathUtils} from '../../utils/FilePathUtils.ts';
 
@@ -112,6 +112,14 @@ export class OrderRequestService {
   async getOrderRequest(id: string, changeState: (state: State) => void) {
     return await this.httpService.requestWithContent<OrderRequestDetails>(
       `orderRequests/${id}`,
+      'GET',
+      undefined,
+      changeState);
+  }
+
+  async getOrderRequestsRadius(changeState: (state: State) => void) {
+    return await this.httpService.requestWithContent<OrderRequestRadius[]>(
+      'orderRequests/radius',
       'GET',
       undefined,
       changeState);

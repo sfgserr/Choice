@@ -41,6 +41,7 @@ export type StackProps = {
   };
   SubscriptionPlans: {subscriptionPaymentService: SubscriptionPaymentService};
   PaySubscription: {subscriptionPaymentService: SubscriptionPaymentService, price: number};
+  ImageView: {uri: string}
 };
 
 export type ClientTabProps = {
@@ -51,10 +52,10 @@ export type ClientTabProps = {
 };
 
 export type CompanyTabProps = {
-  OrderRequests: undefined
-  Chat: undefined
-  Account: undefined
-}
+  OrderRequests: {orderRequestService: OrderRequestService, categoryService: CategoryService};
+  Chat: undefined;
+  Account: undefined;
+};
 
 export type LoginScreenProps = NativeStackScreenProps<StackProps, 'Login'>;
 
@@ -85,6 +86,8 @@ export type CompanyRequestsScreenProps = BottomTabScreenProps<CompanyTabProps, '
 export type SubscriptionScreenProps = NativeStackScreenProps<StackProps, 'SubscriptionPlans'>;
 
 export type PaySubscriptionScreenProps = NativeStackScreenProps<StackProps, 'PaySubscription'>;
+
+export type ImageViewScreenProps = NativeStackScreenProps<StackProps, 'ImageView'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>
