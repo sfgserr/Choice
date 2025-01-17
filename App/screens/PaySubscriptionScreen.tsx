@@ -5,7 +5,7 @@ import {SubscriptionPayment} from '../types/DomainTypes.ts';
 import {AuthContext} from '../App.tsx';
 
 export default function PaySubscriptionScreen({route, navigation}: PaySubscriptionScreenProps){
-  const { changeState } = React.useContext(AuthContext);
+  const { changeState, signOut } = React.useContext(AuthContext);
 
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const [subscriptionPayment, setSubscriptionPayment] = React.useState<SubscriptionPayment>(null);
@@ -24,7 +24,8 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
 
       if (response.content != null) {
         setSubscriptionPayment(response.content);
-        setTimeLeft((new Date(response.content.expirationDate).getTime() - Date.now()) / 1000);
+        let leftTimeInMilleseconds = new Date(`${response.content.expirationDate}Z`).getTime()-Date.now();
+        setTimeLeft(Math.floor(leftTimeInMilleseconds / 1000));
       }
     }
     getPayment();
@@ -61,13 +62,17 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
     }
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!isValid) {
       Alert.alert("Неправильные данные", "Пожалуйста заполните все поля корректно");
       return;
     }
 
-    Alert.alert("Оплата успешна", "Ваш платеж прошел");
+    let response = await route.params.subscriptionPaymentService.pay(changeState);
+
+    if (response.result == 'successful') {
+      Alert.alert("Оплата успешна", "Ваш платеж прошел", [{onPress: signOut, text: 'Ок'}]);
+    }
   };
 
   const getPlanTitle = (period: string) => {

@@ -24,4 +24,12 @@ export class SubscriptionPaymentService {
       undefined,
       changeState);
   }
+
+  async pay(changeState: (state: State) => void) {
+    return this.httpService.request(
+      'subscriptionPayment',
+      'PUT',
+      undefined,
+      changeState);
+  }
 }
