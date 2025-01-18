@@ -62,13 +62,28 @@ export class RefreshTokenHttpServiceDecorator {
     method: string,
     body: BodyInit_ | undefined): Promise<HttpResponseWithContent<T>> {
     const response = await HttpService.getInstance().request(endPoint, method, body);
-    let content = await response.json();
 
-    return {
-      result: response.status == 200 ? 'successful' : response.status == 401 ? 'unauthorized' : 'bad_request',
-      error: response.status == 200 || response.status == 401 ? '' : this.getError(content),
-      content: response.status == 200 ? content : null
-    };
+    if (response.status == 200) {
+      return {
+        result: 'successful',
+        error: '',
+        content: await response.json()
+      };
+    }
+    else if (response.status == 401) {
+      return {
+        result: 'unauthorized',
+        error: '',
+        content: null
+      }
+    }
+    else {
+      return {
+        result: 'bad_request',
+        error: this.getError(await response.json()),
+        content: null
+      }
+    }
   }
 
   public async request(

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Category, OrderRequest} from './DomainTypes.ts';
 import {ReactNode} from 'react';
+import {KeyboardTypeOptions} from 'react-native';
 
 export type BorderedTextInputProps = {
   value: string
@@ -8,6 +9,7 @@ export type BorderedTextInputProps = {
   placeholder: string
   isError: boolean
   isBig: boolean | undefined
+  keyboard: KeyboardTypeOptions | undefined
 };
 
 export type PasswordBoxProps = {

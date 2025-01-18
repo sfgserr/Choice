@@ -6,14 +6,15 @@ import {StyledButton} from '../buttons/StyledButton.tsx';
 
 const d = Dimensions.get('screen');
 
-export default function OrderRequestRadiusItem({orderRequest, categories, navigation}: {
-  orderRequest: OrderRequestRadius,
-  categories: Category[],
-  navigation: any}) {
+export default function OrderRequestRadiusItem({orderRequest, categories, navigation, preview}: {
+  orderRequest: OrderRequestRadius
+  categories: Category[]
+  navigation: any
+  preview: boolean}) {
   return (
     <View
       style={{
-        width: d.width * 0.9,
+        maxWidth: 'auto',
         borderRadius: 10,
         backgroundColor: 'white',
         shadowColor: 'black',
@@ -131,12 +132,15 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
           </Text>
         </View>
       </View>
-      <StyledButton
-        content={'Ответить'}
-        top={10}
-        bottom={5}
-        isDisabled={false}
-        pressed={() => {}}/>
+      {!preview ? (
+        <>
+          <StyledButton
+            content={'Ответить'}
+            top={10}
+            bottom={5}
+            isDisabled={false}
+            pressed={() => navigation.navigate('CreateOrderResponse', {orderRequest, categories})}/>
+        </>) : (<></>)}
     </View>
   );
 }

@@ -57,4 +57,11 @@ export type SubscriptionPayment = {
   payerId: string
   expirationDate: Date
   status: string
-}
+};
+
+export type CompanyOrderRequest = {
+  id: string
+  toKnowPrice: boolean
+  toKnowDeadline: boolean
+  toKnowEnrollmentDate: boolean
+};

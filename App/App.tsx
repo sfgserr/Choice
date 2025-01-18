@@ -26,6 +26,7 @@ import SubscriptionPlansScreen from './screens/SubscriptionPlansScreen.tsx';
 import {SubscriptionPaymentService} from './services/domain/SubscriptionPaymentService.ts';
 import PaySubscriptionScreen from './screens/PaySubscriptionScreen.tsx';
 import ImageViewScreen from './screens/ImageViewScreen.tsx';
+import CreateOrderResponseScreen from './screens/CreateOrderResponseScreen.tsx';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -160,6 +161,11 @@ function App(): React.JSX.Element {
                 name={'ImageView'}
                 component={ImageViewScreen}
                 options={{headerShown: false}}/>
+              <Stack.Screen
+                name={'CreateOrderResponse'}
+                component={CreateOrderResponseScreen}
+                options={{headerShown: false}}
+                initialParams={{orderRequestService: graph.resolve<OrderRequestService>('OrderRequestService')}}/>
             </Stack.Navigator>
           </>) : state == State.User ? (
           <>

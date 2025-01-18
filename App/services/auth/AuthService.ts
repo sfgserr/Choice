@@ -33,7 +33,7 @@ export class AuthService {
       return null;
     }
 
-    return response.json();
+    return await response.json();
   }
 
   async refresh(refreshToken: string): Promise<TokenResponse | null> {
@@ -55,6 +55,6 @@ export class AuthService {
       return null;
     }
 
-    return response.json();
+    return await response.json();
   }
 }

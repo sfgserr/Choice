@@ -3,7 +3,7 @@ import {CategoryService} from '../services/domain/CategoryService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ObjectGraph} from '../di/ObjectGraph.ts';
-import {Category} from './DomainTypes.ts';
+import {Category, OrderRequestRadius} from './DomainTypes.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {OrderRequest} from './DomainTypes.ts';
@@ -41,7 +41,12 @@ export type StackProps = {
   };
   SubscriptionPlans: {subscriptionPaymentService: SubscriptionPaymentService};
   PaySubscription: {subscriptionPaymentService: SubscriptionPaymentService, price: number};
-  ImageView: {uri: string}
+  ImageView: {uri: string};
+  CreateOrderResponse: {
+    orderRequestService: OrderRequestService,
+    orderRequest: OrderRequestRadius,
+    categories: Category[]
+  };
 };
 
 export type ClientTabProps = {
@@ -88,6 +93,8 @@ export type SubscriptionScreenProps = NativeStackScreenProps<StackProps, 'Subscr
 export type PaySubscriptionScreenProps = NativeStackScreenProps<StackProps, 'PaySubscription'>;
 
 export type ImageViewScreenProps = NativeStackScreenProps<StackProps, 'ImageView'>;
+
+export type CreateOrderResponseScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderResponse'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>

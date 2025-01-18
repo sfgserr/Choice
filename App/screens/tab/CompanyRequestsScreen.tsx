@@ -57,10 +57,16 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
             <FlatList
               data={orderRequests}
               renderItem={(item) => (
-                <OrderRequestRadiusItem
-                  orderRequest={item.item}
-                  categories={categories}
-                  navigation={navigation}/>
+                <View
+                  style={{
+                    paddingBottom: 10,
+                    paddingHorizontal: 10
+                  }}>
+                  <OrderRequestRadiusItem
+                    orderRequest={item.item}
+                    categories={categories}
+                    navigation={navigation}/>
+                </View>
               )}
               style={{paddingTop: 20}}/>
           </View>

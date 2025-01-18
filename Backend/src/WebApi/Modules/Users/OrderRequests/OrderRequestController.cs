@@ -4,13 +4,14 @@ using Users.Application.Contracts;
 using Users.Application.OrderRequests.Commands.ChangeOrderRequest;
 using Users.Application.OrderRequests.Commands.CreateOrderRequest;
 using Users.Application.OrderRequests.Queries.GetOrderRequest;
+using Users.Application.OrderRequests.Queries.GetOrderRequestAsCompany;
 using Users.Application.OrderRequests.Queries.GetOrderRequests;
 using Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius;
-using WebApi.Configuration.Authorization;
 using GetOrderRequestDto = Users.Application.OrderRequests.Queries.GetOrderRequest.OrderRequestDto;
 using GetOrderRequestsDto = Users.Application.OrderRequests.Queries.GetOrderRequests.OrderRequestDto;
 using GetOrderRequestsInRadiusDto = Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius.OrderRequestDto;
 using CreateOrderRequestDto = Users.Application.OrderRequests.Commands.CreateOrderRequest.OrderRequestDto;
+using GetOrderRequestAsCompanyDto = Users.Application.OrderRequests.Queries.GetOrderRequestAsCompany.OrderRequestDto;
 
 namespace WebApi.Modules.Users.OrderRequests
 {
@@ -87,6 +88,16 @@ namespace WebApi.Modules.Users.OrderRequests
                     new GetOrderRequestsInRadiusQuery());
 
             return Ok(requests);
+        }
+        
+        [HttpGet("company/{id:guid}")]
+        [HasPermission(Permissions.GetOrderRequestAsCompany)]
+        public async Task<IActionResult> GetOrderRequestAsCompany(Guid id)
+        {
+            var orderRequest = await _usersModule.Query<GetOrderRequestAsCompanyQuery, GetOrderRequestAsCompanyDto>(
+                new(id));
+
+            return Ok(orderRequest);
         }
     }
 }

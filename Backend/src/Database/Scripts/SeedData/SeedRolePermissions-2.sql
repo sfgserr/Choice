@@ -26,6 +26,8 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetOrderRequestsInRadius');
 
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetOrderRequestAsCompany');
+
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Response');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Enroll');

@@ -75,11 +75,8 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
           />
         </>) : (
           <>
-            <ScrollView
-              style={styles.stubContainer}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
+            <View
+              style={styles.stubContainer}>
               <Image
                 source={require('../../assets/images/sad.png')}
                 style={styles.image}/>
@@ -101,7 +98,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
                     onGoBack: (orderRequest: OrderRequest) => {}
                   })}/>
               </View>
-            </ScrollView>
+            </View>
           </>)}
     </View>
   );
@@ -128,6 +125,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   stubContainer: {
+    justifyContent: 'center',
     flex: 1
   },
   image: {
