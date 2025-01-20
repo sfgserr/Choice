@@ -1,38 +1,37 @@
-import {AuthService} from '../services/auth/AuthService.ts';
+import {AuthService} from './auth/AuthService.ts';
 import {AccountManager} from '../managers/AccountManager.ts';
-import {TokenStore} from '../stores/TokenStore.ts';
-import {TokenService} from '../services/auth/TokenService.ts';
-import {CategoryService} from '../services/domain/CategoryService.ts';
-import {TokenStorageService} from '../services/object/TokenStorageService.ts';
+import {TokenService} from './auth/TokenService.ts';
+import {CategoryService} from './domain/CategoryService.ts';
+import {TokenStorageService} from './object/TokenStorageService.ts';
 import {StateManager} from '../managers/StateManager.ts';
-import {RefreshTokenHttpServiceDecorator} from '../services/http/RefreshTokenHttpServiceDecorator.ts';
+import {RefreshTokenHttpServiceDecorator} from './http/RefreshTokenHttpServiceDecorator.ts';
 import YaMap from 'react-native-yamap';
-import {UserStore} from '../stores/UserStore.ts';
-import {UserService} from '../services/domain/UserService.ts';
-import {CompanyService} from '../services/domain/CompanyService.ts';
-import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
-import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
-import {ClientService} from '../services/domain/ClientService.ts';
-import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
+import {UserService} from './domain/UserService.ts';
+import {CompanyService} from './domain/CompanyService.ts';
+import {OrderRequestService} from './domain/OrderRequestService.ts';
+import {ObjectStorageService} from './object/ObjectStorageService.ts';
+import {ClientService} from './domain/ClientService.ts';
+import {SubscriptionPaymentService} from './domain/SubscriptionPaymentService.ts';
 
 type Object = {
   [name: string]: object,
 };
 
 export class ObjectGraph {
-  private isInitialized: boolean;
-  private readonly objects: Object = {};
+  private static isInitialized: boolean;
+  private static readonly objects: Object = {};
 
-  constructor() {
-    this.isInitialized = false;
-    this.objects = {};
+  private constructor() {
   }
 
-  resolve<T>(type: string): T {
+  static resolve<T>(type: string): T {
+    if (!this.isInitialized)
+      this.initialize();
+
     return this.objects[type] as T;
   }
 
-  initialize() {
+  private static initialize() {
     if (this.isInitialized) return;
 
     if (
@@ -48,15 +47,13 @@ export class ObjectGraph {
       `${process.env.API_URL}/api/auth/token`,
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET);
-    const tokenStore = new TokenStore();
-    const tokenService = new TokenService(tokenStore, authService);
+    const tokenService = new TokenService(authService);
     const tokenStorageService = new TokenStorageService();
     const accountManager = new AccountManager(tokenService);
     const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
     const httpService = new RefreshTokenHttpServiceDecorator(stateManager);
     const categoryService = new CategoryService(httpService);
-    const userStore = new UserStore();
-    const userService = new UserService(httpService, userStore, tokenService);
+    const userService = new UserService(httpService, tokenService);
     const objectStorageService = new ObjectStorageService(
       `${process.env.MINIO_URL}`,
       `${process.env.MINIO_ACCESS_KEY}`,
@@ -68,7 +65,6 @@ export class ObjectGraph {
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
-    this.objects["TokenStore"] = tokenStore;
     this.objects["TokenService"] = tokenService;
     this.objects["CategoryService"] = categoryService;
     this.objects["TokenStorageService"] = tokenStorageService;

@@ -1,17 +1,28 @@
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {CreateOrderResponseScreenProps} from '../types/NavigationTypes.ts';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import OrderRequestRadiusItem from '../components/listItems/OrderRequestRadiusItem.tsx';
 import React from 'react';
 import {CompanyOrderRequest} from '../types/DomainTypes.ts';
-import {AuthContext} from '../App.tsx';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import Styles from '../constants/Styles.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 
 export default function CreateOrderResponseScreen({route, navigation}: CreateOrderResponseScreenProps) {
   const { changeState } = React.useContext(AuthContext);
+
+  const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
 
   const [orderRequest, setOrderRequest] = React.useState<CompanyOrderRequest | null>(null);
 
@@ -40,7 +51,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
 
   React.useEffect(() => {
     async function getOrderRequest() {
-      let response = await route.params.orderRequestService.getOrderRequestAsCompany(
+      let response = await orderRequestService.getOrderRequestAsCompany(
         route.params.orderRequest.id,
         changeState);
 
@@ -55,49 +66,20 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingHorizontal: 10
-      }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          paddingTop: 20,
-          alignItems: 'center',
-        }}>
+    <View style={styles.container}>
+      <View style={styles.navigateBackButtonContainer}>
         <NavigateBackButton
           navigation={navigation}/>
       </View>
-      <Text
-        style={{
-          position: 'absolute',
-          alignSelf: 'center',
-          top: 15,
-          fontSize: 21,
-          fontWeight: '700',
-        }}>
-        Ответить на заказ
-      </Text>
-      <View
-        style={{
-          paddingTop: 20
-        }}>
+      <Text style={styles.title}>Ответить на заказ</Text>
+      <View style={styles.orderRequestItemContainer}>
         <OrderRequestRadiusItem
           orderRequest={route.params.orderRequest}
           categories={route.params.categories}
           navigation={navigation}
           preview/>
       </View>
-      <Text
-        style={{
-          fontSize: 17,
-          fontWeight: '700',
-          color: 'black',
-          paddingTop: 20,
-        }}>
+      <Text style={styles.subTitle}>
         Клиент хочет узнать:
       </Text>
       {orderRequest != null && (
@@ -122,29 +104,15 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
                 s={'Время выполнения работ'}
                 top={20}
                 bottom={5}/>
-              <View
-                style={{
-                  ...Styles.borderedTextInputView,
-                  ...Styles.borderedTextInputHeight,
-                  ...Styles.borderedTextInputViewColor,
-                  ...Styles.borderedTextInputUnfocused
-                }}>
+              <View style={styles.borderedTextInput}>
                 <TextInput
                   value={deadlinesIndex == -1 ? '' : deadlines[deadlinesIndex].title}
                   placeholder={'Выберите время выполнения работ'}
                   style={Styles.borderedTextInput}
                   readOnly/>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'center',
-                    paddingRight: 10
-                  }}>
+                <TouchableOpacity style={styles.chevronDownButton}>
                   <Image
-                    style={{
-                      width: 15,
-                      height: 15,
-                      resizeMode: 'contain'
-                    }}
+                    style={styles.image}
                     source={require('../assets/images/chevron-down.png')}/>
                 </TouchableOpacity>
               </View>
@@ -152,71 +120,39 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
           {orderRequest.toKnowEnrollmentDate && (
             <>
               <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingTop: 20
-                }}>
-                <View style={{flex: 1, paddingRight: 3}}>
+                style={styles.horizontalSpread}>
+                <View style={styles.dateInputContainer}>
                   <TextInputTitle
                     s={'Дата записи'}
                     top={0}
                     bottom={5}/>
-                  <View
-                    style={{
-                      ...Styles.borderedTextInputView,
-                      ...Styles.borderedTextInputHeight,
-                      ...Styles.borderedTextInputViewColor,
-                      ...Styles.borderedTextInputUnfocused
-                    }}>
+                  <View style={styles.borderedTextInput}>
                     <TextInput
                       value={deadlinesIndex == -1 ? '' : deadlines[deadlinesIndex].title}
                       placeholder={'Выберите дату записи'}
                       style={Styles.borderedTextInput}
                       readOnly/>
-                    <TouchableOpacity
-                      style={{
-                        alignSelf: 'center',
-                        paddingRight: 10
-                      }}>
+                    <TouchableOpacity style={styles.chevronDownButton}>
                       <Image
-                        style={{
-                          width: 15,
-                          height: 15,
-                          resizeMode: 'contain'
-                        }}
+                        style={styles.image}
                         source={require('../assets/images/chevron-down.png')}/>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={{flex: 1, paddingLeft: 3}}>
+                <View style={styles.timeInputContainer}>
                   <TextInputTitle
                     s={'Время записи'}
                     top={0}
                     bottom={5}/>
-                  <View
-                    style={{
-                      ...Styles.borderedTextInputView,
-                      ...Styles.borderedTextInputHeight,
-                      ...Styles.borderedTextInputViewColor,
-                      ...Styles.borderedTextInputUnfocused
-                    }}>
+                  <View style={styles.borderedTextInput}>
                     <TextInput
                       value={deadlinesIndex == -1 ? '' : deadlines[deadlinesIndex].title}
                       placeholder={'Выберите время записи'}
                       style={Styles.borderedTextInput}
                       readOnly/>
-                    <TouchableOpacity
-                      style={{
-                        alignSelf: 'center',
-                        paddingRight: 10
-                      }}>
+                    <TouchableOpacity style={styles.chevronDownButton}>
                       <Image
-                        style={{
-                          width: 15,
-                          height: 15,
-                          resizeMode: 'contain'
-                        }}
+                        style={styles.image}
                         source={require('../assets/images/chevron-down.png')}/>
                     </TouchableOpacity>
                   </View>
@@ -233,3 +169,61 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 10
+  },
+  navigateBackButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingTop: 20,
+    alignItems: 'center',
+  },
+  title: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 15,
+    fontSize: 21,
+    fontWeight: '700',
+  },
+  orderRequestItemContainer: {
+    paddingTop: 20
+  },
+  subTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: 'black',
+    paddingTop: 20,
+  },
+  borderedTextInput: {
+    ...Styles.borderedTextInputView,
+    ...Styles.borderedTextInputHeight,
+    ...Styles.borderedTextInputViewColor,
+    ...Styles.borderedTextInputUnfocused
+  },
+  chevronDownButton: {
+    alignSelf: 'center',
+    paddingRight: 10
+  },
+  image: {
+    width: 15,
+    height: 15,
+    resizeMode: 'contain'
+  },
+  horizontalSpread: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 20
+  },
+  dateInputContainer: {
+    flex: 1,
+    paddingRight: 3
+  },
+  timeInputContainer: {
+    flex: 1,
+    paddingLeft: 3
+  }
+});

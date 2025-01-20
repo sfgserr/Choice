@@ -1,18 +1,23 @@
 import * as React from 'react';
-import {FlatList, RefreshControl, Text, View} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, Text, View} from 'react-native';
 import CategoryItem from '../../components/listItems/CategoryItem.tsx';
 import {Category} from '../../types/DomainTypes.ts';
 import {CategoriesScreenProps} from '../../types/NavigationTypes.ts';
-import { AuthContext } from '../../App.tsx';
+import { AuthContext } from '../../AuthorizedContextProvider.tsx';
+import {useDependency} from '../../stores/DependencyInjection.ts';
+import {CategoryService} from '../../services/domain/CategoryService.ts';
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
+  const categoryService = useDependency<CategoryService>('CategoryService');
+
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [refreshing, setRefreshing] = React.useState(false);
+
   const { changeState } = React.useContext(AuthContext);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    const categories = await route.params.categoryService.getCategories(changeState);
+    const categories = await categoryService.getCategories(changeState);
 
     if (categories.content != null)
       setCategories(categories.content);
@@ -24,7 +29,7 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
 
   React.useEffect(() => {
     async function getCategories() {
-     let c = await route.params.categoryService.getCategories(changeState);
+     let c = await categoryService.getCategories(changeState);
 
      if (c.content != null)
       setCategories(c.content);
@@ -33,22 +38,8 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
   }, []);
 
   return (
-    <View
-      style={{
-        flexDirection: 'column',
-        paddingTop: 20,
-        flex: 1,
-        backgroundColor: 'white'
-      }}>
-      <Text
-        style={{
-          fontWeight: '600',
-          fontSize: 21,
-          color: 'black',
-          alignSelf: 'center'
-        }}>
-        Услуги
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Услуги</Text>
       <FlatList
         data={categories}
         refreshControl={
@@ -56,9 +47,7 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
             refreshing={refreshing}
             onRefresh={onRefresh}/>
         }
-        style={{
-          paddingTop: 20
-        }}
+        style={styles.flatList}
         renderItem={(item) => {
           return (
             <View>
@@ -72,3 +61,21 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    paddingTop: 20,
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  title: {
+    fontWeight: '600',
+    fontSize: 21,
+    color: 'black',
+    alignSelf: 'center'
+  },
+  flatList: {
+    paddingTop: 20
+  },
+});

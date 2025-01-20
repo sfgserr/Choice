@@ -12,8 +12,6 @@ import {CategoryService} from '../services/domain/CategoryService.ts';
 export default function CompanyTabComponent({route, navigation}: TabScreenProps) {
   const CompanyTab = createBottomTabNavigator<CompanyTabProps>();
 
-  const graph = route.params.graph;
-
   const getTabBarIcon = ({focused, source} : {
     focused: boolean
     source: any}) => {
@@ -47,11 +45,7 @@ export default function CompanyTabComponent({route, navigation}: TabScreenProps)
       <CompanyTab.Screen
         name={'OrderRequests'}
         component={CompanyRequestsScreen}
-        options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}
-        initialParams={{
-          orderRequestService: graph.resolve<OrderRequestService>('OrderRequestService'),
-          categoryService: graph.resolve<CategoryService>('CategoryService')
-        }}/>
+        options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}/>
       <CompanyTab.Screen
         name={'Chat'}
         component={ChatScreen}

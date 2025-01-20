@@ -2,26 +2,34 @@ import * as React from 'react';
 import {
   FlatList,
   Image,
-  RefreshControl, ScrollView,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {AuthContext} from '../../App.tsx';
+import {AuthContext} from '../../AuthorizedContextProvider.tsx';
 import {OrderRequestsScreenProps} from '../../types/NavigationTypes.ts';
 import {Category, OrderRequest} from '../../types/DomainTypes.ts';
 import OrderRequestItem from '../../components/listItems/OrderRequestItem.tsx';
 import {StyledButton} from '../../components/buttons/StyledButton.tsx';
+import {useDependency} from '../../stores/DependencyInjection.ts';
+import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../../services/domain/CategoryService.ts';
 
 export default function OrderRequestsScreen({route, navigation}: OrderRequestsScreenProps) {
   const { changeState } = React.useContext(AuthContext);
+
+  const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
+
   const [orderRequests, setOrderRequests] = React.useState<OrderRequest[]>([]);
   const [categories, setCategories] = React.useState<Category[]>([]);
+
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    const orderRequests = await route.params.orderRequestService.getOrderRequests(changeState);
+    const orderRequests = await orderRequestService.getOrderRequests(changeState);
 
     if (orderRequests.content != null)
       setOrderRequests(orderRequests.content);
@@ -33,7 +41,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
 
   React.useEffect(() => {
     async function getOrderRequests() {
-      let response = await route.params.orderRequestService
+      let response = await orderRequestService
         .getOrderRequests(changeState);
 
       if (response.result == 'successful' && response.content != null) {
@@ -41,7 +49,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
       }
     }
     async function getCategories() {
-      let response = await route.params.categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories(changeState);
 
       if (response.result == 'successful' && response.content != null) {
         setCategories(response.content);

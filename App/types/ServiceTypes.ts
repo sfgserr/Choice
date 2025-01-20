@@ -1,3 +1,5 @@
+import {UserType} from '../enums/ModelEnums.ts';
+
 export type UserClaims = {
   sub: string
   type: string
@@ -19,4 +21,10 @@ export type HttpResponse = {
   result: 'successful' | 'unauthorized' | 'bad_request',
   error: string
 };
+
+export type Token = {
+  id: string
+  userType: UserType
+  subscribed: boolean | undefined
+}
 

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import {PaySubscriptionScreenProps} from '../types/NavigationTypes.ts';
 import {SubscriptionPayment} from '../types/DomainTypes.ts';
-import {AuthContext} from '../App.tsx';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
 
 export default function PaySubscriptionScreen({route, navigation}: PaySubscriptionScreenProps){
   const { changeState, signOut } = React.useContext(AuthContext);
+
+  const subscriptionPaymentService = useDependency<SubscriptionPaymentService>('SubscriptionPaymentService');
 
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const [subscriptionPayment, setSubscriptionPayment] = React.useState<SubscriptionPayment>(null);
@@ -20,7 +24,7 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
 
   useEffect(() => {
     const getPayment = async () => {
-      let response = await route.params.subscriptionPaymentService.get(changeState);
+      let response = await subscriptionPaymentService.get(changeState);
 
       if (response.content != null) {
         setSubscriptionPayment(response.content);
@@ -68,7 +72,7 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
       return;
     }
 
-    let response = await route.params.subscriptionPaymentService.pay(changeState);
+    let response = await subscriptionPaymentService.pay(changeState);
 
     if (response.result == 'successful') {
       Alert.alert("Оплата успешна", "Ваш платеж прошел", [{onPress: signOut, text: 'Ок'}]);

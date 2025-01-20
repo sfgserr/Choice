@@ -12,8 +12,6 @@ import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 export default function ClientTabComponent({route, navigation}: TabScreenProps) {
   const ClientTab = createBottomTabNavigator<ClientTabProps>();
 
-  const graph = route.params.graph;
-
   const getTabBarIcon = ({focused, source} : {
     focused: boolean
     source: any}) => {
@@ -47,16 +45,11 @@ export default function ClientTabComponent({route, navigation}: TabScreenProps) 
       <ClientTab.Screen
         name={'Categories'}
         component={CategoriesScreen}
-        initialParams={{categoryService: graph.resolve<CategoryService>("CategoryService")}}
         options={getOptions({title: 'Услуги', source: require('../assets/images/categories.png')})}
       />
       <ClientTab.Screen
         name={'OrderRequests'}
         component={OrderRequestsScreen}
-        initialParams={{
-          orderRequestService: graph.resolve<OrderRequestService>("OrderRequestService"),
-          categoryService: graph.resolve<CategoryService>("CategoryService")
-        }}
         options={getOptions({title: 'Заказы', source: require('../assets/images/orders.png')})}
       />
       <ClientTab.Screen

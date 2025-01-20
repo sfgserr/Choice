@@ -2,7 +2,7 @@ import {TokenService} from '../services/auth/TokenService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {ObjectGraph} from '../di/ObjectGraph.ts';
+import {ObjectGraph} from '../services/ObjectGraph.ts';
 import {Category, OrderRequestRadius} from './DomainTypes.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
@@ -11,53 +11,42 @@ import {ClientService} from '../services/domain/ClientService.ts';
 import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
 
 export type StackProps = {
-  Login: {tokenService: TokenService};
+  Login: undefined;
   Loading: undefined;
   Map: {
     categoryId: number;
     categories: Category[];
-    companyService: CompanyService;
   };
-  Tab: {graph: ObjectGraph};
+  Tab: undefined;
   CreateOrderRequest: {
     categories: Category[];
     categoryIndex: number;
-    orderRequestService: OrderRequestService;
     onGoBack: (orderRequest: OrderRequest) => Promise<void>;
   };
   EditOrderRequest: {
     orderRequestId: string;
-    orderRequestService: OrderRequestService;
-    categoryService: CategoryService;
   };
-  RegisterClient: {clientService: ClientService};
-  RegisterCompany: {
-    companyService: CompanyService;
-    tokenService: TokenService;
-  };
-  FillData: {
-    categoryService: CategoryService;
-    companyService: CompanyService;
-  };
-  SubscriptionPlans: {subscriptionPaymentService: SubscriptionPaymentService};
-  PaySubscription: {subscriptionPaymentService: SubscriptionPaymentService, price: number};
+  RegisterClient: undefined;
+  RegisterCompany: undefined;
+  FillData: undefined
+  SubscriptionPlans: undefined;
+  PaySubscription: {price: number};
   ImageView: {uri: string};
   CreateOrderResponse: {
-    orderRequestService: OrderRequestService,
     orderRequest: OrderRequestRadius,
     categories: Category[]
   };
 };
 
 export type ClientTabProps = {
-  Categories: {categoryService: CategoryService}
-  OrderRequests: {orderRequestService: OrderRequestService, categoryService: CategoryService}
+  Categories: undefined
+  OrderRequests: undefined
   Chat: undefined
   Account: undefined
 };
 
 export type CompanyTabProps = {
-  OrderRequests: {orderRequestService: OrderRequestService, categoryService: CategoryService};
+  OrderRequests: undefined;
   Chat: undefined;
   Account: undefined;
 };

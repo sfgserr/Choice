@@ -1,21 +1,19 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {UserStore} from '../../stores/UserStore.ts';
 import {State} from '../../enums/AppEnums.ts';
 import {TokenService} from '../auth/TokenService.ts';
 import {UserType} from '../../enums/ModelEnums.ts';
 
 export class UserService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
-  private readonly userStore: UserStore;
   private readonly tokenService: TokenService;
+
+  private user: any;
 
   constructor(
     httpService: RefreshTokenHttpServiceDecorator,
-    userStore: UserStore,
     tokenStore: TokenService,
   ) {
     this.httpService = httpService;
-    this.userStore = userStore;
     this.tokenService = tokenStore;
   }
 
@@ -27,6 +25,6 @@ export class UserService {
       changeState,
     );
 
-    if (response.content != null) this.userStore.setUser(response.content);
+    if (response.content != null) this.user = response.content;
   }
 }

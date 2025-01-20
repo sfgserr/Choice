@@ -1,10 +1,10 @@
 import React from 'react';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {FillDataScreenProps} from '../types/NavigationTypes.ts';
 import SocialMediasScreen from './SocialMediasScreen.tsx';
 import AboutScreen from './AboutScreen.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {AuthContext} from '../App.tsx';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import PickCategoriesBottomSheet from '../components/bottomSheets/PickCategoriesBottomSheet.tsx';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {Category} from '../types/DomainTypes.ts';
@@ -12,11 +12,17 @@ import LongRunningOperationIndicator from '../components/LongRunningOperationInd
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {State} from '../enums/AppEnums.ts';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {CompanyService} from '../services/domain/CompanyService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
-  const { changeState, signOut } = React.useContext(AuthContext);
+  const { changeState } = React.useContext(AuthContext);
+
+  const companyService = useDependency<CompanyService>('CompanyService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [socialMediaUris, setSocialMediaUris] = React.useState<string[]>([]);
 
@@ -24,7 +30,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
 
   React.useEffect(() => {
     async function getCategories() {
-      let response = await route.params.categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories(changeState);
 
       if (response.content != null) {
         setCategories(response.content.map((i) => ({category: i, selected: false})));
@@ -48,7 +54,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
   const fillData = async (description: string, photoUris: string[], prepaymentAvailable: boolean) => {
     setIsRefreshing(true);
 
-    const response = await route.params.companyService.fillData(
+    const response = await companyService.fillData(
       description,
       categories
         .filter(c => c.selected)
@@ -103,46 +109,19 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
 
   return (
     <GestureHandlerRootView>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'white',
-          paddingTop: 20,
-          paddingHorizontal: 15
-        }}>
-        <Text
-          style={{
-            fontSize: 21,
-            fontWeight: '600',
-            alignSelf: 'center',
-            color: 'black'
-          }}>
-          Карточка компании
-        </Text>
-        <View
-          style={{
-            justifyContent: 'space-evenly',
-            flexDirection: 'row',
-            paddingTop: 20,
-            paddingBottom: 20
-          }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Карточка компании</Text>
+        <View style={styles.screenContainer}>
           {screens.map((i, n) => (
             <View
-              style={{
+              style={[styles.progressBar, {
+                backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF',
                 width: d.width/screens.length*0.85,
-                height: 4,
-                borderRadius: 5,
-                backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF'
-              }}
+              }]}
               key={n}/>
           ))}
         </View>
-        <View
-          style={{
-            backgroundColor: '#D7D8D9',
-            width: 'auto',
-            height: .25
-          }}/>
+        <View style={styles.splitter}/>
         {screens[currentIndex]}
       </View>
       <SuccessfulRequestModal
@@ -163,3 +142,33 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
     </GestureHandlerRootView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: 20,
+    paddingHorizontal: 15
+  },
+  title: {
+    fontSize: 21,
+    fontWeight: '600',
+    alignSelf: 'center',
+    color: 'black'
+  },
+  screenContainer: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20
+  },
+  progressBar: {
+    height: 4,
+    borderRadius: 5,
+  },
+  splitter: {
+    backgroundColor: '#D7D8D9',
+    width: 'auto',
+    height: .25
+  },
+});

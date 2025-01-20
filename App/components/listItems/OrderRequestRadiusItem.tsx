@@ -6,7 +6,7 @@ import {StyledButton} from '../buttons/StyledButton.tsx';
 
 const d = Dimensions.get('screen');
 
-export default function OrderRequestRadiusItem({orderRequest, categories, navigation, preview}: {
+export default function OrderRequestRadiusItem({orderRequest, categories, navigation, preview=false}: {
   orderRequest: OrderRequestRadius
   categories: Category[]
   navigation: any
@@ -14,7 +14,7 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
   return (
     <View
       style={{
-        maxWidth: 'auto',
+        width: 'auto',
         borderRadius: 10,
         backgroundColor: 'white',
         shadowColor: 'black',
@@ -24,7 +24,6 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
         },
         paddingHorizontal: 10,
         elevation: 2,
-        alignSelf: 'center',
       }}>
       <Text
         style={{

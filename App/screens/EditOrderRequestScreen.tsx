@@ -10,7 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
-import {CreateOrderRequestScreenProps, EditOrderRequestScreenProps} from '../types/NavigationTypes.ts';
+import {EditOrderRequestScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import {Category, OrderRequestDetails, OrderStatus} from '../types/DomainTypes.ts';
@@ -23,15 +23,21 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
-import {AuthContext} from '../App.tsx';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {DateUtils} from '../utils/DateUtils.ts';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function EditOrderRequestScreen({route, navigation}: EditOrderRequestScreenProps) {
   const { changeState } = React.useContext(AuthContext);
+
+  const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [status, setStatus] = React.useState<OrderStatus>();
@@ -59,12 +65,11 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
 
   React.useEffect(() => {
     async function getData() {
-      let response = await route.params.orderRequestService
+      let response = await orderRequestService
         .getOrderRequest(route.params.orderRequestId, changeState);
 
       if (response.result == 'successful' && response.content != null) {
-        let categoriesResponse = await route.params.categoryService
-          .getCategories(changeState);
+        let categoriesResponse = await categoryService.getCategories(changeState);
 
         if (categoriesResponse.result == 'successful' && categoriesResponse.content != null) {
           setCategories(categoriesResponse.content);
@@ -104,28 +109,31 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
     setIsChanged(true);
   }
 
-  const data= [{
-    title: 'Узнать стоимость',
-    checked: toKnowPrice,
-    pressed: () => {
-      setToKnowPrice(p => !p);
-      setIsChanged(true);
-    }
-  }, {
-    title: 'Узнать время выполнения работ',
-    checked: toKnowDeadline,
-    pressed: () => {
-      setToKnowDeadline(p => !p);
-      setIsChanged(true);
-    }
-  }, {
-    title: 'Узнать время записи',
-    checked: toKnowEnrollmentDate,
-    pressed: () => {
-      setToKnowEnrollmentDate(p => !p);
-      setIsChanged(true);
-    }
-  },
+  const data= [
+    {
+      title: 'Узнать стоимость',
+      checked: toKnowPrice,
+      pressed: () => {
+        setToKnowPrice(p => !p);
+        setIsChanged(true);
+      }
+    },
+    {
+      title: 'Узнать время выполнения работ',
+      checked: toKnowDeadline,
+      pressed: () => {
+        setToKnowDeadline(p => !p);
+        setIsChanged(true);
+      }
+    },
+    {
+      title: 'Узнать время записи',
+      checked: toKnowEnrollmentDate,
+      pressed: () => {
+        setToKnowEnrollmentDate(p => !p);
+        setIsChanged(true);
+      }
+    },
   ];
 
   const [isToggled, setIsToggled] = React.useState(false);
@@ -145,7 +153,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const editOrderRequest = async () => {
     setIsRefreshing(true);
 
-    const response = await route.params.orderRequestService.edit(
+    const response = await orderRequestService.edit(
       route.params.orderRequestId,
       categories[categoryIndex].categoryId,
       description,

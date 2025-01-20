@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 import Styles from '../../constants/Styles.tsx';
 import {BorderedTextInputProps} from '../../types/ComponentTypes.ts';
 
-export default function BorderedTextInput({ value, onChanged, placeholder, isError, isBig, keyboard }: BorderedTextInputProps) {
+export default function BorderedTextInput({ value, onChanged, placeholder, isError, isBig, keyboard=undefined }: BorderedTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);
 
   const borderColor = () => {

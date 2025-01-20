@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen.tsx';
 import LoadingScreen from './screens/LoadingScreen.tsx';
-import {ObjectGraph} from './di/ObjectGraph.ts';
+import {ObjectGraph} from './services/ObjectGraph.ts';
 import {StackProps} from './types/NavigationTypes.ts';
 import {Auth} from './types/AppTypes.ts';
 import {State} from './enums/AppEnums.ts';
@@ -27,44 +27,12 @@ import {SubscriptionPaymentService} from './services/domain/SubscriptionPaymentS
 import PaySubscriptionScreen from './screens/PaySubscriptionScreen.tsx';
 import ImageViewScreen from './screens/ImageViewScreen.tsx';
 import CreateOrderResponseScreen from './screens/CreateOrderResponseScreen.tsx';
-
-export const AuthContext = React.createContext<Auth>({
-  signIn: (accessToken, refreshToken) => {},
-  signOut: () => {},
-  changeState: (state: State) => {}
-});
-
+import {AuthorizedContextProvider} from './AuthorizedContextProvider.tsx';
+import {useDependency} from './stores/DependencyInjection.ts';
 function App(): React.JSX.Element {
-  const graph = new ObjectGraph();
-  graph.initialize();
-
-  const stateManager: StateManager = graph.resolve<StateManager>("StateManager");
+  const stateManager: StateManager = useDependency<StateManager>('StateManager');
 
   const [state, setState] = React.useState(State.Restoring);
-
-  const authContext = React.useMemo(
-    () => ({
-      signIn: (accessToken: string, refreshToken: string) => {
-        async function setTokens() {
-          const state = await stateManager.signIn(accessToken, refreshToken);
-          setState(state);
-        }
-        setTokens();
-      },
-      signOut: () => {
-        async function setTokens() {
-          const state = await stateManager.signOut();
-          setState(state);
-        }
-        setTokens();
-      },
-      changeState: (state: State) => {
-        setState(state);
-      }
-    }),
-    [stateManager]
-  );
-
   React.useEffect(() => {
     const getState = async () => {
       const state = await stateManager.getState();
@@ -77,34 +45,24 @@ function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator<StackProps>();
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthorizedContextProvider setState={setState}>
       <NavigationContainer>
         {state == State.SignOut ? (
           <Stack.Navigator>
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              initialParams={{
-                tokenService: graph.resolve<TokenService>('TokenService'),
-              }}
               options={{headerShown: false}}
             />
             <Stack.Screen
               name={'RegisterClient'}
               component={RegisterClientScreen}
               options={{headerShown: false}}
-              initialParams={{
-                clientService: graph.resolve<ClientService>('ClientService'),
-              }}
             />
             <Stack.Screen
               name={'RegisterCompany'}
               component={RegisterCompanyScreen}
               options={{headerShown: false}}
-              initialParams={{
-                companyService: graph.resolve<CompanyService>('CompanyService'),
-                tokenService: graph.resolve<TokenService>('TokenService'),
-              }}
             />
           </Stack.Navigator>
         ) : state == State.Client ? (
@@ -113,38 +71,21 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name={'Tab'}
                 component={ClientTabComponent}
-                initialParams={{graph}}
                 options={{headerShown: false}}
               />
               <Stack.Screen
                 name={'Map'}
                 component={MapScreen}
                 options={{headerShown: false}}
-                initialParams={{
-                  companyService:
-                    graph.resolve<CompanyService>('CompanyService'),
-                }}
               />
               <Stack.Screen
                 name={'CreateOrderRequest'}
                 component={gestureHandlerRootHOC(CreateOrderRequestScreen)}
-                initialParams={{
-                  orderRequestService: graph.resolve<OrderRequestService>(
-                    'OrderRequestService',
-                  ),
-                }}
                 options={{headerShown: false}}
               />
               <Stack.Screen
                 name={'EditOrderRequest'}
                 component={gestureHandlerRootHOC(EditOrderRequestScreen)}
-                initialParams={{
-                  orderRequestService: graph.resolve<OrderRequestService>(
-                    'OrderRequestService',
-                  ),
-                  categoryService:
-                    graph.resolve<CategoryService>('CategoryService'),
-                }}
                 options={{headerShown: false}}
               />
             </Stack.Navigator>
@@ -155,7 +96,6 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name={'Tab'}
                 component={CompanyTabComponent}
-                initialParams={{graph}}
                 options={{headerShown: false}}/>
               <Stack.Screen
                 name={'ImageView'}
@@ -164,8 +104,7 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name={'CreateOrderResponse'}
                 component={CreateOrderResponseScreen}
-                options={{headerShown: false}}
-                initialParams={{orderRequestService: graph.resolve<OrderRequestService>('OrderRequestService')}}/>
+                options={{headerShown: false}}/>
             </Stack.Navigator>
           </>) : state == State.User ? (
           <>
@@ -173,10 +112,6 @@ function App(): React.JSX.Element {
               <Stack.Screen
                 name={'FillData'}
                 component={gestureHandlerRootHOC(FillDataScreen)}
-                initialParams={{
-                  categoryService: graph.resolve<CategoryService>('CategoryService'),
-                  companyService: graph.resolve<CompanyService>('CompanyService')
-                }}
                 options={{headerShown: false}}
               />
             </Stack.Navigator>
@@ -188,13 +123,11 @@ function App(): React.JSX.Element {
                 name={'SubscriptionPlans'}
                 component={SubscriptionPlansScreen}
                 options={{headerShown: false}}
-                initialParams={{subscriptionPaymentService: graph.resolve<SubscriptionPaymentService>('SubscriptionPaymentService')}}
               />
               <Stack.Screen
                 name={'PaySubscription'}
                 component={PaySubscriptionScreen}
                 options={{headerShown: false}}
-                initialParams={{subscriptionPaymentService: graph.resolve<SubscriptionPaymentService>('SubscriptionPaymentService')}}
               />
             </Stack.Navigator>
           </>) : (
@@ -209,7 +142,7 @@ function App(): React.JSX.Element {
           </>
         )}
       </NavigationContainer>
-    </AuthContext.Provider>
+    </AuthorizedContextProvider>
   );
 }
 

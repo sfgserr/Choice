@@ -3,14 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   SafeAreaView,
   FlatList,
 } from 'react-native';
 import {SubscriptionScreenProps} from '../types/NavigationTypes.ts';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
-import {AuthContext} from '../App.tsx';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
 
 interface Plan {
   id: number;
@@ -50,6 +51,8 @@ const plans: Plan[] = [
 
 export default function SubscriptionPlansScreen({route, navigation}: SubscriptionScreenProps) {
   const { changeState } = React.useContext(AuthContext);
+
+  const subscriptionPaymentService = useDependency<SubscriptionPaymentService>('SubscriptionPaymentService');
 
   const [isToggled, setIsToggled] = React.useState(false);
   const [planIndex, setPlanIndex] = React.useState(-1);
@@ -92,7 +95,7 @@ export default function SubscriptionPlansScreen({route, navigation}: Subscriptio
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={async () => {
-          await route.params.subscriptionPaymentService.buy(plans[planIndex].plan, changeState);
+          await subscriptionPaymentService.buy(plans[planIndex].plan, changeState);
 
           setIsToggled(prev => !prev);
 

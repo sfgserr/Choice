@@ -1,18 +1,24 @@
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {RegisterCompanyScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import PasswordBox from '../components/inputs/PasswordBox.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import TextButton from '../components/buttons/TextButton.tsx';
-import {AuthContext} from '../App.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import {AuthContext} from '../AuthorizedContextProvider.tsx';
+import {useDependency} from '../stores/DependencyInjection.ts';
+import {TokenService} from '../services/auth/TokenService.ts';
+import {CompanyService} from '../services/domain/CompanyService.ts';
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
   const { changeState, signIn } = React.useContext(AuthContext);
+
+  const tokenService = useDependency<TokenService>('TokenService');
+  const companyService = useDependency<CompanyService>('CompanyService');
 
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -32,7 +38,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
   const createCompany = async () => {
     setRefreshing(true);
 
-    const response = await route.params.companyService.createCompany(
+    const response = await companyService.createCompany(
       name,
       password,
       email,
@@ -53,7 +59,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
   }
 
   const login = async () => {
-    let tokens = await route.params.tokenService.login(email, password);
+    let tokens = await tokenService.login(email, password);
 
     if (tokens != null) {
       signIn(tokens[0], tokens[1]);
@@ -62,21 +68,10 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
 
   return (
     <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}
+      style={styles.container}
       showsVerticalScrollIndicator={false}>
-      <View style={{paddingHorizontal: 15}}>
-        <Text
-          style={{
-            color: '#313131',
-            fontWeight: '700',
-            fontSize: 24,
-            paddingTop: 30,
-          }}>
-          Регистрация компании
-        </Text>
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Регистрация компании</Text>
         <TextInputTitle
           s={'Название'}
           top={20}
@@ -158,20 +153,8 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
             password != confirmPassword
           }
           pressed={createCompany}/>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: '400',
-            color: '#9C9C9C',
-            alignSelf: 'center'
-          }}>
-          У меня есть аккаунт
-        </Text>
-        <View
-          style={{
-            alignSelf: 'center',
-            paddingTop: 20,
-          }}>
+        <Text style={styles.loginText}>У меня есть аккаунт</Text>
+        <View style={styles.loginButtonContainer}>
           <TextButton
             text={'Войти'}
             onPress={() => navigation.goBack()}/>
@@ -190,3 +173,29 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  contentContainer: {
+    paddingHorizontal: 15
+  },
+  title: {
+    color: '#313131',
+    fontWeight: '700',
+    fontSize: 24,
+    paddingTop: 30,
+  },
+  loginText: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#9C9C9C',
+    alignSelf: 'center'
+  },
+  loginButtonContainer: {
+    alignSelf: 'center',
+    paddingTop: 20,
+  },
+});

@@ -3,11 +3,17 @@ import {CompanyRequestsScreenProps} from '../../types/NavigationTypes.ts';
 import React from 'react';
 import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
 import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import {AuthContext} from '../../App.tsx';
+import {AuthContext} from '../../AuthorizedContextProvider.tsx';
 import OrderRequestRadiusItem from '../../components/listItems/OrderRequestRadiusItem.tsx';
+import {useDependency} from '../../stores/DependencyInjection.ts';
+import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../../services/domain/CategoryService.ts';
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
   const { changeState } = React.useContext(AuthContext);
+
+  const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -16,7 +22,7 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
 
   React.useEffect(() => {
     async function getOrderRequests() {
-      let response = await route.params.orderRequestService.getOrderRequestsRadius(
+      let response = await orderRequestService.getOrderRequestsRadius(
         changeState);
 
       if (response.content != null) {
@@ -24,7 +30,7 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
       }
     }
     async function getCategories() {
-      let response = await route.params.categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories(changeState);
 
       if (response.content != null) {
         setCategories(response.content);
@@ -35,40 +41,22 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white'
-      }}>
+    <View style={styles.container}>
       {orderRequests.length > 0 ? (
         <>
-          <View
-            style={{flex: 1}}>
-            <Text
-              style={{
-                alignSelf: 'center',
-                fontWeight: '600',
-                fontSize: 21,
-                color: 'black',
-                paddingTop: 20
-              }}>
-              Заказы
-            </Text>
+          <View style={styles.contentContainer}>
+            <Text style={styles.title}>Заказы</Text>
             <FlatList
               data={orderRequests}
               renderItem={(item) => (
-                <View
-                  style={{
-                    paddingBottom: 10,
-                    paddingHorizontal: 10
-                  }}>
+                <View style={styles.itemContainer}>
                   <OrderRequestRadiusItem
                     orderRequest={item.item}
                     categories={categories}
                     navigation={navigation}/>
                 </View>
               )}
-              style={{paddingTop: 20}}/>
+              style={styles.flatList}/>
           </View>
         </>) : (
         <>
@@ -97,6 +85,27 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  contentContainer: {
+    flex: 1
+  },
+  title: {
+    alignSelf: 'center',
+    fontWeight: '600',
+    fontSize: 21,
+    color: 'black',
+    paddingTop: 20
+  },
+  itemContainer: {
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+  },
+  flatList: {
+    paddingTop: 20
+  },
   stubContainer: {
     flex: 1,
     justifyContent: 'center'

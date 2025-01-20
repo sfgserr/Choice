@@ -1,4 +1,4 @@
-import {Dimensions, FlatList, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SocialMediaItem from '../components/listItems/SocialMediaItem.tsx';
 import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
@@ -57,33 +57,15 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
   ];
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        paddingTop: 10
-      }}>
-      <Text
-        style={{
-          fontWeight: '700',
-          fontSize: 17,
-          color: 'black',
-        }}>
-        Социальные сети
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Социальные сети</Text>
       <FlatList
         data={socialMedias}
-        style={{paddingTop: 10}}
+        style={styles.flatList}
         renderItem={item => (
           <SocialMediaItem item={item.item}/>
         )}/>
-      <View
-        style={{
-          bottom: 20,
-          position: 'absolute',
-          alignSelf: 'center',
-          width: d.width * 0.9,
-        }}>
+      <View style={styles.buttonContainer}>
         <StyledButton
           content={'Далее'}
           top={0}
@@ -102,3 +84,25 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: 10
+  },
+  title: {
+    fontWeight: '700',
+    fontSize: 17,
+    color: 'black',
+  },
+  flatList: {
+    paddingTop: 10
+  },
+  buttonContainer: {
+    bottom: 20,
+    position: 'absolute',
+    alignSelf: 'center',
+    width: d.width * 0.9,
+  },
+});

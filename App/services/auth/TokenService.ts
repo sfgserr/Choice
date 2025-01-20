@@ -1,21 +1,20 @@
-import {Token} from '../../models/Token.ts';
+import {Token, UserClaims} from '../../types/ServiceTypes.ts';
 import {AuthService} from './AuthService.ts';
-import {TokenStore} from '../../stores/TokenStore.ts';
 import {jwtDecode} from 'jwt-decode';
-import {UserClaims} from '../../types/ServiceTypes.ts';
 import {UserType} from '../../enums/ModelEnums.ts';
 
 export class TokenService {
-  private readonly store: TokenStore;
   private readonly authService: AuthService;
 
-  constructor(store: TokenStore, authService: AuthService) {
-    this.store = store;
+  private token: Token;
+
+  constructor(authService: AuthService) {
     this.authService = authService;
+    this.token = {id: '0', userType: UserType.User, subscribed: undefined};
   }
 
   getUser(): Token {
-    return this.store.state;
+    return this.token;
   }
 
   async login(email: string, password: string) {
@@ -46,12 +45,16 @@ export class TokenService {
     const token = jwtDecode<UserClaims>(accessToken);
 
     if (token.sub != undefined) {
-      this.store.setToken(new Token(token.sub, this.convertStringToUserType(token.type), token.subscribed));
+      this.token = {
+        id: token.sub,
+        userType: this.convertStringToUserType(token.type),
+        subscribed: token.subscribed,
+      };
     }
   }
 
   signOut() {
-    this.store.setToken(new Token('0', UserType.User, undefined));
+    this.token = {id: '0', userType: UserType.User, subscribed: undefined};
   }
 
   private convertStringToUserType(type: string): UserType {
