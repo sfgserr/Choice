@@ -8,20 +8,17 @@ import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import React from 'react';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import {CompanyMapMarker} from '../types/DomainTypes.ts';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
 import CustomMarker from '../components/CustomMarker.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const companyService = useDependency<CompanyService>('CompanyService');
 
   const map = React.createRef<YaMap>();
@@ -33,8 +30,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
   React.useEffect(() => {
     async function getCompanies() {
       let companies = await companyService.getCompanies(
-        route.params.categories[route.params.categoryId].categoryId,
-        changeState);
+        route.params.categories[route.params.categoryId].categoryId);
       if (companies.result == 'successful') {
         map.current?.setCenter(
           {lat: +companies.content[companies.content.length-1].latitude, lon: +companies.content[companies.content.length-1].longitude},

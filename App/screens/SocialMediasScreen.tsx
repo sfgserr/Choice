@@ -7,7 +7,7 @@ import {StyledButton} from '../components/buttons/StyledButton.tsx';
 const d = Dimensions.get('screen');
 
 export default function SocialMediasScreen({next}: {next: (socialMediaUrls: string[]) => void}) {
-  const [urls, seturls] = React.useState<string[]>(['', '', '', '']);
+  const [urls, setUrls] = React.useState<string[]>(['', '', '', '']);
 
   const [isToggled, setIsToggled] = React.useState(false);
   const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -22,7 +22,7 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
       handlePress();
     }
     else {
-      seturls(prev => {
+      setUrls(prev => {
         prev[index] = '';
         return [...prev];
       })
@@ -77,7 +77,7 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
         isToggled={isToggled}
         handlePress={handlePress}
         title={socialMedias[currentIndex].title}
-        onChange={(val) => seturls(prev => {
+        onChange={(val) => setUrls(prev => {
           prev[currentIndex] = val;
           return [...prev];
         })}/>

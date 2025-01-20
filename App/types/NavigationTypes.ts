@@ -1,18 +1,19 @@
-import {TokenService} from '../services/auth/TokenService.ts';
-import {CategoryService} from '../services/domain/CategoryService.ts';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {ObjectGraph} from '../services/ObjectGraph.ts';
 import {Category, OrderRequestRadius} from './DomainTypes.ts';
-import {CompanyService} from '../services/domain/CompanyService.ts';
-import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {OrderRequest} from './DomainTypes.ts';
-import {ClientService} from '../services/domain/ClientService.ts';
-import {SubscriptionPaymentService} from '../services/domain/SubscriptionPaymentService.ts';
 
-export type StackProps = {
-  Login: undefined;
+export type LoadingStackProps = {
   Loading: undefined;
+};
+
+export type SignOutStackProps = {
+  Login: undefined;
+  RegisterClient: undefined;
+  RegisterCompany: undefined;
+}
+
+export type ClientStackProps = {
   Map: {
     categoryId: number;
     categories: Category[];
@@ -26,23 +27,31 @@ export type StackProps = {
   EditOrderRequest: {
     orderRequestId: string;
   };
-  RegisterClient: undefined;
-  RegisterCompany: undefined;
-  FillData: undefined
-  SubscriptionPlans: undefined;
-  PaySubscription: {price: number};
+}
+
+export type CompanyStackProps = {
+  Tab: undefined;
   ImageView: {uri: string};
   CreateOrderResponse: {
-    orderRequest: OrderRequestRadius,
-    categories: Category[]
+    orderRequest: OrderRequestRadius;
+    categories: Category[];
   };
-};
+}
+
+export type UserStackProps = {
+  FillData: undefined;
+}
+
+export type UnsubscribeStackProps = {
+  SubscriptionPlans: undefined;
+  PaySubscription: {price: number};
+}
 
 export type ClientTabProps = {
-  Categories: undefined
-  OrderRequests: undefined
-  Chat: undefined
-  Account: undefined
+  Categories: undefined;
+  OrderRequests: undefined;
+  Chat: undefined;
+  Account: undefined;
 };
 
 export type CompanyTabProps = {
@@ -51,7 +60,7 @@ export type CompanyTabProps = {
   Account: undefined;
 };
 
-export type LoginScreenProps = NativeStackScreenProps<StackProps, 'Login'>;
+export type LoginScreenProps = NativeStackScreenProps<SignOutStackProps, 'Login'>;
 
 export type OrderRequestsScreenProps = BottomTabScreenProps<ClientTabProps, 'OrderRequests'>;
 
@@ -61,29 +70,31 @@ export type CategoriesScreenProps = BottomTabScreenProps<ClientTabProps, 'Catego
 
 export type AccountScreenProps = BottomTabScreenProps<ClientTabProps, 'Account'>;
 
-export type TabScreenProps = NativeStackScreenProps<StackProps, 'Tab'>;
+export type ClientTabScreenProps = NativeStackScreenProps<ClientStackProps, 'Tab'>;
 
-export type MapScreenProps = NativeStackScreenProps<StackProps, 'Map'>;
+export type CompanyTabScreenProps = NativeStackScreenProps<CompanyStackProps, 'Tab'>;
 
-export type CreateOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderRequest'>;
+export type MapScreenProps = NativeStackScreenProps<ClientStackProps, 'Map'>;
 
-export type EditOrderRequestScreenProps = NativeStackScreenProps<StackProps, 'EditOrderRequest'>;
+export type CreateOrderRequestScreenProps = NativeStackScreenProps<ClientStackProps, 'CreateOrderRequest'>;
 
-export type RegisterClientScreenProps = NativeStackScreenProps<StackProps, 'RegisterClient'>;
+export type EditOrderRequestScreenProps = NativeStackScreenProps<ClientStackProps, 'EditOrderRequest'>;
 
-export type RegisterCompanyScreenProps = NativeStackScreenProps<StackProps, 'RegisterCompany'>;
+export type RegisterClientScreenProps = NativeStackScreenProps<SignOutStackProps, 'RegisterClient'>;
 
-export type FillDataScreenProps = NativeStackScreenProps<StackProps, 'FillData'>;
+export type RegisterCompanyScreenProps = NativeStackScreenProps<SignOutStackProps, 'RegisterCompany'>;
+
+export type FillDataScreenProps = NativeStackScreenProps<UserStackProps, 'FillData'>;
 
 export type CompanyRequestsScreenProps = BottomTabScreenProps<CompanyTabProps, 'OrderRequests'>;
 
-export type SubscriptionScreenProps = NativeStackScreenProps<StackProps, 'SubscriptionPlans'>;
+export type SubscriptionScreenProps = NativeStackScreenProps<UnsubscribeStackProps, 'SubscriptionPlans'>;
 
-export type PaySubscriptionScreenProps = NativeStackScreenProps<StackProps, 'PaySubscription'>;
+export type PaySubscriptionScreenProps = NativeStackScreenProps<UnsubscribeStackProps, 'PaySubscription'>;
 
-export type ImageViewScreenProps = NativeStackScreenProps<StackProps, 'ImageView'>;
+export type ImageViewScreenProps = NativeStackScreenProps<CompanyStackProps, 'ImageView'>;
 
-export type CreateOrderResponseScreenProps = NativeStackScreenProps<StackProps, 'CreateOrderResponse'>;
+export type CreateOrderResponseScreenProps = NativeStackScreenProps<CompanyStackProps, 'CreateOrderResponse'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>

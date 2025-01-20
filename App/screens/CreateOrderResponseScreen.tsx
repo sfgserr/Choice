@@ -11,17 +11,14 @@ import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import OrderRequestRadiusItem from '../components/listItems/OrderRequestRadiusItem.tsx';
 import React from 'react';
 import {CompanyOrderRequest} from '../types/DomainTypes.ts';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import Styles from '../constants/Styles.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 
 export default function CreateOrderResponseScreen({route, navigation}: CreateOrderResponseScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
 
   const [orderRequest, setOrderRequest] = React.useState<CompanyOrderRequest | null>(null);
@@ -52,8 +49,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   React.useEffect(() => {
     async function getOrderRequest() {
       let response = await orderRequestService.getOrderRequestAsCompany(
-        route.params.orderRequest.id,
-        changeState);
+        route.params.orderRequest.id);
 
       if (response.content != null) {
         setOrderRequest(response.content);

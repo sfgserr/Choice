@@ -1,5 +1,4 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../../enums/AppEnums.ts';
 import {CompanyMapMarker} from '../../types/DomainTypes.ts';
 import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 import {FilePathUtils} from '../../utils/FilePathUtils.ts';
@@ -20,8 +19,7 @@ export class CompanyService {
     email: string,
     phoneNumber: string,
     city: string,
-    street: string,
-    changeState: (state: State) => void) {
+    street: string) {
     return await this.httpService.request(
       'companies',
       'POST',
@@ -32,8 +30,7 @@ export class CompanyService {
         phoneNumber,
         city,
         street
-      }),
-      changeState);
+      }));
   }
 
   async fillData(
@@ -41,8 +38,7 @@ export class CompanyService {
     categoryIds: number[],
     photoUris: string[],
     socialMediaUris: string[],
-    isPrepaymentAvailable: boolean,
-    changeState: (state: State) => void) {
+    isPrepaymentAvailable: boolean) {
     const sources = ['', '', '', '', '', ''];
     for (let i = 0; i < 6; i++) {
       sources[i] = photoUris[i];
@@ -60,8 +56,7 @@ export class CompanyService {
         photoUris,
         socialMediaUris,
         isPrepaymentAvailable
-      }),
-      changeState);
+      }));
 
     if (response.result == 'successful') {
       for (let i = 0; i < 6; i++) {
@@ -73,11 +68,10 @@ export class CompanyService {
     return response;
   }
 
-  async getCompanies(categoryId: number, changeState: (state: State) => void): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
+  async getCompanies(categoryId: number): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
     return await this.httpService.requestWithContent<CompanyMapMarker[]>(
       `companies/${categoryId}`,
       'GET',
-      undefined,
-      changeState);
+      undefined);
   }
 }

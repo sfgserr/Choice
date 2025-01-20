@@ -7,18 +7,15 @@ import {
   Text,
   View,
 } from 'react-native';
-import {AuthContext} from '../../AuthorizedContextProvider.tsx';
 import {OrderRequestsScreenProps} from '../../types/NavigationTypes.ts';
 import {Category, OrderRequest} from '../../types/DomainTypes.ts';
 import OrderRequestItem from '../../components/listItems/OrderRequestItem.tsx';
 import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import {useDependency} from '../../stores/DependencyInjection.ts';
+import {useDependency} from '../../services/Hooks.ts';
 import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../services/domain/CategoryService.ts';
 
 export default function OrderRequestsScreen({route, navigation}: OrderRequestsScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const categoryService = useDependency<CategoryService>('CategoryService');
 
@@ -29,7 +26,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    const orderRequests = await orderRequestService.getOrderRequests(changeState);
+    const orderRequests = await orderRequestService.getOrderRequests();
 
     if (orderRequests.content != null)
       setOrderRequests(orderRequests.content);
@@ -42,14 +39,14 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
   React.useEffect(() => {
     async function getOrderRequests() {
       let response = await orderRequestService
-        .getOrderRequests(changeState);
+        .getOrderRequests();
 
       if (response.result == 'successful' && response.content != null) {
         setOrderRequests(response.content);
       }
     }
     async function getCategories() {
-      let response = await categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories();
 
       if (response.result == 'successful' && response.content != null) {
         setCategories(response.content);

@@ -1,5 +1,4 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../../enums/AppEnums.ts';
 import {SubscriptionPayment} from '../../types/DomainTypes.ts';
 
 export class SubscriptionPaymentService {
@@ -9,27 +8,24 @@ export class SubscriptionPaymentService {
     this.httpService = httpService;
   }
 
-  async buy(plan: string, changeState: (state: State) => void) {
+  async buy(plan: string) {
     return this.httpService.request(
       `subscriptionPayment/${plan}`,
       'POST',
-      undefined,
-      changeState);
+      undefined);
   }
 
-  async get(changeState: (state: State) => void) {
+  async get() {
     return this.httpService.requestWithContent<SubscriptionPayment>(
       `subscriptionPayment`,
       'GET',
-      undefined,
-      changeState);
+      undefined);
   }
 
-  async pay(changeState: (state: State) => void) {
+  async pay() {
     return this.httpService.request(
       'subscriptionPayment',
       'PUT',
-      undefined,
-      changeState);
+      undefined);
   }
 }

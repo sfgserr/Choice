@@ -9,13 +9,10 @@ import TextButton from '../components/buttons/TextButton.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {ClientService} from '../services/domain/ClientService.ts';
 
 export default function RegisterClientScreen({route, navigation}: RegisterClientScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const clientService = useDependency<ClientService>('ClientService');
 
   const [name, setName] = React.useState('');
@@ -43,8 +40,7 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
       email,
       phoneNumber,
       city,
-      street,
-      changeState);
+      street);
 
     setRefreshing(false);
 

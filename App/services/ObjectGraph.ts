@@ -12,6 +12,7 @@ import {OrderRequestService} from './domain/OrderRequestService.ts';
 import {ObjectStorageService} from './object/ObjectStorageService.ts';
 import {ClientService} from './domain/ClientService.ts';
 import {SubscriptionPaymentService} from './domain/SubscriptionPaymentService.ts';
+import {State} from '../enums/AppEnums.ts';
 
 type Object = {
   [name: string]: object,
@@ -25,13 +26,13 @@ export class ObjectGraph {
   }
 
   static resolve<T>(type: string): T {
-    if (!this.isInitialized)
-      this.initialize();
+    if (this.isInitialized)
+      return this.objects[type] as T;
 
-    return this.objects[type] as T;
+    throw new Error();
   }
 
-  private static initialize() {
+  static initialize(setState: (state: State) => void) {
     if (this.isInitialized) return;
 
     if (
@@ -51,7 +52,7 @@ export class ObjectGraph {
     const tokenStorageService = new TokenStorageService();
     const accountManager = new AccountManager(tokenService);
     const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
-    const httpService = new RefreshTokenHttpServiceDecorator(stateManager);
+    const httpService = new RefreshTokenHttpServiceDecorator(stateManager, setState);
     const categoryService = new CategoryService(httpService);
     const userService = new UserService(httpService, tokenService);
     const objectStorageService = new ObjectStorageService(

@@ -1,5 +1,4 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../../enums/AppEnums.ts';
 import {CompanyOrderRequest, OrderRequest, OrderRequestDetails, OrderRequestRadius} from '../../types/DomainTypes.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
 import {FilePathUtils} from '../../utils/FilePathUtils.ts';
@@ -20,8 +19,7 @@ export class OrderRequestService {
     toKnowDeadline: boolean,
     toKnowEnrollmentDate: boolean,
     photoUris: string[],
-    distance: number,
-    changeState: (state: State) => void) {
+    distance: number) {
     const sources = ['', '', ''];
     for (let i = 0; i < 3; i++) {
       sources[i] = photoUris[i];
@@ -41,8 +39,7 @@ export class OrderRequestService {
         toKnowEnrollmentDate,
         photoUris,
         distance
-      }),
-      changeState);
+      }));
 
     if (response.result == 'successful') {
       for (let i = 0; i < 3; i++) {
@@ -62,8 +59,7 @@ export class OrderRequestService {
     toKnowDeadline: boolean,
     toKnowEnrollmentDate: boolean,
     photoUris: string[],
-    distance: number,
-    changeState: (state: State) => void) {
+    distance: number) {
     const toUpload = ['', '', ''];
 
     for (let i = 0; i < 3; i++) {
@@ -87,8 +83,7 @@ export class OrderRequestService {
         toKnowEnrollmentDate,
         photoUris,
         distance
-      }),
-      changeState);
+      }));
 
     if (response.result == 'successful') {
       for (let i = 0; i < 3; i++) {
@@ -100,36 +95,32 @@ export class OrderRequestService {
     return response;
   }
 
-  async getOrderRequests(changeState: (state: State) => void) {
+  async getOrderRequests() {
     return await this.httpService.requestWithContent<OrderRequest[]>(
       'orderRequests',
       'GET',
-      undefined,
-      changeState
+      undefined
     );
   }
 
-  async getOrderRequest(id: string, changeState: (state: State) => void) {
+  async getOrderRequest(id: string) {
     return await this.httpService.requestWithContent<OrderRequestDetails>(
       `orderRequests/${id}`,
       'GET',
-      undefined,
-      changeState);
+      undefined);
   }
 
-  async getOrderRequestsRadius(changeState: (state: State) => void) {
+  async getOrderRequestsRadius() {
     return await this.httpService.requestWithContent<OrderRequestRadius[]>(
       'orderRequests/radius',
       'GET',
-      undefined,
-      changeState);
+      undefined);
   }
 
-  async getOrderRequestAsCompany(id: string, changeState: (state: State) => void) {
+  async getOrderRequestAsCompany(id: string) {
     return await this.httpService.requestWithContent<CompanyOrderRequest>(
       `orderRequests/company/${id}`,
       'GET',
-      undefined,
-      changeState);
+      undefined);
   }
 }

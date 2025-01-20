@@ -5,16 +5,17 @@ import {HttpResponse, HttpResponseWithContent} from '../../types/ServiceTypes.ts
 
 export class RefreshTokenHttpServiceDecorator {
   private readonly stateManager: StateManager;
+  private readonly setState: (state: State) => void;
 
-  constructor(stateManager: StateManager) {
+  constructor(stateManager: StateManager, setState: (state: State) => void) {
     this.stateManager = stateManager;
+    this.setState = setState;
   }
 
   public async requestWithContent<T>(
     endPoint: string,
     method: string,
-    body: BodyInit_ | undefined,
-    setState: (state: State) => void): Promise<HttpResponseWithContent<T>> {
+    body: BodyInit_ | undefined): Promise<HttpResponseWithContent<T>> {
     const response = await this.internalRequestWithContent<T>(endPoint, method, body);
 
     if (response.result == 'unauthorized') {
@@ -24,7 +25,7 @@ export class RefreshTokenHttpServiceDecorator {
         return await this.internalRequestWithContent<T>(endPoint, method, body);
       }
 
-      setState(State.SignOut);
+      this.setState(State.SignOut);
       return {result: 'unauthorized', content: null, error: ''};
     }
 
@@ -89,8 +90,7 @@ export class RefreshTokenHttpServiceDecorator {
   public async request(
     endPoint: string,
     method: string,
-    body: BodyInit_ | undefined,
-    setState: (state: State) => void): Promise<HttpResponse> {
+    body: BodyInit_ | undefined): Promise<HttpResponse> {
     const response = await this.internalRequest(endPoint, method, body);
 
     if (response.result == 'unauthorized') {
@@ -100,7 +100,7 @@ export class RefreshTokenHttpServiceDecorator {
         return await this.internalRequest(endPoint, method, body);
       }
 
-      setState(State.SignOut);
+      this.setState(State.SignOut);
       return {result: 'unauthorized', error: ''};
     }
 

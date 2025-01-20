@@ -3,7 +3,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {AuthContext} from '../../AuthorizedContextProvider.tsx';
+import {AuthContext} from '../../contexts/authorized/Context.tsx';
 import {StyledButton} from '../../components/buttons/StyledButton.tsx';
 import {AccountScreenProps} from '../../types/NavigationTypes.ts';
 

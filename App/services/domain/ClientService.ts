@@ -1,5 +1,4 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../../enums/AppEnums.ts';
 
 export class ClientService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -14,8 +13,7 @@ export class ClientService {
     email: string,
     phoneNumber: string,
     city: string,
-    street: string,
-    changeState: (state: State) => void) {
+    street: string) {
     return await this.httpService.request(
       'clients',
       'POST',
@@ -26,7 +24,6 @@ export class ClientService {
         phoneNumber,
         city,
         street
-      }),
-      changeState);
+      }));
   }
 }

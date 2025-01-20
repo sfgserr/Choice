@@ -7,8 +7,8 @@ import TextInputTitle from '../components/TextInputTitle.tsx';
 import PasswordBox from '../components/inputs/PasswordBox.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {TokenService} from '../services/auth/TokenService.ts';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {AuthContext} from '../contexts/authorized/Context.tsx';
+import {useDependency} from '../services/Hooks.ts';
 
 export default function LoginByEmailScreen() {
   const { signIn } = React.useContext(AuthContext);

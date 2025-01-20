@@ -4,7 +4,6 @@ import {FillDataScreenProps} from '../types/NavigationTypes.ts';
 import SocialMediasScreen from './SocialMediasScreen.tsx';
 import AboutScreen from './AboutScreen.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import PickCategoriesBottomSheet from '../components/bottomSheets/PickCategoriesBottomSheet.tsx';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {Category} from '../types/DomainTypes.ts';
@@ -12,15 +11,13 @@ import LongRunningOperationIndicator from '../components/LongRunningOperationInd
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {State} from '../enums/AppEnums.ts';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
 
@@ -30,7 +27,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
 
   React.useEffect(() => {
     async function getCategories() {
-      let response = await categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories();
 
       if (response.content != null) {
         setCategories(response.content.map((i) => ({category: i, selected: false})));
@@ -61,8 +58,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
         .map(c => c.category.categoryId),
       photoUris,
       socialMediaUris,
-      prepaymentAvailable,
-      changeState);
+      prepaymentAvailable);
 
     setIsRefreshing(false);
 

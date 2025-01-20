@@ -3,15 +3,12 @@ import {CompanyRequestsScreenProps} from '../../types/NavigationTypes.ts';
 import React from 'react';
 import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
 import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import {AuthContext} from '../../AuthorizedContextProvider.tsx';
 import OrderRequestRadiusItem from '../../components/listItems/OrderRequestRadiusItem.tsx';
-import {useDependency} from '../../stores/DependencyInjection.ts';
+import {useDependency} from '../../services/Hooks.ts';
 import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../services/domain/CategoryService.ts';
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const categoryService = useDependency<CategoryService>('CategoryService');
 
@@ -22,15 +19,14 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
 
   React.useEffect(() => {
     async function getOrderRequests() {
-      let response = await orderRequestService.getOrderRequestsRadius(
-        changeState);
+      let response = await orderRequestService.getOrderRequestsRadius();
 
       if (response.content != null) {
         setOrderRequests(response.content);
       }
     }
     async function getCategories() {
-      let response = await categoryService.getCategories(changeState);
+      let response = await categoryService.getCategories();
 
       if (response.content != null) {
         setCategories(response.content);

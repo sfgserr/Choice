@@ -23,19 +23,16 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {DateUtils} from '../utils/DateUtils.ts';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function EditOrderRequestScreen({route, navigation}: EditOrderRequestScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const categoryService = useDependency<CategoryService>('CategoryService');
 
@@ -66,10 +63,10 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   React.useEffect(() => {
     async function getData() {
       let response = await orderRequestService
-        .getOrderRequest(route.params.orderRequestId, changeState);
+        .getOrderRequest(route.params.orderRequestId);
 
       if (response.result == 'successful' && response.content != null) {
-        let categoriesResponse = await categoryService.getCategories(changeState);
+        let categoriesResponse = await categoryService.getCategories();
 
         if (categoriesResponse.result == 'successful' && categoriesResponse.content != null) {
           setCategories(categoriesResponse.content);
@@ -81,6 +78,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         }
       }
     }
+    getData();
 
     getData();
   }, []);
@@ -161,8 +159,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       toKnowDeadline,
       toKnowEnrollmentDate,
       photos,
-      radius,
-      changeState
+      radius
     );
 
     setIsRefreshing(false);

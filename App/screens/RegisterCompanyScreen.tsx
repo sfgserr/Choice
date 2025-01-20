@@ -9,13 +9,13 @@ import TextButton from '../components/buttons/TextButton.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {AuthContext} from '../contexts/authorized/Context.tsx';
+import {useDependency} from '../services/Hooks.ts';
 import {TokenService} from '../services/auth/TokenService.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
-  const { changeState, signIn } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   const tokenService = useDependency<TokenService>('TokenService');
   const companyService = useDependency<CompanyService>('CompanyService');
@@ -44,8 +44,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
       email,
       phoneNumber,
       city,
-      street,
-      changeState);
+      street);
 
     if (response.result == 'successful') {
       setToggled(true);

@@ -17,12 +17,11 @@ export class UserService {
     this.tokenService = tokenStore;
   }
 
-  async fetchUser(changeState: (state: State) => void) {
+  async fetchUser() {
     const response = await this.httpService.requestWithContent(
       this.tokenService.getUser().userType == UserType.Client ? 'clients' : 'companies',
       'GET',
-      undefined,
-      changeState,
+      undefined
     );
 
     if (response.content != null) this.user = response.content;

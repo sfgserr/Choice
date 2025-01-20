@@ -23,18 +23,15 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
-import {AuthContext} from '../AuthorizedContextProvider.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
-import {useDependency} from '../stores/DependencyInjection.ts';
+import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
-
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
 
   const [categories, setCategories] = React.useState<Category[]>(route.params.categories);
@@ -115,9 +112,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       toKnowDeadline,
       toKnowEnrollmentDate,
       photos,
-      radius,
-      changeState
-    );
+      radius);
 
     setIsRefreshing(false);
 

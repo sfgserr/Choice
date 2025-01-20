@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Auth} from './types/AppTypes.ts';
-import {State} from './enums/AppEnums.ts';
-import {useDependency} from './stores/DependencyInjection.ts';
-import {StateManager} from './managers/StateManager.ts';
+import {Auth} from '../../types/AppTypes.ts';
+import {State} from '../../enums/AppEnums.ts';
+import {StateManager} from '../../managers/StateManager.ts';
+import {useDependency} from '../../services/Hooks.ts';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -10,12 +10,10 @@ export const AuthContext = React.createContext<Auth>({
   changeState: (state: State) => {}
 });
 
-export const AuthorizedContextProvider = ({children, setState}: {
-  children: any
-  setState: (state: State) => void}) => {
-  const stateManager = useDependency<StateManager>('StateManager');
+export const useAuthContext = (setState: (state: State) => void) => {
+  const stateManager: StateManager = useDependency<StateManager>('StateManager');
 
-  const authContext = React.useMemo(
+  return React.useMemo(
     () => ({
       signIn: (accessToken: string, refreshToken: string) => {
         async function setTokens() {
@@ -37,10 +35,4 @@ export const AuthorizedContextProvider = ({children, setState}: {
     }),
     [stateManager]
   );
-
-  return (
-    <AuthContext.Provider value={authContext}>
-      {children}
-    </AuthContext.Provider>
-  )
 }
