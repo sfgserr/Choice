@@ -17,7 +17,7 @@ export default function UserNavigator({state}: {state: State}) {
     <>
       {state == State.User && (
         <UserStack.Navigator>
-          <FillData/>
+          {FillData()}
         </UserStack.Navigator>
       )}
     </>

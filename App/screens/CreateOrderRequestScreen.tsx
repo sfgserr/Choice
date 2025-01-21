@@ -34,7 +34,8 @@ const d = Dimensions.get('screen');
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
 
-  const [categories, setCategories] = React.useState<Category[]>(route.params.categories);
+  const categories = route.params.categories;
+
   const [description, setDescription] = React.useState('');
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
   const [toKnowDeadline, setToKnowDeadline] = React.useState(false);

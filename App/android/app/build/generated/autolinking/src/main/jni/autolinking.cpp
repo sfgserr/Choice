@@ -8,6 +8,7 @@
 
 #include "autolinking.h"
 #include <RNReactNativeFsSpec.h>
+#include <RNDateTimePickerCGen.h>
 #include <rngesturehandler_codegen.h>
 #include <react/renderer/components/rngesturehandler_codegen/ComponentDescriptors.h>
 #include <RNImagePickerSpec.h>
@@ -25,6 +26,10 @@ std::shared_ptr<TurboModule> autolinking_ModuleProvider(const std::string module
 auto module_RNReactNativeFsSpec = RNReactNativeFsSpec_ModuleProvider(moduleName, params);
 if (module_RNReactNativeFsSpec != nullptr) {
 return module_RNReactNativeFsSpec;
+}
+auto module_RNDateTimePickerCGen = RNDateTimePickerCGen_ModuleProvider(moduleName, params);
+if (module_RNDateTimePickerCGen != nullptr) {
+return module_RNDateTimePickerCGen;
 }
 auto module_rngesturehandler_codegen = rngesturehandler_codegen_ModuleProvider(moduleName, params);
 if (module_rngesturehandler_codegen != nullptr) {

@@ -8,11 +8,11 @@ export default function CompanyNavigator({state}: {state: State}) {
     <>
       {state == State.Company && (
         <CompanyStack.Navigator>
-          <Tab/>
-          <ImageView/>
-          <CreateOrderResponse/>
+          {Tab()}
+          {ImageView()}
+          {CreateOrderResponse()}
         </CompanyStack.Navigator>
       )}
     </>
-  )
+  );
 }

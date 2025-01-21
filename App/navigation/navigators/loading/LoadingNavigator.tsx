@@ -16,7 +16,7 @@ export default function LoadingNavigator({state}: {state: State}) {
     <>
       {state == State.Restoring && (
         <LoadingStack.Navigator>
-          <Loading/>
+          {Loading()}
         </LoadingStack.Navigator>
       )}
     </>

@@ -6,9 +6,9 @@ import {Account, Chat, OrderRequests} from './Screens.tsx';
 export default function CompanyTabComponent({route, navigation}: CompanyTabScreenProps) {
   return (
     <CompanyTab.Navigator>
-      <OrderRequests/>
-      <Chat/>
-      <Account/>
+      {OrderRequests()}
+      {Chat()}
+      {Account()}
     </CompanyTab.Navigator>
-  )
+  );
 }

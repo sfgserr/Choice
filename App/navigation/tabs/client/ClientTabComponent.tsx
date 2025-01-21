@@ -6,10 +6,10 @@ import {Account, Categories, Chat, OrderRequests} from './Screens.tsx';
 export default function ClientTabComponent({route, navigation}: ClientTabScreenProps) {
   return (
     <ClientTab.Navigator>
-      <Categories/>
-      <OrderRequests/>
-      <Chat/>
-      <Account/>
+      {Categories()}
+      {OrderRequests()}
+      {Chat()}
+      {Account()}
     </ClientTab.Navigator>
-  )
+  );
 }

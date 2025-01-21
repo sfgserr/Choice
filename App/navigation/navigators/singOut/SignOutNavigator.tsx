@@ -8,10 +8,11 @@ export default function SignOutNavigator({state}: {state: State}) {
     <>
       {state == State.SignOut && (
         <SignOutStack.Navigator>
-          <Login/>
-          <RegisterClient/>
-          <RegisterCompany/>
+          {Login()}
+          {RegisterClient()}
+          {RegisterCompany()}
         </SignOutStack.Navigator>
       )}
-    </>);
+    </>
+  );
 }

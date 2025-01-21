@@ -1,4 +1,4 @@
-import {FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {CompanyRequestsScreenProps} from '../../types/NavigationTypes.ts';
 import React from 'react';
 import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
@@ -17,6 +17,29 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
   const [orderRequests, setOrderRequests] = React.useState<OrderRequestRadius[]>([]);
   const [categories, setCategories] = React.useState<Category[]>([]);
 
+  const onRefresh = React.useCallback(async () => {
+    async function getOrderRequests() {
+      let response = await orderRequestService.getOrderRequestsRadius();
+
+      if (response.content != null) {
+        setOrderRequests(response.content);
+      }
+    }
+    async function getCategories() {
+      let response = await categoryService.getCategories();
+
+      if (response.content != null) {
+        setCategories(response.content);
+      }
+    }
+    setRefreshing(true);
+
+    await getOrderRequests();
+    await getCategories();
+
+    setRefreshing(false);
+  }, []);
+
   React.useEffect(() => {
     async function getOrderRequests() {
       let response = await orderRequestService.getOrderRequestsRadius();
@@ -32,8 +55,8 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
         setCategories(response.content);
       }
     }
-    getOrderRequests();
     getCategories();
+    getOrderRequests();
   }, []);
 
   return (
@@ -44,6 +67,9 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
             <Text style={styles.title}>Заказы</Text>
             <FlatList
               data={orderRequests}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
               renderItem={(item) => (
                 <View style={styles.itemContainer}>
                   <OrderRequestRadiusItem
@@ -52,6 +78,7 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
                     navigation={navigation}/>
                 </View>
               )}
+              onEndReached={() => {}}
               style={styles.flatList}/>
           </View>
         </>) : (

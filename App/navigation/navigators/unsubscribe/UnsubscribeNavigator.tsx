@@ -25,10 +25,10 @@ export default function UnsubscribeNavigator({state}: {state: State}) {
     <>
       {state == State.Unsubscribe && (
         <UnsubscribeStack.Navigator>
-          <SubscriptionPlans/>
-          <PaySubscription/>
+          {SubscriptionPlans()}
+          {PaySubscription()}
         </UnsubscribeStack.Navigator>
       )}
     </>
-  )
+  );
 }

@@ -8,12 +8,12 @@ export default function ClientNavigator({state}: {state: State}) {
     <>
       {state == State.Client && (
         <ClientStack.Navigator>
-          <Tab/>
-          <Map/>
-          <CreateOrderRequest/>
-          <EditOrderRequest/>
+          {Tab()}
+          {Map()}
+          {CreateOrderRequest()}
+          {EditOrderRequest()}
         </ClientStack.Navigator>
       )}
     </>
-  )
+  );
 }
