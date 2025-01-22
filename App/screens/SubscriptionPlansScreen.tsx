@@ -80,15 +80,17 @@ export default function SubscriptionPlansScreen({route, navigation}: Subscriptio
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Выберите план</Text>
-      <FlatList
-        data={plans}
-        renderItem={renderPlan}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.plan}
-        contentContainerStyle={styles.list}
-      />
+    <>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.header}>Выберите план</Text>
+        <FlatList
+          data={plans}
+          renderItem={renderPlan}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.plan}
+          contentContainerStyle={styles.list}
+        />
+      </SafeAreaView>
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={async () => {
@@ -100,7 +102,7 @@ export default function SubscriptionPlansScreen({route, navigation}: Subscriptio
         }}
         title={'Создать заказ?'}
         text={''}/>
-    </SafeAreaView>
+    </>
   );
 };
 

@@ -14,10 +14,13 @@ import {State} from '../enums/AppEnums.ts';
 import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
+import {AuthContext} from '../contexts/authorized/Context.tsx';
 
 const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
+  const { changeState } = React.useContext(AuthContext);
+
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
 

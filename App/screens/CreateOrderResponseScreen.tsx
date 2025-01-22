@@ -21,7 +21,10 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import CustomBottomSheet from '../components/bottomSheets/CustomBottomSheet.tsx';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import Animated, {useAnimatedStyle,withSpring} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import AnimatedText from '../components/AnimatedText.tsx';
+import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
+import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 
 type Form = {
   price: string
@@ -58,8 +61,10 @@ const ToggleBorder = ({title, value, onPress}: {title: string, value: string, on
 
 export default function CreateOrderResponseScreen({route, navigation}: CreateOrderResponseScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
+  const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
 
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [isToggled, setIsToggled] = React.useState(false);
 
   const [showDatePicker, setShowDatePicker] = React.useState(false);
   const [showTimePicker, setShowTimePicker] = React.useState(false);
@@ -79,6 +84,8 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
 
     if (form.deadlinesIndex == -1 && orderRequest?.toKnowDeadline)
       return false;
+
+    return true;
   }
 
   const secondsInDay = 24 * 3600;
@@ -102,8 +109,8 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   ]
 
   React.useEffect(() => {
-    async function getOrderRequest() {
-      let response = await orderRequestService.getOrderRequestAsCompany(
+    const getOrderRequest = async () => {
+      const response = await orderRequestService.getOrderRequestAsCompany(
         route.params.orderRequest.id);
 
       if (response.content != null) {
@@ -113,129 +120,168 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
         navigation.goBack();
       }
     }
+
     setIsRefreshing(true);
-
     getOrderRequest();
-
     setIsRefreshing(false);
   }, []);
 
-  const ref = React.useRef<BottomSheet>(null);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const createOrderResponse = React.useCallback(async () => {
+    form.date.setHours(form.time.getHours(), form.time.getMinutes());
 
-  const style = useAnimatedStyle(() => ({
-    opacity: withSpring(currentIndex == 3 ? 1 : 0, {duration: 1000}),
-  }))
+    setIsRefreshing(true);
+
+    const result = await orderResponseService.createOrderResponse(
+      route.params.orderRequest.id,
+      +form.price,
+      deadlines[form.deadlinesIndex].seconds,
+      form.date,
+      0);
+
+    setIsRefreshing(false);
+
+    if (result.result == 'successful')
+      setIsToggled(prev => !prev);
+  }, [form]);
+
+  const ref = React.useRef<BottomSheet>(null);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.navigateBackButtonContainer}>
-        <NavigateBackButton navigation={navigation} />
-      </View>
-      <Text style={styles.title}>Ответить на заказ</Text>
-      <View style={styles.orderRequestItemContainer}>
-        <OrderRequestRadiusItem
-          orderRequest={route.params.orderRequest}
-          categories={route.params.categories}
-          navigation={navigation}
-          preview
-        />
-      </View>
-      <Text style={styles.subTitle}>Клиент хочет узнать:</Text>
-      {orderRequest != null && (
-        <>
-          {orderRequest.toKnowPrice && (
-            <>
-              <TextInputTitle s={'Стоимость'} top={20} bottom={5} />
-              <BorderedTextInput
-                value={form.price}
-                onChanged={v => setForm(prev => ({...prev, price: v}))}
-                placeholder={'Введите стоимость'}
-                isError={false}
-                isBig={false}
-                keyboard={'number-pad'}
+    <>
+      <View style={styles.container}>
+        <View style={styles.navigateBackButtonContainer}>
+          <NavigateBackButton navigation={navigation} />
+        </View>
+        <Text style={styles.title}>Ответить на заказ</Text>
+        <View style={styles.orderRequestItemContainer}>
+          <OrderRequestRadiusItem
+            orderRequest={route.params.orderRequest}
+            categories={route.params.categories}
+            navigation={navigation}
+            preview
+          />
+        </View>
+        <Text style={styles.subTitle}>Клиент хочет узнать:</Text>
+        {orderRequest != null && (
+          <>
+            {orderRequest.toKnowPrice && (
+              <>
+                <TextInputTitle s={'Стоимость'} top={20} bottom={5} />
+                <BorderedTextInput
+                  value={form.price}
+                  onChanged={v => setForm(prev => ({...prev, price: v}))}
+                  placeholder={'Введите стоимость'}
+                  isError={false}
+                  isBig={false}
+                  keyboard={'number-pad'}
+                />
+              </>
+            )}
+            {orderRequest.toKnowDeadline && (
+              <ToggleBorder
+                title={'Время выполнения работ'}
+                value={
+                  form.deadlinesIndex == -1
+                    ? ''
+                    : deadlines[form.deadlinesIndex].title
+                }
+                onPress={() => ref.current?.expand()}
               />
-            </>
-          )}
-          {orderRequest.toKnowDeadline && (
-            <ToggleBorder
-              title={'Время выполнения работ'}
-              value={form.deadlinesIndex == -1 ? '' : deadlines[form.deadlinesIndex].title}
-              onPress={() => ref.current?.expand()}/>
-          )}
-          {orderRequest.toKnowEnrollmentDate && (
-            <>
-              <View style={styles.horizontalSpread}>
-                <View style={styles.dateInputContainer}>
-                  <ToggleBorder
-                    title={'Дата записи'}
-                    value={`${form.date.getDate()}.${form.date.getMonth()+1}`}
-                    onPress={() => setShowDatePicker(prev => !prev)}/>
+            )}
+            {orderRequest.toKnowEnrollmentDate && (
+              <>
+                <View style={styles.horizontalSpread}>
+                  <View style={styles.dateInputContainer}>
+                    <ToggleBorder
+                      title={'Дата записи'}
+                      value={`${form.date.getDate()}.${
+                        form.date.getMonth() + 1
+                      }`}
+                      onPress={() => setShowDatePicker(prev => !prev)}
+                    />
+                  </View>
+                  <View style={styles.timeInputContainer}>
+                    <ToggleBorder
+                      title={'Время записи'}
+                      value={`${form.time.getHours()}:${
+                        form.time.getMinutes() == 0
+                          ? '00'
+                          : form.time.getMinutes()
+                      }`}
+                      onPress={() => setShowTimePicker(prev => !prev)}
+                    />
+                  </View>
                 </View>
-                <View style={styles.timeInputContainer}>
-                  <ToggleBorder
-                    title={'Время записи'}
-                    value={`${form.time.getHours()}:${form.time.getMinutes() == 0 ? '00' : form.time.getMinutes()}`}
-                    onPress={() => setShowTimePicker(prev => !prev)}/>
-                </View>
-              </View>
-            </>
-          )}
-        </>
-      )}
-      <StyledButton
-        content={'Ответить'}
-        top={20}
-        bottom={5}
-        isDisabled={!validate()}
-        pressed={() => {}}
-      />
-      {showDatePicker && (
-        <RNDateTimePicker
-          mode={'date'}
-          display={'spinner'}
-          value={form.time}
-          minimumDate={new Date()}
-          onChange={(e, d) => {
-            if (d != null) setForm({...form, date: d});
-
-            setShowDatePicker(prev => !prev);
-          }}
+              </>
+            )}
+          </>
+        )}
+        <StyledButton
+          content={'Ответить'}
+          top={20}
+          bottom={5}
+          isDisabled={!validate()}
+          pressed={async () => createOrderResponse()}
         />
-      )}
-      {showTimePicker && (
-        <RNDateTimePicker
-          mode={'time'}
-          display={'spinner'}
-          value={form.time}
-          onChange={(e, d) => {
-            if (d != null) setForm({...form, time: d});
+        {showDatePicker && (
+          <RNDateTimePicker
+            mode={'date'}
+            display={'spinner'}
+            value={form.time}
+            minimumDate={new Date()}
+            onChange={(e, d) => {
+              if (d != null) setForm({...form, date: d});
 
-            setShowTimePicker(prev => !prev);
-          }}
-        />
-      )}
-      <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
+              setShowDatePicker(prev => !prev);
+            }}
+          />
+        )}
+        {showTimePicker && (
+          <RNDateTimePicker
+            mode={'time'}
+            display={'spinner'}
+            value={form.time}
+            onChange={(e, d) => {
+              if (d != null) setForm({...form, time: d});
+
+              setShowTimePicker(prev => !prev);
+            }}
+          />
+        )}
+        <LongRunningOperationIndicator isRefreshing={isRefreshing} />
+      </View>
       <CustomBottomSheet
         ref={ref}
         title={'Время выполнения работ'}
         close={() => ref.current?.close()}>
         <BottomSheetView>
-          {deadlines.map((v, i) => {
-            return (
-              <Animated.View>
-                <TouchableOpacity onPress={() => setCurrentIndex(i)}>
-                  <Animated.Text
-                    style={style}>
-                    {v.title}
-                  </Animated.Text>
-                </TouchableOpacity>
-              </Animated.View>
-            );
-          })}
+          <Animated.View>
+            {deadlines.map((v, i) => {
+              return (
+                <AnimatedText
+                  item={v}
+                  index={i}
+                  key={i}
+                  selectedIndex={form.deadlinesIndex}
+                  setSelectedIndex={i =>
+                    setForm(prev => ({...prev, deadlinesIndex: i}))
+                  }
+                />
+              );
+            })}
+          </Animated.View>
         </BottomSheetView>
       </CustomBottomSheet>
-    </View>
+      <SuccessfulRequestModal
+        isToggled={isToggled}
+        handlePress={() => {
+          setIsToggled(prev => !prev);
+          navigation.goBack();
+        }}
+        title={'Ответ отправлен клиенту'}
+        text={'Ожидайте ответа от клиента и старайтесь отвечать оперативно'}
+      />
+    </>
   );
 }
 

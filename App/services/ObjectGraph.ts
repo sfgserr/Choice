@@ -13,6 +13,7 @@ import {ObjectStorageService} from './object/ObjectStorageService.ts';
 import {ClientService} from './domain/ClientService.ts';
 import {SubscriptionPaymentService} from './domain/SubscriptionPaymentService.ts';
 import {State} from '../enums/AppEnums.ts';
+import {OrderResponseService} from './domain/OrderResponseService.ts';
 
 type Object = {
   [name: string]: object,
@@ -63,6 +64,7 @@ export class ObjectGraph {
     const orderRequestService = new OrderRequestService(httpService, objectStorageService);
     const clientService = new ClientService(httpService);
     const subscriptionPaymentService = new SubscriptionPaymentService(httpService);
+    const orderResponseService = new OrderResponseService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
@@ -76,6 +78,7 @@ export class ObjectGraph {
     this.objects["OrderRequestService"] = orderRequestService;
     this.objects["ClientService"] = clientService;
     this.objects["SubscriptionPaymentService"] = subscriptionPaymentService;
+    this.objects["OrderResponseService"] = orderResponseService;
 
     this.isInitialized = true;
   }
