@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withDelay,
@@ -8,6 +8,7 @@ import Animated, {
 import React from 'react';
 import CloseButton from '../buttons/CloseButton.tsx';
 import {AnimatedModalProps} from '../../types/ComponentTypes.ts';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const d = Dimensions.get("window");
 

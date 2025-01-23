@@ -1,5 +1,4 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {State} from '../../enums/AppEnums.ts';
 import {TokenService} from '../auth/TokenService.ts';
 import {UserType} from '../../enums/ModelEnums.ts';
 
@@ -11,18 +10,16 @@ export class UserService {
 
   constructor(
     httpService: RefreshTokenHttpServiceDecorator,
-    tokenStore: TokenService,
-  ) {
+    tokenStore: TokenService) {
     this.httpService = httpService;
     this.tokenService = tokenStore;
   }
 
   async fetchUser() {
-    const response = await this.httpService.requestWithContent(
+    const response = await this.httpService.requestWithContent<any>(
       this.tokenService.getUser().userType == UserType.Client ? 'clients' : 'companies',
       'GET',
-      undefined
-    );
+      undefined);
 
     if (response.content != null) this.user = response.content;
   }

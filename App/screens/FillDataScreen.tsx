@@ -107,22 +107,24 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
   }
 
   return (
-    <GestureHandlerRootView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Карточка компании</Text>
-        <View style={styles.screenContainer}>
-          {screens.map((i, n) => (
-            <View
-              style={[styles.progressBar, {
-                backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF',
-                width: d.width/screens.length*0.85,
-              }]}
-              key={n}/>
-          ))}
+    <>
+      <GestureHandlerRootView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Карточка компании</Text>
+          <View style={styles.screenContainer}>
+            {screens.map((i, n) => (
+              <View
+                style={[styles.progressBar, {
+                  backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF',
+                  width: d.width/screens.length*0.85,
+                }]}
+                key={n}/>
+            ))}
+          </View>
+          <View style={styles.splitter}/>
+          {screens[currentIndex]}
         </View>
-        <View style={styles.splitter}/>
-        {screens[currentIndex]}
-      </View>
+      </GestureHandlerRootView>
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={() => changeState(State.Unsubscribe)}
@@ -138,7 +140,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
         close={() => ref.current?.close()}
         categories={categories}
         select={select}/>
-    </GestureHandlerRootView>
+    </>
   )
 }
 

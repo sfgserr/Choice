@@ -3,14 +3,15 @@ import SubscriptionPlansScreen from '../../../screens/SubscriptionPlansScreen.ts
 import PaySubscriptionScreen from '../../../screens/PaySubscriptionScreen.tsx';
 import * as React from 'react';
 import {UnsubscribeStack} from './UnsubscribeStack.ts';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 const SubscriptionPlans = () => (
   <UnsubscribeStack.Screen
     name={'SubscriptionPlans'}
-    component={SubscriptionPlansScreen}
+    component={gestureHandlerRootHOC(SubscriptionPlansScreen)}
     options={{headerShown: false}}
   />
-)
+);
 
 const PaySubscription = () => (
   <UnsubscribeStack.Screen

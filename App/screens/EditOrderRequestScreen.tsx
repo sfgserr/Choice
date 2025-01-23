@@ -78,7 +78,6 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         }
       }
     }
-    getData();
 
     getData();
   }, []);

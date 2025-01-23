@@ -24,34 +24,31 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
+  const getOrderRequests = React.useCallback(async () => {
     const orderRequests = await orderRequestService.getOrderRequests();
 
     if (orderRequests.content != null)
       setOrderRequests(orderRequests.content);
     else
       setOrderRequests([]);
+  }, []);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+
+    await getOrderRequests();
 
     setRefreshing(false);
   }, []);
 
   React.useEffect(() => {
-    async function getOrderRequests() {
-      let response = await orderRequestService
-        .getOrderRequests();
-
-      if (response.result == 'successful' && response.content != null) {
-        setOrderRequests(response.content);
-      }
-    }
-    async function getCategories() {
+    const getCategories = async ()=> {
       let response = await categoryService.getCategories();
 
       if (response.result == 'successful' && response.content != null) {
         setCategories(response.content);
       }
-    }
+    };
     getOrderRequests();
     getCategories();
   }, []);

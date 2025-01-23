@@ -3,10 +3,10 @@ import {
   Dimensions,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import Animated, {useAnimatedStyle, withDelay, withSpring, withTiming} from 'react-native-reanimated';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {CreateAccountModalProps} from '../../types/ComponentTypes.ts';
 
 const d = Dimensions.get('screen');
@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
   popup: {
     width: d.width * 0.9,
     backgroundColor: 'transparent',
-    position: 'absolute',
     alignSelf: 'center',
+    position: 'absolute',
     zIndex: 2,
     bottom: 0,
     height: 'auto'

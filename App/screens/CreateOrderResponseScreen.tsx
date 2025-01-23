@@ -78,14 +78,9 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
     date: new Date(),
   });
 
-  const validate = () => {
-    if (form.price == '' && orderRequest?.toKnowPrice)
-      return false;
-
-    if (form.deadlinesIndex == -1 && orderRequest?.toKnowDeadline)
-      return false;
-
-    return true;
+  const isDisabled = () => {
+    return form.price == '' && orderRequest?.toKnowPrice ||
+      form.deadlinesIndex == -1 && orderRequest?.toKnowDeadline;
   }
 
   const secondsInDay = 24 * 3600;
@@ -220,7 +215,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
           content={'Ответить'}
           top={20}
           bottom={5}
-          isDisabled={!validate()}
+          isDisabled={isDisabled()}
           pressed={async () => createOrderResponse()}
         />
         {showDatePicker && (

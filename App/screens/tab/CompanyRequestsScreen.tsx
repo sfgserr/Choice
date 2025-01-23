@@ -88,19 +88,11 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
               source={require('../../assets/images/sad.png')}
               style={styles.image}/>
             <Text style={styles.stubTitle}>
-              Пока нет заказов
+              Рядом нет заказов
             </Text>
             <Text style={styles.text}>
-              Давайте исправим это
+              Дождитесь появления заказов
             </Text>
-            <View style={styles.buttonContainer}>
-              <StyledButton
-                content={'Создать заказ'}
-                top={40}
-                bottom={0}
-                isDisabled={false}
-                pressed={() => {}}/>
-            </View>
           </View>
         </>)}
     </View>

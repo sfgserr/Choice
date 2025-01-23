@@ -1,10 +1,11 @@
-import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import AnimatedModal from './AnimatedModal.tsx';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import BorderedTextInput from '../inputs/BorderedTextInput.tsx';
 import Animated, {useAnimatedStyle, withDelay, withSpring, withTiming} from 'react-native-reanimated';
 import CloseButton from '../buttons/CloseButton.tsx';
-import {StyledButton} from '../buttons/StyledButton.tsx';
+import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
+import Styles from '../../constants/Styles.tsx';
+import GestureBorderedTextInput from '../inputs/GestureBordererdTextInput.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -29,6 +30,12 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
         : withDelay(duration, withTiming(-1, { duration: 0 })),
     };
   });
+
+  const save = React.useCallback(() => {
+    onChange(value);
+    handlePress();
+    setValue('');
+  }, [value]);
 
   return (
     <>
@@ -56,29 +63,24 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
             </Text>
             <CloseButton close={() => handlePress()} />
           </View>
-          <View
-            style={{
-              paddingTop: 20,
-            }}>
-            <BorderedTextInput
+          <View style={{paddingVertical: 20}}>
+            <GestureBorderedTextInput
               value={value}
               onChanged={setValue}
               placeholder={'Ссылка'}
               isError={false}
-              isBig={false}
-            />
+              isBig={false}/>
           </View>
-          <StyledButton
-            content={'Сохранить'}
-            top={20}
-            bottom={5}
-            isDisabled={false}
-            pressed={() => {
-              onChange(value);
-              handlePress();
-              setValue('');
-            }}
-          />
+          <View style={{paddingBottom: 10}}>
+            <TouchableOpacity
+              style={[Styles.styledButton, {justifyContent: 'center'}]}
+              onPress={save}>
+              <Text style={[
+                Styles.styledButtonContent,
+                {alignSelf: 'center'}
+              ]}>Сохранить</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Animated.View>
     </>

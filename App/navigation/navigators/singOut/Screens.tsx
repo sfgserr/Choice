@@ -3,11 +3,12 @@ import {SignOutStack} from './SignOutStack.ts';
 import * as React from 'react';
 import RegisterClientScreen from '../../../screens/RegisterClientScreen.tsx';
 import RegisterCompanyScreen from '../../../screens/RegisterCompanyScreen.tsx';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export const Login = () => (
   <SignOutStack.Screen
     name="Login"
-    component={LoginScreen}
+    component={gestureHandlerRootHOC(LoginScreen)}
     options={{headerShown: false}}
   />
 )
@@ -15,7 +16,7 @@ export const Login = () => (
 export const RegisterClient = () => (
   <SignOutStack.Screen
     name={'RegisterClient'}
-    component={RegisterClientScreen}
+    component={gestureHandlerRootHOC(RegisterClientScreen)}
     options={{headerShown: false}}
   />
 )
@@ -23,7 +24,7 @@ export const RegisterClient = () => (
 export const RegisterCompany = () => (
   <SignOutStack.Screen
     name={'RegisterCompany'}
-    component={RegisterCompanyScreen}
+    component={gestureHandlerRootHOC(RegisterCompanyScreen)}
     options={{headerShown: false}}
   />
 )

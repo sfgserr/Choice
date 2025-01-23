@@ -15,14 +15,16 @@ import {ClientService} from '../services/domain/ClientService.ts';
 export default function RegisterClientScreen({route, navigation}: RegisterClientScreenProps) {
   const clientService = useDependency<ClientService>('ClientService');
 
-  const [name, setName] = React.useState('');
-  const [surname, setSurname] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [street, setStreet] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [form, setForm] = React.useState({
+    name: '',
+    surname: '',
+    email: '',
+    phoneNumber: '',
+    city: '',
+    street: '',
+    password: '',
+    confirmPassword: ''
+  });
 
   const [errorMessage, setErrorMessage] = React.useState('');
 
@@ -31,16 +33,22 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const createClient = async () => {
+  const isDisabled = React.useCallback(() => {
+    return form.email == '' || form.password == '' ||
+      form.confirmPassword == '' || form.city == '' ||
+      form.street == '' || form.phoneNumber == '';
+  }, [form])
+
+  const createClient = React.useCallback(async () => {
     setRefreshing(true);
 
     const response = await clientService.create(
-      `${name} ${surname}`,
-      password,
-      email,
-      phoneNumber,
-      city,
-      street);
+      `${form.name} ${form.surname}`,
+      form.password,
+      form.email,
+      form.phoneNumber,
+      form.city,
+      form.street);
 
     setRefreshing(false);
 
@@ -51,7 +59,7 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
       setErrorMessage(response.error);
       setErrorToggled(true);
     }
-  }
+  }, [form]);
 
   return (
     <ScrollView
@@ -64,8 +72,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={name}
-          onChanged={setName}
+          value={form.name}
+          onChanged={(name) => setForm(prev => ({...prev, name}))}
           placeholder={'Введите имя'}
           isError={false}
           isBig={false}/>
@@ -74,8 +82,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={surname}
-          onChanged={setSurname}
+          value={form.surname}
+          onChanged={(surname) => setForm(prev => ({...prev, surname}))}
           placeholder={'Введите фамилию'}
           isError={false}
           isBig={false}/>
@@ -84,8 +92,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={email}
-          onChanged={setEmail}
+          value={form.email}
+          onChanged={(email) => setForm(prev => ({...prev, email}))}
           placeholder={'Введите E-mail'}
           isError={false}
           isBig={false}/>
@@ -94,8 +102,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={phoneNumber}
-          onChanged={setPhoneNumber}
+          value={form.phoneNumber}
+          onChanged={(phoneNumber) => setForm(prev => ({...prev, phoneNumber}))}
           placeholder={'Введите номер телефона'}
           isError={false}
           isBig={false}/>
@@ -104,8 +112,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={city}
-          onChanged={setCity}
+          value={form.city}
+          onChanged={(city) => setForm(prev => ({...prev, city}))}
           placeholder={'Введите название города'}
           isError={false}
           isBig={false}/>
@@ -114,8 +122,8 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <BorderedTextInput
-          value={street}
-          onChanged={setStreet}
+          value={form.street}
+          onChanged={(street) => setForm(prev => ({...prev, street}))}
           placeholder={'Введите название улицы'}
           isError={false}
           isBig={false}/>
@@ -124,32 +132,22 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
           top={20}
           bottom={5}/>
         <PasswordBox
-          value={password}
-          onChanged={setPassword}
+          value={form.password}
+          onChanged={(password) => setForm(prev => ({...prev, password}))}
           isError={false}/>
         <TextInputTitle
           s={'Повторите пароль'}
           top={20}
           bottom={5}/>
         <PasswordBox
-          value={confirmPassword}
-          onChanged={setConfirmPassword}
+          value={form.confirmPassword}
+          onChanged={(confirmPassword) => setForm(prev => ({...prev, confirmPassword}))}
           isError={false}/>
         <StyledButton
           content={'Создать аккаунт'}
           top={20}
           bottom={20}
-          isDisabled={
-            name == '' ||
-            surname == '' ||
-            email == '' ||
-            phoneNumber == '' ||
-            city == '' ||
-            street == '' ||
-            password == '' ||
-            confirmPassword == '' ||
-            password != confirmPassword
-          }
+          isDisabled={isDisabled()}
           pressed={createClient}/>
         <Text style={styles.loginText}>У меня есть аккаунт</Text>
         <View style={styles.loginButtonContainer}>
