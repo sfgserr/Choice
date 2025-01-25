@@ -101,7 +101,7 @@ namespace WebApi.Modules.Users.Companies
             return Ok(company);
         }
         
-        [HttpGet("{companyId}")]
+        [HttpGet("map/{companyId:guid}")]
         [HasPermission(Permissions.GetCompanyOnMap)]
         public async Task<IActionResult> GetCompanyOnMap(Guid companyId)
         {

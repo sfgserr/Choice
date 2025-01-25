@@ -77,7 +77,7 @@ export class CompanyService {
 
   async getCompanyOnMap(companyId: string) {
     return await this.httpService.requestWithContent<CompanyInfo>(
-      `companies/${companyId}`,
+      `companies/map/${companyId}`,
       'GET',
       undefined);
   }

@@ -4,7 +4,7 @@ using WebApi.Configuration.Authentication.GrantTypeHandling;
 
 namespace WebApi.Modules.Identity
 {
-    [Route("api/auth")]
+    [Route("api/auth/token")]
     public class IdentityController : Controller
     {
         private readonly GrantTypeHandlerFactory _factory;
@@ -14,7 +14,7 @@ namespace WebApi.Modules.Identity
             _factory = factory;
         }
         
-        [HttpPost("token")]
+        [HttpPost]
         public async Task<IActionResult> Token()
         {
             var request = HttpContext.GetOpenIddictServerRequest();
