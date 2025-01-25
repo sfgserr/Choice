@@ -54,8 +54,8 @@ export class ObjectGraph {
     const accountManager = new AccountManager(tokenService);
     const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
     const httpService = new RefreshTokenHttpServiceDecorator(stateManager, setState);
-    const categoryService = new CategoryService(httpService);
     const userService = new UserService(httpService, tokenService);
+    const categoryService = new CategoryService(httpService);
     const objectStorageService = new ObjectStorageService(
       `${process.env.MINIO_URL}`,
       `${process.env.MINIO_ACCESS_KEY}`,

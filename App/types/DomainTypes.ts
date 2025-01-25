@@ -65,3 +65,16 @@ export type CompanyOrderRequest = {
   toKnowDeadline: boolean
   toKnowEnrollmentDate: boolean
 };
+
+export type CompanyInfo = {
+  id: string
+  name: string
+  iconUri: string
+  street: string
+  city: string
+  photoUris: string[]
+  socialMediaUris: string[]
+  reviewsCount: number
+  averageGrade: number
+  distance: number
+}

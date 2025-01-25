@@ -61,13 +61,7 @@ export class StateManager {
     );
     let user = this.tokenService.getUser();
 
-    return user.userType == UserType.Client
-      ? State.Client
-      : user.userType == UserType.Company
-      ? State.Company
-      : user.userType == UserType.User
-      ? State.User
-      : State.Admin;
+    return this.userTypeToStateMap[user.userType];
   }
 
   async signOut() {

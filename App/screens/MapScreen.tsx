@@ -15,6 +15,9 @@ import CustomMarker from '../components/CustomMarker.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
+import CompanyPageBottomSheet from '../components/bottomSheets/CompanyPageBottomSheet.tsx';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const d = Dimensions.get('screen');
 
@@ -26,6 +29,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
   const [companies, setCompanies] = React.useState<CompanyMapMarker[]>([]);
   const [orderRequest, setOrderRequest] = React.useState<OrderRequest>(null);
   const [isToggled, setIsToggled] = React.useState(false);
+
+  const [companyId, setCompanyId] = React.useState('');
 
   React.useEffect(() => {
     async function getCompanies() {
@@ -56,8 +61,15 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     });
   }
 
+  const onMarkerPressed = React.useCallback((companyId: string) => {
+    setCompanyId(companyId);
+    ref.current?.expand();
+  }, []);
+
+  const ref = React.useRef<BottomSheet>(null);
+
   return (
-    <>
+    <GestureHandlerRootView>
       <YaMap
         ref={map}
         initialRegion={{
@@ -74,7 +86,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
                 <CustomMarker
                   company={company}
                   index={index}
-                  key={index}/>
+                  key={index}
+                  onPress={onMarkerPressed}/>
               )
             })}
           </>
@@ -86,6 +99,10 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         </View>
         <Text style={styles.categoryTitleContainer}>{route.params.categories[route.params.categoryId].title}</Text>
       </View>
+      <CompanyPageBottomSheet
+        companyId={companyId}
+        close={() => ref.current?.close()}
+        ref={ref}/>
       {orderRequest == null ? (
         <>
           <View style={styles.bottomTab}>
@@ -106,7 +123,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
               navigation={navigation}/>
             <LongRunningOperationIndicator isRefreshing={false}/>
           </>)}
-    </>
+    </GestureHandlerRootView>
   );
 }
 

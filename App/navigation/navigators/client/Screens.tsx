@@ -17,7 +17,7 @@ export const Tab = () => (
 export const Map = () => (
   <ClientStack.Screen
     name={'Map'}
-    component={MapScreen}
+    component={gestureHandlerRootHOC(MapScreen)}
     options={{headerShown: false}}
   />
 )

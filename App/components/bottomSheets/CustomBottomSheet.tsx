@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import React, {ForwardedRef} from 'react';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';

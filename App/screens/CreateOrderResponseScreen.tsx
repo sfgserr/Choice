@@ -25,12 +25,14 @@ import Animated from 'react-native-reanimated';
 import AnimatedText from '../components/AnimatedText.tsx';
 import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+import {UserService} from '../services/domain/UserService.ts';
 
 type Form = {
   price: string
   deadlinesIndex: number
   time: Date
   date: Date
+  prepayment: string
 }
 
 const ToggleBorder = ({title, value, onPress}: {title: string, value: string, onPress: () => void}) => (
@@ -62,6 +64,9 @@ const ToggleBorder = ({title, value, onPress}: {title: string, value: string, on
 export default function CreateOrderResponseScreen({route, navigation}: CreateOrderResponseScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
+  const userService = useDependency<UserService>('UserService');
+
+  const [user, setUser] = React.useState<any>(null);
 
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [isToggled, setIsToggled] = React.useState(false);
@@ -71,17 +76,33 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
 
   const [orderRequest, setOrderRequest] = React.useState<CompanyOrderRequest | null>(null);
 
+  const [prepaymentOutofRange, setPrepaymentOutofRange] = React.useState(false);
+  const [isDisabled, setIsDisabled] = React.useState(true);
+
   const [form, setForm] = React.useState<Form>({
     price: '',
     deadlinesIndex: -1,
     time: new Date(),
     date: new Date(),
+    prepayment: ''
   });
 
-  const isDisabled = () => {
-    return form.price == '' && orderRequest?.toKnowPrice ||
+  const validate = React.useCallback((form: Form) => {
+    const isDisabled = form.price == '' && orderRequest?.toKnowPrice ||
       form.deadlinesIndex == -1 && orderRequest?.toKnowDeadline;
-  }
+
+    const price = +form.price;
+    const prepayment = +form.prepayment;
+    const prepaymentOutofRange = user?.isPrepaymentAvailable && prepayment < price*0.1 || prepayment > price*0.25;
+
+    setPrepaymentOutofRange(prepaymentOutofRange);
+    setIsDisabled(isDisabled || prepaymentOutofRange);
+  }, [form])
+
+  const setAndValidate = React.useCallback((set: (prev: Form) => Form) => {
+    setForm(set);
+    validate(set(form));
+  }, [form]);
 
   const secondsInDay = 24 * 3600;
   const deadlines = [
@@ -116,8 +137,17 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
       }
     }
 
+    const getUser = async () => {
+      const user = await userService.getUser();
+
+      setUser(user);
+    }
+
     setIsRefreshing(true);
+
     getOrderRequest();
+    getUser();
+
     setIsRefreshing(false);
   }, []);
 
@@ -131,7 +161,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
       +form.price,
       deadlines[form.deadlinesIndex].seconds,
       form.date,
-      0);
+      +form.prepayment);
 
     setIsRefreshing(false);
 
@@ -140,6 +170,8 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   }, [form]);
 
   const ref = React.useRef<BottomSheet>(null);
+
+  const formatNumber = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
 
   return (
     <>
@@ -164,7 +196,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
                 <TextInputTitle s={'Стоимость'} top={20} bottom={5} />
                 <BorderedTextInput
                   value={form.price}
-                  onChanged={v => setForm(prev => ({...prev, price: v}))}
+                  onChanged={v => setAndValidate(prev => ({...prev, price: v}))}
                   placeholder={'Введите стоимость'}
                   isError={false}
                   isBig={false}
@@ -184,29 +216,50 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
               />
             )}
             {orderRequest.toKnowEnrollmentDate && (
-              <>
-                <View style={styles.horizontalSpread}>
-                  <View style={styles.dateInputContainer}>
-                    <ToggleBorder
-                      title={'Дата записи'}
-                      value={`${form.date.getDate()}.${
-                        form.date.getMonth() + 1
-                      }`}
-                      onPress={() => setShowDatePicker(prev => !prev)}
-                    />
-                  </View>
-                  <View style={styles.timeInputContainer}>
-                    <ToggleBorder
-                      title={'Время записи'}
-                      value={`${form.time.getHours()}:${
-                        form.time.getMinutes() == 0
-                          ? '00'
-                          : form.time.getMinutes()
-                      }`}
-                      onPress={() => setShowTimePicker(prev => !prev)}
-                    />
-                  </View>
+              <View style={styles.horizontalSpread}>
+                <View style={styles.dateInputContainer}>
+                  <ToggleBorder
+                    title={'Дата записи'}
+                    value={`${form.date.getDate()}.${
+                      form.date.getMonth() + 1
+                    }`}
+                    onPress={() => setShowDatePicker(prev => !prev)}
+                  />
                 </View>
+                <View style={styles.timeInputContainer}>
+                  <ToggleBorder
+                    title={'Время записи'}
+                    value={`${form.time.getHours()}:${
+                      form.time.getMinutes() == 0
+                        ? '00'
+                        : form.time.getMinutes()
+                    }`}
+                    onPress={() => setShowTimePicker(prev => !prev)}
+                  />
+                </View>
+              </View>
+            )}
+            {user.isPrepaymentAvailable && (
+              <>
+                <TextInputTitle s={'Предоплата'} top={20} bottom={5} />
+                <BorderedTextInput
+                  value={form.prepayment}
+                  onChanged={prepayment => setAndValidate(prev => ({...prev, prepayment}))}
+                  placeholder={'Введите предоплату'}
+                  isError={prepaymentOutofRange}
+                  isBig={false}
+                  keyboard={'number-pad'}
+                />
+                {prepaymentOutofRange && (
+                  <Text
+                    style={{
+                      color: '#E64646',
+                      fontSize: 15,
+                      fontWeight: '500'
+                    }}>
+                    {`Предоплата должна быть в диапозоне от ${formatNumber(+form.price*0.1)} до ${formatNumber(+form.price*0.25)}`}
+                  </Text>
+                )}
               </>
             )}
           </>
@@ -215,7 +268,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
           content={'Ответить'}
           top={20}
           bottom={5}
-          isDisabled={isDisabled()}
+          isDisabled={isDisabled}
           pressed={async () => createOrderResponse()}
         />
         {showDatePicker && (
@@ -225,7 +278,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             value={form.time}
             minimumDate={new Date()}
             onChange={(e, d) => {
-              if (d != null) setForm({...form, date: d});
+              if (d != null) setAndValidate(form => ({...form, date: d}));
 
               setShowDatePicker(prev => !prev);
             }}
@@ -237,7 +290,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             display={'spinner'}
             value={form.time}
             onChange={(e, d) => {
-              if (d != null) setForm({...form, time: d});
+              if (d != null) setAndValidate(form => ({...form, time: d}));
 
               setShowTimePicker(prev => !prev);
             }}
@@ -259,7 +312,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
                   key={i}
                   selectedIndex={form.deadlinesIndex}
                   setSelectedIndex={i =>
-                    setForm(prev => ({...prev, deadlinesIndex: i}))
+                    setAndValidate(prev => ({...prev, deadlinesIndex: i}))
                   }
                 />
               );

@@ -1,5 +1,5 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {CompanyMapMarker} from '../../types/DomainTypes.ts';
+import {CompanyInfo, CompanyMapMarker} from '../../types/DomainTypes.ts';
 import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 import {FilePathUtils} from '../../utils/FilePathUtils.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
@@ -71,6 +71,13 @@ export class CompanyService {
   async getCompanies(categoryId: number): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
     return await this.httpService.requestWithContent<CompanyMapMarker[]>(
       `companies/${categoryId}`,
+      'GET',
+      undefined);
+  }
+
+  async getCompanyOnMap(companyId: string) {
+    return await this.httpService.requestWithContent<CompanyInfo>(
+      `companies/${companyId}`,
       'GET',
       undefined);
   }
