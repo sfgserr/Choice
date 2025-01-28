@@ -5,7 +5,7 @@ namespace WebApi.Modules
         public const string GetClient = "GetClient";
         public const string ChangeClientData = "ChangeClientData";
         public const string ChangeClientIconUri = "ChangeClientIconUri";
-        public const string ChangeCompanyData = "ChangeClientIconUri";
+        public const string ChangeCompanyData = "ChangeCompanyData";
         public const string ChangeCompanyIconUri = "ChangeCompanyIconUri";
         public const string FillData = "FillData";
         public const string BuySubscriptionPayment = "BuySubscriptionPayment";

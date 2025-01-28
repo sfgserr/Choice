@@ -18,11 +18,13 @@ import {CompanyService} from '../services/domain/CompanyService.ts';
 import CompanyPageBottomSheet from '../components/bottomSheets/CompanyPageBottomSheet.tsx';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {UserService} from '../services/domain/UserService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function MapScreen({route, navigation}: MapScreenProps) {
   const companyService = useDependency<CompanyService>('CompanyService');
+  const userService = useDependency<UserService>('UserService');
 
   const map = React.createRef<YaMap>();
 
@@ -37,8 +39,11 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
       let companies = await companyService.getCompanies(
         route.params.categories[route.params.categoryId].categoryId);
       if (companies.result == 'successful') {
+        const user = await userService.getUser();
+        const userMap = companies.content.find(c => c.id == user.id);
+
         map.current?.setCenter(
-          {lat: +companies.content[companies.content.length-1].latitude, lon: +companies.content[companies.content.length-1].longitude},
+          {lat: +userMap.latitude, lon: +userMap.longitude},
           15,
           Animation.SMOOTH);
         setCompanies(companies.content);
@@ -99,10 +104,6 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         </View>
         <Text style={styles.categoryTitleContainer}>{route.params.categories[route.params.categoryId].title}</Text>
       </View>
-      <CompanyPageBottomSheet
-        companyId={companyId}
-        close={() => ref.current?.close()}
-        ref={ref}/>
       {orderRequest == null ? (
         <>
           <View style={styles.bottomTab}>
@@ -123,6 +124,10 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
               navigation={navigation}/>
             <LongRunningOperationIndicator isRefreshing={false}/>
           </>)}
+      <CompanyPageBottomSheet
+        companyId={companyId}
+        close={() => ref.current?.close()}
+        ref={ref}/>
     </GestureHandlerRootView>
   );
 }

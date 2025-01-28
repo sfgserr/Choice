@@ -2,6 +2,7 @@ using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.Users;
+using Users.Domain.Users.Companies;
 
 namespace Users.Application.Companies.Commands.FillData
 {
@@ -24,7 +25,7 @@ namespace Users.Application.Companies.Commands.FillData
                 command.Description,
                 command.CategoryIds,
                 command.PhotoUris,
-                command.SocialMediaUris,
+                command.SocialMediaUris.Select(SocialMedia.Create).ToList(),
                 command.IsPrepaymentAvailable);
         }
     }

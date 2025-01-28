@@ -15,7 +15,7 @@ const CustomBottomSheet = React.forwardRef(({title, children, close}: any, ref: 
     []
   );
 
-  const snapPoints = React.useMemo(() => ['25%', '50%', '70%'], []);
+  const snapPoints = React.useMemo(() => ['25%', '50%', '90%'], []);
 
   return (
     <BottomSheet

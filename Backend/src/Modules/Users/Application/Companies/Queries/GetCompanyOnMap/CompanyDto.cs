@@ -1,4 +1,6 @@
 
+using Users.Domain.Users.Companies;
+
 namespace Users.Application.Companies.Queries.GetCompanyOnMap
 {
     public class CompanyDto
@@ -12,10 +14,12 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
         public string Street { get; set; }
 
         public string City { get; set; }
+
+	    public string Description { get; set; }
         
         public List<string> PhotoUris { get; set; }
 
-        public List<string> SocialMediaUris { get; set; }
+        public List<SocialMedia> SocialMedias { get; set; }
 
         public int ReviewsCount { get; set; }
         

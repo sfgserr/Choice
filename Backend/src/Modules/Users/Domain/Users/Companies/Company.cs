@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Domain;
-using Users.Domain.Categories;
 using Users.Domain.Users.Companies.Rules;
 using Users.Domain.Users.Rules;
 
@@ -8,7 +7,7 @@ namespace Users.Domain.Users.Companies
     public class Company : Entity, IAggregateRoot
     {
         private readonly List<string> _photoUris = [];
-        private readonly List<string> _socialMediaUris = [];
+        private readonly List<SocialMedia> _socialMedias = [];
         private readonly List<int> _categories = [];
 
         private Company()
@@ -55,6 +54,8 @@ namespace Users.Domain.Users.Companies
 
         public bool IsPrepaymentAvailable { get; private set; } = false;
 
+        public IReadOnlyCollection<SocialMedia> SocialMedias => _socialMedias.AsReadOnly();
+        
         public void ChangeIconUri(string iconUri)
         {
             User.ChangeIconUri(iconUri);
@@ -69,7 +70,7 @@ namespace Users.Domain.Users.Companies
             string description,
             List<int> categories,
             List<string> photoUris,
-            List<string> socialMediaUris,
+            List<SocialMedia> socialMediaUris,
             bool isPrepaymentAvailable)
         {
             CheckRule(new CannotChangeDataWhenDataIsNotFilledRule(IsDataFilled));
@@ -85,8 +86,8 @@ namespace Users.Domain.Users.Companies
             _categories.Clear();
             _categories.AddRange(categories);
             
-            _socialMediaUris.Clear();
-            _socialMediaUris.AddRange(socialMediaUris);
+            _socialMedias.Clear();
+            _socialMedias.AddRange(socialMediaUris);
             
             User.ChangeData(
                 name,
@@ -100,7 +101,7 @@ namespace Users.Domain.Users.Companies
             string description,
             List<int> categories,
             List<string> photoUris,
-            List<string> socialMediaUris,
+            List<SocialMedia> socialMediaUris,
             bool isPrepaymentAvailable)
         {
             CheckRule(new FieldsMustBeProvidedRule([description]));
@@ -112,7 +113,7 @@ namespace Users.Domain.Users.Companies
 
             _photoUris.AddRange(photoUris);
             _categories.AddRange(categories);
-            _socialMediaUris.AddRange(socialMediaUris);
+            _socialMedias.AddRange(socialMediaUris);
             
             User.FillData();
         }
@@ -123,7 +124,7 @@ namespace Users.Domain.Users.Companies
         public List<int> GetCategories() =>
             _categories;
 
-        public List<string> GetSocialMediaUris() =>
-            _socialMediaUris;
+        public List<SocialMedia> GetSocialMedias() =>
+            _socialMedias;
     }
 }

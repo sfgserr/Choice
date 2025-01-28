@@ -72,6 +72,7 @@ export type CompanyInfo = {
   iconUri: string
   street: string
   city: string
+  description: string
   photoUris: string[]
   socialMediaUris: string[]
   reviewsCount: number

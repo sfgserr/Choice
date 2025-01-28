@@ -4,9 +4,9 @@ namespace Users.Domain.Users.Companies.Rules
 {
     internal class AtLeastOneLinkToSocialMediaMustBeProvidedRule : IBusinessRule
     {
-        private readonly List<string> _socialMediaUris;
+        private readonly List<SocialMedia> _socialMediaUris;
 
-        internal AtLeastOneLinkToSocialMediaMustBeProvidedRule(List<string> socialMediaUris)
+        internal AtLeastOneLinkToSocialMediaMustBeProvidedRule(List<SocialMedia> socialMediaUris)
         {
             _socialMediaUris = socialMediaUris;
         }

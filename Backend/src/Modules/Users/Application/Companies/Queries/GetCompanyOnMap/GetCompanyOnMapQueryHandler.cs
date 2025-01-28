@@ -39,7 +39,8 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
                 Street = company.User.Address.Street,
                 City = company.User.Address.City,
                 PhotoUris = company.GetPhotoUris(),
-                SocialMediaUris = company.GetSocialMediaUris(),
+		        Description = company.Description,
+                SocialMedias = company.GetSocialMedias(),
                 ReviewsCount = company.User.ReviewsCount,
                 AverageGrade = company.User.AverageGrade,
                 Distance = distance

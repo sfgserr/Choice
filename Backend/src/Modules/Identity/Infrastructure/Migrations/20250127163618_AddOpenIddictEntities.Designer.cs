@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20241116175355_AddOpenIddictDefaultEntities")]
-    partial class AddOpenIddictDefaultEntities
+    [Migration("20250127163618_AddOpenIddictEntities")]
+    partial class AddOpenIddictEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

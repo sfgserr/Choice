@@ -1,4 +1,5 @@
 using Users.Domain.Categories;
+using Users.Domain.Users.Companies;
 
 namespace Users.Application.Companies.Queries.GetCompany
 {
@@ -11,7 +12,8 @@ namespace Users.Application.Companies.Queries.GetCompany
             string phoneNumber, 
             string description, 
             List<string> photoUris, 
-            List<int> categories, 
+            List<int> categories,
+            List<SocialMedia> socialMedias,
             string city, 
             string street, 
             bool isPrepaymentAvailable)
@@ -23,6 +25,7 @@ namespace Users.Application.Companies.Queries.GetCompany
             Description = description;
             PhotoUris = photoUris;
             Categories = categories;
+            SocialMedias = socialMedias;
             City = city;
             Street = street;
             IsPrepaymentAvailable = isPrepaymentAvailable;
@@ -41,6 +44,8 @@ namespace Users.Application.Companies.Queries.GetCompany
         public List<string> PhotoUris { get; }
 
         public List<int> Categories { get; }
+        
+        public List<SocialMedia> SocialMedias { get; }
 
         public string City { get; }
 

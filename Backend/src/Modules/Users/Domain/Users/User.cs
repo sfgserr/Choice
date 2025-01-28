@@ -108,8 +108,12 @@ namespace Users.Domain.Users
             IUsersCounter counter)
         {
             CheckRule(new FieldsMustBeProvidedRule([name, email, phoneNumber]));
-            CheckRule(new UserEmailMustBeUniqueRule(counter, email));
-            CheckRule(new UserPhoneNumberMustBeUniqueRule(counter, phoneNumber));
+            
+            if (Email != email)
+                CheckRule(new UserEmailMustBeUniqueRule(counter, email));
+            
+            if (PhoneNumber != phoneNumber)
+                CheckRule(new UserPhoneNumberMustBeUniqueRule(counter, phoneNumber));
 
             Name = name;
             Email = email;

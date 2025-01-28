@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Users.Domain.Categories;
-using Users.Domain.Users;
 using Users.Domain.Users.Companies;
-using Users.Infrastructure.Data.ValueConversion;
 
 namespace Users.Infrastructure.Data.Domain.Companies
 {
@@ -22,8 +19,23 @@ namespace Users.Infrastructure.Data.Domain.Companies
             builder.Navigation(x => x.User).AutoInclude();
 
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
-            builder.Property<List<string>>("_socialMediaUris").HasColumnName("SocialMediaUris");
             builder.Property<List<int>>("_categories").HasColumnName("CategoriesId");
+
+            builder.OwnsMany(x => x.SocialMedias, y =>
+            {
+                y.Property<CompanyId>("CompanyId")
+                    .HasColumnType("uuid");
+
+                y.Property(z => z.Url).HasColumnName("Url");
+                y.Property(z => z.Platform).HasColumnName("Platform");
+
+                y.HasKey("CompanyId", "Platform");
+
+                y.ToTable("SocialMedias", "users");
+
+                y.WithOwner()
+                    .HasForeignKey("CompanyId");
+            });
         }
     }
 }

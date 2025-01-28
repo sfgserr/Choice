@@ -17,7 +17,7 @@ using Users.Infrastructure.Data.Outbox;
 
 namespace Users.Infrastructure.Data
 {
-    internal class UsersContext : DbContext, IUsersDbContext
+    public class UsersContext : DbContext, IUsersDbContext
     {
         public UsersContext(DbContextOptions options) : base(options)
         {

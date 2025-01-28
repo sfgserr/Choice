@@ -29,6 +29,7 @@ namespace Users.Application.Companies.Queries.GetCompany
                 company.Description,
                 company.GetPhotoUris(),
                 company.GetCategories(),
+                company.GetSocialMedias(),
                 company.User.Address.City,
                 company.User.Address.Street,
                 company.IsPrepaymentAvailable);
