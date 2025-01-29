@@ -66,16 +66,62 @@ export type CompanyOrderRequest = {
   toKnowEnrollmentDate: boolean
 };
 
+type SocialMedia = {
+  url: string
+  platform: string
+}
+
 export type CompanyInfo = {
   id: string
   name: string
+  email: string
+  phoneNumber: string
   iconUri: string
   street: string
   city: string
   description: string
   photoUris: string[]
-  socialMediaUris: string[]
+  socialMedias: SocialMedia[]
   reviewsCount: number
   averageGrade: number
   distance: number
+}
+
+export type ChatMessages = {
+  User: ChatUser
+  Messages: Message[]
+}
+
+export type ChatUser = {
+  id: string
+  iconUri: string
+  name: string
+}
+
+export type Message = {
+  id: string
+  fromUserId: string
+  content: string | null
+  type: string
+  orderResponseId: string | null
+  creationDate: Date
+  enrollmentDate: Date | null
+  isActive: boolean | null
+  OrderResponse: OrderResponse
+}
+
+export type OrderResponse = {
+  id: string
+  requestId: string
+  clientId: string
+  companyId: string
+  price: number
+  deadline: number
+  enrollmentDate: Date | null
+  prepayment: number
+  status: string
+  isEnrolled: boolean
+  isPaid: boolean
+  isEnrollmentDateConfirmed: boolean
+  isActive: boolean
 }

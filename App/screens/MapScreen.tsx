@@ -127,7 +127,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
       <CompanyPageBottomSheet
         companyId={companyId}
         close={() => ref.current?.close()}
-        ref={ref}/>
+        ref={ref}
+        navigateToChat={() => navigation.navigate('Chat', {id: companyId})}/>
     </GestureHandlerRootView>
   );
 }

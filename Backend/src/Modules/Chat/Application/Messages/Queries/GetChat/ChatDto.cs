@@ -2,15 +2,16 @@ using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Messages.Queries.GetChat
 {
+    public class ChatDto
+    {
+        public UserDto User { get; set; }
+        
+        public IEnumerable<MessageDto> Messages { get; set; }
+    }
+    
     public class MessageDto
     {
         public Guid Id { get; }
-
-        public Guid ToUserId { get; }
-        
-        public string ToUserIconUri { get; }
-        
-        public string ToUserName { get; }
         
         public Guid FromUserId { get; }
 
@@ -27,5 +28,14 @@ namespace Chat.Application.Messages.Queries.GetChat
         public bool? IsActive { get; }
         
         public OrderResponseDto? OrderResponse { get; set; }
+    }
+    
+    public class UserDto
+    {
+        public Guid Id { get; }
+        
+        public string IconUri { get; }
+        
+        public string Name { get; }
     }
 }

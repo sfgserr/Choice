@@ -14,6 +14,7 @@ import {ClientService} from './domain/ClientService.ts';
 import {SubscriptionPaymentService} from './domain/SubscriptionPaymentService.ts';
 import {State} from '../enums/AppEnums.ts';
 import {OrderResponseService} from './domain/OrderResponseService.ts';
+import {ChatService} from './domain/ChatService.tsx';
 
 type Object = {
   [name: string]: object,
@@ -65,6 +66,7 @@ export class ObjectGraph {
     const clientService = new ClientService(httpService);
     const subscriptionPaymentService = new SubscriptionPaymentService(httpService);
     const orderResponseService = new OrderResponseService(httpService);
+    const chatService = new ChatService(httpService);
 
     this.objects["AuthService"] = authService;
     this.objects["AccountManager"] = accountManager;
@@ -79,6 +81,7 @@ export class ObjectGraph {
     this.objects["ClientService"] = clientService;
     this.objects["SubscriptionPaymentService"] = subscriptionPaymentService;
     this.objects["OrderResponseService"] = orderResponseService;
+    this.objects["ChatService"] = chatService;
 
     this.isInitialized = true;
   }

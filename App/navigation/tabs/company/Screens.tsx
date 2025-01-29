@@ -2,7 +2,7 @@ import CompanyRequestsScreen from '../../../screens/tab/CompanyRequestsScreen.ts
 import {getOptions} from '../Helper.tsx';
 import {CompanyTab} from './CompanyTab.ts';
 import * as React from 'react';
-import ChatScreen from '../../../screens/tab/ChatScreen.tsx';
+import ChatsScreen from '../../../screens/tab/ChatsScreen.tsx';
 import CompanyAccountScreen from '../../../screens/tab/CompanyAccountScreen.tsx';
 
 export const OrderRequests = () => (
@@ -14,8 +14,8 @@ export const OrderRequests = () => (
 
 export const Chat = () => (
   <CompanyTab.Screen
-    name={'Chat'}
-    component={ChatScreen}
+    name={'Chats'}
+    component={ChatsScreen}
     options={getOptions({title: 'Чат', source: require('../../../assets/images/chat.png')})}/>
 )
 

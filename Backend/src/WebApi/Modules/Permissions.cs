@@ -41,5 +41,6 @@ namespace WebApi.Modules
         public const string GetClients = "GetClients";
         public const string GetCompaniesAdmin = "GetCompaniesAdmin";
         public const string GetOrderRequestAsCompany = "GetOrderRequestAsCompany";
+        public const string Chat = "Chat";
     }
 }

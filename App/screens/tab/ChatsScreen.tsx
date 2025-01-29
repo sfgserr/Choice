@@ -3,9 +3,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import {ChatScreenProps} from '../../types/NavigationTypes.ts';
+import {ChatsScreenProps} from '../../types/NavigationTypes.ts';
 
-export default function ChatScreen({route, navigation}: ChatScreenProps) {
+export default function ChatsScreen({route, navigation}: ChatsScreenProps) {
   return (
     <View>
       <Text

@@ -5,6 +5,7 @@ import MapScreen from '../../../screens/MapScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import CreateOrderRequestScreen from '../../../screens/CreateOrderRequestScreen.tsx';
 import EditOrderRequestScreen from '../../../screens/EditOrderRequestScreen.tsx';
+import ClientChatScreen from '../../../screens/ClientChatScreen.tsx';
 
 export const Tab = () => (
   <ClientStack.Screen
@@ -34,6 +35,14 @@ export const EditOrderRequest = () => (
   <ClientStack.Screen
     name={'EditOrderRequest'}
     component={gestureHandlerRootHOC(EditOrderRequestScreen)}
+    options={{headerShown: false}}
+  />
+)
+
+export const Chat = () => (
+  <ClientStack.Screen
+    name={'Chat'}
+    component={ClientChatScreen}
     options={{headerShown: false}}
   />
 )

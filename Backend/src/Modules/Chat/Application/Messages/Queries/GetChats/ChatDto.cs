@@ -13,7 +13,5 @@ namespace Chat.Application.Messages.Queries.GetChats
         public Guid LastMessageId { get; }
 
         public DateTime LastMessageCreationDate { get; }
-
-        public bool IsOnline { get; set; }
     }
 }

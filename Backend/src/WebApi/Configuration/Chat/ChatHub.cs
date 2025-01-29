@@ -1,30 +1,30 @@
-using BuildingBlocks.Application.Authentication;
 using Chat.Application.Contracts;
+using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using WebApi.Modules;
 
 namespace WebApi.Configuration.Chat
 {
+    [HasPermission(Permissions.Chat)]
     public class ChatHub : Hub
     {
         private readonly IChatUsersStore _usersStore;
-        private readonly IUserService _userService;
         
-        public ChatHub(IChatUsersStore usersStore, IUserService userService)
+        public ChatHub(IChatUsersStore usersStore)
         {
             _usersStore = usersStore;
-            _userService = userService;
         }
 
         public override Task OnConnectedAsync()
         {
-            _usersStore.Connect(_userService.GetUserId(), Context.ConnectionId);
+            _usersStore.Connect(Guid.Parse(Context.UserIdentifier!), Context.ConnectionId);
             
             return Task.CompletedTask;
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            _usersStore.Disconnect(_userService.GetUserId());
+            _usersStore.Disconnect(Guid.Parse(Context.UserIdentifier!));
             
             return Task.CompletedTask;
         }

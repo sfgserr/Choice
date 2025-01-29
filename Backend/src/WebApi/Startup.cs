@@ -105,6 +105,7 @@ namespace WebApi
             services.AddSingleton<IGrantTypeHandler, PasswordGrantTypeHandler>();
             services.AddSingleton<IGrantTypeHandler, RefreshTokenGrantTypeHandler>();
             services.AddSingleton<GrantTypeHandlerFactory>();
+            services.AddSingleton<IUserIdProvider, SubjectBasedUserIdProvider>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

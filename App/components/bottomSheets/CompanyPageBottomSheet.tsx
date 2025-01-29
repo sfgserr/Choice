@@ -15,15 +15,17 @@ import {useDependency} from '../../services/Hooks.ts';
 import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {Icon} from '@rneui/themed';
+import {GestureStyledButton} from '../buttons/GestureStyledButton.tsx';
 
 type CompanyPageBottomSheetProps = {
   companyId: string
   close: () => void
+  navigateToChat: () => void
 };
 
 const d = Dimensions.get('screen');
 
-const CompanyPageBottomSheet = React.forwardRef(({companyId, close}: CompanyPageBottomSheetProps, ref: ForwardedRef<BottomSheetMethods>) => {
+const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToChat}: CompanyPageBottomSheetProps, ref: ForwardedRef<BottomSheetMethods>) => {
   const companyService = useDependency<CompanyService>('CompanyService');
 
   const [company, setCompany] = React.useState<CompanyInfo | null>(null);
@@ -33,28 +35,32 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close}: CompanyPage
   const minioUrl = `${process.env.MINIO_URL}/app-files`;
 
   const contacts = React.useMemo(
-    () => [
-      {
+    () => ({
+      ['Instagram']: {
         source: require('../../assets/images/instagram.png'),
-        open: async (inst: string) => await Linking.openURL(inst),
+        open:async (inst: string) => await Linking.openURL(inst),
       },
-      {
+      ['Facebook']: {
+        source: require('../../assets/images/facebook.png'),
+        open:async (inst: string) => await Linking.openURL(inst),
+      },
+      ['Telegram']: {
         source: require('../../assets/images/tg.png'),
-        open: async (tg: string) => await Linking.openURL(tg),
+          open: async (tg: string) => await Linking.openURL(tg),
       },
-      {
+      ['Vk']: {
         source: require('../../assets/images/vk.png'),
         open: async (vk: string) => await Linking.openURL(vk),
       },
-      {
+      ['Telephone']: {
         source: require('../../assets/images/tel.png'),
         open: async (phoneNumber: string) => await Linking.openURL(`tel:+${phoneNumber}`),
       },
-      {
+      ['Mail']: {
         source: require('../../assets/images/mail.png'),
         open: async (mail: string) => await Linking.openURL(`mailto:${mail}`),
       },
-    ],
+    }),
     [],
   );
 
@@ -68,6 +74,11 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close}: CompanyPage
     }
   };
 
+  const onClose = React.useCallback(() => {
+    setCompany(null);
+    close();
+  }, []);
+
   React.useEffect(() => {
     const getCompany = async () => {
       const response = await companyService.getCompanyOnMap(companyId);
@@ -79,7 +90,10 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close}: CompanyPage
   }, [companyId]);
 
   return (
-    <CustomBottomSheet ref={ref} title={'Компания'} close={close}>
+    <CustomBottomSheet
+      ref={ref}
+      title={'Компания'}
+      close={onClose}>
       <BottomSheetView>
         {company == null ? (
           <View style={styles.indicatorContainer}>
@@ -152,17 +166,41 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close}: CompanyPage
             <Text style={{...styles.boldText, paddingTop: 10}}>Деятельность компании</Text>
             <Text style={{...styles.lightText, paddingTop: 10}}>{company.description}</Text>
             <View style={styles.contactsContainer}>
-              {contacts.map((c, i) => (
-                <TouchableOpacity
-                  style={styles.contactButton}
-                  onPress={async () => await c.open('asdas')}
-                  key={i}>
-                  <Image
-                    source={c.source}
-                    style={styles.contactImage}/>
-                </TouchableOpacity>
-              ))}
+              {company.socialMedias.map((c, i) => {
+                const contact = contacts[c.platform];
+
+                return (
+                  <TouchableOpacity
+                    style={styles.contactButton}
+                    onPress={async () => await contact.open(c.url)}
+                    key={i}>
+                    <Image
+                      source={contact.source}
+                      style={styles.contactImage}/>
+                  </TouchableOpacity>
+                )
+              })}
+              <TouchableOpacity
+                style={styles.contactButton}
+                onPress={async () => await contacts['Telephone'].open(company.phoneNumber)}>
+                <Image
+                  source={contacts['Telephone'].source}
+                  style={styles.contactImage}/>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.contactButton}
+                onPress={async () => await contacts['Mail'].open(company.email)}>
+                <Image
+                  source={contacts['Mail'].source}
+                  style={styles.contactImage}/>
+              </TouchableOpacity>
             </View>
+            <GestureStyledButton
+              content={'Перейти в чат'}
+              top={20}
+              bottom={0}
+              isDisabled={false}
+              pressed={navigateToChat}/>
           </View>
         )}
       </BottomSheetView>
@@ -305,7 +343,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     resizeMode: 'contain'
-  }
+  },
 })
 
 export default CompanyPageBottomSheet;

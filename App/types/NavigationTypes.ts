@@ -27,6 +27,7 @@ export type ClientStackProps = {
   EditOrderRequest: {
     orderRequestId: string;
   };
+  Chat: {id: string};
 }
 
 export type CompanyStackProps = {
@@ -36,6 +37,7 @@ export type CompanyStackProps = {
     orderRequest: OrderRequestRadius;
     categories: Category[];
   };
+  Chat: {id: string};
 }
 
 export type UserStackProps = {
@@ -50,13 +52,13 @@ export type UnsubscribeStackProps = {
 export type ClientTabProps = {
   Categories: undefined;
   OrderRequests: undefined;
-  Chat: undefined;
+  Chats: undefined;
   Account: undefined;
 };
 
 export type CompanyTabProps = {
   OrderRequests: undefined;
-  Chat: undefined;
+  Chats: undefined;
   Account: undefined;
 };
 
@@ -64,7 +66,7 @@ export type LoginScreenProps = NativeStackScreenProps<SignOutStackProps, 'Login'
 
 export type OrderRequestsScreenProps = BottomTabScreenProps<ClientTabProps, 'OrderRequests'>;
 
-export type ChatScreenProps = BottomTabScreenProps<ClientTabProps, 'Chat'>;
+export type ChatsScreenProps = BottomTabScreenProps<ClientTabProps, 'Chats'>;
 
 export type CategoriesScreenProps = BottomTabScreenProps<ClientTabProps, 'Categories'>;
 
@@ -95,6 +97,10 @@ export type PaySubscriptionScreenProps = NativeStackScreenProps<UnsubscribeStack
 export type ImageViewScreenProps = NativeStackScreenProps<CompanyStackProps, 'ImageView'>;
 
 export type CreateOrderResponseScreenProps = NativeStackScreenProps<CompanyStackProps, 'CreateOrderResponse'>;
+
+export type CompanyChatScreenProps = NativeStackScreenProps<CompanyStackProps, 'Chat'>;
+
+export type ClientChatScreenProps = NativeStackScreenProps<ClientStackProps, 'Chat'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>

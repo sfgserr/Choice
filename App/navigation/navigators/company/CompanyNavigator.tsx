@@ -1,7 +1,7 @@
 import {State} from '../../../enums/AppEnums.ts';
 import * as React from 'react';
 import {CompanyStack} from './CompanyStack.ts';
-import {CreateOrderResponse, ImageView, Tab} from './Screens.tsx';
+import {Chat, CreateOrderResponse, ImageView, Tab} from './Screens.tsx';
 
 export default function CompanyNavigator({state}: {state: State}) {
   return (
@@ -11,6 +11,7 @@ export default function CompanyNavigator({state}: {state: State}) {
           {Tab()}
           {ImageView()}
           {CreateOrderResponse()}
+          {Chat()}
         </CompanyStack.Navigator>
       )}
     </>

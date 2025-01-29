@@ -3,7 +3,7 @@ import {getOptions} from '../Helper.tsx';
 import {ClientTab} from './ClientTab.ts';
 import * as React from 'react';
 import OrderRequestsScreen from '../../../screens/tab/OrderRequestsScreen.tsx';
-import ChatScreen from '../../../screens/tab/ChatScreen.tsx';
+import ChatsScreen from '../../../screens/tab/ChatsScreen.tsx';
 import AccountScreen from '../../../screens/tab/AccountScreen.tsx';
 
 export const Categories = () => (
@@ -22,10 +22,10 @@ export const OrderRequests = () => (
   />
 )
 
-export const Chat = () => (
+export const Chats = () => (
   <ClientTab.Screen
-    name={'Chat'}
-    component={ChatScreen}
+    name={'Chats'}
+    component={ChatsScreen}
     options={getOptions({title: 'Чат', source: require('../../../assets/images/chat.png')})}
   />
 )

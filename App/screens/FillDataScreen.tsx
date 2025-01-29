@@ -60,7 +60,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
         .filter(c => c.selected)
         .map(c => c.category.categoryId),
       photoUris,
-      socialMediaUris,
+      socialMediaUris.filter(u => u != ''),
       prepaymentAvailable);
 
     setIsRefreshing(false);

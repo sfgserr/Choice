@@ -7,7 +7,7 @@ using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Messages.Queries.GetChat
 {
-    internal class GetChatQueryHandler : IQueryHandler<GetChatQuery, IEnumerable<MessageDto>>
+    internal class GetChatQueryHandler : IQueryHandler<GetChatQuery, ChatDto>
     {
         private readonly ISqlConnectionFactory _factory;
         private readonly IUsersModule _usersModule;
@@ -23,19 +23,23 @@ namespace Chat.Application.Messages.Queries.GetChat
             _userContext = userContext;
         }
 
-        public async Task<IEnumerable<MessageDto>> Handle(GetChatQuery query)
+        public async Task<ChatDto> Handle(GetChatQuery query)
         {
             using var connection = _factory.GetConnection();
 
             const string sql = 
             $"""
+            SELECT
+                chat."ChatUsers"."Id" as {nameof(UserDto.Id)},
+                chat."ChatUsers"."Name" as {nameof(UserDto.Name)},
+                chat."ChatUsers"."IconUri" as {nameof(UserDto.IconUri)}
+            FROM chat."ChatUsers"
+            WHERE chat."ChatUsers"."Id" = @Id1;
+            
             SELECT 
                 chat."Messages"."Id" as {nameof(MessageDto.Id)},
                 chat."Messages"."Type" as {nameof(MessageDto.Type)},
                 chat."Messages"."Body" as {nameof(MessageDto.Content)},
-                chat."Messages"."ToUserId" as {nameof(MessageDto.ToUserId)},
-                chat."ChatUsers"."IconUri" as {nameof(MessageDto.ToUserIconUri)},
-                chat."ChatUsers"."Name" as {nameof(MessageDto.ToUserName)},
                 chat."Messages"."FromUserId" as {nameof(MessageDto.FromUserId)},
                 chat."Messages"."CreationDate" as {nameof(MessageDto.CreationDate)},
                 chat."OrderMessages"."ResponseId" as {nameof(MessageDto.OrderResponseId)},
@@ -50,13 +54,16 @@ namespace Chat.Application.Messages.Queries.GetChat
             ORDER BY {nameof(MessageDto.CreationDate)}
             """;
 
-            var messages = await connection.QueryAsync<MessageDto>(
+            var result = await connection.QueryMultipleAsync(
                 sql,
                 new
                 {
                     Id1 = _userContext.Id.Value,
                     Id2 = query.UserId
                 });
+
+            var user = result.Read<UserDto>().First();
+            var messages = result.Read<MessageDto>();
             
             foreach (var message in messages)
             {
@@ -66,7 +73,7 @@ namespace Chat.Application.Messages.Queries.GetChat
                 }
             }
             
-            return messages;
+            return new ChatDto { User = user, Messages = messages };
         }
     }
 }

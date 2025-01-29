@@ -4,6 +4,7 @@ import * as React from 'react';
 import ImageViewScreen from '../../../screens/ImageViewScreen.tsx';
 import CreateOrderResponseScreen from '../../../screens/CreateOrderResponseScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import CompanyChatScreen from '../../../screens/CompanyChatScreen.tsx';
 
 export const Tab = () => (
   <CompanyStack.Screen
@@ -24,4 +25,10 @@ export const CreateOrderResponse = () => (
     name={'CreateOrderResponse'}
     component={gestureHandlerRootHOC(CreateOrderResponseScreen)}
     options={{headerShown: false}}/>
+)
+
+export const Chat = () => (
+  <CompanyStack.Screen
+    name={'Chat'}
+    component={CompanyChatScreen}/>
 )

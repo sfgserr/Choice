@@ -2,9 +2,10 @@ using Chat.Application.Contracts;
 using Chat.Application.Messages.Commands.CreateMessage;
 using Chat.Application.Messages.Queries.GetChat;
 using Chat.Application.Messages.Queries.GetChats;
+using GetChatDto = Chat.Application.Messages.Queries.GetChat.ChatDto;
+using GetChatsDto = Chat.Application.Messages.Queries.GetChats.ChatDto;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Chat.Messages
 {
@@ -37,7 +38,7 @@ namespace WebApi.Modules.Chat.Messages
         public async Task<IActionResult> GetChat(Guid toUserId)
         {
             var chat = await _chatModule
-                .Query<GetChatQuery, IEnumerable<MessageDto>>(new GetChatQuery(toUserId));
+                .Query<GetChatQuery, GetChatDto>(new GetChatQuery(toUserId));
 
             return Ok(chat);
         }
@@ -47,7 +48,7 @@ namespace WebApi.Modules.Chat.Messages
         public async Task<IActionResult> GetChats()
         {
             var chats = await _chatModule
-                .Query<GetChatsQuery, IEnumerable<ChatDto>>(new GetChatsQuery());
+                .Query<GetChatsQuery, IEnumerable<GetChatsDto>>(new GetChatsQuery());
 
             return Ok(chats);
         }

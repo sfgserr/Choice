@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {State} from '../../../enums/AppEnums.ts';
 import {ClientStack} from './ClientStack.ts';
-import {Tab, Map, CreateOrderRequest, EditOrderRequest} from './Screens.tsx';
+import {Tab, Map, CreateOrderRequest, EditOrderRequest, Chat} from './Screens.tsx';
 
 export default function ClientNavigator({state}: {state: State}) {
   return (
@@ -12,6 +12,7 @@ export default function ClientNavigator({state}: {state: State}) {
           {Map()}
           {CreateOrderRequest()}
           {EditOrderRequest()}
+          {Chat()}
         </ClientStack.Navigator>
       )}
     </>
