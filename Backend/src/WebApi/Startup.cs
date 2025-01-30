@@ -183,6 +183,10 @@ namespace WebApi
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ChatHub>("chat");
+                endpoints.MapGet("chat/status/{userId:guid}", (Guid userId) =>
+                {
+                    
+                });
             });
         }
 

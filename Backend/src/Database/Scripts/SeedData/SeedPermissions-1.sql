@@ -54,6 +54,10 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('GetChat');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetChats');
 
+INSERT INTO identity."Permissions" ("Code") VALUES ('Chat');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('Read');
+
 INSERT INTO identity."Permissions" ("Code") VALUES ('CreateCategory');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('EditCategory');

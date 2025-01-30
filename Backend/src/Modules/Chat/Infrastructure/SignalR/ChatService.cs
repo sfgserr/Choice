@@ -1,5 +1,5 @@
 using Chat.Application.Contracts;
-using Chat.Domain.Messages;
+using Chat.Application.Messages.Queries.GetChat;
 using Microsoft.AspNetCore.SignalR;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
@@ -16,9 +16,9 @@ namespace Chat.Infrastructure.SignalR
             _hubContext = hubContext;
         }
 
-        public async Task SendMessage(Message message)
+        public async Task SendMessage(MessageDto message)
         {
-            var toUserId = message.ToUserId.Value;
+            var toUserId = message.ToUserId;
 
             if (_usersStore.IsUserOnline(toUserId))
             {

@@ -1,5 +1,6 @@
 using Chat.Application.Contracts;
 using Chat.Application.Messages.Commands.CreateMessage;
+using Chat.Application.Messages.Commands.Read;
 using Chat.Application.Messages.Queries.GetChat;
 using Chat.Application.Messages.Queries.GetChats;
 using GetChatDto = Chat.Application.Messages.Queries.GetChat.ChatDto;
@@ -20,7 +21,7 @@ namespace WebApi.Modules.Chat.Messages
             _chatModule = chatModule;
         }
 
-        [HttpPost()]
+        [HttpPost]
         [HasPermission(Permissions.CreateMessage)]
         public async Task<IActionResult> CreateMessage(CreateMessageRequest request)
         {
@@ -32,6 +33,14 @@ namespace WebApi.Modules.Chat.Messages
             return Ok();
         }
         
+        [HttpPut("{messageId:guid}")]
+        [HasPermission(Permissions.Read)]
+        public async Task<IActionResult> Read(Guid messageId)
+        {
+            await _chatModule.ExecuteCommand(new ReadCommand(messageId));
+            
+            return Ok();
+        }
         
         [HttpGet("{toUserId:guid}")]
         [HasPermission(Permissions.GetChat)]
@@ -43,7 +52,7 @@ namespace WebApi.Modules.Chat.Messages
             return Ok(chat);
         }
         
-        [HttpGet()]
+        [HttpGet]
         [HasPermission(Permissions.GetChats)]
         public async Task<IActionResult> GetChats()
         {

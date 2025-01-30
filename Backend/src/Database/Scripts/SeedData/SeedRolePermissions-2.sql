@@ -68,6 +68,14 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetChat');
 
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Chat');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Chat');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'Read');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'Read');
+
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetChats');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetChats');

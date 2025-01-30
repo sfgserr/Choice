@@ -2,12 +2,13 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ListRenderItemInfo,
   StyleSheet,
   Text,
-  TextInput,
+  TextInput, TouchableOpacity,
   View,
 } from 'react-native';
-import {ChatMessages} from '../types/DomainTypes.ts';
+import {Category, ChatMessages, Message, OrderRequest} from '../types/DomainTypes.ts';
 import React from 'react';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
@@ -15,13 +16,16 @@ import {ChatService} from '../services/domain/ChatService.ts';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {Icon} from '@rneui/base';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function ChatScreen({id, navigation}: {id: string, navigation: any}) {
   const chatService = useDependency<ChatService>('ChatService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [chat, setChat] = React.useState<ChatMessages | null>(null);
+  const [categories, setCategories] = React.useState<Category[]>([]);
 
   React.useEffect(() => {
     const getChat = async () => {
@@ -31,53 +35,53 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         setChat(response.content);
       }
     }
+    const getCategories = async () => {
+      const response = await categoryService.getCategories();
+
+      if (response.content != null) {
+        setCategories(response.content);
+      }
+    }
     getChat();
+    getCategories();
   }, []);
+
+  const Stub = () => (
+    <View style={styles.stubContainer}>
+      <Text style={styles.stubTitle}>Нет сообщений</Text>
+      <Text style={styles.stubText}>
+        Можете запросить у компании любую интересующую Вас информацию или создать заказ и дождаться ответов от компаний рядом с вами
+      </Text>
+      <View style={{paddingHorizontal: 40}}>
+        <StyledButton
+          content={'Создать заказ'}
+          top={20}
+          bottom={0}
+          isDisabled={false}
+          pressed={() => navigation.navigate('CreateOrderRequest', {
+            categories,
+            categoryIndex: 0,
+            onGoBack: (o: OrderRequest) => {}})}/>
+      </View>
+    </View>
+  );
+
+  const Message = (item: ListRenderItemInfo<Message>) => (
+    <View>
+
+    </View>
+  )
 
   return (
     <View style={styles.container}>
-      {chat != null && (
+      {chat != null && categories.length > 0 && (
         <View style={styles.chatBackground}>
           <View style={styles.chat}>
             <FlatList
               data={chat.messages}
               contentContainerStyle={{flex:1}}
-              renderItem={item => (
-                <View>
-                </View>
-              )}
-              ListEmptyComponent={(
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: '700',
-                      color: 'black',
-                      alignSelf: 'center'
-                    }}>
-                    Нет сообщений
-                  </Text>
-                  <Text
-                    style={{
-                      color: '#818C99',
-                      fontWeight: '400',
-                      fontSize: 16,
-                      paddingTop: 20,
-                      alignSelf: 'center',
-                      textAlign: 'center'
-                    }}>
-                    Можете запросить у компании любую интересующую Вас информацию или создать заказ и дождаться ответов от компаний рядом с вами
-                  </Text>
-                  <View style={{paddingHorizontal: 40}}>
-                    <StyledButton
-                      content={'Создать заказ'}
-                      top={20}
-                      bottom={0}
-                      isDisabled={false}
-                      pressed={() => navigation.go('CreateOrderRequest')}/>
-                  </View>
-                </View>
-              )}/>
+              renderItem={Message}
+              ListEmptyComponent={Stub}/>
           </View>
           <View style={styles.userTab}>
             <View style={[styles.horizontalSpread, {paddingBottom: 5}]}>
@@ -92,30 +96,30 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
           </View>
           <View style={styles.bottomTab}>
             <View style={[styles.horizontalSpread, {paddingTop: 5}]}>
-              <View style={styles.alignToCenterContainer}>
+              <TouchableOpacity style={styles.alignToCenterContainer}>
                 <Icon
                   type={'material'}
                   name={'attachment'}
                   color={'#858E99'}
                   size={25}/>
-              </View>
+              </TouchableOpacity>
               <View style={styles.textInputBorder}>
                 <TextInput
                   style={styles.textInput}
                   placeholder={'Сообщение'}/>
               </View>
-              <View style={styles.alignToCenterContainer}>
+              <TouchableOpacity style={styles.alignToCenterContainer}>
                 <Icon
                   type={'material'}
                   name={'mic'}
                   color={'#858E99'}
                   size={25}/>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
       )}
-      <LongRunningOperationIndicator isRefreshing={chat == null} />
+      <LongRunningOperationIndicator isRefreshing={chat == null || categories.length == 0} />
     </View>
   );
 }
@@ -186,5 +190,26 @@ const styles = StyleSheet.create({
     height: d.height * 0.676,
     position: 'absolute',
     top: d.height*0.108,
+  },
+  stubContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  stubTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center'
+  },
+  stubText: {
+    color: '#818C99',
+    fontWeight: '400',
+    fontSize: 16,
+    paddingTop: 20,
+    alignSelf: 'center',
+    textAlign: 'center'
+  },
+  messageContainer: {
+    paddingTop: 10
   }
 });

@@ -67,12 +67,14 @@ namespace Chat.Domain.Messages
                 toUserId,
                 DateTime.UtcNow);
         }
-
+        
         public MessageId Id { get; }
 
         public MessageType Type { get; }
 
         public string? Body { get; }
+        
+        public bool IsRead { get; }
 
         public OrderMessage? OrderMessage { get; }
 

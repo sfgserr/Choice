@@ -1,5 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using Chat.Application.Contracts;
+using Chat.Application.Messages.Queries.GetChat;
 using Chat.Domain.Messages;
 using Chat.Domain.ChatUsers;
 
@@ -29,7 +30,18 @@ namespace Chat.Application.Messages.Commands.CreateMessage
                 new(command.ToUserId),
                 MessageType.Parse(command.Type));
 
-            await _chatService.SendMessage(message);
+            await _chatService.SendMessage(new MessageDto(
+                message.Id.Value,
+                message.FromUserId.Value,
+                message.ToUserId.Value,
+                message.Body,
+                message.IsRead,
+                message.Type.Value,
+                message.OrderMessage?.ResponseId.Value,
+                message.CreationDate,
+                message.OrderMessage?.EnrollmentDate,
+                message.OrderMessage?.IsActive,
+                null));
             
             await _dbContext.Messages.AddAsync(message);
         }
