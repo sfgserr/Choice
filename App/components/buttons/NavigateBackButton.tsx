@@ -12,7 +12,6 @@ export default function NavigateBackButton({navigation}) {
           alignSelf: 'center',
           width: 20,
           height: 20,
-          paddingLeft: 30
         }}
         source={require('../../assets/images/chevron-left.png')}/>
     </TouchableOpacity>

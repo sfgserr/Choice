@@ -88,8 +88,8 @@ export type CompanyInfo = {
 }
 
 export type ChatMessages = {
-  User: ChatUser
-  Messages: Message[]
+  user: ChatUser
+  messages: Message[]
 }
 
 export type ChatUser = {
@@ -107,7 +107,7 @@ export type Message = {
   creationDate: Date
   enrollmentDate: Date | null
   isActive: boolean | null
-  OrderResponse: OrderResponse
+  orderResponse: OrderResponse
 }
 
 export type OrderResponse = {

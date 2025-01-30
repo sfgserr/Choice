@@ -83,8 +83,9 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToCh
     const getCompany = async () => {
       const response = await companyService.getCompanyOnMap(companyId);
 
-      if (response.content != null)
+      if (response.content != null) {
         setCompany(response.content);
+      }
     }
     getCompany();
   }, [companyId]);

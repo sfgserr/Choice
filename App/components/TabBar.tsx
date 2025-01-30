@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Animated, Dimensions,
+  Animated, Dimensions, NativeScrollEvent, NativeSyntheticEvent,
   Text, TouchableOpacity,
   View, ViewToken,
 } from 'react-native';
@@ -15,13 +15,7 @@ import {
 } from '../types/TabTypes.ts';
 
 export default function TabBar({tabs}: TabBarProps) {
-  const {width, height} = Dimensions.get('screen');
-
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  const onViewableItemsChanged = React.useCallback((info: { viewableItems: ViewToken<TabsType>[], changed: ViewToken<TabsType>[] }) => {
-    if (info.viewableItems.length > 0)
-      setCurrentIndex(+info.viewableItems[info.viewableItems.length-1].item.key);
-  });
+  const { width } = Dimensions.get('screen');
 
   const data = Object.keys(tabs).map<TabsType>((v, i) => ({
     name: tabs[i].title,
@@ -32,20 +26,20 @@ export default function TabBar({tabs}: TabBarProps) {
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  const Tab = React.forwardRef(({item, onItemPress, isPressed}: TabProps, ref: ForwardedRef<View>) => {
+  const Tab = React.forwardRef(({item, onItemPress, color}: TabProps, ref: ForwardedRef<View>) => {
 
     return (
       <TouchableOpacity
         ref={ref}
         onPress={() => onItemPress()}>
-        <Text
+        <Animated.Text
           style={{
-            fontWeight: isPressed ? '600' : '500',
+            fontWeight: color == 'black' ? '600' : '500',
             fontSize: 16,
-            color: isPressed ? 'black' : '#818C99',
+            color: color,
           }}>
           {item.name}
-        </Text>
+        </Animated.Text>
       </TouchableOpacity>
     );
   });
@@ -81,6 +75,18 @@ export default function TabBar({tabs}: TabBarProps) {
 
     const [measures, setMeasures] = React.useState<MeasuresType[]>([]);
 
+    const getColors = React.useCallback((index: number) => {
+      if (measures.length > 0) {
+        const inputRange = data.map((_, i) => i*width);
+        const outputRange = data.map((_, i) => i == index ? 'black' : '#818C99');
+        return scrollX.interpolate({
+          inputRange,
+          outputRange
+        });
+      }
+      return 'white'
+    }, [measures]);
+
     React.useEffect(() => {
       let m: MeasuresType[] = [];
       data.forEach(item => {
@@ -112,7 +118,7 @@ export default function TabBar({tabs}: TabBarProps) {
           {data.map((item: TabsType, index) => {
             return (
               <Tab
-                isPressed={index == currentIndex}
+                color={getColors(index)}
                 key={item.key}
                 item={item}
                 ref={item.ref}
@@ -147,7 +153,6 @@ export default function TabBar({tabs}: TabBarProps) {
         ref={ref}
         data={data}
         keyExtractor={item => item.key}
-        onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{viewAreaCoveragePercentThreshold: 100}}
         pagingEnabled
         horizontal

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Animated, View} from 'react-native';
+import AnimatedInterpolation = Animated.AnimatedInterpolation;
 
 export type TabsType = {
   name: string,
@@ -11,7 +12,7 @@ export type TabsType = {
 export type TabProps = {
   item: TabsType,
   onItemPress: Function,
-  isPressed: boolean
+  color: string | AnimatedInterpolation<string | number>
 }
 
 export type TabsProps = {

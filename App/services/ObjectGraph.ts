@@ -14,7 +14,7 @@ import {ClientService} from './domain/ClientService.ts';
 import {SubscriptionPaymentService} from './domain/SubscriptionPaymentService.ts';
 import {State} from '../enums/AppEnums.ts';
 import {OrderResponseService} from './domain/OrderResponseService.ts';
-import {ChatService} from './domain/ChatService.tsx';
+import {ChatService} from './domain/ChatService.ts';
 
 type Object = {
   [name: string]: object,

@@ -10,7 +10,7 @@ export class ChatService {
 
   public async getChat(userId: string) {
     return await this.httpService.requestWithContent<ChatMessages>(
-      `api/messages/${userId}`,
+      `messages/${userId}`,
       'GET',
       undefined);
   }

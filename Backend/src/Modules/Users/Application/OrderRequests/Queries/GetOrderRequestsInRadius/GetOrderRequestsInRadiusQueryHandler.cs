@@ -43,7 +43,8 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
                     users."Users"."AverageGrade" as {nameof(OrderRequestDto.AverageGrade)},
                     users."OrderRequests"."Distance" as {nameof(OrderRequestDto.Distance)}
                 FROM users."OrderRequests"
-                JOIN users."Users" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"            
+                JOIN users."Users" ON users."OrderRequests"."ClientCreatedId" = users."Users"."Id"
+                WHERE users."OrderRequests"."IsEnrolled" IS NOT TRUE AND users."OrderRequests"."Status" = 'Active'		
                 """;
 
             var orderRequests = await connection.QueryAsync<OrderRequestDto>(sql);

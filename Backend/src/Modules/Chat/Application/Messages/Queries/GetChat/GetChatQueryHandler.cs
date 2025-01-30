@@ -34,7 +34,7 @@ namespace Chat.Application.Messages.Queries.GetChat
                 chat."ChatUsers"."Name" as {nameof(UserDto.Name)},
                 chat."ChatUsers"."IconUri" as {nameof(UserDto.IconUri)}
             FROM chat."ChatUsers"
-            WHERE chat."ChatUsers"."Id" = @Id1;
+            WHERE chat."ChatUsers"."Id" = @Id2;
             
             SELECT 
                 chat."Messages"."Id" as {nameof(MessageDto.Id)},
