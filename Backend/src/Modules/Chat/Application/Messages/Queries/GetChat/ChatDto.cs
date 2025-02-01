@@ -10,40 +10,10 @@ namespace Chat.Application.Messages.Queries.GetChat
     }
     
     public class MessageDto
-    {
-        public MessageDto(
-            Guid id, 
-            Guid fromUserId, 
-            Guid toUserId,
-            string? body, 
-            bool isRead, 
-            string type, 
-            Guid? orderResponseId, 
-            DateTime creationDate, 
-            DateTime? enrollmentDate, 
-            bool? isActive, 
-            OrderResponseDto? orderResponse)
-        {
-            Id = id;
-            FromUserId = fromUserId;
-            ToUserId = toUserId;
-            Body = body;
-            IsRead = isRead;
-            Type = type;
-            OrderResponseId = orderResponseId;
-            CreationDate = creationDate;
-            EnrollmentDate = enrollmentDate;
-            IsActive = isActive;
-            OrderResponse = orderResponse;
-        }
-        
-        public MessageDto() {}
-        
+    {   
         public Guid Id { get; }
         
         public Guid FromUserId { get; }
-
-        public Guid ToUserId { get; }
 
         public string? Body { get; }
         

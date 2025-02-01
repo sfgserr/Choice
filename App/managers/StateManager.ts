@@ -4,6 +4,7 @@ import {UserType} from '../enums/ModelEnums.ts';
 import {TokenStorageService} from '../services/object/TokenStorageService.ts';
 import {AccountManager} from './AccountManager.ts';
 import {TokenService} from '../services/auth/TokenService.ts';
+import {ConnectionManager} from './ConnectionManager.ts';
 
 export class StateManager {
   private readonly tokenStorageService: TokenStorageService;
@@ -42,6 +43,8 @@ export class StateManager {
         result.tokens[1],
       );
 
+      await ConnectionManager.init(result.tokens[0]);
+
       let state = this.userTypeToStateMap[user.userType];
 
       if (state == State.Company && !user.subscribed) {
@@ -59,6 +62,9 @@ export class StateManager {
       accessToken,
       refreshToken,
     );
+
+    await ConnectionManager.init(accessToken);
+
     let user = this.tokenService.getUser();
 
     return this.userTypeToStateMap[user.userType];

@@ -1,4 +1,4 @@
-using Chat.Application.Messages.Queries.GetChat;
+using Chat.Application.Chat.Commands.SendMessageCommand;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Contracts

@@ -1,5 +1,5 @@
 using BuildingBlocks.Application.Events;
-using Chat.Application.Chat.SendOrderMessage;
+using Chat.Application.Chat.Commands.SendOrderMessage;
 using Chat.Infrastructure.Processing;
 using Users.IntegrationEvents;
 

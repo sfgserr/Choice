@@ -66,12 +66,17 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     });
   }
 
+  const ref = React.useRef<BottomSheet>(null);
+
   const onMarkerPressed = React.useCallback((companyId: string) => {
     setCompanyId(companyId);
     ref.current?.expand();
   }, []);
 
-  const ref = React.useRef<BottomSheet>(null);
+  const onClose = React.useCallback(() => {
+    ref.current?.close();
+    setCompanyId('');
+  }, []);
 
   return (
     <GestureHandlerRootView>
@@ -126,7 +131,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           </>)}
       <CompanyPageBottomSheet
         companyId={companyId}
-        close={() => ref.current?.close()}
+        close={onClose}
         ref={ref}
         navigateToChat={() => navigation.navigate('Chat', {id: companyId})}/>
     </GestureHandlerRootView>

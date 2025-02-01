@@ -48,7 +48,7 @@ namespace Users.Infrastructure.Configuration
             containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
 
-            var mappings = new Dictionary<string, Type>()
+            var mappings = new Dictionary<string, Type>
             {
                 [nameof(EnrolledDomainNotification)] = typeof(EnrolledDomainNotification),
                 [nameof(EnrolledWithPrepaymentDomainNotification)] = typeof(EnrolledWithPrepaymentDomainNotification),

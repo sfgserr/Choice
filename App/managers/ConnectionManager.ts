@@ -2,13 +2,12 @@ import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {DeviceEventEmitter} from 'react-native';
 
 export class ConnectionManager {
-  private connection: HubConnection | null;
+  private static connection: HubConnection | null = null;
 
-  constructor() {
-    this.connection = null;
+  private constructor() {
   }
 
-  public async init(accessToken: string) {
+  public static async init(accessToken: string) {
     if (this.connection == null) {
       this.connection = new HubConnectionBuilder().withUrl(
         `${process.env.API_URL}/chat`,

@@ -7,12 +7,10 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
     internal class CreateOrderMessageCommandHandler : ICommandHandler<CreateOrderMessageCommand>
     {
         private readonly IChatDbContext _dbContext;
-        private readonly IChatService _chatService;
         
         internal CreateOrderMessageCommandHandler(IChatDbContext dbContext, IChatService chatService)
         {
             _dbContext = dbContext;
-            _chatService = chatService;
         }
 
         public async Task Execute(CreateOrderMessageCommand command)
@@ -22,8 +20,6 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
                 null,
                 new(command.FromUserId),
                 new(command.ToUserId));
-
-            await _chatService.SendMessage(orderMessage);
             
             await _dbContext.Messages.AddAsync(orderMessage);
         }

@@ -3,7 +3,7 @@ using Chat.Application.Contracts;
 using Users.Application.Contracts;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
-namespace Chat.Application.Chat.SendOrderMessage
+namespace Chat.Application.Chat.Commands.SendOrderMessage
 {
     internal class SendOrderMessageCommandHandler : ICommandHandler<SendOrderMessageCommand>
     {

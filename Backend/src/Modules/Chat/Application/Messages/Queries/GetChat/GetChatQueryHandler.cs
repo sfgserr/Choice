@@ -42,7 +42,6 @@ namespace Chat.Application.Messages.Queries.GetChat
                 chat."Messages"."Body" as {nameof(MessageDto.Body)},
                 chat."Messages"."IsRead" as {nameof(MessageDto.IsRead)},
                 chat."Messages"."FromUserId" as {nameof(MessageDto.FromUserId)},
-                chat."Messages"."ToUserId" as {nameof(MessageDto.ToUserId)},
                 chat."Messages"."CreationDate" as {nameof(MessageDto.CreationDate)},
                 chat."OrderMessages"."ResponseId" as {nameof(MessageDto.OrderResponseId)},
                 chat."OrderMessages"."IsActive" as {nameof(MessageDto.IsActive)},

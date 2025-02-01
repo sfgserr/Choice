@@ -1,6 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Queries;
 
-namespace Chat.Application.Chat.GetUserStatus
+namespace Chat.Application.Chat.Queries.GetUserStatus
 {
     public class GetUserStatusQuery : IQuery<bool>
     {

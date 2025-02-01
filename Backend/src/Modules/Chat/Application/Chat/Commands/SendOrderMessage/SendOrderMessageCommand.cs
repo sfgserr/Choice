@@ -1,6 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 
-namespace Chat.Application.Chat.SendOrderMessage
+namespace Chat.Application.Chat.Commands.SendOrderMessage
 {
     public class SendOrderMessageCommand : ICommand
     {

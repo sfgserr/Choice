@@ -1,4 +1,4 @@
-using Chat.Application.Chat.GetUserStatus;
+using Chat.Application.Chat.Queries.GetUserStatus;
 using Chat.Application.Contracts;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -10,16 +10,13 @@ namespace Chat.Application.Messages.Commands.CreateMessage
     {
         private readonly IChatDbContext _dbContext;
         private readonly IUserContext _userContext;
-        private readonly IChatService _chatService;
         
         internal CreateMessageCommandHandler(
             IChatDbContext dbContext, 
-            IUserContext userContext, 
-            IChatService chatService)
+            IUserContext userContext)
         {
             _dbContext = dbContext;
             _userContext = userContext;
-            _chatService = chatService;
         }
 
         public async Task Execute(CreateMessageCommand command)
@@ -29,19 +26,6 @@ namespace Chat.Application.Messages.Commands.CreateMessage
                 _userContext.Id,
                 new(command.ToUserId),
                 MessageType.Parse(command.Type));
-
-            await _chatService.SendMessage(new MessageDto(
-                message.Id.Value,
-                message.FromUserId.Value,
-                message.ToUserId.Value,
-                message.Body,
-                message.IsRead,
-                message.Type.Value,
-                message.OrderMessage?.ResponseId.Value,
-                message.CreationDate,
-                message.OrderMessage?.EnrollmentDate,
-                message.OrderMessage?.IsActive,
-                null));
             
             await _dbContext.Messages.AddAsync(message);
         }

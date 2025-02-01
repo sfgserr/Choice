@@ -1,7 +1,7 @@
 using BuildingBlocks.Application.Cqrs.Queries;
 using Chat.Application.Contracts;
 
-namespace Chat.Application.Chat.GetUserStatus
+namespace Chat.Application.Chat.Queries.GetUserStatus
 {
     internal class GetUserStatusQueryHandler : IQueryHandler<GetUserStatusQuery, bool>
     {

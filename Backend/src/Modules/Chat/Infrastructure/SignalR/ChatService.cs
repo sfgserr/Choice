@@ -1,5 +1,5 @@
+using Chat.Application.Chat.Commands.SendMessageCommand;
 using Chat.Application.Contracts;
-using Chat.Application.Messages.Queries.GetChat;
 using Microsoft.AspNetCore.SignalR;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
 

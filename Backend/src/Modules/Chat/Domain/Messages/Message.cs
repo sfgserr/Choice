@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Domain;
 using Chat.Domain.ChatUsers;
+using Chat.Domain.Messages.Events;
 using Chat.Domain.Messages.OrderMessages;
 using Chat.Domain.Messages.Rules;
 
@@ -32,6 +33,8 @@ namespace Chat.Domain.Messages
             FromUserId = fromUserId;
             ToUserId = toUserId;
             CreationDate = creationDate;
+            
+            AddDomainEvent(new MessageCreatedDomainEvent(Id));
         }
 
         public static Message CreateMessage(
