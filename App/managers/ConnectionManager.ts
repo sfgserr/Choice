@@ -1,5 +1,6 @@
 import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {DeviceEventEmitter} from 'react-native';
+import {setupURLPolyfill} from 'react-native-url-polyfill';
 
 export class ConnectionManager {
   private static connection: HubConnection | null = null;
@@ -8,14 +9,17 @@ export class ConnectionManager {
   }
 
   public static async init(accessToken: string) {
+    setupURLPolyfill();
+
     if (this.connection == null) {
       this.connection = new HubConnectionBuilder().withUrl(
-        `${process.env.API_URL}/chat`,
+        'http://127.0.0.1:8080/chat',
         {accessTokenFactory: () => accessToken}).build();
 
       this.connection.on('messageSent', (message: any) => {
         DeviceEventEmitter.emit('messageSent', message);
       })
+      await this.connection.start();
     }
   }
 }

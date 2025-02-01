@@ -14,4 +14,22 @@ export class ChatService {
       'GET',
       undefined);
   }
+
+  public async create(toUserId: string, content: string, type: string) {
+    return await this.httpService.request(
+      'messages',
+      'POST',
+      JSON.stringify({
+        toUserId,
+        content,
+        type
+      }));
+  }
+
+  public async getStatus(userId: string) {
+    return await this.httpService.requestWithContent<boolean>(
+      `chat/status/${userId}`,
+      'GET',
+      undefined);
+  }
 }

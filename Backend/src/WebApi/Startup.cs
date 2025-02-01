@@ -23,13 +23,10 @@ using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using MassTransit;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Design;
 using OpenIddict.Validation.AspNetCore;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
-using Users.Infrastructure.Configuration.Data;
-using Users.Infrastructure.Data;
 using WebApi.Configuration.Authentication.GrantTypeHandling;
 using WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandlers;
 using WebApi.Configuration.Chat;
@@ -175,7 +172,7 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseSubscriptionCheck();
             
             app.UseProblemDetails();
@@ -183,10 +180,6 @@ namespace WebApi
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ChatHub>("chat");
-                endpoints.MapGet("chat/status/{userId:guid}", (Guid userId) =>
-                {
-                    
-                });
             });
         }
 

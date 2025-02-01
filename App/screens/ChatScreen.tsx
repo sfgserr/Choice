@@ -25,7 +25,10 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [chat, setChat] = React.useState<ChatMessages | null>(null);
+  const [status, setStatus] = React.useState<boolean>(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
+
+  const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
     const getChat = async () => {
@@ -45,6 +48,23 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
     getChat();
     getCategories();
   }, []);
+
+  React.useEffect(() => {
+    const getStatus = async () => {
+      if (chat != null) {
+        const response = await chatService.getStatus(chat.user.id);
+
+        if (response.content != null) {
+          setStatus(response.content);
+        }
+      }
+    };
+    const timer = setInterval(() => setCount(prev => prev+1), 17000);
+
+    getStatus();
+
+    return () => clearInterval(timer);
+  }, [count]);
 
   const Stub = () => (
     <View style={styles.stubContainer}>
@@ -88,7 +108,10 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
               <View style={styles.alignToCenterContainer}>
                 <NavigateBackButton navigation={navigation} />
               </View>
-              <Text style={styles.userName}>{chat.user.name}</Text>
+              <View>
+                <Text style={styles.userName}>{chat.user.name}</Text>
+                <Text style={styles.status}>{status ? 'В сети' : 'Не в сети'}</Text>
+              </View>
               <Image
                 style={styles.icon}
                 source={{uri: `${process.env.MINIO_URL}/app-files/${chat.user.iconUri}`}} />
@@ -211,5 +234,11 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     paddingTop: 10
+  },
+  status: {
+    color: '#787878',
+    fontWeight: '400',
+    fontSize: 13,
+    alignSelf: 'center'
   }
 });

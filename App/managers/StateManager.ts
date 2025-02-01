@@ -43,7 +43,8 @@ export class StateManager {
         result.tokens[1],
       );
 
-      await ConnectionManager.init(result.tokens[0]);
+      if (user.userType == UserType.Client || user.userType == UserType.Company)
+        await ConnectionManager.init(result.tokens[0]);
 
       let state = this.userTypeToStateMap[user.userType];
 
@@ -63,9 +64,10 @@ export class StateManager {
       refreshToken,
     );
 
-    await ConnectionManager.init(accessToken);
-
     let user = this.tokenService.getUser();
+
+    if (user.userType == UserType.Client || user.userType == UserType.Company)
+      await ConnectionManager.init(accessToken);
 
     return this.userTypeToStateMap[user.userType];
   }
