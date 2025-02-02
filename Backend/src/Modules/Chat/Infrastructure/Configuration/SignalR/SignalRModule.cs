@@ -8,10 +8,12 @@ namespace Chat.Infrastructure.Configuration.SignalR
     internal class SignalRModule<T> : Module where T : Hub
     {
         private readonly IHubContext<T> _hubContext;
-
-        internal SignalRModule(IHubContext<T> hubContext)
+        private readonly IChatUsersStore _usersStore;
+        
+        internal SignalRModule(IHubContext<T> hubContext, IChatUsersStore usersStore)
         {
             _hubContext = hubContext;
+            _usersStore = usersStore;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -22,7 +24,7 @@ namespace Chat.Infrastructure.Configuration.SignalR
                 .As<IChatService>()
                 .InstancePerDependency();
 
-            builder.RegisterType<ChatUsersStore>()
+            builder.RegisterInstance(_usersStore)
                 .As<IChatUsersStore>()
                 .SingleInstance();
         }

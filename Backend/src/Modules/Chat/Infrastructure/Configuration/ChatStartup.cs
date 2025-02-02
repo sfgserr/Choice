@@ -1,5 +1,6 @@
 using Autofac;
 using BuildingBlocks.Application.Authentication;
+using Chat.Application.Contracts;
 using Chat.Infrastructure.Configuration.Authentication;
 using Chat.Infrastructure.Configuration.Data;
 using Chat.Infrastructure.Configuration.DomainEventsDispatching;
@@ -27,11 +28,12 @@ namespace Chat.Infrastructure.Configuration
             ILogger logger, 
             IUserService userService,
             IBus bus,
-            IHubContext<T> hubContext)
+            IHubContext<T> hubContext,
+            IChatUsersStore usersStore)
         {
             var chatLogger = logger.ForContext("Module", "Chat");
             
-            ConfigureCompositionRoot(connectionString, chatLogger, userService, bus, hubContext);
+            ConfigureCompositionRoot(connectionString, chatLogger, userService, bus, hubContext, usersStore);
 
             QuartzStartup.Initialize(chatLogger);
         }
@@ -41,7 +43,8 @@ namespace Chat.Infrastructure.Configuration
             ILogger logger, 
             IUserService userService,
             IBus bus,
-            IHubContext<T> hubContext)
+            IHubContext<T> hubContext,
+            IChatUsersStore usersStore)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -59,7 +62,7 @@ namespace Chat.Infrastructure.Configuration
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
-            containerBuilder.RegisterModule(new SignalRModule<T>(hubContext));
+            containerBuilder.RegisterModule(new SignalRModule<T>(hubContext, usersStore));
             containerBuilder.RegisterModule(new UsersAutofacModule());
             
             _container = containerBuilder.Build();

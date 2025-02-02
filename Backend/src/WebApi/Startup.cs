@@ -12,10 +12,12 @@ using WebApi.Configuration.Authorization;
 using WebApi.Configuration.Validation;
 using Autofac;
 using BuildingBlocks.Application.Authentication;
+using Chat.Application.Contracts;
 using WebApi.Configuration.Authentication;
 using WebApi.Modules.Users;
 using Identity.Infrastructure.Configuration;
 using Chat.Infrastructure.Configuration;
+using Chat.Infrastructure.SignalR;
 using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
@@ -57,12 +59,6 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddSwaggerGen();
-
-            string issuer = Configuration["IdentitySettings:Issuer"]!;
-            string secretKey = Configuration["IdentitySettings:SecretKey"]!;
-            string certificateThumbprint = Configuration["IdentitySettings:Thumbprint"]!;
-
-            services.AddSignalR();
             
             services.AddAuthorization();
             services.AddAuthentication(options => 
@@ -73,6 +69,8 @@ namespace WebApi
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
+            services.AddSignalR();
             
             services.AddHttpContextAccessor();
             services.AddHttpClient("Geocode", options =>
@@ -88,8 +86,12 @@ namespace WebApi
                 x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationProblemDetails(ex));
             });
-
-            var identityOptions = new IdentityOptions(issuer, secretKey, certificateThumbprint);
+            
+            string issuer = Configuration["IdentitySettings:Issuer"]!;
+            string secretKey = Configuration["IdentitySettings:SecretKey"]!;
+            string pathToCert = Configuration["IdentitySettings:PathToCert"]!;
+            
+            var identityOptions = new IdentityOptions(issuer, secretKey, pathToCert);
             
             services.AddIdentity(identityOptions, CurrentEnvironment);
             
@@ -103,6 +105,7 @@ namespace WebApi
             services.AddSingleton<IGrantTypeHandler, RefreshTokenGrantTypeHandler>();
             services.AddSingleton<GrantTypeHandlerFactory>();
             services.AddSingleton<IUserIdProvider, SubjectBasedUserIdProvider>();
+            services.AddSingleton<IChatUsersStore, ChatUsersStore>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -126,6 +129,7 @@ namespace WebApi
             var hub = container.Resolve<IHubContext<ChatHub>>();
             var seed = container.Resolve<SeedClients>();
             var clientFactory = container.Resolve<IHttpClientFactory>();
+            var usersStore = container.Resolve<IChatUsersStore>();
             
             UsersStartup.Initialize(
                 connectionString, 
@@ -152,7 +156,8 @@ namespace WebApi
                 _logger,
                 userService,
                 bus,
-                hub);
+                hub,
+                usersStore);
 
             AdminStartup.Initialize(
                 connectionString,
@@ -172,7 +177,6 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            
             app.UseSubscriptionCheck();
             
             app.UseProblemDetails();

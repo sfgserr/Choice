@@ -46,7 +46,7 @@
            proxy_pass http://webapi/api/;
         }
         
-        location /chat/ {
-           proxy_pass http://webapi/chat/;  	
+        location /chat {
+           proxy_pass http://webapi;  	
         }
     }
