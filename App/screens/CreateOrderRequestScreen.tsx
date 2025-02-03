@@ -113,7 +113,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       toKnowDeadline,
       toKnowEnrollmentDate,
       photos,
-      radius);
+      Math.round(radius));
 
     setIsRefreshing(false);
 
@@ -126,6 +126,10 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       toggleErrorModal();
     }
   };
+
+  const onSliderValueChange = React.useCallback((value: Array<number>, index: number) => {
+    setRadius(value[0]);
+  }, []);
 
   const ref = React.useRef<BottomSheet>(null);
 
@@ -235,7 +239,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
             <Text style={styles.radius}>
-              {`${radius} км`}
+              {`${Math.round(radius)} км`}
             </Text>
           </View>
           <View style={{paddingTop: 10}}>
@@ -243,7 +247,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               minimumValue={5}
               maximumValue={25}
               value={radius}
-              onValueChange={value => setRadius(Math.floor(value[0]))}
+              onValueChange={onSliderValueChange}
               thumbTintColor={'white'}
               minimumTrackTintColor={'#007AFF'}
               maximumTrackTintColor={'#e4e4e6'}

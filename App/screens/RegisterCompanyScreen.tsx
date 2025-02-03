@@ -54,6 +54,10 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
       form.city,
       form.street);
 
+    setTimeout(() => {}, 5000);
+
+    setRefreshing(false);
+
     if (response.result == 'successful') {
       setToggled(true);
     }
@@ -61,8 +65,6 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
       setErrorMessage(response.error);
       setErrorToggled(true);
     }
-
-    setRefreshing(false);
   }, [form]);
 
   const login = React.useCallback(async () => {

@@ -103,11 +103,11 @@ export type Message = {
   fromUserId: string
   content: string | null
   type: string
+  isRead: boolean
   orderResponseId: string | null
   creationDate: Date
   enrollmentDate: Date | null
   isActive: boolean | null
-  orderResponse: OrderResponse
 }
 
 export type OrderResponse = {

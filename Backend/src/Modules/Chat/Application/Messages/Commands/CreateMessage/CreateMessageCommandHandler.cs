@@ -1,12 +1,11 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using Chat.Application.Contracts;
-using Chat.Application.Messages.Queries.GetChat;
 using Chat.Domain.Messages;
 using Chat.Domain.ChatUsers;
 
 namespace Chat.Application.Messages.Commands.CreateMessage
 {
-    internal class CreateMessageCommandHandler : ICommandHandler<CreateMessageCommand>
+    internal class CreateMessageCommandHandler : ICommandHandlerWithResult<CreateMessageCommand, MessageDto>
     {
         private readonly IChatDbContext _dbContext;
         private readonly IUserContext _userContext;
@@ -19,7 +18,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
             _userContext = userContext;
         }
 
-        public async Task Execute(CreateMessageCommand command)
+        public async Task<MessageDto> Execute(CreateMessageCommand command)
         {
             var message = Message.CreateMessage(
                 command.Content,
@@ -27,7 +26,18 @@ namespace Chat.Application.Messages.Commands.CreateMessage
                 new(command.ToUserId),
                 MessageType.Parse(command.Type));
             
-            await _dbContext.Messages.AddAsync(message);
+            var addedMessage = await _dbContext.Messages.AddAsync(message);
+
+            return new MessageDto(
+                addedMessage.Entity.Id.Value,
+                addedMessage.Entity.FromUserId.Value,
+                addedMessage.Entity.Body,
+                addedMessage.Entity.IsRead,
+                addedMessage.Entity.Type.Value,
+                addedMessage.Entity.OrderMessage?.ResponseId.Value,
+                addedMessage.Entity.CreationDate,
+                addedMessage.Entity.OrderMessage?.EnrollmentDate,
+                addedMessage.Entity.OrderMessage?.IsActive);
         }
     }
 }

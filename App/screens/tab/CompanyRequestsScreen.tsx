@@ -59,42 +59,41 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
     getOrderRequests();
   }, []);
 
+  const Stub = () => (
+    <View style={styles.stubContainer}>
+      <Image
+        source={require('../../assets/images/sad.png')}
+        style={styles.image}/>
+      <Text style={styles.stubTitle}>
+        Рядом нет заказов
+      </Text>
+      <Text style={styles.text}>
+        Дождитесь появления заказов
+      </Text>
+    </View>
+  )
+
   return (
     <View style={styles.container}>
-      {orderRequests.length > 0 ? (
-        <>
-          <View style={styles.contentContainer}>
-            <Text style={styles.title}>Заказы</Text>
-            <FlatList
-              data={orderRequests}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-              renderItem={(item) => (
-                <View style={styles.itemContainer}>
-                  <OrderRequestRadiusItem
-                    orderRequest={item.item}
-                    categories={categories}
-                    navigation={navigation}/>
-                </View>
-              )}
-              onEndReached={() => {}}
-              style={styles.flatList}/>
-          </View>
-        </>) : (
-        <>
-          <View style={styles.stubContainer}>
-            <Image
-              source={require('../../assets/images/sad.png')}
-              style={styles.image}/>
-            <Text style={styles.stubTitle}>
-              Рядом нет заказов
-            </Text>
-            <Text style={styles.text}>
-              Дождитесь появления заказов
-            </Text>
-          </View>
-        </>)}
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Заказы</Text>
+        <FlatList
+          data={orderRequests}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          ListEmptyComponent={Stub}
+          contentContainerStyle={{flex: 1}}
+          renderItem={(item) => (
+            <View style={styles.itemContainer}>
+              <OrderRequestRadiusItem
+                orderRequest={item.item}
+                categories={categories}
+                navigation={navigation}/>
+            </View>
+          )}
+          style={styles.flatList}/>
+      </View>
     </View>
   )
 }

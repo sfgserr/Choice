@@ -4,13 +4,13 @@ namespace Chat.Application.Chat.Commands.SendOrderMessage
 {
     public class SendOrderMessageCommand : ICommand
     {
-        public SendOrderMessageCommand(Guid responseId, Guid toUserId)
+        public SendOrderMessageCommand(object data, Guid toUserId)
         {
-            ResponseId = responseId;
+            Data = data;
             ToUserId = toUserId;
         }
-
-        public Guid ResponseId { get; }
+        
+        public object Data { get; }
         
         public Guid ToUserId { get; }
     }

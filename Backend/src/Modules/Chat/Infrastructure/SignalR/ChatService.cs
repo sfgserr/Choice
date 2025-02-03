@@ -28,13 +28,23 @@ namespace Chat.Infrastructure.SignalR
             }
         }
 
-        public async Task SendOrder(OrderResponseDto response, Guid toUserId)
+        public async Task SendOrder(object data, Guid toUserId)
         {
             if (_usersStore.IsUserOnline(toUserId))
             {
                 await _hubContext.Clients
                     .User(_usersStore.GetConnectionId(toUserId))
-                    .SendAsync("orderSent", response);
+                    .SendAsync("orderSent", data);
+            }
+        }
+
+        public async Task SendMessageRead(Guid toUserId, Guid messageId)
+        {
+            if (_usersStore.IsUserOnline(toUserId))
+            {
+                await _hubContext.Clients
+                    .User(_usersStore.GetConnectionId(toUserId))
+                    .SendAsync("messageRead", messageId);
             }
         }
     }

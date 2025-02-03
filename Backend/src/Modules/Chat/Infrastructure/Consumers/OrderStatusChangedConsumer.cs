@@ -10,7 +10,11 @@ namespace Chat.Infrastructure.Consumers
         public async Task Consume(OrderStatusChangedIntegrationEvent integrationEvent)
         {
             await CommandsExecutor.ExecuteCommandAsync(new SendOrderMessageCommand(
-                integrationEvent.ResponseId,
+                new
+                {
+                    integrationEvent.ResponseId,
+                    integrationEvent.Status
+                },
                 integrationEvent.ToUserId));
         }
     }

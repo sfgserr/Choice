@@ -2,7 +2,7 @@ using BuildingBlocks.Application.Cqrs.Commands;
 
 namespace Chat.Application.Messages.Commands.CreateMessage
 {
-    public class CreateMessageCommand : ICommand
+    public class CreateMessageCommand : ICommandWithResult<MessageDto>
     {
         public CreateMessageCommand(string content, Guid toUserId, string type)
         {

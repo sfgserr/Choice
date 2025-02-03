@@ -8,7 +8,7 @@ using Users.Application.OrderResponses.Commands.ConfirmDate;
 using Users.Application.OrderResponses.Commands.Enroll;
 using Users.Application.OrderResponses.Commands.Finish;
 using Users.Application.OrderResponses.Commands.Response;
-using WebApi.Configuration.Authorization;
+using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace WebApi.Modules.Users.OrderResponses
 {
@@ -24,7 +24,7 @@ namespace WebApi.Modules.Users.OrderResponses
         }
         
         [HasPermission(Permissions.Response)]
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> CreateOrderResponse(CreateOrderResponseRequest request)
         {
             await _usersModule.ExecuteCommand(new ResponseCommand(
@@ -99,6 +99,16 @@ namespace WebApi.Modules.Users.OrderResponses
                 responseId));
 
             return Ok();
+        }
+        
+        [HttpGet("{id:guid}")]
+        [HasPermission(Permissions.GetOrderResponse)]
+        public async Task<IActionResult> GetOrderResponse(Guid id)
+        {
+            var orderResponse = await _usersModule.Query<GetOrderResponseQuery, OrderResponseDto>(
+                new GetOrderResponseQuery(id));
+
+            return Ok(orderResponse);
         }
     }
 }

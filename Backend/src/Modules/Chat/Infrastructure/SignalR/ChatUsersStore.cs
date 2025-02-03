@@ -1,10 +1,11 @@
+using System.Collections.Concurrent;
 using Chat.Application.Contracts;
 
 namespace Chat.Infrastructure.SignalR
 {
     public class ChatUsersStore : IChatUsersStore
     {
-        private readonly Dictionary<Guid, string> _users = new();
+        private readonly ConcurrentDictionary<Guid, string> _users = new();
 
         public string GetConnectionId(Guid id)
         {
@@ -18,12 +19,12 @@ namespace Chat.Infrastructure.SignalR
 
         public void Connect(Guid id, string connectionId)
         {
-            _users.Add(id, connectionId);
+            _users.TryAdd(id, connectionId);
         }
 
         public void Disconnect(Guid id)
         {
-            _users.Remove(id);
+            _users.Remove(id, out _);
         }
     }
 }

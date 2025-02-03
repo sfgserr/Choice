@@ -7,6 +7,7 @@ using GetChatDto = Chat.Application.Messages.Queries.GetChat.ChatDto;
 using GetChatsDto = Chat.Application.Messages.Queries.GetChats.ChatDto;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MessageDto = Chat.Application.Messages.Commands.CreateMessage.MessageDto;
 
 namespace WebApi.Modules.Chat.Messages
 {
@@ -25,12 +26,12 @@ namespace WebApi.Modules.Chat.Messages
         [HasPermission(Permissions.CreateMessage)]
         public async Task<IActionResult> CreateMessage(CreateMessageRequest request)
         {
-            await _chatModule.ExecuteCommand(new CreateMessageCommand(
+            var message = await _chatModule.ExecuteCommand<CreateMessageCommand, MessageDto>(new CreateMessageCommand(
                 request.Content,
                 request.ToUserId,
                 request.Type));
 
-            return Ok();
+            return Ok(message);
         }
         
         [HttpPut("{messageId:guid}")]

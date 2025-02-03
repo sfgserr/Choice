@@ -1,4 +1,3 @@
-using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Messages.Queries.GetChat
 {
@@ -28,8 +27,6 @@ namespace Chat.Application.Messages.Queries.GetChat
         public DateTime? EnrollmentDate { get; }
 
         public bool? IsActive { get; }
-        
-        public OrderResponseDto? OrderResponse { get; set; }
     }
     
     public class UserDto

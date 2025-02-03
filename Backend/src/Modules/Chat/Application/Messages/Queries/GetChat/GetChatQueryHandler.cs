@@ -2,24 +2,19 @@ using BuildingBlocks.Application.Cqrs.Queries;
 using BuildingBlocks.Application.Data;
 using Chat.Domain.ChatUsers;
 using Dapper;
-using Users.Application.Contracts;
-using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Messages.Queries.GetChat
 {
     internal class GetChatQueryHandler : IQueryHandler<GetChatQuery, ChatDto>
     {
         private readonly ISqlConnectionFactory _factory;
-        private readonly IUsersModule _usersModule;
         private readonly IUserContext _userContext;
 
         internal GetChatQueryHandler(
             ISqlConnectionFactory factory, 
-            IUsersModule usersModule,
             IUserContext userContext)
         {
             _factory = factory;
-            _usersModule = usersModule;
             _userContext = userContext;
         }
 
@@ -65,14 +60,6 @@ namespace Chat.Application.Messages.Queries.GetChat
 
             var user = result.Read<UserDto>().First();
             var messages = result.Read<MessageDto>();
-            
-            foreach (var message in messages)
-            {
-                if (message.OrderResponseId is { } responseId)
-                {
-                    message.OrderResponse = await _usersModule.Query<GetOrderResponseQuery, OrderResponseDto>(new(responseId));
-                }
-            }
             
             return new ChatDto { User = user, Messages = messages };
         }

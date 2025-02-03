@@ -17,6 +17,7 @@ import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {Icon} from '@rneui/base';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
+import {UserService} from '../services/domain/UserService.ts';
 
 const d = Dimensions.get('screen');
 
@@ -29,6 +30,8 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   const [count, setCount] = React.useState(0);
+
+  const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
     const getChat = async () => {
@@ -59,12 +62,26 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         }
       }
     };
-    const timer = setInterval(() => setCount(prev => prev+1), 17000);
+    const timeout = count == 1000 ? 0 : 17000;
+
+    const timer = setInterval(() => setCount(prev => prev+1), timeout);
 
     getStatus();
 
     return () => clearInterval(timer);
   }, [count]);
+
+  const sendMessage = React.useCallback(async () => {
+    if (chat != null) {
+      const response = await chatService.create(
+        chat.user.id,
+        message,
+        'Text');
+
+      if (response.result == 'successful') {
+      }
+    }
+  }, []);
 
   const Stub = () => (
     <View style={styles.stubContainer}>
@@ -128,6 +145,8 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
               </TouchableOpacity>
               <View style={styles.textInputBorder}>
                 <TextInput
+                  value={message}
+                  onChangeText={setMessage}
                   style={styles.textInput}
                   placeholder={'Сообщение'}/>
               </View>

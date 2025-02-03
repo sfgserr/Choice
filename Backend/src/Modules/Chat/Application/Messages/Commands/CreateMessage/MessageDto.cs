@@ -1,12 +1,10 @@
-
-namespace Chat.Application.Chat.Commands.SendMessageCommand
+namespace Chat.Application.Messages.Commands.CreateMessage
 {
     public class MessageDto
     {
         public MessageDto(
             Guid id, 
             Guid fromUserId, 
-            Guid toUserId,
             string? body, 
             bool isRead, 
             string type, 
@@ -17,7 +15,6 @@ namespace Chat.Application.Chat.Commands.SendMessageCommand
         {
             Id = id;
             FromUserId = fromUserId;
-            ToUserId = toUserId;
             Body = body;
             IsRead = isRead;
             Type = type;
@@ -30,9 +27,7 @@ namespace Chat.Application.Chat.Commands.SendMessageCommand
         public Guid Id { get; }
         
         public Guid FromUserId { get; }
-        
-        public Guid ToUserId { get; }
-        
+
         public string? Body { get; }
         
         public bool IsRead { get; }

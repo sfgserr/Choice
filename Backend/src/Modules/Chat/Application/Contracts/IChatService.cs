@@ -7,6 +7,8 @@ namespace Chat.Application.Contracts
     {
         Task SendMessage(MessageDto message);
 
-        Task SendOrder(OrderResponseDto response, Guid toUserId);
+        Task SendOrder(object data, Guid toUserId);
+
+        Task SendMessageRead(Guid toUserId, Guid messageId);
     }
 }
