@@ -9,10 +9,10 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   borderedTextInputHeight: {
-    height: height*0.054,
+    height: height * 0.054,
   },
   borderedTextInputBigHeight: {
-    height: height*0.116,
+    height: height * 0.116,
   },
   borderedTextInputViewColor: {
     backgroundColor: '#f2f3f5',
@@ -34,7 +34,8 @@ const Styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: '400',
-    flex: 1
+    flex: 1,
+    alignSelf: 'center',
   },
   styledButton: {
     height: height*0.054,

@@ -32,6 +32,7 @@
     "react-native-safe-area-context": "^4.14.0",
     "react-native-screens": "^4.3.0",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-yamap": "^4.8.3",
     "rn-fetch-blob": "^0.12.0"
   },

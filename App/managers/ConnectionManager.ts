@@ -17,10 +17,11 @@ export class ConnectionManager {
         {accessTokenFactory: () => accessToken}).build();
 
       this.connection.on('messageSent', (message: any) => {
+        console.log(message);
         DeviceEventEmitter.emit('messageSent', message);
-      })
+      });
 
-      this.connection.onclose(error => Alert.alert('Ошибка', error?.message, [{text: 'Ок'}]))
+      this.connection.onclose(error => Alert.alert('Ошибка', error?.message, [{text: 'Ок'}]));
 
       await this.connection.start();
     }

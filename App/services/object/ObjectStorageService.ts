@@ -21,7 +21,7 @@ export class ObjectStorageService {
   }
 
   async upload(sourceFile: string, objectName: string) {
-    const bucketName = "app-files";
+    const bucketName = 'app-files';
 
     try {
       const fileContent = await readFile(sourceFile, 'base64');
@@ -34,7 +34,7 @@ export class ObjectStorageService {
         Bucket: bucketName,
         Body: buffer,
         Key: objectName,
-        ContentType: 'image/png'
+        ContentType: 'image/png',
       }).promise();
     }
     catch (error) {

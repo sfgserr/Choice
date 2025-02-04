@@ -1,5 +1,5 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {ChatMessages} from '../../types/DomainTypes.ts';
+import {ChatMessages, Message} from '../../types/DomainTypes.ts';
 
 export class ChatService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -16,13 +16,13 @@ export class ChatService {
   }
 
   public async create(toUserId: string, content: string, type: string) {
-    return await this.httpService.request(
+    return await this.httpService.requestWithContent<Message>(
       'messages',
       'POST',
       JSON.stringify({
         toUserId,
         content,
-        type
+        type,
       }));
   }
 

@@ -15,7 +15,7 @@ const CategoriesBottomSheet = React.forwardRef(({options, close}: any, ref: Forw
         categoryIndex={options.categoryIndex}
         onIndexChange={options.onIndexChange}/>
     </CustomBottomSheet>
-  )
-})
+  );
+});
 
 export default CategoriesBottomSheet;

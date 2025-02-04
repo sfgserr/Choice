@@ -26,6 +26,8 @@ import com.swmansion.reanimated.ReanimatedPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
+// react-native-vector-icons
+import com.oblador.vectoricons.VectorIconsPackage;
 // react-native-yamap
 import ru.vvdev.yamap.RNYamapPackage;
 // rn-fetch-blob
@@ -83,6 +85,7 @@ public class PackageList {
       new ReanimatedPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
+      new VectorIconsPackage(),
       new RNYamapPackage(),
       new RNFetchBlobPackage()
     ));

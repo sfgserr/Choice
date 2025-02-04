@@ -18,6 +18,7 @@
 #include <react/renderer/components/safeareacontext/ComponentDescriptors.h>
 #include <rnscreens.h>
 #include <react/renderer/components/rnscreens/ComponentDescriptors.h>
+#include <RNVectorIconsSpec.h>
 
 namespace facebook {
 namespace react {
@@ -54,6 +55,10 @@ return module_safeareacontext;
 auto module_rnscreens = rnscreens_ModuleProvider(moduleName, params);
 if (module_rnscreens != nullptr) {
 return module_rnscreens;
+}
+auto module_RNVectorIconsSpec = RNVectorIconsSpec_ModuleProvider(moduleName, params);
+if (module_RNVectorIconsSpec != nullptr) {
+return module_RNVectorIconsSpec;
 }
   return nullptr;
 }

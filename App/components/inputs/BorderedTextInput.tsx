@@ -16,7 +16,7 @@ export default function BorderedTextInput({ value, onChanged, placeholder, isErr
         Styles.borderedTextInputView,
         isBig ? Styles.borderedTextInputBigHeight : Styles.borderedTextInputHeight,
         !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError,
-        {alignItems: 'baseline'}
+        isBig ? {alignItems: 'baseline'} : {},
       ]}>
       <TextInput
         value={value}
@@ -25,7 +25,7 @@ export default function BorderedTextInput({ value, onChanged, placeholder, isErr
         placeholder={placeholder}
         onFocus={() => setIsFocused(true)}
         style={Styles.borderedTextInput}
-        multiline
+        multiline={isBig}
         keyboardType={keyboard}/>
     </View>
   )

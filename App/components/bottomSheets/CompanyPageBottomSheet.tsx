@@ -86,7 +86,7 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToCh
       if (response.content != null) {
         setCompany(response.content);
       }
-    }
+    };
     getCompany();
   }, [companyId]);
 
@@ -183,16 +183,16 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToCh
               })}
               <TouchableOpacity
                 style={styles.contactButton}
-                onPress={async () => await contacts['Telephone'].open(company.phoneNumber)}>
+                onPress={async () => await contacts.Telephone.open(company.phoneNumber)}>
                 <Image
-                  source={contacts['Telephone'].source}
+                  source={contacts.Telephone.source}
                   style={styles.contactImage}/>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.contactButton}
-                onPress={async () => await contacts['Mail'].open(company.email)}>
+                onPress={async () => await contacts.Mail.open(company.email)}>
                 <Image
-                  source={contacts['Mail'].source}
+                  source={contacts.Mail.source}
                   style={styles.contactImage}/>
               </TouchableOpacity>
             </View>

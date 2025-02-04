@@ -24,14 +24,26 @@ const d = Dimensions.get('screen');
 export default function ChatScreen({id, navigation}: {id: string, navigation: any}) {
   const chatService = useDependency<ChatService>('ChatService');
   const categoryService = useDependency<CategoryService>('CategoryService');
+  const userService = useDependency<UserService>('UserService');
 
   const [chat, setChat] = React.useState<ChatMessages | null>(null);
   const [status, setStatus] = React.useState<boolean>(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
+  const [userId, setUserId] = React.useState<string>('');
 
   const [count, setCount] = React.useState(0);
 
   const [message, setMessage] = React.useState('');
+
+  React.useEffect(() => {
+    const getUser = async () => {
+      const user = await userService.getUser();
+
+      if (user.id != undefined)
+        setUserId(user.id);
+    };
+    getUser();
+  }, []);
 
   React.useEffect(() => {
     const getChat = async () => {
@@ -40,14 +52,14 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
       if (response.content != null) {
         setChat(response.content);
       }
-    }
+    };
     const getCategories = async () => {
       const response = await categoryService.getCategories();
 
       if (response.content != null) {
         setCategories(response.content);
       }
-    }
+    };
     getChat();
     getCategories();
   }, []);
@@ -78,10 +90,11 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         message,
         'Text');
 
-      if (response.result == 'successful') {
+      if (response.content != null) {
+        chat.messages.push(response.content);
       }
     }
-  }, []);
+  }, [chat]);
 
   const Stub = () => (
     <View style={styles.stubContainer}>
@@ -104,10 +117,12 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   );
 
   const Message = (item: ListRenderItemInfo<Message>) => (
-    <View>
-
+    <View style={styles.messageContainer}>
+      <View style={styles.senderMessageBox}>
+        <Text>{item.item.content}</Text>
+      </View>
     </View>
-  )
+  );
 
   return (
     <View style={styles.container}>
@@ -152,10 +167,13 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
                   style={styles.textInput}
                   placeholder={'Сообщение'}/>
               </View>
-              <TouchableOpacity style={styles.alignToCenterContainer}>
+              <TouchableOpacity
+                  style={styles.alignToCenterContainer}
+                  onPress={sendMessage}
+                  disabled={message.length == 0}>
                 <Icon
                   type={'material'}
-                  name={'mic'}
+                  name={'send'}
                   color={'#858E99'}
                   size={25}/>
               </TouchableOpacity>
@@ -171,11 +189,11 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   chatBackground: {
     flex: 1,
-    backgroundColor: '#F4F5FF'
+    backgroundColor: '#F4F5FF',
   },
   userTab: {
     height: d.height * 0.108,
@@ -184,14 +202,14 @@ const styles = StyleSheet.create({
     top: 0,
     justifyContent: 'flex-end',
     backgroundColor: 'white',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   horizontalSpread: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   alignToCenterContainer: {
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   bottomTab: {
     height: d.height * 0.108,
@@ -200,13 +218,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-start',
     backgroundColor: 'white',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   userName: {
     fontWeight: '600',
     fontSize: 17,
     color: 'black',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   icon: {
     width: 35,
@@ -253,13 +271,24 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center'
   },
-  messageContainer: {
-    paddingTop: 10
-  },
   status: {
     color: '#787878',
     fontWeight: '400',
     fontSize: 13,
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
+  messageContainer: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+  },
+  senderMessageBox: {
+    paddingVertical: 2,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 10,
+    backgroundColor: '#2D81E0',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+  },
 });
