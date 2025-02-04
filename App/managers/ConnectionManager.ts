@@ -1,5 +1,5 @@
 import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
-import {DeviceEventEmitter} from 'react-native';
+import {Alert, DeviceEventEmitter} from 'react-native';
 import {setupURLPolyfill} from 'react-native-url-polyfill';
 
 export class ConnectionManager {
@@ -19,6 +19,9 @@ export class ConnectionManager {
       this.connection.on('messageSent', (message: any) => {
         DeviceEventEmitter.emit('messageSent', message);
       })
+
+      this.connection.onclose(error => Alert.alert('Ошибка', error?.message, [{text: 'Ок'}]))
+
       await this.connection.start();
     }
   }

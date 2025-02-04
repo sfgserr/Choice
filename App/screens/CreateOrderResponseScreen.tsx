@@ -93,10 +93,10 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
 
     const price = +form.price;
     const prepayment = +form.prepayment;
-    const prepaymentOutofRange = user?.isPrepaymentAvailable && prepayment < price*0.1 || prepayment > price*0.25;
+    const prepaymentOutOfRange = user?.isPrepaymentAvailable && prepayment < price*0.1 || prepayment > price*0.25;
 
-    setPrepaymentOutofRange(prepaymentOutofRange);
-    setIsDisabled(isDisabled || prepaymentOutofRange);
+    setPrepaymentOutofRange(prepaymentOutOfRange);
+    setIsDisabled(isDisabled || prepaymentOutOfRange);
   }, [form])
 
   const setAndValidate = React.useCallback((set: (prev: Form) => Form) => {

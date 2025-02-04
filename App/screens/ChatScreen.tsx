@@ -147,6 +147,8 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
                 <TextInput
                   value={message}
                   onChangeText={setMessage}
+                  multiline={false}
+                  maxLength={50}
                   style={styles.textInput}
                   placeholder={'Сообщение'}/>
               </View>
