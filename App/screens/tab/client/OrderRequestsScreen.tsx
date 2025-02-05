@@ -7,13 +7,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import {OrderRequestsScreenProps} from '../../types/NavigationTypes.ts';
-import {Category, OrderRequest} from '../../types/DomainTypes.ts';
-import OrderRequestItem from '../../components/listItems/OrderRequestItem.tsx';
-import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import {useDependency} from '../../services/Hooks.ts';
-import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
-import {CategoryService} from '../../services/domain/CategoryService.ts';
+import {OrderRequestsScreenProps} from '../../../types/NavigationTypes.ts';
+import {Category, OrderRequest} from '../../../types/DomainTypes.ts';
+import OrderRequestItem from '../../../components/listItems/OrderRequestItem.tsx';
+import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
+import {useDependency} from '../../../services/Hooks.ts';
+import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../../../services/domain/CategoryService.ts';
 
 export default function OrderRequestsScreen({route, navigation}: OrderRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
@@ -80,7 +80,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
             <View
               style={styles.stubContainer}>
               <Image
-                source={require('../../assets/images/sad.png')}
+                source={require('../../../assets/images/sad.png')}
                 style={styles.image}/>
               <Text style={styles.stubTitle}>
                 Пока нет заказов

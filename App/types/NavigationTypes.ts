@@ -66,7 +66,9 @@ export type LoginScreenProps = NativeStackScreenProps<SignOutStackProps, 'Login'
 
 export type OrderRequestsScreenProps = BottomTabScreenProps<ClientTabProps, 'OrderRequests'>;
 
-export type ChatsScreenProps = BottomTabScreenProps<ClientTabProps, 'Chats'>;
+export type ClientChatsScreenProps = BottomTabScreenProps<ClientTabProps, 'Chats'>;
+
+export type CompanyChatsScreenProps = BottomTabScreenProps<ClientTabProps, 'Chats'>;
 
 export type CategoriesScreenProps = BottomTabScreenProps<ClientTabProps, 'Categories'>;
 

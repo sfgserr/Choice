@@ -1,7 +1,7 @@
 using Chat.Application.Chat.Commands.SendMessageCommand;
 using Chat.Application.Contracts;
 using Microsoft.AspNetCore.SignalR;
-using Users.Application.OrderResponses.Queries.GetOrderResponse;
+using Serilog;
 
 namespace Chat.Infrastructure.SignalR
 {
@@ -9,22 +9,34 @@ namespace Chat.Infrastructure.SignalR
     {
         private readonly IChatUsersStore _usersStore;
         private readonly IHubContext<T> _hubContext;
-
-        public ChatService(IChatUsersStore usersStore, IHubContext<T> hubContext)
+        private readonly ILogger _logger;
+        
+        public ChatService(IChatUsersStore usersStore, IHubContext<T> hubContext, ILogger logger)
         {
             _usersStore = usersStore;
             _hubContext = hubContext;
+            _logger = logger;
         }
 
         public async Task SendMessage(MessageDto message)
         {
+            _logger.Information("Sending message to {ToUserId}", message.ToUserId);
+            
             var toUserId = message.ToUserId;
 
             if (_usersStore.IsUserOnline(toUserId))
             {
+                var connectionId = _usersStore.GetConnectionId(toUserId);
+                
+                _logger.Information("Start sending message to connectionId {0}", connectionId);
+                
                 await _hubContext.Clients
-                    .User(_usersStore.GetConnectionId(toUserId))
+                    .Client(connectionId)
                     .SendAsync("messageSent", message);
+            }
+            else
+            {
+                _logger.Information("User is not online");
             }
         }
 
@@ -33,7 +45,7 @@ namespace Chat.Infrastructure.SignalR
             if (_usersStore.IsUserOnline(toUserId))
             {
                 await _hubContext.Clients
-                    .User(_usersStore.GetConnectionId(toUserId))
+                    .Client(_usersStore.GetConnectionId(toUserId))
                     .SendAsync("orderSent", data);
             }
         }
@@ -43,7 +55,7 @@ namespace Chat.Infrastructure.SignalR
             if (_usersStore.IsUserOnline(toUserId))
             {
                 await _hubContext.Clients
-                    .User(_usersStore.GetConnectionId(toUserId))
+                    .Client(_usersStore.GetConnectionId(toUserId))
                     .SendAsync("messageRead", messageId);
             }
         }

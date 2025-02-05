@@ -2,6 +2,7 @@ using Autofac;
 using Chat.Application.Contracts;
 using Chat.Infrastructure.SignalR;
 using Microsoft.AspNetCore.SignalR;
+using Serilog;
 
 namespace Chat.Infrastructure.Configuration.SignalR
 {
@@ -20,7 +21,8 @@ namespace Chat.Infrastructure.Configuration.SignalR
         {
             builder.Register(c => new ChatService<T>(
                     c.Resolve<IChatUsersStore>(), 
-                    _hubContext))
+                    _hubContext,
+                    c.Resolve<ILogger>()))
                 .As<IChatService>()
                 .InstancePerDependency();
 

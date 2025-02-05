@@ -76,6 +76,8 @@ export class StateManager {
     await this.tokenStorageService.setTokensToStorage('token', 'token');
     this.tokenService.signOut();
 
+    await ConnectionManager.disconnect();
+
     return State.SignOut;
   }
 }

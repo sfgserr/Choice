@@ -101,11 +101,12 @@ export type ChatUser = {
 export type Message = {
   id: string
   fromUserId: string
-  content: string | null
+  toUserId: string
+  body: string | null
   type: string
   isRead: boolean
   orderResponseId: string | null
-  creationDate: Date
+  creationDate: string
   enrollmentDate: Date | null
   isActive: boolean | null
 }
@@ -124,4 +125,14 @@ export type OrderResponse = {
   isPaid: boolean
   isEnrollmentDateConfirmed: boolean
   isActive: boolean
+}
+
+export type Chat = {
+  userId: string
+  iconUri: string
+  userName: string
+  lastMessageId: string
+  lastMessage: string | null
+  lastMessageIsRead: boolean
+  lastMessageCreationDate: string
 }

@@ -38,11 +38,11 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToCh
     () => ({
       ['Instagram']: {
         source: require('../../assets/images/instagram.png'),
-        open:async (inst: string) => await Linking.openURL(inst),
+        open: async (inst: string) => await Linking.openURL(inst),
       },
       ['Facebook']: {
         source: require('../../assets/images/facebook.png'),
-        open:async (inst: string) => await Linking.openURL(inst),
+        open: async (inst: string) => await Linking.openURL(inst),
       },
       ['Telegram']: {
         source: require('../../assets/images/tg.png'),
@@ -313,24 +313,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 10,
-      height: 10
-    },
-    shadowOpacity: 1,
-    elevation: 1
+    elevation: 1.5,
+    backgroundColor: 'white',
   },
   star: {
     width: 25,
     height: 25,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
   },
   contactsContainer: {
     paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   contactButton: {
     justifyContent: 'center',

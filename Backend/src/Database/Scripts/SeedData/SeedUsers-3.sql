@@ -1,0 +1,17 @@
+INSERT INTO users."Users" ("Id", "Name", "Email", "PhoneNumber", "IconUri", "IsDataFilled", "Role", "Street", "City", "Latitude", "Longitude", "ReviewsCount", "AverageGrade") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Автодом', 'a@gmail.com', '9267339970', 'default.png', true, 'Company', 'Ангарская 21', 'Москва', '55.876824', '37.516799', 0, 0);
+
+INSERT INTO users."Companies" ("Id", "UserId", "Description", "IsPrepaymentAvailable", "PhotoUris", "CategoriesId") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', '954dba19-f9bd-488a-9f45-dee4f184e906', 'Ремонт автомобилей, продажа автозапчастей', true, '{"first.jpg", "snd.jpg", "trd.jpg"}', '{1}');
+
+INSERT INTO users."Users" ("Id", "Name", "Email", "PhoneNumber", "IconUri", "IsDataFilled", "Role", "Street", "City", "Latitude", "Longitude", "ReviewsCount", "AverageGrade") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'b@gmail.com', '9267339971', 'default.png', true, 'Client', 'Арбат 26', 'Москва', '55.749896', '37.591530', 0, 0);
+
+INSERT INTO users."Clients" ("Id", "UserId") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'ecc1d96a-dfd3-4a5c-8885-6914ff716ce2');
+
+INSERT INTO payments."Subscriptions" ("Id", "SubscriberId", "PeriodName", "PeriodCost", "PeriodCostCurrency", "Status", "ExpirationDate") VALUES ('bb5d871c-e812-4a8a-ac2c-e3a2cafea641', '954dba19-f9bd-488a-9f45-dee4f184e906', 'Month', '800', 'RUB', 'Active', '2025-03-05');
+
+INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "Role", "Street", "City", "Latitude", "Longitude") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'b@gmail.com', '9267339971', 'AE8ZXJlUbO+mw/xjWJ/UQxTyCSuDs6WjTUJpMHs03a2ewBoe1AG7hCrYvZW+j+1Tng==', 'Client', 'Арбат 26', 'Москва', '55.749896', '37.591530');
+
+INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "Role", "Street", "City", "Latitude", "Longitude") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'a@gmail.com', '9267339970', 'AE8ZXJlUbO+mw/xjWJ/UQxTyCSuDs6WjTUJpMHs03a2ewBoe1AG7hCrYvZW+j+1Tng==', 'Company', 'Ангарская 21', 'Москва', '55.876824', '37.516799');
+
+INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Company', 'default.png', false);
+
+INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'default.png', false);

@@ -42,8 +42,7 @@ namespace Chat.Application.Messages.Queries.GetChat
                 chat."OrderMessages"."IsActive" as {nameof(MessageDto.IsActive)},
                 chat."OrderMessages"."EnrollmentDate" as {nameof(MessageDto.EnrollmentDate)}
             FROM chat."Messages"
-            JOIN chat."OrderMessages" ON chat."OrderMessages"."MessageId" = chat."Messages"."Id"
-            JOIN chat."ChatUsers" ON chat."ChatUsers"."Id" = chat."Messages"."ToUserId"
+            LEFT JOIN chat."OrderMessages" ON chat."OrderMessages"."MessageId" = chat."Messages"."Id"
             WHERE 
                 (chat."Messages"."ToUserId" = @Id1 AND chat."Messages"."FromUserId" = @Id2) OR
                 (chat."Messages"."ToUserId" = @Id2 AND chat."Messages"."FromUserId" = @Id1)

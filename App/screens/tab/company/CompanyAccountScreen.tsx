@@ -3,9 +3,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import {AuthContext} from '../../contexts/authorized/Context.tsx';
-import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import {AccountScreenProps} from '../../types/NavigationTypes.ts';
+import {AuthContext} from '../../../contexts/authorized/Context.tsx';
+import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
+import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 
 export default function CompanyAccountScreen({route, navigation}: AccountScreenProps) {
   const { signOut } = React.useContext(AuthContext);

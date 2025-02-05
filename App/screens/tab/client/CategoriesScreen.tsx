@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {FlatList, RefreshControl, StyleSheet, Text, View} from 'react-native';
-import CategoryItem from '../../components/listItems/CategoryItem.tsx';
-import {Category} from '../../types/DomainTypes.ts';
-import {CategoriesScreenProps} from '../../types/NavigationTypes.ts';
-import {useDependency} from '../../services/Hooks.ts';
-import {CategoryService} from '../../services/domain/CategoryService.ts';
+import CategoryItem from '../../../components/listItems/CategoryItem.tsx';
+import {Category} from '../../../types/DomainTypes.ts';
+import {CategoriesScreenProps} from '../../../types/NavigationTypes.ts';
+import {useDependency} from '../../../services/Hooks.ts';
+import {CategoryService} from '../../../services/domain/CategoryService.ts';
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const categoryService = useDependency<CategoryService>('CategoryService');

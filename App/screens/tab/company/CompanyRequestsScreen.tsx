@@ -1,12 +1,12 @@
 import {FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {CompanyRequestsScreenProps} from '../../types/NavigationTypes.ts';
+import {CompanyRequestsScreenProps} from '../../../types/NavigationTypes.ts';
 import React from 'react';
-import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
-import {StyledButton} from '../../components/buttons/StyledButton.tsx';
-import OrderRequestRadiusItem from '../../components/listItems/OrderRequestRadiusItem.tsx';
-import {useDependency} from '../../services/Hooks.ts';
-import {OrderRequestService} from '../../services/domain/OrderRequestService.ts';
-import {CategoryService} from '../../services/domain/CategoryService.ts';
+import {Category, OrderRequestRadius} from '../../../types/DomainTypes.ts';
+import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
+import OrderRequestRadiusItem from '../../../components/listItems/OrderRequestRadiusItem.tsx';
+import {useDependency} from '../../../services/Hooks.ts';
+import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
+import {CategoryService} from '../../../services/domain/CategoryService.ts';
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
@@ -62,7 +62,7 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
   const Stub = () => (
     <View style={styles.stubContainer}>
       <Image
-        source={require('../../assets/images/sad.png')}
+        source={require('../../../assets/images/sad.png')}
         style={styles.image}/>
       <Text style={styles.stubTitle}>
         Рядом нет заказов

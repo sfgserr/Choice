@@ -22,7 +22,7 @@ export default function CategoryItem({categoryId, categories, navigation}: {cate
           flexDirection: 'row',
           paddingTop: 10,
           paddingBottom: 10,
-          borderBottomWidth: .5,
+          borderBottomWidth: 1,
           borderColor: '#e9e9e9',
           flex: 1
         }}

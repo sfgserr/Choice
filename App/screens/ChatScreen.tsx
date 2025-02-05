@@ -1,4 +1,5 @@
 import {
+  DeviceEventEmitter,
   Dimensions,
   FlatList,
   Image,
@@ -36,16 +37,23 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
+    DeviceEventEmitter.addListener('messageSent', (message: Message) => {
+      setChat(prev => {
+        prev?.messages.push(message);
+        return prev;
+      });
+    });
+
+    return () => DeviceEventEmitter.removeAllListeners('messageSent');
+  }, []);
+
+  React.useEffect(() => {
     const getUser = async () => {
       const user = await userService.getUser();
 
       if (user.id != undefined)
         setUserId(user.id);
     };
-    getUser();
-  }, []);
-
-  React.useEffect(() => {
     const getChat = async () => {
       const response = await chatService.getChat(id);
 
@@ -60,30 +68,32 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         setCategories(response.content);
       }
     };
+    getUser();
     getChat();
     getCategories();
   }, []);
 
   React.useEffect(() => {
     const getStatus = async () => {
-      if (chat != null) {
-        const response = await chatService.getStatus(chat.user.id);
+      const response = await chatService.getStatus(chat.user.id);
 
-        if (response.content != null) {
-          setStatus(response.content);
-        }
+      if (response.content != null) {
+        setStatus(response.content);
       }
     };
-    const timeout = count == 1000 ? 0 : 17000;
+    if (chat != null) {
+      const timeout = count == 0 ? 0 : 17000;
 
-    const timer = setInterval(() => setCount(prev => prev+1), timeout);
+      const timer = setInterval(async () => {
+        await getStatus();
+        setCount(prev => prev + 1);
+      }, timeout);
 
-    getStatus();
+      return () => clearInterval(timer);
+    }
+  }, [count, chat]);
 
-    return () => clearInterval(timer);
-  }, [count]);
-
-  const sendMessage = React.useCallback(async () => {
+  const createMessage = React.useCallback(async () => {
     if (chat != null) {
       const response = await chatService.create(
         chat.user.id,
@@ -91,10 +101,16 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         'Text');
 
       if (response.content != null) {
+        response.content.creationDate = response.content.creationDate.replace('Z', '');
         chat.messages.push(response.content);
       }
     }
-  }, [chat]);
+  }, [message, chat]);
+
+  const sendMessage = React.useCallback(async () => {
+    await createMessage();
+    setMessage('');
+  }, [createMessage]);
 
   const Stub = () => (
     <View style={styles.stubContainer}>
@@ -116,13 +132,36 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
     </View>
   );
 
-  const Message = (item: ListRenderItemInfo<Message>) => (
-    <View style={styles.messageContainer}>
-      <View style={styles.senderMessageBox}>
-        <Text>{item.item.content}</Text>
+  const Message = (item: ListRenderItemInfo<Message>) => {
+    const isSender = userId === item.item.fromUserId;
+
+    return (
+      <View style={[styles.messageContainer, {alignItems: isSender ? 'flex-end' : 'flex-start'}]}>
+        <View style={isSender ? styles.senderMessageBox : styles.receiverMessageBox}>
+          <Text
+            style={[styles.messageText, {color: isSender ? 'white' : 'black'}]}>
+            {item.item.body}
+          </Text>
+          <View style={styles.messageInfoContainer}>
+            <Text
+              style={[
+                styles.messageCreationTime,
+                {color: isSender ? 'white' : '#8E8E93'},
+              ]}>
+              {`${new Date(item.item.creationDate+'Z').getHours()}:${new Date(item.item.creationDate+'Z').getMinutes()}`}
+            </Text>
+            {isSender && (
+                <Icon
+                  name={item.item.isRead ? 'done-all' : 'check'}
+                  type={'material'}
+                  color={'white'}
+                  size={15}/>
+            )}
+          </View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -230,7 +269,8 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     resizeMode: 'contain',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    borderRadius: 17.5,
   },
   textInputBorder: {
     flex: 1,
@@ -239,13 +279,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#D1D1D6',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   textInput: {
     fontSize: 15,
     fontWeight: '500',
     color: 'black',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    flex: 1,
   },
   chat: {
     width: d.width,
@@ -261,7 +302,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     color: 'black',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   stubText: {
     color: '#818C99',
@@ -269,7 +310,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingTop: 20,
     alignSelf: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   status: {
     color: '#787878',
@@ -278,8 +319,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   messageContainer: {
+    paddingTop: 2.5,
+    paddingBottom: 2.5,
     paddingHorizontal: 10,
-    justifyContent: 'center',
   },
   senderMessageBox: {
     paddingVertical: 2,
@@ -290,5 +332,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#2D81E0',
     paddingHorizontal: 10,
     flexDirection: 'row',
+  },
+  receiverMessageBox: {
+    paddingVertical: 2,
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 10,
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#B5CADD',
+  },
+  messageText: {
+    fontSize: 17,
+    fontWeight: '400',
+    alignSelf: 'center',
+  },
+  messageInfoContainer: {
+    alignSelf: 'flex-end',
+    paddingLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messageCreationTime: {
+    fontWeight: '100',
+    fontSize: 11,
   },
 });

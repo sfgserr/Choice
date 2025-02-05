@@ -1,10 +1,10 @@
-import CategoriesScreen from '../../../screens/tab/CategoriesScreen.tsx';
+import CategoriesScreen from '../../../screens/tab/client/CategoriesScreen.tsx';
 import {getOptions} from '../Helper.tsx';
 import {ClientTab} from './ClientTab.ts';
 import * as React from 'react';
-import OrderRequestsScreen from '../../../screens/tab/OrderRequestsScreen.tsx';
-import ChatsScreen from '../../../screens/tab/ChatsScreen.tsx';
-import AccountScreen from '../../../screens/tab/AccountScreen.tsx';
+import OrderRequestsScreen from '../../../screens/tab/client/OrderRequestsScreen.tsx';
+import ChatsScreen from '../../../screens/ChatsScreen.tsx';
+import AccountScreen from '../../../screens/tab/client/AccountScreen.tsx';
 
 export const Categories = () => (
   <ClientTab.Screen

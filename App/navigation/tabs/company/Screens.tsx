@@ -1,9 +1,9 @@
-import CompanyRequestsScreen from '../../../screens/tab/CompanyRequestsScreen.tsx';
+import CompanyRequestsScreen from '../../../screens/tab/company/CompanyRequestsScreen.tsx';
 import {getOptions} from '../Helper.tsx';
 import {CompanyTab} from './CompanyTab.ts';
 import * as React from 'react';
-import ChatsScreen from '../../../screens/tab/ChatsScreen.tsx';
-import CompanyAccountScreen from '../../../screens/tab/CompanyAccountScreen.tsx';
+import CompanyAccountScreen from '../../../screens/tab/company/CompanyAccountScreen.tsx';
+import CompanyChatsScreen from '../../../screens/tab/company/CompanyChatsScreen.tsx';
 
 export const OrderRequests = () => (
   <CompanyTab.Screen
@@ -15,7 +15,7 @@ export const OrderRequests = () => (
 export const Chat = () => (
   <CompanyTab.Screen
     name={'Chats'}
-    component={ChatsScreen}
+    component={CompanyChatsScreen}
     options={getOptions({title: 'Чат', source: require('../../../assets/images/chat.png')})}/>
 )
 
