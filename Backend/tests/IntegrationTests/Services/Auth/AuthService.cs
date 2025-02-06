@@ -88,7 +88,7 @@ namespace IntegrationTests.Services.Auth
                     Name = "string",
                     Email = "client@gmail.com",
                     Password = "12345678",
-                    PhoneNumber = "9267339971",
+                    PhoneNumber = "9267339972",
                     City = "Москва",
                     Street = "Ангарская 21"
                 }));
@@ -108,7 +108,7 @@ namespace IntegrationTests.Services.Auth
                     Name = "string",
                     Email = "company@gmail.com",
                     Password = "12345678",
-                    PhoneNumber = "9267339972",
+                    PhoneNumber = "9267339973",
                     City = "Москва",
                     Street = "Арбат 26"
                 }));

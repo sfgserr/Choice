@@ -1,6 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Queries;
 using BuildingBlocks.Application.Data;
-using Chat.Application.Contracts;
 using Chat.Domain.ChatUsers;
 using Dapper;
 
@@ -33,6 +32,7 @@ namespace Chat.Application.Messages.Queries.GetChats
                         ELSE chat."Messages"."FromUserId"
                     END as {nameof(ChatDto.UserId)},
                     chat."Messages"."Body" as {nameof(ChatDto.LastMessage)},
+                    chat."Messages"."FromUserId" as {nameof(ChatDto.LastMessageUserSenderId)},
                     chat."Messages"."IsRead" as {nameof(ChatDto.LastMessageIsRead)},
                     chat."Messages"."CreationDate" as {nameof(ChatDto.LastMessageCreationDate)}
                 FROM chat."Messages"
@@ -43,6 +43,7 @@ namespace Chat.Application.Messages.Queries.GetChats
             		{nameof(ChatDto.LastMessageId)},
             		{nameof(ChatDto.UserId)},
             		{nameof(ChatDto.LastMessage)},
+            		{nameof(ChatDto.LastMessageUserSenderId)},
             		{nameof(ChatDto.LastMessageIsRead)},
             		{nameof(ChatDto.LastMessageCreationDate)},
             		chat."ChatUsers"."Name" as {nameof(ChatDto.UserName)},
@@ -57,6 +58,7 @@ namespace Chat.Application.Messages.Queries.GetChats
                 {nameof(ChatDto.UserName)},
                 {nameof(ChatDto.IconUri)},
                 {nameof(ChatDto.LastMessage)},
+                {nameof(ChatDto.LastMessageUserSenderId)},
                 {nameof(ChatDto.LastMessageIsRead)}
             FROM LastMessageWithUser
             WHERE {nameof(ChatDto.UserId)} <> @Id

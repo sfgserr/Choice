@@ -1,24 +1,25 @@
-using BuildingBlocks.Application.Cqrs.Commands;
 using Chat.Application.Contracts;
+using Chat.Application.RealTimeMessaging;
 using Chat.Domain.Messages;
 using Chat.Domain.ChatUsers;
 
 namespace Chat.Application.Messages.Commands.CreateMessage
 {
-    internal class CreateMessageCommandHandler : ICommandHandlerWithResult<CreateMessageCommand, MessageDto>
+    internal class CreateMessageCommandHandler : RealTimeCommandHandlerWithResultBase<CreateMessageCommand, MessageDto>
     {
         private readonly IChatDbContext _dbContext;
         private readonly IUserContext _userContext;
         
         internal CreateMessageCommandHandler(
             IChatDbContext dbContext, 
-            IUserContext userContext)
+            IUserContext userContext, 
+            IChatService chatService) : base(chatService)
         {
             _dbContext = dbContext;
             _userContext = userContext;
         }
 
-        public async Task<MessageDto> Execute(CreateMessageCommand command)
+        protected override async Task<MessageDto> HandleCommandAsync(CreateMessageCommand command)
         {
             var message = Message.CreateMessage(
                 command.Content,
@@ -38,6 +39,11 @@ namespace Chat.Application.Messages.Commands.CreateMessage
                 addedMessage.Entity.CreationDate,
                 addedMessage.Entity.OrderMessage?.EnrollmentDate,
                 addedMessage.Entity.OrderMessage?.IsActive);
+        }
+
+        protected override Guid GetUserId(CreateMessageCommand command)
+        {
+            return command.ToUserId;
         }
     }
 }

@@ -1,5 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.Data;
+using Chat.Application.RealTimeMessaging;
 
 namespace Chat.Infrastructure.Processing
 {
@@ -27,7 +28,12 @@ namespace Chat.Infrastructure.Processing
             var result = await _decorated.Execute(command);
 
             await _unitOfWork.SaveChangesAsync(transaction);
-
+            
+            if (_decorated is IRealTimeMessenger messenger)
+            {
+                await messenger.Send();
+            }
+            
             return result;
         }
     }

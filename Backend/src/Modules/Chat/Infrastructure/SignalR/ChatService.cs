@@ -1,4 +1,3 @@
-using Chat.Application.Chat.Commands.SendMessageCommand;
 using Chat.Application.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
@@ -18,11 +17,9 @@ namespace Chat.Infrastructure.SignalR
             _logger = logger;
         }
 
-        public async Task SendMessage(MessageDto message)
+        public async Task Send(object message, Guid toUserId)
         {
-            _logger.Information("Sending message to {ToUserId}", message.ToUserId);
-            
-            var toUserId = message.ToUserId;
+            _logger.Information("Sending message to {ToUserId}", toUserId);
 
             if (_usersStore.IsUserOnline(toUserId))
             {
@@ -37,26 +34,6 @@ namespace Chat.Infrastructure.SignalR
             else
             {
                 _logger.Information("User is not online");
-            }
-        }
-
-        public async Task SendOrder(object data, Guid toUserId)
-        {
-            if (_usersStore.IsUserOnline(toUserId))
-            {
-                await _hubContext.Clients
-                    .Client(_usersStore.GetConnectionId(toUserId))
-                    .SendAsync("orderSent", data);
-            }
-        }
-
-        public async Task SendMessageRead(Guid toUserId, Guid messageId)
-        {
-            if (_usersStore.IsUserOnline(toUserId))
-            {
-                await _hubContext.Clients
-                    .Client(_usersStore.GetConnectionId(toUserId))
-                    .SendAsync("messageRead", messageId);
             }
         }
     }

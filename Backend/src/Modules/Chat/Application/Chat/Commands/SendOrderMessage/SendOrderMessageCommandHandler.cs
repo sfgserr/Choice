@@ -1,7 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using Chat.Application.Contracts;
-using Users.Application.Contracts;
-using Users.Application.OrderResponses.Queries.GetOrderResponse;
 
 namespace Chat.Application.Chat.Commands.SendOrderMessage
 {
@@ -16,7 +14,7 @@ namespace Chat.Application.Chat.Commands.SendOrderMessage
 
         public async Task Execute(SendOrderMessageCommand command)
         {
-            await _chatService.SendOrder(command.Data, command.ToUserId);
+            await _chatService.Send(command.Data, command.ToUserId);
         }
     }
 }

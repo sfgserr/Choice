@@ -11,7 +11,6 @@ using Chat.Infrastructure.Configuration.Outbox;
 using Chat.Infrastructure.Configuration.Processing;
 using Chat.Infrastructure.Configuration.Quartz;
 using Chat.Infrastructure.Configuration.SignalR;
-using Chat.Infrastructure.MediatR.DomainNotifications;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
@@ -49,13 +48,8 @@ namespace Chat.Infrastructure.Configuration
 
             containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
-
-            var mappings = new Dictionary<string, Type>
-            {
-                [nameof(MessageCreatedDomainNotification)] = typeof(MessageCreatedDomainNotification)
-            };
             
-            containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));
+            containerBuilder.RegisterModule(new DomainEventsDispatchingModule([]));
             containerBuilder.RegisterModule(new EventBusModule(bus));
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Chat")));
             containerBuilder.RegisterModule(new MediationModule());

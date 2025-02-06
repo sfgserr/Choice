@@ -1,5 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Infrastructure.Data;
+using Chat.Application.RealTimeMessaging;
 using Microsoft.EntityFrameworkCore;
 using Chat.Infrastructure.Data;
 
@@ -37,6 +38,11 @@ namespace Chat.Infrastructure.Processing
             await ProcessInternalCommand(command);
 
             await _unitOfWork.SaveChangesAsync(transaction);
+
+            if (_decorated is IRealTimeMessenger messenger)
+            {
+                await messenger.Send();
+            }
         }
 
         private async Task ProcessInternalCommand(T command)

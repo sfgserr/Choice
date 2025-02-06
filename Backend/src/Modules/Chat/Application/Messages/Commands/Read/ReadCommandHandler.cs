@@ -1,22 +1,20 @@
-using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Data;
 using Chat.Application.Contracts;
+using Chat.Application.RealTimeMessaging;
 using Dapper;
 
 namespace Chat.Application.Messages.Commands.Read
 {
-    internal class ReadCommandHandler : ICommandHandler<ReadCommand>
+    internal class ReadCommandHandler : RealTimeCommandHandlerBase<ReadCommand, Guid>
     {
         private readonly ISqlConnectionFactory _connectionFactory;
-        private readonly IChatService _chatService;
         
-        internal ReadCommandHandler(ISqlConnectionFactory connectionFactory, IChatService chatService)
+        internal ReadCommandHandler(ISqlConnectionFactory connectionFactory, IChatService chatService) : base(chatService)
         {
             _connectionFactory = connectionFactory;
-            _chatService = chatService;
         }
 
-        public async Task Execute(ReadCommand command)
+        protected override async Task<Guid> HandleCommandAsync(ReadCommand command)
         {
             using var connection = _connectionFactory.GetConnection();
             
@@ -34,16 +32,23 @@ namespace Chat.Application.Messages.Commands.Read
                     Id = command.MessageId
                 });
 
-            sql = "SELECT chat.\"Messages\".\"ToUserId\" FROM chat.\"Messages\"\nWHERE chat.\"Messages\".\"Id\" = @Id;";
+            return command.MessageId;
+        }
 
-            var id = await connection.QuerySingleAsync<Guid>(
+        protected override Guid GetUserId(ReadCommand command)
+        {
+            using var connection = _connectionFactory.GetConnection();
+            
+            const string sql = "SELECT chat.\"Messages\".\"ToUserId\" FROM chat.\"Messages\"\nWHERE chat.\"Messages\".\"Id\" = @Id;";
+
+            var id = connection.QuerySingle<Guid>(
                 sql, 
                 new
                 {
                     Id = command.MessageId
                 });
 
-            await _chatService.SendMessageRead(id, command.MessageId);
+            return id; 
         }
     }
 }
