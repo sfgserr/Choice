@@ -6,7 +6,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
             Guid id, 
             Guid fromUserId, 
             string? body, 
-            bool isRead, 
+            bool isRead,
             string type, 
             Guid? orderResponseId, 
             DateTime creationDate, 

@@ -14,7 +14,7 @@ namespace Chat.Application.Chat.Commands.SendOrderMessage
 
         public async Task Execute(SendOrderMessageCommand command)
         {
-            await _chatService.Send(command.Data, command.ToUserId);
+            await _chatService.Send(command.Data, command.ToUserId, "orderSent");
         }
     }
 }

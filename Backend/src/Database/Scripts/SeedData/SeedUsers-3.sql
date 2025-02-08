@@ -12,6 +12,6 @@ INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "R
 
 INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "Role", "Street", "City", "Latitude", "Longitude") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'a@gmail.com', '9267339970', 'AE8ZXJlUbO+mw/xjWJ/UQxTyCSuDs6WjTUJpMHs03a2ewBoe1AG7hCrYvZW+j+1Tng==', 'Company', 'Ангарская 21', 'Москва', '55.876824', '37.516799');
 
-INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Company', 'default.png', false);
+INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Автодом', 'default.png', false);
 
 INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'default.png', false);

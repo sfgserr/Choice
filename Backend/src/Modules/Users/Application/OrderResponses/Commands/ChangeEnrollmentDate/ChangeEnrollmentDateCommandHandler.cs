@@ -23,11 +23,13 @@ namespace Users.Application.OrderResponses.Commands.ChangeEnrollmentDate
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
 
             var userId = _userContext.Id.Value;
-
+            
+            var enrollmentDate = command.EnrollmentDate.ToUniversalTime();
+            
             if (_userContext.Role.Equals(UserRole.Client))
-                response.ChangeEnrollmentDateByClient(new(userId), command.EnrollmentDate);
+                response.ChangeEnrollmentDateByClient(new(userId), enrollmentDate);
             else
-                response.ChangeEnrollmentDateByCompany(new(userId), command.EnrollmentDate);
+                response.ChangeEnrollmentDateByCompany(new(userId), enrollmentDate);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Chat.Infrastructure.SignalR
             _logger = logger;
         }
 
-        public async Task Send(object message, Guid toUserId)
+        public async Task Send(object message, Guid toUserId, string methodName)
         {
             _logger.Information("Sending message to {ToUserId}", toUserId);
 
@@ -29,7 +29,7 @@ namespace Chat.Infrastructure.SignalR
                 
                 await _hubContext.Clients
                     .Client(connectionId)
-                    .SendAsync("messageSent", message);
+                    .SendAsync(methodName, message);
             }
             else
             {

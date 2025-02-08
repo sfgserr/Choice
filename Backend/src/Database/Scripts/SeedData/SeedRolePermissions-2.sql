@@ -44,8 +44,6 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangeEnrollmentDate');
 
-INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ConfirmDate');
-
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ConfirmDate');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'AddReview');

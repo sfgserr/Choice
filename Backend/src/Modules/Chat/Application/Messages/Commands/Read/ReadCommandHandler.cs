@@ -9,7 +9,8 @@ namespace Chat.Application.Messages.Commands.Read
     {
         private readonly ISqlConnectionFactory _connectionFactory;
         
-        internal ReadCommandHandler(ISqlConnectionFactory connectionFactory, IChatService chatService) : base(chatService)
+        internal ReadCommandHandler(IChatService chatService, ISqlConnectionFactory connectionFactory) : 
+            base(chatService, "read")
         {
             _connectionFactory = connectionFactory;
         }
@@ -18,37 +19,26 @@ namespace Chat.Application.Messages.Commands.Read
         {
             using var connection = _connectionFactory.GetConnection();
             
-            string sql = 
+            const string sql = 
                 $"""
-                UPDATE chat."Messages"
-                SET chat."Messages"."IsRead" = TRUE
-                WHERE chat."Messages"."Id" = @Id;
+                UPDATE chat."Messages" 
+                SET "IsRead" = TRUE
+                WHERE "Id" = @MessageId 
                 """;
 
             await connection.ExecuteAsync(
                 sql,
                 new
                 {
-                    Id = command.MessageId
+                    command.MessageId
                 });
-
+            
             return command.MessageId;
         }
 
         protected override Guid GetUserId(ReadCommand command)
         {
-            using var connection = _connectionFactory.GetConnection();
-            
-            const string sql = "SELECT chat.\"Messages\".\"ToUserId\" FROM chat.\"Messages\"\nWHERE chat.\"Messages\".\"Id\" = @Id;";
-
-            var id = connection.QuerySingle<Guid>(
-                sql, 
-                new
-                {
-                    Id = command.MessageId
-                });
-
-            return id; 
+            return command.UserId; 
         }
     }
 }

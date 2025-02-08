@@ -15,9 +15,9 @@ namespace Chat.Infrastructure.Data.Domain.Messages
                 .HasColumnName("Type")
                 .HasConversion(x => x.Value, x => MessageType.Parse(x));
             builder.Property(x => x.Body).HasColumnName("Body");
-            builder.Property(x => x.IsRead).HasColumnName("IsRead");
             builder.Property(x => x.FromUserId).HasColumnName("FromUserId");
             builder.Property(x => x.ToUserId).HasColumnName("ToUserId");
+            builder.Property(x => x.IsRead).HasColumnName("IsRead");
             builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
             builder.OwnsOne(x => x.OrderMessage, x =>
             {

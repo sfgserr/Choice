@@ -13,7 +13,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
         internal CreateMessageCommandHandler(
             IChatDbContext dbContext, 
             IUserContext userContext, 
-            IChatService chatService) : base(chatService)
+            IChatService chatService) : base(chatService, "messageSent")
         {
             _dbContext = dbContext;
             _userContext = userContext;

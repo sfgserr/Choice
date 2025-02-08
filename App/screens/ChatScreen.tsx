@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput, TouchableOpacity,
-  View,
+  View, ViewToken,
 } from 'react-native';
 import {Category, ChatMessages, Message, OrderRequest} from '../types/DomainTypes.ts';
 import React from 'react';
@@ -44,7 +44,19 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
       });
     });
 
-    return () => DeviceEventEmitter.removeAllListeners('messageSent');
+    DeviceEventEmitter.addListener('read', (id: string) => {
+      setChat(prev => {
+        if (prev != null) {
+          prev.messages[prev.messages.findIndex(m => String(m.id) === String(id))].isRead = true;
+        }
+        return prev;
+      });
+    });
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('messageSent');
+      DeviceEventEmitter.removeAllListeners('read');
+    };
   }, []);
 
   React.useEffect(() => {
@@ -74,22 +86,21 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   }, []);
 
   React.useEffect(() => {
-    const getStatus = async () => {
-      const response = await chatService.getStatus(chat.user.id);
-
-      if (response.content != null) {
-        setStatus(response.content);
-      }
+    const getStatus = () => {
+      chatService.getStatus(chat.user.id).then(r => {
+        if (r.content != null) {
+          setStatus(r.content);
+        }
+      });
     };
     if (chat != null) {
-      const timeout = count == 0 ? 0 : 17000;
+      const timeout = count == 0 ? 0 : 5000;
 
-      const timer = setInterval(async () => {
-        await getStatus();
+      getStatus();
+
+      setTimeout(async () => {
         setCount(prev => prev + 1);
       }, timeout);
-
-      return () => clearInterval(timer);
     }
   }, [count, chat]);
 
@@ -101,7 +112,6 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
         'Text');
 
       if (response.content != null) {
-        response.content.creationDate = response.content.creationDate.replace('Z', '');
         chat.messages.push(response.content);
       }
     }
@@ -111,6 +121,35 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
     await createMessage();
     setMessage('');
   }, [createMessage]);
+
+  const onViewAbleItemsChanged = React.useCallback(
+    async (info: {
+      viewAbleItems: ViewToken<Message>[];
+      changed: ViewToken<Message>[];
+    }) => {
+      for (let i = 0; i < info.changed.length; i++) {
+        if (!info.changed[i].item.isRead && info.changed[i].item.fromUserId != userId) {
+          chatService.read(
+            info.changed[i].item.fromUserId,
+            info.changed[i].item.id,
+          ).then(r => {
+            if (r.result == 'successful') {
+              setChat(prev => {
+                let index = prev?.messages.findIndex(m => m.id == info.changed[i].item.id);
+
+                if (index != undefined && index != -1 && prev != null) {
+                  prev.messages[index].isRead = true;
+                }
+
+                return prev;
+              });
+            }
+          });
+        }
+      }
+    },
+    [chat],
+  );
 
   const Stub = () => (
     <View style={styles.stubContainer}>
@@ -148,7 +187,7 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
                 styles.messageCreationTime,
                 {color: isSender ? 'white' : '#8E8E93'},
               ]}>
-              {`${new Date(item.item.creationDate+'Z').getHours()}:${new Date(item.item.creationDate+'Z').getMinutes()}`}
+              {`${new Date(item.item.creationDate).getHours()}:${new Date(item.item.creationDate).getMinutes()}`}
             </Text>
             {isSender && (
                 <Icon
@@ -170,9 +209,12 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
           <View style={styles.chat}>
             <FlatList
               data={chat.messages}
-              contentContainerStyle={{flex:1}}
+              showsVerticalScrollIndicator={false}
+              style={{flex: 1}}
               renderItem={Message}
-              ListEmptyComponent={Stub}/>
+              ListEmptyComponent={Stub}
+              viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}
+              onViewableItemsChanged={onViewAbleItemsChanged}/>
           </View>
           <View style={styles.userTab}>
             <View style={[styles.horizontalSpread, {paddingBottom: 5}]}>
@@ -292,7 +334,7 @@ const styles = StyleSheet.create({
     width: d.width,
     height: d.height * 0.676,
     position: 'absolute',
-    top: d.height*0.108,
+    top: d.height * 0.108,
   },
   stubContainer: {
     flex: 1,

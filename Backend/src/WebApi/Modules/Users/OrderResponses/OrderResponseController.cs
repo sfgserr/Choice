@@ -72,7 +72,7 @@ namespace WebApi.Modules.Users.OrderResponses
         }
         
         [HttpPut("confirm/{responseId:guid}")]
-        [HasPermission(Permissions.ConfirmEnrollmentDate)]
+        [HasPermission(Permissions.ConfirmDate)]
         public async Task<IActionResult> Confirm(Guid responseId)
         {
             await _usersModule.ExecuteCommand(new ConfirmDateCommand(

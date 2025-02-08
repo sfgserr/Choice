@@ -39,4 +39,11 @@ export class ChatService {
       'GET',
       undefined);
   }
+
+  public async read(userId: string, messageId: string) {
+    return await this.httpService.request(
+      `chat/${userId}/${messageId}`,
+      'PUT',
+      undefined);
+  }
 }

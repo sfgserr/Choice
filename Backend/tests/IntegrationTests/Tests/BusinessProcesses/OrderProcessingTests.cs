@@ -25,6 +25,8 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var createOrderResponse = new TestChain(CreateOrderResponseReturnsOk);
             var getChats = new TestChain(GetChatsReturnsOk);
             var getChat = new TestChain(GetChatReturnsOk);
+            var changeEnrollmentDate = new TestChain(ChangeEnrollmentDateReturnsOk);
+            var confirm = new TestChain(ConfirmEnrollmentDateReturnsOk);
             var enroll = new TestChain(EnrollReturnsOk);
             var payEnrollment = new TestChain(PayEnrollment);
             var finish = new TestChain(Finish);
@@ -36,7 +38,9 @@ namespace IntegrationTests.Tests.BusinessProcesses
             getOrderRequests.SetNext(createOrderResponse);
             createOrderResponse.SetNext(getChats);
             getChats.SetNext(getChat);
-            getChat.SetNext(enroll);
+            getChat.SetNext(changeEnrollmentDate);
+            changeEnrollmentDate.SetNext(confirm);
+            confirm.SetNext(enroll);
             enroll.SetNext(payEnrollment);
             payEnrollment.SetNext(finish);
             
@@ -61,7 +65,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                         Description = "string",
                         CategoryIds = new List<int> { 1 },
                         PhotoUris = new List<string> { "string" },
-                        SocialMediaUris = new List<string> { "string" },
+                        SocialMediaUris = new List<string> { "https://instagram.com/com" },
                         IsPrepaymentAvailable = true
                     })
                 };
@@ -224,10 +228,46 @@ namespace IntegrationTests.Tests.BusinessProcesses
                     return new TestResult(false);
 
                 var content = await chatsResponse.Content.ReadAsStringAsync();
-                var array = JArray.Parse(content);
+                var chat = JObject.Parse(content);
 
-                return new TestResult(true, array[0].Value<string>("orderResponseId"));
+                return new TestResult(true, chat.SelectToken("messages[0].orderResponseId")!.Value<string>());
             });
+        }
+        
+        private async Task<TestResult> ChangeEnrollmentDateReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Put, 
+                    $"api/orderResponses/{id}/{DateTime.UtcNow:yyyy-MM-dd hh:mm:ss}Z");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, id);
+            }, 4000);
+        }
+        
+        private async Task<TestResult> ConfirmEnrollmentDateReturnsOk(object? arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg is not string id) return new TestResult(false);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"api/orderResponses/confirm/{id}");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, id);
+            }, 8000, false, TokenType.Company);
         }
         
         private async Task<TestResult> EnrollReturnsOk(object? arg)

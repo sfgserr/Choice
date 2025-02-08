@@ -135,4 +135,5 @@ export type Chat = {
   lastMessage: string | null
   lastMessageIsRead: boolean
   lastMessageCreationDate: string
+  lastMessageUserSenderId: string
 }

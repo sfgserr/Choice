@@ -10,11 +10,11 @@ namespace Chat.Application.Messages.Queries.GetChats
         
         public Guid LastMessageId { get; }
         
+        public bool LastMessageIsRead { get; }
+        
         public Guid LastMessageUserSenderId { get; }
         
         public string? LastMessage { get; }
-        
-        public string LastMessageIsRead { get; }
         
         public DateTime LastMessageCreationDate { get; }
     }

@@ -27,6 +27,10 @@ export class ConnectionManager {
         }
       });
 
+      this.connection.on('read', (data: string) => {
+        DeviceEventEmitter.emit('read', data);
+      });
+
       await this.connection.start();
     }
   }

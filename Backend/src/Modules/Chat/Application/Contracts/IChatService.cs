@@ -3,6 +3,6 @@ namespace Chat.Application.Contracts
 {
     public interface IChatService 
     {
-        Task Send(object data, Guid toUserId);
+        Task Send(object data, Guid toUserId, string methodName);
     }
 }

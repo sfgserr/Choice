@@ -4,18 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  ListRenderItemInfo,
-  Dimensions,
-  TouchableOpacity,
-  Image,
+  DeviceEventEmitter,
 } from 'react-native';
-import {Chat} from '../types/DomainTypes.ts';
+import {Chat, Message} from '../types/DomainTypes.ts';
 import {useDependency} from '../services/Hooks.ts';
 import {ChatService} from '../services/domain/ChatService.ts';
-import {Icon} from '@rneui/base';
 import {UserService} from '../services/domain/UserService.ts';
-
-const d = Dimensions.get('screen');
+import ChatItem from '../components/listItems/ChatItem.tsx';
 
 export default function ChatsScreen({navigation}: {navigation: any}) {
   const chatService = useDependency<ChatService>('ChatService');
@@ -23,6 +18,47 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
 
   const [chats, setChats] = React.useState<Chat[]>([]);
   const [userId, setUserId] = React.useState('');
+
+  React.useEffect(() => {
+    DeviceEventEmitter.addListener('messageSent', (message: Message) => {
+      setChats(prev => {
+        let chatIndex = prev.findIndex(c => String(message.fromUserId) === String(c.userId));
+
+        if (chatIndex != -1) {
+          return prev.map((chat, index) =>
+            index === chatIndex
+              ? { ...chat,
+                lastMessage: message.body,
+                lastMessageIsRead: false,
+                lastMessageId: message.id,
+                lastMessageUserSenderId: message.fromUserId,
+                lastMessageCreationDate: message.creationDate,
+              }
+              : chat
+          );
+        }
+
+        return prev;
+      });
+    });
+
+    DeviceEventEmitter.addListener('read', (messageId: string) => {
+      setChats(prev => {
+        let chatIndex = chats.findIndex(c => String(c.lastMessageId) === String(messageId));
+
+        if (chatIndex != -1) {
+          prev[chatIndex].lastMessageIsRead = true;
+        }
+
+        return prev;
+      });
+    });
+
+    return () => {
+      DeviceEventEmitter.removeAllListeners('messageSent');
+      DeviceEventEmitter.removeAllListeners('read');
+    };
+  }, []);
 
   React.useEffect(() => {
     const getUserId = async () => {
@@ -47,40 +83,18 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
     navigation.navigate('Chat', {id});
   }, []);
 
-  const Chat = (item: ListRenderItemInfo<Chat>) => {
-
-    return (
-      <TouchableOpacity
-        style={styles.chatContainer}
-        onPress={() => navigateToChat(item.item.userId)}>
-        <Image
-          style={styles.icon}
-          source={{uri: `${process.env.MINIO_URL}/app-files/${item.item.iconUri}`}}/>
-        <View style={{flex: 1, paddingLeft: 10}}>
-          <View style={styles.chatInfoContainer}>
-            <Text style={styles.chatName}>{item.item.userName}</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Icon
-                name={'done-all'}
-                type={'material'}
-                size={20}
-                color={item.item.lastMessageIsRead ? '#21C004' : '#BBBBBB'}/>
-              <Text>{`${new Date(item.item.lastMessageCreationDate + 'Z').getHours()}:${new Date(item.item.lastMessageCreationDate + 'Z').getMinutes()}`}</Text>
-            </View>
-          </View>
-          <Text style={styles.lastMessage}>{item.item.lastMessage}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Чаты</Text>
       <FlatList
         data={chats}
         contentContainerStyle={{flex: 1}}
-        renderItem={Chat}
+        renderItem={item => (
+          <ChatItem
+            userId={userId}
+            navigateToChat={navigateToChat}
+            item={item}/>
+        )}
         style={{paddingTop: 10}}/>
     </View>
   );
@@ -97,31 +111,5 @@ const styles = StyleSheet.create({
     color: 'black',
     alignSelf: 'center',
     paddingTop: 20,
-  },
-  chatContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-  },
-  icon: {
-    width: d.height * 0.073,
-    height: d.height * 0.073,
-    borderRadius: d.height * 0.0365,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  chatInfoContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  chatName: {
-    color: 'black',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  lastMessage: {
-    fontWeight: '400',
-    fontSize: 15,
-    color: '#8E8E93',
   },
 });
