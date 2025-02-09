@@ -1,10 +1,13 @@
 import {Image, TouchableOpacity} from 'react-native';
 
-export default function NavigateBackButton({navigation}) {
+export default function NavigateBackButton({navigation, onGoBack}: {navigation: any, onGoBack: (() => void) | undefined}) {
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.goBack();
+        if (onGoBack != undefined) {
+          onGoBack();
+        }
       }}>
       <Image
         style={{
@@ -15,5 +18,5 @@ export default function NavigateBackButton({navigation}) {
         }}
         source={require('../../assets/images/chevron-left.png')}/>
     </TouchableOpacity>
-  )
+  );
 }

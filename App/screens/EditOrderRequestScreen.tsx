@@ -82,7 +82,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
     getData();
   }, []);
 
-  const onImageBoxPressed = async (index: number) => {
+  const onImageBoxPressed = React.useCallback(async (index: number) => {
     let response = await launchImageLibrary({mediaType: 'photo'});
 
     setPhotos(prev => {
@@ -96,24 +96,24 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       prev[index] = true;
       return [...prev];
     });
-  };
+  }, []);
 
-  const onRemoveImagePressed = (index: number) => {
+  const onRemoveImagePressed = React.useCallback((index: number) => {
     setPhotos(prev => {
       prev[index] = '';
       return [...prev];
     });
     setIsChanged(true);
-  }
+  }, []);
 
-  const data= [
+  const data= React.useMemo(() => [
     {
       title: 'Узнать стоимость',
       checked: toKnowPrice,
       pressed: () => {
         setToKnowPrice(p => !p);
         setIsChanged(true);
-      }
+      },
     },
     {
       title: 'Узнать время выполнения работ',
@@ -121,7 +121,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       pressed: () => {
         setToKnowDeadline(p => !p);
         setIsChanged(true);
-      }
+      },
     },
     {
       title: 'Узнать время записи',
@@ -129,9 +129,9 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       pressed: () => {
         setToKnowEnrollmentDate(p => !p);
         setIsChanged(true);
-      }
+      },
     },
-  ];
+  ], [toKnowPrice, toKnowDeadline, toKnowEnrollmentDate]);
 
   const [isToggled, setIsToggled] = React.useState(false);
   const [isErrorToggled, setIsErrorToggled] = React.useState(false);
@@ -141,11 +141,11 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
     navigation.goBack();
-  }
+  };
 
   const toggleErrorModal = () => {
     setIsErrorToggled(prev => !prev);
-  }
+  };
 
   const editOrderRequest = async () => {
     setIsRefreshing(true);
@@ -182,7 +182,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         scrollEnabled={!isToggled}>
         <View style={styles.titleView}>
           <View style={{flexDirection: 'row'}}>
-            <NavigateBackButton navigation={navigation} />
+            <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
           </View>
           <Text
             style={
@@ -197,7 +197,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               Styles.borderedTextInputHeight,
               Styles.borderedTextInputViewColor,
               Styles.borderedTextInputUnfocused,
-              {alignItems: 'baseline'},
+              {alignItems: 'center'},
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
@@ -258,6 +258,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               Styles.borderedTextInputBigHeight,
               Styles.borderedTextInputViewColor,
               Styles.borderedTextInputUnfocused,
+              {alignItems: 'baseline'},
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
@@ -278,6 +279,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
+                {justifyContent: 'center'},
               ]}
               onPress={() => {}}>
               <View style={styles.voiceButton}>

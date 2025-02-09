@@ -1,4 +1,5 @@
 import {
+  BackHandler,
   DeviceEventEmitter,
   Dimensions,
   FlatList,
@@ -22,7 +23,7 @@ import {UserService} from '../services/domain/UserService.ts';
 
 const d = Dimensions.get('screen');
 
-export default function ChatScreen({id, navigation}: {id: string, navigation: any}) {
+export default function ChatScreen({id, navigation, onGoBack}: {id: string, navigation: any, onGoBack: () => void}) {
   const chatService = useDependency<ChatService>('ChatService');
   const categoryService = useDependency<CategoryService>('CategoryService');
   const userService = useDependency<UserService>('UserService');
@@ -37,6 +38,14 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   const [message, setMessage] = React.useState('');
 
   React.useEffect(() => {
+    const backPress = () => {
+      navigation.goBack();
+
+      onGoBack();
+
+      return true;
+    };
+
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
       setChat(prev => {
         prev?.messages.push(message);
@@ -53,9 +62,12 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
       });
     });
 
+    BackHandler.addEventListener('hardwareBackPress', backPress);
+
     return () => {
       DeviceEventEmitter.removeAllListeners('messageSent');
       DeviceEventEmitter.removeAllListeners('read');
+      BackHandler.removeEventListener('hardwareBackPress', backPress);
     };
   }, []);
 
@@ -94,7 +106,7 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
       });
     };
     if (chat != null) {
-      const timeout = count == 0 ? 0 : 5000;
+      const timeout = count == 0 ? 0 : 10000;
 
       getStatus();
 
@@ -123,8 +135,8 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
   }, [createMessage]);
 
   const onViewAbleItemsChanged = React.useCallback(
-    async (info: {
-      viewAbleItems: ViewToken<Message>[];
+    (info: {
+      viewableItems: ViewToken<Message>[];
       changed: ViewToken<Message>[];
     }) => {
       for (let i = 0; i < info.changed.length; i++) {
@@ -219,7 +231,7 @@ export default function ChatScreen({id, navigation}: {id: string, navigation: an
           <View style={styles.userTab}>
             <View style={[styles.horizontalSpread, {paddingBottom: 5}]}>
               <View style={styles.alignToCenterContainer}>
-                <NavigateBackButton navigation={navigation} />
+                <NavigateBackButton navigation={navigation} onGoBack={onGoBack}/>
               </View>
               <View>
                 <Text style={styles.userName}>{chat.user.name}</Text>
@@ -275,6 +287,8 @@ const styles = StyleSheet.create({
   chatBackground: {
     flex: 1,
     backgroundColor: '#F4F5FF',
+    paddingTop: d.height * 0.108,
+    paddingBottom: d.height * 0.108,
   },
   userTab: {
     height: d.height * 0.108,
@@ -332,13 +346,11 @@ const styles = StyleSheet.create({
   },
   chat: {
     width: d.width,
-    height: d.height * 0.676,
-    position: 'absolute',
-    top: d.height * 0.108,
+    flex: 1,
   },
   stubContainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   stubTitle: {
     fontSize: 24,

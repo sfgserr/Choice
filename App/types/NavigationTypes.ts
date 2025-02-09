@@ -27,7 +27,10 @@ export type ClientStackProps = {
   EditOrderRequest: {
     orderRequestId: string;
   };
-  Chat: {id: string};
+  Chat: {
+    id: string
+    onGoBack: () => void;
+  };
 }
 
 export type CompanyStackProps = {
@@ -37,7 +40,10 @@ export type CompanyStackProps = {
     orderRequest: OrderRequestRadius;
     categories: Category[];
   };
-  Chat: {id: string};
+  Chat: {
+    id: string;
+    onGoBack: () => void;
+  };
 }
 
 export type UserStackProps = {

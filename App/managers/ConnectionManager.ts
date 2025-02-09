@@ -1,7 +1,7 @@
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr';
 import {Alert, DeviceEventEmitter} from 'react-native';
 import {setupURLPolyfill} from 'react-native-url-polyfill';
-import {Message} from "../types/DomainTypes.ts";
+import {Message} from '../types/DomainTypes.ts';
 
 export class ConnectionManager {
   private static connection: HubConnection | null = null;
@@ -15,16 +15,17 @@ export class ConnectionManager {
     if (this.connection == null) {
       this.connection = new HubConnectionBuilder().withUrl(
         'http://127.0.0.1:8080/chat',
-        {accessTokenFactory: () => accessToken}).withAutomaticReconnect().build();
+        {accessTokenFactory: () => accessToken})
+        .withAutomaticReconnect()
+        .configureLogging(LogLevel.Debug)
+        .build();
 
       this.connection.on('messageSent', (message: Message) => {
         DeviceEventEmitter.emit('messageSent', message);
       });
 
       this.connection.onclose(error => {
-        if (error != undefined) {
-          Alert.alert('Ошибка', error.message, [{text: 'Ок'}]);
-        }
+        Alert.alert('Ошибка', error?.message, [{text: 'Ок'}]);
       });
 
       this.connection.on('read', (data: string) => {

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Icon} from '@rneui/base';
 import {
-  Chat
+  Chat,
 } from '../../types/DomainTypes.ts';
 import * as React from 'react';
 

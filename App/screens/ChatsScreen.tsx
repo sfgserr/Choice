@@ -19,11 +19,15 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   const [chats, setChats] = React.useState<Chat[]>([]);
   const [userId, setUserId] = React.useState('');
 
+  //not good solution but react native navigation renders screen only once
+  const [count, setCount] = React.useState(0);
+  const [refreshing, setRefreshing] = React.useState(false);
+
   React.useEffect(() => {
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
       setChats(prev => {
         let chatIndex = prev.findIndex(c => String(message.fromUserId) === String(c.userId));
-
+        console.log(chatIndex);
         if (chatIndex != -1) {
           return prev.map((chat, index) =>
             index === chatIndex
@@ -44,10 +48,16 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
 
     DeviceEventEmitter.addListener('read', (messageId: string) => {
       setChats(prev => {
-        let chatIndex = chats.findIndex(c => String(c.lastMessageId) === String(messageId));
+        let chatIndex = prev.findIndex(c => String(messageId) === String(c.lastMessageId));
 
         if (chatIndex != -1) {
-          prev[chatIndex].lastMessageIsRead = true;
+          return prev.map((chat, index) =>
+            index === chatIndex
+              ? { ...chat,
+                lastMessageIsRead: true,
+              }
+              : chat
+          );
         }
 
         return prev;
@@ -61,6 +71,10 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   }, []);
 
   React.useEffect(() => {
+    onRefresh();
+  }, [count]);
+
+  const onRefresh = React.useCallback(async () => {
     const getUserId = async () => {
       const user = await userService.getUser();
 
@@ -75,12 +89,21 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
         setChats(response.content);
       }
     };
-    getUserId();
-    getChats();
+
+    setRefreshing(true);
+
+    await getUserId();
+    await getChats();
+
+    setRefreshing(false);
+  }, []);
+
+  const onGoBack = React.useCallback(() => {
+    setCount(prev => prev + 1);
   }, []);
 
   const navigateToChat = React.useCallback((id: string) => {
-    navigation.navigate('Chat', {id});
+    navigation.navigate('Chat', {id, onGoBack});
   }, []);
 
   return (
@@ -89,6 +112,8 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
       <FlatList
         data={chats}
         contentContainerStyle={{flex: 1}}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
         renderItem={item => (
           <ChatItem
             userId={userId}

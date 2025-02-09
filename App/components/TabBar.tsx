@@ -77,14 +77,14 @@ export default function TabBar({tabs}: TabBarProps) {
 
     const getColors = React.useCallback((index: number) => {
       if (measures.length > 0) {
-        const inputRange = data.map((_, i) => i*width);
+        const inputRange = data.map((_, i) => i * width);
         const outputRange = data.map((_, i) => i == index ? 'black' : '#818C99');
         return scrollX.interpolate({
           inputRange,
-          outputRange
+          outputRange,
         });
       }
-      return 'white'
+      return 'white';
     }, [measures]);
 
     React.useEffect(() => {
