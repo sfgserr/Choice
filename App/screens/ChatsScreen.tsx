@@ -27,7 +27,7 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
       setChats(prev => {
         let chatIndex = prev.findIndex(c => String(message.fromUserId) === String(c.userId));
-        console.log(chatIndex);
+
         if (chatIndex != -1) {
           return prev.map((chat, index) =>
             index === chatIndex
@@ -63,12 +63,7 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
         return prev;
       });
     });
-
-    return () => {
-      DeviceEventEmitter.removeAllListeners('messageSent');
-      DeviceEventEmitter.removeAllListeners('read');
-    };
-  }, []);
+  }, [count]);
 
   React.useEffect(() => {
     onRefresh();
@@ -103,7 +98,13 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   }, []);
 
   const navigateToChat = React.useCallback((id: string) => {
+    const removeListeners = () => {
+      DeviceEventEmitter.removeAllListeners('messageSent');
+      DeviceEventEmitter.removeAllListeners('read');
+    };
+
     navigation.navigate('Chat', {id, onGoBack});
+    removeListeners();
   }, []);
 
   return (

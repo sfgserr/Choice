@@ -3,6 +3,7 @@ import {
   readFile
 } from '@dr.pogodin/react-native-fs';
 import {Buffer} from 'buffer';
+import {Alert} from "react-native";
 
 export class ObjectStorageService {
   private readonly minioClient: AWS.S3;
@@ -27,18 +28,27 @@ export class ObjectStorageService {
       const fileContent = await readFile(sourceFile, 'base64');
       const buffer = Buffer.from(fileContent, 'base64');
 
-      if (fileContent.length > 5e6)
+      const fileType = sourceFile.split('.').pop();
+
+      if (fileType === undefined || fileType != 'png' && fileType != 'jpg') {
+        Alert.alert('Ошибка', 'поддерживаемые файлы PNG и JPG');
         return;
+      }
+
+      if (fileContent.length > 5e6) {
+        Alert.alert('Ошибка', 'Макс. размер файла 5 МБ');
+        return;
+      }
 
       await this.minioClient.upload({
         Bucket: bucketName,
         Body: buffer,
         Key: objectName,
-        ContentType: 'image/png',
+        ContentType: `image/${fileType}`,
       }).promise();
     }
     catch (error) {
-      console.log(error);
+      Alert.alert('Ошибка', 'ошибка загрузки файла', [{text: 'ok'}]);
     }
   }
 }

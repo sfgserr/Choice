@@ -13,7 +13,6 @@ import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
-import {Category} from '../types/DomainTypes.ts';
 import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -97,11 +96,11 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       orderRequest.orderStatus = 'Active';
       await route.params.onGoBack(orderRequest);
     }
-  }
+  };
 
   const toggleErrorModal = () => {
     setIsErrorToggled(prev => !prev);
-  }
+  };
 
   const createOrderRequest = async () => {
     setIsRefreshing(true);
@@ -141,7 +140,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
         scrollEnabled={!isToggled}>
         <View style={styles.titleView}>
           <View style={{flexDirection: 'row'}}>
-            <NavigateBackButton navigation={navigation} />
+            <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
           </View>
           <Text style={styles.title}>Создание заказа</Text>
         </View>

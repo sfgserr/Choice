@@ -4,7 +4,6 @@ import {
   Dimensions,
   FlatList,
   Image,
-  ListRenderItemInfo,
   StyleSheet,
   Text,
   TextInput, TouchableOpacity,
@@ -20,6 +19,8 @@ import {Icon} from '@rneui/base';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {UserService} from '../services/domain/UserService.ts';
+import MessageItem from '../components/listItems/MessageItem.tsx';
+import {launchImageLibrary} from "react-native-image-picker";
 
 const d = Dimensions.get('screen');
 
@@ -134,6 +135,21 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     setMessage('');
   }, [createMessage]);
 
+  const launchLibrary = React.useCallback(async () => {
+    if (chat != null) {
+      const imagePickerResponse = await launchImageLibrary({mediaType: 'photo'});
+
+      if (imagePickerResponse.assets && imagePickerResponse.assets[0].uri != undefined) {
+        const response = await chatService.createImage(chat.user.id, imagePickerResponse.assets[0].uri);
+
+        if (response && response.content != null) {
+          chat.messages.push(response.content);
+        }
+      }
+    }
+    setMessage('');
+  }, [chat]);
+
   const onViewAbleItemsChanged = React.useCallback(
     (info: {
       viewableItems: ViewToken<Message>[];
@@ -163,7 +179,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     [chat],
   );
 
-  const Stub = () => (
+  const Stub = React.useMemo(() => (
     <View style={styles.stubContainer}>
       <Text style={styles.stubTitle}>Нет сообщений</Text>
       <Text style={styles.stubText}>
@@ -181,38 +197,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
             onGoBack: (o: OrderRequest) => {}})}/>
       </View>
     </View>
-  );
-
-  const Message = (item: ListRenderItemInfo<Message>) => {
-    const isSender = userId === item.item.fromUserId;
-
-    return (
-      <View style={[styles.messageContainer, {alignItems: isSender ? 'flex-end' : 'flex-start'}]}>
-        <View style={isSender ? styles.senderMessageBox : styles.receiverMessageBox}>
-          <Text
-            style={[styles.messageText, {color: isSender ? 'white' : 'black'}]}>
-            {item.item.body}
-          </Text>
-          <View style={styles.messageInfoContainer}>
-            <Text
-              style={[
-                styles.messageCreationTime,
-                {color: isSender ? 'white' : '#8E8E93'},
-              ]}>
-              {`${new Date(item.item.creationDate).getHours()}:${new Date(item.item.creationDate).getMinutes()}`}
-            </Text>
-            {isSender && (
-                <Icon
-                  name={item.item.isRead ? 'done-all' : 'check'}
-                  type={'material'}
-                  color={'white'}
-                  size={15}/>
-            )}
-          </View>
-        </View>
-      </View>
-    );
-  };
+  ), [categories]);
 
   return (
     <View style={styles.container}>
@@ -223,7 +208,11 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
               data={chat.messages}
               showsVerticalScrollIndicator={false}
               style={{flex: 1}}
-              renderItem={Message}
+              renderItem={(item) =>
+                <MessageItem
+                  item={item}
+                  userId={userId}/>
+              }
               ListEmptyComponent={Stub}
               viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}
               onViewableItemsChanged={onViewAbleItemsChanged}/>
@@ -244,7 +233,9 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
           </View>
           <View style={styles.bottomTab}>
             <View style={[styles.horizontalSpread, {paddingTop: 5}]}>
-              <TouchableOpacity style={styles.alignToCenterContainer}>
+              <TouchableOpacity
+                style={styles.alignToCenterContainer}
+                onPress={launchLibrary}>
                 <Icon
                   type={'material'}
                   name={'attachment'}
@@ -371,47 +362,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 13,
     alignSelf: 'center',
-  },
-  messageContainer: {
-    paddingTop: 2.5,
-    paddingBottom: 2.5,
-    paddingHorizontal: 10,
-  },
-  senderMessageBox: {
-    paddingVertical: 2,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 10,
-    backgroundColor: '#2D81E0',
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-  },
-  receiverMessageBox: {
-    paddingVertical: 2,
-    borderTopRightRadius: 15,
-    borderBottomRightRadius: 15,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 10,
-    backgroundColor: 'white',
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#B5CADD',
-  },
-  messageText: {
-    fontSize: 17,
-    fontWeight: '400',
-    alignSelf: 'center',
-  },
-  messageInfoContainer: {
-    alignSelf: 'flex-end',
-    paddingLeft: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  messageCreationTime: {
-    fontWeight: '100',
-    fontSize: 11,
   },
 });

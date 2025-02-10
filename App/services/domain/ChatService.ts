@@ -1,11 +1,15 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {Chat, ChatMessages, Message} from '../../types/DomainTypes.ts';
+import {ObjectStorageService} from '../object/ObjectStorageService.ts';
+import {FilePathUtils} from "../../utils/FilePathUtils.ts";
 
 export class ChatService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
+  private readonly objectStorageService: ObjectStorageService;
 
-  constructor(httpService: RefreshTokenHttpServiceDecorator) {
+  constructor(httpService: RefreshTokenHttpServiceDecorator, objectStorageService: ObjectStorageService) {
     this.httpService = httpService;
+    this.objectStorageService = objectStorageService;
   }
 
   public async getChat(userId: string) {
@@ -31,6 +35,20 @@ export class ChatService {
         content,
         type,
       }));
+  }
+
+  public async createImage(toUserId: string, content: string) {
+    const path = FilePathUtils.getFileName(content);
+
+    if (path != undefined) {
+      const response = await this.create(toUserId, path, 'Image');
+
+      if (response.result == 'successful') {
+        await this.objectStorageService.upload(content, path);
+      }
+
+      return response;
+    }
   }
 
   public async getStatus(userId: string) {
