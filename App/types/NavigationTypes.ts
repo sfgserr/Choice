@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {Category, OrderRequestRadius} from './DomainTypes.ts';
 import {OrderRequest} from './DomainTypes.ts';
+import {ImageBoxObject, MinioBlob} from "../components/ImageBox.tsx";
 
 export type LoadingStackProps = {
   Loading: undefined;
@@ -31,6 +32,7 @@ export type ClientStackProps = {
     id: string
     onGoBack: () => void;
   };
+  ImageView: {uri: string};
 }
 
 export type CompanyStackProps = {
@@ -102,7 +104,9 @@ export type SubscriptionScreenProps = NativeStackScreenProps<UnsubscribeStackPro
 
 export type PaySubscriptionScreenProps = NativeStackScreenProps<UnsubscribeStackProps, 'PaySubscription'>;
 
-export type ImageViewScreenProps = NativeStackScreenProps<CompanyStackProps, 'ImageView'>;
+export type CompanyImageViewScreenProps = NativeStackScreenProps<CompanyStackProps, 'ImageView'>;
+
+export type ClientImageViewScreenProps = NativeStackScreenProps<ClientStackProps, 'ImageView'>;
 
 export type CreateOrderResponseScreenProps = NativeStackScreenProps<CompanyStackProps, 'CreateOrderResponse'>;
 
@@ -111,7 +115,7 @@ export type CompanyChatScreenProps = NativeStackScreenProps<CompanyStackProps, '
 export type ClientChatScreenProps = NativeStackScreenProps<ClientStackProps, 'Chat'>;
 
 export type AboutScreenProps = {
-  next: (description: string, photoUris: string[], prepaymentAvailable: boolean) => Promise<void>
+  next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>
   categoriesTitle: string
   onChevronPressed: () => void
 };

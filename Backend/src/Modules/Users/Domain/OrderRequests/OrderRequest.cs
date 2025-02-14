@@ -97,9 +97,11 @@ namespace Users.Domain.OrderRequests
             double price,
             int deadline,
             DateTime? enrollmentDate,
-            double prepayment)
+            double prepayment,
+            IOrderResponsesCounter counter)
         { 
             CheckRule(new CannotChangeInactiveRequestRule(Status));
+            CheckRule(new CannotResponseTwiceRule(counter, company.Id));
             CheckRule(new CannotResponseIfUserEnrolledRule(IsEnrolled));
             
             return OrderResponse.Create(

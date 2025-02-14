@@ -6,6 +6,7 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import CreateOrderRequestScreen from '../../../screens/CreateOrderRequestScreen.tsx';
 import EditOrderRequestScreen from '../../../screens/EditOrderRequestScreen.tsx';
 import ClientChatScreen from '../../../screens/ClientChatScreen.tsx';
+import ClientImageViewScreen from "../../../screens/ClientImageViewScreen.tsx";
 
 export const Tab = () => (
   <ClientStack.Screen
@@ -13,7 +14,7 @@ export const Tab = () => (
     component={ClientTabComponent}
     options={{headerShown: false}}
   />
-)
+);
 
 export const Map = () => (
   <ClientStack.Screen
@@ -21,7 +22,7 @@ export const Map = () => (
     component={gestureHandlerRootHOC(MapScreen)}
     options={{headerShown: false}}
   />
-)
+);
 
 export const CreateOrderRequest = () => (
   <ClientStack.Screen
@@ -29,7 +30,7 @@ export const CreateOrderRequest = () => (
     component={gestureHandlerRootHOC(CreateOrderRequestScreen)}
     options={{headerShown: false}}
   />
-)
+);
 
 export const EditOrderRequest = () => (
   <ClientStack.Screen
@@ -37,7 +38,7 @@ export const EditOrderRequest = () => (
     component={gestureHandlerRootHOC(EditOrderRequestScreen)}
     options={{headerShown: false}}
   />
-)
+);
 
 export const Chat = () => (
   <ClientStack.Screen
@@ -45,4 +46,12 @@ export const Chat = () => (
     component={ClientChatScreen}
     options={{headerShown: false}}
   />
-)
+);
+
+export const ImageView = () => (
+  <ClientStack.Screen
+    name={'ImageView'}
+    component={ClientImageViewScreen}
+    options={{headerShown: false}}
+  />
+);

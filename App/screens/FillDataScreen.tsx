@@ -15,6 +15,8 @@ import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {AuthContext} from '../contexts/authorized/Context.tsx';
+import {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 
 const d = Dimensions.get('screen');
 
@@ -23,6 +25,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
 
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
+  const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
 
   const [socialMediaUris, setSocialMediaUris] = React.useState<string[]>([]);
 
@@ -51,7 +54,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
 
   const [isToggled, setIsToggled] = React.useState(false);
 
-  const fillData = async (description: string, photoUris: string[], prepaymentAvailable: boolean) => {
+  const fillData = async (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => {
     setIsRefreshing(true);
 
     const response = await companyService.fillData(
@@ -59,20 +62,24 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
       categories
         .filter(c => c.selected)
         .map(c => c.category.categoryId),
-      photoUris,
+      photoUris.map(mb => mb.getObjectName()),
       socialMediaUris.filter(u => u != ''),
       prepaymentAvailable);
 
-    setIsRefreshing(false);
-
     if (response.result == 'successful') {
+      for (let i = 0; i < photoUris.length; i++) {
+        await objectStorageService.upload(photoUris[i] as MinioBlob);
+      }
+
       setIsToggled(true);
     }
     else {
       setErrorMessage(response.error);
       setIsErrorToggled(true);
     }
-  }
+
+    setIsRefreshing(false);
+  };
 
   const screens = [
     <SocialMediasScreen
@@ -103,8 +110,8 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
       prev[index].selected = !prev[index].selected;
 
       return [...prev];
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -116,7 +123,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
               <View
                 style={[styles.progressBar, {
                   backgroundColor: currentIndex >= n ? '#2688EB' : '#DFDFDF',
-                  width: d.width/screens.length*0.85,
+                  width: d.width / screens.length * 0.85,
                 }]}
                 key={n}/>
             ))}
@@ -141,7 +148,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
         categories={categories}
         select={select}/>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -149,19 +156,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingTop: 20,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   title: {
     fontSize: 21,
     fontWeight: '600',
     alignSelf: 'center',
-    color: 'black'
+    color: 'black',
   },
   screenContainer: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     paddingTop: 20,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   progressBar: {
     height: 4,
@@ -170,6 +177,6 @@ const styles = StyleSheet.create({
   splitter: {
     backgroundColor: '#D7D8D9',
     width: 'auto',
-    height: .25
+    height: 0.25,
   },
 });

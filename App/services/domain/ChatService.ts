@@ -1,15 +1,21 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {Chat, ChatMessages, Message} from '../../types/DomainTypes.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
-import {FilePathUtils} from "../../utils/FilePathUtils.ts";
+import {FilePathUtils} from '../../utils/FilePathUtils.ts';
+import {FileValidationService} from '../object/FileValidationService.ts';
 
 export class ChatService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
   private readonly objectStorageService: ObjectStorageService;
+  private readonly fileValidationService: FileValidationService;
 
-  constructor(httpService: RefreshTokenHttpServiceDecorator, objectStorageService: ObjectStorageService) {
+  constructor(
+    httpService: RefreshTokenHttpServiceDecorator,
+    objectStorageService: ObjectStorageService,
+    fileValidationService: FileValidationService) {
     this.httpService = httpService;
     this.objectStorageService = objectStorageService;
+    this.fileValidationService = fileValidationService;
   }
 
   public async getChat(userId: string) {
@@ -37,14 +43,14 @@ export class ChatService {
       }));
   }
 
-  public async createImage(toUserId: string, content: string) {
-    const path = FilePathUtils.getFileName(content);
+  public async createImage(toUserId: string, path: string) {
+    const result = await this.fileValidationService.getContentAndValidate(path);
 
-    if (path != undefined) {
-      const response = await this.create(toUserId, path, 'Image');
+    if (result.object != null) {
+      const response = await this.create(toUserId, result.object.objectName, 'Image');
 
       if (response.result == 'successful') {
-        await this.objectStorageService.upload(content, path);
+        await this.objectStorageService.upload(result.object);
       }
 
       return response;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Category, OrderRequest} from './DomainTypes.ts';
 import {ReactNode} from 'react';
 import {KeyboardTypeOptions} from 'react-native';
+import {ImageBoxObject, MinioBlob} from "../components/ImageBox.tsx";
 
 export type BorderedTextInputProps = {
   value: string
@@ -52,9 +53,9 @@ export type CheckboxProps = {
 };
 
 export type ImageBoxProps = {
-  uri: string
-  onPress: () => void
-  onRemovePress: () => void
+  object: ImageBoxObject
+  setPhoto: React.Dispatch<React.SetStateAction<ImageBoxObject[]>>
+  index: number
 };
 
 export type CategoriesBottomSheetListProps = {

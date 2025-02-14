@@ -20,7 +20,7 @@ import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
-import {launchImageLibrary} from "react-native-image-picker";
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const d = Dimensions.get('screen');
 
@@ -57,7 +57,11 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     DeviceEventEmitter.addListener('read', (id: string) => {
       setChat(prev => {
         if (prev != null) {
-          prev.messages[prev.messages.findIndex(m => String(m.id) === String(id))].isRead = true;
+          let index = prev.messages.findIndex(m => String(m.id) === String(id));
+
+          if (index != -1) {
+            prev.messages[prev.messages.findIndex(m => String(m.id) === String(id))].isRead = true;
+          }
         }
         return prev;
       });
@@ -139,7 +143,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     if (chat != null) {
       const imagePickerResponse = await launchImageLibrary({mediaType: 'photo'});
 
-      if (imagePickerResponse.assets && imagePickerResponse.assets[0].uri != undefined) {
+      if (imagePickerResponse.assets != undefined && imagePickerResponse.assets[0].uri != undefined) {
         const response = await chatService.createImage(chat.user.id, imagePickerResponse.assets[0].uri);
 
         if (response && response.content != null) {
@@ -211,7 +215,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
               renderItem={(item) =>
                 <MessageItem
                   item={item}
-                  userId={userId}/>
+                  userId={userId}
+                  navigation={navigation}/>
               }
               ListEmptyComponent={Stub}
               viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}

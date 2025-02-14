@@ -3,14 +3,15 @@ import {CompanyInfo, CompanyMapMarker} from '../../types/DomainTypes.ts';
 import {HttpResponseWithContent} from '../../types/ServiceTypes.ts';
 import {FilePathUtils} from '../../utils/FilePathUtils.ts';
 import {ObjectStorageService} from '../object/ObjectStorageService.ts';
+import {MinioBlob} from "../../components/ImageBox.tsx";
 
 export class CompanyService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
-  private readonly objectStorageService: ObjectStorageService;
 
-  constructor(httpService: RefreshTokenHttpServiceDecorator, objectStorageService: ObjectStorageService) {
+  constructor(
+    httpService: RefreshTokenHttpServiceDecorator
+  ) {
     this.httpService = httpService;
-    this.objectStorageService = objectStorageService;
   }
 
   async createCompany(
@@ -19,7 +20,8 @@ export class CompanyService {
     email: string,
     phoneNumber: string,
     city: string,
-    street: string) {
+    street: string,
+  ) {
     return await this.httpService.request(
       'companies',
       'POST',
@@ -29,8 +31,9 @@ export class CompanyService {
         email,
         phoneNumber,
         city,
-        street
-      }));
+        street,
+      }),
+    );
   }
 
   async fillData(
@@ -38,16 +41,9 @@ export class CompanyService {
     categoryIds: number[],
     photoUris: string[],
     socialMediaUris: string[],
-    isPrepaymentAvailable: boolean) {
-    const sources = ['', '', '', '', '', ''];
-    for (let i = 0; i < 6; i++) {
-      sources[i] = photoUris[i];
-      let path = FilePathUtils.getFileName(photoUris[i]);
-
-      photoUris[i] = path == undefined ? '' : path;
-    }
-
-    const response = await this.httpService.request(
+    isPrepaymentAvailable: boolean,
+  ) {
+    return await this.httpService.request(
       'companies/fillData',
       'PUT',
       JSON.stringify({
@@ -55,30 +51,26 @@ export class CompanyService {
         categoryIds,
         photoUris,
         socialMediaUris,
-        isPrepaymentAvailable
-      }));
-
-    if (response.result == 'successful') {
-      for (let i = 0; i < 6; i++) {
-        if (sources[i] != '')
-          await this.objectStorageService.upload(sources[i], photoUris[i]);
-      }
-    }
-
-    return response;
+        isPrepaymentAvailable,
+      }),
+    );
   }
 
-  async getCompanies(categoryId: number): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
+  async getCompanies(
+    categoryId: number,
+  ): Promise<HttpResponseWithContent<CompanyMapMarker[]>> {
     return await this.httpService.requestWithContent<CompanyMapMarker[]>(
       `companies/${categoryId}`,
       'GET',
-      undefined);
+      undefined,
+    );
   }
 
   async getCompanyOnMap(companyId: string) {
     return await this.httpService.requestWithContent<CompanyInfo>(
       `companies/map/${companyId}`,
       'GET',
-      undefined);
+      undefined,
+    );
   }
 }

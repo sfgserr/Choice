@@ -5,7 +5,9 @@ using BuildingBlocks.Infrastructure.Data.ValueConversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Users.Application.Contracts;
+using Users.Application.OrderRequests;
 using Users.Application.Users;
+using Users.Domain.OrderRequests;
 using Users.Domain.Users;
 using Users.Infrastructure.Data;
 
@@ -47,6 +49,10 @@ namespace Users.Infrastructure.Configuration.Data
 
             builder.RegisterType<UsersCounter>()
                 .As<IUsersCounter>()
+                .InstancePerLifetimeScope();
+            
+            builder.RegisterType<OrderResponsesCounter>()
+                .As<IOrderResponsesCounter>()
                 .InstancePerLifetimeScope();
         }
     }

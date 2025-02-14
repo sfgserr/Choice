@@ -3,7 +3,7 @@ import {
   Image,
   ListRenderItemInfo,
   StyleSheet,
-  Text,
+  Text, TouchableOpacity,
   View,
 } from 'react-native';
 import {Icon} from '@rneui/base';
@@ -39,18 +39,24 @@ const TextMessage = ({message, isSender}: {message: Message, isSender: boolean})
   </View>
 );
 
-const ImageMessage = ({message, isSender}: {message: Message, isSender: boolean}) => {
-  const [imageSize, setImageSize] = React.useState<number>(0);
+const ImageMessage = ({message, isSender, navigation}: {
+  message: Message,
+  isSender: boolean,
+  navigation: any}) => {
+  const uri = `${process.env.MINIO_URL}/app-files/${message.body}`;
 
+  const [imageSize, setImageSize] = React.useState<number>(0);
 
   return (
     <View style={[styles.messageContainer, {alignItems: isSender ? 'flex-end' : 'flex-start'}]}>
-      <View style={isSender ? styles.senderImageMessageBox : styles.receiverSenderMessageBox}>
-        <Image
-          style={styles.image}
-          source={{uri: `${process.env.MINIO_URL}/app-files/${message.body}`}}/>
+      <View style={isSender ? styles.senderImageMessageBox : styles.receiverImageMessageBox}>
+        <TouchableOpacity onPress={() => {navigation.navigate('ImageView', {uri: message.body})}}>
+          <Image
+            style={styles.image}
+            source={{uri}}/>
+        </TouchableOpacity>
         <View
-          style={{justifyContent: 'center'}}>
+          style={{justifyContent: 'center', paddingLeft: 5}}>
           <Text style={[styles.imageName, {color: isSender ? 'white' : 'black'}]}>{message.body?.substring(0, 10)}</Text>
           <Text style={styles.imageSize}>{imageSize}</Text>
         </View>
@@ -75,7 +81,10 @@ const ImageMessage = ({message, isSender}: {message: Message, isSender: boolean}
   );
 };
 
-export default function MessageItem ({item, userId}: { item: ListRenderItemInfo<Message>, userId: string }) {
+export default function MessageItem ({item, userId, navigation}: {
+  item: ListRenderItemInfo<Message>,
+  userId: string,
+  navigation: any}) {
   const isSender = userId === item.item.fromUserId;
 
   return (
@@ -84,10 +93,13 @@ export default function MessageItem ({item, userId}: { item: ListRenderItemInfo<
         <TextMessage
           message={item.item}
           isSender={isSender}/>
-      ) : (
+      ) : item.item.type == 'Image' ? (
         <ImageMessage
           message={item.item}
-          isSender={isSender}/>
+          isSender={isSender}
+          navigation={navigation}/>
+      ) : (
+        <Text>asdasd</Text>
       )}
     </>
   );
@@ -122,14 +134,14 @@ const styles = StyleSheet.create({
     borderColor: '#B5CADD',
   },
   senderImageMessageBox: {
-    paddingVertical: 2,
+    paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: '#2D81E0',
     paddingHorizontal: 10,
     flexDirection: 'row',
   },
-  receiverSenderMessageBox: {
-    paddingVertical: 2,
+  receiverImageMessageBox: {
+    paddingVertical: 10,
     borderRadius: 10,
     backgroundColor: 'white',
     paddingHorizontal: 10,
@@ -162,7 +174,8 @@ const styles = StyleSheet.create({
   image: {
     width: d.height * 0.091,
     height: d.height * 0.091,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    borderRadius: 10,
   },
   imageName: {
     fontSize: 16,

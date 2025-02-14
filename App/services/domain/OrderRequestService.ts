@@ -1,15 +1,11 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
 import {CompanyOrderRequest, OrderRequest, OrderRequestDetails, OrderRequestRadius} from '../../types/DomainTypes.ts';
-import {ObjectStorageService} from '../object/ObjectStorageService.ts';
-import {FilePathUtils} from '../../utils/FilePathUtils.ts';
 
 export class OrderRequestService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
-  private readonly objectStorageService: ObjectStorageService;
 
-  constructor(httpService: RefreshTokenHttpServiceDecorator, objectStorageService: ObjectStorageService) {
+  constructor(httpService: RefreshTokenHttpServiceDecorator) {
     this.httpService = httpService;
-    this.objectStorageService = objectStorageService;
   }
 
   async create(
@@ -20,15 +16,7 @@ export class OrderRequestService {
     toKnowEnrollmentDate: boolean,
     photoUris: string[],
     distance: number) {
-    const sources = ['', '', ''];
-    for (let i = 0; i < 3; i++) {
-      sources[i] = photoUris[i];
-      let path = FilePathUtils.getFileName(photoUris[i]);
-
-      photoUris[i] = path == undefined ? '' : path;
-    }
-
-    const response = await this.httpService.requestWithContent<OrderRequest>(
+    return await this.httpService.requestWithContent<OrderRequest>(
       'orderRequests',
       'POST',
       JSON.stringify({
@@ -38,17 +26,8 @@ export class OrderRequestService {
         toKnowDeadline,
         toKnowEnrollmentDate,
         photoUris,
-        distance
+        distance,
       }));
-
-    if (response.result == 'successful') {
-      for (let i = 0; i < 3; i++) {
-        if (sources[i] != '')
-          await this.objectStorageService.upload(sources[i], photoUris[i]);
-      }
-    }
-
-    return response;
   }
 
   async edit(
@@ -60,18 +39,7 @@ export class OrderRequestService {
     toKnowEnrollmentDate: boolean,
     photoUris: string[],
     distance: number) {
-    const toUpload = ['', '', ''];
-
-    for (let i = 0; i < 3; i++) {
-      if (photoUris[i].includes('file:///')) {
-        toUpload[i] = photoUris[i];
-        let path = FilePathUtils.getFileName(photoUris[i]);
-
-        photoUris[i] = path == undefined ? '' : path;
-      }
-    }
-
-    const response = await this.httpService.request(
+    return await this.httpService.request(
       'orderRequests',
       'PUT',
       JSON.stringify({
@@ -82,17 +50,8 @@ export class OrderRequestService {
         toKnowDeadline,
         toKnowEnrollmentDate,
         photoUris,
-        distance
+        distance,
       }));
-
-    if (response.result == 'successful') {
-      for (let i = 0; i < 3; i++) {
-        if (toUpload[i] != '')
-          await this.objectStorageService.upload(toUpload[i], photoUris[i]);
-      }
-    }
-
-    return response;
   }
 
   async getOrderRequests() {

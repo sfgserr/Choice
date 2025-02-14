@@ -14,8 +14,7 @@ import {CreateOrderRequestScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import Checkbox from '../components/buttons/Checkbox.tsx';
-import ImageBox from '../components/ImageBox.tsx';
-import {launchImageLibrary} from 'react-native-image-picker';
+import ImageBox, {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {Slider} from '@miblanchard/react-native-slider';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -27,11 +26,13 @@ import {OrderRequest} from '../types/DomainTypes.ts';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function CreateOrderRequestScreen({route, navigation}: CreateOrderRequestScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
+  const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
 
   const categories = route.params.categories;
 
@@ -39,49 +40,33 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
   const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
   const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
-  const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
+  const [photos, setPhotos] = React.useState<ImageBoxObject[]>([
+    MinioBlob.createDefault(),
+    MinioBlob.createDefault(),
+    MinioBlob.createDefault()]);
   const [radius, setRadius] = React.useState<number>(5);
 
   const [categoryIndex, setCategoryIndex] = React.useState(route.params.categoryIndex);
 
   const [orderRequest, setOrderRequest] = React.useState<OrderRequest>();
 
-  const onImageBoxPressed = async (index: number) => {
-    let response = await launchImageLibrary({mediaType: 'photo'});
-
-    setPhotos(prev => {
-      if (response.assets == undefined)
-        return prev;
-
-      prev[index] = response.assets[0].uri;
-      return [...prev];
-    })
-  };
-
-  const onRemoveImagePressed = (index: number) => {
-    setPhotos(prev => {
-      prev[index] = '';
-      return [...prev];
-    });
-  }
-
-  const data= [
+  const data = React.useMemo(() => ([
     {
       title: 'Узнать стоимость',
       checked: toKnowPrice,
-      pressed: () => setToKnowPrice(p => !p)
+      pressed: () => setToKnowPrice(p => !p),
     },
     {
       title: 'Узнать время выполнения работ',
       checked: toKnowDeadline,
-      pressed: () => setToKnowDeadline(p => !p)
+      pressed: () => setToKnowDeadline(p => !p),
     },
     {
       title: 'Узнать время записи',
       checked: toKnowEnrollmentDate,
-      pressed: () => setToKnowEnrollmentDate(p => !p)
+      pressed: () => setToKnowEnrollmentDate(p => !p),
     },
-  ];
+  ]), [toKnowPrice, toKnowDeadline, toKnowEnrollmentDate]);
 
   const [isToggled, setIsToggled] = React.useState(false);
   const [isErrorToggled, setIsErrorToggled] = React.useState(false);
@@ -111,12 +96,14 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       toKnowPrice,
       toKnowDeadline,
       toKnowEnrollmentDate,
-      photos,
+      photos.map(mb => mb.getObjectName()),
       Math.round(radius));
 
-    setIsRefreshing(false);
-
     if (response.result == 'successful' && response.content != null) {
+      for (let i = 0; i < photos.length; i++) {
+        await objectStorageService.upload(photos[i] as MinioBlob);
+      }
+
       setIsToggled(prev => !prev);
       setOrderRequest(response.content);
     }
@@ -124,6 +111,8 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       setErrorMessage(response.error);
       toggleErrorModal();
     }
+
+    setIsRefreshing(false);
   };
 
   const onSliderValueChange = React.useCallback((value: Array<number>, index: number) => {
@@ -174,7 +163,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               Styles.borderedTextInputBigHeight,
               Styles.borderedTextInputViewColor,
               Styles.borderedTextInputUnfocused,
-              {alignItems: 'baseline'}
+              {alignItems: 'baseline'},
             ]}>
             <TextInput
               style={Styles.borderedTextInput}
@@ -192,7 +181,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
-                {justifyContent: 'center'}
+                {justifyContent: 'center'},
               ]}
               onPress={() => {}}>
               <View style={[styles.voiceButton]}>
@@ -220,20 +209,17 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           />
           <View style={styles.horizontalSpread}>
             <ImageBox
-              uri={photos[0]}
-              onPress={async () => await onImageBoxPressed(0)}
-              onRemovePress={() => onRemoveImagePressed(0)}
-            />
+              object={photos[0]}
+              setPhoto={setPhotos}
+              index={0}/>
             <ImageBox
-              uri={photos[1]}
-              onPress={async () => await onImageBoxPressed(1)}
-              onRemovePress={() => onRemoveImagePressed(1)}
-            />
+              object={photos[1]}
+              setPhoto={setPhotos}
+              index={1}/>
             <ImageBox
-              uri={photos[2]}
-              onPress={async () => await onImageBoxPressed(2)}
-              onRemovePress={() => onRemoveImagePressed(2)}
-            />
+              object={photos[2]}
+              setPhoto={setPhotos}
+              index={2}/>
           </View>
           <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
@@ -276,7 +262,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             categories,
             categoryIndex,
             onIndexChange: (val, index) => {
-              if (val) setCategoryIndex(index);
+              if (val) {setCategoryIndex(index);}
             },
           }}
           ref={ref}
@@ -322,7 +308,7 @@ const styles = StyleSheet.create({
   },
   chevronDown: {
     alignSelf: 'center',
-    paddingRight: 10
+    paddingRight: 10,
   },
   image: {
     resizeMode: 'contain',
@@ -377,6 +363,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingHorizontal: 15,
     paddingTop: 30,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
 });

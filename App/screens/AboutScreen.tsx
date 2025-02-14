@@ -10,34 +10,16 @@ import React from 'react';
 import {AboutScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
-import ImageBox from '../components/ImageBox.tsx';
-import {launchImageLibrary} from 'react-native-image-picker';
+import ImageBox, {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 
 export default function AboutScreen({next, onChevronPressed, categoriesTitle}: AboutScreenProps) {
-  const [photoUris, setPhotoUris] = React.useState<string[]>(['', '', '', '', '', '']);
+  const [photoUris, setPhotoUris] = React.useState<ImageBoxObject[]>(Array.from(
+    {length: 10},
+    (_, __) => MinioBlob.createDefault()));
   const [prepaymentAvailable, setPrepaymentAvailable] = React.useState(false);
   const [description, setDescription] = React.useState('');
-
-  const onImageBoxPressed = async (index: number) => {
-    let response = await launchImageLibrary({mediaType: 'photo'});
-
-    setPhotoUris(prev => {
-      if (response.assets == undefined)
-        return prev;
-
-      prev[index] = response.assets[0].uri;
-      return [...prev];
-    })
-  };
-
-  const onRemoveImagePressed = (index: number) => {
-    setPhotoUris(prev => {
-      prev[index] = '';
-      return [...prev];
-    });
-  }
 
   const Option = ({selected, title, onPress, top}: {
     selected: boolean
@@ -97,10 +79,9 @@ export default function AboutScreen({next, onChevronPressed, categoriesTitle}: A
         {photoUris.map((u, i) => (
           <ImageBox
             key={i}
-            uri={photoUris[i]}
-            onPress={async () => await onImageBoxPressed(i)}
-            onRemovePress={() => onRemoveImagePressed(i)}
-          />
+            object={photoUris[i]}
+            setPhoto={setPhotoUris}
+            index={i}/>
         ))}
       </View>
       <TextInputTitle
@@ -121,7 +102,7 @@ export default function AboutScreen({next, onChevronPressed, categoriesTitle}: A
         content={'Сохранить'}
         top={20}
         bottom={10}
-        isDisabled={photoUris.every(s => s == '') || categoriesTitle == '' || description == ''}
+        isDisabled={photoUris.every(s => s.getObjectName() == '') || categoriesTitle == '' || description == ''}
         pressed={() => next(description, photoUris, prepaymentAvailable)}/>
     </ScrollView>
   );
@@ -146,7 +127,7 @@ const styles = StyleSheet.create({
   },
   chevronDown: {
     alignSelf: 'center',
-    paddingRight: 10
+    paddingRight: 10,
   },
   image: {
     resizeMode: 'contain',
@@ -160,7 +141,7 @@ const styles = StyleSheet.create({
     rowGap: 10,
   },
   optionContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   optionButton: {
     alignSelf: 'center',
@@ -168,20 +149,20 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   optionSelected: {
     alignSelf: 'center',
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#2688EB'
+    backgroundColor: '#2688EB',
   },
   optionTitle: {
     color: 'black',
     fontWeight: '400',
     fontSize: 15,
     alignSelf: 'center',
-    paddingLeft: 10
-  }
+    paddingLeft: 10,
+  },
 });

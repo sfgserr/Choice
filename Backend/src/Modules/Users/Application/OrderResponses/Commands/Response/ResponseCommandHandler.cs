@@ -3,7 +3,6 @@ using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
 using Users.Domain.OrderRequests;
 using Users.Domain.Users;
-using Users.Domain.Users.Companies;
 
 namespace Users.Application.OrderResponses.Commands.Response
 {
@@ -11,13 +10,15 @@ namespace Users.Application.OrderResponses.Commands.Response
     {
         private readonly IUserContext _userContext;
         private readonly IUsersDbContext _dbContext;
+        private readonly IOrderResponsesCounter _counter;
         
         internal ResponseCommandHandler( 
             IUserContext userContext,
-            IUsersDbContext dbContext)
+            IUsersDbContext dbContext, IOrderResponsesCounter counter)
         {
             _userContext = userContext;
             _dbContext = dbContext;
+            _counter = counter;
         }
 
         public async Task Execute(ResponseCommand command)
@@ -32,7 +33,8 @@ namespace Users.Application.OrderResponses.Commands.Response
                 command.Price,
                 command.Deadline,
                 command.EnrollmentDate,
-                command.Prepayment);
+                command.Prepayment,
+                _counter);
 
             await _dbContext.OrderResponses.AddAsync(orderResponse);
         }

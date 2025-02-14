@@ -15,8 +15,7 @@ import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import {Category, OrderRequestDetails, OrderStatus} from '../types/DomainTypes.ts';
 import Checkbox from '../components/buttons/Checkbox.tsx';
-import ImageBox from '../components/ImageBox.tsx';
-import {launchImageLibrary} from 'react-native-image-picker';
+import ImageBox, {ImageBoxObject, MinioBlob, UploadedBlob} from '../components/ImageBox.tsx';
 import {Slider} from '@miblanchard/react-native-slider';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -29,12 +28,14 @@ import {DateUtils} from '../utils/DateUtils.ts';
 import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function EditOrderRequestScreen({route, navigation}: EditOrderRequestScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const categoryService = useDependency<CategoryService>('CategoryService');
+  const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
 
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [status, setStatus] = React.useState<OrderStatus>();
@@ -42,11 +43,10 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const [toKnowPrice, setToKnowPrice] = React.useState(false);
   const [toKnowDeadline, setToKnowDeadline] = React.useState(false);
   const [toKnowEnrollmentDate, setToKnowEnrollmentDate] = React.useState(false);
-  const [photos, setPhotos] = React.useState<string[]>(['', '', '']);
+  const [photos, setPhotos] = React.useState<ImageBoxObject[]>([MinioBlob.createDefault(), MinioBlob.createDefault(), MinioBlob.createDefault()]);
   const [radius, setRadius] = React.useState<number>(5);
   const [creationDate, setCreationDate] = React.useState<Date>(new Date());
   const [categoryIndex, setCategoryIndex] = React.useState(0);
-  const [uriChanged, setUriChanged] = React.useState<boolean[]>([false, false, false]);
   const [isChanged, setIsChanged] = React.useState(false);
 
   const set = (orderRequest: OrderRequestDetails) => {
@@ -55,10 +55,10 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
     setToKnowPrice(orderRequest.toKnowPrice);
     setToKnowDeadline(orderRequest.toKnowDeadline);
     setToKnowEnrollmentDate(orderRequest.toKnowEnrollmentDate);
-    setPhotos(orderRequest.photoUris);
+    setPhotos(orderRequest.photoUris.map(p => new UploadedBlob(p)));
     setRadius(orderRequest.distance);
     setCreationDate(orderRequest.creationDate);
-  }
+  };
 
   React.useEffect(() => {
     async function getData() {
@@ -80,30 +80,6 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
     }
 
     getData();
-  }, []);
-
-  const onImageBoxPressed = React.useCallback(async (index: number) => {
-    let response = await launchImageLibrary({mediaType: 'photo'});
-
-    setPhotos(prev => {
-      if (response.assets == undefined)
-        return prev;
-
-      prev[index] = response.assets[0].uri;
-      return [...prev];
-    });
-    setUriChanged(prev => {
-      prev[index] = true;
-      return [...prev];
-    });
-  }, []);
-
-  const onRemoveImagePressed = React.useCallback((index: number) => {
-    setPhotos(prev => {
-      prev[index] = '';
-      return [...prev];
-    });
-    setIsChanged(true);
   }, []);
 
   const data= React.useMemo(() => [
@@ -157,9 +133,17 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       toKnowPrice,
       toKnowDeadline,
       toKnowEnrollmentDate,
-      photos,
+      photos.map(b => b.getObjectName()),
       radius
     );
+
+    if (response.result == 'successful') {
+      for (let i = 0; i < photos.length; i++) {
+        if (!photos[i].isUpload) {
+          await objectStorageService.upload(photos[i] as MinioBlob);
+        }
+      }
+    }
 
     setIsRefreshing(false);
 
@@ -307,32 +291,17 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
           />
           <View style={styles.horizontalSpread}>
             <ImageBox
-              uri={
-                !uriChanged[0] && photos[0] != ''
-                  ? `${process.env.MINIO_URL}/app-files/${photos[0]}`
-                  : photos[0]
-              }
-              onPress={async () => await onImageBoxPressed(0)}
-              onRemovePress={() => onRemoveImagePressed(0)}
-            />
+              object={photos[0]}
+              setPhoto={setPhotos}
+              index={0}/>
             <ImageBox
-              uri={
-                !uriChanged[1] && photos[1] != ''
-                  ? `${process.env.MINIO_URL}/app-files/${photos[1]}`
-                  : photos[1]
-              }
-              onPress={async () => await onImageBoxPressed(1)}
-              onRemovePress={() => onRemoveImagePressed(1)}
-            />
+              object={photos[1]}
+              setPhoto={setPhotos}
+              index={0}/>
             <ImageBox
-              uri={
-                !uriChanged[2] && photos[2] != ''
-                  ? `${process.env.MINIO_URL}/app-files/${photos[2]}`
-                  : photos[2]
-              }
-              onPress={async () => await onImageBoxPressed(2)}
-              onRemovePress={() => onRemoveImagePressed(2)}
-            />
+              object={photos[2]}
+              setPhoto={setPhotos}
+              index={0}/>
           </View>
           <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
             <Text style={Styles.title}>Радиус поиска</Text>
