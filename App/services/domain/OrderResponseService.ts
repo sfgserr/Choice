@@ -1,4 +1,5 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
+import {OrderResponse} from "../../types/DomainTypes.ts";
 
 export class OrderResponseService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -21,7 +22,14 @@ export class OrderResponseService {
         price,
         deadline,
         enrollmentDate,
-        prepayment
+        prepayment,
       }));
+  }
+
+  public async get(id: string) {
+    return await this.httpService.requestWithContent<OrderResponse>(
+      `orderResponses/${id}`,
+      'GET',
+      undefined);
   }
 }

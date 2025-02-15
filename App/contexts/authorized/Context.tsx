@@ -32,7 +32,7 @@ export const useAuthContext = (setState: (state: State) => void) => {
       },
       changeState: (state: State) => {
         setState(state);
-      }
+      },
     }),
     [stateManager]
   );

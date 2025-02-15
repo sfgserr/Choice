@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ListRenderItemInfo,
@@ -8,7 +9,10 @@ import {
 } from 'react-native';
 import {Icon} from '@rneui/base';
 import React from 'react';
-import { Message } from '../../types/DomainTypes.ts';
+import {Message, OrderResponse} from '../../types/DomainTypes.ts';
+import {Order} from "aws-sdk/clients/glue";
+import {useDependency} from "../../services/Hooks.ts";
+import {OrderResponseService} from "../../services/domain/OrderResponseService.ts";
 
 const d = Dimensions.get('screen');
 
@@ -81,6 +85,52 @@ const ImageMessage = ({message, isSender, navigation}: {
   );
 };
 
+const OrderMessage = ({message, isSender, userId}: {
+  message: Message,
+  isSender: boolean,
+  userId: string,}) => {
+  const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
+
+  const [order, setOrder] = React.useState<OrderResponse | null>(null);
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    const getOrderResponse = async () => {
+      const response = await orderResponseService.get(message.orderResponseId!);
+
+      if (response.result == 'successful') {
+        setOrder(response.content);
+        setIsClient(userId == response.content!.clientId);
+      }
+    };
+
+    getOrderResponse();
+  }, []);
+
+  return (
+    <View style={[styles.messageContainer]}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderWidth: 1,
+          borderColor: '#B5CADD',
+          borderRadius: 10,
+          paddingHorizontal: 10,
+        }}>
+        <View style={{paddingVertical: 5}}>
+          {order == null ? (
+            <ActivityIndicator size="large" color={'#2D81E0'} />
+          ) : (
+            <Text style={{color: 'black', fontWeight: '700', fontSize: 14}}>
+              {message.enrollmentDate == null ? (isSender ? 'Ваш ответ на заказ клиента' : 'Ответ компании на Ваш запрос') : '_'}
+            </Text>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+};
+
 export default function MessageItem ({item, userId, navigation}: {
   item: ListRenderItemInfo<Message>,
   userId: string,
@@ -99,7 +149,10 @@ export default function MessageItem ({item, userId, navigation}: {
           isSender={isSender}
           navigation={navigation}/>
       ) : (
-        <Text>asdasd</Text>
+        <OrderMessage
+          message={item.item}
+          isSender={isSender}
+          userId={userId}/>
       )}
     </>
   );
