@@ -32,6 +32,6 @@ namespace Users.Domain.OrderRequests.OrderResponses.Rules
             (_toKnowDeadline && _deadline == 0) || 
             (_toKnowEnrollmentDate && _enrollmentDate == null);
 
-        public string Message { get; } = "At least 1 requirement must be filled";
+        public string Message => "Вся запрошенная информация должна быть предоставлена";
     }
 }

@@ -32,4 +32,11 @@ export class OrderResponseService {
       'GET',
       undefined);
   }
+
+  public async changeEnrollmentDate(responseId: string, enrollmentDate: Date) {
+    return await this.httpService.request(
+      `orderResponses/${responseId}/${enrollmentDate.toJSON()}`,
+      'PUT',
+      undefined);
+  }
 }

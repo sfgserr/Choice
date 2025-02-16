@@ -91,7 +91,8 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
         <Image
           style={{
             width: 40,
-            height: 40
+            height: 40,
+            borderRadius: 20,
           }}
           source={{uri: `${process.env.MINIO_URL}/app-files/${orderRequest.iconUri}`}}/>
         <View style={{paddingLeft: 5, flex: 1}}>

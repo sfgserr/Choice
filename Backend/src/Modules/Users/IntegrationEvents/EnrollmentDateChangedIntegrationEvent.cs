@@ -8,21 +8,17 @@ namespace Users.IntegrationEvents
             Guid id,
             Guid responseId,
             DateTime previousEnrollmentDate,
-            Guid userChangedEnrollmentDateId,
-            bool isEnrollmentDateConfirmed) : base(id)
+            Guid toUserId) : base(id)
         {
             ResponseId = responseId;
             PreviousEnrollmentDate = previousEnrollmentDate;
-            UserChangedEnrollmentDateId = userChangedEnrollmentDateId;
-            IsEnrollmentDateConfirmed = isEnrollmentDateConfirmed;
+            ToUserId = toUserId;
         }
 
         public Guid ResponseId { get; }
 
         public DateTime PreviousEnrollmentDate { get; }
 
-        public Guid UserChangedEnrollmentDateId { get; }
-
-        public bool IsEnrollmentDateConfirmed { get; }
+        public Guid ToUserId { get; }
     }
 }

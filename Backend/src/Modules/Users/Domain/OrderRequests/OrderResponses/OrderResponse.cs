@@ -187,8 +187,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id, 
                 previousEnrollmentDate,
-                UserChangedEnrollmentDate, 
-                IsEnrollmentDateConfirmed));
+                new UserId(CompanyId.Value)));
         }
 
         public void ChangeEnrollmentDateByCompany(CompanyId changingCompanyId, DateTime newEnrollmentDate)
@@ -211,8 +210,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id,
                 previousEnrollmentDate,
-                UserChangedEnrollmentDate,
-                IsEnrollmentDateConfirmed));
+                new UserId(ClientId.Value)));
         }
 
         public void ConfirmEnrollmentDate(CompanyId confirmingCompanyId)

@@ -6,11 +6,19 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
     {
         public ChangeEnrollmentDateCommand(
             Guid id,
-            Guid responseId) : base(id)
+            DateTime enrollmentDate,
+            Guid responseId, 
+            Guid toUserId) : base(id)
         {
             ResponseId = responseId;
+            EnrollmentDate = enrollmentDate;
+            ToUserId = toUserId;
         }
 
         public Guid ResponseId { get; }
+        
+        public DateTime EnrollmentDate { get; }
+        
+        public Guid ToUserId { get; }
     }
 }

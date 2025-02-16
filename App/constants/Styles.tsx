@@ -38,9 +38,9 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
   },
   styledButton: {
-    height: height*0.054,
+    paddingVertical: 10,
     backgroundColor: '#2D81E0',
-    borderRadius: 10
+    borderRadius: 10,
   },
   styledButtonContent: {
     fontWeight: '500',
@@ -51,7 +51,7 @@ const Styles = StyleSheet.create({
     color: '#6D7885',
     fontSize: 14,
     fontWeight: '400',
-  }
+  },
 });
 
 export default Styles;

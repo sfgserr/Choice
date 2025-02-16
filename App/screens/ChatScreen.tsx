@@ -21,6 +21,7 @@ import {CategoryService} from '../services/domain/CategoryService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {ArrayUtils} from "../utils/ArrayUtils.ts";
 
 const d = Dimensions.get('screen');
 
@@ -49,7 +50,17 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
       setChat(prev => {
-        prev?.messages.push(message);
+        if (prev != undefined) {
+          prev.messages = [...prev.messages, message];
+
+          if (message.enrollmentDate != null) {
+            const index = ArrayUtils.findLastIndex(
+              prev.messages,
+              m => m.orderResponseId == message.orderResponseId);
+
+            prev.messages[index].isActive = false;
+          }
+        }
         return prev;
       });
     });
@@ -183,6 +194,18 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     [chat],
   );
 
+  const enrollmentDateChanged = React.useCallback((index: number) => {
+    setChat(prev => {
+      if (prev != null) {
+        prev.messages.push(prev.messages[index]);
+
+        prev.messages[index].isActive = false;
+      }
+
+      return prev;
+    });
+  }, [chat]);
+
   const Stub = React.useMemo(() => (
     <View style={styles.stubContainer}>
       <Text style={styles.stubTitle}>Нет сообщений</Text>
@@ -216,7 +239,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                 <MessageItem
                   item={item}
                   userId={userId}
-                  navigation={navigation}/>
+                  navigation={navigation}
+                  onEnrollmentDateChanged={enrollmentDateChanged}/>
               }
               ListEmptyComponent={Stub}
               viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}

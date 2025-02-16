@@ -1,6 +1,7 @@
 using BuildingBlocks.Application.Events;
 using Chat.Application.Messages.Commands.ChangeEnrollmentDate;
 using Chat.Infrastructure.Data.InternalCommands;
+using MassTransit;
 using Users.IntegrationEvents;
 
 namespace Chat.Infrastructure.Consumers
@@ -18,7 +19,9 @@ namespace Chat.Infrastructure.Consumers
         {
             await _scheduler.EnqueueAsync(new ChangeEnrollmentDateCommand(
                     @event.Id,
-                    @event.ResponseId));
+                    @event.PreviousEnrollmentDate,
+                    @event.ResponseId,
+                    @event.ToUserId));
         }
     }
 }

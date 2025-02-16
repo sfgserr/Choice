@@ -13,6 +13,10 @@ import {Message, OrderResponse} from '../../types/DomainTypes.ts';
 import {Order} from "aws-sdk/clients/glue";
 import {useDependency} from "../../services/Hooks.ts";
 import {OrderResponseService} from "../../services/domain/OrderResponseService.ts";
+import {DateUtils} from "../../utils/DateUtils.ts";
+import {StyledButton} from "../buttons/StyledButton.tsx";
+import Styles from "../../constants/Styles.tsx";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 const d = Dimensions.get('screen');
 
@@ -85,14 +89,48 @@ const ImageMessage = ({message, isSender, navigation}: {
   );
 };
 
-const OrderMessage = ({message, isSender, userId}: {
+const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged}: {
   message: Message,
   isSender: boolean,
-  userId: string,}) => {
+  userId: string,
+  index: number,
+  onEnrollmentDateChanged: (index: number) => void}) => {
   const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
 
   const [order, setOrder] = React.useState<OrderResponse | null>(null);
   const [isClient, setIsClient] = React.useState(false);
+
+  const [showDateTimePicker, setShowDateTimePicker] = React.useState(false);
+  const [date, setDate] = React.useState<Date>(new Date());
+
+  const info = React.useMemo(() => {
+    if (order != null) {
+      return [
+        {
+          value: `${order.price} рублей`,
+          title: 'Стоимость',
+          icon: require('../../assets/images/rub.png'),
+        },
+        {
+          value: DateUtils.secondsToDate(order.deadline),
+          title: 'Время выполнения работы',
+          icon: require('../../assets/images/deadline.png'),
+        },
+        {
+          value: DateUtils.formatDate(order.enrollmentDate as Date),
+          title: 'Время записи',
+          icon: require('../../assets/images/enrollment.png'),
+        },
+        {
+          value: `${order.prepayment} рублей`,
+          title: 'Предоплата',
+          icon: require('../../assets/images/prepayment.png'),
+        },
+      ];
+    }
+
+    return [];
+  }, [order]);
 
   React.useEffect(() => {
     const getOrderResponse = async () => {
@@ -107,34 +145,107 @@ const OrderMessage = ({message, isSender, userId}: {
     getOrderResponse();
   }, []);
 
+  const changeEnrollmentDate = React.useCallback(async (date: Date) => {
+    if (order != null) {
+      const response = await orderResponseService.changeEnrollmentDate(order.id, date);
+
+      if (response.result == 'successful') {
+        onEnrollmentDateChanged(index);
+      }
+    }
+  }, [order]);
+
   return (
-    <View style={[styles.messageContainer]}>
-      <View
-        style={{
-          backgroundColor: 'white',
-          borderWidth: 1,
-          borderColor: '#B5CADD',
-          borderRadius: 10,
-          paddingHorizontal: 10,
-        }}>
-        <View style={{paddingVertical: 5}}>
+    <View style={styles.messageContainer}>
+      <View style={styles.order}>
+        <View style={{paddingVertical: 10}}>
           {order == null ? (
             <ActivityIndicator size="large" color={'#2D81E0'} />
           ) : (
-            <Text style={{color: 'black', fontWeight: '700', fontSize: 14}}>
-              {message.enrollmentDate == null ? (isSender ? 'Ваш ответ на заказ клиента' : 'Ответ компании на Ваш запрос') : '_'}
+            <Text style={styles.orderMessage}>
+              {message.enrollmentDate == null
+                ? isSender
+                  ? 'Ваш ответ на заказ клиента'
+                  : 'Ответ компании на Ваш запрос'
+                : !isSender
+                ? 'Вы предложили изменить время записи'
+                : isClient
+                ? 'Компания предлагает изменить время записи'
+                : 'Клиент предлагает изменить время записи'}
             </Text>
+          )}
+          {info.map((i, key) => (
+            <>
+              {i.value != null && (
+                <View style={styles.orderInfoContainer} key={key}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Image source={i.icon} style={styles.infoIcon} />
+                    <Text style={styles.infoTitle}>{i.title}</Text>
+                  </View>
+                  <Text style={styles.infoValue}>{`${i.value}`}</Text>
+                </View>
+              )}
+            </>
+          ))}
+          <View style={{paddingTop: 10}}>
+            <TouchableOpacity
+              style={[
+                Styles.styledButton,
+                {
+                  justifyContent: 'center',
+                  backgroundColor: '#001C3D0D',
+                  opacity: order?.isActive && message.isActive ? 1 : 0.5,
+                },
+              ]}
+              disabled={!order?.isActive || !message.isActive}
+              onPress={() => setShowDateTimePicker(true)}>
+              <Text
+                style={[
+                  Styles.styledButtonContent,
+                  {
+                    alignSelf: 'center',
+                    color: '#2688EB',
+                  },
+                ]}>
+                Изменить дату и время записи
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {isClient && order?.enrollmentDate != null && (
+            <StyledButton
+              content={'Записаться и внести предоплату'}
+              top={10}
+              bottom={0}
+              isDisabled={!order?.isActive || !message.isActive}
+              pressed={() => {}}
+            />
           )}
         </View>
       </View>
+      {showDateTimePicker && (
+        <RNDateTimePicker
+          mode={'datetime'}
+          display={'spinner'}
+          value={date}
+          minimumDate={new Date()}
+          onChange={async (e, d) => {
+            if (d != undefined) {
+              await changeEnrollmentDate(d);
+            }
+
+            setShowDateTimePicker(false);
+          }}
+        />
+      )}
     </View>
   );
 };
 
-export default function MessageItem ({item, userId, navigation}: {
+export default function MessageItem ({item, userId, navigation, onEnrollmentDateChanged}: {
   item: ListRenderItemInfo<Message>,
   userId: string,
-  navigation: any}) {
+  navigation: any,
+  onEnrollmentDateChanged: (index: number) => void,}) {
   const isSender = userId === item.item.fromUserId;
 
   return (
@@ -152,7 +263,8 @@ export default function MessageItem ({item, userId, navigation}: {
         <OrderMessage
           message={item.item}
           isSender={isSender}
-          userId={userId}/>
+          userId={userId}
+          index={item.index}/>
       )}
     </>
   );
@@ -238,5 +350,40 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#ddd',
     fontWeight: '400',
+  },
+  order: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#B5CADD',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+  },
+  orderMessage: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  orderInfoContainer: {
+    flexDirection: 'row',
+    paddingTop: 10,
+    paddingLeft: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  infoIcon: {
+    width: 15,
+    height: 15,
+    resizeMode: 'contain',
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#2E2424',
+    paddingLeft: 5,
+  },
+  infoValue: {
+    color: 'black',
+    fontWeight: '500',
+    fontSize: 14,
   },
 });

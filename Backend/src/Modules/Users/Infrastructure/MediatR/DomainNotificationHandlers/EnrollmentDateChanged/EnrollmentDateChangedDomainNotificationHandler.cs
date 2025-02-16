@@ -23,8 +23,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.EnrollmentDate
                 domainEvent.Id,
                 domainEvent.ResponseId.Value,
                 domainEvent.PreviousEnrollmentDate,
-                domainEvent.UserChangedEnrollmentDateId.Value,
-                domainEvent.IsEnrollmentDateConfirmed));
+                domainEvent.ToUserId.Value));
         }
     }
 }

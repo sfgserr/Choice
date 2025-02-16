@@ -84,7 +84,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
     deadlinesIndex: -1,
     time: new Date(),
     date: new Date(),
-    prepayment: ''
+    prepayment: '',
   });
 
   const validate = React.useCallback((form: Form) => {
@@ -108,21 +108,21 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   const deadlines = [
     {
       title: 'День',
-      seconds: secondsInDay
+      seconds: secondsInDay,
     },
     {
       title: 'Неделя',
-      seconds: 7 * secondsInDay
+      seconds: 7 * secondsInDay,
     },
     {
       title: 'Месяц',
-      seconds: 30 * secondsInDay
+      seconds: 30 * secondsInDay,
     },
     {
       title: '3 месяца',
-      seconds: 90 * secondsInDay
-    }
-  ]
+      seconds: 90 * secondsInDay,
+    },
+  ];
 
   React.useEffect(() => {
     const getOrderRequest = async () => {
@@ -135,13 +135,13 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
       else {
         navigation.goBack();
       }
-    }
+    };
 
     const getUser = async () => {
       const user = await userService.getUser();
 
       setUser(user);
-    }
+    };
 
     setIsRefreshing(true);
 
