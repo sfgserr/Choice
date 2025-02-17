@@ -10,13 +10,13 @@ import {
 import {Icon} from '@rneui/base';
 import React from 'react';
 import {Message, OrderResponse} from '../../types/DomainTypes.ts';
-import {Order} from "aws-sdk/clients/glue";
-import {useDependency} from "../../services/Hooks.ts";
-import {OrderResponseService} from "../../services/domain/OrderResponseService.ts";
-import {DateUtils} from "../../utils/DateUtils.ts";
-import {StyledButton} from "../buttons/StyledButton.tsx";
-import Styles from "../../constants/Styles.tsx";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import {Order} from 'aws-sdk/clients/glue';
+import {useDependency} from '../../services/Hooks.ts';
+import {OrderResponseService} from '../../services/domain/OrderResponseService.ts';
+import {DateUtils} from '../../utils/DateUtils.ts';
+import {StyledButton} from '../buttons/StyledButton.tsx';
+import Styles from '../../constants/Styles.tsx';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 const d = Dimensions.get('screen');
 
@@ -58,7 +58,7 @@ const ImageMessage = ({message, isSender, navigation}: {
   return (
     <View style={[styles.messageContainer, {alignItems: isSender ? 'flex-end' : 'flex-start'}]}>
       <View style={isSender ? styles.senderImageMessageBox : styles.receiverImageMessageBox}>
-        <TouchableOpacity onPress={() => {navigation.navigate('ImageView', {uri: message.body})}}>
+        <TouchableOpacity onPress={() => {navigation.navigate('ImageView', {uri: message.body});}}>
           <Image
             style={styles.image}
             source={{uri}}/>
@@ -101,7 +101,6 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   const [isClient, setIsClient] = React.useState(false);
 
   const [showDateTimePicker, setShowDateTimePicker] = React.useState(false);
-  const [date, setDate] = React.useState<Date>(new Date());
 
   const info = React.useMemo(() => {
     if (order != null) {
@@ -110,21 +109,41 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
           value: `${order.price} рублей`,
           title: 'Стоимость',
           icon: require('../../assets/images/rub.png'),
+          color: 'black',
+          crossOut: false,
+          display: order.price > 0,
         },
         {
           value: DateUtils.secondsToDate(order.deadline),
           title: 'Время выполнения работы',
           icon: require('../../assets/images/deadline.png'),
+          color: 'black',
+          crossOut: false,
+          display: order.deadline > 0,
         },
         {
-          value: DateUtils.formatDate(order.enrollmentDate as Date),
-          title: 'Время записи',
+          value: message.enrollmentDate != null ? DateUtils.formatDate(message.enrollmentDate as Date) : null,
+          title: 'Дата и время записи',
           icon: require('../../assets/images/enrollment.png'),
+          color: 'black',
+          crossOut: true,
+          display: message.enrollmentDate != null,
+        },
+        {
+          value: order.enrollmentDate != null ? DateUtils.formatDate(order.enrollmentDate as Date) : null,
+          title: message.enrollmentDate != null ? 'Новая время записи' : 'Дата и время записи',
+          icon: require('../../assets/images/enrollment.png'),
+          color: message.enrollmentDate != null ? '#FF4545' : 'black',
+          crossOut: false,
+          display: order.enrollmentDate != null,
         },
         {
           value: `${order.prepayment} рублей`,
           title: 'Предоплата',
           icon: require('../../assets/images/prepayment.png'),
+          color: 'black',
+          crossOut: false,
+          display: order.prepayment > 0,
         },
       ];
     }
@@ -155,6 +174,22 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
     }
   }, [order]);
 
+  const displayChangeEnrollmentDate = React.useMemo(() => {
+    return order != null && order.status == 'Active' && (userId != order.userChangedEnrollmentDate || !message.isActive || !order.isActive);
+  }, [order]);
+
+  const displayEnroll = React.useMemo(() => {
+    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+  }, [order]);
+
+  const displayWaitForConfirm = React.useMemo(() => {
+    return order != null && order.status == 'Active' && isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+  }, [order]);
+
+  const displayConfirm = React.useMemo(() => {
+    return order != null && order.status == 'Active' && !isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+  }, [order]);
+
   return (
     <View style={styles.messageContainer}>
       <View style={styles.order}>
@@ -176,42 +211,92 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
           )}
           {info.map((i, key) => (
             <>
-              {i.value != null && (
-                <View style={styles.orderInfoContainer} key={key}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image source={i.icon} style={styles.infoIcon} />
-                    <Text style={styles.infoTitle}>{i.title}</Text>
+              {i.display && (
+                <View
+                  style={{paddingTop: 10}}
+                  key={key}>
+                  <View style={styles.orderInfoContainer}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Image
+                        source={i.icon}
+                        style={styles.infoIcon}
+                        tintColor={i.color}
+                      />
+                      <Text style={[styles.infoTitle, {color: i.color}]}>
+                        {i.title}
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.infoValue,
+                        {color: i.color},
+                      ]}>{`${i.value}`}</Text>
+                    {i.crossOut && (
+                      <View
+                        style={{
+                          position: 'absolute',
+                          width: '100%',
+                          height: 1,
+                          backgroundColor: 'black',
+                        }}
+                      />
+                    )}
                   </View>
-                  <Text style={styles.infoValue}>{`${i.value}`}</Text>
                 </View>
               )}
             </>
           ))}
-          <View style={{paddingTop: 10}}>
-            <TouchableOpacity
-              style={[
-                Styles.styledButton,
-                {
-                  justifyContent: 'center',
-                  backgroundColor: '#001C3D0D',
-                  opacity: order?.isActive && message.isActive ? 1 : 0.5,
-                },
-              ]}
-              disabled={!order?.isActive || !message.isActive}
-              onPress={() => setShowDateTimePicker(true)}>
-              <Text
+          {displayChangeEnrollmentDate && (
+            <View style={{paddingTop: 10}}>
+              <TouchableOpacity
                 style={[
-                  Styles.styledButtonContent,
+                  Styles.styledButton,
                   {
-                    alignSelf: 'center',
-                    color: '#2688EB',
+                    justifyContent: 'center',
+                    backgroundColor: '#001C3D0D',
+                    opacity: order?.isActive && message.isActive ? 1 : 0.5,
+                  },
+                ]}
+                disabled={!order?.isActive || !message.isActive}
+                onPress={() => setShowDateTimePicker(true)}>
+                <Text
+                  style={[
+                    Styles.styledButtonContent,
+                    {
+                      alignSelf: 'center',
+                      color: '#2688EB',
+                    },
+                  ]}>
+                  Изменить дату и время записи
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {displayWaitForConfirm && (
+            <View style={{paddingTop: 10}}>
+              <View
+                style={[
+                  Styles.styledButton,
+                  {
+                    justifyContent: 'center',
+                    backgroundColor: '#001C3D0D',
+                    opacity: order?.isActive && message.isActive ? 1 : 0.5,
                   },
                 ]}>
-                Изменить дату и время записи
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {isClient && order?.enrollmentDate != null && (
+                <Text
+                  style={[
+                    Styles.styledButtonContent,
+                    {
+                      alignSelf: 'center',
+                      color: '#2688EB',
+                    },
+                  ]}>
+                  Дождитесь ответа компании
+                </Text>
+              </View>
+            </View>
+          )}
+          {displayEnroll && (
             <StyledButton
               content={'Записаться и внести предоплату'}
               top={10}
@@ -226,10 +311,10 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
         <RNDateTimePicker
           mode={'datetime'}
           display={'spinner'}
-          value={date}
+          value={new Date()}
           minimumDate={new Date()}
           onChange={async (e, d) => {
-            if (d != undefined) {
+            if (e.type == 'set' && d != undefined) {
               await changeEnrollmentDate(d);
             }
 
@@ -264,7 +349,8 @@ export default function MessageItem ({item, userId, navigation, onEnrollmentDate
           message={item.item}
           isSender={isSender}
           userId={userId}
-          index={item.index}/>
+          index={item.index}
+          onEnrollmentDateChanged={onEnrollmentDateChanged}/>
       )}
     </>
   );
@@ -318,6 +404,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '400',
     alignSelf: 'center',
+    maxWidth: d.width / 1.8,
   },
   messageInfoContainer: {
     alignSelf: 'flex-end',
@@ -365,7 +452,6 @@ const styles = StyleSheet.create({
   },
   orderInfoContainer: {
     flexDirection: 'row',
-    paddingTop: 10,
     paddingLeft: 5,
     alignItems: 'center',
     justifyContent: 'space-between',

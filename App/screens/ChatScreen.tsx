@@ -9,7 +9,7 @@ import {
   TextInput, TouchableOpacity,
   View, ViewToken,
 } from 'react-native';
-import {Category, ChatMessages, Message, OrderRequest} from '../types/DomainTypes.ts';
+import {Category, ChatMessages, ChatUser, Message, OrderRequest} from '../types/DomainTypes.ts';
 import React from 'react';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
@@ -21,7 +21,7 @@ import {CategoryService} from '../services/domain/CategoryService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {ArrayUtils} from "../utils/ArrayUtils.ts";
+import {ArrayUtils} from '../utils/ArrayUtils.ts';
 
 const d = Dimensions.get('screen');
 
@@ -30,7 +30,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   const categoryService = useDependency<CategoryService>('CategoryService');
   const userService = useDependency<UserService>('UserService');
 
-  const [chat, setChat] = React.useState<ChatMessages | null>(null);
+  const [chatUser, setChatUser] = React.useState<ChatUser | null>(null);
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [status, setStatus] = React.useState<boolean>(false);
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [userId, setUserId] = React.useState<string>('');
@@ -49,32 +50,32 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     };
 
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
-      setChat(prev => {
+      setMessages(prev => {
         if (prev != undefined) {
-          prev.messages = [...prev.messages, message];
+          prev = [...prev, message];
 
           if (message.enrollmentDate != null) {
             const index = ArrayUtils.findLastIndex(
-              prev.messages,
+              prev,
               m => m.orderResponseId == message.orderResponseId);
 
-            prev.messages[index].isActive = false;
+            prev[index].isActive = false;
           }
         }
-        return prev;
+        return [...prev];
       });
     });
 
     DeviceEventEmitter.addListener('read', (id: string) => {
-      setChat(prev => {
+      setMessages(prev => {
         if (prev != null) {
-          let index = prev.messages.findIndex(m => String(m.id) === String(id));
+          let index = prev.findIndex(m => String(m.id) === String(id));
 
           if (index != -1) {
-            prev.messages[prev.messages.findIndex(m => String(m.id) === String(id))].isRead = true;
+            prev[prev.findIndex(m => String(m.id) === String(id))].isRead = true;
           }
         }
-        return prev;
+        return [...prev];
       });
     });
 
@@ -91,14 +92,16 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     const getUser = async () => {
       const user = await userService.getUser();
 
-      if (user.id != undefined)
+      if (user.id != undefined) {
         setUserId(user.id);
+      }
     };
     const getChat = async () => {
       const response = await chatService.getChat(id);
 
       if (response.content != null) {
-        setChat(response.content);
+        setChatUser(response.content.user);
+        setMessages(response.content.messages);
       }
     };
     const getCategories = async () => {
@@ -115,13 +118,13 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
   React.useEffect(() => {
     const getStatus = () => {
-      chatService.getStatus(chat.user.id).then(r => {
+      chatService.getStatus(chatUser!.id).then(r => {
         if (r.content != null) {
           setStatus(r.content);
         }
       });
     };
-    if (chat != null) {
+    if (chatUser != null) {
       const timeout = count == 0 ? 0 : 10000;
 
       getStatus();
@@ -130,20 +133,20 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
         setCount(prev => prev + 1);
       }, timeout);
     }
-  }, [count, chat]);
+  }, [count, chatUser]);
 
   const createMessage = React.useCallback(async () => {
-    if (chat != null) {
+    if (chatUser != null) {
       const response = await chatService.create(
-        chat.user.id,
+        chatUser.id,
         message,
         'Text');
 
       if (response.content != null) {
-        chat.messages.push(response.content);
+        setMessages(prev => [...prev, response.content!]);
       }
     }
-  }, [message, chat]);
+  }, [message, chatUser]);
 
   const sendMessage = React.useCallback(async () => {
     await createMessage();
@@ -151,19 +154,18 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   }, [createMessage]);
 
   const launchLibrary = React.useCallback(async () => {
-    if (chat != null) {
+    if (chatUser != null) {
       const imagePickerResponse = await launchImageLibrary({mediaType: 'photo'});
 
       if (imagePickerResponse.assets != undefined && imagePickerResponse.assets[0].uri != undefined) {
-        const response = await chatService.createImage(chat.user.id, imagePickerResponse.assets[0].uri);
+        const response = await chatService.createImage(chatUser.id, imagePickerResponse.assets[0].uri);
 
         if (response && response.content != null) {
-          chat.messages.push(response.content);
+          setMessages(prev => [...prev, response.content!]);
         }
       }
     }
-    setMessage('');
-  }, [chat]);
+  }, [chatUser]);
 
   const onViewAbleItemsChanged = React.useCallback(
     (info: {
@@ -177,34 +179,34 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
             info.changed[i].item.id,
           ).then(r => {
             if (r.result == 'successful') {
-              setChat(prev => {
-                let index = prev?.messages.findIndex(m => m.id == info.changed[i].item.id);
+              setMessages(prev => {
+                let index = prev.findIndex(m => m.id == info.changed[i].item.id);
 
-                if (index != undefined && index != -1 && prev != null) {
-                  prev.messages[index].isRead = true;
+                if (index != undefined && index != -1) {
+                  prev[index].isRead = true;
                 }
 
-                return prev;
+                return [...prev];
               });
             }
           });
         }
       }
     },
-    [chat],
+    [messages],
   );
 
   const enrollmentDateChanged = React.useCallback((index: number) => {
-    setChat(prev => {
+    setMessages(prev => {
       if (prev != null) {
-        prev.messages.push(prev.messages[index]);
+        prev.push(prev[index]);
 
-        prev.messages[index].isActive = false;
+        prev[index].isActive = false;
       }
 
-      return prev;
+      return [...prev];
     });
-  }, [chat]);
+  }, [messages]);
 
   const Stub = React.useMemo(() => (
     <View style={styles.stubContainer}>
@@ -228,13 +230,13 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
   return (
     <View style={styles.container}>
-      {chat != null && categories.length > 0 && (
+      {chatUser != null && categories.length > 0 && (
         <View style={styles.chatBackground}>
           <View style={styles.chat}>
             <FlatList
-              data={chat.messages}
+              data={messages}
               showsVerticalScrollIndicator={false}
-              style={{flex: 1}}
+              contentContainerStyle={{flex: messages.length > 0 ? undefined : 1}}
               renderItem={(item) =>
                 <MessageItem
                   item={item}
@@ -252,12 +254,12 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                 <NavigateBackButton navigation={navigation} onGoBack={onGoBack}/>
               </View>
               <View>
-                <Text style={styles.userName}>{chat.user.name}</Text>
+                <Text style={styles.userName}>{chatUser.name}</Text>
                 <Text style={styles.status}>{status ? 'В сети' : 'Не в сети'}</Text>
               </View>
               <Image
                 style={styles.icon}
-                source={{uri: `${process.env.MINIO_URL}/app-files/${chat.user.iconUri}`}} />
+                source={{uri: `${process.env.MINIO_URL}/app-files/${chatUser.iconUri}`}} />
             </View>
           </View>
           <View style={styles.bottomTab}>
@@ -294,7 +296,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
           </View>
         </View>
       )}
-      <LongRunningOperationIndicator isRefreshing={chat == null || categories.length == 0} />
+      <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0} />
     </View>
   );
 }

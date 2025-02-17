@@ -26,6 +26,7 @@ namespace Chat.Infrastructure.Data.Domain.Messages
                 x.HasKey(y => y.MessageId);
                 x.WithOwner().HasForeignKey(y => y.MessageId);
                 x.Property(y => y.ResponseId).HasColumnName("ResponseId");
+                x.Property(y => y.EnrollmentDate).HasColumnName("EnrollmentDate");
             });
             
             builder.Navigation(x => x.OrderMessage).AutoInclude();

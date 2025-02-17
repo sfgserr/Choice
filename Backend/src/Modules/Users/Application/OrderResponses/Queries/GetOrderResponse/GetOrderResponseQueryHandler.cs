@@ -32,6 +32,7 @@ namespace Users.Application.OrderResponses.Queries.GetOrderResponse
                     users."OrderResponses"."IsPaid" as {nameof(OrderResponseDto.IsPaid)},
                     users."OrderResponses"."IsEnrolled" as {nameof(OrderResponseDto.IsEnrolled)},
                     users."OrderResponses"."IsEnrollmentDateConfirmed" as {nameof(OrderResponseDto.IsEnrollmentDateConfirmed)},
+                    users."OrderResponses"."UserChangedEnrollmentDate" as {nameof(OrderResponseDto.UserChangedEnrollmentDate)},
                     users."OrderResponses"."IsActive" as {nameof(OrderResponseDto.IsActive)}
                 FROM users."OrderResponses"
                 WHERE users."OrderResponses"."Id" = @Id 

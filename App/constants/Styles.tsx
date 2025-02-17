@@ -9,7 +9,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   borderedTextInputHeight: {
-    height: height * 0.054,
+    paddingVertical: 0,
   },
   borderedTextInputBigHeight: {
     height: height * 0.116,

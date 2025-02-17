@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 2,
     bottom: 0,
-    height: 'auto'
+    height: 'auto',
   },
   closeButtonContainer: {
     position: 'absolute',

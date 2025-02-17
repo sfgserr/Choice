@@ -25,6 +25,8 @@ namespace Users.Application.OrderResponses.Queries.GetOrderResponse
         public bool IsPaid { get; }
         
         public bool IsEnrollmentDateConfirmed { get; }
+        
+        public Guid? UserChangedEnrollmentDate { get; }
 
         public bool IsActive { get; }
     }

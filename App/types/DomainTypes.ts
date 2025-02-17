@@ -125,6 +125,7 @@ export type OrderResponse = {
   isPaid: boolean
   isEnrollmentDateConfirmed: boolean
   isActive: boolean
+  userChangedEnrollmentDate: string
 }
 
 export type Chat = {

@@ -278,7 +278,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             value={form.time}
             minimumDate={new Date()}
             onChange={(e, d) => {
-              if (d != null) setAndValidate(form => ({...form, date: d}));
+              if (e.type == 'set' && d != null) setAndValidate(form => ({...form, date: d}));
 
               setShowDatePicker(prev => !prev);
             }}
@@ -290,7 +290,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             display={'spinner'}
             value={form.time}
             onChange={(e, d) => {
-              if (d != null) setAndValidate(form => ({...form, time: d}));
+              if (e.type == 'set' && d != null) setAndValidate(form => ({...form, time: d}));
 
               setShowTimePicker(prev => !prev);
             }}

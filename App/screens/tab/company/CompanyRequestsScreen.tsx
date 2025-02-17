@@ -83,13 +83,14 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           ListEmptyComponent={Stub}
-          contentContainerStyle={{flex: 1}}
+          contentContainerStyle={{flex: orderRequests.length > 0 ? undefined : 1}}
           renderItem={(item) => (
             <View style={styles.itemContainer}>
               <OrderRequestRadiusItem
                 orderRequest={item.item}
                 categories={categories}
-                navigation={navigation}/>
+                navigation={navigation}
+                preview={false}/>
             </View>
           )}
           style={styles.flatList}/>

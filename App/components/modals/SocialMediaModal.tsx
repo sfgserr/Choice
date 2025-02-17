@@ -20,7 +20,7 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
   const duration = 1800;
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(isToggled ? (-50) : (d.height*0.312+5)) }],
+    transform: [{ translateY: withSpring(isToggled ? (-50) : (d.height * 0.312 + 5)) }],
   }));
 
   const animatedStyle = useAnimatedStyle(() => {

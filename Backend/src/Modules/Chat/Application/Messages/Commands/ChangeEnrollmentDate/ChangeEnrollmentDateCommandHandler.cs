@@ -23,7 +23,7 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 
             var newOrderMessage = Message.CreateOrder(
                 orderMessage.OrderMessage!.ResponseId,
-                command.EnrollmentDate,
+                command.EnrollmentDate.ToUniversalTime(),
                 orderMessage.FromUserId,
                 orderMessage.ToUserId);
 

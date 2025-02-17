@@ -15,8 +15,10 @@ const d = Dimensions.get("window");
 export default function AnimatedModal({isToggled, handlePress, children, withBackdrop}: AnimatedModalProps) {
   const duration = 1800;
 
+  const [height, setHeight] = React.useState(0);
+
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(isToggled ? (-50) : (d.height*0.312+5)) }],
+    transform: [{ translateY: withSpring(isToggled ? (-height) : (height + height * 0.5)) }],
   }));
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -43,8 +45,10 @@ export default function AnimatedModal({isToggled, handlePress, children, withBac
         style={[
           styles.popup,
           withBackdrop ? styles.fixedHeight : [styles.autoHeight, styles.shadow],
-          animatedStyles
-        ]}>
+          animatedStyles,
+          {bottom: -height}
+        ]}
+        onLayout={(e) => setHeight(e.nativeEvent.layout.height)}>
         {withBackdrop ? (
           <>
             <View style={styles.closeButtonContainer}>
@@ -70,18 +74,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     zIndex: 2,
-    bottom: 0,
   },
   fixedHeight: {
-    height: d.height * 0.312
+    height: d.height * 0.312,
   },
   autoHeight: {
-    height: 'auto'
+    height: 'auto',
   },
   closeButtonContainer: {
     position: 'absolute',
     top: 10,
-    right: 10
+    right: 10,
   },
   shadow: {
     shadowColor: 'black',
