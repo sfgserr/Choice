@@ -22,10 +22,7 @@ namespace Users.Application.OrderResponses.Commands.Enroll
             var response = await _dbContext.OrderResponses.Get(r => 
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
             
-            if (response.Prepayment > 0)
-                response.EnrollWithPrepayment(_userContext.ClientId);
-            else
-                response.Enroll(_userContext.ClientId);
+            response.Enroll(_userContext.ClientId);
         }
     }
 }

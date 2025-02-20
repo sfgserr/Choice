@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Payments.Domain.EnrollmentPayments;
 using Payments.Domain.SubscriptionPayments;
 using Payments.Domain.Subscriptions;
 
@@ -10,7 +9,5 @@ namespace Payments.Application.Contracts
         DbSet<SubscriptionPayment> SubscriptionPayments { get; }
 
         DbSet<Subscription> Subscriptions { get; }
-        
-        DbSet<EnrollmentPayment> EnrollmentPayments { get; }
     }
 }

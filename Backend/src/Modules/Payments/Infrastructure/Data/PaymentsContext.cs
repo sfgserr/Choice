@@ -2,10 +2,8 @@
 using BuildingBlocks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Payments.Application.Contracts;
-using Payments.Domain.EnrollmentPayments;
 using Payments.Domain.SubscriptionPayments;
 using Payments.Domain.Subscriptions;
-using Payments.Infrastructure.Data.Domain.EnrollmentPayments;
 using Payments.Infrastructure.Data.Domain.SubscriptionPayments;
 using Payments.Infrastructure.Data.Domain.Subscriptions;
 using Payments.Infrastructure.Data.InternalCommands;
@@ -23,8 +21,7 @@ namespace Payments.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.ApplyConfiguration(new EnrollmentPaymentEntityTypeConfiguration());
+            
             builder.ApplyConfiguration(new SubscriptionEntityTypeConfiguration());
             builder.ApplyConfiguration(new SubscriptionPaymentEntityTypeConfiguration());
             builder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
@@ -34,8 +31,6 @@ namespace Payments.Infrastructure.Data
         public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
 
         public DbSet<Subscription> Subscriptions { get; set; }
-
-        public DbSet<EnrollmentPayment> EnrollmentPayments { get; set; }
 
         public DbSet<InternalCommand> InternalCommands { get; set; }
 

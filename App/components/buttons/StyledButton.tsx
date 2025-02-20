@@ -3,7 +3,7 @@ import Styles from '../../constants/Styles.tsx';
 import React from 'react';
 import {StyledButtonProps} from '../../types/ComponentTypes.ts';
 
-export function StyledButton({content, top, bottom, isDisabled, pressed}: StyledButtonProps) {
+export function StyledButton({content, top, bottom, isDisabled, pressed, reversed = false}: StyledButtonProps) {
   return (
     <View
       style={{
@@ -16,7 +16,8 @@ export function StyledButton({content, top, bottom, isDisabled, pressed}: Styled
           {
             justifyContent: 'center',
             alignItems: 'baseline',
-            backgroundColor: isDisabled ? '#abcdf3' : '#2D81E0',
+            backgroundColor: reversed ? '#001C3D0D' : '#2D81E0',
+            opacity: isDisabled ? 0.4 : 1,
           },
         ]}
         disabled={isDisabled}
@@ -26,6 +27,7 @@ export function StyledButton({content, top, bottom, isDisabled, pressed}: Styled
             Styles.styledButtonContent,
             {
               alignSelf: 'center',
+              color: reversed ? '#2D81E0' : 'white',
             },
           ]}>
           {content}

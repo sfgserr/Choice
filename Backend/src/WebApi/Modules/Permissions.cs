@@ -10,7 +10,6 @@ namespace WebApi.Modules
         public const string FillData = "FillData";
         public const string BuySubscriptionPayment = "BuySubscriptionPayment";
         public const string PaySubscriptionPayment = "PaySubscriptionPayment";
-        public const string PayEnrollmentPayment = "PayEnrollmentPayment";
         public const string GetSubscriptionPayment = "GetSubscriptionPayment";
         public const string GetCompany = "GetCompany";
         public const string GetCompanies = "GetCompanies";

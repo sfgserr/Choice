@@ -179,7 +179,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   }, [order]);
 
   const displayEnroll = React.useMemo(() => {
-    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && order.isPaid && message.isActive && order.isActive;
   }, [order]);
 
   const displayWaitForConfirm = React.useMemo(() => {
@@ -212,9 +212,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
           {info.map((i, key) => (
             <>
               {i.display && (
-                <View
-                  style={{paddingTop: 10}}
-                  key={key}>
+                <View style={{paddingTop: 10}} key={key}>
                   <View style={styles.orderInfoContainer}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Image
@@ -247,54 +245,24 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
             </>
           ))}
           {displayChangeEnrollmentDate && (
-            <View style={{paddingTop: 10}}>
-              <TouchableOpacity
-                style={[
-                  Styles.styledButton,
-                  {
-                    justifyContent: 'center',
-                    backgroundColor: '#001C3D0D',
-                    opacity: order?.isActive && message.isActive ? 1 : 0.5,
-                  },
-                ]}
-                disabled={!order?.isActive || !message.isActive}
-                onPress={() => setShowDateTimePicker(true)}>
-                <Text
-                  style={[
-                    Styles.styledButtonContent,
-                    {
-                      alignSelf: 'center',
-                      color: '#2688EB',
-                    },
-                  ]}>
-                  Изменить дату и время записи
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <StyledButton
+              content={'Изменить время и дату записи'}
+              top={10}
+              bottom={0}
+              isDisabled={!order?.isActive || !message.isActive}
+              pressed={() => setShowDateTimePicker(true)}
+              reversed={true}
+            />
           )}
           {displayWaitForConfirm && (
-            <View style={{paddingTop: 10}}>
-              <View
-                style={[
-                  Styles.styledButton,
-                  {
-                    justifyContent: 'center',
-                    backgroundColor: '#001C3D0D',
-                    opacity: order?.isActive && message.isActive ? 1 : 0.5,
-                  },
-                ]}>
-                <Text
-                  style={[
-                    Styles.styledButtonContent,
-                    {
-                      alignSelf: 'center',
-                      color: '#2688EB',
-                    },
-                  ]}>
-                  Дождитесь ответа компании
-                </Text>
-              </View>
-            </View>
+            <StyledButton
+              content={'Дождитесь ответа компании'}
+              top={10}
+              bottom={0}
+              isDisabled={!order?.isActive || !message.isActive}
+              pressed={() => {}}
+              reversed={true}
+            />
           )}
           {displayEnroll && (
             <StyledButton
@@ -303,6 +271,16 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
               pressed={() => {}}
+            />
+          )}
+          {displayConfirm && (
+            <StyledButton
+              content={'Подтвердить запись'}
+              top={10}
+              bottom={0}
+              isDisabled={!order?.isActive || !message.isActive}
+              pressed={() => {}}
+              reversed={true}
             />
           )}
         </View>

@@ -5,7 +5,6 @@ using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments.Commands.Buy;
 using Payments.Application.SubscriptionPayments.Commands.Pay;
 using Payments.Application.SubscriptionPayments.Queries.GetPayment;
-using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Payments.SubscriptionPayments
 {

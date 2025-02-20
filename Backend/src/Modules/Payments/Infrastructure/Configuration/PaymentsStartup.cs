@@ -45,7 +45,6 @@ namespace Payments.Infrastructure.Configuration
 
             var mappings = new Dictionary<string, Type>()
             {
-                [nameof(EnrollmentPaymentPaidDomainNotification)] = typeof(EnrollmentPaymentPaidDomainNotification),
                 [nameof(SubscriptionPaymentPaidDomainNotification)] = typeof(SubscriptionPaymentPaidDomainNotification)
             };
 

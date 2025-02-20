@@ -9,7 +9,7 @@ namespace Payments.Infrastructure.Configuration.Events
     {
         public static void AddPaymentsConsumers(this IReceiveEndpointConfigurator cfg)
         {
-            cfg.AddHandler<EnrolledWithPrepaymentIntegrationEvent>();
+            
         }
 
         private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg)

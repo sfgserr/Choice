@@ -5,15 +5,13 @@ namespace Users.Domain.OrderRequests.OrderResponses.Rules
     internal class CannotFinishOrCancelIfUserIsNotEnrolledRule : IBusinessRule
     {
         private readonly bool _isEnrolled;
-        private readonly bool _isPaid;
 
-        internal CannotFinishOrCancelIfUserIsNotEnrolledRule(bool isEnrolled, bool isPaid)
+        internal CannotFinishOrCancelIfUserIsNotEnrolledRule(bool isEnrolled)
         {
             _isEnrolled = isEnrolled;
-            _isPaid = isPaid;
         }
 
-        public bool IsBroken => !_isEnrolled || !_isPaid;
+        public bool IsBroken => !_isEnrolled;
 
         public string Message => "You are not enrolled";
     }

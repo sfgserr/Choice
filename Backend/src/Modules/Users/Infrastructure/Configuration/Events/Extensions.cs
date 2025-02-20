@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Events;
 using MassTransit;
-using Payments.IntegrationEvents;
 
 namespace Users.Infrastructure.Configuration.Events
 {
@@ -9,7 +8,7 @@ namespace Users.Infrastructure.Configuration.Events
     {
         public static void AddUsersConsumers(this IReceiveEndpointConfigurator cfg)
         {
-            cfg.AddHandler<EnrollmentPaidIntegrationEvent>();
+            
         }
 
         private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg)

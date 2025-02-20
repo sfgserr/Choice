@@ -51,10 +51,8 @@ namespace Users.Infrastructure.Configuration
             var mappings = new Dictionary<string, Type>
             {
                 [nameof(EnrolledDomainNotification)] = typeof(EnrolledDomainNotification),
-                [nameof(EnrolledWithPrepaymentDomainNotification)] = typeof(EnrolledWithPrepaymentDomainNotification),
                 [nameof(EnrollmentDateChangedDomainNotification)] = typeof(EnrollmentDateChangedDomainNotification),
                 [nameof(EnrollmentDateConfirmedDomainNotification)] = typeof(EnrollmentDateConfirmedDomainNotification),
-                [nameof(OrderPaidDomainNotification)] = typeof(OrderPaidDomainNotification),
                 [nameof(OrderResponseCreatedDomainNotification)] = typeof(OrderResponseCreatedDomainNotification),
                 [nameof(OrderStatusChangedDomainNotification)] = typeof(OrderStatusChangedDomainNotification),
                 [nameof(ReviewCreatedDomainNotification)] = typeof(ReviewCreatedDomainNotification),

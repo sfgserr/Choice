@@ -28,10 +28,8 @@ namespace Users.Domain.OrderRequests.OrderResponses
             bool toKnowDeadline,
             bool toKnowEnrollmentDate,
             double prepayment,
-            OrderStatus status,
-            bool isPaid)
+            OrderStatus status)
         {
-            CheckRule(new ResponseCannotMarkedAsNotPaidIfPrepaymentIsZeroRule(isPaid, prepayment));
             CheckRule(new PrepaymentShouldBeInRangeBetweenTenAndTwentyFivePercentOfPriceRule(prepayment, price));
             CheckRule(new RequiredInformationMustBeProvidedRule(
                 price, 
@@ -50,7 +48,6 @@ namespace Users.Domain.OrderRequests.OrderResponses
             EnrollmentDate = enrollmentDate;
             Prepayment = prepayment;
             Status = status;
-            IsPaid = isPaid;
 
             AddDomainEvent(new OrderResponseCreatedDomainEvent(
                 Id,
@@ -78,8 +75,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 request.ToKnowDeadline,
                 request.ToKnowEnrollmentDate,
                 prepayment,
-                OrderStatus.Active,
-                !company.IsPrepaymentAvailable);
+                OrderStatus.Active);
         }
 
         public OrderResponseId Id { get; }
@@ -104,31 +100,16 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public bool IsEnrolled { get; private set; }
 
-        public bool IsPaid { get; private set; }
-
         public UserId? UserChangedEnrollmentDate { get; private set; }
 
         public bool IsEnrollmentDateConfirmed { get; private set; } = true;
 
         public bool IsActive { get; } = true;
 
-        public void EnrollWithPrepayment(ClientId enrollingClientId)
-        {
-            CheckRule(new CannotEnrollMoreThanOnceRule(IsEnrolled));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, CompanyId, ClientId));
-            CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(IsEnrollmentDateConfirmed));
-
-            IsEnrolled = true;
-
-            AddDomainEvent(new EnrolledWithPrepaymentDomainEvent(Id, ClientId, Prepayment));
-        }
-
         public void Enroll(ClientId enrollingClientId)
         {
             CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
             CheckRule(new CannotEnrollMoreThanOnceRule(IsEnrolled));
-            CheckRule(new CannotEnrollIfOrderIsNotPaidRule(IsPaid));
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, CompanyId, ClientId));
             CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(IsEnrollmentDateConfirmed));
 
@@ -141,7 +122,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, CompanyId, ClientId));
             CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled, IsPaid));
+            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled));
 
             Status = OrderStatus.Finished;
 
@@ -156,7 +137,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, CompanyId, ClientId));
             CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled, IsPaid));
+            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled));
 
             Status = OrderStatus.Cancelled;
 
@@ -222,13 +203,6 @@ namespace Users.Domain.OrderRequests.OrderResponses
             IsEnrollmentDateConfirmed = true;
             
             AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id, ClientId));
-        }
-
-        public void MarkAsPaid()
-        {
-            IsPaid = true;
-
-            AddDomainEvent(new OrderPaidDomainEvent(Id, RequestId, CompanyId));
         }
 
         public void AddReview(

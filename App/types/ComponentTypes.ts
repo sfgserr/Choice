@@ -25,6 +25,7 @@ export type StyledButtonProps = {
   bottom: number
   isDisabled: boolean
   pressed: () => Promise<void>
+  reversed: boolean
 };
 
 export type TextButtonProps = {

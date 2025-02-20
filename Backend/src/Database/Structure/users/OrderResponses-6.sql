@@ -9,7 +9,6 @@ CREATE TABLE users."OrderResponses" (
     "Prepayment" real NOT NULL,
     "Status" text NOT NULL,
     "IsEnrolled" boolean NOT NULL,
-    "IsPaid" boolean NOT NULL,
     "UserChangedEnrollmentDate" uuid,
     "IsEnrollmentDateConfirmed" boolean NOT NULL,
     "IsActive" boolean NOT NULL
