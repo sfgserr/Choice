@@ -179,7 +179,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   }, [order]);
 
   const displayEnroll = React.useMemo(() => {
-    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && order.isPaid && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
   }, [order]);
 
   const displayWaitForConfirm = React.useMemo(() => {

@@ -14,8 +14,6 @@ TRUNCATE identity."Users" CASCADE;
 
 TRUNCATE identity."InternalCommands" CASCADE;
 
-TRUNCATE payments."EnrollmentPayments" CASCADE;
-
 TRUNCATE payments."InternalCommands" CASCADE;
 
 TRUNCATE payments."OutboxMessages" CASCADE;

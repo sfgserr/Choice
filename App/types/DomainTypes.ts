@@ -122,7 +122,6 @@ export type OrderResponse = {
   prepayment: number
   status: string
   isEnrolled: boolean
-  isPaid: boolean
   isEnrollmentDateConfirmed: boolean
   isActive: boolean
   userChangedEnrollmentDate: string

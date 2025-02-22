@@ -7,15 +7,15 @@ namespace Chat.Infrastructure.Consumers
 {
     internal class EnrolledConsumer : IBusConsumer<EnrolledIntegrationEvent>
     {
-        public async Task Consume(EnrolledIntegrationEvent integrationEvent)
+        public async Task Consume(EnrolledIntegrationEvent @event)
         {
             await CommandsExecutor.ExecuteCommandAsync(new SendOrderMessageCommand(
                 new
                 {
-                    integrationEvent.ResponseId,
+                    @event.ResponseId,
                     IsEnrolled = true
                 },
-                integrationEvent.CompanyId));
+                @event.CompanyId));
         }
     }
 }

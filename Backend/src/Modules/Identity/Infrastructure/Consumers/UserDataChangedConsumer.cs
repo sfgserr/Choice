@@ -14,17 +14,17 @@ namespace Identity.Infrastructure.Consumers
             _scheduler = scheduler;
         }
 
-        public async Task Consume(UserDataChangedIntegrationEvent integrationEvent)
+        public async Task Consume(UserDataChangedIntegrationEvent @event)
         {
             await _scheduler.EnqueueAsync(new ChangeDataCommand(
-                integrationEvent.Id,
-                integrationEvent.UserId,
-                integrationEvent.Email,
-                integrationEvent.PhoneNumber,
-                integrationEvent.City,
-                integrationEvent.Street,
-                integrationEvent.Latitude,
-                integrationEvent.Longitude));
+                @event.Id,
+                @event.UserId,
+                @event.Email,
+                @event.PhoneNumber,
+                @event.City,
+                @event.Street,
+                @event.Latitude,
+                @event.Longitude));
         }
     }
 }

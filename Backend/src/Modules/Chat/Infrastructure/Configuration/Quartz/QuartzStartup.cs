@@ -25,14 +25,14 @@ namespace Chat.Infrastructure.Configuration.Quartz
             
             scheduler.Start().GetAwaiter().GetResult();
 
-            var outboxJob = JobBuilder.Create<ProcessOutboxJob>().Build();
+            /*var outboxJob = JobBuilder.Create<ProcessOutboxJob>().Build();
 
             var outboxJobTrigger = TriggerBuilder.Create()
                 .StartNow()
                 .WithCronSchedule("0/4 * * ? * *")
                 .Build();
 
-            scheduler.ScheduleJob(outboxJob, outboxJobTrigger).GetAwaiter().GetResult();
+            scheduler.ScheduleJob(outboxJob, outboxJobTrigger).GetAwaiter().GetResult();*/
 
             var internalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build();
 

@@ -7,5 +7,6 @@ CREATE TABLE identity."Users" (
     "Street" text NOT NULL,
     "City" text NOT NULL,
     "Latitude" text NOT NULL,
-    "Longitude" text NOT NULL
+    "Longitude" text NOT NULL,
+    "IsSubscribed" boolean NOT NULL
 );

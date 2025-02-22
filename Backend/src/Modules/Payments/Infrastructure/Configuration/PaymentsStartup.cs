@@ -45,7 +45,8 @@ namespace Payments.Infrastructure.Configuration
 
             var mappings = new Dictionary<string, Type>()
             {
-                [nameof(SubscriptionPaymentPaidDomainNotification)] = typeof(SubscriptionPaymentPaidDomainNotification)
+                [nameof(SubscriptionPaymentPaidDomainNotification)] = typeof(SubscriptionPaymentPaidDomainNotification),
+                [nameof(SubscriptionStatusChangedDomainNotification)] = typeof(SubscriptionStatusChangedDomainNotification)
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));

@@ -7,13 +7,15 @@ namespace Identity.Application.Authorization.GetUser
             string city, 
             string street, 
             string latitude, 
-            string longitude)
+            string longitude, 
+            bool isSubscribed)
         {
             RoleCode = roleCode;
             City = city;
             Street = street;
             Latitude = latitude;
             Longitude = longitude;
+            IsSubscribed = isSubscribed;
         }
 
         public string RoleCode { get; }
@@ -25,6 +27,8 @@ namespace Identity.Application.Authorization.GetUser
         public string Latitude { get; }
 
         public string Longitude { get; }
+        
+        public bool IsSubscribed { get; }
 
         public List<string> Permissions { get; } = [];
     }

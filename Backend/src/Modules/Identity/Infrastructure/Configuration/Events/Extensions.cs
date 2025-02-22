@@ -1,6 +1,7 @@
 using Autofac;
 using BuildingBlocks.Application.Events;
 using MassTransit;
+using Payments.IntegrationEvents;
 using Users.IntegrationEvents;
 
 namespace Identity.Infrastructure.Configuration.Events
@@ -11,7 +12,8 @@ namespace Identity.Infrastructure.Configuration.Events
         {
             cfg.AddHandler<UserCreatedIntegrationEvent>()
                .AddHandler<UserDataChangedIntegrationEvent>()
-               .AddHandler<UserRoleChangedIntegrationEvent>();
+               .AddHandler<UserRoleChangedIntegrationEvent>()
+               .AddHandler<SubscriptionStatusChangedIntegrationEvent>();
         }
 
         private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg) 

@@ -5,7 +5,6 @@ using Users.Application.Clients.Commands.ChangeIconUri;
 using Users.Application.Clients.Commands.CreateClient;
 using Users.Application.Clients.Queries.GetClient;
 using Users.Application.Contracts;
-using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Users.Clients
 {

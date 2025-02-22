@@ -28,7 +28,6 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var changeEnrollmentDate = new TestChain(ChangeEnrollmentDateReturnsOk);
             var confirm = new TestChain(ConfirmEnrollmentDateReturnsOk);
             var enroll = new TestChain(EnrollReturnsOk);
-            var payEnrollment = new TestChain(PayEnrollment);
             var finish = new TestChain(Finish);
             
             fillData.SetNext(buySubscription);
@@ -41,8 +40,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
             getChat.SetNext(changeEnrollmentDate);
             changeEnrollmentDate.SetNext(confirm);
             confirm.SetNext(enroll);
-            enroll.SetNext(payEnrollment);
-            payEnrollment.SetNext(finish);
+            enroll.SetNext(finish);
             
             var result = fillData.Execute(null);
 
@@ -286,23 +284,6 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 return new TestResult(response.IsSuccessStatusCode, id);
             }, 8000);
         }
-
-        private async Task<TestResult> PayEnrollment(object? arg)
-        {
-            return await ExecuteAuthorizedTest(async (factory, token) =>
-            {
-                if (arg is not string id) return new TestResult(false);
-                
-                using var client = factory.CreateClient("Default");
-
-                var request = new HttpRequestMessage(HttpMethod.Put, $"api/enrollmentPayments/{id}");
-                request.Headers.Add("Authorization", $"Bearer {token}");
-
-                var response = await client.SendAsync(request);
-
-                return new TestResult(response.IsSuccessStatusCode, id);
-            }, 10000);
-        }
         
         private async Task<TestResult> Finish(object? arg)
         {
@@ -318,7 +299,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 return new TestResult(response.IsSuccessStatusCode, id);
-            }, 0, true, TokenType.Company);
+            }, 3000, true, TokenType.Company);
         }
     }
 }

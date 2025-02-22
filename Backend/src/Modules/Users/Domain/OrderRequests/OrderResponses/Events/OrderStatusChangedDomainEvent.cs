@@ -8,7 +8,7 @@ namespace Users.Domain.OrderRequests.OrderResponses.Events
         public OrderStatusChangedDomainEvent(
             OrderRequestId requestId, 
             OrderResponseId responseId, 
-            OrderStatus status, 
+            string status, 
             UserId toUserId)
         {
             RequestId = requestId;
@@ -21,7 +21,7 @@ namespace Users.Domain.OrderRequests.OrderResponses.Events
         
         public OrderResponseId ResponseId { get; }
 
-        public OrderStatus Status { get; }
+        public string Status { get; }
         
         public UserId ToUserId { get; }
     }

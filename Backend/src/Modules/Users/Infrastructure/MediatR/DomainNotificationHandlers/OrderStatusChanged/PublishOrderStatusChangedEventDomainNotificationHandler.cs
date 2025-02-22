@@ -23,7 +23,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderStatusCha
                 domainEvent.Id,
                 domainEvent.ResponseId.Value,
                 domainEvent.ToUserId.Value,
-                domainEvent.Status.Value));
+                domainEvent.Status));
         }
     }
 }

@@ -14,11 +14,11 @@ namespace Chat.Infrastructure.Consumers
             _scheduler = scheduler;
         }
 
-        public async Task Consume(ClientDeletedIntegrationEvent integrationEvent)
+        public async Task Consume(ClientDeletedIntegrationEvent @event)
         {
             await _scheduler.EnqueueAsync(new DeleteUserCommand(
-                integrationEvent.Id,
-                integrationEvent.ClientId));
+                @event.Id,
+                @event.ClientId));
         }
     }
 }

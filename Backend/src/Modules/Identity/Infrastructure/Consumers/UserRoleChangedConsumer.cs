@@ -14,12 +14,12 @@ namespace Identity.Infrastructure.Consumers
             _scheduler = scheduler;
         }
 
-        public async Task Consume(UserRoleChangedIntegrationEvent integrationEvent)
+        public async Task Consume(UserRoleChangedIntegrationEvent @event)
         {
             await _scheduler.EnqueueAsync(new ChangeRoleCommand(
-                integrationEvent.Id,
-                integrationEvent.UserId,
-                integrationEvent.UserRole));
+                @event.Id,
+                @event.UserId,
+                @event.UserRole));
         }
     }
 }

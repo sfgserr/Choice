@@ -14,12 +14,12 @@ namespace Chat.Infrastructure.Consumers
             _scheduler = scheduler;
         }
 
-        public async Task Consume(UserIconUriChangedIntegrationEvent integrationEvent)
+        public async Task Consume(UserIconUriChangedIntegrationEvent @event)
         {
             await _scheduler.EnqueueAsync(new ChangeIconUriCommand(
-                integrationEvent.Id,
-                integrationEvent.UserId,
-                integrationEvent.IconUri));
+                @event.Id,
+                @event.UserId,
+                @event.IconUri));
         }
     }
 }

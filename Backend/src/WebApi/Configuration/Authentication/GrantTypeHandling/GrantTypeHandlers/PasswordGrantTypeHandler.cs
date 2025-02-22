@@ -5,20 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-using Payments.Application.Contracts;
-using Payments.Application.Subscriptions.Queries.CheckActiveSubscription;
 
 namespace WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandlers
 {
     public class PasswordGrantTypeHandler : IGrantTypeHandler
     {
         private readonly IIdentityModule _identityModule;
-        private readonly IPaymentsModule _paymentsModule;
         
-        public PasswordGrantTypeHandler(IIdentityModule identityModule, IPaymentsModule paymentsModule)
+        public PasswordGrantTypeHandler(IIdentityModule identityModule)
         {
             _identityModule = identityModule;
-            _paymentsModule = paymentsModule;
         }
 
         public string GrantType => OpenIddictConstants.GrantTypes.Password;
@@ -38,14 +34,7 @@ namespace WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandler
             identity.SetClaim(OpenIddictConstants.Claims.Subject, result.User.UserId.ToString());
             identity.SetClaim("type", result.User.UserType);
 
-            if (result.User.UserType == "Company")
-            {
-                var subscribed = await _paymentsModule.Query<CheckActiveSubscriptionQuery, bool>(
-                    new CheckActiveSubscriptionQuery(result.User.UserId));
-                
-                identity.SetClaim("subscribed", subscribed);
-            }
-            
+            identity.SetClaim("subscribed", result.User.IsSubscribed);
             identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
             identity.SetScopes(request.GetScopes());
                 

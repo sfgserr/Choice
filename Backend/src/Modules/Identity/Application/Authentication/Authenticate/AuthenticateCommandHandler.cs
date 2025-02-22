@@ -23,7 +23,7 @@ namespace Identity.Application.Authentication.Authenticate
                 return new AuthenticationResult("User doesn't exist or password is not matched");
             }
 
-            return new AuthenticationResult(new UserDto(user.Id.Value, user.Role.Value));
+            return new AuthenticationResult(new UserDto(user.Id.Value, user.Role.Value, user.IsSubscribed));
         }
     }
 }

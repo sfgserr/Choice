@@ -22,7 +22,7 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.OrderStatusCha
             await _scheduler.EnqueueAsync(new SetStatusCommand(
                 notification.Id,
                 domainEvent.RequestId.Value,
-                domainEvent.Status.Value));
+                domainEvent.Status));
         }
     }
 }

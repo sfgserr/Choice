@@ -11,7 +11,8 @@ namespace Identity.Domain.Users
             string hashedPassword,
             string phoneNumber,
             UserRole role, 
-            Address address)
+            Address address,
+            bool isSubscribed)
         {
             Id = id;
             Email = email;
@@ -19,6 +20,7 @@ namespace Identity.Domain.Users
             PhoneNumber = phoneNumber;
             Role = role;
             Address = address;
+            IsSubscribed = isSubscribed;    
         }
 
         private User()
@@ -40,7 +42,8 @@ namespace Identity.Domain.Users
                 PasswordManager.HashPassword(password),
                 phoneNumber,
                 role,
-                address);
+                address,
+                role.Equals(UserRole.Client));
         }
         
         public UserId Id { get; }
@@ -54,7 +57,9 @@ namespace Identity.Domain.Users
         public UserRole Role { get; private set; }
         
         public Address Address { get; private set; }
-
+        
+        public bool IsSubscribed { get; private set; }
+        
         public void ChangePassword(string password)
         {
             CheckRule(new PasswordsMustBeEqualRule(HashedPassword, password));
@@ -72,6 +77,11 @@ namespace Identity.Domain.Users
         public void ChangeRole(UserRole role)
         {
             Role = role;
+        }
+
+        public void ToggleSubscription()
+        {
+            IsSubscribed = !IsSubscribed;
         }
     }
 }

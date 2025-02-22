@@ -7,15 +7,15 @@ namespace Chat.Infrastructure.Consumers
 {
     public class OrderStatusChangedConsumer : IBusConsumer<OrderStatusChangedIntegrationEvent>
     {
-        public async Task Consume(OrderStatusChangedIntegrationEvent integrationEvent)
+        public async Task Consume(OrderStatusChangedIntegrationEvent @event)
         {
             await CommandsExecutor.ExecuteCommandAsync(new SendOrderMessageCommand(
                 new
                 {
-                    integrationEvent.ResponseId,
-                    integrationEvent.Status
+                    @event.ResponseId,
+                    @event.Status
                 },
-                integrationEvent.ToUserId));
+                @event.ToUserId));
         }
     }
 }

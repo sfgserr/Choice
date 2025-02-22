@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using Payments.Domain.Subscriptions.Events;
 
 namespace Payments.Domain.Subscriptions
 {
@@ -14,13 +15,15 @@ namespace Payments.Domain.Subscriptions
             SubscriberId subscriberId,
             SubscriptionPeriod period,
             SubscriptionStatus status,
-            DateTime exprirationDate)
+            DateTime expirationDate)
         {
             Id = id;
             SubscriberId = subscriberId;
             Period = period;
             Status = status;
-            ExpirationDate = exprirationDate;
+            ExpirationDate = expirationDate;
+            
+            AddDomainEvent(new SubscriptionStatusChangedDomainEvent(SubscriberId));
         }
 
         public static Subscription Create(SubscriberId subscriberId, SubscriptionPeriod period)
@@ -36,6 +39,8 @@ namespace Payments.Domain.Subscriptions
         public void Expire()
         {
             Status = SubscriptionStatus.Expired;
+            
+            AddDomainEvent(new SubscriptionStatusChangedDomainEvent(SubscriberId));
         }
 
         public SubscriptionId Id { get; }

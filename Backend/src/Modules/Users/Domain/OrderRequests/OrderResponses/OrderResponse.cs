@@ -129,7 +129,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             AddDomainEvent(new OrderStatusChangedDomainEvent(
                 RequestId, 
                 Id, 
-                Status, 
+                Status.Value, 
                 !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
         }
 
@@ -144,7 +144,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             AddDomainEvent(new OrderStatusChangedDomainEvent(
                 RequestId, 
                 Id, 
-                Status, 
+                Status.Value, 
                 !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
         }
 

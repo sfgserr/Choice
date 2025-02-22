@@ -53,7 +53,7 @@ namespace Users.Domain.Users.Companies
         public bool IsDataFilled => User.IsDataFilled;
 
         public bool IsPrepaymentAvailable { get; private set; } = false;
-
+        
         public IReadOnlyCollection<SocialMedia> SocialMedias => _socialMedias.AsReadOnly();
         
         public void ChangeIconUri(string iconUri)
@@ -117,7 +117,7 @@ namespace Users.Domain.Users.Companies
             
             User.FillData();
         }
-
+        
         public List<string> GetPhotoUris() =>
             _photoUris;
 

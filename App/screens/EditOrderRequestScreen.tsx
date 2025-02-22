@@ -263,7 +263,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
-                {justifyContent: 'center'},
+                {justifyContent: 'center', paddingVertical: 10},
               ]}
               onPress={() => {}}>
               <View style={styles.voiceButton}>
