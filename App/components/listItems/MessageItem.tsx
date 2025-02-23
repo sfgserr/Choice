@@ -1,5 +1,5 @@
 import {
-  ActivityIndicator,
+  ActivityIndicator, DeviceEventEmitter,
   Dimensions,
   Image,
   ListRenderItemInfo,
@@ -94,7 +94,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   isSender: boolean,
   userId: string,
   index: number,
-  onEnrollmentDateChanged: (index: number) => void}) => {
+  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void}) => {
   const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
 
   const [order, setOrder] = React.useState<OrderResponse | null>(null);
@@ -164,12 +164,34 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
     getOrderResponse();
   }, []);
 
+  React.useEffect(() => {
+    DeviceEventEmitter.addListener('orderSent', (data: any) => {
+      setOrder(prev => ({...prev, ...data}));
+    });
+
+    return () => DeviceEventEmitter.removeAllListeners('orderSent');
+  });
+
   const changeEnrollmentDate = React.useCallback(async (date: Date) => {
     if (order != null) {
       const response = await orderResponseService.changeEnrollmentDate(order.id, date);
 
       if (response.result == 'successful') {
-        onEnrollmentDateChanged(index);
+        onEnrollmentDateChanged(index, order.enrollmentDate!);
+      }
+    }
+  }, [order]);
+
+  const confirm = React.useCallback(async () => {
+    if (order != null) {
+      const response = await orderResponseService.confirm(order.id);
+
+      if (response.result == 'successful') {
+        setOrder(prev => {
+          prev!.isEnrollmentDateConfirmed = true;
+
+          return prev;
+        });
       }
     }
   }, [order]);
@@ -202,11 +224,11 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
                 ? isSender
                   ? 'Ваш ответ на заказ клиента'
                   : 'Ответ компании на Ваш запрос'
-                : !isSender
-                ? 'Вы предложили изменить время записи'
-                : isClient
-                ? 'Компания предлагает изменить время записи'
-                : 'Клиент предлагает изменить время записи'}
+                : isSender
+                  ? 'Вы предложили изменить время записи'
+                  : isClient
+                    ? 'Компания предлагает изменить время записи'
+                    : 'Клиент предлагает изменить время записи'}
             </Text>
           )}
           {info.map((i, key) => (
@@ -279,7 +301,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               top={10}
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
-              pressed={() => {}}
+              pressed={confirm}
               reversed={true}
             />
           )}
@@ -308,7 +330,7 @@ export default function MessageItem ({item, userId, navigation, onEnrollmentDate
   item: ListRenderItemInfo<Message>,
   userId: string,
   navigation: any,
-  onEnrollmentDateChanged: (index: number) => void,}) {
+  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void,}) {
   const isSender = userId === item.item.fromUserId;
 
   return (

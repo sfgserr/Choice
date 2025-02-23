@@ -52,8 +52,6 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
       setMessages(prev => {
         if (prev != undefined) {
-          prev = [...prev, message];
-
           if (message.enrollmentDate != null) {
             const index = ArrayUtils.findLastIndex(
               prev,
@@ -61,6 +59,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
             prev[index].isActive = false;
           }
+
+          prev = [...prev, message];
         }
         return [...prev];
       });
@@ -196,10 +196,14 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     [messages],
   );
 
-  const enrollmentDateChanged = React.useCallback((index: number) => {
+  const enrollmentDateChanged = React.useCallback((index: number, enrollmentDate: Date) => {
     setMessages(prev => {
       if (prev != null) {
-        prev.push(prev[index]);
+        prev.push({
+          ...prev[index],
+          id: 'unique-id',
+          enrollmentDate,
+          fromUserId: userId});
 
         prev[index].isActive = false;
       }

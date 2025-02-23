@@ -39,4 +39,11 @@ export class OrderResponseService {
       'PUT',
       undefined);
   }
+
+  public async confirm(responseId: string) {
+    return await this.httpService.request(
+      `orderResponses/confirm/${responseId}`,
+      'PUT',
+      undefined);
+  }
 }

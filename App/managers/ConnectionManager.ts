@@ -32,6 +32,10 @@ export class ConnectionManager {
         DeviceEventEmitter.emit('read', data);
       });
 
+      this.connection.on('orderSent', (data: any) => {
+        DeviceEventEmitter.emit('orderSent', data);
+      });
+
       await this.connection.start();
     }
   }

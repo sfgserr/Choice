@@ -29,7 +29,6 @@ namespace Users.Application.OrderResponses.Queries.GetOrderResponse
                     users."OrderResponses"."EnrollmentDate" as {nameof(OrderResponseDto.EnrollmentDate)},
                     users."OrderResponses"."Prepayment" as {nameof(OrderResponseDto.Prepayment)},
                     users."OrderResponses"."Status" as {nameof(OrderResponseDto.Status)},
-                    users."OrderResponses"."IsPaid" as {nameof(OrderResponseDto.IsPaid)},
                     users."OrderResponses"."IsEnrolled" as {nameof(OrderResponseDto.IsEnrolled)},
                     users."OrderResponses"."IsEnrollmentDateConfirmed" as {nameof(OrderResponseDto.IsEnrollmentDateConfirmed)},
                     users."OrderResponses"."UserChangedEnrollmentDate" as {nameof(OrderResponseDto.UserChangedEnrollmentDate)},

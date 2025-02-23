@@ -1,9 +1,9 @@
-using BuildingBlocks.Application.Extensions;
 using Chat.Application.Contracts;
 using Chat.Application.Messages.Commands.CreateMessage;
 using Chat.Application.RealTimeMessaging;
 using Chat.Domain.Messages;
 using Chat.Domain.Messages.OrderMessages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 {
@@ -18,14 +18,17 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 
         protected override async Task<MessageDto> HandleCommandAsync(ChangeEnrollmentDateCommand command)
         {
-            var orderMessage = await _dbContext.Messages.Get(o => 
-                o.Type.Equals(MessageType.Order) && o.OrderMessage!.ResponseId.Equals(new OrderResponseId(command.ResponseId)));
+            var orderMessage = await _dbContext.Messages
+                .Where(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.ResponseId.Equals(new OrderResponseId(
+                    command.ResponseId)))
+                .OrderByDescending(m => m.CreationDate)
+                .FirstOrDefaultAsync();
 
             var newOrderMessage = Message.CreateOrder(
-                orderMessage.OrderMessage!.ResponseId,
+                orderMessage!.OrderMessage!.ResponseId,
                 command.EnrollmentDate.ToUniversalTime(),
-                orderMessage.FromUserId,
-                orderMessage.ToUserId);
+                orderMessage.ToUserId,
+                orderMessage.FromUserId);
 
             orderMessage.OrderMessage.SetAsInactive();
 

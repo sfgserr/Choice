@@ -1,7 +1,6 @@
 using BuildingBlocks.Application.Events;
 using Chat.Application.Messages.Commands.ChangeEnrollmentDate;
 using Chat.Infrastructure.Data.InternalCommands;
-using MassTransit;
 using Users.IntegrationEvents;
 
 namespace Chat.Infrastructure.Consumers

@@ -1,5 +1,5 @@
 import {
-  Image,
+  Image, ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -175,7 +175,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
 
   return (
     <>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.navigateBackButtonContainer}>
           <NavigateBackButton navigation={navigation} />
         </View>
@@ -297,7 +297,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
           />
         )}
         <LongRunningOperationIndicator isRefreshing={isRefreshing} />
-      </View>
+      </ScrollView>
       <CustomBottomSheet
         ref={ref}
         title={'Время выполнения работ'}

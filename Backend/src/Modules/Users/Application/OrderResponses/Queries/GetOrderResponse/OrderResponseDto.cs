@@ -21,8 +21,6 @@ namespace Users.Application.OrderResponses.Queries.GetOrderResponse
         public string Status { get; }
         
         public bool IsEnrolled { get; }
-
-        public bool IsPaid { get; }
         
         public bool IsEnrollmentDateConfirmed { get; }
         
