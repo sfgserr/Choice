@@ -6,6 +6,10 @@ namespace Users.Domain.Users.Clients
 {
     public class Client : Entity, IAggregateRoot
     {
+        private User _user;
+
+        private UserId _userId;
+        
         private Client()
         {
 
@@ -14,8 +18,9 @@ namespace Users.Domain.Users.Clients
         private Client(User user)
         {
             Id = new(user.Id.Value);
-            UserId = user.Id;
-            User = user;
+            
+            _userId = user.Id;
+            _user = user;
         }
 
         public static Client Create(
@@ -60,7 +65,7 @@ namespace Users.Domain.Users.Clients
 
         public void ChangeIconUri(string iconUri)
         {
-            User.ChangeIconUri(iconUri);
+            _user.ChangeIconUri(iconUri);
         }
 
         public void ChangeData(
@@ -70,7 +75,7 @@ namespace Users.Domain.Users.Clients
             Address address,
             IUsersCounter counter)
         {
-            User.ChangeData(
+            _user.ChangeData(
                 name,
                 email,
                 phoneNumber,
@@ -79,9 +84,5 @@ namespace Users.Domain.Users.Clients
         }
 
         public ClientId Id { get; }
-
-        public UserId UserId { get; }
-
-        public User User { get; }
     }
 }

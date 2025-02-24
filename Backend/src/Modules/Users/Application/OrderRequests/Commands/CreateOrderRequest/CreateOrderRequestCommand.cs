@@ -1,9 +1,8 @@
 using BuildingBlocks.Application.Cqrs.Commands;
-using Users.Domain.OrderRequests;
 
 namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 {
-    public class CreateOrderRequestCommand : ICommandWithResult<OrderRequestDto>
+    public class CreateOrderRequestCommand : ICommandWithResult<Guid>
     {
         public CreateOrderRequestCommand(
             bool toKnowPrice,

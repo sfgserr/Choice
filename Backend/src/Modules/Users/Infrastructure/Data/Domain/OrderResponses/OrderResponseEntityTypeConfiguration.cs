@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Users.Domain.OrderRequests;
 using Users.Domain.OrderRequests.OrderResponses;
+using Users.Domain.Users;
+using Users.Domain.Users.Clients;
+using Users.Domain.Users.Companies;
 
 namespace Users.Infrastructure.Data.Domain.OrderResponses
 {
@@ -13,17 +16,22 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.RequestId).HasColumnName("RequestId");
-            builder.Property(x => x.Prepayment).HasColumnName("Prepayment");
-            builder.Property(x => x.Price).HasColumnName("Price");
-            builder.Property(x => x.ClientId).HasColumnName("ClientId");
-            builder.Property(x => x.CompanyId).HasColumnName("CompanyId");
-            builder.Property(x => x.Deadline).HasColumnName("Deadline");
-            builder.Property(x => x.IsActive).HasColumnName("IsActive");
-            builder.Property(x => x.Status)
-                .HasConversion(x => x.Value, x => OrderStatus.Parse(x));
+            builder.Property<OrderRequestId>("_requestId").HasColumnName("RequestId");
+            builder.Property<double>("_prepayment").HasColumnName("Prepayment");
+            builder.Property<double>("_price").HasColumnName("Price");
+            builder.Property<ClientId>("_clientId").HasColumnName("ClientId");
+            builder.Property<CompanyId>("_companyId").HasColumnName("CompanyId");
+            builder.Property<int>("_deadline").HasColumnName("Deadline");
+            builder.Property<bool>("_isActive").HasColumnName("IsActive");
+            builder.Property<DateTime?>("_enrollmentDate").HasColumnName("EnrollmentDate");
+            builder.Property<bool>("_isEnrolled").HasColumnName("IsEnrolled");
+            builder.Property<UserId?>("_userChangedEnrollmentDate").HasColumnName("UserChangedEnrollmentDate");
+            builder.Property<bool>("_isEnrollmentDateConfirmed").HasColumnName("IsEnrollmentDateConfirmed");
+            builder.Property<OrderStatus>("_status")
+                .HasConversion(x => x.Value, x => OrderStatus.Parse(x))
+                .HasColumnName("Status");
 
-            builder.OwnsMany(x => x.Reviews, b =>
+            builder.OwnsMany<Review>("_reviews", b =>
             {
                 b.ToTable("Reviews", "users");
 
@@ -31,9 +39,9 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
                 
                 b.HasKey(x => new { x.ResponseId, x.AuthorId, x.ToUserId });
 
-                b.Property(x => x.Text).HasColumnName("Text");
+                b.Property<string>("_text").HasColumnName("Text");
 
-                b.Property(x => x.Grade).HasColumnName("Grade");
+                b.Property<int>("_grade").HasColumnName("Grade");
             });
         }
     }

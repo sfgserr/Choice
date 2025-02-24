@@ -9,6 +9,30 @@ namespace Users.Domain.OrderRequests.OrderResponses
 {
     public class OrderResponse : Entity, IAggregateRoot
     {
+        private OrderRequestId _requestId;
+
+        private ClientId _clientId;
+        
+        private CompanyId _companyId;
+
+        private double _price;
+
+        private int _deadline;
+        
+        private DateTime? _enrollmentDate;
+
+        private double _prepayment;
+        
+        private OrderStatus _status = OrderStatus.Active;
+
+        private bool _isEnrolled;
+
+        private UserId? _userChangedEnrollmentDate;
+        
+        private bool _isEnrollmentDateConfirmed = true;
+
+        private bool _isActive = true;
+        
         private readonly List<Review> _reviews = [];
 
         private OrderResponse()
@@ -40,19 +64,20 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 toKnowEnrollmentDate));
 
             Id = id;
-            RequestId = requestId;
-            ClientId = clientId;
-            CompanyId = companyId;
-            Price = price;
-            Deadline = deadline;
-            EnrollmentDate = enrollmentDate;
-            Prepayment = prepayment;
-            Status = status;
+            
+            _requestId = requestId;
+            _clientId = clientId;
+            _companyId = companyId;
+            _price = price;
+            _deadline = deadline;
+            _enrollmentDate = enrollmentDate;
+            _prepayment = prepayment;
+            _status = status;
 
             AddDomainEvent(new OrderResponseCreatedDomainEvent(
                 Id,
-                CompanyId,
-                ClientId));
+                _companyId,
+                _clientId));
         }
 
         internal static OrderResponse Create(
@@ -80,129 +105,103 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public OrderResponseId Id { get; }
 
-        public OrderRequestId RequestId { get; }
-
-        public ClientId ClientId { get; }
-        
-        public CompanyId CompanyId { get; }
-
-        public double Price { get; }
-
-        public int Deadline { get; }
-
-        public DateTime? EnrollmentDate { get; private set; }
-
-        public double Prepayment { get; }
-
-        public OrderStatus Status { get; private set; } = OrderStatus.Active;
-
-        public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
-
-        public bool IsEnrolled { get; private set; }
-
-        public UserId? UserChangedEnrollmentDate { get; private set; }
-
-        public bool IsEnrollmentDateConfirmed { get; private set; } = true;
-
-        public bool IsActive { get; } = true;
-
         public void Enroll(ClientId enrollingClientId)
         {
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotEnrollMoreThanOnceRule(IsEnrolled));
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, CompanyId, ClientId));
-            CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(IsEnrollmentDateConfirmed));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotEnrollMoreThanOnceRule(_isEnrolled));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, _companyId, _clientId));
+            CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(_isEnrollmentDateConfirmed));
 
-            IsEnrolled = true;
+            _isEnrolled = true;
 
-            AddDomainEvent(new EnrolledDomainEvent(Id, RequestId, CompanyId));
+            AddDomainEvent(new EnrolledDomainEvent(Id, _requestId, _companyId));
         }
 
         public void Finish(UserId cancellingUserId)
         {
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, CompanyId, ClientId));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, _companyId, _clientId));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(_isEnrolled));
 
-            Status = OrderStatus.Finished;
+            _status = OrderStatus.Finished;
 
             AddDomainEvent(new OrderStatusChangedDomainEvent(
-                RequestId, 
+                _requestId, 
                 Id, 
-                Status.Value, 
-                !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
+                _status.Value, 
+                !cancellingUserId.Equals(new UserId(_clientId.Value)) ? new(_clientId.Value) : new(_companyId.Value)));
         }
 
         public void Cancel(UserId cancellingUserId)
         {
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, CompanyId, ClientId));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(IsEnrolled));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(cancellingUserId.Value, _companyId, _clientId));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotFinishOrCancelIfUserIsNotEnrolledRule(_isEnrolled));
 
-            Status = OrderStatus.Cancelled;
+            _status = OrderStatus.Cancelled;
 
             AddDomainEvent(new OrderStatusChangedDomainEvent(
-                RequestId, 
+                _requestId, 
                 Id, 
-                Status.Value, 
-                !cancellingUserId.Equals(new UserId(ClientId.Value)) ? new(ClientId.Value) : new(CompanyId.Value)));
+                _status.Value, 
+                !cancellingUserId.Equals(new UserId(_clientId.Value)) ? new(_clientId.Value) : new(_companyId.Value)));
         }
 
         public void ChangeEnrollmentDateByClient(ClientId changingClientId, DateTime newEnrollmentDate)
         {
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(changingClientId.Value, CompanyId, ClientId));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(EnrollmentDate));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(changingClientId.Value, _companyId, _clientId));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(_enrollmentDate));
             CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(newEnrollmentDate));
-            CheckRule(new CannotChangeEnrollmentDateIfUserEnrolledRule(IsEnrolled));
+            CheckRule(new CannotChangeEnrollmentDateIfUserEnrolledRule(_isEnrolled));
             CheckRule(new CannotChangeEnrollmentDateTwiceInARowRule(
-                UserChangedEnrollmentDate,
+                _userChangedEnrollmentDate,
                 new UserId(changingClientId.Value)));
 
-            var previousEnrollmentDate = EnrollmentDate!.Value;
+            var previousEnrollmentDate = _enrollmentDate!.Value;
 
-            EnrollmentDate = newEnrollmentDate;
-            IsEnrollmentDateConfirmed = false;
-            UserChangedEnrollmentDate = new UserId(changingClientId.Value);
+            _enrollmentDate = newEnrollmentDate;
+            _isEnrollmentDateConfirmed = false;
+            _userChangedEnrollmentDate = new UserId(changingClientId.Value);
 
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id, 
                 previousEnrollmentDate,
-                new UserId(CompanyId.Value)));
+                new UserId(_companyId.Value)));
         }
 
         public void ChangeEnrollmentDateByCompany(CompanyId changingCompanyId, DateTime newEnrollmentDate)
         {
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(changingCompanyId.Value, CompanyId, ClientId));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(EnrollmentDate));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(changingCompanyId.Value, _companyId, _clientId));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(_enrollmentDate));
             CheckRule(new CannotChangeEnrollmentDateIfItIsNotProvidedRule(newEnrollmentDate));
-            CheckRule(new CannotChangeEnrollmentDateIfUserEnrolledRule(IsEnrolled));
+            CheckRule(new CannotChangeEnrollmentDateIfUserEnrolledRule(_isEnrolled));
             CheckRule(new CannotChangeEnrollmentDateTwiceInARowRule(
-                UserChangedEnrollmentDate, 
+                _userChangedEnrollmentDate, 
                 new UserId(changingCompanyId.Value)));
 
-            var previousEnrollmentDate = EnrollmentDate!.Value;
+            var previousEnrollmentDate = _enrollmentDate!.Value;
 
-            EnrollmentDate = newEnrollmentDate;
-            IsEnrollmentDateConfirmed = true;
-            UserChangedEnrollmentDate = new UserId(changingCompanyId.Value);
+            _enrollmentDate = newEnrollmentDate;
+            _isEnrollmentDateConfirmed = true;
+            _userChangedEnrollmentDate = new UserId(changingCompanyId.Value);
 
             AddDomainEvent(new EnrollmentDateChangedDomainEvent(
                 Id,
                 previousEnrollmentDate,
-                new UserId(ClientId.Value)));
+                new UserId(_clientId.Value)));
         }
 
         public void ConfirmEnrollmentDate(CompanyId confirmingCompanyId)
         {
-            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(confirmingCompanyId.Value, CompanyId, ClientId));
-            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(Status, IsActive));
-            CheckRule(new CannotConfirmEnrollmentDateMoreThanOnceRule(IsEnrollmentDateConfirmed));
+            CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(confirmingCompanyId.Value, _companyId, _clientId));
+            CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
+            CheckRule(new CannotConfirmEnrollmentDateMoreThanOnceRule(_isEnrollmentDateConfirmed));
 
-            IsEnrollmentDateConfirmed = true;
+            _isEnrollmentDateConfirmed = true;
             
-            AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id, ClientId));
+            AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id, _clientId));
         }
 
         public void AddReview(
@@ -213,7 +212,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
         {
             CheckRule(new CannotReviewMoreThanOnceRule(_reviews, reviewingUserId));
             CheckRule(new CannotReviewYourselfRule(reviewingUserId, toUserId));
-            CheckRule(new CannotReviewWhileOrderActive(Status));
+            CheckRule(new CannotReviewWhileOrderActive(_status));
 
             _reviews.Add(Review.Create(
                 Id,

@@ -12,12 +12,19 @@ namespace Users.Infrastructure.Data.Domain.Users
             builder.ToTable("Users", "users");
 
             builder.HasKey(u => u.Id);
-
-            builder.Property<UserRole>("Role")
+            
+            builder.Property<string>("_name").HasColumnName("Name");
+            builder.Property<string>("_email").HasColumnName("Email");
+            builder.Property<string>("_phoneNumber").HasColumnName("PhoneNumber");
+            builder.Property<string>("_iconUri").HasColumnName("IconUri");
+            builder.Property<int>("_reviewsCount").HasColumnName("ReviewsCount");
+            builder.Property<double>("_averageGrade").HasColumnName("AverageGrade");
+            builder.Property<bool>("IsDataFilled").HasColumnName("IsDataFilled");
+            builder.Property<UserRole>("_role")
                 .HasConversion(new UserRoleToStringValueConverter())
                 .HasColumnName("Role");
             
-            builder.OwnsOne(x => x.Address, b =>
+            builder.OwnsOne<Address>("_address", b =>
             {
                 b.Property(x => x.Street).HasColumnName("Street");
                 b.Property(x => x.City).HasColumnName("City");

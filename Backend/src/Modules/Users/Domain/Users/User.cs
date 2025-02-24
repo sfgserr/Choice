@@ -6,6 +6,22 @@ namespace Users.Domain.Users
 {
     public class User : Entity, IAggregateRoot
     {
+        private string _name;
+
+        private string _email;
+
+        private string _phoneNumber;
+
+        private string _iconUri;
+        
+        private Address _address;
+
+        private UserRole _role;
+
+        private int _reviewsCount;
+
+        private double _averageGrade;
+        
         private User()
         {
 
@@ -26,14 +42,14 @@ namespace Users.Domain.Users
             CheckRule(new UserPhoneNumberMustBeUniqueRule(counter, phoneNumber));
 
             Id = id;
-            Name = name;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            IconUri = iconUri;
-            Role = role;
+            _name = name;
+            _email = email;
+            _phoneNumber = phoneNumber;
+            _iconUri = iconUri;
+            _role = role;
             IsDataFilled = !role.Equals(UserRole.Company);
-            Address = address;
-            Role = role;
+            _address = address;
+            _role = role;
 
             AddDomainEvent(new UserCreatedDomainEvent(
                 id,
@@ -68,36 +84,20 @@ namespace Users.Domain.Users
 
         public UserId Id { get; }
 
-        public string Name { get; private set; }
-
-        public string Email { get; private set; }
-
-        public string PhoneNumber { get; private set; }
-
-        public string IconUri { get; private set; }
-
-        public bool IsDataFilled { get; private set; }
-
-        public Address Address { get; private set; }
-
-        public UserRole Role { get; private set; }
-        
-        public int ReviewsCount { get; private set; }
-        
-        public double AverageGrade { get; private set; }
+        internal bool IsDataFilled { get; private set; }
 
         public void Review(double grade)
         {
-            AverageGrade = (AverageGrade * ReviewsCount + grade) / ++ReviewsCount;
+            _averageGrade = (_averageGrade * _reviewsCount + grade) / ++_reviewsCount;
         }
         
         internal void ChangeIconUri(string iconUri)
         {
             CheckRule(new FieldsMustBeProvidedRule([iconUri]));
 
-            IconUri = iconUri;
+            _iconUri = iconUri;
             
-            AddDomainEvent(new UserIconUriChangedDomainEvent(Id, IconUri));
+            AddDomainEvent(new UserIconUriChangedDomainEvent(Id, _iconUri));
         }
 
         internal void ChangeData(
@@ -109,34 +109,34 @@ namespace Users.Domain.Users
         {
             CheckRule(new FieldsMustBeProvidedRule([name, email, phoneNumber]));
             
-            if (Email != email)
+            if (_email != email)
                 CheckRule(new UserEmailMustBeUniqueRule(counter, email));
             
-            if (PhoneNumber != phoneNumber)
+            if (_phoneNumber != phoneNumber)
                 CheckRule(new UserPhoneNumberMustBeUniqueRule(counter, phoneNumber));
 
-            Name = name;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Address = address;
+            _name = name;
+            _email = email;
+            _phoneNumber = phoneNumber;
+            _address = address;
 
             AddDomainEvent(new UserDataChangedDomainEvent(
                 Id,
-                Name,
-                Email,
-                PhoneNumber,
-                Address));
+                _name,
+                _email,
+                _phoneNumber,
+                _address));
         }
 
         internal void FillData()
         {
-            CheckRule(new UserRoleMustBeCompanyToFillDataRule(Role));
+            CheckRule(new UserRoleMustBeCompanyToFillDataRule(_role));
 
             IsDataFilled = true;
 
-            Role = UserRole.Company;
+            _role = UserRole.Company;
 
-            AddDomainEvent(new UserRoleChangedDomainEvent(Id, Role.Value));
+            AddDomainEvent(new UserRoleChangedDomainEvent(Id, _role.Value));
         }
     }
 }

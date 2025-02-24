@@ -6,10 +6,20 @@ namespace Users.Domain.Users.Companies
 {
     public class Company : Entity, IAggregateRoot
     {
+        private string _description = string.Empty;
+        
+        private bool _isPrepaymentAvailable = false;
+        
+        private User _user;
+        
+        private UserId _userId;
+        
         private readonly List<string> _photoUris = [];
+        
         private readonly List<SocialMedia> _socialMedias = [];
+        
         private readonly List<int> _categories = [];
-
+        
         private Company()
         {
 
@@ -18,8 +28,9 @@ namespace Users.Domain.Users.Companies
         private Company(User user)
         {
             Id = new(user.Id.Value);
-            UserId = user.Id;
-            User = user;
+            
+            _userId = user.Id;
+            _user = user;
         }
 
         public static Company Create(
@@ -44,21 +55,9 @@ namespace Users.Domain.Users.Companies
 
         public CompanyId Id { get; }
         
-        public UserId UserId { get; }
-        
-        public User User { get; }
-
-        public string Description { get; private set; } = string.Empty;
-
-        public bool IsDataFilled => User.IsDataFilled;
-
-        public bool IsPrepaymentAvailable { get; private set; } = false;
-        
-        public IReadOnlyCollection<SocialMedia> SocialMedias => _socialMedias.AsReadOnly();
-        
         public void ChangeIconUri(string iconUri)
         {
-            User.ChangeIconUri(iconUri);
+            _user.ChangeIconUri(iconUri);
         }
 
         public void ChangeData(
@@ -73,12 +72,12 @@ namespace Users.Domain.Users.Companies
             List<SocialMedia> socialMediaUris,
             bool isPrepaymentAvailable)
         {
-            CheckRule(new CannotChangeDataWhenDataIsNotFilledRule(IsDataFilled));
+            CheckRule(new CannotChangeDataWhenDataIsNotFilledRule(_user.IsDataFilled));
             CheckRule(new FieldsMustBeProvidedRule([description]));
             CheckRule(new CategoriesCannotBeEmptyRule(categories));
             CheckRule(new AtLeastOneLinkToSocialMediaMustBeProvidedRule(socialMediaUris));
             
-            IsPrepaymentAvailable = isPrepaymentAvailable;
+            _isPrepaymentAvailable = isPrepaymentAvailable;
 
             _photoUris.Clear();
             _photoUris.AddRange(photoUris);
@@ -89,7 +88,7 @@ namespace Users.Domain.Users.Companies
             _socialMedias.Clear();
             _socialMedias.AddRange(socialMediaUris);
             
-            User.ChangeData(
+            _user.ChangeData(
                 name,
                 email,
                 phoneNumber,
@@ -108,21 +107,18 @@ namespace Users.Domain.Users.Companies
             CheckRule(new CategoriesCannotBeEmptyRule(categories));
             CheckRule(new AtLeastOneLinkToSocialMediaMustBeProvidedRule(socialMediaUris));
             
-            Description = description;
-            IsPrepaymentAvailable = isPrepaymentAvailable;
+            _description = description;
+            _isPrepaymentAvailable = isPrepaymentAvailable;
 
             _photoUris.AddRange(photoUris);
             _categories.AddRange(categories);
             _socialMedias.AddRange(socialMediaUris);
             
-            User.FillData();
+            _user.FillData();
         }
         
         public List<string> GetPhotoUris() =>
             _photoUris;
-
-        public List<int> GetCategories() =>
-            _categories;
 
         public List<SocialMedia> GetSocialMedias() =>
             _socialMedias;

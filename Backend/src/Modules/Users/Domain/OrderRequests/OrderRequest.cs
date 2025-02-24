@@ -9,6 +9,18 @@ namespace Users.Domain.OrderRequests
 {
     public class OrderRequest : Entity, IAggregateRoot
     {
+        private int _distance;
+        
+        private string _description;
+
+        private bool _isEnrolled;
+
+        private OrderStatus _status;
+
+        private CategoryId _categoryId;
+
+        private DateTime _creationDate;
+        
         private readonly List<string> _photoUris = [];
         
         private OrderRequest()
@@ -37,12 +49,12 @@ namespace Users.Domain.OrderRequests
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
-            Distance = distance;
-            Description = description;
-            Status = status;
-            CategoryId = categoryId;
-            CreationDate = creationDate;
-
+            
+            _distance = distance;
+            _description = description;
+            _status = status;
+            _categoryId = categoryId;
+            _creationDate = creationDate;
             _photoUris = photoUris;
         }
 
@@ -72,25 +84,13 @@ namespace Users.Domain.OrderRequests
 
         public OrderRequestId Id { get; }
 
-        public ClientId ClientCreatedId { get; }
+        internal ClientId ClientCreatedId { get; }
 
-        public bool ToKnowPrice { get; private set; }
+        internal bool ToKnowPrice { get; private set; }
 
-        public bool ToKnowDeadline { get; private set; }
+        internal bool ToKnowDeadline { get; private set; }
 
-        public bool ToKnowEnrollmentDate { get; private set; }
-
-        public int Distance { get; private set; }
-
-        public string Description { get; private set; }
-
-        public bool IsEnrolled { get; private set; }
-
-        public OrderStatus Status { get; private set; }
-
-        public CategoryId CategoryId { get; private set; }
-
-        public DateTime CreationDate { get; }
+        internal bool ToKnowEnrollmentDate { get; private set; }
 
         public OrderResponse Response(
             Company company,
@@ -100,9 +100,9 @@ namespace Users.Domain.OrderRequests
             double prepayment,
             IOrderResponsesCounter counter)
         { 
-            CheckRule(new CannotChangeInactiveRequestRule(Status));
+            CheckRule(new CannotChangeInactiveRequestRule(_status));
             CheckRule(new CannotResponseTwiceRule(counter, company.Id));
-            CheckRule(new CannotResponseIfUserEnrolledRule(IsEnrolled));
+            CheckRule(new CannotResponseIfUserEnrolledRule(_isEnrolled));
             
             return OrderResponse.Create(
                 this, 
@@ -124,16 +124,16 @@ namespace Users.Domain.OrderRequests
             ClientId changingClientId)
         {
             CheckRule(new OnlyCreatorCanChangeRequestRule(changingClientId, ClientCreatedId));
-            CheckRule(new CannotChangeInactiveRequestRule(Status));
+            CheckRule(new CannotChangeInactiveRequestRule(_status));
             CheckRule(new AtLeastOneRequirementMustBeTrueRule([toKnowDeadline, toKnowEnrollmentDate, toKnowPrice]));
             CheckRule(new DescriptionMustBeProvidedRule(description));
             
             ToKnowPrice = toKnowPrice;
             ToKnowDeadline = toKnowDeadline;
             ToKnowEnrollmentDate = toKnowEnrollmentDate;
-            Distance = distance > 25 ? 25 : distance < 5 ? 5 : distance;
-            Description = description;
-            CategoryId = categoryId;
+            _distance = distance > 25 ? 25 : distance < 5 ? 5 : distance;
+            _description = description;
+            _categoryId = categoryId;
 
             _photoUris.Clear();
             _photoUris.AddRange(photoUris);
@@ -141,12 +141,12 @@ namespace Users.Domain.OrderRequests
 
         public void Enroll()
         {
-            IsEnrolled = true;
+            _isEnrolled = true;
         }
         
         public void SetStatus(OrderStatus status)
         {
-            Status = status;
+            _status = status;
         }
     }
 }

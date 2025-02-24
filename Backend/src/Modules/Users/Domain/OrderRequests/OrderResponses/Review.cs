@@ -6,6 +6,10 @@ namespace Users.Domain.OrderRequests.OrderResponses
 {
     public class Review : Entity
     {
+        private string _text;
+
+        private int _grade;
+        
         private Review(
             OrderResponseId responseId,
             UserId authorId,
@@ -16,8 +20,9 @@ namespace Users.Domain.OrderRequests.OrderResponses
             ResponseId = responseId;
             AuthorId = authorId;
             ToUserId = toUserId;
-            Text = text;
-            Grade = grade;
+            
+            _text = text;
+            _grade = grade;
             
             AddDomainEvent(new ReviewCreatedDomainEvent(grade, toUserId));
         }
@@ -42,9 +47,5 @@ namespace Users.Domain.OrderRequests.OrderResponses
         public UserId AuthorId { get; }
 
         public UserId ToUserId { get; }
-
-        public string Text { get; }
-
-        public int Grade { get; }
     }
 }

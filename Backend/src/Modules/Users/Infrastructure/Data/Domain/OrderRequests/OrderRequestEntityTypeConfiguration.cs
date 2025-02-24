@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Users.Domain.Categories;
 using Users.Domain.OrderRequests;
+using Users.Domain.Users.Clients;
 
 namespace Users.Infrastructure.Data.Domain.OrderRequests
 {
@@ -12,12 +14,20 @@ namespace Users.Infrastructure.Data.Domain.OrderRequests
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.ClientCreatedId).HasColumnName("ClientCreatedId");
-            builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
-            builder.Property(x => x.CategoryId)
-                .HasConversion(i => i.Value, i => new(i));
-            builder.Property(x => x.Status)
-                .HasConversion(x => x.Value, x => OrderStatus.Parse(x));
+            builder.Property<ClientId>("ClientCreatedId").HasColumnName("ClientCreatedId");
+            builder.Property<bool>("ToKnowPrice").HasColumnName("ToKnowPrice");
+            builder.Property<bool>("ToKnowDeadline").HasColumnName("ToKnowDeadline");
+            builder.Property<bool>("ToKnowEnrollmentDate").HasColumnName("ToKnowEnrollmentDate");
+            builder.Property<int>("_distance").HasColumnName("Distance");
+            builder.Property<string>("_description").HasColumnName("Description");
+            builder.Property<bool>("_isEnrolled").HasColumnName("IsEnrolled");
+            builder.Property<DateTime>("_creationDate").HasColumnName("CreationDate");
+            builder.Property<CategoryId>("_categoryId")
+                .HasConversion(i => i.Value, i => new(i))
+                .HasColumnName("CategoryId");
+            builder.Property<OrderStatus>("_status")
+                .HasConversion(x => x.Value, x => OrderStatus.Parse(x))
+                .HasColumnName("Status");
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
         }
     }

@@ -28,7 +28,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
                 MessageType.Parse(command.Type));
             
             var addedMessage = await _dbContext.Messages.AddAsync(message);
-
+            
             return new MessageDto(
                 addedMessage.Entity.Id.Value,
                 addedMessage.Entity.FromUserId.Value,

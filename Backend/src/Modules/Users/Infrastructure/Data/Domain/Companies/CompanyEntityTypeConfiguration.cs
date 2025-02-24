@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Users.Domain.Users;
 using Users.Domain.Users.Companies;
 
 namespace Users.Infrastructure.Data.Domain.Companies
@@ -11,17 +12,22 @@ namespace Users.Infrastructure.Data.Domain.Companies
             builder.ToTable("Companies", "users");
 
             builder.HasKey(x => x.Id);
-
-            builder.HasOne(x => x.User)
+            
+            builder.Property<UserId>("_userId").HasColumnName("UserId");
+            
+            builder.HasOne<User>("_user")
                 .WithOne()
-                .HasForeignKey<Company>(x => x.UserId);
+                .HasForeignKey<Company>("_userId");
 
-            builder.Navigation(x => x.User).AutoInclude();
+            builder.Navigation("_user").AutoInclude();
 
+            builder.Property<string>("_description").HasColumnName("Description");
+            builder.Property<bool>("_isPrepaymentAvailable").HasColumnName("IsPrepaymentAvailable");
+            
             builder.Property<List<string>>("_photoUris").HasColumnName("PhotoUris");
             builder.Property<List<int>>("_categories").HasColumnName("CategoriesId");
 
-            builder.OwnsMany(x => x.SocialMedias, y =>
+            builder.OwnsMany<SocialMedia>("_socialMedias", y =>
             {
                 y.Property<CompanyId>("CompanyId")
                     .HasColumnType("uuid");

@@ -1,33 +1,35 @@
 
-using Users.Domain.Users.Companies;
-
 namespace Users.Application.Companies.Queries.GetCompanyOnMap
 {
     public class CompanyDto
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-	public string Email { get; set; }
+	    public string Email { get; }
 
-	public string PhoneNumber { get; set; }
+	    public string PhoneNumber { get; }
         
-        public string IconUri { get; set; }
+        public string IconUri { get; }
         
-        public string Street { get; set; }
+        public string Street { get; }
 
-        public string City { get; set; }
+        public string City { get; }
 
-	public string Description { get; set; }
+	    public string Description { get;  }
         
-        public List<string> PhotoUris { get; set; }
+        public List<string> PhotoUris { get; }
 
-        public List<SocialMedia> SocialMedias { get; set; }
+        public IEnumerable<SocialMediaDto> SocialMedias { get; set; }
 
-        public int ReviewsCount { get; set; }
+        public int ReviewsCount { get; }
         
-        public double AverageGrade { get; set; }
+        public double AverageGrade { get;  }
+
+        public string Latitude { get; }
+        
+        public string Longitude { get; }
 
         public int Distance { get; set; }
     }

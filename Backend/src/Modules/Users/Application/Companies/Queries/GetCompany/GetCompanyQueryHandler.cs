@@ -1,38 +1,60 @@
 using BuildingBlocks.Application.Cqrs.Queries;
-using BuildingBlocks.Application.Extensions;
-using Users.Application.Contracts;
+using BuildingBlocks.Application.Data;
+using Dapper;
 using Users.Domain.Users;
 
 namespace Users.Application.Companies.Queries.GetCompany
 {
     internal class GetCompanyQueryHandler : IQueryHandler<GetCompanyQuery, CompanyDto>
     {
-        private readonly IUsersDbContext _dbContext;
+        private readonly ISqlConnectionFactory _connectionFactory;
         private readonly IUserContext _userContext;
-
-        internal GetCompanyQueryHandler(IUsersDbContext dbContext, IUserContext userContext)
-        {
-            _dbContext = dbContext;
+    
+        internal GetCompanyQueryHandler(ISqlConnectionFactory connectionFactory, IUserContext userContext)
+        { 
+            _connectionFactory = connectionFactory;
             _userContext = userContext;
         }
 
         public async Task<CompanyDto> Handle(GetCompanyQuery query)
         {
-            var company = await _dbContext.Companies.GetAsNoTracking(c => 
-                c.Id.Equals(_userContext.CompanyId));
+            using var connection = _connectionFactory.GetConnection();
             
-            return new CompanyDto(
-                company.Id.Value,
-                company.User.Name,
-                company.User.Email,
-                company.User.PhoneNumber,
-                company.Description,
-                company.GetPhotoUris(),
-                company.GetCategories(),
-                company.GetSocialMedias(),
-                company.User.Address.City,
-                company.User.Address.Street,
-                company.IsPrepaymentAvailable);
+            const string sql = 
+                $"""
+                SELECT 
+                    users."Users"."Id" as {nameof(CompanyDto.Id)},
+                    users."Users"."Name" as {nameof(CompanyDto.Name)},
+                    users."Users"."Email" as {nameof(CompanyDto.Email)},
+                    users."Users"."PhoneNumber" as {nameof(CompanyDto.PhoneNumber)},
+                    users."Companies"."Description" as {nameof(CompanyDto.Description)},
+                    users."Companies"."PhotoUris" as {nameof(CompanyDto.PhotoUris)},
+                    users."Companies"."Categories" as {nameof(CompanyDto.Categories)},
+                    users."Users"."City" as {nameof(CompanyDto.City)},
+                    users."Users"."Street" as {nameof(CompanyDto.Street)},
+                    users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)}
+                FROM users."Users"
+                JOIN users."Companies" ON users."Companies".Id = users."Users"."Id"
+                WHERE users."Users"."Id" = @Id;
+                
+                SELECT 
+                    users."SocialMedias"."Platform" as {nameof(SocialMediaDto.Platform)},
+                    users."SocialMedias"."Url" as {nameof(SocialMediaDto.Url)}
+                FROM users."SocialMedias"
+                WHERE users."SocialMedias"."CompanyId" = @Id;
+                """;
+
+            var result = await connection.QueryMultipleAsync(
+                sql,
+                new
+                {
+                    Id = _userContext.CompanyId.Value
+                });
+            
+            var company = result.ReadSingle<CompanyDto>();
+            company.SocialMedias = result.Read<SocialMediaDto>();
+
+            return company;
         }
     }
 }
