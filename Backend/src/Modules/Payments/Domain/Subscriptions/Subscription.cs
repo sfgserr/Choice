@@ -5,6 +5,14 @@ namespace Payments.Domain.Subscriptions
 {
     public class Subscription : Entity, IAggregateRoot
     {
+        private SubscriberId _subscriberId;
+        
+        private SubscriptionPeriod _period;
+
+        private SubscriptionStatus _status;
+
+        private DateTime _expirationDate;
+        
         private Subscription()
         {
 
@@ -18,14 +26,17 @@ namespace Payments.Domain.Subscriptions
             DateTime expirationDate)
         {
             Id = id;
-            SubscriberId = subscriberId;
-            Period = period;
-            Status = status;
-            ExpirationDate = expirationDate;
             
-            AddDomainEvent(new SubscriptionStatusChangedDomainEvent(SubscriberId));
+            _subscriberId = subscriberId;
+            _period = period;
+            _status = status;
+            _expirationDate = expirationDate;
+            
+            AddDomainEvent(new SubscriptionStatusChangedDomainEvent(_subscriberId));
         }
-
+        
+        public bool IsActive => _status.Equals(SubscriptionStatus.Active);
+        
         public static Subscription Create(SubscriberId subscriberId, SubscriptionPeriod period)
         {
             return new Subscription(
@@ -38,19 +49,14 @@ namespace Payments.Domain.Subscriptions
 
         public void Expire()
         {
-            Status = SubscriptionStatus.Expired;
+            if (_expirationDate < DateTime.UtcNow)
+            {
+                _status = SubscriptionStatus.Expired;
             
-            AddDomainEvent(new SubscriptionStatusChangedDomainEvent(SubscriberId));
+                AddDomainEvent(new SubscriptionStatusChangedDomainEvent(_subscriberId));
+            }
         }
 
         public SubscriptionId Id { get; }
-
-        public SubscriberId SubscriberId { get; }
-
-        public SubscriptionPeriod Period { get; }
-
-        public SubscriptionStatus Status { get; private set; }
-
-        public DateTime ExpirationDate { get; }
     }
 }

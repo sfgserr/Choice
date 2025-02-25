@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Payments.Domain.Payers;
 using Payments.Domain.SeedWork;
 using Payments.Domain.SubscriptionPayments;
+using Payments.Domain.Subscriptions;
 
 namespace Payments.Infrastructure.Data.Domain.SubscriptionPayments
 {
@@ -12,13 +14,14 @@ namespace Payments.Infrastructure.Data.Domain.SubscriptionPayments
             builder.ToTable("SubscriptionPayments", "payments");
 
             builder.HasKey(x => x.Id);
+            
+            builder.Property<PayerId>("_payerId").HasColumnName("PayerId");
+            builder.Property<DateTime>("_expirationDate").HasColumnName("ExpirationDate");
+            builder.Property<PaymentStatus>("_status")
+                .HasConversion(e => e.Value, e => PaymentStatus.Parse(e))
+                .HasColumnName("Status");
 
-            builder.HasKey(s => s.Id);
-            builder.Property(x => x.PayerId).HasColumnName("PayerId");
-            builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate");
-            builder.Property(e => e.Status).HasConversion(e => e.Value, e => PaymentStatus.Parse(e));
-
-            builder.OwnsOne(e => e.Period, b =>
+            builder.OwnsOne<SubscriptionPeriod>("_period", b =>
             {
                 b.Property(x => x.Value).HasColumnName("PeriodName");
                 b.OwnsOne(x => x.Cost, b =>

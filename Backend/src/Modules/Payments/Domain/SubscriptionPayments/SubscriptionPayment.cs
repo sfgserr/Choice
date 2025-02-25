@@ -9,6 +9,14 @@ namespace Payments.Domain.SubscriptionPayments
 {
     public class SubscriptionPayment : Entity, IAggregateRoot
     {
+        private SubscriptionPeriod _period;
+
+        private PayerId _payerId;
+
+        private DateTime _expirationDate;
+
+        private PaymentStatus _status;
+        
         private SubscriptionPayment()
         {
 
@@ -27,10 +35,10 @@ namespace Payments.Domain.SubscriptionPayments
             CheckRule(new CannotBuyPaymentWithActiveSubscriptionPaymentRule(counter, payerId));
             
             Id = id;
-            Period = period;
-            PayerId = payerId;
-            ExpirationDate = expirationDate;
-            Status = status;
+            _period = period;
+            _payerId = payerId;
+            _expirationDate = expirationDate;
+            _status = status;
         }
 
         public static SubscriptionPayment Buy(
@@ -51,24 +59,18 @@ namespace Payments.Domain.SubscriptionPayments
 
         public void Pay()
         {
-            Status = PaymentStatus.Paid;
+            _status = PaymentStatus.Paid;
 
-            AddDomainEvent(new SubscriptionPaymentPaidDomainEvent(PayerId, Period.Value));
+            AddDomainEvent(new SubscriptionPaymentPaidDomainEvent(_payerId, _period.Value));
         }
 
         public void Expire()
         {
-            Status = PaymentStatus.Expired;
+            if (_expirationDate < DateTime.UtcNow) _status = PaymentStatus.Expired;
         }
 
         public SubscrtipionPaymentId Id { get; }
 
-        public SubscriptionPeriod Period { get; }
-
-        public PayerId PayerId { get; }
-
-        public DateTime ExpirationDate { get; }
-
-        public PaymentStatus Status { get; private set; }
+        public bool IsActive => _status.Equals(PaymentStatus.WaitingForPayment);
     }
 }

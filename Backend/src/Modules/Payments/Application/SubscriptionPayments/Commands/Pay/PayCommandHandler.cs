@@ -1,7 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Exceptions;
-using BuildingBlocks.Application.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Payments.Application.Contracts;
 
 namespace Payments.Application.SubscriptionPayments.Commands.Pay
@@ -17,11 +15,11 @@ namespace Payments.Application.SubscriptionPayments.Commands.Pay
 
         public Task Execute(PayCommand command)
         {
-            var payment = _dbContext.SubscriptionPayments.AsEnumerable().FirstOrDefault(c => c.Status.Value.Equals("WaitingForPayment"));
+            var payment = _dbContext.SubscriptionPayments.AsEnumerable().FirstOrDefault(c => c.IsActive);
 
             InvalidCommandException.ThrowIfNull(payment);
             
-            payment.Pay();
+            payment!.Pay();
 
             return Task.CompletedTask;
         }

@@ -15,13 +15,9 @@ namespace Payments.Application.Subscriptions.Commands.Expire
 
         public Task Execute(ExpireCommand command)
         {
-            var subscriptions = _dbContext.Subscriptions.Where(s => s.Status.Equals(SubscriptionStatus.Active));
+            var subscriptions = _dbContext.Subscriptions.Where(s => s.IsActive);
 
-            foreach (var subscription in subscriptions) 
-            {
-                if (subscription.ExpirationDate < DateTime.UtcNow)
-                    subscription.Expire();
-            }
+            foreach (var subscription in subscriptions) subscription.Expire();
 
             return Task.CompletedTask;
         }

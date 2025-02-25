@@ -11,11 +11,13 @@ namespace Payments.Infrastructure.Data.Domain.Subscriptions
             builder.ToTable("Subscriptions", "payments");
 
             builder.HasKey(s => s.Id);
-            builder.Property(e => e.SubscriberId).HasColumnName("SubscriberId");
-            builder.Property(e => e.ExpirationDate).HasColumnName("ExpirationDate");
-            builder.Property(e => e.Status).HasConversion(e => e.Value, e => SubscriptionStatus.Parse(e));
+            builder.Property<SubscriberId>("_subscriberId").HasColumnName("SubscriberId");
+            builder.Property<DateTime>("_expirationDate").HasColumnName("ExpirationDate");
+            builder.Property<SubscriptionStatus>("_status")
+                .HasConversion(e => e.Value, e => SubscriptionStatus.Parse(e))
+                .HasColumnName("SubscriptionStatus");
 
-            builder.OwnsOne(e => e.Period, b =>
+            builder.OwnsOne<SubscriptionPeriod>("_period", b =>
             {
                 b.Property(x => x.Value).HasColumnName("PeriodName");
                 b.OwnsOne(x => x.Cost, b =>
