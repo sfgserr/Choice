@@ -67,13 +67,26 @@ namespace Chat.Domain.Messages
                 toUserId,
                 DateTime.UtcNow);
         }
+
+        public Message ChangeEnrollmentDate(DateTime enrollmentDate)
+        {
+            CheckRule(new CannotChangeEnrollmentDateOnlyIfOrderMessageRule(Type));
+            
+            OrderMessage!.SetAsInactive();
+            
+            return CreateOrder(
+                OrderMessage!.ResponseId,
+                enrollmentDate,
+                ToUserId,
+                FromUserId);
+        }
         
         public MessageId Id { get; }
 
         public MessageType Type { get; }
 
         public string? Body { get; }
-        
+
         public bool IsRead { get; }
 
         public OrderMessage? OrderMessage { get; }

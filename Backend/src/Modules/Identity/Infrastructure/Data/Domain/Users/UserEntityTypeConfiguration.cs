@@ -11,11 +11,15 @@ namespace Identity.Infrastructure.Data.Domain.Users
             builder.ToTable("Users", "identity");
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Role)
+            builder.Property<string>("_email").HasColumnName("Email");
+            builder.Property<string>("_password").HasColumnName("HashedPassword");
+            builder.Property<string>("_phoneNumber").HasColumnName("PhoneNumber");
+            builder.Property<bool>("_isSubscribed").HasColumnName("IsSubscribed");
+            builder.Property<UserRole>("_role")
                 .HasConversion(x => x.Value, x => UserRole.Parse(x))
                 .HasColumnName("Role");
             
-            builder.OwnsOne(x => x.Address, b =>
+            builder.OwnsOne<Address>("_address", b =>
             {
                 b.Property(x => x.City).HasColumnName("City");
                 b.Property(x => x.Street).HasColumnName("Street");

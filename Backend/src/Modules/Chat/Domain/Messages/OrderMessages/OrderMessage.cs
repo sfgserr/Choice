@@ -4,12 +4,17 @@ namespace Chat.Domain.Messages.OrderMessages
 {
     public class OrderMessage : Entity
     {
+        private DateTime? _enrollmentDate;
+
+        private bool _isActive;
+        
         private OrderMessage(OrderResponseId responseId, MessageId messageId, DateTime? enrollmentDate, bool isActive)
         {
             ResponseId = responseId;
             MessageId = messageId;
-            EnrollmentDate = enrollmentDate;
-            IsActive = isActive;
+            
+            _enrollmentDate = enrollmentDate;
+            _isActive = isActive;
         }
 
         private OrderMessage()
@@ -33,13 +38,9 @@ namespace Chat.Domain.Messages.OrderMessages
 
         public MessageId MessageId { get; }
 
-        public DateTime? EnrollmentDate { get; }
-
-        public bool IsActive { get; private set; }
-
         public void SetAsInactive()
         {
-            IsActive = false;
+            _isActive = false;
         }
     }
 }

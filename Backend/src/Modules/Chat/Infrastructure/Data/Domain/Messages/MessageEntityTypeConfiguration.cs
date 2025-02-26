@@ -1,4 +1,6 @@
+using Chat.Domain.ChatUsers;
 using Chat.Domain.Messages;
+using Chat.Domain.Messages.OrderMessages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,6 +21,7 @@ namespace Chat.Infrastructure.Data.Domain.Messages
             builder.Property(x => x.ToUserId).HasColumnName("ToUserId");
             builder.Property(x => x.IsRead).HasColumnName("IsRead");
             builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
+            
             builder.OwnsOne(x => x.OrderMessage, x =>
             {
                 x.ToTable("OrderMessages", "chat");
@@ -26,7 +29,8 @@ namespace Chat.Infrastructure.Data.Domain.Messages
                 x.HasKey(y => y.MessageId);
                 x.WithOwner().HasForeignKey(y => y.MessageId);
                 x.Property(y => y.ResponseId).HasColumnName("ResponseId");
-                x.Property(y => y.EnrollmentDate).HasColumnName("EnrollmentDate");
+                x.Property<DateTime?>("_enrollmentDate").HasColumnName("EnrollmentDate");
+                x.Property<bool>("_isActive").HasColumnName("IsActive");
             });
             
             builder.Navigation(x => x.OrderMessage).AutoInclude();

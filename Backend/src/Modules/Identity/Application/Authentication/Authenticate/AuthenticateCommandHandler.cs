@@ -1,4 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.Data;
+using Dapper;
 using Identity.Application.Contracts;
 using Identity.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -7,23 +9,41 @@ namespace Identity.Application.Authentication.Authenticate
 {
     internal class AuthenticateCommandHandler : ICommandHandlerWithResult<AuthenticateCommand, AuthenticationResult>
     {
-        private readonly IIdentityDbContext _dbContext;
+        private readonly ISqlConnectionFactory _connectionFactory;
 
-        internal AuthenticateCommandHandler(IIdentityDbContext dbContext)
+        internal AuthenticateCommandHandler(ISqlConnectionFactory connectionFactory)
         {
-            _dbContext = dbContext;
+            _connectionFactory = connectionFactory;
         }
 
         public async Task<AuthenticationResult> Execute(AuthenticateCommand command)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == command.Email);
+            using var connection = _connectionFactory.GetConnection();
+            
+            const string sql = 
+                $"""
+                 SELECT 
+                     identity."Users"."Id" as {nameof(UserDto.UserId)},
+                     identity."Users"."Role" as {nameof(UserDto.UserType)},
+                     identity."Users"."IsSubscribed" as {nameof(UserDto.IsSubscribed)},
+                     identity."Users"."HashedPassword" as {nameof(UserDto.Password)}
+                 FROM identity."Users"
+                 WHERE identity."Users"."Email" = @Email 
+                 """;
 
-            if (user == null || !PasswordManager.VerifyHashedPassword(user.HashedPassword, command.Password))
+            var user = await connection.QuerySingleOrDefaultAsync<UserDto>(
+                sql,
+                new
+                {
+                    command.Email
+                });
+
+            if (user == null || !PasswordManager.VerifyHashedPassword(user.Password, command.Password))
             {
-                return new AuthenticationResult("User doesn't exist or password is not matched");
+                return new AuthenticationResult("Неправильный логин или пароль");
             }
-
-            return new AuthenticationResult(new UserDto(user.Id.Value, user.Role.Value, user.IsSubscribed));
+            
+            return new AuthenticationResult(user);
         }
     }
 }

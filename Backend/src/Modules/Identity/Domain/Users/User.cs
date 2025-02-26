@@ -5,22 +5,34 @@ namespace Identity.Domain.Users
 {
     public class User : Entity, IAggregateRoot
     {
+        private string _email;
+
+        private string _password;
+
+        private string _phoneNumber;
+
+        private UserRole _role;
+
+        private Address _address;
+
+        private bool _isSubscribed;
+        
         private User(
             UserId id, 
             string email,
-            string hashedPassword,
+            string password,
             string phoneNumber,
             UserRole role, 
             Address address,
             bool isSubscribed)
         {
             Id = id;
-            Email = email;
-            HashedPassword = hashedPassword;
-            PhoneNumber = phoneNumber;
-            Role = role;
-            Address = address;
-            IsSubscribed = isSubscribed;    
+            _email = email;
+            _password = password;
+            _phoneNumber = phoneNumber;
+            _role = role;
+            _address = address;
+            _isSubscribed = isSubscribed;    
         }
 
         private User()
@@ -47,41 +59,29 @@ namespace Identity.Domain.Users
         }
         
         public UserId Id { get; }
-
-        public string Email { get; private set; }
-
-        public string HashedPassword { get; private set; }
-
-        public string PhoneNumber { get; private set; }
-
-        public UserRole Role { get; private set; }
-        
-        public Address Address { get; private set; }
-        
-        public bool IsSubscribed { get; private set; }
         
         public void ChangePassword(string password)
         {
-            CheckRule(new PasswordsMustBeEqualRule(HashedPassword, password));
+            CheckRule(new PasswordsMustBeEqualRule(_password, password));
 
-            HashedPassword = PasswordManager.HashPassword(password);
+            _password = PasswordManager.HashPassword(password);
         }
-
+        
         public void ChangeData(string email, string phoneNumber, Address address)
         {
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Address = address;
+            _email = email;
+            _phoneNumber = phoneNumber;
+            _address = address;
         }
 
         public void ChangeRole(UserRole role)
         {
-            Role = role;
+            _role = role;
         }
 
         public void ToggleSubscription()
         {
-            IsSubscribed = !IsSubscribed;
+            _isSubscribed = !_isSubscribed;
         }
     }
 }

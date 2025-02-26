@@ -6,7 +6,7 @@ using GetChatDto = Chat.Application.Messages.Queries.GetChat.ChatDto;
 using GetChatsDto = Chat.Application.Messages.Queries.GetChats.ChatDto;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MessageDto = Chat.Application.Messages.Commands.CreateMessage.MessageDto;
+using MessageDto = Chat.Application.Messages.Commands.MessageDto;
 
 namespace WebApi.Modules.Chat.Messages
 {

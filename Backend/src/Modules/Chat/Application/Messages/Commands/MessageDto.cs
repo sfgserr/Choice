@@ -1,4 +1,7 @@
-namespace Chat.Application.Messages.Commands.CreateMessage
+using BuildingBlocks.Domain;
+using Chat.Domain.Messages;
+
+namespace Chat.Application.Messages.Commands
 {
     public class MessageDto
     {
@@ -41,5 +44,35 @@ namespace Chat.Application.Messages.Commands.CreateMessage
         public DateTime? EnrollmentDate { get; }
 
         public bool? IsActive { get; }
+    }
+    
+    internal static class Extensions
+    {
+        internal static MessageDto ToDto(this Message message)
+        {
+            var type = message.GetType();
+        
+            var fields = type
+                .GetFields()
+                .Select(field => ExtractValue(field.GetValue(message)))
+                .ToArray();
+
+            return (MessageDto)Activator.CreateInstance(typeof(MessageDto), fields)!;
+        }
+
+        private static object? ExtractValue(object? obj)
+        {
+            if (obj == null) return null;
+
+            var objType = obj.GetType();
+            
+            var valueProperty = objType.GetProperty("Value");
+            if (valueProperty != null)
+            {
+                return valueProperty.GetValue(obj);
+            }
+
+            return obj; 
+        }
     }
 }

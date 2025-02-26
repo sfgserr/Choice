@@ -18,32 +18,18 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 
         protected override async Task<MessageDto> HandleCommandAsync(ChangeEnrollmentDateCommand command)
         {
-            var orderMessage = await _dbContext.Messages
+            var orderMessage = _dbContext.Messages
+                .ToList()
                 .Where(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.ResponseId.Equals(new OrderResponseId(
                     command.ResponseId)))
                 .OrderByDescending(m => m.CreationDate)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
-            var newOrderMessage = Message.CreateOrder(
-                orderMessage!.OrderMessage!.ResponseId,
-                command.EnrollmentDate.ToUniversalTime(),
-                orderMessage.ToUserId,
-                orderMessage.FromUserId);
-
-            orderMessage.OrderMessage.SetAsInactive();
+            var newOrderMessage = orderMessage!.ChangeEnrollmentDate(command.EnrollmentDate.ToUniversalTime());
 
             var message = await _dbContext.Messages.AddAsync(newOrderMessage);
 
-            return new MessageDto(
-                message.Entity.Id.Value,
-                message.Entity.FromUserId.Value,
-                message.Entity.Body,
-                message.Entity.IsRead,
-                message.Entity.Type.Value,
-                message.Entity.OrderMessage?.ResponseId.Value,
-                message.Entity.CreationDate,
-                message.Entity.OrderMessage?.EnrollmentDate,
-                message.Entity.OrderMessage?.IsActive);
+            return message.Entity.ToDto();
         }
         
         protected override Guid GetUserId(ChangeEnrollmentDateCommand command)

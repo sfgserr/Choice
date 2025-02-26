@@ -4,6 +4,12 @@ namespace Chat.Domain.ChatUsers
 {
     public class ChatUser : Entity, IAggregateRoot
     {
+        private string _name;
+
+        private string _iconUri;
+
+        private bool _isDeleted;
+        
         private ChatUser()
         {
 
@@ -16,9 +22,10 @@ namespace Chat.Domain.ChatUsers
             bool isDeleted)
         {
             Id = id;
-            Name = name;
-            IconUri = iconUri;
-            IsDeleted = isDeleted;
+            
+            _name = name;
+            _iconUri = iconUri;
+            _isDeleted = isDeleted;
         }
 
         public static ChatUser Create(
@@ -31,28 +38,22 @@ namespace Chat.Domain.ChatUsers
 
         public ChatUserId Id { get; }
 
-        public string Name { get; private set; }
-
-        public string IconUri { get; private set; }
-
-        public bool IsDeleted { get; private set; }
-
         public void ChangeName(string name)
         {
-            Name = name;
+            _name = name;
         }
         
         public void ChangeIconUri(string iconUri)
         {
-            IconUri = iconUri;
+            _iconUri = iconUri;
         }
 
         public void Delete()
         {
-            Name = "Deleted user";
-            IconUri = "deleted";
+            _name = "Deleted user";
+            _iconUri = "deleted";
             
-            IsDeleted = true;
+            _isDeleted = true;
         }
     }
 }
