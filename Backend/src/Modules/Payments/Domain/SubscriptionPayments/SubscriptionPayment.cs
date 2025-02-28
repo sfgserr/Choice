@@ -70,7 +70,5 @@ namespace Payments.Domain.SubscriptionPayments
         }
 
         public SubscrtipionPaymentId Id { get; }
-
-        public bool IsActive => _status.Equals(PaymentStatus.WaitingForPayment);
     }
 }

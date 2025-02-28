@@ -1,6 +1,10 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Exceptions;
+using BuildingBlocks.Application.ExpressionTranslation;
+using Microsoft.EntityFrameworkCore;
 using Payments.Application.Contracts;
+using Payments.Domain.SeedWork;
+using Payments.Domain.SubscriptionPayments;
 
 namespace Payments.Application.SubscriptionPayments.Commands.Pay
 {
@@ -13,15 +17,15 @@ namespace Payments.Application.SubscriptionPayments.Commands.Pay
             _dbContext = dbContext;
         }
 
-        public Task Execute(PayCommand command)
+        public async Task Execute(PayCommand command)
         {
-            var payment = _dbContext.SubscriptionPayments.AsEnumerable().FirstOrDefault(c => c.IsActive);
+            var payment = await _dbContext.SubscriptionPayments.FirstOrDefaultAsync(
+                ExpressionTranslator.Translate<SubscriptionPayment, SubscriptionPaymentDataModel, bool>(
+                    s => s.Status.Equals(PaymentStatus.WaitingForPayment)));
 
             InvalidCommandException.ThrowIfNull(payment);
             
             payment!.Pay();
-
-            return Task.CompletedTask;
         }
     }
 }

@@ -1,5 +1,5 @@
+using BuildingBlocks.Application.Extensions;
 using Chat.Application.Contracts;
-using Chat.Application.Messages.Commands.CreateMessage;
 using Chat.Application.RealTimeMessaging;
 using Chat.Domain.Messages;
 
@@ -24,7 +24,7 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
             
             var addedMessage = await _dbContext.Messages.AddAsync(orderMessage);
             
-            return addedMessage.Entity.ToDto();
+            return addedMessage.Entity.ToDto<Message, MessageDto>();
         }
 
         protected override Guid GetUserId(CreateOrderMessageCommand command)

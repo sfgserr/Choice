@@ -14,7 +14,10 @@ namespace Administration.Infrastructure.Data.Domain.Categories
 
             builder.Property(x => x.Id)
                 .HasConversion(x => x.Value, x => new(x))
-                .ValueGeneratedOnAddOrUpdate();
+                .ValueGeneratedOnAdd();
+            
+            builder.Property<string>("_title").HasColumnName("Title");
+            builder.Property<string>("_iconUri").HasColumnName("IconUri");
         }
     }
 }

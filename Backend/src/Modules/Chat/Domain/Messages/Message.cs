@@ -7,6 +7,20 @@ namespace Chat.Domain.Messages
 {
     public class Message : Entity, IAggregateRoot
     {
+        private MessageType _type;
+
+        private string? _body;
+
+        private bool _isRead;
+
+        private OrderMessage? _orderMessage;
+
+        private ChatUserId _fromUserId;
+
+        private ChatUserId _toUserId;
+
+        private DateTime _creationDate;
+        
         private Message()
         {
 
@@ -26,12 +40,13 @@ namespace Chat.Domain.Messages
             CheckRule(new BodyMustBeProvidedIfTypeTextOrImageRule(type, body));
 
             Id = id;
-            Type = type;
-            Body = body;
-            OrderMessage = orderMessage;
-            FromUserId = fromUserId;
-            ToUserId = toUserId;
-            CreationDate = creationDate;
+            
+            _type = type;
+            _body = body;
+            _orderMessage = orderMessage;
+            _fromUserId = fromUserId;
+            _toUserId = toUserId;
+            _creationDate = creationDate;
         }
 
         public static Message CreateMessage(
@@ -70,31 +85,17 @@ namespace Chat.Domain.Messages
 
         public Message ChangeEnrollmentDate(DateTime enrollmentDate)
         {
-            CheckRule(new CannotChangeEnrollmentDateOnlyIfOrderMessageRule(Type));
+            CheckRule(new CannotChangeEnrollmentDateOnlyIfOrderMessageRule(_type));
             
-            OrderMessage!.SetAsInactive();
+            _orderMessage!.SetAsInactive();
             
             return CreateOrder(
-                OrderMessage!.ResponseId,
+                _orderMessage!.ResponseId,
                 enrollmentDate,
-                ToUserId,
-                FromUserId);
+                _toUserId,
+                _fromUserId);
         }
         
         public MessageId Id { get; }
-
-        public MessageType Type { get; }
-
-        public string? Body { get; }
-
-        public bool IsRead { get; }
-
-        public OrderMessage? OrderMessage { get; }
-
-        public ChatUserId FromUserId { get; }
-
-        public ChatUserId ToUserId { get; }
-
-        public DateTime CreationDate { get; }
     }
 }

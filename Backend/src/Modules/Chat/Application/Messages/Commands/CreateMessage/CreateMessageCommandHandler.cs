@@ -1,3 +1,4 @@
+using BuildingBlocks.Application.Extensions;
 using Chat.Application.Contracts;
 using Chat.Application.RealTimeMessaging;
 using Chat.Domain.Messages;
@@ -29,7 +30,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
             
             var addedMessage = await _dbContext.Messages.AddAsync(message);
             
-            return addedMessage.Entity.ToDto();
+            return addedMessage.Entity.ToDto<Message, MessageDto>();
         }
 
         protected override Guid GetUserId(CreateMessageCommand command)

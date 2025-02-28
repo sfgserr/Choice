@@ -13,16 +13,15 @@ namespace Chat.Infrastructure.Data.Domain.Messages
             builder.ToTable("Messages", "chat");
             builder.HasKey(x => x.Id);
             
-            builder.Property(x => x.Type)
+            builder.Property<MessageType>("_type")
                 .HasColumnName("Type")
                 .HasConversion(x => x.Value, x => MessageType.Parse(x));
-            builder.Property(x => x.Body).HasColumnName("Body");
-            builder.Property(x => x.FromUserId).HasColumnName("FromUserId");
-            builder.Property(x => x.ToUserId).HasColumnName("ToUserId");
-            builder.Property(x => x.IsRead).HasColumnName("IsRead");
-            builder.Property(x => x.CreationDate).HasColumnName("CreationDate");
-            
-            builder.OwnsOne(x => x.OrderMessage, x =>
+            builder.Property<string>("_body").HasColumnName("Body");
+            builder.Property<ChatUserId>("_fromUserId").HasColumnName("FromUserId");
+            builder.Property<ChatUserId>("_toUserId").HasColumnName("ToUserId");
+            builder.Property<bool>("_isRead").HasColumnName("IsRead");
+            builder.Property<DateTime>("_creationDate").HasColumnName("CreationDate");
+            builder.OwnsOne<OrderMessage>("_orderMessage", x =>
             {
                 x.ToTable("OrderMessages", "chat");
                 
@@ -33,7 +32,7 @@ namespace Chat.Infrastructure.Data.Domain.Messages
                 x.Property<bool>("_isActive").HasColumnName("IsActive");
             });
             
-            builder.Navigation(x => x.OrderMessage).AutoInclude();
+            builder.Navigation("_orderMessage").AutoInclude();
         }
     }
 }

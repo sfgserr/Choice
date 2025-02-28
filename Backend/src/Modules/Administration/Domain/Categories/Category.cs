@@ -5,12 +5,21 @@ namespace Administration.Domain.Categories
 {
     public class Category : Entity, IAggregateRoot
     {
+        private string _title;
+
+        private string _iconUri;
+
+        private Category()
+        {
+            
+        }
+        
         private Category(string title, string iconUri)
         {
             CheckRule(new CategoryDataMustBeProvidedRule(title, iconUri));
             
-            Title = title;
-            IconUri = iconUri;
+            _title = title;
+            _iconUri = iconUri;
         }
 
         public static Category Create(string title, string iconUri)
@@ -19,18 +28,14 @@ namespace Administration.Domain.Categories
         }
         
         public CategoryId Id { get; }
-        
-        public string Title { get; private set; }
-
-        public string IconUri { get; private set; }
 
         public void Edit(string title, string iconUri)
         {
             CheckRule(new BasedCategoryCannotBeEditedRule(Id));
             CheckRule(new CategoryDataMustBeProvidedRule(title, iconUri));
             
-            Title = title;
-            IconUri = iconUri;
+            _title = title;
+            _iconUri = iconUri;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Payments.Domain.Subscriptions
     public class Subscription : Entity, IAggregateRoot
     {
         private SubscriberId _subscriberId;
-        
+         
         private SubscriptionPeriod _period;
 
         private SubscriptionStatus _status;
@@ -34,8 +34,6 @@ namespace Payments.Domain.Subscriptions
             
             AddDomainEvent(new SubscriptionStatusChangedDomainEvent(_subscriberId));
         }
-        
-        public bool IsActive => _status.Equals(SubscriptionStatus.Active);
         
         public static Subscription Create(SubscriberId subscriberId, SubscriptionPeriod period)
         {

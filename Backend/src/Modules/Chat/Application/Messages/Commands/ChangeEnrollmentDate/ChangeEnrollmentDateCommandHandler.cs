@@ -1,9 +1,8 @@
+using BuildingBlocks.Application.Extensions;
 using Chat.Application.Contracts;
-using Chat.Application.Messages.Commands.CreateMessage;
 using Chat.Application.RealTimeMessaging;
 using Chat.Domain.Messages;
 using Chat.Domain.Messages.OrderMessages;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 {
@@ -19,17 +18,16 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
         protected override async Task<MessageDto> HandleCommandAsync(ChangeEnrollmentDateCommand command)
         {
             var orderMessage = _dbContext.Messages
-                .ToList()
-                .Where(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.ResponseId.Equals(new OrderResponseId(
+                .TranslatedWhere<Message, MessageDataModel>(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.ResponseId.Equals(new OrderResponseId(
                     command.ResponseId)))
-                .OrderByDescending(m => m.CreationDate)
+                .TranslatedOrderByDescending<Message, MessageDataModel, DateTime>(m => m.CreationDate)
                 .FirstOrDefault();
 
             var newOrderMessage = orderMessage!.ChangeEnrollmentDate(command.EnrollmentDate.ToUniversalTime());
 
             var message = await _dbContext.Messages.AddAsync(newOrderMessage);
 
-            return message.Entity.ToDto();
+            return message.Entity.ToDto<Message, MessageDto>();
         }
         
         protected override Guid GetUserId(ChangeEnrollmentDateCommand command)

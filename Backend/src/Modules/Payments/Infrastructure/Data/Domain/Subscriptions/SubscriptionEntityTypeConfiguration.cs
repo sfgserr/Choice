@@ -15,7 +15,7 @@ namespace Payments.Infrastructure.Data.Domain.Subscriptions
             builder.Property<DateTime>("_expirationDate").HasColumnName("ExpirationDate");
             builder.Property<SubscriptionStatus>("_status")
                 .HasConversion(e => e.Value, e => SubscriptionStatus.Parse(e))
-                .HasColumnName("SubscriptionStatus");
+                .HasColumnName("Status");
 
             builder.OwnsOne<SubscriptionPeriod>("_period", b =>
             {

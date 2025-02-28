@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.Extensions;
 using Payments.Application.Contracts;
 using Payments.Domain.Subscriptions;
 
@@ -15,7 +16,8 @@ namespace Payments.Application.Subscriptions.Commands.Expire
 
         public Task Execute(ExpireCommand command)
         {
-            var subscriptions = _dbContext.Subscriptions.Where(s => s.IsActive);
+            var subscriptions = _dbContext.Subscriptions
+                .TranslatedWhere<Subscription, SubscriptionDataModel>(s => s.Status.Equals(SubscriptionStatus.Active));
 
             foreach (var subscription in subscriptions) subscription.Expire();
 
