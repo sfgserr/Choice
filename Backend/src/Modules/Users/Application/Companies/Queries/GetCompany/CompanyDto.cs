@@ -13,9 +13,9 @@ namespace Users.Application.Companies.Queries.GetCompany
 
         public string Description { get; }
 
-        public List<string> PhotoUris { get; }
+        public string[] PhotoUris { get; }
 
-        public List<int> Categories { get; }
+        public int[] Categories { get; }
         
         public IEnumerable<SocialMediaDto> SocialMedias { get; set; }
 

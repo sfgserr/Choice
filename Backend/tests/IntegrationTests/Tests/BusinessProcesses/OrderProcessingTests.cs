@@ -27,7 +27,6 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var getChat = new TestChain(GetChatReturnsOk);
             var changeEnrollmentDate = new TestChain(ChangeEnrollmentDateReturnsOk);
             var confirm = new TestChain(ConfirmEnrollmentDateReturnsOk);
-            var enroll = new TestChain(EnrollReturnsOk);
             var finish = new TestChain(Finish);
             
             fillData.SetNext(buySubscription);
@@ -39,8 +38,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
             getChats.SetNext(getChat);
             getChat.SetNext(changeEnrollmentDate);
             changeEnrollmentDate.SetNext(confirm);
-            confirm.SetNext(enroll);
-            enroll.SetNext(finish);
+            confirm.SetNext(finish);
             
             var result = fillData.Execute(null);
 

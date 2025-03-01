@@ -17,7 +17,7 @@ namespace Users.Application.OrderRequests.Commands.SetStatus
         public async Task Execute(SetStatusCommand command)
         {
             var request = await _dbContext.OrderRequests.Get(r => 
-                r.Equals(new OrderRequestId(command.RequestId)));
+                r.Id.Equals(new OrderRequestId(command.RequestId)));
             
             request.SetStatus(OrderStatus.Parse(command.OrderStatus));
         }

@@ -19,7 +19,7 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
 
 	    public string Description { get;  }
         
-        public List<string> PhotoUris { get; }
+        public string[] PhotoUris { get; }
 
         public IEnumerable<SocialMediaDto> SocialMedias { get; set; }
 

@@ -200,6 +200,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             CheckRule(new CannotConfirmEnrollmentDateMoreThanOnceRule(_isEnrollmentDateConfirmed));
 
             _isEnrollmentDateConfirmed = true;
+            _isEnrolled = true;
             
             AddDomainEvent(new EnrollmentDateConfirmedDomainEvent(Id, _clientId));
         }

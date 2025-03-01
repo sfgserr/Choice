@@ -45,7 +45,7 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
                      users."Users"."Latitude" as {nameof(CompanyDto.Latitude)},
                      users."Users"."Longitude" as {nameof(CompanyDto.Longitude)}
                  FROM users."Users"
-                 JOIN users."Companies" ON users."Companies".Id = users."Users"."Id"
+                 JOIN users."Companies" ON users."Companies"."Id" = users."Users"."Id"
                  WHERE users."Users"."Id" = @CompanyId;
 
                  SELECT 

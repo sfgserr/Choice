@@ -13,7 +13,8 @@ namespace Chat.Infrastructure.Consumers
                 new
                 {
                     @event.ResponseId,
-                    IsEnrollmentDateConfirmed = true
+                    IsEnrollmentDateConfirmed = true,
+                    IsEnrolled = true
                 }, 
                 @event.ToUserId));
         }

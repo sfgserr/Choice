@@ -197,11 +197,11 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   }, [order]);
 
   const displayChangeEnrollmentDate = React.useMemo(() => {
-    return order != null && order.status == 'Active' && (userId != order.userChangedEnrollmentDate || !message.isActive || !order.isActive);
+    return order != null && (order.status == 'Active') && (userId != order.userChangedEnrollmentDate || !message.isActive || !order.isActive || !order.isEnrolled);
   }, [order]);
 
   const displayEnroll = React.useMemo(() => {
-    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && !order.isEnrolled && message.isActive && order.isActive;
   }, [order]);
 
   const displayWaitForConfirm = React.useMemo(() => {
@@ -210,6 +210,10 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
 
   const displayConfirm = React.useMemo(() => {
     return order != null && order.status == 'Active' && !isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+  }, [order]);
+
+  const displayEnrollment = React.useMemo(() => {
+    return order != null && order.status == 'Active' && order.isEnrolled && message.isActive && order.isActive;
   }, [order]);
 
   return (
@@ -304,6 +308,47 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               pressed={confirm}
               reversed={true}
             />
+          )}
+          {displayEnrollment && (
+            <>
+              <View
+                style={{
+                  paddingTop: 10,
+                }}>
+                <View
+                  style={[
+                    Styles.styledButton,
+                    {
+                      backgroundColor: '#6DC876',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    },
+                  ]}>
+                  <Image
+                    source={require('../../assets/images/congrats.png')}
+                    style={{width: 20, height: 20, alignSelf: 'center'}}
+                    tintColor={'white'}/>
+                  <Text
+                    style={{fontSize: 15, fontWeight: '500', color: 'white', paddingLeft: 10}}>
+                    {`${isClient ? 'Вы записаны' : 'Клиент записан'} на ${DateUtils.formatDate(order!.enrollmentDate!)}`}
+                  </Text>
+                </View>
+              </View>
+              <StyledButton
+                content={'Работа выполнена'}
+                top={10}
+                bottom={0}
+                isDisabled={false}
+                pressed={() => {}}
+                reversed={false}/>
+              <StyledButton
+                content={'Отменить запись'}
+                top={10}
+                bottom={0}
+                isDisabled={false}
+                pressed={() => {}}
+                reversed={true}/>
+            </>
           )}
         </View>
       </View>

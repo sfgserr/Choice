@@ -2,9 +2,9 @@ using BuildingBlocks.Application.Cqrs.Commands;
 
 namespace Users.Application.OrderResponses.Commands.Enroll
 {
-    public class EnrollCommand : InternalCommandBase
+    public class EnrollCommand : ICommand
     {
-        public EnrollCommand(Guid responseId, Guid id = default) : base(id)
+        public EnrollCommand(Guid responseId)
         {
             ResponseId = responseId;
         }

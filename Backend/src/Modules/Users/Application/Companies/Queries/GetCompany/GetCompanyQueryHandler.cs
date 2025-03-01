@@ -29,12 +29,12 @@ namespace Users.Application.Companies.Queries.GetCompany
                     users."Users"."PhoneNumber" as {nameof(CompanyDto.PhoneNumber)},
                     users."Companies"."Description" as {nameof(CompanyDto.Description)},
                     users."Companies"."PhotoUris" as {nameof(CompanyDto.PhotoUris)},
-                    users."Companies"."Categories" as {nameof(CompanyDto.Categories)},
+                    users."Companies"."CategoriesId" as {nameof(CompanyDto.Categories)},
                     users."Users"."City" as {nameof(CompanyDto.City)},
                     users."Users"."Street" as {nameof(CompanyDto.Street)},
                     users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)}
                 FROM users."Users"
-                JOIN users."Companies" ON users."Companies".Id = users."Users"."Id"
+                JOIN users."Companies" ON users."Companies"."Id" = users."Users"."Id"
                 WHERE users."Users"."Id" = @Id;
                 
                 SELECT 
