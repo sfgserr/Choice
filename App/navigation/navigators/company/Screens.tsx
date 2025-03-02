@@ -30,6 +30,6 @@ export const CreateOrderResponse = () => (
 export const Chat = () => (
   <CompanyStack.Screen
     name={'Chat'}
-    component={CompanyChatScreen}
+    component={gestureHandlerRootHOC(CompanyChatScreen)}
     options={{headerShown: false}}/>
 );

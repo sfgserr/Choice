@@ -10,7 +10,7 @@ import {
   View, ViewToken,
 } from 'react-native';
 import {Category, ChatMessages, ChatUser, Message, OrderRequest} from '../types/DomainTypes.ts';
-import React from 'react';
+import React, {ForwardedRef} from 'react';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {ChatService} from '../services/domain/ChatService.ts';
@@ -22,6 +22,11 @@ import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {ArrayUtils} from '../utils/ArrayUtils.ts';
+import CustomBottomSheet from "../components/bottomSheets/CustomBottomSheet.tsx";
+import {BottomSheetMethods} from "@gorhom/bottom-sheet/lib/typescript/types";
+import BottomSheet from "@gorhom/bottom-sheet";
+import ReviewBottomSheet from "../components/bottomSheets/ReviewBottomSheet.tsx";
+import SuccessfulRequestModal from "../components/modals/SuccessfulRequestModal.tsx";
 
 const d = Dimensions.get('screen');
 
@@ -39,6 +44,10 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   const [count, setCount] = React.useState(0);
 
   const [message, setMessage] = React.useState('');
+
+  const [responseId, setResponseId] = React.useState<string>('');
+
+  const [isToggled, setIsToggled] = React.useState(false);
 
   React.useEffect(() => {
     const backPress = () => {
@@ -232,6 +241,21 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     </View>
   ), [categories]);
 
+  const ref = React.useRef<BottomSheet>(null);
+
+  const open = React.useCallback((orderResponseId: string) => {
+    setResponseId(orderResponseId);
+    ref.current?.expand();
+  }, [ref]);
+
+  const close = React.useCallback(() => {
+    ref.current?.close();
+  }, [ref]);
+
+  const toggleModal = React.useCallback(() => {
+    setIsToggled(prev => !prev);
+  }, []);
+
   return (
     <View style={styles.container}>
       {chatUser != null && categories.length > 0 && (
@@ -246,7 +270,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                   item={item}
                   userId={userId}
                   navigation={navigation}
-                  onEnrollmentDateChanged={enrollmentDateChanged}/>
+                  onEnrollmentDateChanged={enrollmentDateChanged}
+                  open={open}/>
               }
               ListEmptyComponent={Stub}
               viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}
@@ -301,6 +326,17 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
         </View>
       )}
       <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0} />
+      <ReviewBottomSheet
+        ref={ref}
+        toUserId={chatUser == null ? '' : chatUser.id}
+        responseId={responseId}
+        close={close}
+        toggleModal={toggleModal}/>
+      <SuccessfulRequestModal
+        isToggled={isToggled}
+        handlePress={toggleModal}
+        title={'Отзыва оставлен'}
+        text={''}/>
     </View>
   );
 }

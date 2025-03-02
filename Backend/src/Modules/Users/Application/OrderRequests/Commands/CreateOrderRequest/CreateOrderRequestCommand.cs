@@ -2,7 +2,7 @@ using BuildingBlocks.Application.Cqrs.Commands;
 
 namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 {
-    public class CreateOrderRequestCommand : ICommandWithResult<Guid>
+    public class CreateOrderRequestCommand : ICommandWithResult<OrderRequestDto>
     {
         public CreateOrderRequestCommand(
             bool toKnowPrice,

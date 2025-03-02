@@ -30,7 +30,7 @@ namespace Chat.Application.Messages.Commands.CreateMessage
             
             var addedMessage = await _dbContext.Messages.AddAsync(message);
             
-            return addedMessage.Entity.ToDto<Message, MessageDto>();
+            return addedMessage.Entity.ToDto<MessageDto>();
         }
 
         protected override Guid GetUserId(CreateMessageCommand command)

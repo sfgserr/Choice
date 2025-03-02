@@ -27,7 +27,7 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 
             var message = await _dbContext.Messages.AddAsync(newOrderMessage);
 
-            return message.Entity.ToDto<Message, MessageDto>();
+            return message.Entity.ToDto<MessageDto>();
         }
         
         protected override Guid GetUserId(ChangeEnrollmentDateCommand command)

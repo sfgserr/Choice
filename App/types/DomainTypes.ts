@@ -9,10 +9,11 @@ export type CompanyMapMarker = {
   iconUri: string,
   averageGrade: number,
   latitude: string,
-  longitude: string
+  longitude: string,
+  isResponsed: boolean,
 };
 
-export type OrderStatus = 'Active' | 'Canceled' | 'Finished';
+export type OrderStatus = 'Active' | 'Cancelled' | 'Finished';
 
 export type OrderRequest = {
   id: string

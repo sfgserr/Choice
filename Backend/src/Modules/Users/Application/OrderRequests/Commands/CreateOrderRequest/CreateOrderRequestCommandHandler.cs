@@ -1,12 +1,11 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Users.Application.Contracts;
-using Users.Domain.OrderRequests;
 using Users.Domain.Users;
 
 namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 {
-    internal class CreateOrderRequestCommandHandler : ICommandHandlerWithResult<CreateOrderRequestCommand, Guid>
+    internal class CreateOrderRequestCommandHandler : ICommandHandlerWithResult<CreateOrderRequestCommand, OrderRequestDto>
     {
         private readonly IUsersDbContext _dbContext;
         private readonly IUserContext _userContext;
@@ -19,7 +18,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
             _userContext = userContext;
         }
 
-        public async Task<Guid> Execute(CreateOrderRequestCommand command)
+        public async Task<OrderRequestDto> Execute(CreateOrderRequestCommand command)
         {
             var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.ClientId));
             
@@ -34,7 +33,7 @@ namespace Users.Application.OrderRequests.Commands.CreateOrderRequest
 
             var entry = await _dbContext.OrderRequests.AddAsync(orderRequest);
 
-            return entry.Entity.Id.Value;
+            return entry.Entity.ToDto<OrderRequestDto>();
         }
     }
 }

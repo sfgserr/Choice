@@ -1,4 +1,4 @@
-import {StyleSheet, Text} from 'react-native';
+import {DeviceEventEmitter, StyleSheet, Text} from 'react-native';
 import {
   View,
   Dimensions
@@ -8,7 +8,7 @@ import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import React from 'react';
-import {CompanyMapMarker} from '../types/DomainTypes.ts';
+import {CompanyMapMarker, Message} from '../types/DomainTypes.ts';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
 import CustomMarker from '../components/CustomMarker.tsx';
@@ -28,7 +28,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const map = React.createRef<YaMap>();
 
-  const [companies, setCompanies] = React.useState<CompanyMapMarker[]>([]);
+  const [companies, setCompanies] = React.useState<{marker: CompanyMapMarker, responseId: string}[]>([]);
   const [orderRequest, setOrderRequest] = React.useState<OrderRequest>(null);
   const [isToggled, setIsToggled] = React.useState(false);
 
@@ -46,11 +46,33 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           {lat: +userMap.latitude, lon: +userMap.longitude},
           15,
           Animation.SMOOTH);
-        setCompanies(companies.content);
+        setCompanies(companies.content.map(c => ({marker: c, responseId: ''})));
       }
     }
     getCompanies();
   }, []);
+
+  React.useEffect(() => {
+    DeviceEventEmitter.addListener('messageSent', (message: Message) => {
+      console.log(message);
+      if (orderRequest != null && message.enrollmentDate == null && message.type == 'Order') {
+        setCompanies(prev => {
+          const index = prev.findIndex(c => c.marker.id == message.fromUserId);
+
+          prev[index].responseId = message.orderResponseId!;
+
+          map.current?.fitMarkers(prev.filter(c => c.responseId != '').map(c => ({
+            lat: +c.marker.latitude,
+            lon: +c.marker.longitude,
+          })));
+
+          return [...prev];
+        });
+      }
+    });
+
+    return () => DeviceEventEmitter.removeAllListeners('messageSent');
+  }, [orderRequest]);
 
   const onOrderRequestCreated = async (orderRequest: OrderRequest) => {
     setOrderRequest(orderRequest);
@@ -64,7 +86,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
       categoryIndex: route.params.categoryId,
       onGoBack: onOrderRequestCreated
     });
-  }
+  };
 
   const ref = React.useRef<BottomSheet>(null);
 

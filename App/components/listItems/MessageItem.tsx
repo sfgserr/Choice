@@ -89,12 +89,13 @@ const ImageMessage = ({message, isSender, navigation}: {
   );
 };
 
-const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged}: {
+const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged, open}: {
   message: Message,
   isSender: boolean,
   userId: string,
   index: number,
-  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void}) => {
+  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void,
+  open: (responseId: string) => void}) => {
   const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
 
   const [order, setOrder] = React.useState<OrderResponse | null>(null);
@@ -187,33 +188,82 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
       const response = await orderResponseService.confirm(order.id);
 
       if (response.result == 'successful') {
-        setOrder(prev => {
-          prev!.isEnrollmentDateConfirmed = true;
-
-          return prev;
-        });
+        const data: any = {
+          isEnrollmentDateConfirmed: true,
+          isEnrolled: true,
+        };
+        setOrder(prev => ({...prev, ...data}));
       }
     }
   }, [order]);
 
+  const enroll = React.useCallback(async () => {
+    if (order != null) {
+      const response = await orderResponseService.enroll(order.id);
+
+      if (response.result == 'successful') {
+        const data: any = {
+          isEnrolled: true,
+        };
+        setOrder(prev => ({...prev, ...data}));
+      }
+    }
+  }, [order]);
+
+  const finish = React.useCallback(async () => {
+    if (order != null) {
+      const response = await orderResponseService.finish(order.id);
+
+      if (response.result == 'successful') {
+        const data: any = {
+          status: 'Finished',
+        };
+        setOrder(prev => ({...prev, ...data}));
+      }
+    }
+  }, [order]);
+
+  const cancel = React.useCallback(async () => {
+    if (order != null) {
+      const response = await orderResponseService.cancel(order.id);
+
+      if (response.result == 'successful') {
+        const data: any = {
+          status: 'Cancelled',
+        };
+        setOrder(prev => ({...prev, ...data}));
+      }
+    }
+  }, [order]);
+
+  const expandSheet = React.useCallback(() => {
+    if (order != null) {
+      open(order.id);
+    }
+  }, [order]);
+
   const displayChangeEnrollmentDate = React.useMemo(() => {
-    return order != null && (order.status == 'Active') && (userId != order.userChangedEnrollmentDate || !message.isActive || !order.isActive || !order.isEnrolled);
+    return order != null && (!message.isActive || (!order.isEnrolled && order.userChangedEnrollmentDate != userId));
   }, [order]);
 
   const displayEnroll = React.useMemo(() => {
-    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && !order.isEnrolled && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && isClient && order.isEnrollmentDateConfirmed && !order.isEnrolled && message.isActive;
   }, [order]);
 
   const displayWaitForConfirm = React.useMemo(() => {
-    return order != null && order.status == 'Active' && isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.userChangedEnrollmentDate == userId;
   }, [order]);
 
   const displayConfirm = React.useMemo(() => {
-    return order != null && order.status == 'Active' && !isClient && !order.isEnrollmentDateConfirmed && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && !isClient && !order.isEnrollmentDateConfirmed && message.isActive;
   }, [order]);
 
   const displayEnrollment = React.useMemo(() => {
-    return order != null && order.status == 'Active' && order.isEnrolled && message.isActive && order.isActive;
+    return order != null && order.status == 'Active' && order.isEnrolled && message.isActive;
+  }, [order]);
+
+  const displayReview = React.useMemo(() => {
+    return order != null && order.status != 'Active' && message.isActive;
   }, [order]);
 
   return (
@@ -223,17 +273,39 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
           {order == null ? (
             <ActivityIndicator size="large" color={'#2D81E0'} />
           ) : (
-            <Text style={styles.orderMessage}>
-              {message.enrollmentDate == null
-                ? isSender
-                  ? 'Ваш ответ на заказ клиента'
-                  : 'Ответ компании на Ваш запрос'
-                : isSender
-                  ? 'Вы предложили изменить время записи'
-                  : isClient
-                    ? 'Компания предлагает изменить время записи'
-                    : 'Клиент предлагает изменить время записи'}
-            </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={styles.orderMessage}>
+                {message.enrollmentDate == null
+                  ? isSender
+                    ? 'Ваш ответ на заказ клиента'
+                    : 'Ответ компании на Ваш запрос'
+                  : isSender
+                    ? 'Вы предложили изменить время записи'
+                    : isClient
+                      ? 'Компания предлагает изменить время записи'
+                      : 'Клиент предлагает изменить время записи'}
+              </Text>
+              {displayReview && (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 3,
+                    paddingHorizontal: 5,
+                    backgroundColor: order.status == 'Finished' ? '#2D81E0' : '#F1F1F1',
+                    borderRadius: 10
+                  }}>
+                  <Text
+                    style={{
+                      color: order.status == 'Finished' ? 'white' : '#979797',
+                      fontSize: 14,
+                      fontWeight: '400',
+                    }}>
+                    {order.status == 'Finished' ? 'Завершен' : 'Отменен'}
+                  </Text>
+                </View>
+              )}
+            </View>
           )}
           {info.map((i, key) => (
             <>
@@ -296,7 +368,8 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               top={10}
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
-              pressed={() => {}}
+              reversed={false}
+              pressed={enroll}
             />
           )}
           {displayConfirm && (
@@ -339,16 +412,25 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
                 top={10}
                 bottom={0}
                 isDisabled={false}
-                pressed={() => {}}
+                pressed={finish}
                 reversed={false}/>
               <StyledButton
                 content={'Отменить запись'}
                 top={10}
                 bottom={0}
                 isDisabled={false}
-                pressed={() => {}}
+                pressed={cancel}
                 reversed={true}/>
             </>
+          )}
+          {displayReview && (
+            <StyledButton
+              content={'Оставить отзыв'}
+              top={10}
+              bottom={0}
+              isDisabled={false}
+              pressed={expandSheet}
+              reversed={false}/>
           )}
         </View>
       </View>
@@ -371,11 +453,12 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
   );
 };
 
-export default function MessageItem ({item, userId, navigation, onEnrollmentDateChanged}: {
+export default function MessageItem ({item, userId, navigation, onEnrollmentDateChanged, open}: {
   item: ListRenderItemInfo<Message>,
   userId: string,
   navigation: any,
-  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void,}) {
+  onEnrollmentDateChanged: (index: number, enrollmentDate: Date) => void,
+  open: (responseId: string) => void}) {
   const isSender = userId === item.item.fromUserId;
 
   return (
@@ -395,7 +478,8 @@ export default function MessageItem ({item, userId, navigation, onEnrollmentDate
           isSender={isSender}
           userId={userId}
           index={item.index}
-          onEnrollmentDateChanged={onEnrollmentDateChanged}/>
+          onEnrollmentDateChanged={onEnrollmentDateChanged}
+          open={open}/>
       )}
     </>
   );

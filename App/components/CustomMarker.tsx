@@ -3,22 +3,27 @@ import {Marker} from 'react-native-yamap';
 import React from 'react';
 import {Image, View} from 'react-native';
 
-export default function CustomMarker({ company, index, onPress }: {
-  company: CompanyMapMarker
-  index: number
-  onPress: (companyId: string) => void}) {
+export default function CustomMarker({
+  company,
+  index,
+  onPress,
+}: {
+  company: {marker: CompanyMapMarker, responseId: string};
+  index: number;
+  onPress: (companyId: string) => void;
+}) {
   const [markerKey, setMarkerKey] = React.useState(index);
   const [isEnd, setIsEnd] = React.useState(false);
 
   return (
     <Marker
       key={markerKey}
-      point={{ lat: +company.latitude, lon: +company.longitude }}
-      onPress={() => onPress(company.id)}>
+      point={{lat: +company.marker.latitude, lon: +company.marker.longitude}}
+      onPress={() => onPress(company.marker.id)}>
       <View>
         <Image
           source={{
-            uri: `${process.env.MINIO_URL}/app-files/${company.iconUri}`,
+            uri: `${process.env.MINIO_URL}/app-files/${company.marker.iconUri}`,
           }}
           onLoadEnd={() => {
             if (!isEnd) {
@@ -33,10 +38,10 @@ export default function CustomMarker({ company, index, onPress }: {
             height: 30,
             overflow: 'hidden',
             borderWidth: 2,
-            borderColor: 'white',
+            borderColor: company.responseId != '' ? '#6DC876' : 'white',
           }}
         />
       </View>
     </Marker>
-  )
+  );
 }

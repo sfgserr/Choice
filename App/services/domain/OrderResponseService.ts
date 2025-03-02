@@ -46,4 +46,37 @@ export class OrderResponseService {
       'PUT',
       undefined);
   }
+
+  public async enroll(responseId: string) {
+    return await this.httpService.request(
+      `orderResponses/enroll/${responseId}`,
+      'PUT',
+      undefined);
+  }
+
+  public async finish(responseId: string) {
+    return await this.httpService.request(
+      `orderResponses/finish/${responseId}`,
+      'PUT',
+      undefined);
+  }
+
+  public async cancel(responseId: string) {
+    return await this.httpService.request(
+      `orderResponses/cancel/${responseId}`,
+      'PUT',
+      undefined);
+  }
+
+  public async review(responseId: string, toUserId: string, text: string, grade: number) {
+    return await this.httpService.request(
+      'orderResponses/review',
+      'POST',
+      JSON.stringify({
+        responseId,
+        toUserId,
+        text,
+        grade,
+      }));
+  }
 }

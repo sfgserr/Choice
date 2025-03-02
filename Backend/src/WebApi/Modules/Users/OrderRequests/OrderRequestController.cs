@@ -11,6 +11,7 @@ using GetOrderRequestDto = Users.Application.OrderRequests.Queries.GetOrderReque
 using GetOrderRequestsDto = Users.Application.OrderRequests.Queries.GetOrderRequests.OrderRequestDto;
 using GetOrderRequestsInRadiusDto = Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius.OrderRequestDto;
 using GetOrderRequestAsCompanyDto = Users.Application.OrderRequests.Queries.GetOrderRequestAsCompany.OrderRequestDto;
+using CreateOrderRequestDto = Users.Application.OrderRequests.Commands.CreateOrderRequest.OrderRequestDto;
 
 namespace WebApi.Modules.Users.OrderRequests
 {
@@ -29,7 +30,7 @@ namespace WebApi.Modules.Users.OrderRequests
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
         {
-            var orderRequestId = await _usersModule.ExecuteCommand<CreateOrderRequestCommand, Guid>(
+            var orderRequestId = await _usersModule.ExecuteCommand<CreateOrderRequestCommand, CreateOrderRequestDto>(
                 new CreateOrderRequestCommand(
                     request.ToKnowPrice,
                     request.ToKnowDeadline,

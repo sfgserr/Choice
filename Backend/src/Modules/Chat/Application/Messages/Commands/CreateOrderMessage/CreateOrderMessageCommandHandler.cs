@@ -24,7 +24,7 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
             
             var addedMessage = await _dbContext.Messages.AddAsync(orderMessage);
             
-            return addedMessage.Entity.ToDto<Message, MessageDto>();
+            return addedMessage.Entity.ToDto<MessageDto>();
         }
 
         protected override Guid GetUserId(CreateOrderMessageCommand command)

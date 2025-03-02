@@ -14,12 +14,12 @@ export default function OrderRequestCard({orderRequest, navigation}: OrderReques
         <View style={[
           styles.statusContainer,
           orderRequest.orderStatus == 'Active' ?
-            styles.activeColor : orderRequest.orderStatus == 'Canceled' ?
+            styles.activeColor : orderRequest.orderStatus == 'Cancelled' ?
               styles.canceledColor : styles.finishedColor
         ]}>
           <Text style={styles.status}>
             {orderRequest.orderStatus == 'Active' ?
-              'Активен' : orderRequest.orderStatus == 'Canceled' ?
+              'Активен' : orderRequest.orderStatus == 'Cancelled' ?
                 'Отменен' : 'Завершен'}
           </Text>
         </View>

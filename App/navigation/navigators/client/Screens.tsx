@@ -43,7 +43,7 @@ export const EditOrderRequest = () => (
 export const Chat = () => (
   <ClientStack.Screen
     name={'Chat'}
-    component={ClientChatScreen}
+    component={gestureHandlerRootHOC(ClientChatScreen)}
     options={{headerShown: false}}
   />
 );

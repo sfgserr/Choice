@@ -14,7 +14,7 @@ namespace Users.Application.OrderRequests
             _connectionFactory = connectionFactory;
         }
 
-        public int Count(CompanyId companyId)
+        public int Count(OrderRequestId orderRequestId, CompanyId companyId)
         {
             using var connection = _connectionFactory.GetConnection();
 
@@ -22,14 +22,15 @@ namespace Users.Application.OrderRequests
                 $"""
                 SELECT COUNT(*)
                 FROM users."OrderResponses"
-                WHERE users."OrderResponses"."CompanyId" = @Id 
+                WHERE users."OrderResponses"."RequestId" = @RequestId AND users."OrderResponses"."CompanyId" = @CompanyId
                 """;
             
             return connection.QuerySingle<int>(
                 sql, 
                 new
                 {
-                    Id = companyId.Value
+                    RequestId = orderRequestId.Value,
+                    CompanyId = companyId.Value
                 });
         }
     }

@@ -101,7 +101,7 @@ namespace Users.Domain.OrderRequests
             IOrderResponsesCounter counter)
         { 
             CheckRule(new CannotChangeInactiveRequestRule(_status));
-            CheckRule(new CannotResponseTwiceRule(counter, company.Id));
+            CheckRule(new CannotResponseTwiceRule(counter, Id, company.Id));
             CheckRule(new CannotResponseIfUserEnrolledRule(_isEnrolled));
             
             return OrderResponse.Create(

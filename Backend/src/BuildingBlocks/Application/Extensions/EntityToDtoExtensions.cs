@@ -5,12 +5,12 @@ namespace BuildingBlocks.Application.Extensions
 {
     public static class EntityToDtoExtensions
     {
-        public static TDto ToDto<TEntity, TDto>(this TEntity entity) where TEntity : Entity where TDto : new()
+        public static TDto ToDto<TDto>(this Entity entity) where TDto : new()
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
-
+            
             var destination = new TDto();
-            var sourceType = typeof(TEntity);
+            var sourceType = entity.GetType();
             var destinationType = typeof(TDto);
 
             var sourceFields = sourceType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
