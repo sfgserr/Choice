@@ -27,7 +27,7 @@ namespace Chat.Infrastructure.Data.Domain.Messages
                 
                 x.HasKey(y => y.MessageId);
                 x.WithOwner().HasForeignKey(y => y.MessageId);
-                x.Property(y => y.ResponseId).HasColumnName("ResponseId");
+                x.Property(y => y.OrderResponseId).HasColumnName("ResponseId");
                 x.Property<DateTime?>("_enrollmentDate").HasColumnName("EnrollmentDate");
                 x.Property<bool>("_isActive").HasColumnName("IsActive");
             });

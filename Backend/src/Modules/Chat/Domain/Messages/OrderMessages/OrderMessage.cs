@@ -8,9 +8,9 @@ namespace Chat.Domain.Messages.OrderMessages
 
         private bool _isActive;
         
-        private OrderMessage(OrderResponseId responseId, MessageId messageId, DateTime? enrollmentDate, bool isActive)
+        private OrderMessage(OrderResponseId orderResponseId, MessageId messageId, DateTime? enrollmentDate, bool isActive)
         {
-            ResponseId = responseId;
+            OrderResponseId = orderResponseId;
             MessageId = messageId;
             
             _enrollmentDate = enrollmentDate;
@@ -34,7 +34,7 @@ namespace Chat.Domain.Messages.OrderMessages
                 true);
         }
 
-        public OrderResponseId ResponseId { get; }
+        public OrderResponseId OrderResponseId { get; }
 
         public MessageId MessageId { get; }
 

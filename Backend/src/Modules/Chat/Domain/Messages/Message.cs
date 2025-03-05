@@ -90,7 +90,7 @@ namespace Chat.Domain.Messages
             _orderMessage!.SetAsInactive();
             
             return CreateOrder(
-                _orderMessage!.ResponseId,
+                _orderMessage!.OrderResponseId,
                 enrollmentDate,
                 _toUserId,
                 _fromUserId);

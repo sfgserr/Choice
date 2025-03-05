@@ -54,8 +54,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
-      console.log(message);
       if (orderRequest != null && message.enrollmentDate == null && message.type == 'Order') {
+        console.log(message);
         setCompanies(prev => {
           const index = prev.findIndex(c => c.marker.id == message.fromUserId);
 

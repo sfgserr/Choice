@@ -18,7 +18,7 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
         protected override async Task<MessageDto> HandleCommandAsync(ChangeEnrollmentDateCommand command)
         {
             var orderMessage = _dbContext.Messages
-                .TranslatedWhere<Message, MessageDataModel>(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.ResponseId.Equals(new OrderResponseId(
+                .TranslatedWhere<Message, MessageDataModel>(m => m.Type.Equals(MessageType.Order) && m.OrderMessage!.OrderResponseId.Equals(new OrderResponseId(
                     command.ResponseId)))
                 .TranslatedOrderByDescending<Message, MessageDataModel, DateTime>(m => m.CreationDate)
                 .FirstOrDefault();
