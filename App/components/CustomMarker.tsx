@@ -1,7 +1,7 @@
-import {CompanyMapMarker} from '../types/DomainTypes';
+import {CompanyMapMarker, Message} from '../types/DomainTypes';
 import {Marker} from 'react-native-yamap';
 import React from 'react';
-import {Image, View} from 'react-native';
+import {DeviceEventEmitter, Image, View} from 'react-native';
 
 export default function CustomMarker({
   company,
@@ -14,6 +14,9 @@ export default function CustomMarker({
 }) {
   const [markerKey, setMarkerKey] = React.useState(index);
   const [isEnd, setIsEnd] = React.useState(false);
+  const [responseId, setResponseId] = React.useState(company.responseId);
+
+  console.log(company);
 
   return (
     <Marker
@@ -26,9 +29,10 @@ export default function CustomMarker({
             uri: `${process.env.MINIO_URL}/app-files/${company.marker.iconUri}`,
           }}
           onLoadEnd={() => {
-            if (!isEnd) {
-              setMarkerKey(markerKey + 1);
+            if (!isEnd || responseId != '') {
+              setMarkerKey(prev => prev + 1);
               setIsEnd(true);
+              setResponseId('');
             }
           }}
           style={{
@@ -37,7 +41,7 @@ export default function CustomMarker({
             width: 30,
             height: 30,
             overflow: 'hidden',
-            borderWidth: 2,
+            borderWidth: company.responseId != '' ? 4 : 2,
             borderColor: company.responseId != '' ? '#6DC876' : 'white',
           }}
         />

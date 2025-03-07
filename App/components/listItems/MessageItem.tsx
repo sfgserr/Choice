@@ -167,7 +167,11 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('orderSent', (data: any) => {
-      setOrder(prev => ({...prev, ...data}));
+      setOrder(prev => {
+        if (prev?.id === data.responseId) {
+          return {...prev, ...data};
+        }
+      });
     });
 
     return () => DeviceEventEmitter.removeAllListeners('orderSent');

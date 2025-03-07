@@ -81,7 +81,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
           let index = prev.findIndex(m => String(m.id) === String(id));
 
           if (index != -1) {
-            prev[prev.findIndex(m => String(m.id) === String(id))].isRead = true;
+            prev[index].isRead = true;
           }
         }
         return [...prev];

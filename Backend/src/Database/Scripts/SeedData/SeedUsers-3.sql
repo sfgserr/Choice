@@ -6,7 +6,7 @@ INSERT INTO users."Users" ("Id", "Name", "Email", "PhoneNumber", "IconUri", "IsD
 
 INSERT INTO users."Clients" ("Id", "UserId") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'ecc1d96a-dfd3-4a5c-8885-6914ff716ce2');
 
-INSERT INTO payments."Subscriptions" ("Id", "SubscriberId", "PeriodName", "PeriodCost", "PeriodCostCurrency", "Status", "ExpirationDate") VALUES ('bb5d871c-e812-4a8a-ac2c-e3a2cafea641', '954dba19-f9bd-488a-9f45-dee4f184e906', 'Month', '800', 'RUB', 'Active', '2025-03-05');
+INSERT INTO payments."Subscriptions" ("Id", "SubscriberId", "PeriodName", "PeriodCost", "PeriodCostCurrency", "Status", "ExpirationDate") VALUES ('bb5d871c-e812-4a8a-ac2c-e3a2cafea641', '954dba19-f9bd-488a-9f45-dee4f184e906', 'Month', '800', 'RUB', 'Active', '2025-04-05');
 
 INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "Role", "Street", "City", "Latitude", "Longitude", "IsSubscribed") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'b@gmail.com', '9267339971', 'AE8ZXJlUbO+mw/xjWJ/UQxTyCSuDs6WjTUJpMHs03a2ewBoe1AG7hCrYvZW+j+1Tng==', 'Client', 'Арбат 26', 'Москва', '55.749896', '37.591530', true);
 

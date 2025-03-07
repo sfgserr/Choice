@@ -3,7 +3,7 @@ import {
   View,
   Dimensions
 } from 'react-native';
-import YaMap, {Animation} from 'react-native-yamap';
+import YaMap, {Animation, Point} from 'react-native-yamap';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
@@ -46,33 +46,47 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           {lat: +userMap.latitude, lon: +userMap.longitude},
           15,
           Animation.SMOOTH);
-        setCompanies(companies.content.map(c => ({marker: c, responseId: ''})));
+
+        setCompanies(companies.content.map((c) => {
+          const a = {marker: c, responseId: ''};
+
+          return a;
+        }));
       }
     }
     getCompanies();
   }, []);
 
   React.useEffect(() => {
-    DeviceEventEmitter.addListener('messageSent', (message: Message) => {
+    const moveMarkers = (message: Message) => {
       if (orderRequest != null && message.enrollmentDate == null && message.type == 'Order') {
-        console.log(message);
         setCompanies(prev => {
           const index = prev.findIndex(c => c.marker.id == message.fromUserId);
+          if (index === -1) return prev;
 
           prev[index].responseId = message.orderResponseId!;
 
-          map.current?.fitMarkers(prev.filter(c => c.responseId != '').map(c => ({
-            lat: +c.marker.latitude,
-            lon: +c.marker.longitude,
-          })));
+          const responsedCompanies: Point[] = prev.filter(c => c.responseId !== '')
+            .map(c => ({
+              lat: +c.marker.latitude,
+              lon: +c.marker.longitude,
+            }));
+
+          if (responsedCompanies.length == 1) {
+            map.current?.setCenter(responsedCompanies[0], 15, 0, 0, 0.5, Animation.SMOOTH);
+          } else {
+            map.current?.fitMarkers(responsedCompanies);
+          }
 
           return [...prev];
         });
       }
-    });
+    };
+
+    DeviceEventEmitter.addListener('messageSent', moveMarkers);
 
     return () => DeviceEventEmitter.removeAllListeners('messageSent');
-  }, [orderRequest]);
+  }, [orderRequest, map]);
 
   const onOrderRequestCreated = async (orderRequest: OrderRequest) => {
     setOrderRequest(orderRequest);
@@ -84,7 +98,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     navigation.navigate('CreateOrderRequest', {
       categories: route.params.categories,
       categoryIndex: route.params.categoryId,
-      onGoBack: onOrderRequestCreated
+      onGoBack: onOrderRequestCreated,
     });
   };
 
