@@ -28,11 +28,12 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const map = React.createRef<YaMap>();
 
-  const [companies, setCompanies] = React.useState<{marker: CompanyMapMarker, responseId: string}[]>([]);
+  const [companies, setCompanies] = React.useState<{marker: CompanyMapMarker, responseId: string, index: number}[]>([]);
   const [orderRequest, setOrderRequest] = React.useState<OrderRequest>(null);
   const [isToggled, setIsToggled] = React.useState(false);
 
   const [companyId, setCompanyId] = React.useState('');
+  const [responseId, setResponseId] = React.useState('');
 
   React.useEffect(() => {
     async function getCompanies() {
@@ -47,8 +48,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           15,
           Animation.SMOOTH);
 
-        setCompanies(companies.content.map((c) => {
-          const a = {marker: c, responseId: ''};
+        setCompanies(companies.content.map((c, index) => {
+          const a = {marker: c, responseId: '', index};
 
           return a;
         }));
@@ -65,6 +66,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           if (index === -1) return prev;
 
           prev[index].responseId = message.orderResponseId!;
+          prev[index].index++;
 
           const responsedCompanies: Point[] = prev.filter(c => c.responseId !== '')
             .map(c => ({
@@ -104,8 +106,10 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const ref = React.useRef<BottomSheet>(null);
 
-  const onMarkerPressed = React.useCallback((companyId: string) => {
+  const onMarkerPressed = React.useCallback((companyId: string, responseId: string) => {
     setCompanyId(companyId);
+    setResponseId(responseId);
+    setIsToggled(false);
     ref.current?.expand();
   }, []);
 
@@ -131,7 +135,6 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
               return (
                 <CustomMarker
                   company={company}
-                  index={index}
                   key={index}
                   onPress={onMarkerPressed}/>
               )
@@ -167,6 +170,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
           </>)}
       <CompanyPageBottomSheet
         companyId={companyId}
+        responseId={responseId}
         close={onClose}
         ref={ref}
         navigateToChat={() => navigation.navigate('Chat', {id: companyId})}/>

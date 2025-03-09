@@ -30,7 +30,7 @@ namespace BuildingBlocks.Infrastructure.DomainEventDispatching
         private IEnumerable<Entity> GetEntities()
         {
             return _dbContext.ChangeTracker.Entries<Entity>()
-               .Where(e => e.Entity.DomainEvents != null && e.Entity.DomainEvents.Any())
+               .Where(e => e.Entity.DomainEvents.Count != 0)
                .Select(e => e.Entity);
         }
     }

@@ -31,8 +31,8 @@ export default function SuccessfulRequestModal({isToggled, handlePress, title, t
         <View style={styles.buttonContainer}>
           <StyledButton
             content={'Ok'}
-            top={0}
-            bottom={0}
+            top={20}
+            bottom={5}
             isDisabled={false}
             pressed={async () => handlePress()}/>
         </View>
@@ -73,10 +73,6 @@ const styles = StyleSheet.create({
     color: '#6D7885'
   },
   buttonContainer: {
-    flex: 1,
-    position: 'absolute',
-    width: '85%',
-    bottom: 10,
-    alignSelf: 'center',
+    paddingHorizontal: 15,
   }
 })

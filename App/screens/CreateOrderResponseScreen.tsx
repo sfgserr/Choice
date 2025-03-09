@@ -30,8 +30,8 @@ import {UserService} from '../services/domain/UserService.ts';
 type Form = {
   price: string
   deadlinesIndex: number
-  time: Date
-  date: Date
+  time: Date | null
+  date: Date | null
   prepayment: string
 }
 
@@ -152,14 +152,14 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   }, []);
 
   const createOrderResponse = React.useCallback(async () => {
-    form.date.setHours(form.time.getHours(), form.time.getMinutes());
+    form.date?.setHours(form.time!.getHours(), form.time!.getMinutes());
 
     setIsRefreshing(true);
 
     const result = await orderResponseService.createOrderResponse(
       route.params.orderRequest.id,
       +form.price,
-      deadlines[form.deadlinesIndex].seconds,
+      form.deadlinesIndex == -1 ? 0 : deadlines[form.deadlinesIndex].seconds,
       form.date,
       +form.prepayment);
 
@@ -296,7 +296,6 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             }}
           />
         )}
-        <LongRunningOperationIndicator isRefreshing={isRefreshing} />
       </ScrollView>
       <CustomBottomSheet
         ref={ref}
@@ -329,6 +328,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
         title={'Ответ отправлен клиенту'}
         text={'Ожидайте ответа от клиента и старайтесь отвечать оперативно'}
       />
+      <LongRunningOperationIndicator isRefreshing={isRefreshing} />
     </>
   );
 }

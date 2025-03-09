@@ -62,7 +62,7 @@ export class UploadedBlob implements ImageBoxObject {
 
 const d = Dimensions.get('screen');
 
-export default function ImageBox({object, setPhoto, index}: ImageBoxProps) {
+export default function ImageBox({object, setPhoto, index, readonly = false}: ImageBoxProps) {
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
 
   const set = React.useCallback(async ()=> {
@@ -99,7 +99,7 @@ export default function ImageBox({object, setPhoto, index}: ImageBoxProps) {
           width: d.width * 0.274,
           height: d.width * 0.274,
           borderRadius: 12,
-          borderWidth: 1,
+          borderWidth: readonly ? 0 : 1,
           borderStyle: 'dashed',
           position: 'relative',
           backgroundColor: '#F9F9F9',
@@ -115,8 +115,8 @@ export default function ImageBox({object, setPhoto, index}: ImageBoxProps) {
                 style={{
                   alignSelf: 'center',
                   resizeMode: 'contain',
-                  width: d.width*0.091,
-                  height: d.width*0.091,
+                  width: d.width * 0.091,
+                  height: d.width * 0.091,
                 }}/>
             </TouchableOpacity>
           </>
@@ -130,29 +130,31 @@ export default function ImageBox({object, setPhoto, index}: ImageBoxProps) {
                 borderRadius: 12,
               }}/>
 
-            <TouchableOpacity
-              style={{
-                width: d.width * 0.06,
-                height: d.width * 0.06,
-                borderWidth: 1,
-                borderColor: '#E7E7E7',
-                backgroundColor: 'white',
-                position: 'absolute',
-                top: -6,
-                right: -6,
-                borderRadius: d.width * 0.03,
-                justifyContent: 'center',
-              }}
-              onPress={remove}>
-              <Image
+            {!readonly && (
+              <TouchableOpacity
                 style={{
-                  width: d.width * 0.03,
-                  height: d.width * 0.03,
-                  resizeMode: 'contain',
-                  alignSelf: 'center',
+                  width: d.width * 0.06,
+                  height: d.width * 0.06,
+                  borderWidth: 1,
+                  borderColor: '#E7E7E7',
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  top: -6,
+                  right: -6,
+                  borderRadius: d.width * 0.03,
+                  justifyContent: 'center',
                 }}
-                source={require('../assets/images/cross.png')}/>
-            </TouchableOpacity>
+                onPress={remove}>
+                <Image
+                  style={{
+                    width: d.width * 0.03,
+                    height: d.width * 0.03,
+                    resizeMode: 'contain',
+                    alignSelf: 'center',
+                  }}
+                  source={require('../assets/images/cross.png')}/>
+              </TouchableOpacity>
+            )}
           </>
         )}
       </View>

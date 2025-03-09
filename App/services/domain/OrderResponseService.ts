@@ -12,7 +12,7 @@ export class OrderResponseService {
     requestId: string,
     price: number,
     deadline: number,
-    enrollmentDate: Date,
+    enrollmentDate: Date | null,
     prepayment: number) {
     return await this.httpService.request(
       'orderResponses',

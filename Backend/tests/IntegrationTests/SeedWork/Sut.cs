@@ -31,7 +31,7 @@ namespace IntegrationTests.SeedWork
                 if (token is null) 
                 {
                     _dbService.ClearDatabase();
-                    return new TestResult(false);
+                    return new TestResult(false, []);
                 }
                 
                 var result = await testExecution(_factory, token);
@@ -45,7 +45,7 @@ namespace IntegrationTests.SeedWork
             catch
             {
                 Reset();
-                return new TestResult(false);
+                return new TestResult(false, []);
             }
         }
         

@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Domain;
-using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR;
 using BuildingBlocks.Infrastructure.DomainEventDispatching.MediatR.Notifications;
 using BuildingBlocks.Infrastructure.Outbox;
 using BuildingBlocks.Infrastructure.Serialization;

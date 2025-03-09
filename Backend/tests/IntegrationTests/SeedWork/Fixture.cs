@@ -12,9 +12,10 @@ namespace IntegrationTests.SeedWork
             if (configuration is not null)
             {
                 services.AddHttpClient("Default", o => o.BaseAddress = new(configuration["ServerUrl"]!));
-                services.AddSingleton(s => new DbService(new(configuration["PostgreConnectionString"]!)));
+                services.AddSingleton<DbService>();
                 services.AddSingleton<AuthService>();
                 services.Configure<AppOptions>(configuration.GetSection("App"));
+                services.Configure<DbOptions>(configuration.GetSection("PostgreSqlSettings"));
             }
         }
         

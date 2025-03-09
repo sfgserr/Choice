@@ -27,8 +27,8 @@ export default function UnsuccessfulRequestModal({isToggled, handlePress, errorM
         <View style={styles.buttonContainer}>
           <StyledButton
             content={'Ok'}
-            top={0}
-            bottom={0}
+            top={20}
+            bottom={5}
             isDisabled={false}
             pressed={async () => handlePress()}/>
         </View>
@@ -61,10 +61,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonContainer: {
-    flex: 1,
-    position: 'absolute',
-    width: '85%',
-    bottom: 10,
-    alignSelf: 'center',
+    paddingHorizontal: 15
   }
 })

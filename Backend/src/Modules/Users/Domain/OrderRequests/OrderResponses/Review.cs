@@ -23,8 +23,6 @@ namespace Users.Domain.OrderRequests.OrderResponses
             
             _text = text;
             _grade = grade;
-            
-            AddDomainEvent(new ReviewCreatedDomainEvent(grade, toUserId));
         }
 
         internal static Review Create(

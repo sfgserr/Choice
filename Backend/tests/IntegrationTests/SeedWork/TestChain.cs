@@ -3,11 +3,11 @@ namespace IntegrationTests.SeedWork
 {
     public class TestChain
     {
-        private readonly Func<object?, Task<TestResult>> _test;
+        private readonly Func<object?[], Task<TestResult>> _test;
 
         private TestChain? _next;
 
-        public TestChain(Func<object?, Task<TestResult>> test)
+        public TestChain(Func<object?[], Task<TestResult>> test)
         {
             _test = test;
         }
@@ -17,13 +17,13 @@ namespace IntegrationTests.SeedWork
             _next = next;
         }
 
-        public bool Execute(object? args)
+        public async Task<bool> Execute(object?[] args)
         {
-            var result = _test(args).GetAwaiter().GetResult();
+            var result = await _test(args);
 
             if (result.IsSuccessful)
             {
-                return _next is null || _next.Execute(result.Result);
+                return _next is null || await _next.Execute(result.Result);
             }
 
             return false;

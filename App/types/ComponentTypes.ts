@@ -51,12 +51,14 @@ export type TabBarProps = {
 export type CheckboxProps = {
   checked: boolean
   pressed: () => void
+  readonly: boolean
 };
 
 export type ImageBoxProps = {
   object: ImageBoxObject
   setPhoto: React.Dispatch<React.SetStateAction<ImageBoxObject[]>>
   index: number
+  readonly: boolean
 };
 
 export type CategoriesBottomSheetListProps = {

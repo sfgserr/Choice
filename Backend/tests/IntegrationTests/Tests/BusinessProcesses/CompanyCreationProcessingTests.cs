@@ -12,7 +12,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
         }
         
         [Fact]
-        public void ChangingDataNotCausesDuplicateSocialMedias()
+        public async Task ChangingDataNotCausesDuplicateSocialMedias()
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
             var buySubscriptionPayment = new TestChain(BuySubscriptionPaymentReturnsOk);
@@ -24,12 +24,12 @@ namespace IntegrationTests.Tests.BusinessProcesses
             buySubscriptionPayment.SetNext(paySubscription);
             changeData.SetNext(companyHasTwoSocialMedias);
             
-            var result = fillData.Execute(null);
+            var result = await fillData.Execute([]);
 
             Assert.True(result);
         }
         
-        private async Task<TestResult> CompanyFillDataReturnsOk(object? arg)
+        private async Task<TestResult> CompanyFillDataReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -53,11 +53,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 10000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> BuySubscriptionPaymentReturnsOk(object? arg)
+        private async Task<TestResult> BuySubscriptionPaymentReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -70,11 +70,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 0, false, TokenType.Company);
         }
         
-        private async Task<TestResult> PaySubscriptionReturnsOk(object? arg)
+        private async Task<TestResult> PaySubscriptionReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -87,11 +87,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
                 
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 5000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> ChangeDataReturnsOk(object? arg)
+        private async Task<TestResult> ChangeDataReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -120,11 +120,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 10000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> CompanyHasTwoSocialMedias(object? arg)
+        private async Task<TestResult> CompanyHasTwoSocialMedias(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -138,14 +138,14 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
-                    return new TestResult(false);
+                    return new TestResult(false, []);
                 
                 var json = await response.Content.ReadAsStringAsync();
                 
                 return new TestResult(
                     JObject.Parse(json)
                                       .SelectToken("socialMedias")?
-                                      .Value<string[]>()!.Length > 2);
+                                      .Value<string[]>()!.Length > 2, []);
             }, 0, true, TokenType.Company);
         }
     }

@@ -27,7 +27,7 @@ namespace IntegrationTests.Tests.Users
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 0, true);
 
             Assert.True(result.IsSuccessful); 

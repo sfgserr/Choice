@@ -215,12 +215,16 @@ namespace Users.Domain.OrderRequests.OrderResponses
             CheckRule(new CannotReviewYourselfRule(reviewingUserId, toUserId));
             CheckRule(new CannotReviewWhileOrderActive(_status));
 
-            _reviews.Add(Review.Create(
+            var review = Review.Create(
                 Id,
                 reviewingUserId,
                 toUserId,
                 text,
-                grade));
+                grade);
+            
+            _reviews.Add(review);
+            
+            AddDomainEvent(new ReviewCreatedDomainEvent(grade, toUserId));
         }
     }
 }

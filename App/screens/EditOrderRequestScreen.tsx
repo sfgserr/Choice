@@ -226,14 +226,16 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               }
               readOnly
             />
-            <TouchableOpacity
-              style={styles.chevronDown}
-              onPress={() => ref.current?.expand()}>
-              <Image
-                style={styles.image}
-                source={require('../assets/images/chevron-down.png')}
-              />
-            </TouchableOpacity>
+            {status == 'Active' && (
+              <TouchableOpacity
+                style={styles.chevronDown}
+                onPress={() => ref.current?.expand()}>
+                <Image
+                  style={styles.image}
+                  source={require('../assets/images/chevron-down.png')}
+                />
+              </TouchableOpacity>
+            )}
           </View>
           <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
           <View
@@ -254,33 +256,39 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
                 setDescription(val);
                 setIsChanged(true);
               }}
+              readOnly={status != 'Active'}
               multiline
             />
           </View>
-          <View style={{paddingTop: 10}}>
-            <TouchableOpacity
-              style={[
-                Styles.borderedTextInputView,
-                Styles.borderedTextInputViewColor,
-                Styles.borderedTextInputHeight,
-                {justifyContent: 'center', paddingVertical: 10},
-              ]}
-              onPress={() => {}}>
-              <View style={styles.voiceButton}>
-                <Image
-                  source={require('../assets/images/micro.png')}
-                  style={styles.voiceButtonImage}
-                />
-                <Text style={styles.voiceButtonContent}>Записать голосом</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          {status == 'Active' && (
+            <View style={{paddingTop: 10}}>
+              <TouchableOpacity
+                style={[
+                  Styles.borderedTextInputView,
+                  Styles.borderedTextInputViewColor,
+                  Styles.borderedTextInputHeight,
+                  {justifyContent: 'center', paddingVertical: 10},
+                ]}
+                onPress={() => {}}>
+                <View style={styles.voiceButton}>
+                  <Image
+                    source={require('../assets/images/micro.png')}
+                    style={styles.voiceButtonImage}
+                  />
+                  <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
           <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
           {data.map((item, index) => {
             return (
               <View key={index} style={styles.checkBoxContainer}>
-                <Checkbox checked={item.checked} pressed={item.pressed} />
-                <Text style={styles.checkBoxTitle}>{item.title}</Text>
+                <Checkbox
+                  checked={item.checked}
+                  pressed={item.pressed}
+                  readonly={status != 'Active'}/>
+                {(status == 'Active' || item.checked) && <Text style={styles.checkBoxTitle}>{item.title}</Text>}
               </View>
             );
           })}
@@ -290,42 +298,55 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
             bottom={5}
           />
           <View style={styles.horizontalSpread}>
-            <ImageBox
-              object={photos[0]}
-              setPhoto={setPhotos}
-              index={0}/>
-            <ImageBox
-              object={photos[1]}
-              setPhoto={setPhotos}
-              index={0}/>
-            <ImageBox
-              object={photos[2]}
-              setPhoto={setPhotos}
-              index={0}/>
+            {status == 'Active' || photos[0].getObjectName() != '' && (
+              <ImageBox
+                object={photos[0]}
+                setPhoto={setPhotos}
+                index={0}
+                readonly={status != 'Active'}/>
+            )}
+            {status == 'Active' || photos[1].getObjectName() != '' && (
+              <ImageBox
+                object={photos[1]}
+                setPhoto={setPhotos}
+                index={0}
+                readonly={status != 'Active'}/>
+            )}
+            {status == 'Active' || photos[2].getObjectName() != '' && (
+              <ImageBox
+                object={photos[2]}
+                setPhoto={setPhotos}
+                index={0}
+                readonly={status != 'Active'}/>
+            )}
           </View>
-          <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
-            <Text style={Styles.title}>Радиус поиска</Text>
-            <Text style={styles.radius}>{`${radius} км`}</Text>
-          </View>
-          <View style={{paddingTop: 10}}>
-            <Slider
-              minimumValue={5}
-              maximumValue={25}
-              value={radius}
-              onValueChange={value => {
-                setRadius(Math.floor(value[0]));
-                setIsChanged(true);
-              }}
-              thumbTintColor={'white'}
-              minimumTrackTintColor={'#007AFF'}
-              maximumTrackTintColor={'#e4e4e6'}
-              thumbStyle={styles.thumbStyle}
-            />
-          </View>
-          <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
-            <Text style={Styles.title}>от 5 км</Text>
-            <Text style={Styles.title}>до 25 км</Text>
-          </View>
+          {status == 'Active' && (
+            <>
+              <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
+                <Text style={Styles.title}>Радиус поиска</Text>
+                <Text style={styles.radius}>{`${radius} км`}</Text>
+              </View>
+              <View style={{paddingTop: 10}}>
+                <Slider
+                  minimumValue={5}
+                  maximumValue={25}
+                  value={radius}
+                  onValueChange={value => {
+                    setRadius(Math.floor(value[0]));
+                    setIsChanged(true);
+                  }}
+                  thumbTintColor={'white'}
+                  minimumTrackTintColor={'#007AFF'}
+                  maximumTrackTintColor={'#e4e4e6'}
+                  thumbStyle={styles.thumbStyle}
+                />
+              </View>
+              <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
+                <Text style={Styles.title}>от 5 км</Text>
+                <Text style={Styles.title}>до 25 км</Text>
+              </View>
+            </>
+          )}
         </View>
         {isChanged ? (
           <>
@@ -360,18 +381,18 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
           ref={ref}
           close={() => ref.current?.close()}
         />
-        <SuccessfulRequestModal
-          isToggled={isToggled}
-          handlePress={toggleSuccessfulModal}
-          title={'Изменения сохранены'}
-        />
-        <UnsuccessfulRequestModal
-          isToggled={isErrorToggled}
-          handlePress={() => setIsErrorToggled(prev => !prev)}
-          errorMessage={errorMessage}
-        />
-        <LongRunningOperationIndicator isRefreshing={isRefreshing} />
       </ScrollView>
+      <SuccessfulRequestModal
+        isToggled={isToggled}
+        handlePress={toggleSuccessfulModal}
+        title={'Изменения сохранены'}
+      />
+      <UnsuccessfulRequestModal
+        isToggled={isErrorToggled}
+        handlePress={() => setIsErrorToggled(prev => !prev)}
+        errorMessage={errorMessage}
+      />
+      <LongRunningOperationIndicator isRefreshing={isRefreshing} />
     </GestureHandlerRootView>
   );
 }

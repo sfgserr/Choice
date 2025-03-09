@@ -16,16 +16,18 @@ import {BottomSheetView} from '@gorhom/bottom-sheet';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {Icon} from '@rneui/themed';
 import {GestureStyledButton} from '../buttons/GestureStyledButton.tsx';
+import OrderResponseCard from "../OrderResponseCard.tsx";
 
 type CompanyPageBottomSheetProps = {
   companyId: string
   close: () => void
   navigateToChat: () => void
+  responseId: string
 };
 
 const d = Dimensions.get('screen');
 
-const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToChat}: CompanyPageBottomSheetProps, ref: ForwardedRef<BottomSheetMethods>) => {
+const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToChat, responseId}: CompanyPageBottomSheetProps, ref: ForwardedRef<BottomSheetMethods>) => {
   const companyService = useDependency<CompanyService>('CompanyService');
 
   const [company, setCompany] = React.useState<CompanyInfo | null>(null);
@@ -150,6 +152,12 @@ const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToCh
                 </View>
                 <Text style={styles.lightText}>{`${company.city}, ${company.street}`}</Text>
               </View>
+            </View>
+            <View style={{paddingVertical: 10}}>
+              {responseId != '' && (
+                <OrderResponseCard
+                  responseId={responseId}/>
+              )}
             </View>
             <View style={styles.reviewContainer}>
               <TouchableOpacity style={styles.reviewCard}>

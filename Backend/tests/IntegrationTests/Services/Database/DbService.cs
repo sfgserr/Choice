@@ -1,6 +1,7 @@
 using System.Reflection;
 using DbUp;
 using DbUp.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace IntegrationTests.Services.Database
 {
@@ -8,9 +9,9 @@ namespace IntegrationTests.Services.Database
     {
         private readonly DbOptions _options;
 
-        public DbService(DbOptions options)
+        public DbService(IOptions<DbOptions> options)
         {
-            _options = options;
+            _options = options.Value;
         }
 
         public void ClearDatabase()

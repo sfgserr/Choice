@@ -1,21 +1,27 @@
+using Dapper;
 using IntegrationTests.SeedWork;
 using IntegrationTests.Services.Auth;
+using IntegrationTests.Services.Database;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Npgsql;
 using Xunit.Abstractions;
 
 namespace IntegrationTests.Tests.BusinessProcesses
 {
     public class OrderProcessingTests : Sut
     {
+        private readonly DbOptions _dbOptions;
+        
         public OrderProcessingTests(
             ITestOutputHelper outputHelper, 
             Fixture testBed) : base(outputHelper, testBed)
         {
-            
+            _dbOptions = testBed.GetService<IOptions<DbOptions>>(outputHelper)!.Value;
         }
 
         [Fact]
-        public void OrderProcessExecutesSuccessfully()
+        public async Task OrderProcessExecutesSuccessfully()
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
             var buySubscription = new TestChain(BuySubscriptionPaymentReturnsOk);
@@ -28,6 +34,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var changeEnrollmentDate = new TestChain(ChangeEnrollmentDateReturnsOk);
             var confirm = new TestChain(ConfirmEnrollmentDateReturnsOk);
             var finish = new TestChain(Finish);
+            var getClient = new TestChain(GetClientReturnsOk);
+            var reviewClient = new TestChain(ReviewClient);
+            var getCompany = new TestChain(GetCompanyReturnsOk);
+            var reviewCompany = new TestChain(ReviewCompany);
+            var checkReviewCount = new TestChain(CheckReviewCount);
             
             fillData.SetNext(buySubscription);
             buySubscription.SetNext(paySubscription);
@@ -39,13 +50,18 @@ namespace IntegrationTests.Tests.BusinessProcesses
             getChat.SetNext(changeEnrollmentDate);
             changeEnrollmentDate.SetNext(confirm);
             confirm.SetNext(finish);
+            finish.SetNext(getClient);
+            getClient.SetNext(reviewClient);
+            reviewClient.SetNext(getCompany);
+            getCompany.SetNext(reviewCompany);
+            reviewCompany.SetNext(checkReviewCount);
             
-            var result = fillData.Execute(null);
+            var result = await fillData.Execute([]);
 
             Assert.True(result);
         }
 
-        private async Task<TestResult> CompanyFillDataReturnsOk(object? arg)
+        private async Task<TestResult> CompanyFillDataReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -69,11 +85,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 10000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> BuySubscriptionPaymentReturnsOk(object? arg)
+        private async Task<TestResult> BuySubscriptionPaymentReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -86,11 +102,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
  
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 0, false, TokenType.Company);
         }
         
-        private async Task<TestResult> PaySubscriptionReturnsOk(object? arg)
+        private async Task<TestResult> PaySubscriptionReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -103,11 +119,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
                 
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 5000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> CreateOrderRequestReturnsOk(object? arg)
+        private async Task<TestResult> CreateOrderRequestReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) => 
             {
@@ -131,11 +147,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 5000);
         }
         
-        private async Task<TestResult> GetOrderRequestsReturnsOk(object? arg)
+        private async Task<TestResult> GetOrderRequestsReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
@@ -149,20 +165,20 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var orderRequests = await client.SendAsync(getOrdersRequest);
 
                 if (!orderRequests.IsSuccessStatusCode)
-                    return new TestResult(false);
+                    return new TestResult(false, []);
 
                 var content = await orderRequests.Content.ReadAsStringAsync();
                 var array = JArray.Parse(content);
 
-                return new TestResult(true, array[0].Value<string>("id"));
+                return new TestResult(true, [array[0].Value<string>("id")]);
             }, 0, false, TokenType.Company);
         }
         
-        private async Task<TestResult> CreateOrderResponseReturnsOk(object? arg)
+        private async Task<TestResult> CreateOrderResponseReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
                 
                 using var client = factory.CreateClient("Default");
                 
@@ -182,11 +198,11 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode);
+                return new TestResult(response.IsSuccessStatusCode, []);
             }, 9000, false, TokenType.Company);
         }
 
-        private async Task<TestResult> GetChatsReturnsOk(object? arg)
+        private async Task<TestResult> GetChatsReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
@@ -198,20 +214,20 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var chatsResponse = await client.SendAsync(getChatsRequest);
 
                 if (!chatsResponse.IsSuccessStatusCode)
-                    return new TestResult(false);
+                    return new TestResult(false, []);
 
                 var content = await chatsResponse.Content.ReadAsStringAsync();
                 var array = JArray.Parse(content);
 
-                return new TestResult(true, array[0].Value<string>("userId"));
+                return new TestResult(true, [array[0].Value<string>("userId")]);
             });
         }
     
-        private async Task<TestResult> GetChatReturnsOk(object? arg)
+        private async Task<TestResult> GetChatReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
 
                 using var client = factory.CreateClient("Default");
                 
@@ -221,20 +237,20 @@ namespace IntegrationTests.Tests.BusinessProcesses
                 var chatsResponse = await client.SendAsync(getChatsRequest);
 
                 if (!chatsResponse.IsSuccessStatusCode)
-                    return new TestResult(false);
+                    return new TestResult(false, []);
 
                 var content = await chatsResponse.Content.ReadAsStringAsync();
                 var chat = JObject.Parse(content);
 
-                return new TestResult(true, chat.SelectToken("messages[0].orderResponseId")!.Value<string>());
+                return new TestResult(true, [chat.SelectToken("messages[0].orderResponseId")!.Value<string>()]);
             });
         }
         
-        private async Task<TestResult> ChangeEnrollmentDateReturnsOk(object? arg)
+        private async Task<TestResult> ChangeEnrollmentDateReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
                 
                 using var client = factory.CreateClient("Default");
 
@@ -245,15 +261,15 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode, id);
+                return new TestResult(response.IsSuccessStatusCode, [id]);
             }, 4000);
         }
         
-        private async Task<TestResult> ConfirmEnrollmentDateReturnsOk(object? arg)
+        private async Task<TestResult> ConfirmEnrollmentDateReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
                 
                 using var client = factory.CreateClient("Default");
 
@@ -262,15 +278,15 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode, id);
+                return new TestResult(response.IsSuccessStatusCode, [id]);
             }, 8000, false, TokenType.Company);
         }
         
-        private async Task<TestResult> EnrollReturnsOk(object? arg)
+        private async Task<TestResult> EnrollReturnsOk(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
                 
                 using var client = factory.CreateClient("Default");
 
@@ -279,15 +295,15 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode, id);
+                return new TestResult(response.IsSuccessStatusCode, [id]);
             }, 8000);
         }
         
-        private async Task<TestResult> Finish(object? arg)
+        private async Task<TestResult> Finish(object?[] arg)
         {
             return await ExecuteAuthorizedTest(async (factory, token) =>
             {
-                if (arg is not string id) return new TestResult(false);
+                if (arg[0] is not string id) return new TestResult(false, []);
                 
                 using var client = factory.CreateClient("Default");
 
@@ -296,8 +312,120 @@ namespace IntegrationTests.Tests.BusinessProcesses
 
                 var response = await client.SendAsync(request);
 
-                return new TestResult(response.IsSuccessStatusCode, id);
-            }, 3000, true, TokenType.Company);
+                return new TestResult(response.IsSuccessStatusCode, [id]);
+            }, 3000, false, TokenType.Company);
+        }
+
+        private async Task<TestResult> GetClientReturnsOk(object?[] arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/clients");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+                
+                var response = await client.SendAsync(request);
+                
+                if (!response.IsSuccessStatusCode)
+                    return new TestResult(false, []);
+                
+                var content = await response.Content.ReadAsStringAsync();
+                var jObject = JObject.Parse(content);
+                
+                return new TestResult(response.IsSuccessStatusCode, [arg[0], jObject.SelectToken("id")?.Value<string>()]);       
+            });
+        }
+        
+        private async Task<TestResult> ReviewClient(object?[] arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg[0] is not string responseId || arg[1] is not string toUserId) 
+                    return new TestResult(false, []);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Post, $"api/orderResponses/review")
+                {
+                    Content = JsonContent.Create(new
+                    {
+                        ResponseId = responseId,
+                        ToUserId = toUserId,
+                        Text = "string",
+                        Grade = 5
+                    })
+                };
+                request.Headers.Add("Authorization", $"Bearer {token}");
+                
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, [responseId]);
+            }, 3000, false, TokenType.Company);
+        }
+        
+        private async Task<TestResult> GetCompanyReturnsOk(object?[] arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Get, $"api/companies");
+                request.Headers.Add("Authorization", $"Bearer {token}");
+                
+                var response = await client.SendAsync(request);
+                
+                if (!response.IsSuccessStatusCode)
+                    return new TestResult(false, []);
+                
+                var content = await response.Content.ReadAsStringAsync();
+                var jObject = JObject.Parse(content);
+                
+                return new TestResult(response.IsSuccessStatusCode, [arg[0], jObject.SelectToken("id")?.Value<string>()]);       
+            }, 0, false, TokenType.Company);
+        }
+        
+        private async Task<TestResult> ReviewCompany(object?[] arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) =>
+            {
+                if (arg[0] is not string responseId || arg[1] is not string toUserId) 
+                    return new TestResult(false, []);
+                
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(HttpMethod.Post, $"api/orderResponses/review")
+                {
+                    Content = JsonContent.Create(new
+                    {
+                        ResponseId = responseId,
+                        ToUserId = toUserId,
+                        Text = "string",
+                        Grade = 5
+                    })
+                };
+                request.Headers.Add("Authorization", $"Bearer {token}");
+                
+                var response = await client.SendAsync(request);
+
+                return new TestResult(response.IsSuccessStatusCode, [responseId]);
+            }, 7000);
+        }
+
+        private async Task<TestResult> CheckReviewCount(object?[] args)
+        { 
+            using var connection = new NpgsqlConnection(_dbOptions.ConnectionString);
+            connection.Open();
+
+            const string sql =
+                $"""
+                 SELECT users."Users"."ReviewsCount" FROM users."Users" 
+                 """;
+
+            var counts = await connection.QueryAsync<int>(sql);
+                
+            return await ExecuteAuthorizedTest((_, _) => 
+                Task.FromResult(new TestResult(counts.All(c => c == 1), [])), 0, true);
         }
     }
 }

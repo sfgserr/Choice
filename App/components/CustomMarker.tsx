@@ -5,34 +5,28 @@ import {DeviceEventEmitter, Image, View} from 'react-native';
 
 export default function CustomMarker({
   company,
-  index,
   onPress,
 }: {
-  company: {marker: CompanyMapMarker, responseId: string};
-  index: number;
-  onPress: (companyId: string) => void;
+  company: {marker: CompanyMapMarker, responseId: string, index: number};
+  onPress: (companyId: string, responseId: string) => void;
 }) {
-  const [markerKey, setMarkerKey] = React.useState(index);
-  const [isEnd, setIsEnd] = React.useState(false);
-  const [responseId, setResponseId] = React.useState(company.responseId);
 
-  console.log(company);
+  const [isLoadEnd, setIsLoadEnd] = React.useState(false);
 
   return (
     <Marker
-      key={markerKey}
+      key={company.index}
       point={{lat: +company.marker.latitude, lon: +company.marker.longitude}}
-      onPress={() => onPress(company.marker.id)}>
+      onPress={() => onPress(company.marker.id, company.responseId)}>
       <View>
         <Image
           source={{
             uri: `${process.env.MINIO_URL}/app-files/${company.marker.iconUri}`,
           }}
           onLoadEnd={() => {
-            if (!isEnd || responseId != '') {
-              setMarkerKey(prev => prev + 1);
-              setIsEnd(true);
-              setResponseId('');
+            if (!isLoadEnd) {
+              company.index++;
+              setIsLoadEnd(true);
             }
           }}
           style={{
