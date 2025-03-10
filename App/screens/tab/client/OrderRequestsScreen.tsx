@@ -15,6 +15,35 @@ import {useDependency} from '../../../services/Hooks.ts';
 import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
 
+const Stub = ({navigation, categories}: {navigation: any, categories: Category[]}) => {
+  return (
+    <View
+      style={styles.stubContainer}>
+      <Image
+        source={require('../../../assets/images/sad.png')}
+        style={styles.image}/>
+      <Text style={styles.stubTitle}>
+        Пока нет заказов
+      </Text>
+      <Text style={styles.text}>
+        Давайте исправим это
+      </Text>
+      <View style={styles.buttonContainer}>
+        <StyledButton
+          content={'Создать заказ'}
+          top={40}
+          bottom={0}
+          isDisabled={false}
+          pressed={() => navigation.navigate('CreateOrderRequest', {
+            categories,
+            categoryIndex: 0,
+            onGoBack: (orderRequest: OrderRequest) => {}
+          })}/>
+      </View>
+    </View>
+  );
+}
+
 export default function OrderRequestsScreen({route, navigation}: OrderRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
   const categoryService = useDependency<CategoryService>('CategoryService');
@@ -58,50 +87,23 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Заказы</Text>
       </View>
-      {orderRequests.length > 0 ? (
-        <>
-          <FlatList
-            data={orderRequests}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            renderItem={item => {
-              return (
-                <View style={styles.itemContainer}>
-                  <OrderRequestItem
-                    orderRequest={item.item}
-                    navigation={navigation}/>
-                </View>
-              )
-            }}
-          />
-        </>) : (
-          <>
-            <View
-              style={styles.stubContainer}>
-              <Image
-                source={require('../../../assets/images/sad.png')}
-                style={styles.image}/>
-              <Text style={styles.stubTitle}>
-                Пока нет заказов
-              </Text>
-              <Text style={styles.text}>
-                Давайте исправим это
-              </Text>
-              <View style={styles.buttonContainer}>
-                <StyledButton
-                  content={'Создать заказ'}
-                  top={40}
-                  bottom={0}
-                  isDisabled={false}
-                  pressed={() => navigation.navigate('CreateOrderRequest', {
-                    categories,
-                    categoryIndex: 0,
-                    onGoBack: (orderRequest: OrderRequest) => {}
-                  })}/>
-              </View>
+      <FlatList
+        data={orderRequests}
+        contentContainerStyle={{flex: orderRequests.length == 0 ? 1 : undefined}}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={Stub}
+        renderItem={item => {
+          return (
+            <View style={styles.itemContainer}>
+              <OrderRequestItem
+                orderRequest={item.item}
+                navigation={navigation}/>
             </View>
-          </>)}
+          )
+        }}
+      />
     </View>
   );
 }

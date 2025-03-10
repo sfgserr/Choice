@@ -6,15 +6,15 @@ export default function TextButton({text, onPress}: TextButtonProps) {
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: 'transparent',
-        justifyContent: 'center'
+        alignItems: 'baseline',
       }}
       onPress={onPress}>
       <Text
         style={{
           color: '#2D81E0',
           fontSize: 16,
-          fontWeight: '400'
+          fontWeight: '400',
+          alignSelf: 'center',
         }}>
         {text}
       </Text>

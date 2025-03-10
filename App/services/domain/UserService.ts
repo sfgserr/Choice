@@ -32,4 +32,10 @@ export class UserService {
 
     return this.user;
   }
+
+  async getUserWithoutCache() {
+    await this.fetchUser();
+
+    return this.user;
+  }
 }

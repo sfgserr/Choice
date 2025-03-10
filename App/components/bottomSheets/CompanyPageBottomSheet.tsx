@@ -332,8 +332,8 @@ const styles = StyleSheet.create({
   contactsContainer: {
     paddingTop: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 15,
   },
   contactButton: {
     justifyContent: 'center',

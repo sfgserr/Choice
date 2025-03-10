@@ -138,3 +138,13 @@ export type Chat = {
   lastMessageCreationDate: string
   lastMessageUserSenderId: string
 }
+
+export type Client = {
+  id: string
+  iconUri: string
+  name: string
+  email: string
+  phoneNumber: string
+  city: string
+  street: string
+}

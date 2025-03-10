@@ -1,6 +1,5 @@
 import {CheckboxProps} from '../../types/ComponentTypes.ts';
 import {
-  View,
   Dimensions,
   Image, TouchableOpacity,
 } from 'react-native';
@@ -23,16 +22,14 @@ export default function Checkbox({checked, pressed, readonly = false}: CheckboxP
           }}
           onPress={pressed}
           disabled={readonly}>
-          {checked ? (
-            <>
-              <Image
-                source={require('../../assets/images/checkbox.png')}
-                style={{
-                  width: d.height*0.023,
-                  height: d.height*0.023
-                }}/>
-            </>
-          ) : (<></>)}
+          {checked && (
+            <Image
+              source={require('../../assets/images/checkbox.png')}
+              style={{
+                width: d.height * 0.023,
+                height: d.height * 0.023,
+              }}/>
+          )}
         </TouchableOpacity>
       )}
     </>
