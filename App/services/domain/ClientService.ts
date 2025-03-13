@@ -26,4 +26,12 @@ export class ClientService {
         street
       }));
   }
+
+  async changeIconUri(
+    iconUri: string) {
+    return await this.httpService.request(
+      `clients/${iconUri}`,
+      'PUT',
+      undefined);
+  }
 }

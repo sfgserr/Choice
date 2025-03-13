@@ -6,7 +6,8 @@ import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
 import {UserService} from '../../../services/domain/UserService.ts';
 import {Client} from '../../../types/DomainTypes.ts';
-import TextButton from "../../../components/buttons/TextButton.tsx";
+import TextButton from '../../../components/buttons/TextButton.tsx';
+import ChangeIconUriModal from '../../../components/modals/ChangeIconUriModal.tsx';
 
 export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const userService = useDependency<UserService>('UserService');
@@ -14,6 +15,14 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const { signOut } = React.useContext(AuthContext);
 
   const [user, setUser] = React.useState<Client | null>(null);
+
+  const [isChangeIconUriModalToggled, setIsChangeIconUriModalToggled] = React.useState(false);
+
+  const toggle = React.useCallback(() => setIsChangeIconUriModalToggled(prev => !prev), []);
+
+  const setIcon = React.useCallback((objectName: string) => {
+    setUser(prev => ({...prev, iconUri: objectName}));
+  }, []);
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -41,10 +50,16 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               }}/>
           </View>
           <View style={styles.textButtonContainer}>
-            <TextButton text={'Изменить фото'} onPress={() => {}}/>
+            <TextButton
+              text={'Изменить фото'}
+              onPress={toggle}/>
           </View>
         </>
       )}
+      <ChangeIconUriModal
+        isToggled={isChangeIconUriModalToggled}
+        handlePress={toggle}
+        setIcon={setIcon}/>
     </View>
   );
 }

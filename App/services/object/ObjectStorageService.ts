@@ -18,9 +18,9 @@ export class ObjectStorageService {
     });
   }
 
-  public async upload(minioObject: MinioBlob) {
+  public async upload(minioObject: MinioBlob): Promise<boolean> {
     if (minioObject.buffer == null) {
-      return;
+      return false;
     }
 
     const bucketName = 'app-files';
@@ -32,9 +32,12 @@ export class ObjectStorageService {
         Key: minioObject.objectName,
         ContentType: `image/${minioObject.contentType}`,
       }).promise();
+
+      return true;
     }
     catch (error) {
       Alert.alert('Ошибка', 'ошибка загрузки файла', [{text: 'ok'}]);
+      return false;
     }
   }
 }

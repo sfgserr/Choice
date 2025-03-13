@@ -23,8 +23,8 @@ export class FileValidationService {
 
     const fileContent = await readFile(sourceFile, 'base64');
 
-    if (fileContent.length > 5e6) {
-      Alert.alert('Ошибка', 'Макс. размер файла 5 МБ');
+    if (fileContent.length > 10e6) {
+      Alert.alert('Ошибка', 'Макс. размер файла 10 МБ');
       return {object: null};
     }
 

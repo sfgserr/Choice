@@ -107,3 +107,9 @@ export type CreateAccountModalProps = {
   handlePress: () => void
   navigation: any
 };
+
+export type ChangeIconUriModalProps = {
+  isToggled: boolean
+  handlePress: () => void
+  setIcon: (objectName: string) => void
+};

@@ -4,10 +4,10 @@ import {
   Dimensions,
 } from 'react-native';
 import {ImageBoxProps} from '../types/ComponentTypes.ts';
-import {useDependency} from "../services/Hooks.ts";
-import {FileValidationService} from "../services/object/FileValidationService.ts";
-import {launchImageLibrary} from "react-native-image-picker";
-import React from "react";
+import {useDependency} from '../services/Hooks.ts';
+import {FileValidationService} from '../services/object/FileValidationService.ts';
+import {launchImageLibrary} from 'react-native-image-picker';
+import React from 'react';
 
 export interface ImageBoxObject {
   getUri(): string;
@@ -159,5 +159,5 @@ export default function ImageBox({object, setPhoto, index, readonly = false}: Im
         )}
       </View>
     </View>
-  )
+  );
 }
