@@ -8,7 +8,6 @@ using Users.Application.Companies.Queries.GetCompanies;
 using Users.Application.Companies.Queries.GetCompany;
 using Users.Application.Companies.Queries.GetCompanyOnMap;
 using Users.Application.Contracts;
-using WebApi.Configuration.Authorization;
 using GetCompaniesDto = Users.Application.Companies.Queries.GetCompanies.CompanyDto;
 using GetCompanyDto = Users.Application.Companies.Queries.GetCompany.CompanyDto;
 using GetCompanyOnMapDto = Users.Application.Companies.Queries.GetCompanyOnMap.CompanyDto;
@@ -26,7 +25,7 @@ namespace WebApi.Modules.Users.Companies
             _usersModule = usersModule;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> Create(CreateCompanyRequest request)
         {
             await _usersModule.ExecuteCommand(new CreateCompanyCommand(
@@ -40,7 +39,7 @@ namespace WebApi.Modules.Users.Companies
             return Ok();
         }
 
-        [HttpPost("{iconUri}")]
+        [HttpPut("{iconUri}")]
         [HasPermission(Permissions.ChangeCompanyIconUri)]
         public async Task<IActionResult> ChangeIconUri(string iconUri)
         {
@@ -49,7 +48,7 @@ namespace WebApi.Modules.Users.Companies
             return Ok();
         }
         
-        [HttpPut()]
+        [HttpPut]
         [HasPermission(Permissions.ChangeCompanyData)]
         public async Task<IActionResult> ChangeData(ChangeCompanyDataRequest request)
         {
@@ -93,7 +92,7 @@ namespace WebApi.Modules.Users.Companies
         }
         
         [HasPermission(Permissions.GetCompany)]
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> GetCompany()
         {
             var company = await _usersModule.Query<GetCompanyQuery, GetCompanyDto>(new GetCompanyQuery());

@@ -59,6 +59,7 @@ namespace Users.Infrastructure.Configuration
                 [nameof(UserCreatedDomainNotification)] = typeof(UserCreatedDomainNotification),
                 [nameof(UserDataChangedDomainNotification)] = typeof(UserDataChangedDomainNotification),
                 [nameof(UserRoleChangedDomainNotification)] = typeof(UserRoleChangedDomainNotification),
+                [nameof(UserIconUriChangedDomainNotification)] = typeof(UserIconUriChangedDomainNotification),
             };
 
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule(mappings));

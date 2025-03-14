@@ -19,7 +19,7 @@ namespace WebApi.Modules.Users.Clients
             _usersModule = usersModule;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> CreateClient(CreateClientRequest createClientRequest)
         {
             await _usersModule.ExecuteCommand(new CreateClientCommand(
@@ -34,7 +34,7 @@ namespace WebApi.Modules.Users.Clients
         }
 
         [HasPermission(Permissions.ChangeClientData)]
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> ChangeData(ChangeClientDataRequest request)
         {
             await _usersModule.ExecuteCommand(new ChangeDataCommand(
@@ -57,7 +57,7 @@ namespace WebApi.Modules.Users.Clients
         }
 
         [HasPermission(Permissions.GetClient)]
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             var client = await _usersModule.Query<GetClientQuery, ClientDto>(new GetClientQuery());

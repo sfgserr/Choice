@@ -4,7 +4,6 @@ using Administration.Application.Contracts;
 using Administration.Application.Queries.GetCategories;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Configuration.Authorization;
 
 namespace WebApi.Modules.Admin.Categories
 {

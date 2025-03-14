@@ -27,7 +27,7 @@ namespace WebApi.Modules.Users.OrderRequests
         }
         
         [HasPermission(Permissions.CreateOrderRequest)]
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
         {
             var orderRequestId = await _usersModule.ExecuteCommand<CreateOrderRequestCommand, CreateOrderRequestDto>(
@@ -43,7 +43,7 @@ namespace WebApi.Modules.Users.OrderRequests
             return Ok(orderRequestId);
         }
 
-        [HttpPut()]
+        [HttpPut]
         [HasPermission(Permissions.ChangeOrderRequest)]
         public async Task<IActionResult> ChangeOrderRequest(ChangeOrderRequest request)
         {
@@ -69,7 +69,7 @@ namespace WebApi.Modules.Users.OrderRequests
             return Ok(request);
         }
         
-        [HttpGet()]
+        [HttpGet]
         [HasPermission(Permissions.GetOrderRequests)]
         public async Task<IActionResult> GetOrderRequests()
         {

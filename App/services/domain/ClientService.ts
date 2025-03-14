@@ -34,4 +34,22 @@ export class ClientService {
       'PUT',
       undefined);
   }
+
+  async changeData(
+    name: string,
+    email: string,
+    phoneNumber: string,
+    city: string,
+    street: string) {
+    return await this.httpService.request(
+      'clients',
+      'PUT',
+      JSON.stringify({
+        name,
+        email,
+        phoneNumber,
+        city,
+        street
+      }));
+  }
 }

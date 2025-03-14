@@ -18,6 +18,8 @@ namespace Users.Infrastructure.Data.Domain.Clients
             builder.HasOne<User>("_user")
                 .WithOne()
                 .HasForeignKey<Client>("_userId");
+            
+            builder.Navigation("_user").AutoInclude();
         }
     }
 }

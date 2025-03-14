@@ -30,7 +30,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
         }
 
         [HasPermission(Permissions.PaySubscriptionPayment)]
-        [HttpPut()]
+        [HttpPut]
         [AllowUnsubscribe]
         public async Task<IActionResult> Pay()
         {

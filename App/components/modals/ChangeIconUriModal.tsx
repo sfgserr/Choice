@@ -51,7 +51,7 @@ export default function ChangeIconUriModal({ isToggled, handlePress, setIcon }: 
       const result = await fileValidationService.getContentAndValidate(response.assets[0].uri!);
 
       if (result.object != null) {
-        const response = await clientService.changeIconUri('damn');
+        const response = await clientService.changeIconUri(result.object.objectName);
 
         if (response.result == 'successful') {
           const isSet = await blobService.upload(result.object);

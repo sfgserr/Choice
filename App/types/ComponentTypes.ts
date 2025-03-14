@@ -19,13 +19,15 @@ export type PasswordBoxProps = {
   isError: boolean
 };
 
+type ButtonType = 'default' | 'reversed' | 'warn';
+
 export type StyledButtonProps = {
   content: string
   top: number
   bottom: number
   isDisabled: boolean
   pressed: () => Promise<void>
-  reversed: boolean
+  type: ButtonType
 };
 
 export type TextButtonProps = {
