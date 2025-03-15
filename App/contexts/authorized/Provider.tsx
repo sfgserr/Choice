@@ -11,5 +11,5 @@ export const AuthContextProvider = ({children, setState}: {
     <AuthContext.Provider value={authContext}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

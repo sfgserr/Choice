@@ -33,6 +33,7 @@ export type ClientStackProps = {
     onGoBack: () => void;
   };
   ImageView: {uri: string};
+  ChangePassword: {};
 }
 
 export type CompanyStackProps = {
@@ -113,6 +114,8 @@ export type CreateOrderResponseScreenProps = NativeStackScreenProps<CompanyStack
 export type CompanyChatScreenProps = NativeStackScreenProps<CompanyStackProps, 'Chat'>;
 
 export type ClientChatScreenProps = NativeStackScreenProps<ClientStackProps, 'Chat'>;
+
+export type ChangePasswordScreenProps = NativeStackScreenProps<ClientStackProps, 'ChangePassword'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>

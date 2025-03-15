@@ -107,3 +107,8 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('A
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetClients');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetCompaniesAdmin');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'ChangePassword');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'ChangePassword');
+

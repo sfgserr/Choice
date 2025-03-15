@@ -25,7 +25,9 @@ export class ConnectionManager {
       });
 
       this.connection.onclose(error => {
-        Alert.alert('Ошибка', error?.message, [{text: 'Ок'}]);
+        if (error != undefined) {
+          Alert.alert('Ошибка', error.message, [{text: 'Ок'}]);
+        }
       });
 
       this.connection.on('read', (data: string) => {

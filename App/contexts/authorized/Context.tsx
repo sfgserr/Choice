@@ -3,7 +3,6 @@ import {Auth} from '../../types/AppTypes.ts';
 import {State} from '../../enums/AppEnums.ts';
 import {StateManager} from '../../managers/StateManager.ts';
 import {useDependency} from '../../services/Hooks.ts';
-import {UserService} from '../../services/domain/UserService.ts';
 
 export const AuthContext = React.createContext<Auth>({
   signIn: (accessToken, refreshToken) => {},
@@ -36,4 +35,4 @@ export const useAuthContext = (setState: (state: State) => void) => {
     }),
     [stateManager]
   );
-}
+};

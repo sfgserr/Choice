@@ -20,7 +20,7 @@ namespace Identity.Application.Users.ChangePassword
         {
             var user = await _dbContext.Users.Get(u => u.Id.Equals(_userContext.Id));
             
-            user.ChangePassword(command.Password);
+            user.ChangePassword(command.OldPassword, command.NewPassword);
         }
     }
 }

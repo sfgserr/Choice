@@ -43,5 +43,6 @@ namespace WebApi.Modules
         public const string Chat = "Chat";
         public const string Read = "Read";
         public const string GetOrderResponse = "GetOrderResponse";
+        public const string ChangePassword = "ChangePassword";
     }
 }

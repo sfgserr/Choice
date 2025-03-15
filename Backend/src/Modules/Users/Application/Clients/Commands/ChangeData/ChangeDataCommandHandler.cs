@@ -26,7 +26,7 @@ namespace Users.Application.Clients.Commands.ChangeData
 
         public async Task Execute(ChangeDataCommand command)
         {
-            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.Id));
+            var client = await _dbContext.Clients.Get(c => c.Id.Equals(_userContext.ClientId));
 
             var coords = await _geoService.GetCoords(command.City, command.Street);
             

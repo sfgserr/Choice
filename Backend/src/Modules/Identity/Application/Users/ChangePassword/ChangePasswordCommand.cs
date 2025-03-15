@@ -4,11 +4,14 @@ namespace Identity.Application.Users.ChangePassword
 {
     public class ChangePasswordCommand : ICommand
     {
-        public ChangePasswordCommand(string password)
+        public ChangePasswordCommand(string oldPassword, string newPassword)
         {
-            Password = password;
+            OldPassword = oldPassword;
+            NewPassword = newPassword;
         }
-
-        public string Password { get; }
+        
+        public string OldPassword { get; }
+        
+        public string NewPassword { get; }
     }
 }

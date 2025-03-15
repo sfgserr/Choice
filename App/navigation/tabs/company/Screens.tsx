@@ -4,6 +4,7 @@ import {CompanyTab} from './CompanyTab.ts';
 import * as React from 'react';
 import CompanyAccountScreen from '../../../screens/tab/company/CompanyAccountScreen.tsx';
 import CompanyChatsScreen from '../../../screens/tab/company/CompanyChatsScreen.tsx';
+import {gestureHandlerRootHOC} from "react-native-gesture-handler";
 
 export const OrderRequests = () => (
   <CompanyTab.Screen
@@ -22,6 +23,6 @@ export const Chat = () => (
 export const Account = () => (
   <CompanyTab.Screen
     name={'Account'}
-    component={CompanyAccountScreen}
+    component={gestureHandlerRootHOC(CompanyAccountScreen)}
     options={getOptions({title: 'Аккаунт', source: require('../../../assets/images/account.png')})}/>
 )

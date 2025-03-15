@@ -60,11 +60,11 @@ namespace Identity.Domain.Users
         
         public UserId Id { get; }
         
-        public void ChangePassword(string password)
+        public void ChangePassword(string oldPassword, string newPassword)
         {
-            CheckRule(new PasswordsMustBeEqualRule(_password, password));
+            CheckRule(new PasswordsMustBeEqualRule(_password, oldPassword));
 
-            _password = PasswordManager.HashPassword(password);
+            _password = PasswordManager.HashPassword(newPassword);
         }
         
         public void ChangeData(string email, string phoneNumber, Address address)

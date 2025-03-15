@@ -6,7 +6,8 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import CreateOrderRequestScreen from '../../../screens/CreateOrderRequestScreen.tsx';
 import EditOrderRequestScreen from '../../../screens/EditOrderRequestScreen.tsx';
 import ClientChatScreen from '../../../screens/ClientChatScreen.tsx';
-import ClientImageViewScreen from "../../../screens/ClientImageViewScreen.tsx";
+import ClientImageViewScreen from '../../../screens/ClientImageViewScreen.tsx';
+import ChangePasswordScreen from '../../../screens/ChangePasswordScreen.tsx';
 
 export const Tab = () => (
   <ClientStack.Screen
@@ -52,6 +53,14 @@ export const ImageView = () => (
   <ClientStack.Screen
     name={'ImageView'}
     component={ClientImageViewScreen}
+    options={{headerShown: false}}
+  />
+);
+
+export const ChangePassword = () => (
+  <ClientStack.Screen
+    name={'ChangePassword'}
+    component={gestureHandlerRootHOC(ChangePasswordScreen)}
     options={{headerShown: false}}
   />
 );

@@ -17,7 +17,7 @@ export default function Root(): React.JSX.Element {
     const getState = async () => {
       const state = await stateManager.getState();
       setState(state);
-    }
+    };
 
     getState();
   }, []);

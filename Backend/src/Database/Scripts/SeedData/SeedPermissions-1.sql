@@ -81,3 +81,5 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('GetClients');
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetCompaniesAdmin');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetOrderRequestAsCompany');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('ChangePassword');

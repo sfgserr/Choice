@@ -12,6 +12,7 @@ import BorderedTextInput from '../../../components/inputs/BorderedTextInput.tsx'
 import {SetStateAction} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import SuccessfulRequestModal from "../../../components/modals/SuccessfulRequestModal.tsx";
+import {ClientService} from "../../../services/domain/ClientService.ts";
 
 type Form = {
   id: string
@@ -26,6 +27,7 @@ type Form = {
 
 export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const userService = useDependency<UserService>('UserService');
+  const clientService = useDependency<ClientService>('ClientService');
 
   const { signOut } = React.useContext(AuthContext);
 
@@ -46,6 +48,30 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
 
     setIsChanged(true);
   }, []);
+
+  const saveChanges = React.useCallback(async () => {
+    if (form != null) {
+      const response = await clientService.changeData(
+        `${form.name} ${form.surname}`,
+        form.email,
+        form.phoneNumber,
+        form.city,
+        form.street);
+
+      if (response.result == 'successful') {
+        setIsSuccessfulRequestModalToggled(true);
+      }
+    }
+  }, [form]);
+
+  const isDisable = () => {
+    return form?.name == '' ||
+      form?.surname == '' ||
+      form?.email == '' ||
+      form?.phoneNumber == '' ||
+      form?.city == '' ||
+      form?.street == '';
+  };
 
   const isFocused = useIsFocused();
 
@@ -154,7 +180,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               top={20}
               bottom={0}
               isDisabled={false}
-              pressed={() => {}}
+              pressed={() => navigation.navigate('ChangePassword')}
               type={'reversed'}/>
             <StyledButton
               content={'Выйти из акканта'}
@@ -168,8 +194,8 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
                 content={'Сохранить изменения'}
                 top={20}
                 bottom={0}
-                isDisabled={false}
-                pressed={() => {}}/>
+                isDisabled={isDisable()}
+                pressed={saveChanges}/>
             )}
           </View>
         </ScrollView>
@@ -180,8 +206,11 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
         setIcon={setIcon}/>
       <SuccessfulRequestModal
         isToggled={isSuccessfulRequestModalToggled}
-        handlePress={() => setIsChanged(false)}
-        title={''}
+        handlePress={() => {
+          setIsChanged(false);
+          setIsSuccessfulRequestModalToggled(false);
+        }}
+        title={'Изменения сохранены'}
         text={''}/>
     </View>
   );
@@ -207,7 +236,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     alignSelf: 'center',
   },
   textButtonContainer: {

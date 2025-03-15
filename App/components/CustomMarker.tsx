@@ -30,7 +30,7 @@ export default function CustomMarker({
             }
           }}
           style={{
-            resizeMode: 'contain',
+            resizeMode: 'cover',
             borderRadius: 15,
             width: 30,
             height: 30,
