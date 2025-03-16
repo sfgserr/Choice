@@ -14,7 +14,7 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
 
   const handlePress = () => {
     setIsToggled(prev => !prev);
-  }
+  };
 
   const onPress = (index: number, val: boolean) => {
     if (val) {
@@ -25,9 +25,9 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
       setUrls(prev => {
         prev[index] = '';
         return [...prev];
-      })
+      });
     }
-  }
+  };
 
   const socialMedias = [
     {

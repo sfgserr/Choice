@@ -11,13 +11,13 @@ import {ChangeIconUriModalProps} from '../../types/ComponentTypes.ts';
 import {launchImageLibrary, launchCamera, ImagePickerResponse} from 'react-native-image-picker';
 import {useDependency} from '../../services/Hooks.ts';
 import {FileValidationService} from '../../services/object/FileValidationService.ts';
-import {ClientService} from '../../services/domain/ClientService.ts';
 import {ObjectStorageService} from '../../services/object/ObjectStorageService.ts';
+import {UserService} from '../../services/domain/UserService.ts';
 
 const d = Dimensions.get('screen');
 
 export default function ChangeIconUriModal({ isToggled, handlePress, setIcon }: ChangeIconUriModalProps) {
-  const clientService = useDependency<ClientService>('ClientService');
+  const userService = useDependency<UserService>('UserService');
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
   const blobService = useDependency<ObjectStorageService>('ObjectStorageService');
 
@@ -51,7 +51,7 @@ export default function ChangeIconUriModal({ isToggled, handlePress, setIcon }: 
       const result = await fileValidationService.getContentAndValidate(response.assets[0].uri!);
 
       if (result.object != null) {
-        const response = await clientService.changeIconUri(result.object.objectName);
+        const response = await userService.changeIconUri(result.object.objectName);
 
         if (response.result == 'successful') {
           const isSet = await blobService.upload(result.object);

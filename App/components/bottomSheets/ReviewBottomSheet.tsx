@@ -7,9 +7,9 @@ import {Icon} from '@rneui/themed';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextInputTitle from '../TextInputTitle.tsx';
 import Styles from '../../constants/Styles.tsx';
-import {StyledButton} from '../buttons/StyledButton.tsx';
 import {useDependency} from '../../services/Hooks.ts';
 import {OrderResponseService} from '../../services/domain/OrderResponseService.ts';
+import {GestureStyledButton} from '../buttons/GestureStyledButton.tsx';
 
 const ReviewBottomSheet = React.forwardRef((
   {responseId, toUserId, toggleModal, close}: {
@@ -96,13 +96,13 @@ const ReviewBottomSheet = React.forwardRef((
             multiline
           />
         </View>
-        <StyledButton
+        <GestureStyledButton
           content={'Оставить отзыв'}
           top={40}
           bottom={5}
           isDisabled={text == ''}
           pressed={review}
-          reversed={false}/>
+          type={'default'}/>
       </BottomSheetView>
     </CustomBottomSheet>
   );

@@ -14,31 +14,31 @@ import ImageBox, {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 
+const Option = ({selected, title, onPress, top}: {
+  selected: boolean
+  title: string
+  onPress: () => void
+  top: number}) => (
+  <View style={[styles.optionContainer, {paddingTop: top}]}>
+    <TouchableOpacity
+      style={[
+        styles.optionButton, {
+          borderColor: selected ? '#2688EB' : '#B8C1CC',
+        }]}
+      onPress={onPress}
+      disabled={selected}>
+      {selected ? (<View style={styles.optionSelected}/>) : (<></>)}
+    </TouchableOpacity>
+    <Text style={styles.optionTitle}>{title}</Text>
+  </View>
+);
+
 export default function AboutScreen({next, onChevronPressed, categoriesTitle}: AboutScreenProps) {
   const [photoUris, setPhotoUris] = React.useState<ImageBoxObject[]>(Array.from(
-    {length: 10},
+    {length: 6},
     (_, __) => MinioBlob.createDefault()));
   const [prepaymentAvailable, setPrepaymentAvailable] = React.useState(false);
   const [description, setDescription] = React.useState('');
-
-  const Option = ({selected, title, onPress, top}: {
-    selected: boolean
-    title: string
-    onPress: () => void
-    top: number}) => (
-    <View style={[styles.optionContainer, {paddingTop: top}]}>
-      <TouchableOpacity
-        style={[
-          styles.optionButton, {
-          borderColor: selected ? '#2688EB' : '#B8C1CC',
-        }]}
-        onPress={onPress}
-        disabled={selected}>
-        {selected ? (<View style={styles.optionSelected}/>) : (<></>)}
-      </TouchableOpacity>
-      <Text style={styles.optionTitle}>{title}</Text>
-    </View>
-  );
 
   const onOptionPressed = () => setPrepaymentAvailable(prev => !prev);
 

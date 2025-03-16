@@ -27,14 +27,6 @@ export class ClientService {
       }));
   }
 
-  async changeIconUri(
-    iconUri: string) {
-    return await this.httpService.request(
-      `clients/${iconUri}`,
-      'PUT',
-      undefined);
-  }
-
   async changeData(
     name: string,
     email: string,

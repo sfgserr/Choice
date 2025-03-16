@@ -16,7 +16,7 @@ namespace Chat.Application.ChatUsers.Commands.ChangeName
 
         public async Task Execute(ChangeNameCommand command)
         {
-            var user = await _dbContext.ChatUsers.Get(u => u.Equals(new ChatUserId(command.UserId)));
+            var user = await _dbContext.ChatUsers.Get(u => u.Id.Equals(new ChatUserId(command.UserId)));
             
             user.ChangeName(command.Name);
         }

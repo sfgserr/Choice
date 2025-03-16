@@ -26,6 +26,14 @@ export class UserService {
     if (response.content != null) this.user = response.content;
   }
 
+  async changeIconUri(
+    iconUri: string) {
+    return await this.httpService.request(
+      `${this.tokenService.getUser().userType == UserType.Client ? 'clients' : 'companies'}/${iconUri}`,
+      'PUT',
+      undefined);
+  }
+
   async getUser() {
     if (this.user == null)
       await this.fetchUser();

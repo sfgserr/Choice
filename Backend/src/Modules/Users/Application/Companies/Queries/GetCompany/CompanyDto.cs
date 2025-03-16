@@ -23,6 +23,8 @@ namespace Users.Application.Companies.Queries.GetCompany
 
         public string Street { get; }
         
+        public string IconUri { get; }
+        
         public bool IsPrepaymentAvailable { get; }
     }
 }

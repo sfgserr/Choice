@@ -73,4 +73,32 @@ export class CompanyService {
       undefined,
     );
   }
+
+  async changeData(
+    name: string,
+    phoneNumber: string,
+    email: string,
+    city: string,
+    street: string,
+    description: string,
+    categories: number[],
+    photoUris: string[],
+    socialMediaUris: string[],
+    isPrepaymentAvailable: boolean) {
+    return await this.httpService.request(
+      'companies',
+      'PUT',
+      JSON.stringify({
+        name,
+        phoneNumber,
+        email,
+        city,
+        street,
+        description,
+        categories,
+        photoUris,
+        socialMediaUris,
+        isPrepaymentAvailable,
+      }));
+  }
 }

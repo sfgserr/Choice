@@ -353,7 +353,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
               pressed={() => setShowDateTimePicker(true)}
-              reversed={true}
+              type={'reversed'}
             />
           )}
           {displayWaitForConfirm && (
@@ -363,7 +363,6 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
               pressed={() => {}}
-              reversed={true}
             />
           )}
           {displayEnroll && (
@@ -372,7 +371,6 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               top={10}
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
-              reversed={false}
               pressed={enroll}
             />
           )}
@@ -383,7 +381,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}
               pressed={confirm}
-              reversed={true}
+              type={'reversed'}
             />
           )}
           {displayEnrollment && (
@@ -416,15 +414,14 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
                 top={10}
                 bottom={0}
                 isDisabled={false}
-                pressed={finish}
-                reversed={false}/>
+                pressed={finish}/>
               <StyledButton
                 content={'Отменить запись'}
                 top={10}
                 bottom={0}
                 isDisabled={false}
                 pressed={cancel}
-                reversed={true}/>
+                type={'reversed'}/>
             </>
           )}
           {displayReview && (

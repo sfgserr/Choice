@@ -32,6 +32,7 @@ namespace Users.Application.Companies.Queries.GetCompany
                     users."Companies"."CategoriesId" as {nameof(CompanyDto.Categories)},
                     users."Users"."City" as {nameof(CompanyDto.City)},
                     users."Users"."Street" as {nameof(CompanyDto.Street)},
+                    users."Users"."IconUri" as {nameof(CompanyDto.IconUri)},
                     users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)}
                 FROM users."Users"
                 JOIN users."Companies" ON users."Companies"."Id" = users."Users"."Id"

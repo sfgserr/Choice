@@ -23,7 +23,7 @@ const ChatItem = ({item, userId, navigateToChat}: {
 
   return (
     <TouchableOpacity
-      style={styles.chatContainer}
+      style={{...styles.chatContainer}}
       onPress={() => navigateToChat(item.item.userId)}>
       <Image
         style={styles.icon}
@@ -50,7 +50,7 @@ const ChatItem = ({item, userId, navigateToChat}: {
             ).getMinutes()}`}</Text>
           </View>
         </View>
-        <Text style={styles.lastMessage}>{item.item.lastMessage}</Text>
+        <Text style={styles.lastMessage}>{item.item.lastMessage ?? 'Заказ'}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -62,12 +62,15 @@ const styles = StyleSheet.create({
   chatContainer: {
     flexDirection: 'row',
     paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderColor: '#D7D8D9',
   },
   icon: {
     width: d.height * 0.073,
     height: d.height * 0.073,
     borderRadius: d.height * 0.0365,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     alignSelf: 'center',
   },
   chatInfoContainer: {

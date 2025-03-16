@@ -1,9 +1,10 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, View} from 'react-native';
 import React, {ForwardedRef} from 'react';
 import CustomBottomSheet from './CustomBottomSheet.tsx';
 import {BottomSheetMethods} from '@gorhom/bottom-sheet/lib/typescript/types';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {Icon} from '@rneui/themed';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const PickCategoriesBottomSheet = React.forwardRef(({categories, close, select}: any, ref: ForwardedRef<BottomSheetMethods>) => {
   return (

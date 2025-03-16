@@ -49,6 +49,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
   const [isToggled, setIsToggled] = React.useState(false);
 
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+
   React.useEffect(() => {
     const backPress = () => {
       navigation.goBack();
@@ -164,6 +166,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
   const launchLibrary = React.useCallback(async () => {
     if (chatUser != null) {
+      setIsRefreshing(true);
+
       const imagePickerResponse = await launchImageLibrary({mediaType: 'photo'});
 
       if (imagePickerResponse.assets != undefined && imagePickerResponse.assets[0].uri != undefined) {
@@ -172,6 +176,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
         if (response && response.content != null) {
           setMessages(prev => [...prev, response.content!]);
         }
+
+        setIsRefreshing(false);
       }
     }
   }, [chatUser]);
@@ -325,7 +331,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
           </View>
         </View>
       )}
-      <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0} />
+      <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0 || isRefreshing} />
       <ReviewBottomSheet
         ref={ref}
         toUserId={chatUser == null ? '' : chatUser.id}

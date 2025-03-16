@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {ActivityIndicator, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
-import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
 import {UserService} from '../../../services/domain/UserService.ts';
@@ -11,8 +10,9 @@ import TextInputTitle from '../../../components/TextInputTitle.tsx';
 import BorderedTextInput from '../../../components/inputs/BorderedTextInput.tsx';
 import {SetStateAction} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-import SuccessfulRequestModal from "../../../components/modals/SuccessfulRequestModal.tsx";
-import {ClientService} from "../../../services/domain/ClientService.ts";
+import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequestModal.tsx';
+import {ClientService} from '../../../services/domain/ClientService.ts';
+import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 
 type Form = {
   id: string
@@ -175,14 +175,14 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               isError={false}
               isBig={false}
               keyboard={'default'}/>
-            <StyledButton
+            <GestureStyledButton
               content={'Изменить пароль'}
               top={20}
               bottom={0}
               isDisabled={false}
               pressed={() => navigation.navigate('ChangePassword')}
               type={'reversed'}/>
-            <StyledButton
+            <GestureStyledButton
               content={'Выйти из акканта'}
               top={20}
               bottom={0}
@@ -190,7 +190,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               pressed={signOut}
               type={'warn'}/>
             {isChanged && (
-              <StyledButton
+              <GestureStyledButton
                 content={'Сохранить изменения'}
                 top={20}
                 bottom={0}

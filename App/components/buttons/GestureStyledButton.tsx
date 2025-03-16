@@ -1,10 +1,10 @@
 import {Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Styles from '../../constants/Styles.tsx';
 import React from 'react';
 import {StyledButtonProps} from '../../types/ComponentTypes.ts';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-export function GestureStyledButton({content, top, bottom, isDisabled, pressed}: StyledButtonProps) {
+export function GestureStyledButton({content, top, bottom, isDisabled, pressed, type = 'default'}: StyledButtonProps) {
   return (
     <View
       style={{
@@ -17,7 +17,8 @@ export function GestureStyledButton({content, top, bottom, isDisabled, pressed}:
           {
             justifyContent: 'center',
             alignItems: 'baseline',
-            backgroundColor: isDisabled ? '#abcdf3' : '#2D81E0',
+            backgroundColor: type == 'reversed' || type == 'warn' ? '#001C3D0D' : '#2D81E0',
+            opacity: isDisabled ? 0.4 : 1,
           },
         ]}
         disabled={isDisabled}
@@ -27,6 +28,7 @@ export function GestureStyledButton({content, top, bottom, isDisabled, pressed}:
             Styles.styledButtonContent,
             {
               alignSelf: 'center',
+              color: type == 'reversed' ? '#2D81E0' : type == 'warn' ? '#EB2626' : 'white',
             },
           ]}>
           {content}

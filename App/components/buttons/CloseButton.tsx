@@ -1,6 +1,7 @@
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import React from 'react';
 import {CloseButtonProps} from '../../types/ComponentTypes.ts';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function CloseButton({close}: CloseButtonProps) {
   return (
