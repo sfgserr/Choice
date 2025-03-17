@@ -24,8 +24,9 @@ namespace Administration.Application.Queries.GetClients
                     users."Users"."IconUri" as {nameof(ClientDto.IconUri)},
                     users."Users"."Name" as {nameof(ClientDto.Name)},
                     users."Users"."City" as {nameof(ClientDto.City)},
-                    users."Users"."Street" as {nameof(ClientDto.Street)},
-                FROM users."Users" 
+                    users."Users"."Street" as {nameof(ClientDto.Street)}
+                FROM users."Users"
+                WHERE users."Users"."Role" = 'Client' 
                 """;
 
             return await connection.QueryAsync<ClientDto>(sql);

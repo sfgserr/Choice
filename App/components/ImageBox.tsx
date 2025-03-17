@@ -1,10 +1,11 @@
-import {Image, TouchableOpacity} from 'react-native';
+import {Image} from 'react-native';
 import {
   View,
   Dimensions,
 } from 'react-native';
 import {ImageBoxProps} from '../types/ComponentTypes.ts';
 import {useDependency} from '../services/Hooks.ts';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
 import {launchImageLibrary} from 'react-native-image-picker';
 import React from 'react';
@@ -131,29 +132,33 @@ export default function ImageBox({object, setPhoto, index, readonly = false}: Im
               }}/>
 
             {!readonly && (
-              <TouchableOpacity
+              <View
                 style={{
-                  width: d.width * 0.06,
-                  height: d.width * 0.06,
-                  borderWidth: 1,
-                  borderColor: '#E7E7E7',
-                  backgroundColor: 'white',
                   position: 'absolute',
                   top: -6,
                   right: -6,
-                  borderRadius: d.width * 0.03,
-                  justifyContent: 'center',
-                }}
-                onPress={remove}>
-                <Image
+                }}>
+                <TouchableOpacity
                   style={{
-                    width: d.width * 0.03,
-                    height: d.width * 0.03,
-                    resizeMode: 'contain',
-                    alignSelf: 'center',
+                    width: d.width * 0.06,
+                    height: d.width * 0.06,
+                    borderWidth: 1,
+                    borderColor: '#E7E7E7',
+                    backgroundColor: 'white',
+                    borderRadius: d.width * 0.03,
+                    justifyContent: 'center',
                   }}
-                  source={require('../assets/images/cross.png')}/>
-              </TouchableOpacity>
+                  onPress={remove}>
+                  <Image
+                    style={{
+                      width: d.width * 0.03,
+                      height: d.width * 0.03,
+                      resizeMode: 'contain',
+                      alignSelf: 'center',
+                    }}
+                    source={require('../assets/images/cross.png')}/>
+                </TouchableOpacity>
+              </View>
             )}
           </>
         )}

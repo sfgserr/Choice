@@ -33,6 +33,7 @@ import {CompanyService} from '../../../services/domain/CompanyService.ts';
 import {ObjectStorageService} from '../../../services/object/ObjectStorageService.ts';
 import LongRunningOperationIndicator from '../../../components/LongRunningOperationIndicator.tsx';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
+import GestureBorderedTextInput from "../../../components/inputs/GestureBordererdTextInput.tsx";
 
 type Form = {
   id: string
@@ -292,7 +293,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'Название'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.name}
               onChanged={(text: string) => set(prev => ({...prev, name: text}))}
               placeholder={'Введите название'}
@@ -303,7 +304,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'E-mail'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.email}
               onChanged={(text: string) => set(prev => ({...prev, email: text}))}
               placeholder={'Введите e-mail'}
@@ -314,7 +315,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'Номер телефона'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.phoneNumber}
               onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
               placeholder={'Введите номер телефона'}
@@ -325,7 +326,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'Город'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.city}
               onChanged={(text: string) => set(prev => ({...prev, city: text}))}
               placeholder={'Город'}
@@ -336,7 +337,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'Улица'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.street}
               onChanged={(text: string) => set(prev => ({...prev, street: text}))}
               placeholder={'Улица'}
@@ -358,7 +359,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               s={'Описание'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.description}
               onChanged={(text: string) => set(prev => ({...prev, description: text}))}
               placeholder={'Введите описание компании'}
@@ -374,14 +375,15 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
                 style={Styles.borderedTextInput}
                 value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
                 readOnly/>
-              <TouchableOpacity
-                style={styles.chevronDown}
-                onPress={() => ref.current?.expand()}>
-                <Image
-                  style={styles.image}
-                  source={require('../../../assets/images/chevron-down.png')}
-                />
-              </TouchableOpacity>
+              <View style={styles.chevronDown}>
+                <TouchableOpacity
+                  onPress={() => ref.current?.expand()}>
+                  <Image
+                    style={styles.image}
+                    source={require('../../../assets/images/chevron-down.png')}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             <TextInputTitle
               s={'Добавьте фотографии'}

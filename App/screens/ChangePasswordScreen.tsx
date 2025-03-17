@@ -9,7 +9,7 @@ import {useDependency} from '../services/Hooks.ts';
 import {IdentityService} from '../services/domain/IdentityService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 
-export default function ChangePasswordScreen({route, navigation}: ChangePasswordScreenProps) {
+export default function ChangePasswordScreen({navigation}: ChangePasswordScreenProps) {
   const identityService = useDependency<IdentityService>('IdentityService');
 
   const [oldPassword, setOldPassword] = useState<string>('');

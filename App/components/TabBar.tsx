@@ -14,7 +14,7 @@ import {
   TabsType,
 } from '../types/TabTypes.ts';
 
-export default function TabBar({tabs}: TabBarProps) {
+export default function TabBar({tabs, big = true}: TabBarProps) {
   const { width } = Dimensions.get('screen');
 
   const data = Object.keys(tabs).map<TabsType>((v, i) => ({
@@ -44,15 +44,15 @@ export default function TabBar({tabs}: TabBarProps) {
     );
   });
 
-  const Indicator = ({scrollX, measures}: IndicatorProps) => {
-    const inputRange = data.map((_, i) => i*width);
+  const Indicator = ({scrollX, measures, big}: IndicatorProps) => {
+    const inputRange = data.map((_, i) => i * width);
     const indicatorWidth = scrollX.interpolate({
       inputRange,
-      outputRange: measures.map((m) => m.width*2.0)
+      outputRange: measures.map((m) => big ? m.width * 2.0 : m.width),
     });
     const translateX = scrollX.interpolate({
       inputRange,
-      outputRange: measures.map((m) => m.x-m.width*0.5)
+      outputRange: measures.map((m) => big ? m.x - m.width * 0.5 : m.x),
     });
 
     return (
@@ -129,7 +129,7 @@ export default function TabBar({tabs}: TabBarProps) {
             );
           })}
         </View>
-        {measures.length > 0 && <Indicator measures={measures} scrollX={scrollX}/>}
+        {measures.length > 0 && <Indicator measures={measures} scrollX={scrollX} big={big}/>}
       </View>
     );
   }

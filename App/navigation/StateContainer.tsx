@@ -7,6 +7,7 @@ import CompanyNavigator from './navigators/company/CompanyNavigator.tsx';
 import UserNavigator from './navigators/user/UserNavigator.tsx';
 import UnsubscribeNavigator from './navigators/unsubscribe/UnsubscribeNavigator.tsx';
 import LoadingNavigator from './navigators/loading/LoadingNavigator.tsx';
+import AdminNavigator from './navigators/admin/AdminNavigator.tsx';
 
 export default function StateContainer({state}: {state: State}) {
   return (
@@ -17,6 +18,7 @@ export default function StateContainer({state}: {state: State}) {
       <UserNavigator state={state}/>
       <UnsubscribeNavigator state={state}/>
       <LoadingNavigator state={state}/>
+      <AdminNavigator state={state}/>
     </NavigationContainer>
-  )
+  );
 }

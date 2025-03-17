@@ -31,4 +31,5 @@ export type MeasuresType = {
 export type IndicatorProps = {
   measures: MeasuresType[],
   scrollX: Animated.Value
+  big: boolean
 }

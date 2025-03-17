@@ -20,13 +20,13 @@ namespace Administration.Application.Queries.GetCompanies
             const string sql = 
                 $"""
                 SELECT 
-                    users."Companies"."Id" as {nameof(CompanyDto.Id)},
+                    users."Users"."Id" as {nameof(CompanyDto.Id)},
                     users."Users"."IconUri" as {nameof(CompanyDto.IconUri)},
                     users."Users"."Name" as {nameof(CompanyDto.Name)},
                     users."Users"."City" as {nameof(CompanyDto.City)},
-                    users."Companies"."Street" as {nameof(CompanyDto.Street)}
-                FROM users."Companies"
-                JOIN users."Users" ON users."Users"."Id" = users."Companies"."Id"
+                    users."Users"."Street" as {nameof(CompanyDto.Street)}
+                FROM users."Users"
+                WHERE users."Users"."Role" = 'Company'
                 """;
 
             return await connection.QueryAsync<CompanyDto>(sql);

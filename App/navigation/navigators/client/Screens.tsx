@@ -7,7 +7,7 @@ import CreateOrderRequestScreen from '../../../screens/CreateOrderRequestScreen.
 import EditOrderRequestScreen from '../../../screens/EditOrderRequestScreen.tsx';
 import ClientChatScreen from '../../../screens/ClientChatScreen.tsx';
 import ClientImageViewScreen from '../../../screens/ClientImageViewScreen.tsx';
-import ChangePasswordScreen from '../../../screens/ChangePasswordScreen.tsx';
+import ClientChangePasswordScreen from '../../../screens/ClientChangePasswordScreen.tsx';
 
 export const Tab = () => (
   <ClientStack.Screen
@@ -60,7 +60,7 @@ export const ImageView = () => (
 export const ChangePassword = () => (
   <ClientStack.Screen
     name={'ChangePassword'}
-    component={gestureHandlerRootHOC(ChangePasswordScreen)}
+    component={gestureHandlerRootHOC(ClientChangePasswordScreen)}
     options={{headerShown: false}}
   />
 );

@@ -9,7 +9,7 @@ export default function GestureBorderedTextInput({ value, onChanged, placeholder
 
   const borderColor = () => {
     return isFocused ? Styles.borderedTextInputFocused : Styles.borderedTextInputUnfocused;
-  }
+  };
 
   return (
     <View
@@ -17,7 +17,7 @@ export default function GestureBorderedTextInput({ value, onChanged, placeholder
         Styles.borderedTextInputView,
         isBig ? Styles.borderedTextInputBigHeight : Styles.borderedTextInputHeight,
         !isError ? [borderColor(), Styles.borderedTextInputViewColor] : Styles.borderedTextInputError,
-        {alignItems: 'baseline'}
+        isBig ? {alignItems: 'baseline'} : {},
       ]}>
       <TextInput
         value={value}
@@ -26,7 +26,7 @@ export default function GestureBorderedTextInput({ value, onChanged, placeholder
         placeholder={placeholder}
         onFocus={() => setIsFocused(true)}
         style={Styles.borderedTextInput}
-        multiline
+        multiline={isBig}
         keyboardType={keyboard}/>
     </View>
   )

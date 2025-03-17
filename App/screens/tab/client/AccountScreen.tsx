@@ -8,11 +8,12 @@ import TextButton from '../../../components/buttons/TextButton.tsx';
 import ChangeIconUriModal from '../../../components/modals/ChangeIconUriModal.tsx';
 import TextInputTitle from '../../../components/TextInputTitle.tsx';
 import BorderedTextInput from '../../../components/inputs/BorderedTextInput.tsx';
-import {SetStateAction} from 'react';
+import {SetStateAction, useCallback, useMemo} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequestModal.tsx';
 import {ClientService} from '../../../services/domain/ClientService.ts';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
+import GestureBorderedTextInput from "../../../components/inputs/GestureBordererdTextInput.tsx";
 
 type Form = {
   id: string
@@ -64,7 +65,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
     }
   }, [form]);
 
-  const isDisable = () => {
+  const isDisabled = () => {
     return form?.name == '' ||
       form?.surname == '' ||
       form?.email == '' ||
@@ -113,7 +114,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'Имя'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.name}
               onChanged={(text: string) => set(prev => ({...prev, name: text}))}
               placeholder={'Введите имя'}
@@ -124,7 +125,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'Фамилия'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.surname}
               onChanged={(text: string) => set(prev => ({...prev, surname: text}))}
               placeholder={'Введите фамилию'}
@@ -135,7 +136,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'E-mail'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.email}
               onChanged={(text: string) => set(prev => ({...prev, email: text}))}
               placeholder={'Введите e-mail'}
@@ -146,7 +147,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'Номер телефона'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.phoneNumber}
               onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
               placeholder={'Введите номер телефона'}
@@ -157,7 +158,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'Город'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.city}
               onChanged={(text: string) => set(prev => ({...prev, city: text}))}
               placeholder={'Город'}
@@ -168,7 +169,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               s={'Улица'}
               top={20}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={form?.street}
               onChanged={(text: string) => set(prev => ({...prev, street: text}))}
               placeholder={'Улица'}
@@ -194,7 +195,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
                 content={'Сохранить изменения'}
                 top={20}
                 bottom={0}
-                isDisabled={isDisable()}
+                isDisabled={isDisabled()}
                 pressed={saveChanges}/>
             )}
           </View>

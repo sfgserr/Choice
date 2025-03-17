@@ -17,6 +17,7 @@ import {OrderResponseService} from './domain/OrderResponseService.ts';
 import {ChatService} from './domain/ChatService.ts';
 import {FileValidationService} from './object/FileValidationService.ts';
 import {IdentityService} from './domain/IdentityService.ts';
+import {AdminService} from "./domain/AdminService.ts";
 
 type Object = {
   [name: string]: object,
@@ -71,6 +72,7 @@ export class ObjectGraph {
     const orderResponseService = new OrderResponseService(httpService);
     const chatService = new ChatService(httpService, objectStorageService, fileValidationService);
     const identityService = new IdentityService(httpService);
+    const adminService = new AdminService(httpService);
 
     this.objects.AuthService = authService;
     this.objects.AccountManager = accountManager;
@@ -89,6 +91,7 @@ export class ObjectGraph {
     this.objects.FileValidationService = fileValidationService;
     this.objects.ObjectStorageService = objectStorageService;
     this.objects.IdentityService = identityService;
+    this.objects.AdminService = adminService;
 
     this.isInitialized = true;
   }

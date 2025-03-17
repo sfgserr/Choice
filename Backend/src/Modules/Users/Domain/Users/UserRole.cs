@@ -11,8 +11,6 @@ namespace Users.Domain.Users
         
         public string Value { get; }
 
-        public static UserRole Admin { get; } = new UserRole("Admin");
-
         public static UserRole Client { get; } = new UserRole("Client");
 
         public static UserRole Company { get; } = new UserRole("Company");
@@ -21,7 +19,6 @@ namespace Users.Domain.Users
 
         public static UserRole Parse(string value) => value switch
         {
-            "Admin" => Admin,
             "Client" => Client,
             "Company" => Company,
             "User" => User,

@@ -2,7 +2,7 @@ import {Text, View} from 'react-native';
 import Styles from '../../constants/Styles.tsx';
 import React from 'react';
 import {StyledButtonProps} from '../../types/ComponentTypes.ts';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Pressable} from 'react-native-gesture-handler';
 
 export function GestureStyledButton({content, top, bottom, isDisabled, pressed, type = 'default'}: StyledButtonProps) {
   return (
@@ -11,7 +11,7 @@ export function GestureStyledButton({content, top, bottom, isDisabled, pressed, 
         paddingTop: top,
         paddingBottom: bottom,
       }}>
-      <TouchableOpacity
+      <Pressable
         style={[
           Styles.styledButton,
           {
@@ -33,7 +33,7 @@ export function GestureStyledButton({content, top, bottom, isDisabled, pressed, 
           ]}>
           {content}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

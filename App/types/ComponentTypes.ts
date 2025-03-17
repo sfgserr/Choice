@@ -48,6 +48,7 @@ type Tab = {
 
 export type TabBarProps = {
   tabs: Tab[]
+  big: boolean
 };
 
 export type CheckboxProps = {

@@ -47,6 +47,7 @@ export type CompanyStackProps = {
     id: string;
     onGoBack: () => void;
   };
+  ChangePassword: {};
 }
 
 export type UserStackProps = {
@@ -56,6 +57,14 @@ export type UserStackProps = {
 export type UnsubscribeStackProps = {
   SubscriptionPlans: undefined;
   PaySubscription: {price: number};
+}
+
+export type AdminStackProps = {
+  Panel: undefined;
+  Reviews: undefined;
+  EditClient: undefined;
+  EditCompany: undefined;
+  EditReview: undefined;
 }
 
 export type ClientTabProps = {
@@ -115,7 +124,13 @@ export type CompanyChatScreenProps = NativeStackScreenProps<CompanyStackProps, '
 
 export type ClientChatScreenProps = NativeStackScreenProps<ClientStackProps, 'Chat'>;
 
-export type ChangePasswordScreenProps = NativeStackScreenProps<ClientStackProps, 'ChangePassword'>;
+export type ClientChangePasswordScreenProps = NativeStackScreenProps<ClientStackProps, 'ChangePassword'>;
+
+export type CompanyChangePasswordScreenProps = NativeStackScreenProps<CompanyStackProps, 'ChangePassword'>;
+
+export type ChangePasswordScreenProps = { navigation: any };
+
+export type PanelScreenProps = NativeStackScreenProps<AdminStackProps, 'Panel'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>

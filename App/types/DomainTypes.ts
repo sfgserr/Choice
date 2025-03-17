@@ -148,3 +148,11 @@ export type Client = {
   city: string
   street: string
 }
+
+export type AdminUser = {
+  id: string
+  iconUri: string
+  name: string
+  city: string
+  street: string
+}
