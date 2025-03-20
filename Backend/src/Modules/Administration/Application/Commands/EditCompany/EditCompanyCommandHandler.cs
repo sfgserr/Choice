@@ -1,6 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Data;
-using BuildingBlocks.Application.Events;
 using Dapper;
 
 namespace Administration.Application.Commands.EditCompany
@@ -8,7 +7,6 @@ namespace Administration.Application.Commands.EditCompany
     internal class EditCompanyCommandHandler : ICommandHandler<EditCompanyCommand>
     {
         private readonly ISqlConnectionFactory _factory;
-        private readonly IEventBus _eventBus;
         
         internal EditCompanyCommandHandler(ISqlConnectionFactory factory)
         {

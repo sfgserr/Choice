@@ -24,12 +24,12 @@ export default function CategoryItem({categoryId, categories, navigation}: {cate
           paddingBottom: 10,
           borderBottomWidth: 1,
           borderColor: '#e9e9e9',
-          flex: 1
+          flex: 1,
         }}
         onPress={() => {
           navigation.navigate('Map', {
             categoryId,
-            categories
+            categories,
           });
         }}>
         <View
