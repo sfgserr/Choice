@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Category, OrderRequest} from './DomainTypes.ts';
 import {ReactNode} from 'react';
 import {KeyboardTypeOptions} from 'react-native';
-import {ImageBoxObject, MinioBlob} from "../components/ImageBox.tsx";
+import {ImageBoxObject} from '../components/ImageBox.tsx';
 
 export type BorderedTextInputProps = {
   value: string
@@ -11,6 +11,7 @@ export type BorderedTextInputProps = {
   isError: boolean
   isBig: boolean | undefined
   keyboard: KeyboardTypeOptions | undefined
+  isReadonly: boolean
 };
 
 export type PasswordBoxProps = {

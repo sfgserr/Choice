@@ -51,7 +51,12 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
               <CategoryItem
                 categoryId={item.index}
                 categories={categories}
-                navigation={navigation}/>
+                onPress={() => {
+                  navigation.navigate('Map', {
+                    categoryId: item.index,
+                    categories,
+                  });
+                }}/>
             </View>
           )
         }}/>

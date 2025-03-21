@@ -19,7 +19,7 @@ export default function CompaniesScreen() {
         return;
       }
 
-      Alert.alert('Ошибка', 'Ну удалось получить компании', [{text: 'Ок'}]);
+      Alert.alert('Ошибка', 'Ну удалось получить компании', [{info: 'Ок'}]);
     };
 
     getCompanies();

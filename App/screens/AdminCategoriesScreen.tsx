@@ -4,7 +4,7 @@ import CategoryItem from '../components/listItems/CategoryItem.tsx';
 import {Category} from '../types/DomainTypes.ts';
 import {useDependency} from '../services/Hooks.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
-import {StyledButton} from "../components/buttons/StyledButton.tsx";
+import {StyledButton} from '../components/buttons/StyledButton.tsx';
 
 export default function AdminCategoriesScreen({navigation}: {navigation: any}) {
   const categoryService = useDependency<CategoryService>('CategoryService');
@@ -50,7 +50,11 @@ export default function AdminCategoriesScreen({navigation}: {navigation: any}) {
               <CategoryItem
                 categoryId={item.index}
                 categories={categories}
-                navigation={navigation}/>
+                onPress={() => {
+                  navigation.navigate('EditCategory', {
+                    category: item.item,
+                  });
+                }}/>
             </View>
           )
         }}/>
@@ -60,7 +64,7 @@ export default function AdminCategoriesScreen({navigation}: {navigation: any}) {
           top={0}
           bottom={0}
           isDisabled={false}
-          pressed={() => {}}
+          pressed={() => navigation.navigate('CreateCategory')}
           type={'default'}/>
       </View>
     </View>

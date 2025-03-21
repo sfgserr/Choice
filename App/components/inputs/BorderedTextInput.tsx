@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 import Styles from '../../constants/Styles.tsx';
 import {BorderedTextInputProps} from '../../types/ComponentTypes.ts';
 
-export default function BorderedTextInput({ value, onChanged, placeholder, isError, isBig, keyboard=undefined }: BorderedTextInputProps) {
+export default function BorderedTextInput({ value, onChanged, placeholder, isError, isBig, isReadonly=false, keyboard=undefined }: BorderedTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);
 
   const borderColor = () => {
@@ -26,7 +26,8 @@ export default function BorderedTextInput({ value, onChanged, placeholder, isErr
         onFocus={() => setIsFocused(true)}
         style={Styles.borderedTextInput}
         multiline={isBig}
-        keyboardType={keyboard}/>
+        keyboardType={keyboard}
+        readOnly={isReadonly}/>
     </View>
-  )
+  );
 }

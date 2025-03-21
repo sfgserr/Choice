@@ -36,7 +36,7 @@ export class ObjectStorageService {
       return true;
     }
     catch (error) {
-      Alert.alert('Ошибка', 'ошибка загрузки файла', [{text: 'ok'}]);
+      Alert.alert('Ошибка', 'ошибка загрузки файла', [{info: 'ok'}]);
       return false;
     }
   }

@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOffset: {
       width: 10,
-      height: 10
+      height: 10,
     },
     shadowOpacity: 1,
-    elevation: 5
-  }
+    elevation: 5,
+  },
 });

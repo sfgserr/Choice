@@ -61,11 +61,13 @@ export type UnsubscribeStackProps = {
 
 export type AdminStackProps = {
   Panel: undefined;
-  Reviews: undefined;
   EditClient: undefined;
   EditCompany: undefined;
-  EditReview: undefined;
-}
+  EditCategory: {
+    category: Category;
+  };
+  CreateCategory: undefined;
+};
 
 export type ClientTabProps = {
   Categories: undefined;
@@ -131,6 +133,10 @@ export type CompanyChangePasswordScreenProps = NativeStackScreenProps<CompanySta
 export type ChangePasswordScreenProps = { navigation: any };
 
 export type PanelScreenProps = NativeStackScreenProps<AdminStackProps, 'Panel'>;
+
+export type EditCategoryScreenProps = NativeStackScreenProps<AdminStackProps, 'EditCategory'>;
+
+export type CreateCategoryScreenProps = NativeStackScreenProps<AdminStackProps, 'CreateCategory'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>

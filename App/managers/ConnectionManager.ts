@@ -26,7 +26,7 @@ export class ConnectionManager {
 
       this.connection.onclose(error => {
         if (error != undefined) {
-          Alert.alert('Ошибка', error.message, [{text: 'Ок'}]);
+          Alert.alert('Ошибка', error.message, [{info: 'Ок'}]);
         }
       });
 

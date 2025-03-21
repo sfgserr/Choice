@@ -8,7 +8,7 @@ import {Category} from '../../types/DomainTypes.ts';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {ClientTabProps} from '../../types/NavigationTypes.ts';
 
-export default function CategoryItem({categoryId, categories, navigation}: {categoryId: number, categories: Category[], navigation: BottomTabNavigationProp<ClientTabProps, 'Categories', undefined>}) {
+export default function CategoryItem({categoryId, categories, onPress}: {categoryId: number, categories: Category[], onPress: () => void}) {
   const { width, height } = Dimensions.get('screen');
 
   return (
@@ -26,12 +26,7 @@ export default function CategoryItem({categoryId, categories, navigation}: {cate
           borderColor: '#e9e9e9',
           flex: 1,
         }}
-        onPress={() => {
-          navigation.navigate('Map', {
-            categoryId,
-            categories,
-          });
-        }}>
+        onPress={onPress}>
         <View
           style={{
             width: height*0.054,

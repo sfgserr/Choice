@@ -19,7 +19,7 @@ export default function ClientsScreen() {
         return;
       }
 
-      Alert.alert('Ошибка', 'Не удалось получить клиентов', [{text: 'Ок'}]);
+      Alert.alert('Ошибка', 'Не удалось получить клиентов', [{info: 'Ок'}]);
     };
 
     getClients();

@@ -20,7 +20,7 @@ export default function PanelScreen({route, navigation}: PanelScreenProps) {
       title: 'Компании',
     },
     {
-      element: <AdminCategoriesScreen/>,
+      element: <AdminCategoriesScreen navigation={navigation}/>,
       title: 'Категории',
     },
   ], []);

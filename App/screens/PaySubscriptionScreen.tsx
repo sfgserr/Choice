@@ -75,7 +75,7 @@ export default function PaySubscriptionScreen({route, navigation}: PaySubscripti
     let response = await subscriptionPaymentService.pay();
 
     if (response.result == 'successful') {
-      Alert.alert("Оплата успешна", "Ваш платеж прошел", [{onPress: signOut, text: 'Ок'}]);
+      Alert.alert("Оплата успешна", "Ваш платеж прошел", [{onPress: signOut, info: 'Ок'}]);
     }
   };
 
