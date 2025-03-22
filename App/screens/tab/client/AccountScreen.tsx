@@ -7,13 +7,12 @@ import {UserService} from '../../../services/domain/UserService.ts';
 import TextButton from '../../../components/buttons/TextButton.tsx';
 import ChangeIconUriModal from '../../../components/modals/ChangeIconUriModal.tsx';
 import TextInputTitle from '../../../components/TextInputTitle.tsx';
-import BorderedTextInput from '../../../components/inputs/BorderedTextInput.tsx';
-import {SetStateAction, useCallback, useMemo} from 'react';
+import {SetStateAction, } from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequestModal.tsx';
 import {ClientService} from '../../../services/domain/ClientService.ts';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
-import GestureBorderedTextInput from "../../../components/inputs/GestureBordererdTextInput.tsx";
+import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
 
 type Form = {
   id: string

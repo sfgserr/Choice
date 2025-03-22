@@ -12,11 +12,11 @@ export default function PanelScreen({route, navigation}: PanelScreenProps) {
 
   const tabs = useMemo(() => [
     {
-      element: <ClientsScreen/>,
+      element: <ClientsScreen navigation={navigation}/>,
       title: 'Клиенты',
     },
     {
-      element: <CompaniesScreen/>,
+      element: <CompaniesScreen navigation={navigation}/>,
       title: 'Компании',
     },
     {

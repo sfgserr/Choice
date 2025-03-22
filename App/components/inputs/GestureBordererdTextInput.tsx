@@ -4,7 +4,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import Styles from '../../constants/Styles.tsx';
 import {BorderedTextInputProps} from '../../types/ComponentTypes.ts';
 
-export default function GestureBorderedTextInput({ value, onChanged, placeholder, isError, isBig, keyboard=undefined }: BorderedTextInputProps) {
+export default function GestureBorderedTextInput({ value, onChanged, placeholder, isError, isBig, keyboard=undefined, isReadonly }: BorderedTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);
 
   const borderColor = () => {
@@ -27,7 +27,8 @@ export default function GestureBorderedTextInput({ value, onChanged, placeholder
         onFocus={() => setIsFocused(true)}
         style={Styles.borderedTextInput}
         multiline={isBig}
-        keyboardType={keyboard}/>
+        keyboardType={keyboard}
+        readOnly={isReadonly}/>
     </View>
   )
 }

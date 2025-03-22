@@ -5,7 +5,7 @@ import {AdminService} from '../services/domain/AdminService.ts';
 import {AdminUser} from '../types/DomainTypes.ts';
 import AdminUserItem from '../components/listItems/AdminUserItem.tsx';
 
-export default function ClientsScreen() {
+export default function ClientsScreen({navigation}: {navigation: any}) {
   const adminService = useDependency<AdminService>('AdminService');
 
   const [clients, setClients] = React.useState<AdminUser[]>([]);
@@ -19,7 +19,7 @@ export default function ClientsScreen() {
         return;
       }
 
-      Alert.alert('Ошибка', 'Не удалось получить клиентов', [{info: 'Ок'}]);
+      Alert.alert('Ошибка', 'Не удалось получить клиентов', [{text: 'Ок'}]);
     };
 
     getClients();
@@ -34,7 +34,9 @@ export default function ClientsScreen() {
           data={clients}
           style={{paddingTop: 15}}
           renderItem={item => (
-            <AdminUserItem item={item.item}/>
+            <AdminUserItem
+              item={item.item}
+              onPress={() => navigation.navigate('EditClient', {clientId: item.item.id})}/>
           )}/>
       )}
     </View>

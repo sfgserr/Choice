@@ -5,7 +5,7 @@ import {AdminService} from '../services/domain/AdminService.ts';
 import {AdminUser} from '../types/DomainTypes.ts';
 import AdminUserItem from '../components/listItems/AdminUserItem.tsx';
 
-export default function CompaniesScreen() {
+export default function CompaniesScreen({navigation}: {navigation: any}) {
   const adminService = useDependency<AdminService>('AdminService');
 
   const [companies, setCompanies] = React.useState<AdminUser[]>([]);
@@ -19,7 +19,7 @@ export default function CompaniesScreen() {
         return;
       }
 
-      Alert.alert('Ошибка', 'Ну удалось получить компании', [{info: 'Ок'}]);
+      Alert.alert('Ошибка', 'Ну удалось получить компании', [{text: 'Ок'}]);
     };
 
     getCompanies();
@@ -34,7 +34,7 @@ export default function CompaniesScreen() {
           data={companies}
           style={{paddingTop: 15}}
           renderItem={item => (
-            <AdminUserItem item={item.item}/>
+            <AdminUserItem item={item.item} onPress={() => navigation.navigate('EditCompany', {companyId: item.item.id})}/>
           )}/>
       )}
     </View>

@@ -61,8 +61,8 @@ export type UnsubscribeStackProps = {
 
 export type AdminStackProps = {
   Panel: undefined;
-  EditClient: undefined;
-  EditCompany: undefined;
+  EditClient: {clientId: string};
+  EditCompany: {companyId: string};
   EditCategory: {
     category: Category;
   };
@@ -137,6 +137,10 @@ export type PanelScreenProps = NativeStackScreenProps<AdminStackProps, 'Panel'>;
 export type EditCategoryScreenProps = NativeStackScreenProps<AdminStackProps, 'EditCategory'>;
 
 export type CreateCategoryScreenProps = NativeStackScreenProps<AdminStackProps, 'CreateCategory'>;
+
+export type EditClientScreenProps = NativeStackScreenProps<AdminStackProps, 'EditClient'>;
+
+export type EditCompanyScreenProps = NativeStackScreenProps<AdminStackProps, 'EditCompany'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>

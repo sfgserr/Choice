@@ -1,4 +1,5 @@
 using Administration.Application.Contracts;
+using Administration.Domain.Categories;
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 
@@ -15,7 +16,7 @@ namespace Administration.Application.Commands.EditCategory
 
         public async Task Execute(EditCategoryCommand command)
         {
-            var category = await _dbContext.Categories.Get(c => c.Id.Value == command.CategoryId);
+            var category = await _dbContext.Categories.Get(c => c.Id.Equals(new CategoryId(command.CategoryId)));
             
             category.Edit(command.Title, command.IconUri);
         }

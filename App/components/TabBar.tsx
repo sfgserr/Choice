@@ -15,7 +15,7 @@ import {
 } from '../types/TabTypes.ts';
 
 export default function TabBar({tabs, big = true}: TabBarProps) {
-  const { width } = Dimensions.get('screen');
+  const { width, height } = Dimensions.get('screen');
 
   const data = Object.keys(tabs).map<TabsType>((v, i) => ({
     name: tabs[i].title,

@@ -1,38 +1,27 @@
 import * as React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import {AuthContext} from '../../../contexts/authorized/Context.tsx';
-import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
-import {useDependency} from '../../../services/Hooks.ts';
-import {UserService} from '../../../services/domain/UserService.ts';
-import TextButton from '../../../components/buttons/TextButton.tsx';
-import ChangeIconUriModal from '../../../components/modals/ChangeIconUriModal.tsx';
-import TextInputTitle from '../../../components/TextInputTitle.tsx';
-import {SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {useIsFocused} from '@react-navigation/native';
-import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequestModal.tsx';
-import SocialMediaModal from '../../../components/modals/SocialMediaModal.tsx';
-import SocialMediaItem from '../../../components/listItems/SocialMediaItem.tsx';
-import Styles from '../../../constants/Styles.tsx';
-import PickCategoriesBottomSheet from '../../../components/bottomSheets/PickCategoriesBottomSheet.tsx';
+import {ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {useDependency} from '../services/Hooks.ts';
+import TextButton from '../components/buttons/TextButton.tsx';
+import TextInputTitle from '../components/TextInputTitle.tsx';
+import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
+import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+import {EditCompanyScreenProps} from '../types/NavigationTypes.ts';
+import {AdminService} from '../services/domain/AdminService.ts';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import ImageBox, {ImageBoxObject, MinioBlob, UploadedBlob} from '../components/ImageBox.tsx';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {FileValidationService} from '../services/object/FileValidationService.ts';
+import {GestureHandlerRootView, TouchableOpacity} from 'react-native-gesture-handler';
+import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import SocialMediaItem from '../components/listItems/SocialMediaItem.tsx';
+import Styles from '../constants/Styles.tsx';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {Category} from '../../../types/DomainTypes.ts';
-import {CategoryService} from '../../../services/domain/CategoryService.ts';
-import ImageBox, {ImageBoxObject, MinioBlob, UploadedBlob} from '../../../components/ImageBox.tsx';
-import {CompanyService} from '../../../services/domain/CompanyService.ts';
-import {ObjectStorageService} from '../../../services/object/ObjectStorageService.ts';
-import LongRunningOperationIndicator from '../../../components/LongRunningOperationIndicator.tsx';
-import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
-import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
+import {Category} from '../types/DomainTypes.ts';
+import PickCategoriesBottomSheet from '../components/bottomSheets/PickCategoriesBottomSheet.tsx';
+import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
+import {CategoryService} from '../services/domain/CategoryService.ts';
 
 type Form = {
   id: string
@@ -42,7 +31,6 @@ type Form = {
   city: string
   street: string
   description: string
-  iconUri: string
   socialMedias: SocialMedia[]
   photoUris: string[]
   categories: number[]
@@ -73,53 +61,35 @@ const Option = ({selected, title, onPress, top}: {
   </View>
 );
 
-export default function CompanyAccountScreen({route, navigation}: AccountScreenProps) {
-  const userService = useDependency<UserService>('UserService');
-  const companyService = useDependency<CompanyService>('CompanyService');
-  const categoryService = useDependency<CategoryService>('CategoryService');
+export default function EditCompanyScreen({route, navigation}: EditCompanyScreenProps) {
+  const adminService = useDependency<AdminService>('AdminService');
   const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
+  const fileValidationService = useDependency<FileValidationService>('FileValidationService');
+  const categoryService = useDependency<CategoryService>('CategoryService');
 
-  const isFocused = useIsFocused();
+  const [form, setForm] = React.useState<Form | null>(null);
+  const [iconUri, setIconUri] = React.useState<ImageBoxObject>(MinioBlob.createDefault());
 
-  const { signOut } = useContext(AuthContext);
+  const [readonly, setReadonly] = React.useState(true);
 
-  const [form, setForm] = useState<Form | null>(null);
-  const [isChanged, setIsChanged] = useState<boolean>(false);
+  const [isSuccessfulRequestModalToggled, setIsSuccessfulRequestModalToggled] = React.useState(false);
 
-  const [isChangeIconUriModalToggled, setIsChangeIconUriModalToggled] = useState(false);
-  const [isSuccessfulRequestModalToggled, setIsSuccessfulRequestModalToggled] = useState(false);
-
+  const [socialMedias, setSocialMedias] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSocialMediaModalToggled, setIsSocialMediaModalToggled] = useState(false);
-
+  const [photoUris, setPhotoUris] = useState<ImageBoxObject[]>([]);
   const [categories, setCategories] = useState<{category: Category, selected: boolean}[]>([]);
 
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+
   const categoriesTitle = useMemo(() =>
-    categories
-      .filter(c => c.selected)
-      .map(c => c.category.title)
-      .join(', '),
+      categories
+        .filter(c => c.selected)
+        .map(c => c.category.title)
+        .join(', '),
     [categories]);
 
-  const [photoUris, setPhotoUris] = useState<ImageBoxObject[]>([]);
-
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const setPhoto = (object: SetStateAction<ImageBoxObject[]>) => {
-    setPhotoUris(object);
-    setIsChanged(true);
-  };
-
   const ref = useRef<BottomSheet>(null);
-
-  const select = (index: number) => {
-    setCategories(prev => {
-      prev[index].selected = !prev[index].selected;
-
-      return [...prev];
-    });
-    setIsChanged(true);
-  };
 
   const handlePress = () => setIsSocialMediaModalToggled(prev => !prev);
 
@@ -133,36 +103,35 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
         prev[index].uri = '';
         return [...prev];
       });
-      setIsChanged(true);
     }
   };
 
-  const [socialMedias, setSocialMedias] = useState<any[]>([]);
+  const onOptionPressed = () => setForm(prev => ({...prev!, isPrepaymentAvailable: !prev!.isPrepaymentAvailable}));
 
   useEffect(() => {
     if (form != null) {
       const init = [
         {
           title: 'Instagram',
-          icon: require('../../../assets/images/instagram.png'),
+          icon: require('../assets/images/instagram.png'),
           uri: '',
           onPress: (val: boolean) => {},
         },
         {
           title: 'Facebook',
-          icon: require('../../../assets/images/facebook.png'),
+          icon: require('../assets/images/facebook.png'),
           uri: '',
           onPress: (val: boolean) => {},
         },
         {
           title: 'VK',
-          icon: require('../../../assets/images/vk.png'),
+          icon: require('../assets/images/vk.png'),
           uri: '',
           onPress: (val: boolean) => {},
         },
         {
           title: 'Telegram',
-          icon: require('../../../assets/images/tg.png'),
+          icon: require('../assets/images/tg.png'),
           uri: '',
           onPress: (val: boolean) => {},
         },
@@ -177,40 +146,48 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
 
       setSocialMedias(init);
     }
-  }, [form, isFocused]);
+  }, [form]);
 
-  const toggle = useCallback(() => setIsChangeIconUriModalToggled(prev => !prev), []);
+  const changeIconUri = React.useCallback(async () => {
+    if (!readonly) {
+      const response = await launchImageLibrary({mediaType: 'photo'});
 
-  const setIcon = useCallback((objectName: string) => {
-    setForm(prev => ({...prev, iconUri: objectName}));
-  }, []);
+      if (response.assets != undefined && response.assets.length > 0) {
+        const validationResult = await fileValidationService.getContentAndValidate(response.assets[0].uri!);
 
-  const set = useCallback((func: SetStateAction<Form | null>) => {
-    setForm(func);
+        if (validationResult.object != null) {
+          setIconUri(validationResult.object);
+        }
+      }
+    }
+  }, [readonly]);
 
-    setIsChanged(true);
-  }, []);
-
-  const saveChanges = useCallback(async () => {
-    if (form != null) {
+  const saveChanges = React.useCallback(async () => {
+    if (!readonly && form != null) {
       setIsRefreshing(true);
 
       const c = categories.filter(c => c.selected).map(c => c.category.categoryId);
       const s = socialMedias.filter(s => s.uri != '').map(s => s.uri);
 
-      const response = await companyService.changeData(
+      const response = await adminService.editCompany(
+        form.id,
+        iconUri.getObjectName(),
         form.name,
-        form.phoneNumber,
+        form.description,
         form.email,
+        form.phoneNumber,
         form.city,
         form.street,
-        form.description,
+        s,
         c,
         photoUris.map(p => p.getObjectName()),
-        s,
         form.isPrepaymentAvailable);
 
       if (response.result == 'successful') {
+        if (!iconUri.isUpload) {
+          await objectStorageService.upload(iconUri as MinioBlob);
+        }
+
         for (let i = 0; i < photoUris.length; i++) {
           if (photoUris[i].getObjectName() != '' && !photoUris[i].isUpload) {
             await objectStorageService.upload(photoUris[i] as MinioBlob);
@@ -222,7 +199,9 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
 
       setIsRefreshing(false);
     }
-  }, [form, socialMedias, categories]);
+
+    setReadonly(prev => !prev);
+  }, [form, iconUri, readonly]);
 
   const isDisable = () => {
     return form?.name == '' ||
@@ -235,49 +214,71 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
       photoUris.every(c => c.getObjectName() == '');
   };
 
-  const onOptionPressed = () => set(prev => ({...prev, isPrepaymentAvailable: !prev.isPrepaymentAvailable}));
+  const select = (index: number) => {
+    setCategories(prev => {
+      prev[index].selected = !prev[index].selected;
 
-  useEffect(() => {
+      return [...prev];
+    });
+  };
+
+  React.useEffect(() => {
     const getUser = async () => {
-      const user = await userService.getUserWithoutCache();
+      const response = await adminService.getCompany(route.params.companyId);
 
-      if (user != null) {
-        setForm(user);
-        setPhotoUris(user.photoUris.map(p => new UploadedBlob(p)));
+      if (response.result == 'successful') {
+        setForm(response.content!);
+        setPhotoUris(response.content!.photoUris.map(p => new UploadedBlob(p)));
+        setIconUri(new UploadedBlob(response.content.iconUri));
 
-        const response = await categoryService.getCategories();
+        const categoriesResponse = await categoryService.getCategories();
 
-        if (response.result == 'successful') {
-          setCategories(response.content!.map(c => ({
+        if (categoriesResponse.result == 'successful') {
+          setCategories(categoriesResponse.content!.map(c => ({
             category: c,
-            selected: user.categories.findIndex(id => id == c.categoryId) != -1,
+            selected: response.content!.categoryIds.findIndex(id => id == c.categoryId) != -1,
           })));
         }
       }
     };
 
     getUser();
-    setIsChanged(false);
-  }, [isFocused]);
+  }, []);
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       {form == null ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'}/>
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>Аккаунт</Text>
+          <View style={styles.controlsContainer}>
+            <View style={{alignSelf: 'center'}}>
+              <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+            </View>
+            <Text style={styles.title}>{readonly ? 'Компания' : 'Изменить компанию'}</Text>
+            <View style={{alignSelf: 'center'}}>
+              <TouchableOpacity
+                disabled={(!readonly && isDisable())}
+                onPress={saveChanges}>
+                <Image
+                  style={[styles.editIcon, {
+                    opacity: (!readonly && !isDisable()) || readonly ? 1 : 0.5,
+                  }]}
+                  source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
+              </TouchableOpacity>
+            </View>
+          </View>
           <View style={styles.iconContainer}>
             <Image
               style={styles.icon}
               source={{
-                uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
+                uri: iconUri.getUri(),
               }}/>
           </View>
           <View style={styles.textButtonContainer}>
             <TextButton
-              text={'Изменить логотип'}
-              onPress={toggle}/>
+              text={'Изменить фото'}
+              onPress={changeIconUri}/>
           </View>
           <View style={{paddingHorizontal: 15}}>
             <View style={styles.splitterContainer}>
@@ -291,55 +292,60 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.name}
-              onChanged={(text: string) => set(prev => ({...prev, name: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, name: text}))}
               placeholder={'Введите название'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
+              keyboard={'default'}
+              isReadonly={readonly}/>
             <TextInputTitle
               s={'E-mail'}
               top={20}
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.email}
-              onChanged={(text: string) => set(prev => ({...prev, email: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, email: text}))}
               placeholder={'Введите e-mail'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
+              keyboard={'default'}
+              isReadonly={readonly}/>
             <TextInputTitle
               s={'Номер телефона'}
               top={20}
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.phoneNumber}
-              onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, phoneNumber: text}))}
               placeholder={'Введите номер телефона'}
               isError={false}
               isBig={false}
-              keyboard={'phone-pad'}/>
+              keyboard={'phone-pad'}
+              isReadonly={readonly}/>
             <TextInputTitle
               s={'Город'}
               top={20}
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.city}
-              onChanged={(text: string) => set(prev => ({...prev, city: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, city: text}))}
               placeholder={'Город'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
+              keyboard={'default'}
+              isReadonly={readonly}/>
             <TextInputTitle
               s={'Улица'}
               top={20}
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.street}
-              onChanged={(text: string) => set(prev => ({...prev, street: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, street: text}))}
               placeholder={'Улица'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
+              keyboard={'default'}
+              isReadonly={readonly}/>
             <View style={styles.splitterContainer}>
               <View style={styles.splitter}/>
             </View>
@@ -357,11 +363,12 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               bottom={5}/>
             <GestureBorderedTextInput
               value={form?.description}
-              onChanged={(text: string) => set(prev => ({...prev, description: text}))}
+              onChanged={(text: string) => setForm(prev => ({...prev!, description: text}))}
               placeholder={'Введите описание компании'}
               isError={false}
               isBig={true}
-              keyboard={'default'}/>
+              keyboard={'default'}
+              isReadonly={readonly}/>
             <TextInputTitle
               s={'Виды деятельности'}
               top={20}
@@ -371,15 +378,17 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
                 style={Styles.borderedTextInput}
                 value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
                 readOnly/>
-              <View style={styles.chevronDown}>
-                <TouchableOpacity
-                  onPress={() => ref.current?.expand()}>
-                  <Image
-                    style={styles.image}
-                    source={require('../../../assets/images/chevron-down.png')}
-                  />
-                </TouchableOpacity>
-              </View>
+              {!readonly && (
+                <View style={styles.chevronDown}>
+                  <TouchableOpacity
+                    onPress={() => ref.current?.expand()}>
+                    <Image
+                      style={styles.image}
+                      source={require('../assets/images/chevron-down.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
             <TextInputTitle
               s={'Добавьте фотографии'}
@@ -390,9 +399,9 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
                 <ImageBox
                   key={i}
                   object={photoUris[i]}
-                  setPhoto={setPhoto}
+                  setPhoto={setPhotoUris}
                   index={i}
-                  readonly={false}/>
+                  readonly={readonly}/>
               ))}
             </View>
             <TextInputTitle
@@ -409,40 +418,15 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               title={'Работа без предоплатой'}
               onPress={onOptionPressed}
               top={10}/>
-            <GestureStyledButton
-              content={'Изменить пароль'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={() => navigation.navigate('ChangePassword')}
-              type={'reversed'}/>
-            <GestureStyledButton
-              content={'Выйти из акканта'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={signOut}
-              type={'warn'}/>
-            {isChanged && (
-              <GestureStyledButton
-                content={'Сохранить изменения'}
-                top={20}
-                bottom={0}
-                isDisabled={isDisable()}
-                pressed={saveChanges}/>
-            )}
+            <View style={{paddingTop: 20}}/>
           </View>
         </ScrollView>
       )}
-      <ChangeIconUriModal
-        isToggled={isChangeIconUriModalToggled}
-        handlePress={toggle}
-        setIcon={setIcon}/>
       <SuccessfulRequestModal
         isToggled={isSuccessfulRequestModalToggled}
         handlePress={() => {
-          setIsChanged(false);
           setIsSuccessfulRequestModalToggled(false);
+          navigation.goBack();
         }}
         title={'Изменения сохранены'}
         text={''}/>
@@ -459,11 +443,10 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
           title={socialMedias[currentIndex].title}
           onChange={(val) => setSocialMedias(prev => {
             prev[currentIndex].uri = val;
-            setIsChanged(true);
             return [...prev];
           })}/>
       )}
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -472,11 +455,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  editIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+  },
+  controlsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingTop: 30,
+  },
   title: {
     fontWeight: '700',
     fontSize: 22,
     alignSelf: 'center',
-    paddingTop: 30,
   },
   iconContainer: {
     alignSelf: 'center',
@@ -515,30 +508,6 @@ const styles = StyleSheet.create({
   flatList: {
     paddingTop: 10,
   },
-  borderedInput: {
-    ...Styles.borderedTextInputView,
-    ...Styles.borderedTextInputHeight,
-    ...Styles.borderedTextInputViewColor,
-    ...Styles.borderedTextInputUnfocused,
-  },
-  chevronDown: {
-    alignSelf: 'center',
-    paddingRight: 10,
-  },
-  image: {
-    resizeMode: 'contain',
-    width: 15,
-    height: 15,
-  },
-  photoUrisContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    rowGap: 20,
-  },
-  optionContainer: {
-    flexDirection: 'row',
-  },
   optionButton: {
     alignSelf: 'center',
     width: 20,
@@ -560,5 +529,29 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: 'center',
     paddingLeft: 10,
+  },
+  chevronDown: {
+    alignSelf: 'center',
+    paddingRight: 10,
+  },
+  borderedInput: {
+    ...Styles.borderedTextInputView,
+    ...Styles.borderedTextInputHeight,
+    ...Styles.borderedTextInputViewColor,
+    ...Styles.borderedTextInputUnfocused,
+  },
+  photoUrisContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    rowGap: 20,
+  },
+  image: {
+    resizeMode: 'contain',
+    width: 15,
+    height: 15,
+  },
+  optionContainer: {
+    flexDirection: 'row',
   },
 });

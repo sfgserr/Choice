@@ -1,3 +1,4 @@
+using Administration.Infrastructure.Processing;
 using Autofac;
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Cqrs.Queries;
@@ -24,7 +25,11 @@ namespace Administration.Infrastructure.Configuration.Processing
                 .AsClosedTypesOf(typeof(IQueryHandler<,>))
                 .InstancePerDependency()
                 .FindConstructorsWith(new AllConstructorFinder());
-
+            
+            builder.RegisterGenericDecorator(
+                typeof(UnitOfWorkCommandHandlerDecorator<>),
+                typeof(ICommandHandler<>));
+            
             builder.RegisterGenericDecorator(
                 typeof(ValidationCommandHandlerDecorator<>),
                 typeof(ICommandHandler<>));

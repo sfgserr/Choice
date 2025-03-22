@@ -1,6 +1,8 @@
 using Administration.Infrastructure.Configuration.Data;
+using Administration.Infrastructure.Configuration.DomainEventsDispatching;
 using Administration.Infrastructure.Configuration.Events;
 using Administration.Infrastructure.Configuration.Logging;
+using Administration.Infrastructure.Configuration.Outbox;
 using Administration.Infrastructure.Configuration.Processing;
 using Autofac;
 using MassTransit;
@@ -28,8 +30,10 @@ namespace Administration.Infrastructure.Configuration
             var containerBuilder = new ContainerBuilder();
             
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
+            containerBuilder.RegisterModule(new DomainEventsDispatchingModule([]));
             containerBuilder.RegisterModule(new EventBusModule(bus));
-            containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Users")));
+            containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Administration")));
+            containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
 
             _container = containerBuilder.Build();

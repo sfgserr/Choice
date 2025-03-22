@@ -2,7 +2,7 @@ import {AdminUser} from '../../types/DomainTypes.ts';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 
-export default function AdminUserItem({item}: {item: AdminUser}) {
+export default function AdminUserItem({item, onPress}: {item: AdminUser, onPress: () => void}) {
   return (
     <View style={styles.card}>
       <Image
@@ -12,7 +12,7 @@ export default function AdminUserItem({item}: {item: AdminUser}) {
         <Text style={styles.boldText}>{item.name}</Text>
         <Text style={styles.lightText}>{`${item.city}, ${item.street}`}</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Image
           source={require('../../assets/images/chevron-right.png')}
           style={styles.chevron}/>

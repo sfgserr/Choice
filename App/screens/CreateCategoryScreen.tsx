@@ -1,4 +1,4 @@
-import {Alert, Image, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {CreateCategoryScreenProps} from '../types/NavigationTypes.ts';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
@@ -10,11 +10,13 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
-import {CategoryService} from "../services/domain/CategoryService.ts";
+import {CategoryService} from '../services/domain/CategoryService.ts';
+import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 
 export default function CreateCategoryScreen({route, navigation}: CreateCategoryScreenProps) {
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
   const categoryService = useDependency<CategoryService>('CategoryService');
+  const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
 
   const [uri, setUri] = React.useState<ImageBoxObject>(MinioBlob.createDefault());
   const [title, setTitle] = React.useState<string>('');
@@ -38,15 +40,20 @@ export default function CreateCategoryScreen({route, navigation}: CreateCategory
   const createCategory = async () => {
     const response = await categoryService.createCategory(title, uri.getObjectName());
 
-    if (response.result == 'successful') {
-      navigation.goBack();
-    }
-    else {
-      Alert.alert('Ошибка', response.error, [{text: 'Ок'}]);
+    let errorMsg = response.error;
 
-      setUri(MinioBlob.createDefault());
-      setTitle('');
+    if (response.result == 'successful') {
+      const isUpload = await objectStorageService.upload(uri as MinioBlob);
+
+      if (isUpload) {
+        navigation.goBack();
+        return;
+      }
+
+      errorMsg = 'Ошибка загрузки иконки';
     }
+
+    Alert.alert('Ошибка', errorMsg, [{text: 'Ок'}]);
   };
 
   return (
@@ -91,13 +98,14 @@ export default function CreateCategoryScreen({route, navigation}: CreateCategory
           keyboard={'default'}
           isReadonly={false}/>
       </View>
-      <View
+      <KeyboardAvoidingView
         style={{
           position: 'absolute',
           bottom: 20,
           width: '90%',
           alignSelf: 'center',
-        }}>
+        }}
+        behavior={'height'}>
         <StyledButton
           content={'Создать категорию'}
           top={0}
@@ -105,7 +113,7 @@ export default function CreateCategoryScreen({route, navigation}: CreateCategory
           isDisabled={isDisable()}
           pressed={createCategory}
           type={'default'}/>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

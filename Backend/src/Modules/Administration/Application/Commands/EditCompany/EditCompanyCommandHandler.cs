@@ -34,7 +34,6 @@ namespace Administration.Application.Commands.EditCompany
                 UPDATE users."Companies"
                 SET
                     "Description" = @Description,
-                    "SocialMedias" = @SocialMedias,
                     "CategoriesId" = @CategoryIds,
                     "PhotoUris" = @PhotoUris,
                     "IsPrepaymentAvailable" = @IsPrepaymentAvailable

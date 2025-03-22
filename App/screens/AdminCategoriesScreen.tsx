@@ -87,9 +87,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
     alignSelf: 'center',
     width: '90%',
+    borderTopWidth: 1,
+    borderColor: '#f5f5f5',
   },
 });

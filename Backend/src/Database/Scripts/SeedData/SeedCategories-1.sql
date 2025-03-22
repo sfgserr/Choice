@@ -1,7 +1,7 @@
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (1, 'Авто', 'auto.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (2, 'Услуги строителя', 'building.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (3, 'Красота', 'beauty.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (4, 'Бытовые услуги', 'household.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (5, 'Финансовые услуги', 'finance.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (6, 'Парфюм', 'perfume.png');
-INSERT INTO administration."Categories" ("Id", "Title", "IconUri") VALUES (7, 'Автотовары', 'goods.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Авто', 'auto.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Услуги строителя', 'building.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Красота', 'beauty.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Бытовые услуги', 'household.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Финансовые услуги', 'finance.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Парфюм', 'perfume.png');
+INSERT INTO administration."Categories" ("Title", "IconUri") VALUES ('Автотовары', 'goods.png');

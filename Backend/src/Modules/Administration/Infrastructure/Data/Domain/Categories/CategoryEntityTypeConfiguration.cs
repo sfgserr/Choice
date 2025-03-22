@@ -10,11 +10,12 @@ namespace Administration.Infrastructure.Data.Domain.Categories
         {
             builder.ToTable("Categories", "administration");
 
-            builder.HasKey(x => x.Id);
-
             builder.Property(x => x.Id)
                 .HasConversion(x => x.Value, x => new(x))
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd()
+                .HasValueGenerator<CategoryIdValueGenerator>();
+            
+            builder.HasKey(x => x.Id);
             
             builder.Property<string>("_title").HasColumnName("Title");
             builder.Property<string>("_iconUri").HasColumnName("IconUri");

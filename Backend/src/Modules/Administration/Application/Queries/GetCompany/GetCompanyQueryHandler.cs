@@ -28,23 +28,32 @@ namespace Administration.Application.Queries.GetCompany
                     users."Users"."Email" as {nameof(CompanyDto.Email)},
                     users."Users"."PhoneNumber" as {nameof(CompanyDto.PhoneNumber)},
                     users."Users"."City" as {nameof(CompanyDto.City)},
-                    users."Companies"."Street" as {nameof(CompanyDto.Street)},
-                    users."Companies"."SocialMedias" as {nameof(CompanyDto.SocialMedias)},
-                    users."Companies"."Email" as {nameof(CompanyDto.Email)},
+                    users."Users"."Street" as {nameof(CompanyDto.Street)},
                     users."Companies"."CategoriesId" as {nameof(CompanyDto.CategoryIds)},
                     users."Companies"."PhotoUris" as {nameof(CompanyDto.PhotoUris)},
                     users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)}
                 FROM users."Companies"
                 JOIN users."Users" ON users."Users"."Id" = users."Companies"."Id"
-                WHERE users."Companies"."Id" = @Id
+                WHERE users."Companies"."Id" = @Id;
+
+                SELECT 
+                    users."SocialMedias"."Platform" as {nameof(SocialMediaDto.Platform)},
+                    users."SocialMedias"."Url" as {nameof(SocialMediaDto.Url)}
+                FROM users."SocialMedias"
+                WHERE users."SocialMedias"."CompanyId" = @Id;
                 """;
 
-            return await connection.QuerySingleAsync<CompanyDto>(
+            var result = await connection.QueryMultipleAsync(
                 sql,
                 new
                 {
                     Id = query.CompanyId
                 });
+            
+            var company = result.ReadSingle<CompanyDto>();
+            company.SocialMedias = result.Read<SocialMediaDto>();
+
+            return company;
         }
     }
 }

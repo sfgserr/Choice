@@ -20,13 +20,13 @@ namespace Administration.Application.Commands.EditClient
             const string sql = 
                 $"""
                 UPDATE users."Users" SET
-                    users."Users"."IconUri" = @IconUri,
-                    users."Users"."Name" = @Name,
-                    users."Users"."PhoneNumber" = @PhoneNumber,
-                    users."Users"."Email" = @Email,
-                    users."Users"."City" = @City,
-                    users."Users"."Street" = @Street
-                WHERE users."Users"."Id" = @ClientId
+                    "IconUri" = @IconUri,
+                    "Name" = @Name,
+                    "PhoneNumber" = @PhoneNumber,
+                    "Email" = @Email,
+                    "City" = @City,
+                    "Street" = @Street
+                WHERE "Id" = @ClientId
                 """;
 
             await connection.ExecuteAsync(

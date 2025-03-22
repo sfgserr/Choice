@@ -22,4 +22,15 @@ export class CategoryService {
         iconUri,
       }));
   }
+
+  async changeCategory(categoryId: number, title: string, iconUri: string) {
+    return await this.httpService.request(
+      'categories',
+      'PUT',
+      JSON.stringify({
+        categoryId,
+        title,
+        iconUri,
+      }));
+  }
 }
