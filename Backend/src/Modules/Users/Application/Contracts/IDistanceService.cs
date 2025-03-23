@@ -2,10 +2,8 @@
 
 namespace Users.Application.Contracts
 {
-    public interface IGeoService
+    public interface IDistanceService
     {
-        Task<string[]> GetCoords(string city, string street);
-        
         int GetDistance(Coords coords1, Coords coords2);
     }
 }

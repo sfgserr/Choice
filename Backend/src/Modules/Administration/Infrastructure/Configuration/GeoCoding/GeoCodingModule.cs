@@ -1,10 +1,8 @@
-﻿using Autofac;
+using Autofac;
 using BuildingBlocks.Application.GeoCoding;
 using BuildingBlocks.Infrastructure.GeoCoding;
-using Users.Application.Contracts;
-using Users.Infrastructure.GeoCoding;
 
-namespace Users.Infrastructure.Configuration.GeoCoding
+namespace Administration.Infrastructure.Configuration.GeoCoding
 {
     internal class GeoCodingModule : Module
     {
@@ -22,10 +20,6 @@ namespace Users.Infrastructure.Configuration.GeoCoding
             builder.RegisterInstance(_factory)
                 .As<IHttpClientFactory>()
                 .SingleInstance();
-            
-            builder.RegisterType<DistanceService>()
-                .As<IDistanceService>()
-                .InstancePerDependency();
             
             builder.Register(s => new GeoCodingService(s.Resolve<IHttpClientFactory>(), _apiKey))
                 .As<IGeoCodingService>()

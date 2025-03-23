@@ -11,9 +11,9 @@ namespace WebApi.Modules.Admin.Users
             string phoneNumber, 
             string city, 
             string street, 
-            List<string> socialMedias, 
-            List<int> categoryIds, 
-            List<string> photoUris, 
+            string[] socialMedias, 
+            int[] categoryIds, 
+            string[] photoUris, 
             bool isPrepaymentAvailable)
         {
             Id = id;
@@ -46,11 +46,11 @@ namespace WebApi.Modules.Admin.Users
         
         public string Street { get; }
 
-        public List<string> SocialMedias { get; }
+        public string[] SocialMedias { get; }
 
-        public List<int> CategoryIds { get; }
+        public int[] CategoryIds { get; }
 
-        public List<string> PhotoUris { get; }
+        public string[] PhotoUris { get; }
 
         public bool IsPrepaymentAvailable { get; }
     }

@@ -162,7 +162,9 @@ namespace WebApi
             AdminStartup.Initialize(
                 connectionString,
                 _logger,
-                bus);
+                bus,
+                clientFactory,
+                Configuration["YandexGeocoder:ApiKey"]!);
             
             bus.StartAsync().GetAwaiter().GetResult();
             seed.Seed().GetAwaiter().GetResult();

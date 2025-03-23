@@ -1,5 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Data;
+using BuildingBlocks.Application.GeoCoding;
 using Dapper;
 
 namespace Administration.Application.Commands.EditCompany
@@ -7,17 +8,21 @@ namespace Administration.Application.Commands.EditCompany
     internal class EditCompanyCommandHandler : ICommandHandler<EditCompanyCommand>
     {
         private readonly ISqlConnectionFactory _factory;
+        private readonly IGeoCodingService _geoCodingService;
         
-        internal EditCompanyCommandHandler(ISqlConnectionFactory factory)
+        internal EditCompanyCommandHandler(ISqlConnectionFactory factory, IGeoCodingService geoCodingService)
         {
             _factory = factory;
+            _geoCodingService = geoCodingService;
         }
 
         public async Task Execute(EditCompanyCommand command)
         {
             using var connection = _factory.GetConnection();
+
+            var coords = await _geoCodingService.GetCoords(command.City, command.Street);
             
-            const string sql = 
+            string sql = 
                 $"""
                 BEGIN;
                 
@@ -28,7 +33,9 @@ namespace Administration.Application.Commands.EditCompany
                     "PhoneNumber" = @PhoneNumber,
                     "Email" = @Email,
                     "City" = @City,
-                    "Street" = @Street
+                    "Street" = @Street,
+                    "Latitude" = @Latitude,
+                    "Longitude" = @Longitude
                 WHERE "Id" = @Id;
                 
                 UPDATE users."Companies"
@@ -39,9 +46,13 @@ namespace Administration.Application.Commands.EditCompany
                     "IsPrepaymentAvailable" = @IsPrepaymentAvailable
                 WHERE "Id" = @Id;
                 
-                COMMIT;
+                DELETE FROM users."SocialMedias" WHERE users."SocialMedias"."CompanyId" = @Id;
                 """;
 
+            foreach (var url in command.SocialMedias) sql += " " + SocialMediaParser.Parse(url, command.Id);
+            
+            sql += " COMMIT;";
+            
             await connection.ExecuteAsync(
                 sql,
                 new
@@ -53,11 +64,12 @@ namespace Administration.Application.Commands.EditCompany
                     command.Email,
                     command.City,
                     command.Street,
-                    command.SocialMedias,
                     command.CategoryIds,
                     command.PhotoUris,
                     command.Description,
-                    command.IsPrepaymentAvailable
+                    command.IsPrepaymentAvailable,
+                    Latitude = coords[0],
+                    Longitude = coords[1]
                 });
         }
     }

@@ -4,20 +4,28 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - <path_to_cert>:/certs/localhost.crt:ro
-      - <path_to_key>:/private/localhost.key:ro
+      - <path_to_cert>:/certs:ro
+      - <path_to_key>:/private:ro
     environment:
       - LISTEN_PORT=443 ssl
       - HOST_NAME=<host_name>
       - MINIO_HOST_NAME=<minio_host_name>
       - |
         SSL_DIRECTIVES=\
-        ssl_certificate /certs/localhost.crt;
-        ssl_certificate_key /private/localhost.key;
+        ssl_certificate /certs/certificate.crt;
+        ssl_certificate_key /private/private_key.key;
   
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - IdentitySettings__PathToCert=/keys/signing.crt
+      - IdentitySettings__SecretKey=
+      - "Clients[0]:ClientId="
+      - "Clients[0]:ClientSecret="
+      - YandexGeocoder__ApiKey=
+      - PostgreSqlSettings__ConnectionString=
+    volumes:
+      - /etc/ssl/choice:/keys:ro
         
   minio:
     environment:

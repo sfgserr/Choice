@@ -11,16 +11,16 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
     internal class GetCompanyOnMapQueryHandler : IQueryHandler<GetCompanyOnMapQuery, CompanyDto>
     {
         private readonly ISqlConnectionFactory _connectionFactory;
-        private readonly IGeoService _geoService;
+        private readonly IDistanceService _distanceService;
         private readonly IUserContext _userContext;
         
         internal GetCompanyOnMapQueryHandler(
             ISqlConnectionFactory connectionFactory,
-            IGeoService geoService, 
+            IDistanceService distanceService, 
             IUserContext userContext)
         {
             _connectionFactory = connectionFactory;
-            _geoService = geoService;
+            _distanceService = distanceService;
             _userContext = userContext;
         }
 
@@ -65,7 +65,7 @@ namespace Users.Application.Companies.Queries.GetCompanyOnMap
             var company = result.ReadSingle<CompanyDto>();
             
             company.SocialMedias = result.Read<SocialMediaDto>();
-            company.Distance = _geoService.GetDistance(
+            company.Distance = _distanceService.GetDistance(
                 _userContext.Address.Coords, 
                 new Coords(company.Latitude, company.Longitude));
 

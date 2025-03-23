@@ -1,6 +1,6 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using BuildingBlocks.Application.GeoCoding;
 using Users.Application.Contracts;
-using Users.Application.Users;
 using Users.Domain.Users;
 using Users.Domain.Users.Companies;
 
@@ -10,21 +10,21 @@ namespace Users.Application.Companies.Commands.CreateCompany
     {
         private readonly IUsersDbContext _dbContext;
         private readonly IUsersCounter _usersCounter;
-        private readonly IGeoService _geoService;
+        private readonly IGeoCodingService _geoCodingService;
         
         internal CreateCompanyCommandHandler(
             IUsersDbContext dbContext, 
             IUsersCounter usersCounter, 
-            IGeoService geoService)
+            IGeoCodingService geoCodingService)
         {
             _dbContext = dbContext;
             _usersCounter = usersCounter;
-            _geoService = geoService;
+            _geoCodingService = geoCodingService;
         }
 
         public async Task Execute(CreateCompanyCommand command)
         {
-            var coords = await _geoService.GetCoords(command.City, command.Street);
+            var coords = await _geoCodingService.GetCoords(command.City, command.Street);
             
             var company = Company.Create(
                 command.Name,

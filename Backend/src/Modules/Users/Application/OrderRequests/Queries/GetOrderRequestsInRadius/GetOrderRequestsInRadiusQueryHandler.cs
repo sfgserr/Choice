@@ -10,16 +10,16 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
         IQueryHandler<GetOrderRequestsInRadiusQuery, IEnumerable<OrderRequestDto>>
     {
         private readonly ISqlConnectionFactory _connectionFactory;
-        private readonly IGeoService _geoService;
+        private readonly IDistanceService _distanceService;
         private readonly IUserContext _userContext;
         
         internal GetOrderRequestsInRadiusQueryHandler(
             ISqlConnectionFactory connectionFactory, 
-            IGeoService geoService, 
+            IDistanceService distanceService, 
             IUserContext userContext)
         {
             _connectionFactory = connectionFactory;
-            _geoService = geoService;
+            _distanceService = distanceService;
             _userContext = userContext;
         }
 
@@ -53,7 +53,7 @@ namespace Users.Application.OrderRequests.Queries.GetOrderRequestsInRadius
 
             foreach (var request in orderRequests)
             {
-                var distance = _geoService.GetDistance(
+                var distance = _distanceService.GetDistance(
                     new(request.Latitude, request.Longitude),
                     _userContext.Address.Coords);
 
