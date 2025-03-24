@@ -1,4 +1,4 @@
-cd ~/Projects/Choice/Backend/src/Database/DatabaseMigrator
+cd DatabaseMigrator
 
 dotnet run "User Id=root;Password=pgadminchoice;Database=Choice;Host=localhost;Port=5432;" "../Structure"
 
