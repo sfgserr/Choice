@@ -11,15 +11,16 @@ services:
       - HOST_NAME=<host_name>
       - MINIO_HOST_NAME=<minio_host_name>
       - |
-        SSL_DIRECTIVES=\
+        SSL_DIRECTIVES=
         ssl_certificate /certs/certificate.crt;
         ssl_certificate_key /private/private_key.key;
   
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - IdentitySettings__PathToCert=/keys/signing.crt
+      - IdentitySettings__PathToCert=/keys/signing.pfx
       - IdentitySettings__SecretKey=
+      - IdentitySettings__CertificatePassword=
       - "Clients[0]:ClientId="
       - "Clients[0]:ClientSecret="
       - YandexGeocoder__ApiKey=

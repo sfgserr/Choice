@@ -38,7 +38,9 @@ namespace Identity.Infrastructure.Configuration.Identity
                     }
                     else
                     {   
-                        options.AddSigningCertificate(new X509Certificate2(identityOptions.PathToCert));
+                        options.AddSigningCertificate(
+                            new FileStream(identityOptions.PathToCert, FileMode.Open), 
+                            identityOptions.CertificatePassword);
                     }
 
                     options.AddEncryptionKey(new SymmetricSecurityKey(Convert.FromBase64String(identityOptions.SecretKey)));

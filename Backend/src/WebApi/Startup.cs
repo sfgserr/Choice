@@ -90,8 +90,9 @@ namespace WebApi
             string issuer = Configuration["IdentitySettings:Issuer"]!;
             string secretKey = Configuration["IdentitySettings:SecretKey"]!;
             string pathToCert = Configuration["IdentitySettings:PathToCert"]!;
+            string certificatePassword = Configuration["IdentitySettings:CertificatePassword"]!;    
             
-            var identityOptions = new IdentityOptions(issuer, secretKey, pathToCert);
+            var identityOptions = new IdentityOptions(issuer, secretKey, pathToCert, certificatePassword);
             
             services.AddIdentity(identityOptions, CurrentEnvironment);
             
