@@ -1,6 +1,5 @@
 using Autofac;
 using BuildingBlocks.Application.Authentication;
-using BuildingBlocks.Application.Events;
 using Identity.Infrastructure.Configuration.Authentication;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.DomainEventsDispatching;

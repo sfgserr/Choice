@@ -6,4 +6,4 @@ dotnet run "User Id=root;Password=pgadminchoice;Database=Choice;Host=localhost;P
 
 cd ../..
 
-dotnet ef database update --project Modules/Identity/Infrastructure/Infrastructure.csproj --startup-project WebApi/WebApi.csproj
+dotnet ef database update --project Modules/Identity/Infrastructure/Infrastructure.csproj --startup-project WebApi/WebApi.csproj -- "User Id=root;Password=pgadminchoice;Host=localhost;Port=5432;Database=Choice;"
