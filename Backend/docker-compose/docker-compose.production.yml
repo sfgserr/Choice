@@ -14,6 +14,7 @@ services:
         SSL_DIRECTIVES=
         ssl_certificate /certs/certificate.crt;
         ssl_certificate_key /private/private_key.key;
+      - REDIRECT=return 301 https://$host$requested_uri;
   
   webapi:
     environment:
@@ -26,7 +27,7 @@ services:
       - YandexGeocoder__ApiKey=
       - PostgreSqlSettings__ConnectionString=
     volumes:
-      - /etc/ssl/choice:/keys:ro
+      - /etc/ssl/choice:/keys
         
   minio:
     environment:
