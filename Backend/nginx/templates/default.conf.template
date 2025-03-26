@@ -1,10 +1,4 @@
     server {
-        listen 80;
-        
-        ${REDIRECT}
-    }
-    
-    server {
         listen ${LISTEN_PORT};
         
         server_name ${MINIO_HOST_NAME};

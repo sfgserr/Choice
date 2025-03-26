@@ -4,32 +4,51 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - <path_to_cert>:/certs:ro
-      - <path_to_key>:/private:ro
+      - ../nginx/certificate.crt:/certs/certificate.pem
+      - ../nginx/private_key.key:/private/private_key.pem
+    env_file:
+      - .env
     environment:
       - LISTEN_PORT=443 ssl
-      - HOST_NAME=<host_name>
-      - MINIO_HOST_NAME=<minio_host_name>
+      - HOST_NAME=${HOST_NAME}
+      - MINIO_HOST_NAME=${MINIO_HOST_NAME}
       - |
         SSL_DIRECTIVES=
-        ssl_certificate /certs/certificate.crt;
-        ssl_certificate_key /private/private_key.key;
-      - REDIRECT=return 301 https://$host$requested_uri;
+        ssl_certificate /certs/certificate.pem;
+        ssl_certificate_key /private/private_key.pem;
   
   webapi:
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - IdentitySettings__PathToCert=/keys/signing.pfx
-      - IdentitySettings__SecretKey=
-      - IdentitySettings__CertificatePassword=
-      - "Clients[0]:ClientId="
-      - "Clients[0]:ClientSecret="
-      - YandexGeocoder__ApiKey=
-      - PostgreSqlSettings__ConnectionString=
+      - IdentitySettings__SecretKey=${SECRET_KEY}
+      - IdentitySettings__CertificatePassword=${CERTIFICATE_PASSWORD}
+      - Clients[0]__ClientId=${CLIENT_ID}
+      - Clients[0]__ClientSecret=${CLIENT_SECRET}
+      - YandexGeocoder__ApiKey=${YANDEX_API_KEY}
+      - PostgreSqlSettings__ConnectionString=${CONNECTION_STRING}
     volumes:
       - /etc/ssl/choice:/keys
         
   minio:
+    env_file:
+      - .env
     environment:
-      - MINIO_ROOT_USER=<RootName>
-      - MINIO_ROOT_PASSWORD=<Password>
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+        
+  certbot:
+    ports:
+      - 6000:80
+    env_file:
+      - .env
+    volumes:
+      - ../nginx/:/etc/nginx/
+    build:
+      context: ./certbot
+      dockerfile: Dockerfile
+      args:
+        DOMAIN_EMAIL: ${DOMAIN_EMAIL}
+        DOMAIN_URL: ${DOMAIN_URL}

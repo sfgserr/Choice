@@ -1,14 +1,14 @@
-export $CHOICE_HOME=<CHOICE_HOME>
+source .env
 
-sudo openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/choice/signing.key -out /etc/ssl/choice/signing.crt -days 365 -subj "/CN=Choice Signing Certificate" -passout pass:<CertPassword>
+sudo openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/choice/signing.key -out /etc/ssl/choice/signing.crt -days 365 -subj "/CN=Choice Signing Certificate" -passout pass:$CERTIFICATE_PASSWORD
 
-sudo openssl rsa -in /etc/ssl/choice/signing.key -out /etc/ssl/choice/signing.key -passin pass:<CertPassword>
+sudo openssl rsa -in /etc/ssl/choice/signing.key -out /etc/ssl/choice/signing.key -passin pass:$CERTIFICATE_PASSWORD
 
 openssl pkcs12 -export -out /etc/ssl/choice/signing.pfx \
     -inkey /etc/ssl/choice/signing.key \
     -in /etc/ssl/choice/signing.crt \
-    -password pass:<CertPassword> \
-    -passin pass:<CertPassword>
+    -password pass:$CERTIFICATE_PASSWORD \
+    -passin pass:$CERTIFICATE_PASSWORD
 
 chmod -R 777 /etc/ssl/choice
 
