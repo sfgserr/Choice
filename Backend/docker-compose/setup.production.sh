@@ -1,4 +1,4 @@
-source .env
+source ./.env
 
 sudo openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/choice/signing.key -out /etc/ssl/choice/signing.crt -days 365 -subj "/CN=Choice Signing Certificate" -passout pass:$CERTIFICATE_PASSWORD
 
