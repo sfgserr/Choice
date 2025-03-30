@@ -2,9 +2,9 @@
         listen ${LISTEN_PORT};
 
         server_name ${MINIO_HOST_NAME};
-        
+
         ${SSL_DIRECTIVES}
-        
+
         ignore_invalid_headers off;
         client_max_body_size 0;
         proxy_buffering off;
@@ -21,7 +21,15 @@
             proxy_set_header Connection "";
             chunked_transfer_encoding off;
 
-            proxy_pass http://minio;
+            proxy_pass http://minio:81;
+        }
+
+        location /02d2cd10-74ae-4785-b417-4bdd38075199/ {
+           proxy_pass http://minio/;
+        }
+
+        location /.well-known/acme-challenge/ {
+           root /var/www/certbot/;
         }
     }
 

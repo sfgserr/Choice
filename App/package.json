@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "prod": "NODE_ENV=production npx react-native start"
   },
   "dependencies": {
     "@dr.pogodin/react-native-fs": "^2.30.2",
@@ -40,7 +41,7 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "15.0.1",
+    "@react-native-community/cli": "latest",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",
     "@react-native/babel-preset": "0.76.3",
