@@ -16,4 +16,12 @@ $CHOICE_HOME/Backend/src/Database/migrate.production.sh
 
 sudo docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
 
+rm -r /etc/letsencrypt/live/certfolder
 
+rm -rf ../nginx/certificate.pem
+rm -rf ../nginx/private_key.pem
+
+sudo certbot certonly --webroot -w /var/www/certbot -d $HOST_NAME -d www.$HOST_NAME -d $MINIO_HOST_NAME --cert-name=certfolder
+
+cp /etc/letsencrypt/live/certfolder/fullchain.pem ../nginx/certificate.pem
+cp /etc/letsencrypt/live/certfolder/privkey.pem ../nginx/private_key.pem

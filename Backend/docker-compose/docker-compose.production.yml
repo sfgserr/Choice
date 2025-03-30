@@ -4,8 +4,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ../nginx/certificate.crt:/certs/certificate.pem
-      - ../nginx/private_key.key:/private/private_key.pem
+      - ../nginx/certificate.pem:/certs/certificate.pem
+      - ../nginx/private_key.pem:/private/private_key.pem
+      - /var/www/certbot:/var/www/certbot
     env_file:
       - .env
     environment:
@@ -16,7 +17,7 @@ services:
         SSL_DIRECTIVES=
         ssl_certificate /certs/certificate.pem;
         ssl_certificate_key /private/private_key.pem;
-  
+
   webapi:
     env_file:
       - .env
@@ -31,25 +32,10 @@ services:
       - PostgreSqlSettings__ConnectionString=${CONNECTION_STRING}
     volumes:
       - /etc/ssl/choice:/keys
-        
+
   minio:
     env_file:
       - .env
     environment:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-        
-  certbot:
-    container_name: "certbot"
-    ports:
-      - 6000:80
-    env_file:
-      - .env
-    volumes:
-      - ../nginx/:/etc/nginx/
-    build:
-      context: ../certbot/
-      dockerfile: Dockerfile
-      args:
-        DOMAIN_EMAIL: ${DOMAIN_EMAIL}
-        DOMAIN_URL: ${DOMAIN_URL}
