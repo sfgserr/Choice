@@ -26,8 +26,9 @@ services:
       - IdentitySettings__PathToCert=/keys/signing.pfx
       - IdentitySettings__SecretKey=${SECRET_KEY}
       - IdentitySettings__CertificatePassword=${CERTIFICATE_PASSWORD}
-      - Clients[0]__ClientId=${CLIENT_ID}
-      - Clients[0]__ClientSecret=${CLIENT_SECRET}
+      - IdentitySettings__Issuer=${HOST_NAME}
+      - Clients__0__ClientId=${CLIENT_ID}
+      - Clients__0__ClientSecret=${CLIENT_SECRET}
       - YandexGeocoder__ApiKey=${YANDEX_API_KEY}
       - PostgreSqlSettings__ConnectionString=${CONNECTION_STRING}
     volumes:
