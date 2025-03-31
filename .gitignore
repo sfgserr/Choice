@@ -5,7 +5,7 @@
 
 # Prod
 App/.env.production
-
+App/android/app/.cxx
 # Docker
 */.docker
 Backend/docker-compose/sudo
