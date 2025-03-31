@@ -6,6 +6,7 @@ export class ObjectStorageService {
   private readonly minioClient: AWS.S3;
 
   constructor(endPoint: string, accessKey: string, secretKey: string) {
+    console.log(endPoint, accessKey, secretKey);
     AWS.config.update({logger: console});
     this.minioClient = new AWS.S3({
       credentials: {
@@ -14,7 +15,6 @@ export class ObjectStorageService {
       },
       endpoint: endPoint,
       s3ForcePathStyle: true,
-      sslEnabled: false,
     });
   }
 
@@ -36,7 +36,7 @@ export class ObjectStorageService {
       return true;
     }
     catch (error) {
-      Alert.alert('Ошибка', 'ошибка загрузки файла', [{info: 'ok'}]);
+      Alert.alert('Ошибка', `ошибка загрузки файла: ${error}`, [{info: 'ok'}]);
       return false;
     }
   }

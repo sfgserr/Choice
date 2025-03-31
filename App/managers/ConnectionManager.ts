@@ -14,7 +14,7 @@ export class ConnectionManager {
 
     if (this.connection == null) {
       this.connection = new HubConnectionBuilder().withUrl(
-        'http://127.0.0.1:8080/chat',
+        'https://choice-api.ru/chat',
         {accessTokenFactory: () => accessToken})
         .withAutomaticReconnect()
         .configureLogging(LogLevel.Debug)

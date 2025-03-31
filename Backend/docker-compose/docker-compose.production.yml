@@ -26,7 +26,7 @@ services:
       - IdentitySettings__PathToCert=/keys/signing.pfx
       - IdentitySettings__SecretKey=${SECRET_KEY}
       - IdentitySettings__CertificatePassword=${CERTIFICATE_PASSWORD}
-      - IdentitySettings__Issuer=${HOST_NAME}
+      - IdentitySettings__Issuer=https://${HOST_NAME}
       - Clients__0__ClientId=${CLIENT_ID}
       - Clients__0__ClientSecret=${CLIENT_SECRET}
       - YandexGeocoder__ApiKey=${YANDEX_API_KEY}
