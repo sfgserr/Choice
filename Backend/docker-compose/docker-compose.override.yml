@@ -30,3 +30,4 @@ services:
     environment:
       - MINIO_ROOT_USER=ROOTNAME
       - MINIO_ROOT_PASSWORD=CHANGEME123
+      - MINIO_BROWSER_REDIRECT_URL=http://${MINIO_HOST_NAME}/minio/ui
