@@ -105,13 +105,15 @@ namespace Users.Domain.OrderRequests.OrderResponses
 
         public OrderResponseId Id { get; }
 
-        public void Enroll(ClientId enrollingClientId)
+        public async Task Enroll(ClientId enrollingClientId, IPaymentService paymentService)
         {
             CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
             CheckRule(new CannotEnrollMoreThanOnceRule(_isEnrolled));
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(enrollingClientId.Value, _companyId, _clientId));
             CheckRule(new CannotEnrollIfEnrollmentDateIsNotConfirmedRule(_isEnrollmentDateConfirmed));
 
+            if (_prepayment > 0) await paymentService.TransferMoney(_clientId, _companyId, _prepayment);
+            
             _isEnrolled = true;
 
             AddDomainEvent(new EnrolledDomainEvent(Id, _requestId, _companyId));
@@ -193,12 +195,14 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 new UserId(_clientId.Value)));
         }
 
-        public void ConfirmEnrollmentDate(CompanyId confirmingCompanyId)
+        public async Task ConfirmEnrollmentDate(CompanyId confirmingCompanyId, IPaymentService paymentService)
         {
             CheckRule(new OnlyClientCreatedOrCompanyResponsedCanMakeOperationsRule(confirmingCompanyId.Value, _companyId, _clientId));
             CheckRule(new CannotMakeOperationsWithNotActiveOrderRule(_status, _isActive));
             CheckRule(new CannotConfirmEnrollmentDateMoreThanOnceRule(_isEnrollmentDateConfirmed));
 
+            if (_prepayment > 0) await paymentService.TransferMoney(_clientId, _companyId, _prepayment);
+            
             _isEnrollmentDateConfirmed = true;
             _isEnrolled = true;
             

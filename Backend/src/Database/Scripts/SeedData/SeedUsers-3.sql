@@ -17,3 +17,7 @@ INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "R
 INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Автодом', 'default.png', false);
 
 INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'default.png', false);
+
+INSERT INTO payments."Wallets" ("Id", "PayerId", "Copecks") VALUES ('84b92f6d-a254-4b4d-a115-d5a38e44e58d', 'ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 15000);
+
+INSERT INTO payments."Wallets" ("Id", "PayerId", "Copecks") VALUES ('3fd3df18-9e32-44a2-9f2e-f79d0d377249', '954dba19-f9bd-488a-9f45-dee4f184e906', 0);

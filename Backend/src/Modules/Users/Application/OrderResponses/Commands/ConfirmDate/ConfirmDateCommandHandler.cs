@@ -10,11 +10,13 @@ namespace Users.Application.OrderResponses.Commands.ConfirmDate
     {
         private readonly IUsersDbContext _dbContext;
         private readonly IUserContext _userContext;
-
-        internal ConfirmDateCommandHandler(IUsersDbContext dbContext, IUserContext userContext)
+        private readonly IPaymentService _paymentService;
+        
+        internal ConfirmDateCommandHandler(IUsersDbContext dbContext, IUserContext userContext, IPaymentService paymentService)
         {
             _dbContext = dbContext;
             _userContext = userContext;
+            _paymentService = paymentService;
         }
 
         public async Task Execute(ConfirmDateCommand command)
@@ -22,7 +24,7 @@ namespace Users.Application.OrderResponses.Commands.ConfirmDate
             var response = await _dbContext.OrderResponses.Get(r => 
                 r.Id.Equals(new OrderResponseId(command.ResponseId)));
 
-            response.ConfirmEnrollmentDate(_userContext.CompanyId);
+            await response.ConfirmEnrollmentDate(_userContext.CompanyId, _paymentService);
         }
     }
 }

@@ -55,8 +55,4 @@ namespace BuildingBlocks.Application.ExpressionTranslation
             return dictionary;
         }
     }
-
-    internal class PublicMethodProperty
-    {
-    }
 }

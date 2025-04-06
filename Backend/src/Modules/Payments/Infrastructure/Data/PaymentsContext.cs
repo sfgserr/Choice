@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Payments.Application.Contracts;
 using Payments.Domain.SubscriptionPayments;
 using Payments.Domain.Subscriptions;
+using Payments.Domain.Wallets;
 using Payments.Infrastructure.Data.Domain.SubscriptionPayments;
 using Payments.Infrastructure.Data.Domain.Subscriptions;
+using Payments.Infrastructure.Data.Domain.Wallets;
 using Payments.Infrastructure.Data.InternalCommands;
 using Payments.Infrastructure.Data.Outbox;
 
@@ -24,6 +26,7 @@ namespace Payments.Infrastructure.Data
             
             builder.ApplyConfiguration(new SubscriptionEntityTypeConfiguration());
             builder.ApplyConfiguration(new SubscriptionPaymentEntityTypeConfiguration());
+            builder.ApplyConfiguration(new WalletEntityTypeConfiguration());
             builder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
             builder.ApplyConfiguration(new OutboxEntityTypeConfiguration());
         }
@@ -31,6 +34,8 @@ namespace Payments.Infrastructure.Data
         public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
 
         public DbSet<Subscription> Subscriptions { get; set; }
+
+        public DbSet<Wallet> Wallets { get; set; }
 
         public DbSet<InternalCommand> InternalCommands { get; set; }
 

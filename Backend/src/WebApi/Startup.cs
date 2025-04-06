@@ -1,4 +1,5 @@
-﻿using Autofac.Extensions.DependencyInjection;
+﻿using System.Text;
+using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.Application.Exceptions;
 using BuildingBlocks.Domain;
 using Microsoft.AspNetCore.Authentication;
@@ -76,6 +77,15 @@ namespace WebApi
             services.AddHttpClient("Geocode", options =>
             {
                 options.BaseAddress = new(Configuration["YandexGeocoder:BaseUrl"]!);
+            });
+            services.AddHttpClient("YooKassa", options =>
+            {
+                options.BaseAddress = new(Configuration["YooKassaSettings:BaseUrl"]!);
+                
+                var credentials = 
+                    Encoding.UTF8.GetBytes($"{Configuration["YooKassaSettings:AppId"]!}:{Configuration["YooKassaSettings:SecretKey"]!}");
+                
+                options.DefaultRequestHeaders.Add("Authorization", $"Bearer {Convert.ToBase64String(credentials)}");
             });
             
             services.AddControllers();

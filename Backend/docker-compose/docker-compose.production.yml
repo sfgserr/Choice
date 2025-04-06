@@ -30,6 +30,9 @@ services:
       - Clients__0__ClientId=${CLIENT_ID}
       - Clients__0__ClientSecret=${CLIENT_SECRET}
       - YandexGeocoder__ApiKey=${YANDEX_API_KEY}
+      - YooKassaSettings__BaseUrl=${YOO_KASSA_BASE_URL}
+      - YooKassaSettings__SecretKey=${YOO_KASSA_SECRET_KEY}
+      - YooKassaSettings__AppId=${YOO_KASSA_APP_ID}
       - PostgreSqlSettings__ConnectionString=${CONNECTION_STRING}
     volumes:
       - /etc/ssl/choice:/keys

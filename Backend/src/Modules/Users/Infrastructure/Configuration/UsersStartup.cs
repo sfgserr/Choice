@@ -4,12 +4,14 @@ using MassTransit;
 using Serilog;
 using Users.Infrastructure.Configuration.Authentication;
 using Users.Infrastructure.Configuration.Data;
+using Users.Infrastructure.Configuration.Domain;
 using Users.Infrastructure.Configuration.DomainEventsDispatching;
 using Users.Infrastructure.Configuration.Events;
 using Users.Infrastructure.Configuration.GeoCoding;
 using Users.Infrastructure.Configuration.Logging;
 using Users.Infrastructure.Configuration.Mediation;
 using Users.Infrastructure.Configuration.Outbox;
+using Users.Infrastructure.Configuration.Payments;
 using Users.Infrastructure.Configuration.Processing;
 using Users.Infrastructure.Configuration.Quartz;
 using Users.Infrastructure.MediatR.DomainNotifications;
@@ -47,7 +49,8 @@ namespace Users.Infrastructure.Configuration
 
             containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
-
+            containerBuilder.RegisterModule(new DomainModule());
+            
             var mappings = new Dictionary<string, Type>
             {
                 [nameof(EnrolledDomainNotification)] = typeof(EnrolledDomainNotification),
@@ -68,6 +71,7 @@ namespace Users.Infrastructure.Configuration
             containerBuilder.RegisterModule(new LoggingModule(logger));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
+            containerBuilder.RegisterModule(new PaymentsModule());
             containerBuilder.RegisterModule(new ProcessingModule());
 
             _container = containerBuilder.Build();

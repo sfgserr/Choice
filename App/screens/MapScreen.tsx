@@ -118,6 +118,8 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     setCompanyId('');
   }, []);
 
+  const onGoBack = React.useCallback(() => {}, []);
+
   return (
     <GestureHandlerRootView>
       <YaMap
@@ -173,7 +175,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         responseId={responseId}
         close={onClose}
         ref={ref}
-        navigateToChat={() => navigation.navigate('Chat', {id: companyId})}/>
+        navigateToChat={() => navigation.navigate('Chat', {id: companyId, onGoBack})}/>
     </GestureHandlerRootView>
   );
 }

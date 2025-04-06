@@ -55,7 +55,7 @@ namespace Identity.Domain.Users
                 phoneNumber,
                 role,
                 address,
-                role.Equals(UserRole.Client));
+                true);
         }
         
         public UserId Id { get; }

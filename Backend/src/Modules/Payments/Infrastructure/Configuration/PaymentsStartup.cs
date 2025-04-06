@@ -10,6 +10,8 @@ using Payments.Infrastructure.Configuration.Mediation;
 using Payments.Infrastructure.Configuration.Outbox;
 using Payments.Infrastructure.Configuration.Processing;
 using Payments.Infrastructure.Configuration.Quartz;
+using Payments.Infrastructure.Configuration.Services;
+using Payments.Infrastructure.Configuration.YooKassa;
 using Payments.Infrastructure.MediatR.DomainNotifications;
 using Serilog;
 
@@ -55,7 +57,9 @@ namespace Payments.Infrastructure.Configuration
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
-
+            containerBuilder.RegisterModule(new ServicesModule());
+            containerBuilder.RegisterModule(new YooKassaModule());
+            
             _container = containerBuilder.Build();
 
             PaymentsCompositionRoot.SetContainer(_container);
