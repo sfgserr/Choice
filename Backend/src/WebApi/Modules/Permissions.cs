@@ -44,5 +44,8 @@ namespace WebApi.Modules
         public const string Read = "Read";
         public const string GetOrderResponse = "GetOrderResponse";
         public const string ChangePassword = "ChangePassword";
+        public const string CreatePayment = "CreatePayment";
+        public const string CreatePayout = "CreatePayout";
+        public const string GetWallet = "GetWallet";
     }
 }
