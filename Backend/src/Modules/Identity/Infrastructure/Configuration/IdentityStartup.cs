@@ -8,6 +8,7 @@ using Identity.Infrastructure.Configuration.Logging;
 using Identity.Infrastructure.Configuration.Outbox;
 using Identity.Infrastructure.Configuration.Processing;
 using Identity.Infrastructure.Configuration.Quartz;
+using Identity.Infrastructure.Configuration.Sms;
 using MassTransit;
 using Serilog;
 
@@ -45,6 +46,7 @@ namespace Identity.Infrastructure.Configuration
             builder.RegisterModule(new LoggingModule(logger));
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new ProcessingModule());
+            builder.RegisterModule(new SmsModule());
             
             _container = builder.Build();
             IdentityCompositionRoot.SetContainer(_container);

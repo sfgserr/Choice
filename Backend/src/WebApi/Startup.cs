@@ -87,6 +87,15 @@ namespace WebApi
                 
                 options.DefaultRequestHeaders.Add("Authorization", $"Bearer {Convert.ToBase64String(credentials)}");
             });
+            services.AddHttpClient("SmsApi", options =>
+            {
+                options.BaseAddress = new(Configuration["SmsApiSettings:BaseUrl"]!);
+                
+                var credentials = 
+                    Encoding.UTF8.GetBytes($"{Configuration["SmsApiSettings:Login"]!}:{Configuration["SmsApiSettings:Password"]!}");
+                
+                options.DefaultRequestHeaders.Add("Authorization", $"Bearer {Convert.ToBase64String(credentials)}");
+            });
             
             services.AddControllers();
             services.AddSwaggerGen();
@@ -114,6 +123,7 @@ namespace WebApi
             services.AddSingleton<SeedClients>();
             services.AddSingleton<IGrantTypeHandler, PasswordGrantTypeHandler>();
             services.AddSingleton<IGrantTypeHandler, RefreshTokenGrantTypeHandler>();
+            services.AddSingleton<IGrantTypeHandler, PasswordPhoneGrantTypeHandler>();
             services.AddSingleton<GrantTypeHandlerFactory>();
             services.AddSingleton<IUserIdProvider, SubjectBasedUserIdProvider>();
             services.AddSingleton<IChatUsersStore, ChatUsersStore>();

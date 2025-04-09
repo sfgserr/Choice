@@ -31,7 +31,6 @@ namespace WebApi.Modules.Payments.Wallets
             return Ok(confirmationUrl);
         }
         
-        [AllowUnsubscribe]
         [HttpPost("deposit")]
         public async Task<IActionResult> Deposit([FromBody] EventRequest request)
         {
@@ -50,7 +49,6 @@ namespace WebApi.Modules.Payments.Wallets
             return Ok();
         }
         
-        [AllowUnsubscribe]
         [HttpPost("withdraw")]
         public async Task<IActionResult> Withdraw([FromBody] EventRequest request)
         {

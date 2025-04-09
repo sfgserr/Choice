@@ -1,7 +1,8 @@
 using System.Security.Claims;
 using Identity.Application.Authentication;
-using Identity.Application.Authentication.Authenticate;
+using Identity.Application.Authentication.Phone.VerifyCode;
 using Identity.Application.Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
@@ -9,24 +10,35 @@ using OpenIddict.Server.AspNetCore;
 
 namespace WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandlers
 {
-    public class PasswordGrantTypeHandler : IGrantTypeHandler
+    public class PasswordPhoneGrantTypeHandler : IGrantTypeHandler
     {
-        private readonly IIdentityModule _identityModule;
-        
-        public PasswordGrantTypeHandler(IIdentityModule identityModule)
+        private readonly IIdentityModule _module;
+
+        public PasswordPhoneGrantTypeHandler(IIdentityModule module)
         {
-            _identityModule = identityModule;
+            _module = module;
         }
 
-        public string GrantType => OpenIddictConstants.GrantTypes.Password;
-        
+        public string GrantType => "password_phone";
+
         public async Task<IActionResult> Handle(OpenIddictRequest request, Controller controller)
         {
-            var result = await _identityModule.ExecuteCommand<AuthenticateCommand, AuthenticationResult>(
-                new AuthenticateCommand(
-                    request.Username,
-                    request.Password));
+            var code = request.GetParameter("code").ToString();
 
+            if (code == null)
+            {
+                var properties = new AuthenticationProperties(new Dictionary<string, string>
+                {
+                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = OpenIddictConstants.Errors.InvalidGrant,
+                    [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                        "code paramenter is not found"
+                });
+                
+                return controller.Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
+
+            var result = await _module.ExecuteCommand<VerifyCodeCommand, AuthenticationResult>(new(code));
+            
             if (!result.IsSuccessful)
                 return controller.Unauthorized(result.ErrorMessage);
             

@@ -1,4 +1,4 @@
-namespace Identity.Application.Authentication.Authenticate
+namespace Identity.Application.Authentication
 {
     public class UserDto
     { 

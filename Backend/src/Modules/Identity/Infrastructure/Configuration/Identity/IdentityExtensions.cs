@@ -22,9 +22,10 @@ namespace Identity.Infrastructure.Configuration.Identity
             services.AddOpenIddict()
                 .AddServer(options =>
                 {
-                    options.SetTokenEndpointUris("api/auth/token")
+                    options.SetTokenEndpointUris("api/auth/token", "api/auth/phone")
                            .AllowPasswordFlow()
-                           .AllowRefreshTokenFlow();
+                           .AllowRefreshTokenFlow()
+                           .AllowCustomFlow("password_phone");
                     
                     options.UseAspNetCore()
                            .EnableTokenEndpointPassthrough()

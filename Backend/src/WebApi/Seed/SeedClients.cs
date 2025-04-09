@@ -28,6 +28,7 @@ namespace WebApi.Seed
                         {
                             OpenIddictConstants.Permissions.Endpoints.Token,
                             OpenIddictConstants.Permissions.GrantTypes.Password,
+                            OpenIddictConstants.Permissions.GrantTypes.Password + "_phone",
                             OpenIddictConstants.Permissions.GrantTypes.RefreshToken
                         }
                     });
