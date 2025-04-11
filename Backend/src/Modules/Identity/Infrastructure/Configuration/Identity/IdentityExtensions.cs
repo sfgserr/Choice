@@ -22,7 +22,7 @@ namespace Identity.Infrastructure.Configuration.Identity
             services.AddOpenIddict()
                 .AddServer(options =>
                 {
-                    options.SetTokenEndpointUris("api/auth/token", "api/auth/phone")
+                    options.SetTokenEndpointUris("api/auth/token")
                            .AllowPasswordFlow()
                            .AllowRefreshTokenFlow()
                            .AllowCustomFlow("password_phone");
@@ -47,14 +47,16 @@ namespace Identity.Infrastructure.Configuration.Identity
                     options.AddEncryptionKey(new SymmetricSecurityKey(Convert.FromBase64String(identityOptions.SecretKey)));
                     
                     options.DisableAccessTokenEncryption();
+                    
+                    options.SetIssuer(identityOptions.Issuer);
                 })
                 .AddValidation(options =>
                 {
-                    options.SetIssuer(identityOptions.Issuer);
-                    
                     options.UseLocalServer();
                     
                     options.UseAspNetCore();
+                    
+                    options.SetIssuer(identityOptions.Issuer);
                 });
         }
     }

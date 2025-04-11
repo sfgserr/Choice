@@ -25,11 +25,12 @@ namespace Payments.Infrastructure.Configuration
             string connectionString,
             ILogger logger,
             IUserService userService,
-            IBus bus)
+            IBus bus,
+            IHttpClientFactory clientFactory)
         {
             var paymentsLogger = logger.ForContext("Module", "Payments");
             
-            ConfigureCompositionRoot(connectionString, paymentsLogger, userService, bus);
+            ConfigureCompositionRoot(connectionString, paymentsLogger, userService, bus, clientFactory);
 
             QuartzStartup.Initialize(paymentsLogger);
         }
@@ -38,14 +39,15 @@ namespace Payments.Infrastructure.Configuration
             string connectionString,
             ILogger logger,
             IUserService userService,
-            IBus bus)
+            IBus bus,
+            IHttpClientFactory clientFactory)
         {
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterModule(new AuthenticationModule(userService));
             containerBuilder.RegisterModule(new DataAccessModule(connectionString));
 
-            var mappings = new Dictionary<string, Type>()
+            var mappings = new Dictionary<string, Type>
             {
                 [nameof(SubscriptionPaymentPaidDomainNotification)] = typeof(SubscriptionPaymentPaidDomainNotification),
                 [nameof(SubscriptionStatusChangedDomainNotification)] = typeof(SubscriptionStatusChangedDomainNotification)
@@ -58,7 +60,7 @@ namespace Payments.Infrastructure.Configuration
             containerBuilder.RegisterModule(new OutboxModule());
             containerBuilder.RegisterModule(new ProcessingModule());
             containerBuilder.RegisterModule(new ServicesModule());
-            containerBuilder.RegisterModule(new YooKassaModule());
+            containerBuilder.RegisterModule(new YooKassaModule(clientFactory));
             
             _container = containerBuilder.Build();
 

@@ -1,4 +1,5 @@
 using Autofac;
+using BuildingBlocks.Infrastructure.Configuration;
 using Users.Domain.OrderRequests.OrderResponses;
 using Users.Infrastructure.Payments;
 
@@ -10,7 +11,8 @@ namespace Users.Infrastructure.Configuration.Domain
         {
             builder.RegisterType<PaymentService>()
                 .As<IPaymentService>()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .FindConstructorsWith(new AllConstructorFinder());
         }
     }
 }

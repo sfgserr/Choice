@@ -1,5 +1,6 @@
 using Autofac;
 using Payments.Application.Contracts;
+using PaymentsModuleExternal = Payments.Infrastructure.PaymentsModule;
 
 namespace Users.Infrastructure.Configuration.Payments
 {
@@ -7,7 +8,7 @@ namespace Users.Infrastructure.Configuration.Payments
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<PaymentsModule>()
+            builder.RegisterType<PaymentsModuleExternal>()
                 .As<IPaymentsModule>()
                 .InstancePerLifetimeScope();
         }

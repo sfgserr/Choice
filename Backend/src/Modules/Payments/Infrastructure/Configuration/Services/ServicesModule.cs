@@ -1,4 +1,5 @@
 using Autofac;
+using BuildingBlocks.Infrastructure.Configuration;
 using Payments.Application.Services;
 
 namespace Payments.Infrastructure.Configuration.Services
@@ -9,11 +10,13 @@ namespace Payments.Infrastructure.Configuration.Services
         {
             builder.RegisterType<PaymentsService>()
                 .AsSelf()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .FindConstructorsWith(new AllConstructorFinder());
             
             builder.RegisterType<PayoutService>()
                 .AsSelf()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .FindConstructorsWith(new AllConstructorFinder());
         }
     }
 }

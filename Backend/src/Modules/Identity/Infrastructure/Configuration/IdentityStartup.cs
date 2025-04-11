@@ -22,11 +22,12 @@ namespace Identity.Infrastructure.Configuration
             string connectionString, 
             ILogger logger,
             IUserService userService, 
-            IBus bus)
+            IBus bus,
+            IHttpClientFactory clientFactory)
         {
             var identityLogger = logger.ForContext("Module", "Identity");
             
-            ConfigureCompositionRoot(connectionString, identityLogger, userService, bus);
+            ConfigureCompositionRoot(connectionString, identityLogger, userService, bus, clientFactory);
             
             QuartzStartup.Initialize(identityLogger);
         }
@@ -35,7 +36,8 @@ namespace Identity.Infrastructure.Configuration
             string connectionString, 
             ILogger logger,
             IUserService userService, 
-            IBus eventBus)
+            IBus eventBus,
+            IHttpClientFactory clientFactory)
         {
             var builder = new ContainerBuilder();
 
@@ -46,7 +48,7 @@ namespace Identity.Infrastructure.Configuration
             builder.RegisterModule(new LoggingModule(logger));
             builder.RegisterModule(new OutboxModule());
             builder.RegisterModule(new ProcessingModule());
-            builder.RegisterModule(new SmsModule());
+            builder.RegisterModule(new SmsModule(clientFactory));
             
             _container = builder.Build();
             IdentityCompositionRoot.SetContainer(_container);

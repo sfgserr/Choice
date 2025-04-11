@@ -85,7 +85,7 @@ namespace WebApi
                 var credentials = 
                     Encoding.UTF8.GetBytes($"{Configuration["YooKassaSettings:AppId"]!}:{Configuration["YooKassaSettings:SecretKey"]!}");
                 
-                options.DefaultRequestHeaders.Add("Authorization", $"Bearer {Convert.ToBase64String(credentials)}");
+                options.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentials)}");
             });
             services.AddHttpClient("SmsApi", options =>
             {
@@ -94,7 +94,7 @@ namespace WebApi
                 var credentials = 
                     Encoding.UTF8.GetBytes($"{Configuration["SmsApiSettings:Login"]!}:{Configuration["SmsApiSettings:Password"]!}");
                 
-                options.DefaultRequestHeaders.Add("Authorization", $"Bearer {Convert.ToBase64String(credentials)}");
+                options.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentials)}");
             });
             
             services.AddControllers();
@@ -164,13 +164,15 @@ namespace WebApi
                 connectionString,
                 _logger,
                 userService,
-                bus);
+                bus,
+                clientFactory);
 
             PaymentsStartup.Initialize(
                 connectionString,
                 _logger,
                 userService,
-                bus);
+                bus,
+                clientFactory);
             
             ChatStartup<ChatHub>.Initialize(
                 connectionString,
