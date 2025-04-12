@@ -8,6 +8,8 @@ services:
       - minio
     volumes:
       - ../nginx/templates:/etc/nginx/templates
+      - ../nginx/certificate.pem:/certs/certificate.pem
+      - ../nginx/private_key.pem:/private/private_key.pem
   
   webapi:
     image: ${DOCKER_REGISTRY-}webapi

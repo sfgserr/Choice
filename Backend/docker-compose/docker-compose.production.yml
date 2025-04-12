@@ -4,19 +4,12 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ../nginx/certificate.pem:/certs/certificate.pem
-      - ../nginx/private_key.pem:/private/private_key.pem
       - /var/www/certbot:/var/www/certbot
     env_file:
-      - .env
+      - .env.prod
     environment:
-      - LISTEN_PORT=443 ssl
       - HOST_NAME=${HOST_NAME}
       - MINIO_HOST_NAME=${MINIO_HOST_NAME}
-      - |
-        SSL_DIRECTIVES=
-        ssl_certificate /certs/certificate.pem;
-        ssl_certificate_key /private/private_key.pem;
 
   webapi:
     env_file:

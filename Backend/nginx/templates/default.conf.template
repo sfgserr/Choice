@@ -1,16 +1,17 @@
     server {
-        listen ${LISTEN_PORT};
+        listen 443 ssl;
 
-   	server_name ${MINIO_HOST_NAME};
+   	    server_name ${MINIO_HOST_NAME};
 	
-	${SSL_DIRECTIVES}        
+	    ssl_certificate /certs/certificate.pem;
+        ssl_certificate_key /private/private_key.pem;  
 
         ignore_invalid_headers off;
-   	client_max_body_size 0;
-   	proxy_buffering off;
-   	proxy_request_buffering off;
+   	    client_max_body_size 0;
+   	    proxy_buffering off;
+   	    proxy_request_buffering off;
 
-   	location / {
+   	    location / {
             proxy_set_header Host $http_host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -24,7 +25,7 @@
             proxy_pass http://minio;
         }
 
-   	location /minio/ui/ {
+   	    location /minio/ui/ {
       	    rewrite ^/minio/ui/(.*) /$1 break;
             proxy_set_header Host $http_host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -49,11 +50,12 @@
     }
 
     server {
-        listen ${LISTEN_PORT};
+        listen 443 ssl;
 
         server_name ${HOST_NAME};
 
-        ${SSL_DIRECTIVES}
+        ssl_certificate /certs/certificate.pem;
+        ssl_certificate_key /private/private_key.pem;
 
         proxy_http_version 1.1;
         proxy_cache_bypass $http_upgrade;
@@ -72,4 +74,10 @@
         location /chat {
            proxy_pass http://webapi;
         }
+    }
+    
+    server {
+        listen 80;
+        
+        return 301 https://$host$request_uri;
     }

@@ -1,4 +1,6 @@
-cd DatabaseMigrator
+export PATH=${PATH}:${HOME}/.dotnet/tools
+
+cd ../src/Database/DatabaseMigrator
 
 dotnet run "User Id=root;Password=pgadminchoice;Database=Choice;Host=localhost;Port=5432;" "../Structure"
 
