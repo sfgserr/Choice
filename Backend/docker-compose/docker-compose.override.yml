@@ -16,7 +16,19 @@ services:
       POSTGRES_DB: Choice
     ports:
       - 5432:5432
+  
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
     
+    environment:
+      FTLCONF_webserver_api_password: 'ftl_password'
+      
+    restart: unless-stopped
+    ports:
+      - 8084:80
+      - 53:53/udp
+  
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
