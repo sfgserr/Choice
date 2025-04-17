@@ -13,6 +13,8 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.RNFetchBlob.RNFetchBlobPackage
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage
+import com.facebook.react.modules.network.OkHttpClientProvider
+import com.app.CustomClientFactory
 
 class MainApplication : Application(), ReactApplication {
 
@@ -38,6 +40,10 @@ class MainApplication : Application(), ReactApplication {
     get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
   override fun onCreate() {
+    if (BuildConfig.DEBUG) {
+        OkHttpClientProvider.setOkHttpClientFactory(CustomClientFactory());
+    }
+
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
