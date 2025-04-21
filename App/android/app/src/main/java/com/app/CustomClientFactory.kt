@@ -17,7 +17,6 @@ class CustomClientFactory : OkHttpClientFactory {
 
                 override fun getAcceptedIssuers() = arrayOf<X509Certificate>()
             })
-
             // Install the all-trusting trust manager
             val sslContext = SSLContext.getInstance("SSL")
             sslContext.init(null, trustAllCerts, java.security.SecureRandom())

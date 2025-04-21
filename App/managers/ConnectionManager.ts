@@ -1,33 +1,22 @@
-import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr';
-import {Alert, DeviceEventEmitter} from 'react-native';
-import {setupURLPolyfill} from 'react-native-url-polyfill';
+import {SignalRConnection} from '../realTime/connections/SignalRConnection.ts';
+import {IConnection} from '../realTime/connections/IConnection.ts';
+import {SignalRClient} from '../realTime/signalr/SignalRClient.ts';
+import {HubConnectionAdapter} from '../realTime/connections/HubConnectionAdapter.ts';
+import {DeviceEventEmitter} from 'react-native';
 import {Message} from '../types/DomainTypes.ts';
 
 export class ConnectionManager {
-  private static connection: HubConnection | null = null;
+  private static connection: IConnection | null = null;
 
   private constructor() {
   }
 
   public static async init(accessToken: string) {
-    setupURLPolyfill();
-
     if (this.connection == null) {
-      this.connection = new HubConnectionBuilder().withUrl(
-        'https://choice.ru:8083/chat',
-        {accessTokenFactory: () => accessToken})
-        .withAutomaticReconnect()
-        .configureLogging(LogLevel.Debug)
-        .build();
+      this.connection = new HubConnectionAdapter(accessToken);
 
       this.connection.on('messageSent', (message: Message) => {
         DeviceEventEmitter.emit('messageSent', message);
-      });
-
-      this.connection.onclose(error => {
-        if (error != undefined) {
-          Alert.alert('Ошибка', error.message, [{info: 'Ок'}]);
-        }
       });
 
       this.connection.on('read', (data: string) => {
@@ -43,9 +32,6 @@ export class ConnectionManager {
   }
 
   public static async disconnect(): Promise<void> {
-    if (this.connection != null) {
-      await this.connection.stop();
-      this.connection = null;
-    }
+    this.connection?.close();
   }
 }

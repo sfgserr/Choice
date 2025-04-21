@@ -1,6 +1,7 @@
 using Chat.Application.Contracts;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Serilog;
 using WebApi.Modules;
 
 namespace WebApi.Configuration.Chat
@@ -25,6 +26,11 @@ namespace WebApi.Configuration.Chat
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             _usersStore.Disconnect(Guid.Parse(Context.UserIdentifier!));
+
+            if (exception != null)
+            {
+                Log.Error(exception.Message, "Disconnected from server");
+            }
             
             return Task.CompletedTask;
         }

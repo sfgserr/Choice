@@ -40,9 +40,7 @@ class MainApplication : Application(), ReactApplication {
     get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
   override fun onCreate() {
-    if (BuildConfig.DEBUG) {
-        OkHttpClientProvider.setOkHttpClientFactory(CustomClientFactory());
-    }
+    //OkHttpClientProvider.setOkHttpClientFactory(CustomClientFactory());
 
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)

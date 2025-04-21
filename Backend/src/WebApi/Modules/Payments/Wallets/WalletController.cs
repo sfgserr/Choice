@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.Payments.CreatePayment;
 using Payments.Application.Payouts.Commands.CreatePayout;
-using Payments.Application.Wallets.Commands.Deposit;
-using Payments.Application.Wallets.Commands.Withdraw;
 using Payments.Application.Wallets.Queries.GetWallet;
+using Payments.Infrastructure.YooKassa.Events.Core;
 
 namespace WebApi.Modules.Payments.Wallets
 {
@@ -31,10 +30,10 @@ namespace WebApi.Modules.Payments.Wallets
             return Ok(confirmationUrl);
         }
         
-        [HttpPost("deposit")]
-        public async Task<IActionResult> Deposit([FromBody] EventRequest request)
+        [HttpPost("notification")]
+        public async Task<IActionResult> Deposit([FromBody] EventObject request)
         {
-            await _module.ExecuteCommand(new DepositCommand(Guid.Parse(request.Object.Id)));
+            await YooKassaNotifications.Handle(request);
             
             return Ok();
         }
@@ -46,14 +45,6 @@ namespace WebApi.Modules.Payments.Wallets
         {
             await _module.ExecuteCommand(new CreatePayoutCommand(request.BankCardNumber, request.Copecks));
             
-            return Ok();
-        }
-        
-        [HttpPost("withdraw")]
-        public async Task<IActionResult> Withdraw([FromBody] EventRequest request)
-        {
-            await _module.ExecuteCommand(new WithdrawCommand(request.Object.Id));
-
             return Ok();
         }
         

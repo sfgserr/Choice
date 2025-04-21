@@ -2,7 +2,7 @@ services:
   nginx:
     ports:
       - 8080:80
-      - 8083:443
+      - 8443:443
     environment:
       - HOST_NAME=choice.ru
       - MINIO_HOST_NAME=minio.choice.ru
@@ -48,4 +48,4 @@ services:
     environment:
       - MINIO_ROOT_USER=ROOTNAME
       - MINIO_ROOT_PASSWORD=CHANGEME123
-      - MINIO_BROWSER_REDIRECT_URL=https://minio.choice.ru:8083/minio/ui
+      - MINIO_BROWSER_REDIRECT_URL=https://minio.choice.ru:8443/minio/ui
