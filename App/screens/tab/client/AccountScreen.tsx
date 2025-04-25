@@ -13,6 +13,10 @@ import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequest
 import {ClientService} from '../../../services/domain/ClientService.ts';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
+import {PaymentService} from "../../../services/domain/PaymentService.tsx";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import {Icon} from "@rneui/base";
+import PayModal from "../../../components/modals/PayModal.tsx";
 
 type Form = {
   id: string
@@ -28,14 +32,17 @@ type Form = {
 export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const userService = useDependency<UserService>('UserService');
   const clientService = useDependency<ClientService>('ClientService');
+  const paymentService = useDependency<PaymentService>('PaymentService');
 
   const { signOut } = React.useContext(AuthContext);
 
   const [form, setForm] = React.useState<Form | null>(null);
   const [isChanged, setIsChanged] = React.useState<boolean>(false);
+  const [balance, setBalance] = React.useState<string>('');
 
   const [isChangeIconUriModalToggled, setIsChangeIconUriModalToggled] = React.useState(false);
   const [isSuccessfulRequestModalToggled, setIsSuccessfulRequestModalToggled] = React.useState(false);
+  const [isPayModalToggled, setIsPayModalToggled] = React.useState(false);
 
   const toggle = React.useCallback(() => setIsChangeIconUriModalToggled(prev => !prev), []);
 
@@ -85,14 +92,23 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
       }
     };
 
+    const getBalance = async () => {
+      const response = await paymentService.getWallet();
+
+      if (response.result == 'successful') {
+        setBalance(((response.content / 100).toFixed(2)));
+      }
+    };
+
     getUser();
+    getBalance();
     setIsChanged(false);
   }, [isFocused]);
 
   return (
     <View style={styles.container}>
-      {form == null ? (
-        <ActivityIndicator size={'large'} color={'#2D81E0'}/>
+      {form == null || balance == '' ? (
+        <ActivityIndicator size={'large'} color={'#2D81E0'} />
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.title}>Аккаунт</Text>
@@ -101,101 +117,111 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               style={styles.icon}
               source={{
                 uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
-              }}/>
+              }}
+            />
           </View>
           <View style={styles.textButtonContainer}>
-            <TextButton
-              text={'Изменить фото'}
-              onPress={toggle}/>
+            <TextButton text={'Изменить фото'} onPress={toggle} />
+          </View>
+          <View style={{paddingTop: 15, paddingHorizontal: 15}}>
+            <Text style={{fontSize: 15, fontWeight: '600'}}>Баланс:</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 30, fontWeight: '700'}}>{`${balance} \u20bd`}</Text>
+              <TouchableOpacity onPress={() => setIsPayModalToggled(prev => !prev)}>
+                <Icon
+                  type={'material'}
+                  name={'add'}
+                  color={'#2688EB'}/>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{paddingHorizontal: 15}}>
-            <TextInputTitle
-              s={'Имя'}
-              top={20}
-              bottom={5}/>
+            <TextInputTitle s={'Имя'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.name}
               onChanged={(text: string) => set(prev => ({...prev, name: text}))}
               placeholder={'Введите имя'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Фамилия'}
-              top={20}
-              bottom={5}/>
+              keyboard={'default'}
+            />
+            <TextInputTitle s={'Фамилия'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.surname}
-              onChanged={(text: string) => set(prev => ({...prev, surname: text}))}
+              onChanged={(text: string) =>
+                set(prev => ({...prev, surname: text}))
+              }
               placeholder={'Введите фамилию'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'E-mail'}
-              top={20}
-              bottom={5}/>
+              keyboard={'default'}
+            />
+            <TextInputTitle s={'E-mail'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.email}
-              onChanged={(text: string) => set(prev => ({...prev, email: text}))}
+              onChanged={(text: string) =>
+                set(prev => ({...prev, email: text}))
+              }
               placeholder={'Введите e-mail'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Номер телефона'}
-              top={20}
-              bottom={5}/>
+              keyboard={'default'}
+            />
+            <TextInputTitle s={'Номер телефона'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.phoneNumber}
-              onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
+              onChanged={(text: string) =>
+                set(prev => ({...prev, phoneNumber: text}))
+              }
               placeholder={'Введите номер телефона'}
               isError={false}
               isBig={false}
-              keyboard={'phone-pad'}/>
-            <TextInputTitle
-              s={'Город'}
-              top={20}
-              bottom={5}/>
+              keyboard={'phone-pad'}
+            />
+            <TextInputTitle s={'Город'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.city}
               onChanged={(text: string) => set(prev => ({...prev, city: text}))}
               placeholder={'Город'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Улица'}
-              top={20}
-              bottom={5}/>
+              keyboard={'default'}
+            />
+            <TextInputTitle s={'Улица'} top={20} bottom={5} />
             <GestureBorderedTextInput
               value={form?.street}
-              onChanged={(text: string) => set(prev => ({...prev, street: text}))}
+              onChanged={(text: string) =>
+                set(prev => ({...prev, street: text}))
+              }
               placeholder={'Улица'}
               isError={false}
               isBig={false}
-              keyboard={'default'}/>
+              keyboard={'default'}
+            />
             <GestureStyledButton
               content={'Изменить пароль'}
               top={20}
               bottom={0}
               isDisabled={false}
               pressed={() => navigation.navigate('ChangePassword')}
-              type={'reversed'}/>
+              type={'reversed'}
+            />
             <GestureStyledButton
               content={'Выйти из акканта'}
               top={20}
               bottom={0}
               isDisabled={false}
               pressed={signOut}
-              type={'warn'}/>
+              type={'warn'}
+            />
             {isChanged && (
               <GestureStyledButton
                 content={'Сохранить изменения'}
                 top={20}
                 bottom={0}
                 isDisabled={isDisabled()}
-                pressed={saveChanges}/>
+                pressed={saveChanges}
+              />
             )}
           </View>
         </ScrollView>
@@ -203,7 +229,8 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
       <ChangeIconUriModal
         isToggled={isChangeIconUriModalToggled}
         handlePress={toggle}
-        setIcon={setIcon}/>
+        setIcon={setIcon}
+      />
       <SuccessfulRequestModal
         isToggled={isSuccessfulRequestModalToggled}
         handlePress={() => {
@@ -211,7 +238,11 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
           setIsSuccessfulRequestModalToggled(false);
         }}
         title={'Изменения сохранены'}
-        text={''}/>
+        text={''}
+      />
+      <PayModal
+        isToggled={isPayModalToggled}
+        handlePress={() => setIsPayModalToggled(prev => !prev)}/>
     </View>
   );
 }

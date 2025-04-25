@@ -83,4 +83,8 @@ export class AdminService {
       'GET',
       undefined);
   }
+
+  public async deleteClient(id: string) {
+    return await this.httpService.requestWithContent(`admin/users/${id}`, 'DELETE', undefined);
+  }
 }

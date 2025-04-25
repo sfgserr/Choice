@@ -1,42 +1,42 @@
-using Payments.Application.Wallets.Commands.Deposit;
-using Payments.Application.Wallets.Commands.Withdraw;
-using Payments.Infrastructure.Processing;
+
+using BuildingBlocks.Application.Exceptions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Payments.Infrastructure.YooKassa.Events.Core 
 {
     public static class YooKassaNotifications
     {
-        private static bool _init = false;
-        
-        public static Dictionary<string, IEnumerable<Func<object, Task>>> _handlers = new();
-
-        public static void Init()
+        private static readonly Dictionary<string, Type> Notifications = new()
         {
-            if (_init) return;
+            ["payment.succeeded"] = typeof(PaymentSucceededEvent),
+            ["payout.succeeded"] = typeof(PayoutSucceededEvent),
+        };
+        
+        private static readonly Dictionary<string, List<Func<IYooKassaEvent?, Task>>> Handlers = new();
+
+        public static void AddHandler<T>(string name, Func<T?, Task> handler) where T : IYooKassaEvent
+        {
+            if (!Notifications.TryGetValue(name, out _)) throw new ArgumentException("No such event");
             
-            var paymentSucceedHandlers = new List<Func<object, Task>>();
-            paymentSucceedHandlers.Add(async eventData =>
-            {
-                if (eventData is PaymentSucceededEvent @event)
-                    await CommandsExecutor.ExecuteCommandAsync(new DepositCommand(@event.PaymentId));
-            });
+            var handlers = Handlers.GetValueOrDefault(name) ?? [];
+
+            handlers.Add(async @event =>  await handler((T)@event));
             
-            var payoutSucceedHandlers = new List<Func<object, Task>>();
-            payoutSucceedHandlers.Add(async eventData =>
-            {
-                if (eventData is PayoutSucceededEvent @event)
-                    await CommandsExecutor.ExecuteCommandAsync(new WithdrawCommand(@event.PayoutId));
-            });
-            
-            _handlers.Add("payment.succeeded", paymentSucceedHandlers);
-            _handlers.Add("payout.succeeded", payoutSucceedHandlers);
+            Handlers[name] = handlers;
         }
         
-        public static async Task Handle(EventObject eventObject)
+        public static async Task Handle(string json)
         {
-            foreach (var handler in _handlers[eventObject.Event])
+            var jObject = JObject.Parse(json);
+            
+            var eventName = jObject.SelectToken("event")?.Value<string>() ?? throw new InvalidCommandException(["No such event"]);
+            
+            foreach (var handler in Handlers[eventName])
             {
-                await handler(eventObject.Object);
+                var type = Notifications[eventName];
+                
+                await handler((IYooKassaEvent)jObject.SelectToken("object")?.ToObject(type));
             }
         }
     }

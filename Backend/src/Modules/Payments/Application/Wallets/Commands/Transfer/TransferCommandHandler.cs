@@ -1,6 +1,7 @@
 using BuildingBlocks.Application.Cqrs.Commands;
 using BuildingBlocks.Application.Extensions;
 using Payments.Application.Contracts;
+using Payments.Domain.Payers;
 using Payments.Domain.Wallets;
 
 namespace Payments.Application.Wallets.Commands.Transfer
@@ -16,9 +17,9 @@ namespace Payments.Application.Wallets.Commands.Transfer
 
         public async Task Execute(TransferCommand command)
         {
-            var fromWallet = await _dbContext.Wallets.Get(w => w.PayerId.Equals(new WalletId(command.FromUserId)));
+            var fromWallet = await _dbContext.Wallets.Get(w => w.PayerId.Equals(new PayerId(command.FromUserId)));
             
-            var toWallet = await _dbContext.Wallets.Get(w => w.PayerId.Equals(new WalletId(command.ToUserId)));
+            var toWallet = await _dbContext.Wallets.Get(w => w.PayerId.Equals(new PayerId(command.ToUserId)));
             
             fromWallet.Transfer(command.Copecks, toWallet);
         }

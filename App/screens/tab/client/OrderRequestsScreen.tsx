@@ -93,7 +93,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        ListEmptyComponent={Stub}
+        ListEmptyComponent={() => <Stub navigation={navigation} categories={categories}/>}
         renderItem={item => {
           return (
             <View style={styles.itemContainer}>

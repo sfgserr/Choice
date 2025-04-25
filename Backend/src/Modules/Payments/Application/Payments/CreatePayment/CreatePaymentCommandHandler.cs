@@ -4,7 +4,7 @@ using Payments.Domain.Payers;
 
 namespace Payments.Application.Payments.CreatePayment
 {
-    internal class CreatePaymentCommandHandler : ICommandHandlerWithResult<CreatePaymentCommand, string>
+    internal class CreatePaymentCommandHandler : ICommandHandlerWithResult<CreatePaymentCommand, CreatePaymentResult>
     {
         private readonly IPayerContext _payerContext;
         private readonly PaymentsService _paymentsService;
@@ -15,9 +15,11 @@ namespace Payments.Application.Payments.CreatePayment
             _paymentsService = paymentsService;
         }
 
-        public async Task<string> Execute(CreatePaymentCommand command)
+        public async Task<CreatePaymentResult> Execute(CreatePaymentCommand command)
         {
-            return await _paymentsService.CreatePayment(_payerContext.Id.Value, command.Copecks);
+            var url = await _paymentsService.CreatePayment(_payerContext.Id.Value, command.Copecks);
+            
+            return new CreatePaymentResult(url);
         }
     }
 }

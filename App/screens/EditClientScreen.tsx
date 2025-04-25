@@ -14,6 +14,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
 import {GestureHandlerRootView, TouchableOpacity} from 'react-native-gesture-handler';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
 type Form = {
   id: string
@@ -75,6 +76,16 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
 
     setReadonly(prev => !prev);
   }, [form, iconUri, readonly]);
+
+  const deleteClient = React.useCallback(async () => {
+    if (form != null) {
+      const response = await userService.deleteClient(form.id);
+
+      if (response.result == 'successful') {
+        navigation.goBack();
+      }
+    }
+  }, [form]);
 
   const isDisabled = () => {
     return form?.name == '' ||
@@ -209,6 +220,13 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
               isBig={false}
               keyboard={'default'}
               isReadonly={readonly}/>
+            <GestureStyledButton
+              content={'Заблокировать клиента'}
+              top={30}
+              bottom={10}
+              isDisabled={false}
+              pressed={deleteClient}
+              type={'warn'}/>
           </View>
         </ScrollView>
       )}

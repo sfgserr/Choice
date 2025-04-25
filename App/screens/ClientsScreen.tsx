@@ -8,7 +8,7 @@ import AdminUserItem from '../components/listItems/AdminUserItem.tsx';
 export default function ClientsScreen({navigation}: {navigation: any}) {
   const adminService = useDependency<AdminService>('AdminService');
 
-  const [clients, setClients] = React.useState<AdminUser[]>([]);
+  const [clients, setClients] = React.useState<AdminUser[] | null>(null);
 
   useEffect(() => {
     const getClients = async () => {
@@ -27,7 +27,7 @@ export default function ClientsScreen({navigation}: {navigation: any}) {
 
   return (
     <View style={styles.container}>
-      {clients.length == 0 ? (
+      {clients == null ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'}/>
       ) : (
         <FlatList

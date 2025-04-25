@@ -18,8 +18,8 @@ namespace Users.Infrastructure.Payments
         public async Task TransferMoney(ClientId clientId, CompanyId companyId, double amount)
         {
             await _paymentsModule.ExecuteCommand(new TransferCommand(
-                clientId.Value, 
-                companyId.Value,
+                companyId.Value, 
+                clientId.Value,
                 (int)(amount * 100)));
         }
     }

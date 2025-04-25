@@ -30,6 +30,7 @@ using OpenIddict.Validation.AspNetCore;
 using WebApi.Configuration.EventBus;
 using WebApi.Modules.Identity;
 using Payments.Infrastructure.Configuration;
+using Payments.Infrastructure.YooKassa.Events;
 using Payments.Infrastructure.YooKassa.Events.Core;
 using WebApi.Configuration.Authentication.GrantTypeHandling;
 using WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandlers;
@@ -189,8 +190,6 @@ namespace WebApi
                 bus,
                 clientFactory,
                 Configuration["YandexGeocoder:ApiKey"]!);
-            
-            YooKassaNotifications.Init();
             
             bus.StartAsync().GetAwaiter().GetResult();
             seed.Seed().GetAwaiter().GetResult();

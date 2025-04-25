@@ -24,16 +24,22 @@ namespace WebApi.Modules.Payments.Wallets
         [HttpPost("payment")]
         public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequest request)
         {
-            var confirmationUrl = await _module.ExecuteCommand<CreatePaymentCommand, string>(
+            var result = await _module.ExecuteCommand<CreatePaymentCommand, CreatePaymentResult>(
                 new(request.Copecks));
             
-            return Ok(confirmationUrl);
+            return Ok(result);
         }
         
         [HttpPost("notification")]
-        public async Task<IActionResult> Deposit([FromBody] EventObject request)
+        public async Task<IActionResult> Deposit([FromBody] HttpRequest request)
         {
-            await YooKassaNotifications.Handle(request);
+            string body = "";
+            using (StreamReader stream = new StreamReader(request.Body))
+            {
+                body = await stream.ReadToEndAsync();
+            }
+            
+            await YooKassaNotifications.Handle(body);
             
             return Ok();
         }

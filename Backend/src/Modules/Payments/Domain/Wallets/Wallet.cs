@@ -8,6 +8,11 @@ namespace Payments.Domain.Wallets
     {
         private int _copecks;
 
+        private Wallet()
+        {
+            
+        }
+        
         private Wallet(WalletId id, PayerId payerId)
         {
             Id = id;

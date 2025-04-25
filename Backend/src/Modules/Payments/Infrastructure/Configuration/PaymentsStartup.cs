@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using BuildingBlocks.Application.Authentication;
 using MassTransit;
+using Payments.Application.Wallets.Commands.Deposit;
+using Payments.Application.Wallets.Commands.Withdraw;
 using Payments.Infrastructure.Configuration.Authentication;
 using Payments.Infrastructure.Configuration.Data;
 using Payments.Infrastructure.Configuration.DomainEventsDispatching;
@@ -13,6 +15,9 @@ using Payments.Infrastructure.Configuration.Quartz;
 using Payments.Infrastructure.Configuration.Services;
 using Payments.Infrastructure.Configuration.YooKassa;
 using Payments.Infrastructure.MediatR.DomainNotifications;
+using Payments.Infrastructure.Processing;
+using Payments.Infrastructure.YooKassa.Events;
+using Payments.Infrastructure.YooKassa.Events.Core;
 using Serilog;
 
 namespace Payments.Infrastructure.Configuration
@@ -63,8 +68,17 @@ namespace Payments.Infrastructure.Configuration
             containerBuilder.RegisterModule(new YooKassaModule(clientFactory));
             
             _container = containerBuilder.Build();
-
+            
             PaymentsCompositionRoot.SetContainer(_container);
+            
+            YooKassaNotifications.AddHandler<PaymentSucceededEvent>("payment.succeeded", async @event =>
+            {
+                await CommandsExecutor.ExecuteCommandAsync(new DepositCommand(@event.PaymentId));
+            });
+            YooKassaNotifications.AddHandler<PayoutSucceededEvent>("payout.succeeded", async @event =>
+            {
+                await CommandsExecutor.ExecuteCommandAsync(new WithdrawCommand(@event.PayoutId));
+            });
         }
     }
 }

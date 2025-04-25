@@ -22,14 +22,23 @@ namespace Administration.Application.Commands.DeleteClient
         {
             using var connection = _connectionFactory.GetConnection();
 
-            const string deleteClientSql = "DELETE FROM users.\"Clients\" WHERE users.\"Clients\".\"Id\" = @Id;";
+            const string sql = 
+                $"""
+                DELETE FROM users."OrderResponses" WHERE users."OrderResponses"."ClientId" = @Id;
+                
+                DELETE FROM users."OrderRequests" WHERE users."OrderRequests"."ClientCreatedId" = @Id;
+                
+                DELETE FROM users."Clients" WHERE users."Clients"."Id" = @Id;
+                
+                DELETE FROM users."Users" WHERE users."Users"."Id" = @Id;
 
-            const string deleteUserSql = "DELETE FROM users.\"Clients\" WHERE users.\"Clients\".\"Id\" = @Id;";
-
-            const string deleteIdentitySql = "DELETE FROM identity.\"Users\" WHERE identity.\"Users\".\"Id\" = @Id;";
+                DELETE FROM payments."Wallets" WHERE payments."Wallets"."PayerId" = @Id;
+                
+                DELETE FROM identity."Users" WHERE identity."Users"."Id" = @Id;
+                """;
 
             int affections = await connection.ExecuteAsync(
-                deleteClientSql+deleteUserSql+deleteIdentitySql,
+                sql,
                 new
                 {
                     Id = command.ClientId

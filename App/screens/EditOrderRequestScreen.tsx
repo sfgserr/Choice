@@ -73,7 +73,6 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
 
           setCategoryIndex(categoriesResponse.content.findIndex(c =>
             c.categoryId == response.content.categoryId));
-
           set(response.content);
         }
       }
@@ -298,21 +297,21 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
             bottom={5}
           />
           <View style={styles.horizontalSpread}>
-            {status == 'Active' || photos[0].getObjectName() != '' && (
+            {(status == 'Active' || photos[0].getObjectName() != '') && (
               <ImageBox
                 object={photos[0]}
                 setPhoto={setPhotos}
                 index={0}
                 readonly={status != 'Active'}/>
             )}
-            {status == 'Active' || photos[1].getObjectName() != '' && (
+            {(status == 'Active' || photos[1].getObjectName() != '') && (
               <ImageBox
                 object={photos[1]}
                 setPhoto={setPhotos}
                 index={0}
                 readonly={status != 'Active'}/>
             )}
-            {status == 'Active' || photos[2].getObjectName() != '' && (
+            {(status == 'Active' || photos[2].getObjectName() != '') && (
               <ImageBox
                 object={photos[2]}
                 setPhoto={setPhotos}

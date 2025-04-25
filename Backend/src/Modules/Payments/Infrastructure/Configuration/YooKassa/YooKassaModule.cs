@@ -1,6 +1,7 @@
 using Autofac;
 using Payments.Application.Contracts;
 using Payments.Infrastructure.YooKassa;
+using Serilog;
 
 namespace Payments.Infrastructure.Configuration.YooKassa
 {
@@ -19,7 +20,9 @@ namespace Payments.Infrastructure.Configuration.YooKassa
                 .As<IHttpClientFactory>()
                 .SingleInstance();
             
-            builder.Register(s => new YooKassaClient(s.Resolve<IHttpClientFactory>()))
+            builder.Register(s => new YooKassaClient(
+                    s.Resolve<IHttpClientFactory>(),
+                    s.Resolve<ILogger>()))
                 .As<IPaymentsGateway>()
                 .InstancePerLifetimeScope();
         }

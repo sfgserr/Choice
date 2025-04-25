@@ -4,6 +4,4 @@ namespace WebApi.Modules.Payments.Wallets
     {
         public Object Object { get; }
     }
-    
-    
 }
