@@ -20,16 +20,19 @@ namespace Chat.Infrastructure.SignalR
         public async Task Send(object message, Guid toUserId, string methodName)
         {
             _logger.Information("Sending message to {ToUserId}", toUserId);
-
-            if (_usersStore.IsUserOnline(toUserId))
+            
+            var connectionsId = _usersStore.GetConnectionsId(toUserId);
+            
+            if (connectionsId != null)
             {
-                var connectionId = _usersStore.GetConnectionId(toUserId);
-                
-                _logger.Information("Start sending message to connectionId {0}", connectionId);
-                
-                await _hubContext.Clients
-                    .Client(connectionId)
-                    .SendAsync(methodName, message);
+                foreach (var connectionId in connectionsId)
+                {
+                    _logger.Information("Start sending message to connectionId {0}", connectionId);
+                    
+                    await _hubContext.Clients
+                        .Client(connectionId)
+                        .SendAsync(methodName, message);
+                }
             }
             else
             {

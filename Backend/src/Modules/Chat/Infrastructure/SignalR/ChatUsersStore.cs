@@ -5,11 +5,14 @@ namespace Chat.Infrastructure.SignalR
 {
     public class ChatUsersStore : IChatUsersStore
     {
-        private readonly ConcurrentDictionary<Guid, string> _users = new();
-
-        public string GetConnectionId(Guid id)
+        private readonly ConcurrentDictionary<Guid, List<string>> _users = new();
+        private readonly object _lock = new();
+        
+        public List<string>? GetConnectionsId(Guid id)
         {
-            return _users[id];
+            _users.TryGetValue(id, out var connectionsId);
+
+            return connectionsId;
         }
         
         public bool IsUserOnline(Guid userId)
@@ -19,12 +22,33 @@ namespace Chat.Infrastructure.SignalR
 
         public void Connect(Guid id, string connectionId)
         {
-            _users.TryAdd(id, connectionId);
+            _users.AddOrUpdate(
+                id, 
+                new List<string> { connectionId },
+                (key, value) =>
+                {
+                    value.Add(connectionId);
+                    
+                    return value;
+                });
         }
 
-        public void Disconnect(Guid id)
-        {
-            _users.Remove(id, out _);
+        public void Disconnect(Guid id, string connectionId)
+        { 
+            lock (_lock)
+            {
+                _users.TryGetValue(id, out var list);
+
+                if (list != null)
+                {
+                    list.Remove(connectionId);
+
+                    if (list.Count == 0)
+                    {
+                        _users.Remove(id, out _);
+                    }
+                }
+            }
         }
     }
 }

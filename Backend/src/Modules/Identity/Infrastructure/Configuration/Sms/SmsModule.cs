@@ -1,6 +1,7 @@
 using Autofac;
 using Identity.Application.Contracts;
 using Identity.Infrastructure.Sms;
+using Serilog;
 
 namespace Identity.Infrastructure.Configuration.Sms
 {
@@ -19,7 +20,7 @@ namespace Identity.Infrastructure.Configuration.Sms
                 .As<IHttpClientFactory>()
                 .SingleInstance();
             
-            builder.Register(s => new SmsService(s.Resolve<IHttpClientFactory>()))
+            builder.Register(s => new SmsService(s.Resolve<IHttpClientFactory>(), s.Resolve<ILogger>()))
                 .As<ISmsService>()
                 .InstancePerLifetimeScope();
         }

@@ -13,6 +13,7 @@ import TabBar from '../components/TabBar.tsx';
 import {LoginScreenProps} from '../types/NavigationTypes.ts';
 import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import LoginByPhoneScreen from "./LoginByPhoneScreen.tsx";
 
 const {height} = Dimensions.get('screen');
 
@@ -21,7 +22,7 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
 
   const tabs = [
     {element: <LoginByEmailScreen/>, title: 'E-mail'},
-    {element: <View><Text>Phone</Text></View>, title: 'Телефон'}
+    {element: <LoginByPhoneScreen/>, title: 'Телефон'}
   ]
 
   return (

@@ -25,7 +25,7 @@ namespace WebApi.Configuration.Chat
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            _usersStore.Disconnect(Guid.Parse(Context.UserIdentifier!));
+            _usersStore.Disconnect(Guid.Parse(Context.UserIdentifier!), Context.ConnectionId);
 
             if (exception != null)
             {

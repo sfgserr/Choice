@@ -2,14 +2,14 @@ import * as React from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Image,
+  Image, RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native-gesture-handler';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -60,7 +60,7 @@ const Option = ({selected, title, onPress, top}: {
   onPress: () => void
   top: number}) => (
   <View style={[styles.optionContainer, {paddingTop: top}]}>
-    <TouchableOpacity
+    <Pressable
       style={[
         styles.optionButton, {
           borderColor: selected ? '#2688EB' : '#B8C1CC',
@@ -68,7 +68,7 @@ const Option = ({selected, title, onPress, top}: {
       onPress={onPress}
       disabled={selected}>
       {selected ? (<View style={styles.optionSelected}/>) : (<></>)}
-    </TouchableOpacity>
+    </Pressable>
     <Text style={styles.optionTitle}>{title}</Text>
   </View>
 );
@@ -103,7 +103,8 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
 
   const [photoUris, setPhotoUris] = useState<ImageBoxObject[]>([]);
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshingOnSave, setIsRefreshingOnSave] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const setPhoto = (object: SetStateAction<ImageBoxObject[]>) => {
     setPhotoUris(object);
@@ -193,7 +194,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
 
   const saveChanges = useCallback(async () => {
     if (form != null) {
-      setIsRefreshing(true);
+      setIsRefreshingOnSave(true);
 
       const c = categories.filter(c => c.selected).map(c => c.category.categoryId);
       const s = socialMedias.filter(s => s.uri != '').map(s => s.uri);
@@ -220,7 +221,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
         setIsSuccessfulRequestModalToggled(true);
       }
 
-      setIsRefreshing(false);
+      setIsRefreshingOnSave(false);
     }
   }, [form, socialMedias, categories]);
 
@@ -235,27 +236,35 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
       photoUris.every(c => c.getObjectName() == '');
   };
 
+  const getUser = React.useCallback(async () => {
+    const user = await userService.getUserWithoutCache();
+
+    if (user != null) {
+      setForm(user);
+      setPhotoUris(user.photoUris.map(p => new UploadedBlob(p)));
+
+      const response = await categoryService.getCategories();
+
+      if (response.result == 'successful') {
+        setCategories(response.content!.map(c => ({
+          category: c,
+          selected: user.categories.findIndex(id => id == c.categoryId) != -1,
+        })));
+      }
+    }
+  }, []);
+
+  const refresh = React.useCallback(async () => {
+    setRefreshing(true);
+
+    await getUser();
+
+    setRefreshing(false);
+  }, []);
+
   const onOptionPressed = () => set(prev => ({...prev, isPrepaymentAvailable: !prev.isPrepaymentAvailable}));
 
   useEffect(() => {
-    const getUser = async () => {
-      const user = await userService.getUserWithoutCache();
-
-      if (user != null) {
-        setForm(user);
-        setPhotoUris(user.photoUris.map(p => new UploadedBlob(p)));
-
-        const response = await categoryService.getCategories();
-
-        if (response.result == 'successful') {
-          setCategories(response.content!.map(c => ({
-            category: c,
-            selected: user.categories.findIndex(id => id == c.categoryId) != -1,
-          })));
-        }
-      }
-    };
-
     getUser();
     setIsChanged(false);
   }, [isFocused]);
@@ -265,7 +274,9 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
       {form == null ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'}/>
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
           <Text style={styles.title}>Аккаунт</Text>
           <View style={styles.iconContainer}>
             <Image
@@ -372,13 +383,13 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
                 value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
                 readOnly/>
               <View style={styles.chevronDown}>
-                <TouchableOpacity
+                <Pressable
                   onPress={() => ref.current?.expand()}>
                   <Image
                     style={styles.image}
                     source={require('../../../assets/images/chevron-down.png')}
                   />
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
             <TextInputTitle
@@ -451,7 +462,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
         close={() => ref.current?.close()}
         categories={categories}
         select={select}/>
-      <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
+      <LongRunningOperationIndicator isRefreshing={isRefreshingOnSave}/>
       {socialMedias.length > 0 && (
         <SocialMediaModal
           isToggled={isSocialMediaModalToggled}

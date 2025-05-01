@@ -13,7 +13,7 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<TokenResponse | null> {
     try {
-      var response = await fetch(this.tokenEndpoint, {
+      var response = await fetch(`${this.tokenEndpoint}/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -45,7 +45,7 @@ export class AuthService {
 
   async refresh(refreshToken: string): Promise<TokenResponse | null> {
     try {
-      var response = await fetch(this.tokenEndpoint, {
+      var response = await fetch(`${this.tokenEndpoint}/token`, {
         method: 'POST',
         headers: {
           'Content-Type':'application/x-www-form-urlencoded'
@@ -69,5 +69,11 @@ export class AuthService {
       console.log(error);
       return null;
     }
+  }
+
+  async sendCode(phoneNumber: string) {
+    const response = await fetch(`${this.tokenEndpoint}/code?phoneNumber=${phoneNumber}`, {method: 'POST'});
+
+    return response.status == 200;
   }
 }

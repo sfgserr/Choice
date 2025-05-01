@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ActivityIndicator, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -7,16 +7,16 @@ import {UserService} from '../../../services/domain/UserService.ts';
 import TextButton from '../../../components/buttons/TextButton.tsx';
 import ChangeIconUriModal from '../../../components/modals/ChangeIconUriModal.tsx';
 import TextInputTitle from '../../../components/TextInputTitle.tsx';
-import {SetStateAction, } from 'react';
+import {SetStateAction } from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import SuccessfulRequestModal from '../../../components/modals/SuccessfulRequestModal.tsx';
 import {ClientService} from '../../../services/domain/ClientService.ts';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
-import {PaymentService} from "../../../services/domain/PaymentService.tsx";
-import {TouchableOpacity} from "react-native-gesture-handler";
-import {Icon} from "@rneui/base";
-import PayModal from "../../../components/modals/PayModal.tsx";
+import {PaymentService} from '../../../services/domain/PaymentService.tsx';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Icon} from '@rneui/base';
+import PayModal from '../../../components/modals/PayModal.tsx';
 
 type Form = {
   id: string
@@ -43,6 +43,8 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const [isChangeIconUriModalToggled, setIsChangeIconUriModalToggled] = React.useState(false);
   const [isSuccessfulRequestModalToggled, setIsSuccessfulRequestModalToggled] = React.useState(false);
   const [isPayModalToggled, setIsPayModalToggled] = React.useState(false);
+
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
 
   const toggle = React.useCallback(() => setIsChangeIconUriModalToggled(prev => !prev), []);
 
@@ -82,24 +84,33 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
 
   const isFocused = useIsFocused();
 
+  const refresh = React.useCallback(async () => {
+    setIsRefreshing(true);
+
+    await getUser();
+    await getBalance();
+
+    setIsRefreshing(false);
+  }, []);
+
+  const getUser = React.useCallback(async () => {
+    const user = await userService.getUserWithoutCache();
+    if (user != null) {
+      const initials = user.name.split(' ');
+
+      setForm({...user, name: initials[0], surname: initials[1]});
+    }
+  }, []);
+
+  const getBalance = React.useCallback(async () => {
+    const response = await paymentService.getWallet();
+
+    if (response.result == 'successful') {
+      setBalance(((response.content / 100).toFixed(2)));
+    }
+  }, []);
+
   React.useEffect(() => {
-    const getUser = async () => {
-      const user = await userService.getUserWithoutCache();
-      if (user != null) {
-        const initials = user.name.split(' ');
-
-        setForm({...user, name: initials[0], surname: initials[1]});
-      }
-    };
-
-    const getBalance = async () => {
-      const response = await paymentService.getWallet();
-
-      if (response.result == 'successful') {
-        setBalance(((response.content / 100).toFixed(2)));
-      }
-    };
-
     getUser();
     getBalance();
     setIsChanged(false);
@@ -110,7 +121,9 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
       {form == null || balance == '' ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'} />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}>
           <Text style={styles.title}>Аккаунт</Text>
           <View style={styles.iconContainer}>
             <Image

@@ -22,7 +22,7 @@ namespace Chat.Application.RealTimeMessaging
 
         protected async Task<TData> SetCommandAndData(TCommand command)
         {
-            _command = command;
+            _command = command; 
             
             _data = await HandleCommandAsync(command);
             

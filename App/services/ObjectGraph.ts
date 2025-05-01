@@ -51,7 +51,7 @@ export class ObjectGraph {
     YaMap.init(`${process.env.YANDEX_API_KEY}`);
 
     const authService = new AuthService(
-      `${process.env.API_URL}/api/auth/token`,
+      `${process.env.API_URL}/api/auth`,
       process.env.CLIENT_ID,
       process.env.CLIENT_SECRET);
     const tokenService = new TokenService(authService);

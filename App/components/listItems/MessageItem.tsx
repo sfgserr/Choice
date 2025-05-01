@@ -17,6 +17,7 @@ import {DateUtils} from '../../utils/DateUtils.ts';
 import {StyledButton} from '../buttons/StyledButton.tsx';
 import Styles from '../../constants/Styles.tsx';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import NativeModules from 'react-native';
 
 const d = Dimensions.get('screen');
 
@@ -175,7 +176,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
     });
 
     return () => DeviceEventEmitter.removeAllListeners('orderSent');
-  });
+  }, []);
 
   const changeEnrollmentDate = React.useCallback(async (date: Date) => {
     if (order != null) {

@@ -21,6 +21,7 @@ export default function PayModal({isToggled, handlePress}: PayModalProps) {
     const response = await paymentService.createPayment((+sumToDeposit) * 100);
 
     if (response.result == 'successful') {
+      handlePress();
       await Linking.openURL(response.content.url!);
     }
   }, [sumToDeposit]);

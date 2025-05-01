@@ -29,7 +29,6 @@ const d = Dimensions.get('screen');
 
 const CompanyPageBottomSheet = React.forwardRef(({companyId, close, navigateToChat, responseId}: CompanyPageBottomSheetProps, ref: ForwardedRef<BottomSheetMethods>) => {
   const companyService = useDependency<CompanyService>('CompanyService');
-
   const [company, setCompany] = React.useState<CompanyInfo | null>(null);
 
   const [currentIndex, setCurrentIndex] = React.useState(0);

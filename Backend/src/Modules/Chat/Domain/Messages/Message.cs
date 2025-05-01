@@ -83,17 +83,20 @@ namespace Chat.Domain.Messages
                 DateTime.UtcNow);
         }
 
-        public Message ChangeEnrollmentDate(DateTime enrollmentDate)
+        public Message ChangeEnrollmentDate(DateTime enrollmentDate, ChatUserId toUserId)
         {
-            CheckRule(new CannotChangeEnrollmentDateOnlyIfOrderMessageRule(_type));
+            CheckRule(new CanChangeEnrollmentDateOnlyIfOrderMessageRule(_type));
+            CheckRule(new UserShouldBeEitherSenderOrReceiverToChangeEnrollmentDateRule(_fromUserId, _toUserId, toUserId));
             
             _orderMessage!.SetAsInactive();
+
+            var fromUserId = _toUserId.Equals(toUserId) ? _fromUserId : _toUserId;
             
             return CreateOrder(
                 _orderMessage!.OrderResponseId,
                 enrollmentDate,
-                _toUserId,
-                _fromUserId);
+                fromUserId,
+                toUserId);
         }
         
         public MessageId Id { get; }

@@ -239,7 +239,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
                 </View>
               </View>
             )}
-            {user != null && user.isPrepaymentAvailable && (
+            {user != null && user.isPrepaymentAvailable && orderRequest.toKnowPrice && (
               <>
                 <TextInputTitle s={'Предоплата'} top={20} bottom={5} />
                 <BorderedTextInput

@@ -2,11 +2,11 @@ using BuildingBlocks.Domain;
 
 namespace Chat.Domain.Messages.Rules
 {
-    internal class CannotChangeEnrollmentDateOnlyIfOrderMessageRule : IBusinessRule
+    internal class CanChangeEnrollmentDateOnlyIfOrderMessageRule : IBusinessRule
     {
         private readonly MessageType _messageType;
 
-        internal CannotChangeEnrollmentDateOnlyIfOrderMessageRule(MessageType messageType)
+        internal CanChangeEnrollmentDateOnlyIfOrderMessageRule(MessageType messageType)
         {
             _messageType = messageType;
         }

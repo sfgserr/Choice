@@ -1,6 +1,4 @@
-import {SignalRConnection} from '../realTime/connections/SignalRConnection.ts';
 import {IConnection} from '../realTime/connections/IConnection.ts';
-import {SignalRClient} from '../realTime/signalr/SignalRClient.ts';
 import {HubConnectionAdapter} from '../realTime/connections/HubConnectionAdapter.ts';
 import {DeviceEventEmitter} from 'react-native';
 import {Message} from '../types/DomainTypes.ts';

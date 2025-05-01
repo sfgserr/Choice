@@ -23,7 +23,7 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
                 .TranslatedOrderByDescending<Message, MessageDataModel, DateTime>(m => m.CreationDate)
                 .FirstOrDefault();
             
-            var newOrderMessage = orderMessage!.ChangeEnrollmentDate(command.EnrollmentDate.ToUniversalTime());
+            var newOrderMessage = orderMessage!.ChangeEnrollmentDate(command.EnrollmentDate.ToUniversalTime(), new(command.ToUserId));
 
             var message = await _dbContext.Messages.AddAsync(newOrderMessage);
 
