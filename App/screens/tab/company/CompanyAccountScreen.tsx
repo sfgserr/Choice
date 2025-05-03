@@ -9,7 +9,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
+import {Pressable, TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -33,6 +33,10 @@ import {ObjectStorageService} from '../../../services/object/ObjectStorageServic
 import LongRunningOperationIndicator from '../../../components/LongRunningOperationIndicator.tsx';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
+import {Icon} from '@rneui/base';
+import {PaymentService} from '../../../services/domain/PaymentService.ts';
+import PayModal from "../../../components/modals/PayModal.tsx";
+import PayoutModal from "../../../components/modals/PayoutModal.tsx";
 
 type Form = {
   id: string
@@ -78,6 +82,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
   const objectStorageService = useDependency<ObjectStorageService>('ObjectStorageService');
+  const paymentService = useDependency<PaymentService>('PaymentService');
 
   const isFocused = useIsFocused();
 
@@ -103,8 +108,12 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
 
   const [photoUris, setPhotoUris] = useState<ImageBoxObject[]>([]);
 
+  const [balance, setBalance] = React.useState<string>('');
+
   const [isRefreshingOnSave, setIsRefreshingOnSave] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isPayModalToggled, setIsPayModalToggled] = useState<boolean>(false);
+  const [isPayoutModalToggled, setIsPayoutModalToggled] = useState<boolean>(false);
 
   const setPhoto = (object: SetStateAction<ImageBoxObject[]>) => {
     setPhotoUris(object);
@@ -258,14 +267,24 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
     setRefreshing(true);
 
     await getUser();
+    await getBalance();
 
     setRefreshing(false);
   }, []);
 
   const onOptionPressed = () => set(prev => ({...prev, isPrepaymentAvailable: !prev.isPrepaymentAvailable}));
 
+  const getBalance = React.useCallback(async () => {
+    const response = await paymentService.getWallet();
+
+    if (response.result == 'successful') {
+      setBalance(((response.content / 100).toFixed(2)));
+    }
+  }, []);
+
   useEffect(() => {
     getUser();
+    getBalance();
     setIsChanged(false);
   }, [isFocused]);
 
@@ -289,6 +308,58 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
             <TextButton
               text={'Изменить логотип'}
               onPress={toggle}/>
+          </View>
+          <View style={{paddingTop: 15, paddingHorizontal: 15}}>
+            <Text style={{fontSize: 15, fontWeight: '600'}}>Баланс:</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 30, fontWeight: '700'}}>{`${balance} \u20bd`}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              gap: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Pressable
+              style={{
+                paddingVertical: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                backgroundColor: '#2688EB',
+                flex: 1,
+              }}
+              onPress={() => setIsPayModalToggled(prev => !prev)}>
+              <Image
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+                source={require('../../../assets/images/imagebox.png')}
+                tintColor={'white'}/>
+              <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Пополнить</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                paddingVertical: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 10,
+                backgroundColor: '#2688EB',
+                flex: 1,
+              }}
+              onPress={() => setIsPayoutModalToggled(prev => !prev)}>
+              <Image
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+                source={require('../../../assets/images/remove.png')}
+                tintColor={'white'}/>
+              <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Снять</Text>
+            </Pressable>
           </View>
           <View style={{paddingHorizontal: 15}}>
             <View style={styles.splitterContainer}>
@@ -463,6 +534,8 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
         categories={categories}
         select={select}/>
       <LongRunningOperationIndicator isRefreshing={isRefreshingOnSave}/>
+      <PayModal isToggled={isPayModalToggled} handlePress={() => setIsPayModalToggled(prev => !prev)}/>
+      <PayoutModal isToggled={isPayoutModalToggled} handlePress={() => setIsPayoutModalToggled(prev => !prev)}/>
       {socialMedias.length > 0 && (
         <SocialMediaModal
           isToggled={isSocialMediaModalToggled}

@@ -17,8 +17,8 @@ import {OrderResponseService} from './domain/OrderResponseService.ts';
 import {ChatService} from './domain/ChatService.ts';
 import {FileValidationService} from './object/FileValidationService.ts';
 import {IdentityService} from './domain/IdentityService.ts';
-import {AdminService} from "./domain/AdminService.ts";
-import {PaymentService} from "./domain/PaymentService.tsx";
+import {AdminService} from './domain/AdminService.ts';
+import {PaymentService} from './domain/PaymentService';
 
 type Object = {
   [name: string]: object,

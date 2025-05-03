@@ -119,6 +119,10 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     setRadius(value[0]);
   }, []);
 
+  const record = () => {
+
+  }
+
   const ref = React.useRef<BottomSheet>(null);
 
   return (
