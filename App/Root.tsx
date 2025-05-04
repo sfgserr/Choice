@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {State} from './enums/AppEnums.ts';
-import {StateManager} from './managers/StateManager.ts';
-import {AuthContextProvider} from './contexts/authorized/Provider.tsx';
-import {useDependency} from './services/Hooks.ts';
-import StateContainer from './navigation/StateContainer.tsx';
-import {ObjectGraph} from './services/ObjectGraph.ts';
+import {State} from './enums/AppEnums';
+import {StateManager} from './managers/StateManager';
+import {AuthContextProvider} from './contexts/authorized/Provider';
+import {useDependency} from './services/Hooks';
+import StateContainer from './navigation/StateContainer';
+import {ObjectGraph} from './services/ObjectGraph';
 
 export default function Root(): React.JSX.Element {
   const [state, setState] = React.useState(State.Restoring);

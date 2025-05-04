@@ -10,12 +10,6 @@ App/android/app/.cxx
 # Env
 *.env
 
-# react-native
-App/android
-App/ios
-App/.bundle
-App/__tests__
-
 # Docker
 */.docker
 Backend/docker-compose/sudo

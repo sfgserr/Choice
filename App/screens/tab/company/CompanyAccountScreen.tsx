@@ -310,9 +310,9 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               onPress={toggle}/>
           </View>
           <View style={{paddingTop: 15, paddingHorizontal: 15}}>
-            <Text style={{fontSize: 15, fontWeight: '600'}}>Баланс:</Text>
+            <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 30, fontWeight: '700'}}>{`${balance} \u20bd`}</Text>
+              <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
             </View>
           </View>
           <View
@@ -561,6 +561,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     alignSelf: 'center',
     paddingTop: 30,
+    color: 'black',
   },
   iconContainer: {
     alignSelf: 'center',
@@ -589,6 +590,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 17,
     paddingTop: 10,
+    color: 'black',
   },
   sectionDescription: {
     paddingTop: 10,

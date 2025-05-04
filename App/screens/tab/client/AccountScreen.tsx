@@ -137,9 +137,9 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
             <TextButton text={'Изменить фото'} onPress={toggle} />
           </View>
           <View style={{paddingTop: 15, paddingHorizontal: 15}}>
-            <Text style={{fontSize: 15, fontWeight: '600'}}>Баланс:</Text>
+            <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 30, fontWeight: '700'}}>{`${balance} \u20bd`}</Text>
+              <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
               <TouchableOpacity onPress={() => setIsPayModalToggled(prev => !prev)}>
                 <Icon
                   type={'material'}
@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     alignSelf: 'center',
     paddingTop: 30,
+    color: 'black'
   },
   iconContainer: {
     alignSelf: 'center',

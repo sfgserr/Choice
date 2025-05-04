@@ -35,7 +35,6 @@ const Styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     flex: 1,
-    alignSelf: 'center',
   },
   styledButton: {
     paddingVertical: 10,
