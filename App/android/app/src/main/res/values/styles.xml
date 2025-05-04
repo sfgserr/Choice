@@ -5,7 +5,4 @@
         <!-- Customize your theme here. -->
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     </style>
-    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@null</item>
-    </style>
 </resources>
