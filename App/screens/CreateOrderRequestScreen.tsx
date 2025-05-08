@@ -27,6 +27,7 @@ import LongRunningOperationIndicator from '../components/LongRunningOperationInd
 import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import Voice from '@react-native-voice/voice';
 
 const d = Dimensions.get('screen');
 
@@ -72,6 +73,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   const [isErrorToggled, setIsErrorToggled] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [recording, setRecording] = React.useState(false);
 
   const toggleSuccessfulModal = async () => {
     setIsToggled(prev => !prev);
@@ -119,9 +121,23 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     setRadius(value[0]);
   }, []);
 
-  const record = () => {
+  const record = async () => {
+    setRecording(true);
+    try {
+      await Voice.start('ru-RU');
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-  }
+  React.useEffect(() => {
+    Voice.onSpeechResults = e => {
+      if (e.value != undefined) {
+        setDescription(e.value[0]);
+      }
+      setRecording(false);
+    };
+  }, []);
 
   const ref = React.useRef<BottomSheet>(null);
 
@@ -187,7 +203,8 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
                 Styles.borderedTextInputHeight,
                 {justifyContent: 'center', paddingVertical: 10},
               ]}
-              onPress={() => {}}>
+              onPress={record}
+              disabled={recording}>
               <View style={[styles.voiceButton]}>
                 <Image
                   source={require('../assets/images/micro.png')}

@@ -1,4 +1,4 @@
-import {Alert, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, View} from 'react-native';
+import {Alert, Image, KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {CreateCategoryScreenProps} from '../types/NavigationTypes.ts';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';

@@ -9,7 +9,7 @@ import {
   TextInput, TouchableOpacity,
   View, ViewToken,
 } from 'react-native';
-import {Category, ChatMessages, ChatUser, Message, OrderRequest} from '../types/DomainTypes.ts';
+import {Category, ChatUser, Message, OrderRequest} from '../types/DomainTypes.ts';
 import React, {ForwardedRef} from 'react';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
@@ -22,11 +22,9 @@ import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {ArrayUtils} from '../utils/ArrayUtils.ts';
-import CustomBottomSheet from "../components/bottomSheets/CustomBottomSheet.tsx";
-import {BottomSheetMethods} from "@gorhom/bottom-sheet/lib/typescript/types";
-import BottomSheet from "@gorhom/bottom-sheet";
-import ReviewBottomSheet from "../components/bottomSheets/ReviewBottomSheet.tsx";
-import SuccessfulRequestModal from "../components/modals/SuccessfulRequestModal.tsx";
+import BottomSheet from '@gorhom/bottom-sheet';
+import ReviewBottomSheet from '../components/bottomSheets/ReviewBottomSheet.tsx';
+import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -95,7 +93,6 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
     return () => {
       DeviceEventEmitter.removeAllListeners('messageSent');
       DeviceEventEmitter.removeAllListeners('read');
-      BackHandler.removeEventListener('hardwareBackPress', backPress);
     };
   }, []);
 

@@ -76,7 +76,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
   }, [form]);
 
   return (
-    <ScrollView
+    <View
       style={styles.container}
       showsVerticalScrollIndicator={false}>
       <View style={styles.contentContainer}>
@@ -170,7 +170,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
         handlePress={() => setErrorToggled(false)}
         errorMessage={errorMessage}/>
       <LongRunningOperationIndicator isRefreshing={refreshing}/>
-    </ScrollView>
+    </View>
   )
 }
 

@@ -1,0 +1,192 @@
+diff --git a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/ClusteredYamapViewManager.kt b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/ClusteredYamapViewManager.kt
+index 54d8a0f..e62206c 100644
+--- a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/ClusteredYamapViewManager.kt
++++ b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/ClusteredYamapViewManager.kt
+@@ -230,7 +230,7 @@ class ClusteredYamapViewManager internal constructor() : ViewGroupManager<Cluste
+         view: View,
+         jsPoints: ReadableArray?,
+         jsVehicles: ReadableArray?,
+-        id: String
++        id: String?
+     ) {
+         if (jsPoints != null) {
+             val points = ArrayList<Point?>()
+@@ -240,7 +240,7 @@ class ClusteredYamapViewManager internal constructor() : ViewGroupManager<Cluste
+                     points.add(Point(point.getDouble("lat"), point.getDouble("lon")))
+                 }
+             }
+-            val vehicles = ArrayList<String>()
++            val vehicles = ArrayList<String?>()
+             if (jsVehicles != null) {
+                 for (i in 0 until jsVehicles.size()) {
+                     vehicles.add(jsVehicles.getString(i))
+diff --git a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapMarkerManager.kt b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapMarkerManager.kt
+index e32d22c..3dbfebb 100644
+--- a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapMarkerManager.kt
++++ b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapMarkerManager.kt
+@@ -109,8 +109,8 @@ class YamapMarkerManager internal constructor() : ViewGroupManager<YamapMarker>(
+             "animatedMoveTo" -> {
+                 val markerPoint = args!!.getMap(0)
+                 val moveDuration = args.getInt(1)
+-                val lon = markerPoint.getDouble("lon").toFloat()
+-                val lat = markerPoint.getDouble("lat").toFloat()
++                val lon = markerPoint!!.getDouble("lon").toFloat()
++                val lat = markerPoint!!.getDouble("lat").toFloat()
+                 val point = Point(lat.toDouble(), lon.toDouble())
+                 castToMarkerView(view).animatedMoveTo(point, moveDuration.toFloat())
+                 return
+diff --git a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapViewManager.kt b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapViewManager.kt
+index 8b05905..02ee079 100644
+--- a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapViewManager.kt
++++ b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/YamapViewManager.kt
+@@ -221,7 +221,7 @@ class YamapViewManager internal constructor() : ViewGroupManager<YamapView>() {
+         view: View,
+         jsPoints: ReadableArray?,
+         jsVehicles: ReadableArray?,
+-        id: String
++        id: String?
+     ) {
+         if (jsPoints != null) {
+             val points = ArrayList<Point?>()
+@@ -233,7 +233,7 @@ class YamapViewManager internal constructor() : ViewGroupManager<YamapView>() {
+                 }
+             }
+ 
+-            val vehicles = ArrayList<String>()
++            val vehicles = ArrayList<String?>()
+ 
+             if (jsVehicles != null) {
+                 for (i in 0 until jsVehicles.size()) {
+diff --git a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/ClusteredYamapView.kt b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/ClusteredYamapView.kt
+index c01f591..5f65617 100644
+--- a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/ClusteredYamapView.kt
++++ b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/ClusteredYamapView.kt
+@@ -23,7 +23,7 @@ class ClusteredYamapView(context: Context?) : YamapView(context), ClusterListene
+     private val placemarksMap: HashMap<String?, PlacemarkMapObject?> = HashMap<String?, PlacemarkMapObject?>()
+     private var pointsList = ArrayList<Point>()
+ 
+-    fun setClusteredMarkers(points: ArrayList<Any>) {
++    fun setClusteredMarkers(points: ArrayList<Any?>) {
+         clusterCollection.clear()
+         placemarksMap.clear()
+         val pt = ArrayList<Point>()
+diff --git a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/YamapView.kt b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/YamapView.kt
+index 48c1cdf..9dfe9ff 100644
+--- a/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/YamapView.kt
++++ b/node_modules/react-native-yamap/android/src/main/java/ru/vvdev/yamap/view/YamapView.kt
+@@ -221,12 +221,12 @@ open class YamapView(context: Context?) : MapView(context), UserLocationObjectLi
+             .receiveEvent(getId(), "visibleRegion", result)
+     }
+ 
+-    fun emitWorldToScreenPoints(worldPoints: ReadableArray, id: String?) {
++    fun emitWorldToScreenPoints(worldPoints: ReadableArray?, id: String?) {
+         val screenPoints = Arguments.createArray()
+ 
+-        for (i in 0 until worldPoints.size()) {
+-            val p = worldPoints.getMap(i)
+-            val worldPoint = Point(p.getDouble("lat"), p.getDouble("lon"))
++        for (i in 0 until worldPoints!!.size()) {
++            val p = worldPoints!!.getMap(i)
++            val worldPoint = Point(p!!.getDouble("lat"), p!!.getDouble("lon"))
+             val screenPoint = mapWindow.worldToScreen(worldPoint)
+             screenPoints.pushMap(screenPointToJSON(screenPoint))
+         }
+@@ -240,12 +240,12 @@ open class YamapView(context: Context?) : MapView(context), UserLocationObjectLi
+             .receiveEvent(getId(), "worldToScreenPoints", result)
+     }
+ 
+-    fun emitScreenToWorldPoints(screenPoints: ReadableArray, id: String?) {
++    fun emitScreenToWorldPoints(screenPoints: ReadableArray?, id: String?) {
+         val worldPoints = Arguments.createArray()
+ 
+-        for (i in 0 until screenPoints.size()) {
+-            val p = screenPoints.getMap(i)
+-            val screenPoint = ScreenPoint(p.getDouble("x").toFloat(), p.getDouble("y").toFloat())
++        for (i in 0 until screenPoints!!.size()) {
++            val p = screenPoints!!.getMap(i)
++            val screenPoint = ScreenPoint(p!!.getDouble("x").toFloat(), p!!.getDouble("y").toFloat())
+             val worldPoint = mapWindow.screenToWorld(screenPoint)
+             worldPoints.pushMap(worldPointToJSON(worldPoint))
+         }
+@@ -266,7 +266,7 @@ open class YamapView(context: Context?) : MapView(context), UserLocationObjectLi
+         setCenter(position, duration, animation)
+     }
+ 
+-    fun findRoutes(points: ArrayList<Point?>, vehicles: ArrayList<String>, id: String?) {
++    fun findRoutes(points: ArrayList<Point?>, vehicles: ArrayList<String?>, id: String?) {
+         val self = this
+         if (vehicles.size == 1 && vehicles[0] == "car") {
+             val listener: DrivingRouteListener = object : DrivingRouteListener {
+diff --git a/node_modules/react-native-yamap/ios/ClusteredYamapView.m b/node_modules/react-native-yamap/ios/ClusteredYamapView.m
+index ce9fd1e..6f1ea67 100644
+--- a/node_modules/react-native-yamap/ios/ClusteredYamapView.m
++++ b/node_modules/react-native-yamap/ios/ClusteredYamapView.m
+@@ -20,12 +20,17 @@ @implementation ClusteredYamapView
+         @"onCameraPositionReceived",
+         @"onVisibleRegionReceived",
+         @"onCameraPositionChange",
++        @"onCameraPositionChangeEnd",
+         @"onMapPress",
+         @"onMapLongPress",
+-        @"onCameraPositionChangeEnd"
++        @"onMapLoaded",
++        @"onWorldToScreenPointsReceived",
++        @"onScreenToWorldPointsReceived"
+     ];
+ }
+ 
++
++
+ - (instancetype)init {
+     self = [super init];
+     return self;
+@@ -50,15 +55,48 @@ - (void)setCenterForMap:(RNCYMView*)map center:(NSDictionary*)_center zoom:(floa
+ RCT_EXPORT_VIEW_PROPERTY(onCameraPositionReceived, RCTBubblingEventBlock)
+ RCT_EXPORT_VIEW_PROPERTY(onVisibleRegionReceived, RCTBubblingEventBlock)
+ RCT_EXPORT_VIEW_PROPERTY(onCameraPositionChange, RCTBubblingEventBlock)
++RCT_EXPORT_VIEW_PROPERTY(onCameraPositionChangeEnd, RCTBubblingEventBlock)
+ RCT_EXPORT_VIEW_PROPERTY(onMapPress, RCTBubblingEventBlock)
+ RCT_EXPORT_VIEW_PROPERTY(onMapLongPress, RCTBubblingEventBlock)
+-RCT_EXPORT_VIEW_PROPERTY(onCameraPositionChangeEnd, RCTBubblingEventBlock)
++RCT_EXPORT_VIEW_PROPERTY(onMapLoaded, RCTBubblingEventBlock) 
++RCT_EXPORT_VIEW_PROPERTY(onWorldToScreenPointsReceived, RCTBubblingEventBlock)
++RCT_EXPORT_VIEW_PROPERTY(onScreenToWorldPointsReceived, RCTBubblingEventBlock)
++
++
+ 
+ RCT_CUSTOM_VIEW_PROPERTY(initialRegion, NSDictionary, RNYMView) {
+     if (json && view) {
+         [view setInitialRegion:json];
+     }
+ }
++
++
++
++RCT_CUSTOM_VIEW_PROPERTY(maxFps, NSNumber, RNYMView) {
++   if (json && view) {
++        [view setMaxFps:[json floatValue]];
++    }
++}
++
++RCT_CUSTOM_VIEW_PROPERTY(interactive, BOOL, RNYMView) {
++    if (json && view) {
++        [view setInteractive:[json boolValue]];
++    }
++}
++
++RCT_CUSTOM_VIEW_PROPERTY(logoPosition, BOOL, RNYMView) {
++    if (json && view) {
++        [view setLogoPosition:json];
++    }
++}
++
++RCT_CUSTOM_VIEW_PROPERTY(logoPadding, BOOL, RNYMView) {
++    if (json && view) {
++        [view setLogoPadding:json];
++    }
++}
++
++
+ RCT_CUSTOM_VIEW_PROPERTY(userLocationAccuracyFillColor, NSNumber, RNCYMView) {
+     [view setUserLocationAccuracyFillColor:[RCTConvert UIColor:json]];
+ }
