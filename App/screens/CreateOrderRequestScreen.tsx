@@ -4,7 +4,6 @@ import {
   View,
   Dimensions,
   TextInput,
-  TouchableOpacity,
   Image,
   ScrollView,
   StyleSheet,
@@ -16,7 +15,6 @@ import Styles from '../constants/Styles.tsx';
 import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox, {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {Slider} from '@miblanchard/react-native-slider';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
@@ -28,6 +26,8 @@ import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import Voice from '@react-native-voice/voice';
+import {Pressable} from 'react-native-gesture-handler';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -122,12 +122,17 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
   }, []);
 
   const record = async () => {
-    setRecording(true);
-    try {
-      await Voice.start('ru-RU');
-    } catch (e) {
-      console.error(e);
+    if (recording) {
+      await Voice.stop();
+    } else {
+      try {
+        await Voice.start('ru-RU');
+      } catch (e) {
+        console.error(e);
+      }
     }
+
+    setRecording(prev => !prev);
   };
 
   React.useEffect(() => {
@@ -137,6 +142,11 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
       }
       setRecording(false);
     };
+    Voice.onSpeechError = e => {
+      console.error(e.error?.message);
+    };
+
+    return () => Voice.removeAllListeners();
   }, []);
 
   const ref = React.useRef<BottomSheet>(null);
@@ -167,14 +177,14 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
               value={categories[categoryIndex].title}
               readOnly
             />
-            <TouchableOpacity
+            <Pressable
               style={styles.chevronDown}
               onPress={() => ref.current?.expand()}>
               <Image
                 style={styles.image}
                 source={require('../assets/images/chevron-down.png')}
               />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
           <View
@@ -196,23 +206,33 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             />
           </View>
           <View style={{paddingTop: 10}}>
-            <TouchableOpacity
+            <Pressable
               style={[
                 Styles.borderedTextInputView,
                 Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
                 {justifyContent: 'center', paddingVertical: 10},
               ]}
-              onPress={record}
-              disabled={recording}>
+              onPress={record}>
               <View style={[styles.voiceButton]}>
-                <Image
-                  source={require('../assets/images/micro.png')}
-                  style={styles.voiceButtonImage}
-                />
-                <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                {recording ? (
+                  <View
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 5,
+                      backgroundColor: '#2688EB',
+                    }}/>
+                  ) : (
+                  <>
+                    <Image
+                      source={require('../assets/images/micro.png')}
+                      style={styles.voiceButtonImage}
+                    />
+                    <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                  </>)}
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
           {data.map((item, index) => {
@@ -266,16 +286,17 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <StyledButton
+          <GestureStyledButton
             content={'Создать заказ'}
             top={0}
             bottom={0}
             isDisabled={
               description == '' ||
               (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
-              photos.every(p => p == '')
+              photos.every(p => p.getUri() == '')
             }
             pressed={createOrderRequest}
+            type={'default'}
           />
         </View>
         <CategoriesBottomSheet

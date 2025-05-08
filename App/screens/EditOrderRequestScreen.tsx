@@ -4,7 +4,6 @@ import {
   View,
   Dimensions,
   TextInput,
-  TouchableOpacity,
   Image,
   ScrollView,
   StyleSheet,
@@ -29,6 +28,8 @@ import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import {Pressable} from 'react-native-gesture-handler';
+import {GestureStyledButton} from "../components/buttons/GestureStyledButton.tsx";
 
 const d = Dimensions.get('screen');
 
@@ -226,14 +227,14 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               readOnly
             />
             {status == 'Active' && (
-              <TouchableOpacity
+              <Pressable
                 style={styles.chevronDown}
                 onPress={() => ref.current?.expand()}>
                 <Image
                   style={styles.image}
                   source={require('../assets/images/chevron-down.png')}
                 />
-              </TouchableOpacity>
+              </Pressable>
             )}
           </View>
           <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
@@ -261,7 +262,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
           </View>
           {status == 'Active' && (
             <View style={{paddingTop: 10}}>
-              <TouchableOpacity
+              <Pressable
                 style={[
                   Styles.borderedTextInputView,
                   Styles.borderedTextInputViewColor,
@@ -276,7 +277,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
                   />
                   <Text style={styles.voiceButtonContent}>Записать голосом</Text>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           )}
           <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
@@ -350,7 +351,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         {isChanged ? (
           <>
             <View style={styles.buttonContainer}>
-              <StyledButton
+              <GestureStyledButton
                 content={'Сохранить изменения'}
                 top={0}
                 bottom={0}

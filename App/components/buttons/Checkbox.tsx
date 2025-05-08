@@ -1,8 +1,9 @@
 import {CheckboxProps} from '../../types/ComponentTypes.ts';
 import {
   Dimensions,
-  Image, TouchableOpacity,
+  Image,
 } from 'react-native';
+import {Pressable} from 'react-native-gesture-handler';
 
 export default function Checkbox({checked, pressed, readonly = false}: CheckboxProps) {
   const d = Dimensions.get('screen');
@@ -10,7 +11,7 @@ export default function Checkbox({checked, pressed, readonly = false}: CheckboxP
   return (
     <>
       {(!readonly || checked) && (
-        <TouchableOpacity
+        <Pressable
           style={{
             width: d.height * 0.023,
             height: d.height * 0.023,
@@ -30,7 +31,7 @@ export default function Checkbox({checked, pressed, readonly = false}: CheckboxP
                 height: d.height * 0.023,
               }}/>
           )}
-        </TouchableOpacity>
+        </Pressable>
       )}
     </>
   )

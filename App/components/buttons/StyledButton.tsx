@@ -1,4 +1,4 @@
-import {TouchableOpacity, Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Styles from '../../constants/Styles.tsx';
 import React from 'react';
 import {StyledButtonProps} from '../../types/ComponentTypes.ts';
