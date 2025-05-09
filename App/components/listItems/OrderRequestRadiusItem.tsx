@@ -1,8 +1,9 @@
 import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
-import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, Text, View} from 'react-native';
 import {Icon} from '@rneui/themed';
 import React from 'react';
 import {StyledButton} from '../buttons/StyledButton.tsx';
+import {Pressable} from 'react-native-gesture-handler';
 
 const d = Dimensions.get('screen');
 
@@ -50,7 +51,7 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
       {orderRequest.photoUris
         .filter(u => u != '')
         .map((v, i) => (
-          <TouchableOpacity
+          <Pressable
             style={{
               flexDirection: 'row',
               paddingTop: 10,
@@ -73,7 +74,7 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
               }}>
               {v.length > 15 ? `${v.substring(0, 14)}...` : v}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       <View
         style={{paddingTop: 10, paddingBottom: 10}}>

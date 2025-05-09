@@ -12,18 +12,21 @@ import LoginByEmailScreen from './LoginByEmailScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {LoginScreenProps} from '../types/NavigationTypes.ts';
 import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
+import LoginByPhoneScreen from './LoginByPhoneScreen.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
-import LoginByPhoneScreen from "./LoginByPhoneScreen.tsx";
 
 const {height} = Dimensions.get('screen');
 
 export default function LoginScreen({route, navigation}: LoginScreenProps) {
   const [isToggled, setIsToggled] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const refresh = React.useCallback(() => setRefreshing(prev => !prev), []);
 
   const tabs = [
-    {element: <LoginByEmailScreen/>, title: 'E-mail'},
+    {element: <LoginByEmailScreen refresh={refresh}/>, title: 'E-mail'},
     {element: <LoginByPhoneScreen/>, title: 'Телефон'}
-  ]
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,11 +41,12 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
           text={'Создать аккаунт'}
           onPress={() => setIsToggled(prev => !prev)}/>
       </View>
-      <TabBar tabs={tabs}/>
+      <TabBar tabs={tabs} big/>
       <CreateAccountModal
         isToggled={isToggled}
         handlePress={() => setIsToggled(prev => !prev)}
         navigation={navigation}/>
+      <LongRunningOperationIndicator isRefreshing={refreshing}/>
     </SafeAreaView>
   )
 }

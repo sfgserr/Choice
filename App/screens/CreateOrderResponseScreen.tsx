@@ -2,8 +2,6 @@ import {
   Image, ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {CreateOrderResponseScreenProps} from '../types/NavigationTypes.ts';
@@ -12,9 +10,9 @@ import OrderRequestRadiusItem from '../components/listItems/OrderRequestRadiusIt
 import React from 'react';
 import {CompanyOrderRequest} from '../types/DomainTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
-import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
+import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
 import Styles from '../constants/Styles.tsx';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
@@ -26,6 +24,7 @@ import AnimatedText from '../components/AnimatedText.tsx';
 import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {UserService} from '../services/domain/UserService.ts';
+import {TextInput, Pressable} from 'react-native-gesture-handler';
 
 type Form = {
   price: string
@@ -49,14 +48,14 @@ const ToggleBorder = ({title, value, onPress}: {title: string, value: string, on
         style={Styles.borderedTextInput}
         readOnly
       />
-      <TouchableOpacity
+      <Pressable
         style={styles.chevronDownButton}
         onPress={onPress}>
         <Image
           style={styles.image}
           source={require('../assets/images/chevron-down.png')}
         />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   </>
 )
@@ -194,7 +193,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             {orderRequest.toKnowPrice && (
               <>
                 <TextInputTitle s={'Стоимость'} top={20} bottom={5} />
-                <BorderedTextInput
+                <GestureBorderedTextInput
                   value={form.price}
                   onChanged={v => setAndValidate(prev => ({...prev, price: v}))}
                   placeholder={'Введите стоимость'}
@@ -242,7 +241,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             {user != null && user.isPrepaymentAvailable && orderRequest.toKnowPrice && (
               <>
                 <TextInputTitle s={'Предоплата'} top={20} bottom={5} />
-                <BorderedTextInput
+                <GestureBorderedTextInput
                   value={form.prepayment}
                   onChanged={prepayment => setAndValidate(prev => ({...prev, prepayment}))}
                   placeholder={'Введите предоплату'}
@@ -264,7 +263,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
             )}
           </>
         )}
-        <StyledButton
+        <GestureStyledButton
           content={'Ответить'}
           top={20}
           bottom={5}

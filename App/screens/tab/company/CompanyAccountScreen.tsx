@@ -6,10 +6,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
-import {Pressable, TouchableOpacity} from 'react-native-gesture-handler';
+import {Pressable, TextInput} from 'react-native-gesture-handler';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -33,10 +32,9 @@ import {ObjectStorageService} from '../../../services/object/ObjectStorageServic
 import LongRunningOperationIndicator from '../../../components/LongRunningOperationIndicator.tsx';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
-import {Icon} from '@rneui/base';
 import {PaymentService} from '../../../services/domain/PaymentService.ts';
-import PayModal from "../../../components/modals/PayModal.tsx";
-import PayoutModal from "../../../components/modals/PayoutModal.tsx";
+import PayModal from '../../../components/modals/PayModal.tsx';
+import PayoutModal from '../../../components/modals/PayoutModal.tsx';
 
 type Form = {
   id: string

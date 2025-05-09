@@ -6,17 +6,16 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput, TouchableOpacity,
   View, ViewToken,
 } from 'react-native';
 import {Category, ChatUser, Message, OrderRequest} from '../types/DomainTypes.ts';
-import React, {ForwardedRef} from 'react';
+import React from 'react';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {ChatService} from '../services/domain/ChatService.ts';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {Icon} from '@rneui/base';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import MessageItem from '../components/listItems/MessageItem.tsx';
@@ -25,6 +24,7 @@ import {ArrayUtils} from '../utils/ArrayUtils.ts';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ReviewBottomSheet from '../components/bottomSheets/ReviewBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+import {TextInput, Pressable} from 'react-native-gesture-handler';
 
 const d = Dimensions.get('screen');
 
@@ -231,7 +231,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
         Можете запросить у компании любую интересующую Вас информацию или создать заказ и дождаться ответов от компаний рядом с вами
       </Text>
       <View style={{paddingHorizontal: 40}}>
-        <StyledButton
+        <GestureStyledButton
           content={'Создать заказ'}
           top={20}
           bottom={0}
@@ -296,7 +296,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
           </View>
           <View style={styles.bottomTab}>
             <View style={[styles.horizontalSpread, {paddingTop: 5}]}>
-              <TouchableOpacity
+              <Pressable
                 style={styles.alignToCenterContainer}
                 onPress={launchLibrary}>
                 <Icon
@@ -304,7 +304,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                   name={'attachment'}
                   color={'#858E99'}
                   size={25}/>
-              </TouchableOpacity>
+              </Pressable>
               <View style={styles.textInputBorder}>
                 <TextInput
                   value={message}
@@ -314,7 +314,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                   style={styles.textInput}
                   placeholder={'Сообщение'}/>
               </View>
-              <TouchableOpacity
+              <Pressable
                   style={styles.alignToCenterContainer}
                   onPress={sendMessage}
                   disabled={message.length == 0}>
@@ -323,7 +323,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
                   name={'send'}
                   color={'#858E99'}
                   size={25}/>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>

@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Dimensions,
-  TextInput,
   Image,
   ScrollView,
   StyleSheet,
@@ -14,8 +13,8 @@ import TextInputTitle from '../components/TextInputTitle.tsx';
 import Styles from '../constants/Styles.tsx';
 import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox, {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
-import {Slider} from '@miblanchard/react-native-slider';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Slider} from 'react-native-awesome-slider';
+import {GestureHandlerRootView, TextInput} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
@@ -28,6 +27,7 @@ import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import Voice from '@react-native-voice/voice';
 import {Pressable} from 'react-native-gesture-handler';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
+import {useSharedValue} from 'react-native-reanimated';
 
 const d = Dimensions.get('screen');
 
@@ -117,9 +117,9 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
     setIsRefreshing(false);
   };
 
-  const onSliderValueChange = React.useCallback((value: Array<number>, index: number) => {
-    setRadius(value[0]);
-  }, []);
+  const progress = useSharedValue(5);
+  const min = useSharedValue(5);
+  const max = useSharedValue(25);
 
   const record = async () => {
     if (recording) {
@@ -270,15 +270,27 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           </View>
           <View style={{paddingTop: 10}}>
             <Slider
-              minimumValue={5}
-              maximumValue={25}
-              value={radius}
-              onValueChange={onSliderValueChange}
-              thumbTintColor={'white'}
-              minimumTrackTintColor={'#007AFF'}
-              maximumTrackTintColor={'#e4e4e6'}
-              thumbStyle={styles.thumbStyle}
-            />
+              minimumValue={min}
+              maximumValue={max}
+              progress={progress}
+              onSlidingComplete={n => setRadius(Math.round(n))}
+              steps={1}
+              renderBubble={() => (<></>)}
+              renderThumb={() => (
+                <View
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                    backgroundColor: 'white',
+                    shadowColor: 'black',
+                    elevation: 2,
+                  }}/>
+              )}
+              theme={{
+                minimumTrackTintColor: '#007AFF',
+                maximumTrackTintColor: '#e4e4e6',
+              }}/>
           </View>
           <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
             <Text style={Styles.title}>от 5 км</Text>

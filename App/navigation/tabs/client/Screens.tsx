@@ -18,7 +18,7 @@ export const Categories = () => (
 export const OrderRequests = () => (
   <ClientTab.Screen
     name={'OrderRequests'}
-    component={OrderRequestsScreen}
+    component={gestureHandlerRootHOC(OrderRequestsScreen)}
     options={getOptions({title: 'Заказы', source: require('../../../assets/images/orders.png')})}
   />
 )

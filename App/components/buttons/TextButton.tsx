@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text} from 'react-native';
 import {TextButtonProps} from '../../types/ComponentTypes.ts';
+import {Pressable} from 'react-native-gesture-handler';
 
 export default function TextButton({text, onPress}: TextButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         alignItems: 'baseline',
       }}
@@ -18,6 +19,6 @@ export default function TextButton({text, onPress}: TextButtonProps) {
         }}>
         {text}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   )
 }

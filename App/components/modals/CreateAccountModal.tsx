@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import Animated, {useAnimatedStyle, withDelay, withSpring, withTiming} from 'react-native-reanimated';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Pressable} from 'react-native-gesture-handler';
 import {CreateAccountModalProps} from '../../types/ComponentTypes.ts';
 
 const d = Dimensions.get('screen');
@@ -30,14 +30,14 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
   return (
     <>
       <Animated.View style={[styles.backdrop, animatedStyle]}>
-        <TouchableOpacity
+        <Pressable
           style={{flex: 1}}
           onPress={() => handlePress()}
           disabled={!isToggled}
         />
       </Animated.View>
       <Animated.View style={[styles.popup, animatedStyles]}>
-        <TouchableOpacity
+        <Pressable
           style={{
             height: d.height * 0.064,
             borderTopRightRadius: 15,
@@ -60,8 +60,8 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
             }}>
             Создать аккаунт клиента
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </Pressable>
+        <Pressable
           style={{
             height: d.height * 0.064,
             borderBottomRightRadius: 15,
@@ -82,12 +82,12 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
             }}>
             Создать аккаунт компании
           </Text>
-        </TouchableOpacity>
+        </Pressable>
         <View
           style={{
             paddingTop: 10,
           }}>
-          <TouchableOpacity
+          <Pressable
             style={{
               borderRadius: 15,
               height: d.height * 0.064,
@@ -104,7 +104,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
               }}>
               Отменить
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </Animated.View>
     </>

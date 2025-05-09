@@ -4,8 +4,8 @@ import * as React from 'react';
 import EditCategoryScreen from '../../../screens/EditCategoryScreen.tsx';
 import CreateCategoryScreen from '../../../screens/CreateCategoryScreen.tsx';
 import EditClientScreen from '../../../screens/EditClientScreen.tsx';
-import {gestureHandlerRootHOC} from "react-native-gesture-handler";
-import EditCompanyScreen from "../../../screens/EditCompanyScreen.tsx";
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import EditCompanyScreen from '../../../screens/EditCompanyScreen.tsx';
 
 export const Panel = () => (
   <AdminStack.Screen

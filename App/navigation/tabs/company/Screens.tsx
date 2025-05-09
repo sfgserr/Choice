@@ -9,7 +9,7 @@ import {gestureHandlerRootHOC} from "react-native-gesture-handler";
 export const OrderRequests = () => (
   <CompanyTab.Screen
     name={'OrderRequests'}
-    component={CompanyRequestsScreen}
+    component={gestureHandlerRootHOC(CompanyRequestsScreen)}
     options={getOptions({title: 'Заказы', source: require('../../../assets/images/orders.png')})}/>
 )
 

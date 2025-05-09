@@ -2,7 +2,7 @@ import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SocialMediaItem from '../components/listItems/SocialMediaItem.tsx';
 import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -66,7 +66,7 @@ export default function SocialMediasScreen({next}: {next: (socialMediaUrls: stri
           <SocialMediaItem item={item.item}/>
         )}/>
       <View style={styles.buttonContainer}>
-        <StyledButton
+        <GestureStyledButton
           content={'Далее'}
           top={0}
           bottom={0}

@@ -1,12 +1,12 @@
-import {FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, RefreshControl, StyleSheet, Text, View} from 'react-native';
 import {CompanyRequestsScreenProps} from '../../../types/NavigationTypes.ts';
 import React from 'react';
 import {Category, OrderRequestRadius} from '../../../types/DomainTypes.ts';
-import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
 import OrderRequestRadiusItem from '../../../components/listItems/OrderRequestRadiusItem.tsx';
 import {useDependency} from '../../../services/Hooks.ts';
 import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
@@ -74,28 +74,30 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
   )
 
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>Заказы</Text>
-        <FlatList
-          data={orderRequests}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          ListEmptyComponent={Stub}
-          contentContainerStyle={{flex: orderRequests.length > 0 ? undefined : 1}}
-          renderItem={(item) => (
-            <View style={styles.itemContainer}>
-              <OrderRequestRadiusItem
-                orderRequest={item.item}
-                categories={categories}
-                navigation={navigation}
-                preview={false}/>
-            </View>
-          )}
-          style={styles.flatList}/>
+    <GestureHandlerRootView>
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.title}>Заказы</Text>
+          <FlatList
+            data={orderRequests}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            ListEmptyComponent={Stub}
+            contentContainerStyle={{flex: orderRequests.length > 0 ? undefined : 1}}
+            renderItem={(item) => (
+              <View style={styles.itemContainer}>
+                <OrderRequestRadiusItem
+                  orderRequest={item.item}
+                  categories={categories}
+                  navigation={navigation}
+                  preview={false}/>
+              </View>
+            )}
+            style={styles.flatList}/>
+        </View>
       </View>
-    </View>
+    </GestureHandlerRootView>
   )
 }
 

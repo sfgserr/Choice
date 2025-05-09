@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Dimensions,
-  TextInput,
   Image,
   ScrollView,
   StyleSheet,
@@ -15,9 +14,8 @@ import Styles from '../constants/Styles.tsx';
 import {Category, OrderRequestDetails, OrderStatus} from '../types/DomainTypes.ts';
 import Checkbox from '../components/buttons/Checkbox.tsx';
 import ImageBox, {ImageBoxObject, MinioBlob, UploadedBlob} from '../components/ImageBox.tsx';
-import {Slider} from '@miblanchard/react-native-slider';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Slider} from 'react-native-awesome-slider';
+import {GestureHandlerRootView, TextInput} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CategoriesBottomSheet from '../components/bottomSheets/CategoriesBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
@@ -29,7 +27,9 @@ import {OrderRequestService} from '../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import {Pressable} from 'react-native-gesture-handler';
-import {GestureStyledButton} from "../components/buttons/GestureStyledButton.tsx";
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
+import Voice from '@react-native-voice/voice';
+import {useSharedValue} from "react-native-reanimated";
 
 const d = Dimensions.get('screen');
 
@@ -49,6 +49,8 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
   const [creationDate, setCreationDate] = React.useState<Date>(new Date());
   const [categoryIndex, setCategoryIndex] = React.useState(0);
   const [isChanged, setIsChanged] = React.useState(false);
+
+  const [recording, setRecording] = React.useState(false);
 
   const set = (orderRequest: OrderRequestDetails) => {
     setStatus(orderRequest.status);
@@ -155,6 +157,38 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
       toggleErrorModal();
     }
   };
+
+  const record = async () => {
+    if (recording) {
+      await Voice.stop();
+    } else {
+      try {
+        await Voice.start('ru-RU');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    setRecording(prev => !prev);
+  };
+
+  const progress = useSharedValue(5);
+  const min = useSharedValue(5);
+  const max = useSharedValue(25);
+
+  React.useEffect(() => {
+    Voice.onSpeechResults = e => {
+      if (e.value != undefined) {
+        setDescription(e.value[0]);
+      }
+      setRecording(false);
+    };
+    Voice.onSpeechError = e => {
+      console.error(e.error?.message);
+    };
+
+    return () => Voice.removeAllListeners();
+  }, []);
 
   const ref = React.useRef<BottomSheet>(null);
 
@@ -269,13 +303,24 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
                   Styles.borderedTextInputHeight,
                   {justifyContent: 'center', paddingVertical: 10},
                 ]}
-                onPress={() => {}}>
+                onPress={record}>
                 <View style={styles.voiceButton}>
-                  <Image
-                    source={require('../assets/images/micro.png')}
-                    style={styles.voiceButtonImage}
-                  />
-                  <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                  {recording ? (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 5,
+                        backgroundColor: '#2688EB',
+                      }}/>
+                  ) : (
+                    <>
+                      <Image
+                        source={require('../assets/images/micro.png')}
+                        style={styles.voiceButtonImage}
+                      />
+                      <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                    </>)}
                 </View>
               </Pressable>
             </View>
@@ -328,18 +373,27 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
               </View>
               <View style={{paddingTop: 10}}>
                 <Slider
-                  minimumValue={5}
-                  maximumValue={25}
-                  value={radius}
-                  onValueChange={value => {
-                    setRadius(Math.floor(value[0]));
-                    setIsChanged(true);
-                  }}
-                  thumbTintColor={'white'}
-                  minimumTrackTintColor={'#007AFF'}
-                  maximumTrackTintColor={'#e4e4e6'}
-                  thumbStyle={styles.thumbStyle}
-                />
+                  minimumValue={min}
+                  maximumValue={max}
+                  progress={progress}
+                  onSlidingComplete={n => setRadius(Math.round(n))}
+                  steps={1}
+                  renderBubble={() => (<></>)}
+                  renderThumb={() => (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 10,
+                        backgroundColor: 'white',
+                        shadowColor: 'black',
+                        elevation: 2,
+                      }}/>
+                  )}
+                  theme={{
+                    minimumTrackTintColor: '#007AFF',
+                    maximumTrackTintColor: '#e4e4e6',
+                  }}/>
               </View>
               <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
                 <Text style={Styles.title}>от 5 км</Text>

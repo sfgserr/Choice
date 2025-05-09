@@ -12,7 +12,7 @@ import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import {ImageBoxObject, MinioBlob, UploadedBlob} from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
-import {GestureHandlerRootView, TouchableOpacity} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, Pressable} from 'react-native-gesture-handler';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
@@ -124,7 +124,7 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
             </View>
             <Text style={styles.title}>{readonly ? 'Клиент' : 'Изменить клиента'}</Text>
             <View style={{alignSelf: 'center'}}>
-              <TouchableOpacity
+              <Pressable
                 disabled={(!readonly && isDisabled())}
                 onPress={saveChanges}>
                 <Image
@@ -132,7 +132,7 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
                     opacity: (!readonly && !isDisabled()) || readonly ? 1 : 0.5,
                   }]}
                   source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={styles.iconContainer}>

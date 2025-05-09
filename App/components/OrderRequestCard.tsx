@@ -1,7 +1,8 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import Styles from '../constants/Styles.tsx';
 import {OrderRequestCardProps} from '../types/ComponentTypes.ts';
 import {DateUtils} from '../utils/DateUtils.ts';
+import {Pressable} from 'react-native-gesture-handler';
 
 export default function OrderRequestCard({orderRequest, navigation}: OrderRequestCardProps) {
   return (
@@ -35,11 +36,11 @@ export default function OrderRequestCard({orderRequest, navigation}: OrderReques
         <Text style={styles.creationDate}>{DateUtils.formatDate(orderRequest.creationDate)}</Text>
       </View>
       <View style={styles.detailsButtonContainer}>
-        <TouchableOpacity
+        <Pressable
           style={[Styles.styledButton, styles.detailsButton]}
           onPress={() => navigation.navigate('EditOrderRequest', {orderRequestId: orderRequest.id})}>
           <Text style={styles.detailsButtonContent}>Подробнее</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

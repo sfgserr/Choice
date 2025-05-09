@@ -14,7 +14,7 @@ import {ClientService} from '../../../services/domain/ClientService.ts';
 import {GestureStyledButton} from '../../../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../../../components/inputs/GestureBordererdTextInput.tsx';
 import {PaymentService} from '../../../services/domain/PaymentService.tsx';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Pressable} from 'react-native-gesture-handler';
 import {Icon} from '@rneui/base';
 import PayModal from '../../../components/modals/PayModal.tsx';
 
@@ -140,12 +140,12 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
             <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
-              <TouchableOpacity onPress={() => setIsPayModalToggled(prev => !prev)}>
+              <Pressable onPress={() => setIsPayModalToggled(prev => !prev)}>
                 <Icon
                   type={'material'}
                   name={'add'}
                   color={'#2688EB'}/>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{paddingHorizontal: 15}}>

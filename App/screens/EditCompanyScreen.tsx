@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDependency} from '../services/Hooks.ts';
 import TextButton from '../components/buttons/TextButton.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
@@ -11,7 +11,7 @@ import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import ImageBox, {ImageBoxObject, MinioBlob, UploadedBlob} from '../components/ImageBox.tsx';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
-import {GestureHandlerRootView, TouchableOpacity} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, Pressable} from 'react-native-gesture-handler';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import SocialMediaItem from '../components/listItems/SocialMediaItem.tsx';
@@ -22,6 +22,7 @@ import PickCategoriesBottomSheet from '../components/bottomSheets/PickCategories
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
+import {TextInput} from 'react-native-gesture-handler';
 
 type Form = {
   id: string
@@ -48,7 +49,7 @@ const Option = ({selected, title, onPress, top}: {
   onPress: () => void
   top: number}) => (
   <View style={[styles.optionContainer, {paddingTop: top}]}>
-    <TouchableOpacity
+    <Pressable
       style={[
         styles.optionButton, {
           borderColor: selected ? '#2688EB' : '#B8C1CC',
@@ -56,7 +57,7 @@ const Option = ({selected, title, onPress, top}: {
       onPress={onPress}
       disabled={selected}>
       {selected ? (<View style={styles.optionSelected}/>) : (<></>)}
-    </TouchableOpacity>
+    </Pressable>
     <Text style={styles.optionTitle}>{title}</Text>
   </View>
 );
@@ -257,7 +258,7 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
             </View>
             <Text style={styles.title}>{readonly ? 'Компания' : 'Изменить компанию'}</Text>
             <View style={{alignSelf: 'center'}}>
-              <TouchableOpacity
+              <Pressable
                 disabled={(!readonly && isDisable())}
                 onPress={saveChanges}>
                 <Image
@@ -265,7 +266,7 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
                     opacity: (!readonly && !isDisable()) || readonly ? 1 : 0.5,
                   }]}
                   source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={styles.iconContainer}>
@@ -380,13 +381,13 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
                 readOnly/>
               {!readonly && (
                 <View style={styles.chevronDown}>
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => ref.current?.expand()}>
                     <Image
                       style={styles.image}
                       source={require('../assets/images/chevron-down.png')}
                     />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               )}
             </View>

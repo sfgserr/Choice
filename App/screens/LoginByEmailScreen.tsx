@@ -2,15 +2,15 @@ import * as React from 'react';
 import {
   ScrollView, StyleSheet, Text,
 } from 'react-native';
-import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
 import TextInputTitle from '../components/TextInputTitle.tsx';
-import PasswordBox from '../components/inputs/PasswordBox.tsx';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {TokenService} from '../services/auth/TokenService.ts';
 import {AuthContext} from '../contexts/authorized/Context.tsx';
 import {useDependency} from '../services/Hooks.ts';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
+import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
+import GesturePasswordBox from '../components/inputs/GesturePasswordBox.tsx';
 
-export default function LoginByEmailScreen() {
+export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
   const { signIn } = React.useContext(AuthContext);
 
   const tokenService = useDependency<TokenService>('TokenService');
@@ -40,7 +40,7 @@ export default function LoginByEmailScreen() {
         s={'E-mail'}
         top={0}
         bottom={5}/>
-      <BorderedTextInput
+      <GestureBorderedTextInput
         value={email}
         onChanged={onEmailChanged}
         placeholder={'Введите E-mail'}
@@ -50,7 +50,7 @@ export default function LoginByEmailScreen() {
         s={'Пароль'}
         top={20}
         bottom={5}/>
-      <PasswordBox
+      <GesturePasswordBox
         value={password}
         onChanged={onPasswordChanged}
         isError={isError}/>
@@ -59,13 +59,17 @@ export default function LoginByEmailScreen() {
           <Text style={styles.errorText}>Логин или пароль неверны</Text>
         </>
       )}
-      <StyledButton
+      <GestureStyledButton
         content={'Войти'}
         top={20}
         bottom={0}
         isDisabled={isDisabled}
         pressed={async () => {
+          refresh();
+
           let result = await tokenService.login(email, password);
+
+          refresh();
 
           if (result != null)
             signIn(result[0], result[1]);
