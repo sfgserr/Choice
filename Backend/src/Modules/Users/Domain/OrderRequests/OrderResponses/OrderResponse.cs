@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Domain;
 using Users.Domain.OrderRequests.OrderResponses.Events;
+using Users.Domain.OrderRequests.OrderResponses.Reviews;
 using Users.Domain.OrderRequests.OrderResponses.Rules;
 using Users.Domain.Users;
 using Users.Domain.Users.Clients;

@@ -31,10 +31,11 @@ namespace WebApi.Modules.Payments.Wallets
         }
         
         [HttpPost("notification")]
-        public async Task<IActionResult> Deposit([FromBody] HttpRequest request)
+        public async Task<IActionResult> Deposit()
         {
-            string body = "";
-            using (StreamReader stream = new StreamReader(request.Body))
+            string body;
+            
+            using (var stream = new StreamReader(HttpContext.Request.Body))
             {
                 body = await stream.ReadToEndAsync();
             }

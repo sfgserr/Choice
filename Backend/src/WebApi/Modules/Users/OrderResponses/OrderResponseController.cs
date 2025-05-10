@@ -9,6 +9,7 @@ using Users.Application.OrderResponses.Commands.Enroll;
 using Users.Application.OrderResponses.Commands.Finish;
 using Users.Application.OrderResponses.Commands.Response;
 using Users.Application.OrderResponses.Queries.GetOrderResponse;
+using Users.Application.OrderResponses.Queries.GetReviews;
 
 namespace WebApi.Modules.Users.OrderResponses
 {
@@ -109,6 +110,15 @@ namespace WebApi.Modules.Users.OrderResponses
                 new GetOrderResponseQuery(id));
 
             return Ok(orderResponse);
+        }
+
+        [HttpGet("reviews/{userId:guid}")]
+        [HasPermission(Permissions.GetReviews)]
+        public async Task<IActionResult> GetReviews(Guid userId)
+        {
+            var reviews = await _usersModule.Query<GetReviewsQuery, IEnumerable<ReviewDto>>(new (userId));
+            
+            return Ok(reviews);
         }
     }
 }

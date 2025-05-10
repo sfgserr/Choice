@@ -1,30 +1,39 @@
 ﻿using BuildingBlocks.Domain;
-using Users.Domain.OrderRequests.OrderResponses.Events;
 using Users.Domain.Users;
 
-namespace Users.Domain.OrderRequests.OrderResponses
+namespace Users.Domain.OrderRequests.OrderResponses.Reviews
 {
     public class Review : Entity
     {
+        private OrderResponseId _responseId;
+
+        private UserId _authorId;
+
+        private UserId _toUserId;
+        
         private string _text;
 
         private int _grade;
         
         private Review(
+            ReviewId id,
             OrderResponseId responseId,
             UserId authorId,
             UserId toUserId,
             string text,
             int grade)
         {
-            ResponseId = responseId;
-            AuthorId = authorId;
-            ToUserId = toUserId;
+            Id = id;
             
+            _responseId = responseId;
+            _authorId = authorId;
+            _toUserId = toUserId;
             _text = text;
             _grade = grade;
         }
-
+        
+        public ReviewId Id { get; }
+        
         internal static Review Create(
             OrderResponseId responseId,
             UserId authorId,
@@ -33,6 +42,7 @@ namespace Users.Domain.OrderRequests.OrderResponses
             int grade)
         {
             return new Review(
+                new(Guid.NewGuid()),
                 responseId,
                 authorId,
                 toUserId,
@@ -40,10 +50,9 @@ namespace Users.Domain.OrderRequests.OrderResponses
                 grade > 5 ? 5 : grade < 1 ? 1 : grade);
         }
 
-        public OrderResponseId ResponseId { get; }
-
-        public UserId AuthorId { get; }
-
-        public UserId ToUserId { get; }
+        internal bool CheckIfReviewed(UserId authorId)
+        {
+            return _authorId.Equals(authorId);
+        }
     }
 }

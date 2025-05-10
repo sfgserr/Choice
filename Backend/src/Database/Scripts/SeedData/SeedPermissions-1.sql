@@ -89,3 +89,7 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('CreatePayment');
 INSERT INTO identity."Permissions" ("Code") VALUES ('CreatePayout');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetWallet');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetReviews');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('EditReview');

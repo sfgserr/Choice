@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using Users.Domain.OrderRequests.OrderResponses.Reviews;
 using Users.Domain.Users;
 
 namespace Users.Domain.OrderRequests.OrderResponses.Rules
@@ -14,8 +15,8 @@ namespace Users.Domain.OrderRequests.OrderResponses.Rules
             _authorId = authorId;
         }
 
-        public bool IsBroken => _reviews.Any(r => r.AuthorId.Equals(_authorId));
+        public bool IsBroken => _reviews.Any(r => r.CheckIfReviewed(_authorId));
 
-        public string Message => "You've already reviewd";
+        public string Message => "Вы уже написали отзыв";
     }
 }
