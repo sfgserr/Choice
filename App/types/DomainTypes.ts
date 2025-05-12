@@ -156,3 +156,9 @@ export type AdminUser = {
   city: string
   street: string
 }
+
+export type Review = {
+  name: string
+  text: string
+  grade: number
+}

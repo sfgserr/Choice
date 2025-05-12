@@ -1,8 +1,7 @@
 import {CompanyMapMarker} from '../types/DomainTypes';
 import {Marker} from 'react-native-yamap';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
-import {Icon} from '@rneui/themed';
+import { Image, View } from 'react-native';
 
 export default function CustomMarker({
   company,

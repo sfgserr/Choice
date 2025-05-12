@@ -4,6 +4,5 @@ CREATE TABLE users."Reviews" (
     "AuthorId" uuid,
     "ToUserId" uuid,
     "Text" text NOT NULL,
-    "Grade" integer NOT NULL,
-    FOREIGN KEY ("UserId") REFERENCES users."Users" ("Id")
+    "Grade" integer NOT NULL
 );

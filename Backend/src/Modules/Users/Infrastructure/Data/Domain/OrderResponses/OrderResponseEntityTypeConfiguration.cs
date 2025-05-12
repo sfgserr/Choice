@@ -38,9 +38,9 @@ namespace Users.Infrastructure.Data.Domain.OrderResponses
                 
                 b.HasKey(x => x.Id);
                 
-                b.Property<Guid>("_authorId").HasColumnName("AuthorId");
-                b.Property<Guid>("_toUserId").HasColumnName("ToUserId");
-                b.Property<Guid>("_responseId").HasColumnName("ResponseId");
+                b.Property<UserId>("_authorId").HasColumnName("AuthorId");
+                b.Property<UserId>("_toUserId").HasColumnName("ToUserId");
+                b.Property<OrderResponseId>("_responseId").HasColumnName("ResponseId");
                 b.Property<string>("_text").HasColumnName("Text");
                 b.Property<int>("_grade").HasColumnName("Grade");
                 

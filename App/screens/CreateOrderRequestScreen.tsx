@@ -304,8 +304,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
             bottom={0}
             isDisabled={
               description == '' ||
-              (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
-              photos.every(p => p.getUri() == '')
+              (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate)
             }
             pressed={createOrderRequest}
             type={'default'}

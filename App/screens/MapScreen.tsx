@@ -6,9 +6,9 @@ import {
 import YaMap, {Animation, Point} from 'react-native-yamap';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {MapScreenProps} from '../types/NavigationTypes.ts';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import React from 'react';
-import {CompanyMapMarker, Message, OrderResponse} from '../types/DomainTypes.ts';
+import {CompanyInfo, CompanyMapMarker, Message, OrderResponse} from '../types/DomainTypes.ts';
 import {OrderRequest} from '../types/DomainTypes.ts';
 import OrderRequestModal from '../components/modals/OrderRequestModal.tsx';
 import CustomMarker from '../components/CustomMarker.tsx';
@@ -22,6 +22,7 @@ import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import {DateUtils} from '../utils/DateUtils.ts';
 import TextButton from '../components/buttons/TextButton.tsx';
+import ReviewsBottomSheet from "../components/bottomSheets/ReviewsBottomSheet.tsx";
 
 const d = Dimensions.get('screen');
 
@@ -216,6 +217,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   const [responsedCompany, setResponsedCompany] = React.useState<CompanyMapMarker>(null);
   const [lastResponse, setLastResponse] = React.useState<string>('');
+  const [companyReviews, setCompanyReviews] = React.useState<CompanyInfo | null>(null);
 
   React.useEffect(() => {
     async function getCompanies() {
@@ -290,6 +292,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
   };
 
   const ref = React.useRef<BottomSheet>(null);
+  const reviewsRef = React.useRef<BottomSheet>(null);
 
   const onMarkerPressed = React.useCallback((companyId: string, responseId: string) => {
     setCompanyId(companyId);
@@ -298,9 +301,19 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
     ref.current?.expand();
   }, []);
 
+  const openReviews = React.useCallback((company: CompanyInfo) => {
+    setCompanyReviews(company);
+    reviewsRef.current?.expand();
+  }, []);
+
   const onClose = React.useCallback(() => {
     ref.current?.close();
     setCompanyId('');
+    setCompanyReviews(null);
+  }, []);
+
+  const closeReviews = React.useCallback(() => {
+    reviewsRef.current?.close();
   }, []);
 
   const onGoBack = React.useCallback(() => {}, []);
@@ -348,7 +361,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         <>
           <View style={styles.bottomTab}>
             <View style={styles.buttonContainer}>
-              <StyledButton
+              <GestureStyledButton
                 content={'Создать заказ'}
                 top={10}
                 bottom={0}
@@ -369,7 +382,12 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
         responseId={responseId}
         close={onClose}
         ref={ref}
-        navigateToChat={() => navigation.navigate('Chat', {id: companyId, onGoBack})}/>
+        navigateToChat={() => navigation.navigate('Chat', {id: companyId, onGoBack})}
+        openReviews={openReviews}/>
+      <ReviewsBottomSheet
+        close={closeReviews}
+        company={companyReviews}
+        ref={reviewsRef}/>
     </GestureHandlerRootView>
   );
 }

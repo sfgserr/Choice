@@ -25,7 +25,7 @@ namespace Users.Application.OrderResponses.Queries.GetReviews
                     users."Reviews"."Grade" as {nameof(ReviewDto.Grade)}
                 FROM users."Reviews"
                 JOIN users."Users" ON users."Users"."Id" = users."Reviews"."AuthorId"
-                WHERE users."Reviews"."ToUserId" = @Id
+                WHERE users."Reviews"."ToUserId" = @ToUserId
                 """;
 
             return await connection.QueryAsync<ReviewDto>(
