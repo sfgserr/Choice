@@ -2,9 +2,6 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {RegisterCompanyScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
-import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
-import PasswordBox from '../components/inputs/PasswordBox.tsx';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import TextButton from '../components/buttons/TextButton.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
@@ -13,6 +10,10 @@ import {AuthContext} from '../contexts/authorized/Context.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {TokenService} from '../services/auth/TokenService.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
+import PhoneBox from '../components/inputs/PhoneBox.tsx';
+import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
+import GesturePasswordBox from '../components/inputs/GesturePasswordBox.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
   const { signIn } = React.useContext(AuthContext);
@@ -27,7 +28,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
     city: '',
     street: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
 
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -41,7 +42,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
     return form.email == '' || form.password == '' ||
       form.confirmPassword == '' || form.city == '' ||
       form.street == '' || form.phoneNumber == '';
-  }, [form])
+  }, [form]);
 
   const createCompany = React.useCallback(async () => {
     setRefreshing(true);
@@ -76,7 +77,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
   }, [form]);
 
   return (
-    <View
+    <ScrollView
       style={styles.container}
       showsVerticalScrollIndicator={false}>
       <View style={styles.contentContainer}>
@@ -85,7 +86,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'Название'}
           top={20}
           bottom={5}/>
-        <BorderedTextInput
+        <GestureBorderedTextInput
           value={form.name}
           onChanged={(name) => setForm(prev => ({...prev, name}))}
           placeholder={'Введите название'}
@@ -95,7 +96,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'E-mail'}
           top={20}
           bottom={5}/>
-        <BorderedTextInput
+        <GestureBorderedTextInput
           value={form.email}
           onChanged={(email) => setForm(prev => ({...prev, email}))}
           placeholder={'Введите E-mail'}
@@ -105,17 +106,16 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'Номер телефона'}
           top={20}
           bottom={5}/>
-        <BorderedTextInput
+        <PhoneBox
           value={form.phoneNumber}
+          isReadonly={false}
           onChanged={(phoneNumber) => setForm(prev => ({...prev, phoneNumber}))}
-          placeholder={'Введите номер телефона'}
-          isError={false}
-          isBig={false}/>
+          isError={false}/>
         <TextInputTitle
           s={'Город'}
           top={20}
           bottom={5}/>
-        <BorderedTextInput
+        <GestureBorderedTextInput
           value={form.city}
           onChanged={(city) => setForm(prev => ({...prev, city}))}
           placeholder={'Введите название города'}
@@ -125,7 +125,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'Улица'}
           top={20}
           bottom={5}/>
-        <BorderedTextInput
+        <GestureBorderedTextInput
           value={form.street}
           onChanged={(street) => setForm(prev => ({...prev, street}))}
           placeholder={'Введите название улицы'}
@@ -135,7 +135,7 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'Пароль'}
           top={20}
           bottom={5}/>
-        <PasswordBox
+        <GesturePasswordBox
           value={form.password}
           onChanged={(password) => setForm(prev => ({...prev, password}))}
           isError={false}/>
@@ -143,11 +143,11 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
           s={'Повторите пароль'}
           top={20}
           bottom={5}/>
-        <PasswordBox
+        <GesturePasswordBox
           value={form.confirmPassword}
           onChanged={(confirmPassword) => setForm(prev => ({...prev, confirmPassword}))}
           isError={false}/>
-        <StyledButton
+        <GestureStyledButton
           content={'Создать аккаунт'}
           top={20}
           bottom={20}
@@ -170,8 +170,8 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
         handlePress={() => setErrorToggled(false)}
         errorMessage={errorMessage}/>
       <LongRunningOperationIndicator isRefreshing={refreshing}/>
-    </View>
-  )
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   contentContainer: {
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   title: {
     color: '#313131',
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     color: '#9C9C9C',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   loginButtonContainer: {
     alignSelf: 'center',

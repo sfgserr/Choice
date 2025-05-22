@@ -34,8 +34,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - YandexGeocoder__ApiKey=${YANDEX_API_KEY}
       - YooKassaSettings__BaseUrl=${YOO_KASSA_BASE_URL}
-      - YooKassaSettings__SecretKey=${YOO_KASSA_SECRET_KEY}
-      - YooKassaSettings__AppId=${YOO_KASSA_APP_ID}
+      - YooKassaSettings__PaymentsSecretKey=${YOO_KASSA_PAYMENTS_SECRET_KEY}
+      - YooKassaSettings__PaymentsAppId=${YOO_KASSA_PAYMENTS_APP_ID}
+      - YooKassaSettings__PayoutsSecretKey=${YOO_KASSA_PAYOUTS_SECRET_KEY}
+      - YooKassaSettings__PayoutsAppId=${YOO_KASSA_PAYOUTS_APP_ID}
       - SmsApiSettings__Login=${SMS_API_SETTINGS_LOGIN}
       - SmsApiSettings__Password=${SMS_API_SETTINGS_PASSWORD}
       - SmsApiSettings__BaseUrl=${SMS_API_SETTINGS_BASE_URL}

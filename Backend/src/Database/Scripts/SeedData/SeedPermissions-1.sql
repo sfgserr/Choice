@@ -93,3 +93,5 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('GetWallet');
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetReviews');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('EditReview');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetAuthorReviews');

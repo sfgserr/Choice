@@ -19,6 +19,6 @@ export class PaymentService {
     return await this.httpService.request(
       'wallets/payout',
       'POST',
-      JSON.stringify({copecks}));
+      JSON.stringify({bankCardNumber, copecks}));
   }
 }

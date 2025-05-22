@@ -1,8 +1,9 @@
-import {Image, TouchableOpacity} from 'react-native';
+import {Image} from 'react-native';
+import {Pressable} from 'react-native-gesture-handler';
 
 export default function NavigateBackButton({navigation, onGoBack}: {navigation: any, onGoBack: (() => void) | undefined}) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         navigation.goBack();
         if (onGoBack != undefined) {
@@ -17,6 +18,6 @@ export default function NavigateBackButton({navigation, onGoBack}: {navigation: 
           height: 20,
         }}
         source={require('../../assets/images/chevron-left.png')}/>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

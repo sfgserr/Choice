@@ -49,5 +49,6 @@ namespace WebApi.Modules
         public const string GetWallet = "GetWallet";
         public const string GetReviews = "GetReviews";
         public const string EditReview = "EditReview";
+        public const string GetAuthorReviews = "GetAuthorReviews";
     }
 }

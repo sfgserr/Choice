@@ -4,8 +4,7 @@ import {
   Dimensions,
   Image,
   Text,
-  SafeAreaView,
-  StyleSheet,
+  StyleSheet, KeyboardAvoidingView, SafeAreaView,
 } from 'react-native';
 import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
@@ -29,7 +28,8 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={styles.container}>
       <Image
         source={require('../assets/images/logo.png')}
         style={styles.logo}/>

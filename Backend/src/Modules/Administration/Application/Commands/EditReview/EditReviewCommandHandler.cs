@@ -20,8 +20,8 @@ namespace Administration.Application.Commands.EditReview
             const string sql = 
                 $"""
                 UPDATE users."Reviews" SET
-                    users."Reviews"."Text" = @Text,
-                    users."Reviews"."Grade" = @Grade,
+                    "Text" = @Text,
+                    "Grade" = @Grade
                 WHERE users."Reviews"."Id" = @ReviewId
                 """;
 

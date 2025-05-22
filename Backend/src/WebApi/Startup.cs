@@ -78,12 +78,21 @@ namespace WebApi
             {
                 options.BaseAddress = new(Configuration["YandexGeocoder:BaseUrl"]!);
             });
-            services.AddHttpClient("YooKassa", options =>
+            services.AddHttpClient("YooKassaPayments", options =>
             {
                 options.BaseAddress = new(Configuration["YooKassaSettings:BaseUrl"]!);
                 
                 var credentials = 
-                    Encoding.UTF8.GetBytes($"{Configuration["YooKassaSettings:AppId"]!}:{Configuration["YooKassaSettings:SecretKey"]!}");
+                    Encoding.UTF8.GetBytes($"{Configuration["YooKassaSettings:PaymentsAppId"]!}:{Configuration["YooKassaSettings:PaymentsSecretKey"]!}");
+                
+                options.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentials)}");
+            });
+            services.AddHttpClient("YooKassaPayouts", options =>
+            {
+                options.BaseAddress = new(Configuration["YooKassaSettings:BaseUrl"]!);
+                
+                var credentials = 
+                    Encoding.UTF8.GetBytes($"{Configuration["YooKassaSettings:PayoutsAppId"]!}:{Configuration["YooKassaSettings:PayoutsSecretKey"]!}");
                 
                 options.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentials)}");
             });

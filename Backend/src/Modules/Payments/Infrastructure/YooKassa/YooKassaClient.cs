@@ -19,7 +19,7 @@ namespace Payments.Infrastructure.YooKassa
 
         public async Task<PaymentDto> ProcessPayment(Guid payerId, double amount)
         {
-            using var client = _factory.CreateClient("YooKassa");
+            using var client = _factory.CreateClient("YooKassaPayments");
             
             _logger.Information("Processing payment");
             
@@ -42,7 +42,7 @@ namespace Payments.Infrastructure.YooKassa
                 },
                 Metadata = new Dictionary<string, string>
                 {
-                    ["PaymentId"] = payerId.ToString(),
+                    ["payerId"] = payerId.ToString(),
                 }
             }, options: new JsonSerializerOptions
             {
@@ -63,7 +63,7 @@ namespace Payments.Infrastructure.YooKassa
 
         public async Task<PaymentDto?> Get(Guid paymentId)
         {
-            using var client = _factory.CreateClient("YooKassa");
+            using var client = _factory.CreateClient("YooKassaPayments");
             
             var response = await client.GetAsync($"v3/payments/{paymentId}");
             response.EnsureSuccessStatusCode();
@@ -73,7 +73,7 @@ namespace Payments.Infrastructure.YooKassa
 
         public async Task<PayoutDto> ProcessPayout(Guid payerId, string bankCardNumber, double amount)
         {
-            using var client = _factory.CreateClient("YooKassa");
+            using var client = _factory.CreateClient("YooKassaPayouts");
             
             _logger.Information("Start processing payout");
             
@@ -81,6 +81,7 @@ namespace Payments.Infrastructure.YooKassa
                 HttpMethod.Post, 
                 $"{client.BaseAddress}/v3/payouts");
             request.Headers.Add("Idempotence-Key", Guid.NewGuid().ToString());
+            
             request.Content = JsonContent.Create(new
             {
                 Amount = new
@@ -95,8 +96,12 @@ namespace Payments.Infrastructure.YooKassa
                 },
                 Metadata = new Dictionary<string, string>
                 {
-                    ["PayerId"] = payerId.ToString(),
+                    ["payerId"] = payerId.ToString(),
                 }
+            }, options: new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
             });
             
             var response = await client.SendAsync(request);
@@ -111,7 +116,7 @@ namespace Payments.Infrastructure.YooKassa
 
         public async Task<PayoutDto?> GetPayout(string payoutId)
         {
-            using var client = _factory.CreateClient("YooKassa");
+            using var client = _factory.CreateClient("YooKassaPayouts");
             
             var response = await client.GetAsync($"v3/payouts/{payoutId}");
             response.EnsureSuccessStatusCode();

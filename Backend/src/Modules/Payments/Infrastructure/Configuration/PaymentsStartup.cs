@@ -73,11 +73,11 @@ namespace Payments.Infrastructure.Configuration
             
             YooKassaNotifications.AddHandler<PaymentSucceededEvent>("payment.succeeded", async @event =>
             {
-                await CommandsExecutor.ExecuteCommandAsync(new DepositCommand(@event.PaymentId));
+                await CommandsExecutor.ExecuteCommandAsync(new DepositCommand(@event.Id));
             });
             YooKassaNotifications.AddHandler<PayoutSucceededEvent>("payout.succeeded", async @event =>
             {
-                await CommandsExecutor.ExecuteCommandAsync(new WithdrawCommand(@event.PayoutId));
+                await CommandsExecutor.ExecuteCommandAsync(new WithdrawCommand(@event.Id));
             });
         }
     }

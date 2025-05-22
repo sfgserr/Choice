@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FlatList, RefreshControl, StyleSheet, Text, View} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 import CategoryItem from '../components/listItems/CategoryItem.tsx';
 import {Category} from '../types/DomainTypes.ts';
 import {useDependency} from '../services/Hooks.ts';

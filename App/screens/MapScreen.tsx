@@ -22,7 +22,7 @@ import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import {DateUtils} from '../utils/DateUtils.ts';
 import TextButton from '../components/buttons/TextButton.tsx';
-import ReviewsBottomSheet from "../components/bottomSheets/ReviewsBottomSheet.tsx";
+import ReviewsBottomSheet from '../components/bottomSheets/ReviewsBottomSheet.tsx';
 
 const d = Dimensions.get('screen');
 
@@ -394,7 +394,7 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
 const styles = StyleSheet.create({
   map: {
-    flex: 1
+    flex: 1,
   },
   topTab: {
     position: 'absolute',
@@ -406,7 +406,8 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   navigateBackButtonContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingHorizontal: 10
   },
   categoryTitleContainer: {
     color: 'black',
@@ -422,7 +423,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     bottom: 0,
     justifyContent: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   buttonContainer: {
     flex: 1

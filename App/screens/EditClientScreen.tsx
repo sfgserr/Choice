@@ -221,8 +221,15 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
               keyboard={'default'}
               isReadonly={readonly}/>
             <GestureStyledButton
-              content={'Заблокировать клиента'}
+              content={'Отзывы'}
               top={30}
+              bottom={10}
+              isDisabled={false}
+              pressed={() => navigation.navigate('ClientReviews', {clientId: route.params.clientId})}
+              type={'reversed'}/>
+            <GestureStyledButton
+              content={'Заблокировать клиента'}
+              top={10}
               bottom={10}
               isDisabled={false}
               pressed={deleteClient}

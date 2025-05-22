@@ -25,7 +25,7 @@ namespace Payments.Application.Services
             InvalidCommandException.ThrowIfNull(payout);
             
             return new GetPayoutInfoResponse(
-                Guid.Parse(payout.Metadata.First(x => x.Key == "PayerId").Value),
+                Guid.Parse(payout.Metadata.First(x => x.Key == "payerId").Value),
                 (int)(payout.Amount.Value * 100));
         }
     }

@@ -1,5 +1,5 @@
 import {RefreshTokenHttpServiceDecorator} from '../http/RefreshTokenHttpServiceDecorator.ts';
-import {AdminUser} from '../../types/DomainTypes.ts';
+import {AdminUser, Review} from '../../types/DomainTypes.ts';
 
 export class AdminService {
   private readonly httpService: RefreshTokenHttpServiceDecorator;
@@ -86,5 +86,20 @@ export class AdminService {
 
   public async deleteClient(id: string) {
     return await this.httpService.requestWithContent(`admin/users/${id}`, 'DELETE', undefined);
+  }
+
+  public async getReviews(clientId: string) {
+    return await this.httpService.requestWithContent<Review[]>(`admin/reviews/${clientId}`, 'GET', undefined);
+  }
+
+  public async editReview(reviewId: string, grade: number, text: string) {
+    return await this.httpService.request(
+      'admin/reviews',
+      'PUT',
+      JSON.stringify({
+        reviewId,
+        grade,
+        text,
+      }));
   }
 }

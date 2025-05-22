@@ -199,7 +199,7 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
         showsVerticalScrollIndicator={false}
         scrollEnabled={!isToggled}>
         <View style={styles.titleView}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', paddingHorizontal: 10,}}>
             <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
           </View>
           <Text

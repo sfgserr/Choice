@@ -4,11 +4,11 @@ namespace Payments.Infrastructure.YooKassa.Events
 {
     public class PayoutSucceededEvent : IYooKassaEvent
     {
-        public PayoutSucceededEvent(string payoutId)
+        public PayoutSucceededEvent(string id)
         {
-            PayoutId = payoutId;
+            Id = id;
         }
 
-        public string PayoutId { get; }
+        public string Id { get; }
     }
 }

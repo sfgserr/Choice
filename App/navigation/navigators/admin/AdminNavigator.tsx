@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {State} from '../../../enums/AppEnums.ts';
 import {AdminStack} from './AdminStack.ts';
-import {CreateCategory, EditCategory, EditClient, EditCompany, Panel} from './Screens.tsx';
+import {ClientReviews, CreateCategory, EditCategory, EditClient, EditCompany, EditReview, Panel} from './Screens.tsx';
 
 export default function AdminNavigator({state}: {state: State}) {
   return (
@@ -13,6 +13,8 @@ export default function AdminNavigator({state}: {state: State}) {
           {CreateCategory()}
           {EditClient()}
           {EditCompany()}
+          {ClientReviews()}
+          {EditReview()}
         </AdminStack.Navigator>
       )}
     </>

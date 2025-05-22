@@ -9,7 +9,7 @@ export default function ReviewItem({review}: {review: Review}) {
       style={{
         padding: 10,
         justifyContent: 'center',
-        borderColor: 'F5ECE0',
+        borderColor: '#F5ECE0',
         borderBottomWidth: 1,
       }}>
       <View
@@ -33,10 +33,19 @@ export default function ReviewItem({review}: {review: Review}) {
               type={'material'}
               name={'star'}
               size={15}
-              color={i <= review.grade ? '#E4E839' : '#C8C8C8'}/>
+              color={i + 1 <= review.grade ? '#E4E839' : '#C8C8C8'}/>
           ))}
         </View>
       </View>
+      <Text
+        style={{
+          paddingTop: 10,
+          color: '#99A2AD',
+          fontSize: 14,
+          fontWeight: '400',
+        }}>
+        {review.text}
+      </Text>
     </View>
   );
 }

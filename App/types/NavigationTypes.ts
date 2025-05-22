@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {Category, OrderRequestRadius} from './DomainTypes.ts';
+import {Category, OrderRequestRadius, Review} from './DomainTypes.ts';
 import {OrderRequest} from './DomainTypes.ts';
 import {ImageBoxObject, MinioBlob} from "../components/ImageBox.tsx";
 
@@ -67,6 +67,8 @@ export type AdminStackProps = {
     category: Category;
   };
   CreateCategory: undefined;
+  ClientReviews: {clientId: string};
+  EditReview: {review: Review};
 };
 
 export type ClientTabProps = {
@@ -141,6 +143,10 @@ export type CreateCategoryScreenProps = NativeStackScreenProps<AdminStackProps, 
 export type EditClientScreenProps = NativeStackScreenProps<AdminStackProps, 'EditClient'>;
 
 export type EditCompanyScreenProps = NativeStackScreenProps<AdminStackProps, 'EditCompany'>;
+
+export type ClientReviewsScreenProps = NativeStackScreenProps<AdminStackProps, 'ClientReviews'>;
+
+export type EditReviewScreenProps = NativeStackScreenProps<AdminStackProps, 'EditReview'>;
 
 export type AboutScreenProps = {
   next: (description: string, photoUris: ImageBoxObject[], prepaymentAvailable: boolean) => Promise<void>

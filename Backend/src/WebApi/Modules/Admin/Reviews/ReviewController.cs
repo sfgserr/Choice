@@ -1,5 +1,6 @@
 using Administration.Application.Commands.EditReview;
 using Administration.Application.Contracts;
+using Administration.Application.Queries.GetAuthorReviews;
 using Identity.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,15 @@ namespace WebApi.Modules.Admin.Reviews
             await _module.ExecuteCommand(new EditReviewCommand(request.ReviewId, request.Text, request.Grade));
             
             return Ok();
+        }
+        
+        [HttpGet("{userId:guid}")]
+        [HasPermission(Permissions.GetAuthorReviews)]
+        public async Task<IActionResult> GetReviews(Guid userId)
+        {
+            var reviews = await _module.Query<GetAuthorReviewsQuery, IEnumerable<ReviewDto>>(new (userId));
+            
+            return Ok(reviews);
         }
     }
 }
