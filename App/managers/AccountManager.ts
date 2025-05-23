@@ -21,7 +21,7 @@ export class AccountManager {
     const token = jwtDecode(accessToken);
 
     if (token.exp != undefined) {
-      if (Date.now()/1000 > token.exp) {
+      if (Date.now() / 1000 > token.exp) {
         let response = await this.tokenService.refresh(refreshToken);
 
         if (response != null) {
