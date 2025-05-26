@@ -11,7 +11,7 @@ export class HubConnectionAdapter implements IConnection {
   private readonly tokenStorageService: TokenStorageService;
   private readonly authService: AuthService;
 
-  public constructor(accessToken: string, tokenService: TokenStorageService, authService: AuthService) {
+  public constructor(tokenService: TokenStorageService, authService: AuthService) {
     setupURLPolyfill();
 
     this.tokenStorageService = tokenService;

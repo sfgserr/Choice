@@ -7,13 +7,21 @@ import {TokenStorageService} from '../services/object/TokenStorageService.ts';
 
 export class ConnectionManager {
   private static connection: IConnection | null = null;
+  private static authService: AuthService;
+  private static tokenStorageService: TokenStorageService;
+
 
   private constructor() {
   }
 
-  public static async init(accessToken: string, authService: AuthService, tokenService: TokenStorageService): Promise<void> {
+  public static setUp(authService: AuthService, tokenStorageService: TokenStorageService): void {
+    this.authService = authService;
+    this.tokenStorageService = tokenStorageService;
+  }
+
+  public static async init(): Promise<void> {
     if (this.connection == null) {
-      this.connection = new HubConnectionAdapter(accessToken, tokenService, authService);
+      this.connection = new HubConnectionAdapter(this.tokenStorageService, this.authService);
 
       this.connection.on('messageSent', (message: Message) => {
         DeviceEventEmitter.emit('messageSent', message);

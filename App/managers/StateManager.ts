@@ -11,7 +11,6 @@ export class StateManager {
   private readonly tokenStorageService: TokenStorageService;
   private readonly accountManager: AccountManager;
   private readonly tokenService: TokenService;
-  private readonly authService: AuthService;
   private readonly userTypeToStateMap: {[id: UserType]: State} = {
     [UserType.User]: State.User,
     [UserType.Client]: State.Client,
@@ -23,12 +22,10 @@ export class StateManager {
     tokenStorageService: TokenStorageService,
     accountManager: AccountManager,
     tokenService: TokenService,
-    authService: AuthService
   ) {
     this.tokenStorageService = tokenStorageService;
     this.accountManager = accountManager;
     this.tokenService = tokenService;
-    this.authService = authService;
   }
 
   async getState(): Promise<State> {
@@ -48,7 +45,7 @@ export class StateManager {
       );
 
       if (user.userType == UserType.Client || user.userType == UserType.Company)
-        await ConnectionManager.init(result.tokens[0], this.authService, this.tokenStorageService);
+        await ConnectionManager.init();
 
       let state = this.userTypeToStateMap[user.userType];
 

@@ -20,6 +20,7 @@ import {IdentityService} from './domain/IdentityService.ts';
 import {AdminService} from './domain/AdminService.ts';
 import {PaymentService} from './domain/PaymentService';
 import {ReviewService} from './domain/ReviewService.ts';
+import {ConnectionManager} from "../managers/ConnectionManager.ts";
 
 type Object = {
   [name: string]: object,
@@ -58,7 +59,10 @@ export class ObjectGraph {
     const tokenService = new TokenService(authService);
     const tokenStorageService = new TokenStorageService();
     const accountManager = new AccountManager(tokenService);
-    const stateManager = new StateManager(tokenStorageService, accountManager, tokenService, authService);
+
+    ConnectionManager.setUp(authService, tokenStorageService);
+
+    const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
     const httpService = new RefreshTokenHttpServiceDecorator(stateManager, setState);
     const userService = new UserService(httpService, tokenService);
     const categoryService = new CategoryService(httpService);
