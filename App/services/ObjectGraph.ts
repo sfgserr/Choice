@@ -58,7 +58,7 @@ export class ObjectGraph {
     const tokenService = new TokenService(authService);
     const tokenStorageService = new TokenStorageService();
     const accountManager = new AccountManager(tokenService);
-    const stateManager = new StateManager(tokenStorageService, accountManager, tokenService);
+    const stateManager = new StateManager(tokenStorageService, accountManager, tokenService, authService);
     const httpService = new RefreshTokenHttpServiceDecorator(stateManager, setState);
     const userService = new UserService(httpService, tokenService);
     const categoryService = new CategoryService(httpService);
