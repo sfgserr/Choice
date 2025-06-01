@@ -23,6 +23,7 @@ import {UserService} from '../services/domain/UserService.ts';
 import {DateUtils} from '../utils/DateUtils.ts';
 import TextButton from '../components/buttons/TextButton.tsx';
 import ReviewsBottomSheet from '../components/bottomSheets/ReviewsBottomSheet.tsx';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const d = Dimensions.get('screen');
 
@@ -320,74 +321,80 @@ export default function MapScreen({route, navigation}: MapScreenProps) {
 
   return (
     <GestureHandlerRootView>
-      <YaMap
-        ref={map}
-        initialRegion={{
-          lat: 50,
-          lon: 50,
-          zoom: 8,
-          tilt: 100,
-        }}
-        style={styles.map}>
-        {companies.length > 0 && (
-          <>
-            {companies.map((company, index) => {
-              return (
-                <>
-                  <CustomMarker
-                    company={company}
-                    key={index}
-                    onPress={onMarkerPressed}/>
-                </>
-              )
-            })}
-          </>
-        )}
-      </YaMap>
-      <View style={styles.topTab}>
-        <View style={styles.navigateBackButtonContainer}>
-          <NavigateBackButton navigation={navigation} />
-        </View>
-        <Text style={styles.categoryTitleContainer}>{route.params.categories[route.params.categoryId].title}</Text>
-      </View>
-      {lastResponse != '' && (
-        <OrderResponseCard
-          responseId={lastResponse}
-          company={responsedCompany}
-          hide={() => setLastResponse('')}
-          details={onMarkerPressed}/>
-      )}
-      {orderRequest == null ? (
-        <>
-          <View style={styles.bottomTab}>
-            <View style={styles.buttonContainer}>
-              <GestureStyledButton
-                content={'Создать заказ'}
-                top={10}
-                bottom={0}
-                isDisabled={false}
-                pressed={onCreateOrderRequestButtonPressed}/>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={{
+          flex: 1,
+        }}>
+          <YaMap
+            ref={map}
+            initialRegion={{
+              lat: 50,
+              lon: 50,
+              zoom: 8,
+              tilt: 100,
+            }}
+            style={styles.map}>
+            {companies.length > 0 && (
+              <>
+                {companies.map((company, index) => {
+                  return (
+                    <>
+                      <CustomMarker
+                        company={company}
+                        key={index}
+                        onPress={onMarkerPressed}/>
+                    </>
+                  )
+                })}
+              </>
+            )}
+          </YaMap>
+          <View style={styles.topTab}>
+            <View style={styles.navigateBackButtonContainer}>
+              <NavigateBackButton navigation={navigation} />
             </View>
+            <Text style={styles.categoryTitleContainer}>{route.params.categories[route.params.categoryId].title}</Text>
           </View>
-        </>) : (
-          <>
-            <OrderRequestModal
-              isToggled={isToggled}
-              orderRequest={orderRequest}
-              navigation={navigation}/>
-            <LongRunningOperationIndicator isRefreshing={false}/>
-          </>)}
-      <CompanyPageBottomSheet
-        companyId={companyId}
-        responseId={responseId}
-        close={onClose}
-        ref={ref}
-        navigateToChat={() => navigation.navigate('Chat', {id: companyId, onGoBack})}
-        openReviews={openReviews}/>
-      <ReviewsBottomSheet
-        close={closeReviews}
-        company={companyReviews}
-        ref={reviewsRef}/>
+          {lastResponse != '' && (
+            <OrderResponseCard
+              responseId={lastResponse}
+              company={responsedCompany}
+              hide={() => setLastResponse('')}
+              details={onMarkerPressed}/>
+          )}
+          {orderRequest == null ? (
+            <>
+              <View style={styles.bottomTab}>
+                <View style={styles.buttonContainer}>
+                  <GestureStyledButton
+                    content={'Создать заказ'}
+                    top={10}
+                    bottom={0}
+                    isDisabled={false}
+                    pressed={onCreateOrderRequestButtonPressed}/>
+                </View>
+              </View>
+            </>) : (
+            <>
+              <OrderRequestModal
+                isToggled={isToggled}
+                orderRequest={orderRequest}
+                navigation={navigation}/>
+              <LongRunningOperationIndicator isRefreshing={false}/>
+            </>)}
+        </View>
+        <CompanyPageBottomSheet
+          companyId={companyId}
+          responseId={responseId}
+          close={onClose}
+          ref={ref}
+          navigateToChat={() => navigation.navigate('Chat', {id: companyId, onGoBack})}
+          openReviews={openReviews}/>
+        <ReviewsBottomSheet
+          close={closeReviews}
+          company={companyReviews}
+          ref={reviewsRef}/>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }
@@ -398,7 +405,7 @@ const styles = StyleSheet.create({
   },
   topTab: {
     position: 'absolute',
-    height: d.height * 0.086,
+    paddingVertical: 20,
     width: '100%',
     backgroundColor: 'white',
     top: 0,
@@ -418,7 +425,6 @@ const styles = StyleSheet.create({
   },
   bottomTab: {
     position: 'absolute',
-    height: d.height * 0.086,
     width: '100%',
     backgroundColor: 'white',
     bottom: 0,

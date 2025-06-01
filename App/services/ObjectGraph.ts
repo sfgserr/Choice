@@ -20,7 +20,7 @@ import {IdentityService} from './domain/IdentityService.ts';
 import {AdminService} from './domain/AdminService.ts';
 import {PaymentService} from './domain/PaymentService';
 import {ReviewService} from './domain/ReviewService.ts';
-import {ConnectionManager} from "../managers/ConnectionManager.ts";
+import {ConnectionManager} from '../managers/ConnectionManager.ts';
 
 type Object = {
   [name: string]: object,

@@ -12,6 +12,8 @@ import {useDependency} from '../services/Hooks.ts';
 import {FileValidationService} from '../services/object/FileValidationService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import {GestureHandlerRootView} from "react-native-gesture-handler";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function CreateCategoryScreen({route, navigation}: CreateCategoryScreenProps) {
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
@@ -57,64 +59,68 @@ export default function CreateCategoryScreen({route, navigation}: CreateCategory
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.controlsContainer}>
-        <View style={{alignSelf: 'center'}}>
-          <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+    <GestureHandlerRootView>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.controlsContainer}>
+            <View style={{alignSelf: 'center'}}>
+              <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+            </View>
+          </View>
+          <Text style={styles.title}>Категория</Text>
+          <View style={styles.iconContainer}>
+            <Image
+              source={{uri: uri.getUri()}}
+              style={styles.icon}/>
+          </View>
+          <View style={styles.textButtonContainer}>
+            <TextButton
+              text={'Изменить иконку'}
+              onPress={changeIconUri}/>
+          </View>
+          <View style={styles.infoContainer}>
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'contain',
+                alignSelf: 'center',
+              }}
+              source={require('../assets/images/warn.png')}/>
+            <Text style={styles.info}>
+              {'Иконки SVG/PNG на прозрачном фоне.\nЦвет заливки - белый. Стиль - Outline'}
+            </Text>
+          </View>
+          <View style={{paddingHorizontal: 15}}>
+            <TextInputTitle s={'Название'} top={40} bottom={5}/>
+            <BorderedTextInput
+              value={title}
+              onChanged={setTitle}
+              placeholder={'Введите название'}
+              isError={false}
+              isBig={false}
+              keyboard={'default'}
+              isReadonly={false}/>
+          </View>
+          <KeyboardAvoidingView
+            style={{
+              position: 'absolute',
+              bottom: 20,
+              width: '90%',
+              alignSelf: 'center',
+            }}
+            behavior={'height'}>
+            <StyledButton
+              content={'Создать категорию'}
+              top={0}
+              bottom={0}
+              isDisabled={isDisable()}
+              pressed={createCategory}
+              type={'default'}/>
+          </KeyboardAvoidingView>
         </View>
-      </View>
-      <Text style={styles.title}>Категория</Text>
-      <View style={styles.iconContainer}>
-        <Image
-          source={{uri: uri.getUri()}}
-          style={styles.icon}/>
-      </View>
-      <View style={styles.textButtonContainer}>
-        <TextButton
-          text={'Изменить иконку'}
-          onPress={changeIconUri}/>
-      </View>
-      <View style={styles.infoContainer}>
-        <Image
-          style={{
-            width: 20,
-            height: 20,
-            resizeMode: 'contain',
-            alignSelf: 'center',
-          }}
-          source={require('../assets/images/warn.png')}/>
-        <Text style={styles.info}>
-          {'Иконки SVG/PNG на прозрачном фоне.\nЦвет заливки - белый. Стиль - Outline'}
-        </Text>
-      </View>
-      <View style={{paddingHorizontal: 15}}>
-        <TextInputTitle s={'Название'} top={40} bottom={5}/>
-        <BorderedTextInput
-          value={title}
-          onChanged={setTitle}
-          placeholder={'Введите название'}
-          isError={false}
-          isBig={false}
-          keyboard={'default'}
-          isReadonly={false}/>
-      </View>
-      <KeyboardAvoidingView
-        style={{
-          position: 'absolute',
-          bottom: 20,
-          width: '90%',
-          alignSelf: 'center',
-        }}
-        behavior={'height'}>
-        <StyledButton
-          content={'Создать категорию'}
-          top={0}
-          bottom={0}
-          isDisabled={isDisable()}
-          pressed={createCategory}
-          type={'default'}/>
-      </KeyboardAvoidingView>
-    </View>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 

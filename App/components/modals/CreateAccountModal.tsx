@@ -15,7 +15,7 @@ export default function CreateAccountModal({isToggled, handlePress, navigation}:
   const duration = 1800;
 
   const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(isToggled ? (-50) : (d.height*0.4)) }],
+    transform: [{ translateY: withSpring(isToggled ? (-50) : (d.height * 0.4)) }],
   }));
 
   const animatedStyle = useAnimatedStyle(() => {

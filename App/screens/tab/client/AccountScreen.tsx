@@ -1,5 +1,14 @@
 import * as React from 'react';
-import {ActivityIndicator, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -17,6 +26,8 @@ import {PaymentService} from '../../../services/domain/PaymentService.tsx';
 import {Pressable} from 'react-native-gesture-handler';
 import {Icon} from '@rneui/base';
 import PayModal from '../../../components/modals/PayModal.tsx';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
+import PhoneBox from "../../../components/inputs/PhoneBox.tsx";
 
 type Form = {
   id: string
@@ -45,6 +56,8 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
   const [isPayModalToggled, setIsPayModalToggled] = React.useState(false);
 
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+
+  const insets = useSafeAreaInsets();
 
   const toggle = React.useCallback(() => setIsChangeIconUriModalToggled(prev => !prev), []);
 
@@ -117,127 +130,129 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
   }, [isFocused]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       {form == null || balance == '' ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'} />
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}>
-          <Text style={styles.title}>Аккаунт</Text>
-          <View style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={{
-                uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
-              }}
-            />
-          </View>
-          <View style={styles.textButtonContainer}>
-            <TextButton text={'Изменить фото'} onPress={toggle} />
-          </View>
-          <View style={{paddingTop: 15, paddingHorizontal: 15}}>
-            <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
-              <Pressable onPress={() => setIsPayModalToggled(prev => !prev)}>
-                <Icon
-                  type={'material'}
-                  name={'add'}
-                  color={'#2688EB'}/>
-              </Pressable>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={'height'}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}>
+            <Text style={styles.title}>Аккаунт</Text>
+            <View style={styles.iconContainer}>
+              <Image
+                style={styles.icon}
+                source={{
+                  uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
+                }}
+              />
             </View>
-          </View>
-          <View style={{paddingHorizontal: 15}}>
-            <TextInputTitle s={'Имя'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.name}
-              onChanged={(text: string) => set(prev => ({...prev, name: text}))}
-              placeholder={'Введите имя'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-            />
-            <TextInputTitle s={'Фамилия'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.surname}
-              onChanged={(text: string) =>
-                set(prev => ({...prev, surname: text}))
-              }
-              placeholder={'Введите фамилию'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-            />
-            <TextInputTitle s={'E-mail'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.email}
-              onChanged={(text: string) =>
-                set(prev => ({...prev, email: text}))
-              }
-              placeholder={'Введите e-mail'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-            />
-            <TextInputTitle s={'Номер телефона'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.phoneNumber}
-              onChanged={(text: string) =>
-                set(prev => ({...prev, phoneNumber: text}))
-              }
-              placeholder={'Введите номер телефона'}
-              isError={false}
-              isBig={false}
-              keyboard={'phone-pad'}
-            />
-            <TextInputTitle s={'Город'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.city}
-              onChanged={(text: string) => set(prev => ({...prev, city: text}))}
-              placeholder={'Город'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-            />
-            <TextInputTitle s={'Улица'} top={20} bottom={5} />
-            <GestureBorderedTextInput
-              value={form?.street}
-              onChanged={(text: string) =>
-                set(prev => ({...prev, street: text}))
-              }
-              placeholder={'Улица'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-            />
-            <GestureStyledButton
-              content={'Изменить пароль'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={() => navigation.navigate('ChangePassword')}
-              type={'reversed'}
-            />
-            <GestureStyledButton
-              content={'Выйти из акканта'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={signOut}
-              type={'warn'}
-            />
-            {isChanged && (
+            <View style={styles.textButtonContainer}>
+              <TextButton text={'Изменить фото'} onPress={toggle} />
+            </View>
+            <View style={{paddingTop: 15, paddingHorizontal: 15}}>
+              <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
+                <Pressable onPress={() => setIsPayModalToggled(prev => !prev)}>
+                  <Icon
+                    type={'material'}
+                    name={'add'}
+                    color={'#2688EB'}/>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{paddingHorizontal: 15}}>
+              <TextInputTitle s={'Имя'} top={20} bottom={5} />
+              <GestureBorderedTextInput
+                value={form?.name}
+                onChanged={(text: string) => set(prev => ({...prev, name: text}))}
+                placeholder={'Введите имя'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+              />
+              <TextInputTitle s={'Фамилия'} top={20} bottom={5} />
+              <GestureBorderedTextInput
+                value={form?.surname}
+                onChanged={(text: string) =>
+                  set(prev => ({...prev, surname: text}))
+                }
+                placeholder={'Введите фамилию'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+              />
+              <TextInputTitle s={'E-mail'} top={20} bottom={5} />
+              <GestureBorderedTextInput
+                value={form?.email}
+                onChanged={(text: string) =>
+                  set(prev => ({...prev, email: text}))
+                }
+                placeholder={'Введите e-mail'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+              />
+              <TextInputTitle s={'Номер телефона'} top={20} bottom={5} />
+              <PhoneBox
+                value={form?.phoneNumber}
+                onChanged={(text: string) =>
+                  set(prev => ({...prev, phoneNumber: text}))
+                }
+                isError={false}
+                isReadonly={false}
+              />
+              <TextInputTitle s={'Город'} top={20} bottom={5} />
+              <GestureBorderedTextInput
+                value={form?.city}
+                onChanged={(text: string) => set(prev => ({...prev, city: text}))}
+                placeholder={'Город'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+              />
+              <TextInputTitle s={'Улица'} top={20} bottom={5} />
+              <GestureBorderedTextInput
+                value={form?.street}
+                onChanged={(text: string) =>
+                  set(prev => ({...prev, street: text}))
+                }
+                placeholder={'Улица'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+              />
               <GestureStyledButton
-                content={'Сохранить изменения'}
+                content={'Изменить пароль'}
                 top={20}
                 bottom={0}
-                isDisabled={isDisabled()}
-                pressed={saveChanges}
+                isDisabled={false}
+                pressed={() => navigation.navigate('ChangePassword')}
+                type={'reversed'}
               />
-            )}
-          </View>
-        </ScrollView>
+              <GestureStyledButton
+                content={'Выйти из аккаунта'}
+                top={20}
+                bottom={10}
+                isDisabled={false}
+                pressed={signOut}
+                type={'warn'}
+              />
+              {isChanged && (
+                <GestureStyledButton
+                  content={'Сохранить изменения'}
+                  top={20}
+                  bottom={0}
+                  isDisabled={isDisabled()}
+                  pressed={saveChanges}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
       <ChangeIconUriModal
         isToggled={isChangeIconUriModalToggled}
@@ -266,11 +281,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 22,
     alignSelf: 'center',
-    paddingTop: 30,
-    color: 'black'
+    color: 'black',
+    paddingTop: 20,
   },
   iconContainer: {
     alignSelf: 'center',

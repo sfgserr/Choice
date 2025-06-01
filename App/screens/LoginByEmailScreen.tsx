@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  SafeAreaView,
+  KeyboardAvoidingView,
   ScrollView, StyleSheet, Text,
 } from 'react-native';
 import TextInputTitle from '../components/TextInputTitle.tsx';
@@ -10,6 +10,7 @@ import {useDependency} from '../services/Hooks.ts';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
 import GesturePasswordBox from '../components/inputs/GesturePasswordBox.tsx';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
   const { signIn } = React.useContext(AuthContext);
@@ -34,8 +35,10 @@ export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <SafeAreaView>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={'height'}>
+      <ScrollView style={styles.container}>
         <TextInputTitle
           s={'E-mail'}
           top={0}
@@ -76,8 +79,8 @@ export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
             else
               setIsError(true);
           }}/>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 

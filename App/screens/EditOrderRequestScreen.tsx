@@ -30,6 +30,7 @@ import {Pressable} from 'react-native-gesture-handler';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import Voice from '@react-native-voice/voice';
 import {useSharedValue} from "react-native-reanimated";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const d = Dimensions.get('screen');
 
@@ -194,248 +195,250 @@ export default function EditOrderRequestScreen({route, navigation}: EditOrderReq
 
   return (
     <GestureHandlerRootView>
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={!isToggled}>
-        <View style={styles.titleView}>
-          <View style={{flexDirection: 'row', paddingHorizontal: 10,}}>
-            <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
+      <SafeAreaView
+        style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={!isToggled}>
+          <View style={styles.titleView}>
+            <View style={{flexDirection: 'row', paddingHorizontal: 10,}}>
+              <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
+            </View>
+            <Text
+              style={
+                styles.title
+              }>{`Заказ №${route.params.orderRequestId.substring(0, 8)}`}</Text>
           </View>
-          <Text
-            style={
-              styles.title
-            }>{`Заказ №${route.params.orderRequestId.substring(0, 8)}`}</Text>
-        </View>
-        <View style={styles.contentContainer}>
-          <TextInputTitle s={'Создан'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-              {alignItems: 'center'},
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={DateUtils.formatDate(creationDate)}
-              readOnly
-            />
-            <View style={styles.statusBoxContainer}>
-              <View
-                style={{
-                  ...styles.statusBox,
-                  backgroundColor:
-                    status == 'Active'
-                      ? '#6DC876'
+          <View style={styles.contentContainer}>
+            <TextInputTitle s={'Создан'} top={20} bottom={5} />
+            <View
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputHeight,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+                {alignItems: 'center'},
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={DateUtils.formatDate(creationDate)}
+                readOnly
+              />
+              <View style={styles.statusBoxContainer}>
+                <View
+                  style={{
+                    ...styles.statusBox,
+                    backgroundColor:
+                      status == 'Active'
+                        ? '#6DC876'
+                        : status == 'Finished'
+                          ? '#2D81E0'
+                          : '#AEAEB2',
+                  }}>
+                  <Text style={styles.status}>
+                    {status == 'Active'
+                      ? 'Активен'
                       : status == 'Finished'
-                      ? '#2D81E0'
-                      : '#AEAEB2',
-                }}>
-                <Text style={styles.status}>
-                  {status == 'Active'
-                    ? 'Активен'
-                    : status == 'Finished'
-                    ? 'Завершен'
-                    : 'Отменен'}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={
-                categories.length == 0
-                  ? 'Услуга'
-                  : categories[categoryIndex].title
-              }
-              readOnly
-            />
-            {status == 'Active' && (
-              <Pressable
-                style={styles.chevronDown}
-                onPress={() => ref.current?.expand()}>
-                <Image
-                  style={styles.image}
-                  source={require('../assets/images/chevron-down.png')}
-                />
-              </Pressable>
-            )}
-          </View>
-          <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputBigHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-              {alignItems: 'baseline'},
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={description}
-              placeholder={
-                'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
-              }
-              onChangeText={val => {
-                setDescription(val);
-                setIsChanged(true);
-              }}
-              readOnly={status != 'Active'}
-              multiline
-            />
-          </View>
-          {status == 'Active' && (
-            <View style={{paddingTop: 10}}>
-              <Pressable
-                style={[
-                  Styles.borderedTextInputView,
-                  Styles.borderedTextInputViewColor,
-                  Styles.borderedTextInputHeight,
-                  {justifyContent: 'center', paddingVertical: 10},
-                ]}
-                onPress={record}>
-                <View style={styles.voiceButton}>
-                  {recording ? (
-                    <View
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 5,
-                        backgroundColor: '#2688EB',
-                      }}/>
-                  ) : (
-                    <>
-                      <Image
-                        source={require('../assets/images/micro.png')}
-                        style={styles.voiceButtonImage}
-                      />
-                      <Text style={styles.voiceButtonContent}>Записать голосом</Text>
-                    </>)}
+                        ? 'Завершен'
+                        : 'Отменен'}
+                  </Text>
                 </View>
-              </Pressable>
+              </View>
             </View>
-          )}
-          <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
-          {data.map((item, index) => {
-            return (
-              <View key={index} style={styles.checkBoxContainer}>
-                <Checkbox
-                  checked={item.checked}
-                  pressed={item.pressed}
-                  readonly={status != 'Active'}/>
-                {(status == 'Active' || item.checked) && <Text style={styles.checkBoxTitle}>{item.title}</Text>}
-              </View>
-            );
-          })}
-          <TextInputTitle
-            s={'Приложите файлы или фото к заказу'}
-            top={20}
-            bottom={5}
-          />
-          <View style={styles.horizontalSpread}>
-            {(status == 'Active' || photos[0].getObjectName() != '') && (
-              <ImageBox
-                object={photos[0]}
-                setPhoto={setPhotos}
-                index={0}
-                readonly={status != 'Active'}/>
-            )}
-            {(status == 'Active' || photos[1].getObjectName() != '') && (
-              <ImageBox
-                object={photos[1]}
-                setPhoto={setPhotos}
-                index={0}
-                readonly={status != 'Active'}/>
-            )}
-            {(status == 'Active' || photos[2].getObjectName() != '') && (
-              <ImageBox
-                object={photos[2]}
-                setPhoto={setPhotos}
-                index={0}
-                readonly={status != 'Active'}/>
-            )}
-          </View>
-          {status == 'Active' && (
-            <>
-              <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
-                <Text style={Styles.title}>Радиус поиска</Text>
-                <Text style={styles.radius}>{`${radius} км`}</Text>
-              </View>
-              <View style={{paddingTop: 10}}>
-                <Slider
-                  minimumValue={min}
-                  maximumValue={max}
-                  progress={progress}
-                  onSlidingComplete={n => setRadius(Math.round(n))}
-                  steps={1}
-                  renderBubble={() => (<></>)}
-                  renderThumb={() => (
-                    <View
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 10,
-                        backgroundColor: 'white',
-                        shadowColor: 'black',
-                        elevation: 2,
-                      }}/>
-                  )}
-                  theme={{
-                    minimumTrackTintColor: '#007AFF',
-                    maximumTrackTintColor: '#e4e4e6',
-                  }}/>
-              </View>
-              <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
-                <Text style={Styles.title}>от 5 км</Text>
-                <Text style={Styles.title}>до 25 км</Text>
-              </View>
-            </>
-          )}
-        </View>
-        {isChanged ? (
-          <>
-            <View style={styles.buttonContainer}>
-              <GestureStyledButton
-                content={'Сохранить изменения'}
-                top={0}
-                bottom={0}
-                isDisabled={
-                  description == '' ||
-                  (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
-                  photos.every(p => p == '')
+            <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
+            <View
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputHeight,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={
+                  categories.length == 0
+                    ? 'Услуга'
+                    : categories[categoryIndex].title
                 }
-                pressed={editOrderRequest}
+                readOnly
+              />
+              {status == 'Active' && (
+                <Pressable
+                  style={styles.chevronDown}
+                  onPress={() => ref.current?.expand()}>
+                  <Image
+                    style={styles.image}
+                    source={require('../assets/images/chevron-down.png')}
+                  />
+                </Pressable>
+              )}
+            </View>
+            <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
+            <View
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputBigHeight,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+                {alignItems: 'baseline'},
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={description}
+                placeholder={
+                  'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
+                }
+                onChangeText={val => {
+                  setDescription(val);
+                  setIsChanged(true);
+                }}
+                readOnly={status != 'Active'}
+                multiline
               />
             </View>
-          </>
-        ) : (
-          <></>
-        )}
-        <CategoriesBottomSheet
-          options={{
-            categories,
-            categoryIndex,
-            onIndexChange: (val, index) => {
-              if (val) {
-                setCategoryIndex(index);
-                setIsChanged(true);
-              }
-            },
-          }}
-          ref={ref}
-          close={() => ref.current?.close()}
-        />
-      </ScrollView>
+            {status == 'Active' && (
+              <View style={{paddingTop: 10}}>
+                <Pressable
+                  style={[
+                    Styles.borderedTextInputView,
+                    Styles.borderedTextInputViewColor,
+                    Styles.borderedTextInputHeight,
+                    {justifyContent: 'center', paddingVertical: 10},
+                  ]}
+                  onPress={record}>
+                  <View style={styles.voiceButton}>
+                    {recording ? (
+                      <View
+                        style={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: 5,
+                          backgroundColor: '#2688EB',
+                        }}/>
+                    ) : (
+                      <>
+                        <Image
+                          source={require('../assets/images/micro.png')}
+                          style={styles.voiceButtonImage}
+                        />
+                        <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                      </>)}
+                  </View>
+                </Pressable>
+              </View>
+            )}
+            <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
+            {data.map((item, index) => {
+              return (
+                <View key={index} style={styles.checkBoxContainer}>
+                  <Checkbox
+                    checked={item.checked}
+                    pressed={item.pressed}
+                    readonly={status != 'Active'}/>
+                  {(status == 'Active' || item.checked) && <Text style={styles.checkBoxTitle}>{item.title}</Text>}
+                </View>
+              );
+            })}
+            <TextInputTitle
+              s={'Приложите файлы или фото к заказу'}
+              top={20}
+              bottom={5}
+            />
+            <View style={styles.horizontalSpread}>
+              {(status == 'Active' || photos[0].getObjectName() != '') && (
+                <ImageBox
+                  object={photos[0]}
+                  setPhoto={setPhotos}
+                  index={0}
+                  readonly={status != 'Active'}/>
+              )}
+              {(status == 'Active' || photos[1].getObjectName() != '') && (
+                <ImageBox
+                  object={photos[1]}
+                  setPhoto={setPhotos}
+                  index={0}
+                  readonly={status != 'Active'}/>
+              )}
+              {(status == 'Active' || photos[2].getObjectName() != '') && (
+                <ImageBox
+                  object={photos[2]}
+                  setPhoto={setPhotos}
+                  index={0}
+                  readonly={status != 'Active'}/>
+              )}
+            </View>
+            {status == 'Active' && (
+              <>
+                <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
+                  <Text style={Styles.title}>Радиус поиска</Text>
+                  <Text style={styles.radius}>{`${radius} км`}</Text>
+                </View>
+                <View style={{paddingTop: 10}}>
+                  <Slider
+                    minimumValue={min}
+                    maximumValue={max}
+                    progress={progress}
+                    onSlidingComplete={n => setRadius(Math.round(n))}
+                    steps={1}
+                    renderBubble={() => (<></>)}
+                    renderThumb={() => (
+                      <View
+                        style={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: 10,
+                          backgroundColor: 'white',
+                          shadowColor: 'black',
+                          elevation: 2,
+                        }}/>
+                    )}
+                    theme={{
+                      minimumTrackTintColor: '#007AFF',
+                      maximumTrackTintColor: '#e4e4e6',
+                    }}/>
+                </View>
+                <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
+                  <Text style={Styles.title}>от 5 км</Text>
+                  <Text style={Styles.title}>до 25 км</Text>
+                </View>
+              </>
+            )}
+          </View>
+          {isChanged ? (
+            <>
+              <View style={styles.buttonContainer}>
+                <GestureStyledButton
+                  content={'Сохранить изменения'}
+                  top={0}
+                  bottom={0}
+                  isDisabled={
+                    description == '' ||
+                    (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate) ||
+                    photos.every(p => p == '')
+                  }
+                  pressed={editOrderRequest}
+                />
+              </View>
+            </>
+          ) : (
+            <></>
+          )}
+          <CategoriesBottomSheet
+            options={{
+              categories,
+              categoryIndex,
+              onIndexChange: (val, index) => {
+                if (val) {
+                  setCategoryIndex(index);
+                  setIsChanged(true);
+                }
+              },
+            }}
+            ref={ref}
+            close={() => ref.current?.close()}
+          />
+        </ScrollView>
+      </SafeAreaView>
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={toggleSuccessfulModal}

@@ -11,6 +11,7 @@ import {Review} from '../types/DomainTypes.ts';
 import UnsuccessfulRequestModal from '../components/modals/UnsuccessfulRequestModal.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {AdminService} from '../services/domain/AdminService.ts';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const d = Dimensions.get('screen');
 
@@ -52,87 +53,89 @@ export default function EditReviewScreen({navigation, route}: EditReviewScreenPr
 
   return (
     <GestureHandlerRootView>
-      <View style={{flex: 1, backgroundColor: 'white'}}>
-        <View
-          style={{
-            alignItems: 'baseline',
-            justifyContent: 'center',
-            height: d.height * 0.086,
-          }}>
-          <View style={{flexDirection: 'row', paddingHorizontal: 15}}>
-            <NavigateBackButton navigation={navigation} onGoBack={undefined} />
-          </View>
-          <Text
-            style={{
-              fontSize: 21,
-              fontWeight: '600',
-              color: 'black',
-              alignSelf: 'center',
-              position: 'absolute',
-            }}>
-            Отзыв
-          </Text>
-        </View>
-        <View style={{paddingHorizontal: 15}}>
-          <Text
-            style={{
-              alignSelf: 'center',
-              color: 'black',
-              fontWeight: '600',
-              fontSize: 16,
-              paddingTop: 20,
-              paddingBottom: 10,
-            }}>
-            {gradeNames[review.grade]}
-          </Text>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
+              alignItems: 'baseline',
+              justifyContent: 'center',
+              height: d.height * 0.086,
             }}>
-            {grades.map((_, index) => (
-              <Pressable key={index} onPress={() => set(r => ({...r, grade: _}))}>
-                <Icon
-                  name={'star'}
-                  type={'material'}
-                  color={review.grade >= _ ? '#E4E839' : '#CFCFCF'}
-                  size={50}
-                />
-              </Pressable>
-            ))}
+            <View style={{flexDirection: 'row', paddingHorizontal: 15}}>
+              <NavigateBackButton navigation={navigation} onGoBack={undefined} />
+            </View>
+            <Text
+              style={{
+                fontSize: 21,
+                fontWeight: '600',
+                color: 'black',
+                alignSelf: 'center',
+                position: 'absolute',
+              }}>
+              Отзыв
+            </Text>
           </View>
-          <TextInputTitle s={'Отзыв'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputBigHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-              {alignItems: 'baseline'},
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={review.text}
-              placeholder={'Введите текст вашего отзыва'}
-              onChangeText={text => set(r => ({...r, text}))}
-              multiline
+          <View style={{paddingHorizontal: 15}}>
+            <Text
+              style={{
+                alignSelf: 'center',
+                color: 'black',
+                fontWeight: '600',
+                fontSize: 16,
+                paddingTop: 20,
+                paddingBottom: 10,
+              }}>
+              {gradeNames[review.grade]}
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+              }}>
+              {grades.map((_, index) => (
+                <Pressable key={index} onPress={() => set(r => ({...r, grade: _}))}>
+                  <Icon
+                    name={'star'}
+                    type={'material'}
+                    color={review.grade >= _ ? '#E4E839' : '#CFCFCF'}
+                    size={50}
+                  />
+                </Pressable>
+              ))}
+            </View>
+            <TextInputTitle s={'Отзыв'} top={20} bottom={5} />
+            <View
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputBigHeight,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+                {alignItems: 'baseline'},
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={review.text}
+                placeholder={'Введите текст вашего отзыва'}
+                onChangeText={text => set(r => ({...r, text}))}
+                multiline
+              />
+            </View>
+            <GestureStyledButton
+              content={'Сохранить'}
+              top={40}
+              bottom={5}
+              isDisabled={review.text == '' || !isChanged}
+              pressed={edit}
+              type={'default'}
             />
           </View>
-          <GestureStyledButton
-            content={'Сохранить'}
-            top={40}
-            bottom={5}
-            isDisabled={review.text == '' || !isChanged}
-            pressed={edit}
-            type={'default'}
-          />
         </View>
-      </View>
-      <UnsuccessfulRequestModal
-        isToggled={isToggled}
-        handlePress={() => setIsToggled(prev => !prev)}
-        errorMessage={errorMessage}/>
+        <UnsuccessfulRequestModal
+          isToggled={isToggled}
+          handlePress={() => setIsToggled(prev => !prev)}
+          errorMessage={errorMessage}/>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

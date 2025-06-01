@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, StatusBar, Dimensions, KeyboardAvoidingView} from 'react-native';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {ChangePasswordScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
@@ -8,6 +8,7 @@ import {StyledButton} from '../components/buttons/StyledButton.tsx';
 import {useDependency} from '../services/Hooks.ts';
 import {IdentityService} from '../services/domain/IdentityService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ChangePasswordScreen({navigation}: ChangePasswordScreenProps) {
   const identityService = useDependency<IdentityService>('IdentityService');
@@ -34,63 +35,69 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.navigateBackButtonContainer}>
-        <NavigateBackButton
-          navigation={navigation}
-          onGoBack={() => {}}/>
-      </View>
-      <Text style={styles.title}>Изменить пароль</Text>
-      <View style={styles.inputContainer}>
-        <TextInputTitle
-          s={'Старый пароль'}
-          top={30}
-          bottom={5}/>
-        <BorderedTextInput
-          value={oldPassword}
-          onChanged={setOldPassword}
-          placeholder={'Введите текущий пароль'}
-          isError={false}
-          isBig={false}
-          keyboard={'default'}/>
-        <TextInputTitle
-          s={'Новый пароль'}
-          top={30}
-          bottom={5}/>
-        <BorderedTextInput
-          value={newPassword}
-          onChanged={setNewPassword}
-          placeholder={'Введите новый пароль'}
-          isError={false}
-          isBig={false}
-          keyboard={'default'}/>
-        <TextInputTitle
-          s={'Повторите новый пароль'}
-          top={30}
-          bottom={5}/>
-        <BorderedTextInput
-          value={confirmPassword}
-          onChanged={setConfirmPassword}
-          placeholder={'Введите новый пароль'}
-          isError={false}
-          isBig={false}
-          keyboard={'default'}/>
-      </View>
-      <View style={styles.buttonContainer}>
-        <StyledButton
-          content={'Сохранить новый пароль'}
-          top={0}
-          bottom={0}
-          isDisabled={disable()}
-          pressed={changePassword}
-          type={'default'}/>
-      </View>
-      <SuccessfulRequestModal
-        isToggled={isToggled}
-        handlePress={handlePress}
-        title={'Пароль изменен'}
-        text={''}/>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={'height'}>
+        <View style={{flex: 1}}>
+          <View style={styles.navigateBackButtonContainer}>
+            <NavigateBackButton
+              navigation={navigation}
+              onGoBack={() => {}}/>
+          </View>
+          <Text style={styles.title}>Изменить пароль</Text>
+          <View style={styles.inputContainer}>
+            <TextInputTitle
+              s={'Старый пароль'}
+              top={30}
+              bottom={5}/>
+            <BorderedTextInput
+              value={oldPassword}
+              onChanged={setOldPassword}
+              placeholder={'Введите текущий пароль'}
+              isError={false}
+              isBig={false}
+              keyboard={'default'}/>
+            <TextInputTitle
+              s={'Новый пароль'}
+              top={30}
+              bottom={5}/>
+            <BorderedTextInput
+              value={newPassword}
+              onChanged={setNewPassword}
+              placeholder={'Введите новый пароль'}
+              isError={false}
+              isBig={false}
+              keyboard={'default'}/>
+            <TextInputTitle
+              s={'Повторите новый пароль'}
+              top={30}
+              bottom={5}/>
+            <BorderedTextInput
+              value={confirmPassword}
+              onChanged={setConfirmPassword}
+              placeholder={'Введите новый пароль'}
+              isError={false}
+              isBig={false}
+              keyboard={'default'}/>
+          </View>
+          <View style={styles.buttonContainer}>
+            <StyledButton
+              content={'Сохранить новый пароль'}
+              top={0}
+              bottom={0}
+              isDisabled={disable()}
+              pressed={changePassword}
+              type={'default'}/>
+          </View>
+          <SuccessfulRequestModal
+            isToggled={isToggled}
+            handlePress={handlePress}
+            title={'Пароль изменен'}
+            text={''}/>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -117,9 +124,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   buttonContainer: {
-    position: 'absolute',
     width: '90%',
-    bottom: 20,
     alignSelf: 'center',
+    flex: 1,
+    justifyContent: 'flex-end'
   },
 });

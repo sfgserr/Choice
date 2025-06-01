@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {KeyboardAvoidingView, View} from 'react-native';
 import {useCallback, useState} from 'react';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
@@ -21,42 +21,46 @@ export default function LoginByPhoneScreen() {
   }, [phone]);
 
   return (
-    <View style={{paddingHorizontal: 15}}>
-      {!isCodeSent ? (
-        <>
-          <TextInputTitle s={'Номер телефона'} top={20} bottom={5}/>
-          <PhoneBox
-            value={phone}
-            onChanged={setPhone}
-            isError={false}
-            isReadonly={false}/>
-          <StyledButton
-            content={'Отправить код'}
-            top={20}
-            bottom={0}
-            isDisabled={phone == ''}
-            pressed={sendCode}
-            type={'default'}/>
-        </>
-      ) : (
-        <>
-          <TextInputTitle s={'Код'} top={20} bottom={5}/>
-          <BorderedTextInput
-            value={code}
-            onChanged={setCode}
-            placeholder={'Введите код из смс'}
-            isError={false}
-            isBig={false}
-            keyboard={'phone-pad'}
-            isReadonly={false}/>
-          <StyledButton
-            content={'Отправить код'}
-            top={20}
-            bottom={0}
-            isDisabled={phone == ''}
-            pressed={() => {}}
-            type={'default'}/>
-        </>)}
-    </View>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={'height'}>
+      <View style={{paddingHorizontal: 15}}>
+        {!isCodeSent ? (
+          <>
+            <TextInputTitle s={'Номер телефона'} top={20} bottom={5}/>
+            <PhoneBox
+              value={phone}
+              onChanged={setPhone}
+              isError={false}
+              isReadonly={false}/>
+            <StyledButton
+              content={'Отправить код'}
+              top={20}
+              bottom={0}
+              isDisabled={phone == ''}
+              pressed={sendCode}
+              type={'default'}/>
+          </>
+        ) : (
+          <>
+            <TextInputTitle s={'Код'} top={20} bottom={5}/>
+            <BorderedTextInput
+              value={code}
+              onChanged={setCode}
+              placeholder={'Введите код из смс'}
+              isError={false}
+              isBig={false}
+              keyboard={'phone-pad'}
+              isReadonly={false}/>
+            <StyledButton
+              content={'Отправить код'}
+              top={20}
+              bottom={0}
+              isDisabled={phone == ''}
+              pressed={() => {}}
+              type={'default'}/>
+          </>)}
+      </View>
+    </KeyboardAvoidingView>
   );
 }

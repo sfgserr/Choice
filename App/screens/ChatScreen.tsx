@@ -3,7 +3,7 @@ import {
   DeviceEventEmitter,
   Dimensions,
   FlatList,
-  Image,
+  Image, KeyboardAvoidingView,
   StyleSheet,
   Text,
   View, ViewToken,
@@ -25,6 +25,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import ReviewBottomSheet from '../components/bottomSheets/ReviewBottomSheet.tsx';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {TextInput, Pressable} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const d = Dimensions.get('screen');
 
@@ -40,6 +41,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   const [userId, setUserId] = React.useState<string>('');
 
   const [count, setCount] = React.useState(0);
+
+  const [isFocused, setIsFocused] = React.useState(false);
 
   const [message, setMessage] = React.useState('');
 
@@ -260,74 +263,82 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   }, []);
 
   return (
-    <View style={styles.container}>
-      {chatUser != null && categories.length > 0 && (
-        <View style={styles.chatBackground}>
-          <View style={styles.chat}>
-            <FlatList
-              data={messages}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flex: messages.length > 0 ? undefined : 1}}
-              renderItem={(item) =>
-                <MessageItem
-                  item={item}
-                  userId={userId}
-                  navigation={navigation}
-                  onEnrollmentDateChanged={enrollmentDateChanged}
-                  open={open}/>
-              }
-              ListEmptyComponent={Stub}
-              viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}
-              onViewableItemsChanged={onViewAbleItemsChanged}/>
-          </View>
-          <View style={styles.userTab}>
-            <View style={[styles.horizontalSpread, {paddingBottom: 5}]}>
-              <View style={styles.alignToCenterContainer}>
-                <NavigateBackButton navigation={navigation} onGoBack={onGoBack}/>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={'height'}>
+        {chatUser != null && categories.length > 0 && (
+          <View style={{flex: 1}}>
+            <View style={styles.userTab}>
+              <View style={[styles.horizontalSpread, {paddingBottom: 5}]}>
+                <View style={styles.alignToCenterContainer}>
+                  <NavigateBackButton navigation={navigation} onGoBack={onGoBack}/>
+                </View>
+                <View>
+                  <Text style={styles.userName}>{chatUser.name}</Text>
+                  <Text style={styles.status}>{status ? 'В сети' : 'Не в сети'}</Text>
+                </View>
+                <Image
+                  style={styles.icon}
+                  source={{uri: `${process.env.MINIO_URL}/app-files/${chatUser.iconUri}`}} />
               </View>
-              <View>
-                <Text style={styles.userName}>{chatUser.name}</Text>
-                <Text style={styles.status}>{status ? 'В сети' : 'Не в сети'}</Text>
-              </View>
-              <Image
-                style={styles.icon}
-                source={{uri: `${process.env.MINIO_URL}/app-files/${chatUser.iconUri}`}} />
             </View>
-          </View>
-          <View style={styles.bottomTab}>
-            <View style={[styles.horizontalSpread, {paddingTop: 5}]}>
-              <Pressable
-                style={styles.alignToCenterContainer}
-                onPress={launchLibrary}>
-                <Icon
-                  type={'material'}
-                  name={'attachment'}
-                  color={'#858E99'}
-                  size={25}/>
-              </Pressable>
-              <View style={styles.textInputBorder}>
-                <TextInput
-                  value={message}
-                  onChangeText={setMessage}
-                  multiline={false}
-                  maxLength={50}
-                  style={styles.textInput}
-                  placeholder={'Сообщение'}/>
+            <View style={styles.chatBackground}>
+              <View style={styles.chat}>
+                <FlatList
+                  data={messages}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{flex: messages.length > 0 ? undefined : 1}}
+                  renderItem={(item) =>
+                    <MessageItem
+                      item={item}
+                      userId={userId}
+                      navigation={navigation}
+                      onEnrollmentDateChanged={enrollmentDateChanged}
+                      open={open}/>
+                  }
+                  ListEmptyComponent={Stub}
+                  viewabilityConfig={{viewAreaCoveragePercentThreshold: 50}}
+                  onViewableItemsChanged={onViewAbleItemsChanged}/>
               </View>
-              <Pressable
+            </View>
+            <View style={styles.bottomTab}>
+              <View style={[styles.horizontalSpread, {paddingTop: 5}]}>
+                <Pressable
+                  style={styles.alignToCenterContainer}
+                  onPress={launchLibrary}>
+                  <Icon
+                    type={'material'}
+                    name={'attachment'}
+                    color={'#858E99'}
+                    size={25}/>
+                </Pressable>
+                <View style={styles.textInputBorder}>
+                  <TextInput
+                    value={message}
+                    onChangeText={setMessage}
+                    multiline={false}
+                    maxLength={50}
+                    style={styles.textInput}
+                    placeholder={'Сообщение'}
+                    onFocus={() => setIsFocused(true)}
+                    onEndEditing={() => setIsFocused(false)}/>
+                </View>
+                <Pressable
                   style={styles.alignToCenterContainer}
                   onPress={sendMessage}
                   disabled={message.length == 0}>
-                <Icon
-                  type={'material'}
-                  name={'send'}
-                  color={'#858E99'}
-                  size={25}/>
-              </Pressable>
+                  <Icon
+                    type={'material'}
+                    name={'send'}
+                    color={'#858E99'}
+                    size={25}/>
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      )}
+        )}
+      </KeyboardAvoidingView>
       <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0 || isRefreshing} />
       <ReviewBottomSheet
         ref={ref}
@@ -340,7 +351,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
         handlePress={toggleModal}
         title={'Отзыва оставлен'}
         text={''}/>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -352,17 +363,14 @@ const styles = StyleSheet.create({
   chatBackground: {
     flex: 1,
     backgroundColor: '#F4F5FF',
-    paddingTop: d.height * 0.108,
-    paddingBottom: d.height * 0.108,
+    alignSelf: 'center',
   },
   userTab: {
-    height: d.height * 0.108,
     width: d.width,
-    position: 'absolute',
-    top: 0,
     justifyContent: 'flex-end',
     backgroundColor: 'white',
     paddingHorizontal: 10,
+    paddingTop: 10,
   },
   horizontalSpread: {
     flexDirection: 'row',
@@ -372,13 +380,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   bottomTab: {
-    height: d.height * 0.108,
     width: d.width,
-    position: 'absolute',
-    bottom: 0,
     justifyContent: 'flex-start',
     backgroundColor: 'white',
     paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   userName: {
     fontWeight: '600',

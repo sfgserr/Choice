@@ -2,13 +2,13 @@ import * as React from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Image, RefreshControl,
-  ScrollView,
+  Image, KeyboardAvoidingView, RefreshControl,
+  ScrollView, StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {Pressable, TextInput} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, Pressable, TextInput} from 'react-native-gesture-handler';
 import {AuthContext} from '../../../contexts/authorized/Context.tsx';
 import {AccountScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
@@ -35,6 +35,7 @@ import GestureBorderedTextInput from '../../../components/inputs/GestureBorderer
 import {PaymentService} from '../../../services/domain/PaymentService.ts';
 import PayModal from '../../../components/modals/PayModal.tsx';
 import PayoutModal from '../../../components/modals/PayoutModal.tsx';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 type Form = {
   id: string
@@ -83,6 +84,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
   const paymentService = useDependency<PaymentService>('PaymentService');
 
   const isFocused = useIsFocused();
+  const insets = useSafeAreaInsets();
 
   const { signOut } = useContext(AuthContext);
 
@@ -287,232 +289,236 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
   }, [isFocused]);
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={[styles.container, {paddingTop: insets.top}]}>
       {form == null ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'}/>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
-          <Text style={styles.title}>Аккаунт</Text>
-          <View style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={{
-                uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
-              }}/>
-          </View>
-          <View style={styles.textButtonContainer}>
-            <TextButton
-              text={'Изменить логотип'}
-              onPress={toggle}/>
-          </View>
-          <View style={{paddingTop: 15, paddingHorizontal: 15}}>
-            <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 15,
-              gap: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Pressable
-              style={{
-                paddingVertical: 5,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 10,
-                backgroundColor: '#2688EB',
-                flex: 1,
-              }}
-              onPress={() => setIsPayModalToggled(prev => !prev)}>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={'height'}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
+            <Text style={styles.title}>Аккаунт</Text>
+            <View style={styles.iconContainer}>
               <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-                source={require('../../../assets/images/imagebox.png')}
-                tintColor={'white'}/>
-              <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Пополнить</Text>
-            </Pressable>
-            <Pressable
-              style={{
-                paddingVertical: 5,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 10,
-                backgroundColor: '#2688EB',
-                flex: 1,
-              }}
-              onPress={() => setIsPayoutModalToggled(prev => !prev)}>
-              <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-                source={require('../../../assets/images/remove.png')}
-                tintColor={'white'}/>
-              <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Снять</Text>
-            </Pressable>
-          </View>
-          <View style={{paddingHorizontal: 15}}>
-            <View style={styles.splitterContainer}>
-              <View style={styles.splitter}/>
+                style={styles.icon}
+                source={{
+                  uri: `${process.env.MINIO_URL}/app-files/${form.iconUri}`,
+                }}/>
             </View>
-            <Text style={styles.sectionTitle}>Контактные данные</Text>
-            <Text style={styles.sectionDescription}>Укажите информацию, которая будет отображаться в карточке вашей компании, ее увидят тысячи наших пользователей</Text>
-            <TextInputTitle
-              s={'Название'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.name}
-              onChanged={(text: string) => set(prev => ({...prev, name: text}))}
-              placeholder={'Введите название'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'E-mail'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.email}
-              onChanged={(text: string) => set(prev => ({...prev, email: text}))}
-              placeholder={'Введите e-mail'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Номер телефона'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.phoneNumber}
-              onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
-              placeholder={'Введите номер телефона'}
-              isError={false}
-              isBig={false}
-              keyboard={'phone-pad'}/>
-            <TextInputTitle
-              s={'Город'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.city}
-              onChanged={(text: string) => set(prev => ({...prev, city: text}))}
-              placeholder={'Город'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Улица'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.street}
-              onChanged={(text: string) => set(prev => ({...prev, street: text}))}
-              placeholder={'Улица'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}/>
-            <View style={styles.splitterContainer}>
-              <View style={styles.splitter}/>
+            <View style={styles.textButtonContainer}>
+              <TextButton
+                text={'Изменить логотип'}
+                onPress={toggle}/>
             </View>
-            <Text style={styles.sectionTitle}>Социальные сети</Text>
-            <FlatList
-              data={socialMedias}
-              style={styles.flatList}
-              renderItem={item => (
-                <SocialMediaItem item={item.item}/>
-              )}/>
-            <Text style={styles.sectionTitle}>О работе</Text>
-            <TextInputTitle
-              s={'Описание'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.description}
-              onChanged={(text: string) => set(prev => ({...prev, description: text}))}
-              placeholder={'Введите описание компании'}
-              isError={false}
-              isBig={true}
-              keyboard={'default'}/>
-            <TextInputTitle
-              s={'Виды деятельности'}
-              top={20}
-              bottom={5}/>
-            <View style={styles.borderedInput}>
-              <TextInput
-                style={Styles.borderedTextInput}
-                value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
-                readOnly/>
-              <View style={styles.chevronDown}>
-                <Pressable
-                  onPress={() => ref.current?.expand()}>
-                  <Image
-                    style={styles.image}
-                    source={require('../../../assets/images/chevron-down.png')}
-                  />
-                </Pressable>
+            <View style={{paddingTop: 15, paddingHorizontal: 15}}>
+              <Text style={{fontSize: 15, fontWeight: '600', color: 'black'}}>Баланс:</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{fontSize: 30, fontWeight: '700', color: 'black'}}>{`${balance} \u20bd`}</Text>
               </View>
             </View>
-            <TextInputTitle
-              s={'Добавьте фотографии'}
-              top={20}
-              bottom={10}/>
-            <View style={styles.photoUrisContainer}>
-              {photoUris.map((u, i) => (
-                <ImageBox
-                  key={i}
-                  object={photoUris[i]}
-                  setPhoto={setPhoto}
-                  index={i}
-                  readonly={false}/>
-              ))}
+            <View
+              style={{
+                paddingHorizontal: 15,
+                gap: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Pressable
+                style={{
+                  paddingVertical: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  backgroundColor: '#2688EB',
+                  flex: 1,
+                }}
+                onPress={() => setIsPayModalToggled(prev => !prev)}>
+                <Image
+                  style={{
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require('../../../assets/images/imagebox.png')}
+                  tintColor={'white'}/>
+                <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Пополнить</Text>
+              </Pressable>
+              <Pressable
+                style={{
+                  paddingVertical: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  backgroundColor: '#2688EB',
+                  flex: 1,
+                }}
+                onPress={() => setIsPayoutModalToggled(prev => !prev)}>
+                <Image
+                  style={{
+                    width: 30,
+                    height: 30,
+                  }}
+                  source={require('../../../assets/images/remove.png')}
+                  tintColor={'white'}/>
+                <Text style={{fontSize: 15, color: 'white', fontWeight: '500'}}>Снять</Text>
+              </Pressable>
             </View>
-            <TextInputTitle
-              s={'Опции'}
-              top={20}
-              bottom={5}/>
-            <Option
-              selected={form.isPrepaymentAvailable}
-              title={'Работа с предоплатой'}
-              onPress={onOptionPressed}
-              top={0}/>
-            <Option
-              selected={!form.isPrepaymentAvailable}
-              title={'Работа без предоплатой'}
-              onPress={onOptionPressed}
-              top={10}/>
-            <GestureStyledButton
-              content={'Изменить пароль'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={() => navigation.navigate('ChangePassword')}
-              type={'reversed'}/>
-            <GestureStyledButton
-              content={'Выйти из акканта'}
-              top={20}
-              bottom={0}
-              isDisabled={false}
-              pressed={signOut}
-              type={'warn'}/>
-            {isChanged && (
+            <View style={{paddingHorizontal: 15}}>
+              <View style={styles.splitterContainer}>
+                <View style={styles.splitter}/>
+              </View>
+              <Text style={styles.sectionTitle}>Контактные данные</Text>
+              <Text style={styles.sectionDescription}>Укажите информацию, которая будет отображаться в карточке вашей компании, ее увидят тысячи наших пользователей</Text>
+              <TextInputTitle
+                s={'Название'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.name}
+                onChanged={(text: string) => set(prev => ({...prev, name: text}))}
+                placeholder={'Введите название'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}/>
+              <TextInputTitle
+                s={'E-mail'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.email}
+                onChanged={(text: string) => set(prev => ({...prev, email: text}))}
+                placeholder={'Введите e-mail'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}/>
+              <TextInputTitle
+                s={'Номер телефона'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.phoneNumber}
+                onChanged={(text: string) => set(prev => ({...prev, phoneNumber: text}))}
+                placeholder={'Введите номер телефона'}
+                isError={false}
+                isBig={false}
+                keyboard={'phone-pad'}/>
+              <TextInputTitle
+                s={'Город'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.city}
+                onChanged={(text: string) => set(prev => ({...prev, city: text}))}
+                placeholder={'Город'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}/>
+              <TextInputTitle
+                s={'Улица'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.street}
+                onChanged={(text: string) => set(prev => ({...prev, street: text}))}
+                placeholder={'Улица'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}/>
+              <View style={styles.splitterContainer}>
+                <View style={styles.splitter}/>
+              </View>
+              <Text style={styles.sectionTitle}>Социальные сети</Text>
+              <FlatList
+                data={socialMedias}
+                style={styles.flatList}
+                renderItem={item => (
+                  <SocialMediaItem item={item.item}/>
+                )}/>
+              <Text style={styles.sectionTitle}>О работе</Text>
+              <TextInputTitle
+                s={'Описание'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.description}
+                onChanged={(text: string) => set(prev => ({...prev, description: text}))}
+                placeholder={'Введите описание компании'}
+                isError={false}
+                isBig={true}
+                keyboard={'default'}/>
+              <TextInputTitle
+                s={'Виды деятельности'}
+                top={20}
+                bottom={5}/>
+              <View style={styles.borderedInput}>
+                <TextInput
+                  style={Styles.borderedTextInput}
+                  value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
+                  readOnly/>
+                <View style={styles.chevronDown}>
+                  <Pressable
+                    onPress={() => ref.current?.expand()}>
+                    <Image
+                      style={styles.image}
+                      source={require('../../../assets/images/chevron-down.png')}
+                    />
+                  </Pressable>
+                </View>
+              </View>
+              <TextInputTitle
+                s={'Добавьте фотографии'}
+                top={20}
+                bottom={10}/>
+              <View style={styles.photoUrisContainer}>
+                {photoUris.map((u, i) => (
+                  <ImageBox
+                    key={i}
+                    object={photoUris[i]}
+                    setPhoto={setPhoto}
+                    index={i}
+                    readonly={false}/>
+                ))}
+              </View>
+              <TextInputTitle
+                s={'Опции'}
+                top={20}
+                bottom={5}/>
+              <Option
+                selected={form.isPrepaymentAvailable}
+                title={'Работа с предоплатой'}
+                onPress={onOptionPressed}
+                top={0}/>
+              <Option
+                selected={!form.isPrepaymentAvailable}
+                title={'Работа без предоплатой'}
+                onPress={onOptionPressed}
+                top={10}/>
               <GestureStyledButton
-                content={'Сохранить изменения'}
+                content={'Изменить пароль'}
                 top={20}
                 bottom={0}
-                isDisabled={isDisable()}
-                pressed={saveChanges}/>
-            )}
-          </View>
-        </ScrollView>
+                isDisabled={false}
+                pressed={() => navigation.navigate('ChangePassword')}
+                type={'reversed'}/>
+              <GestureStyledButton
+                content={'Выйти из аккаунта'}
+                top={20}
+                bottom={10}
+                isDisabled={false}
+                pressed={signOut}
+                type={'warn'}/>
+              {isChanged && (
+                <GestureStyledButton
+                  content={'Сохранить изменения'}
+                  top={20}
+                  bottom={0}
+                  isDisabled={isDisable()}
+                  pressed={saveChanges}/>
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
       <ChangeIconUriModal
         isToggled={isChangeIconUriModalToggled}
@@ -545,7 +551,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
             return [...prev];
           })}/>
       )}
-    </View>
+    </GestureHandlerRootView>
   );
 }
 

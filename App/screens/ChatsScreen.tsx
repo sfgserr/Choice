@@ -11,6 +11,7 @@ import {useDependency} from '../services/Hooks.ts';
 import {ChatService} from '../services/domain/ChatService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import ChatItem from '../components/listItems/ChatItem.tsx';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function ChatsScreen({navigation}: {navigation: any}) {
   const chatService = useDependency<ChatService>('ChatService');
@@ -22,6 +23,8 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   //not good solution but react native navigation renders screen only once
   const [count, setCount] = React.useState(0);
   const [refreshing, setRefreshing] = React.useState(false);
+
+  const insets = useSafeAreaInsets();
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
@@ -108,7 +111,7 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <Text style={styles.title}>Чаты</Text>
       <FlatList
         data={chats}
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 21,
     color: 'black',
     alignSelf: 'center',

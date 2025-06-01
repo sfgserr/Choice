@@ -4,7 +4,7 @@ import {
   Dimensions,
   Image,
   Text,
-  StyleSheet, KeyboardAvoidingView, SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
@@ -13,6 +13,7 @@ import {LoginScreenProps} from '../types/NavigationTypes.ts';
 import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
 import LoginByPhoneScreen from './LoginByPhoneScreen.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const {height} = Dimensions.get('screen');
 

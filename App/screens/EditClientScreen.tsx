@@ -15,6 +15,7 @@ import {FileValidationService} from '../services/object/FileValidationService.ts
 import {GestureHandlerRootView, Pressable} from 'react-native-gesture-handler';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 type Form = {
   id: string
@@ -114,137 +115,139 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {form == null ? (
-        <ActivityIndicator size={'large'} color={'#2D81E0'}/>
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.controlsContainer}>
-            <View style={{alignSelf: 'center'}}>
-              <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+      <SafeAreaView style={{flex: 1}}>
+        {form == null ? (
+          <ActivityIndicator size={'large'} color={'#2D81E0'}/>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.controlsContainer}>
+              <View style={{alignSelf: 'center'}}>
+                <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+              </View>
+              <Text style={styles.title}>{readonly ? 'Клиент' : 'Изменить клиента'}</Text>
+              <View style={{alignSelf: 'center'}}>
+                <Pressable
+                  disabled={(!readonly && isDisabled())}
+                  onPress={saveChanges}>
+                  <Image
+                    style={[styles.editIcon, {
+                      opacity: (!readonly && !isDisabled()) || readonly ? 1 : 0.5,
+                    }]}
+                    source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
+                </Pressable>
+              </View>
             </View>
-            <Text style={styles.title}>{readonly ? 'Клиент' : 'Изменить клиента'}</Text>
-            <View style={{alignSelf: 'center'}}>
-              <Pressable
-                disabled={(!readonly && isDisabled())}
-                onPress={saveChanges}>
-                <Image
-                  style={[styles.editIcon, {
-                    opacity: (!readonly && !isDisabled()) || readonly ? 1 : 0.5,
-                  }]}
-                  source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
-              </Pressable>
+            <View style={styles.iconContainer}>
+              <Image
+                style={styles.icon}
+                source={{
+                  uri: iconUri.getUri(),
+                }}/>
             </View>
-          </View>
-          <View style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={{
-                uri: iconUri.getUri(),
-              }}/>
-          </View>
-          <View style={styles.textButtonContainer}>
-            <TextButton
-              text={'Изменить фото'}
-              onPress={changeIconUri}/>
-          </View>
-          <View style={{paddingHorizontal: 15}}>
-            <TextInputTitle
-              s={'Имя'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.name}
-              onChanged={(text: string) => setForm(prev => ({...prev!, name: text}))}
-              placeholder={'Введите имя'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Фамилия'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.surname}
-              onChanged={(text: string) => setForm(prev => ({...prev!, surname: text}))}
-              placeholder={'Введите фамилию'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'E-mail'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.email}
-              onChanged={(text: string) => setForm(prev => ({...prev!, email: text}))}
-              placeholder={'Введите e-mail'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Номер телефона'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.phoneNumber}
-              onChanged={(text: string) => setForm(prev => ({...prev!, phoneNumber: text}))}
-              placeholder={'Введите номер телефона'}
-              isError={false}
-              isBig={false}
-              keyboard={'phone-pad'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Город'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.city}
-              onChanged={(text: string) => setForm(prev => ({...prev!, city: text}))}
-              placeholder={'Город'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Улица'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.street}
-              onChanged={(text: string) => setForm(prev => ({...prev!, street: text}))}
-              placeholder={'Улица'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <GestureStyledButton
-              content={'Отзывы'}
-              top={30}
-              bottom={10}
-              isDisabled={false}
-              pressed={() => navigation.navigate('ClientReviews', {clientId: route.params.clientId})}
-              type={'reversed'}/>
-            <GestureStyledButton
-              content={'Заблокировать клиента'}
-              top={10}
-              bottom={10}
-              isDisabled={false}
-              pressed={deleteClient}
-              type={'warn'}/>
-          </View>
-        </ScrollView>
-      )}
-      <SuccessfulRequestModal
-        isToggled={isSuccessfulRequestModalToggled}
-        handlePress={() => {
-          setIsSuccessfulRequestModalToggled(false);
-          navigation.goBack();
-        }}
-        title={'Изменения сохранены'}
-        text={''}/>
+            <View style={styles.textButtonContainer}>
+              <TextButton
+                text={'Изменить фото'}
+                onPress={changeIconUri}/>
+            </View>
+            <View style={{paddingHorizontal: 15}}>
+              <TextInputTitle
+                s={'Имя'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.name}
+                onChanged={(text: string) => setForm(prev => ({...prev!, name: text}))}
+                placeholder={'Введите имя'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Фамилия'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.surname}
+                onChanged={(text: string) => setForm(prev => ({...prev!, surname: text}))}
+                placeholder={'Введите фамилию'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'E-mail'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.email}
+                onChanged={(text: string) => setForm(prev => ({...prev!, email: text}))}
+                placeholder={'Введите e-mail'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Номер телефона'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.phoneNumber}
+                onChanged={(text: string) => setForm(prev => ({...prev!, phoneNumber: text}))}
+                placeholder={'Введите номер телефона'}
+                isError={false}
+                isBig={false}
+                keyboard={'phone-pad'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Город'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.city}
+                onChanged={(text: string) => setForm(prev => ({...prev!, city: text}))}
+                placeholder={'Город'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Улица'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.street}
+                onChanged={(text: string) => setForm(prev => ({...prev!, street: text}))}
+                placeholder={'Улица'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <GestureStyledButton
+                content={'Отзывы'}
+                top={30}
+                bottom={10}
+                isDisabled={false}
+                pressed={() => navigation.navigate('ClientReviews', {clientId: route.params.clientId})}
+                type={'reversed'}/>
+              <GestureStyledButton
+                content={'Заблокировать клиента'}
+                top={10}
+                bottom={10}
+                isDisabled={false}
+                pressed={deleteClient}
+                type={'warn'}/>
+            </View>
+          </ScrollView>
+        )}
+        <SuccessfulRequestModal
+          isToggled={isSuccessfulRequestModalToggled}
+          handlePress={() => {
+            setIsSuccessfulRequestModalToggled(false);
+            navigation.goBack();
+          }}
+          title={'Изменения сохранены'}
+          text={''}/>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

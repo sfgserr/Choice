@@ -5,12 +5,15 @@ import {Category} from '../../../types/DomainTypes.ts';
 import {CategoriesScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const categoryService = useDependency<CategoryService>('CategoryService');
 
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [refreshing, setRefreshing] = React.useState(false);
+
+  const insets = useSafeAreaInsets();
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -36,7 +39,7 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Услуги</Text>
+      <Text style={[styles.title, {paddingTop: insets.top}]}>Услуги</Text>
       <FlatList
         data={categories}
         refreshControl={

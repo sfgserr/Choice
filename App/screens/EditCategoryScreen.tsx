@@ -12,6 +12,7 @@ import {FileValidationService} from '../services/object/FileValidationService.ts
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import {GestureHandlerRootView} from "react-native-gesture-handler";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function EditCategoryScreen({route, navigation}: EditCategoryScreenProps) {
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
@@ -64,59 +65,61 @@ export default function EditCategoryScreen({route, navigation}: EditCategoryScre
 
   return (
     <GestureHandlerRootView>
-      <View style={styles.container}>
-        <View style={styles.controlsContainer}>
-          <View style={{alignSelf: 'center'}}>
-            <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.controlsContainer}>
+            <View style={{alignSelf: 'center'}}>
+              <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+            </View>
+            <Text style={styles.title}>Категория</Text>
+            <View style={{alignSelf: 'center'}}>
+              <TouchableOpacity
+                disabled={(readonly && route.params.category.categoryId <= 7) || (!readonly && title == '')}
+                onPress={save}>
+                <Image
+                  style={[styles.editIcon, {
+                    opacity: (readonly && route.params.category.categoryId > 7) || (!readonly && title != '') ? 1 : 0.5
+                  }]}
+                  source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text style={styles.title}>Категория</Text>
-          <View style={{alignSelf: 'center'}}>
-            <TouchableOpacity
-              disabled={(readonly && route.params.category.categoryId <= 7) || (!readonly && title == '')}
-              onPress={save}>
-              <Image
-                style={[styles.editIcon, {
-                  opacity: (readonly && route.params.category.categoryId > 7) || (!readonly && title != '') ? 1 : 0.5
-                }]}
-                source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
-            </TouchableOpacity>
+          <View style={styles.iconContainer}>
+            <Image
+              source={{uri: uri.getUri()}}
+              style={styles.icon}/>
+          </View>
+          <View style={styles.textButtonContainer}>
+            <TextButton
+              text={'Изменить иконку'}
+              onPress={changeIconUri}/>
+          </View>
+          <View style={styles.infoContainer}>
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'contain',
+                alignSelf: 'center',
+              }}
+              source={require('../assets/images/warn.png')}/>
+            <Text style={styles.info}>
+              {'Иконки SVG/PNG на прозрачном фоне.\nЦвет заливки - белый. Стиль - Outline'}
+            </Text>
+          </View>
+          <View style={{paddingHorizontal: 15}}>
+            <TextInputTitle s={'Название'} top={40} bottom={5}/>
+            <BorderedTextInput
+              value={title}
+              onChanged={setTitle}
+              placeholder={'Введите название'}
+              isError={false}
+              isBig={false}
+              keyboard={'default'}
+              isReadonly={readonly}/>
           </View>
         </View>
-        <View style={styles.iconContainer}>
-          <Image
-            source={{uri: uri.getUri()}}
-            style={styles.icon}/>
-        </View>
-        <View style={styles.textButtonContainer}>
-          <TextButton
-            text={'Изменить иконку'}
-            onPress={changeIconUri}/>
-        </View>
-        <View style={styles.infoContainer}>
-          <Image
-            style={{
-              width: 20,
-              height: 20,
-              resizeMode: 'contain',
-              alignSelf: 'center',
-            }}
-            source={require('../assets/images/warn.png')}/>
-          <Text style={styles.info}>
-            {'Иконки SVG/PNG на прозрачном фоне.\nЦвет заливки - белый. Стиль - Outline'}
-          </Text>
-        </View>
-        <View style={{paddingHorizontal: 15}}>
-          <TextInputTitle s={'Название'} top={40} bottom={5}/>
-          <BorderedTextInput
-            value={title}
-            onChanged={setTitle}
-            placeholder={'Введите название'}
-            isError={false}
-            isBig={false}
-            keyboard={'default'}
-            isReadonly={readonly}/>
-        </View>
-      </View>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

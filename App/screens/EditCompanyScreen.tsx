@@ -23,6 +23,7 @@ import LongRunningOperationIndicator from '../components/LongRunningOperationInd
 import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {TextInput} from 'react-native-gesture-handler';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 type Form = {
   id: string
@@ -248,205 +249,207 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      {form == null ? (
-        <ActivityIndicator size={'large'} color={'#2D81E0'}/>
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.controlsContainer}>
-            <View style={{alignSelf: 'center'}}>
-              <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+      <SafeAreaView style={{flex: 1}}>
+        {form == null ? (
+          <ActivityIndicator size={'large'} color={'#2D81E0'}/>
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.controlsContainer}>
+              <View style={{alignSelf: 'center'}}>
+                <NavigateBackButton navigation={navigation} onGoBack={() => {}}/>
+              </View>
+              <Text style={styles.title}>{readonly ? 'Компания' : 'Изменить компанию'}</Text>
+              <View style={{alignSelf: 'center'}}>
+                <Pressable
+                  disabled={(!readonly && isDisable())}
+                  onPress={saveChanges}>
+                  <Image
+                    style={[styles.editIcon, {
+                      opacity: (!readonly && !isDisable()) || readonly ? 1 : 0.5,
+                    }]}
+                    source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
+                </Pressable>
+              </View>
             </View>
-            <Text style={styles.title}>{readonly ? 'Компания' : 'Изменить компанию'}</Text>
-            <View style={{alignSelf: 'center'}}>
-              <Pressable
-                disabled={(!readonly && isDisable())}
-                onPress={saveChanges}>
-                <Image
-                  style={[styles.editIcon, {
-                    opacity: (!readonly && !isDisable()) || readonly ? 1 : 0.5,
-                  }]}
-                  source={readonly ? require('../assets/images/edit.png') : require('../assets/images/ok.png')}/>
-              </Pressable>
+            <View style={styles.iconContainer}>
+              <Image
+                style={styles.icon}
+                source={{
+                  uri: iconUri.getUri(),
+                }}/>
             </View>
-          </View>
-          <View style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={{
-                uri: iconUri.getUri(),
-              }}/>
-          </View>
-          <View style={styles.textButtonContainer}>
-            <TextButton
-              text={'Изменить фото'}
-              onPress={changeIconUri}/>
-          </View>
-          <View style={{paddingHorizontal: 15}}>
-            <View style={styles.splitterContainer}>
-              <View style={styles.splitter}/>
+            <View style={styles.textButtonContainer}>
+              <TextButton
+                text={'Изменить фото'}
+                onPress={changeIconUri}/>
             </View>
-            <Text style={styles.sectionTitle}>Контактные данные</Text>
-            <Text style={styles.sectionDescription}>Укажите информацию, которая будет отображаться в карточке вашей компании, ее увидят тысячи наших пользователей</Text>
-            <TextInputTitle
-              s={'Название'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.name}
-              onChanged={(text: string) => setForm(prev => ({...prev!, name: text}))}
-              placeholder={'Введите название'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'E-mail'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.email}
-              onChanged={(text: string) => setForm(prev => ({...prev!, email: text}))}
-              placeholder={'Введите e-mail'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Номер телефона'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.phoneNumber}
-              onChanged={(text: string) => setForm(prev => ({...prev!, phoneNumber: text}))}
-              placeholder={'Введите номер телефона'}
-              isError={false}
-              isBig={false}
-              keyboard={'phone-pad'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Город'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.city}
-              onChanged={(text: string) => setForm(prev => ({...prev!, city: text}))}
-              placeholder={'Город'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Улица'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.street}
-              onChanged={(text: string) => setForm(prev => ({...prev!, street: text}))}
-              placeholder={'Улица'}
-              isError={false}
-              isBig={false}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <View style={styles.splitterContainer}>
-              <View style={styles.splitter}/>
+            <View style={{paddingHorizontal: 15}}>
+              <View style={styles.splitterContainer}>
+                <View style={styles.splitter}/>
+              </View>
+              <Text style={styles.sectionTitle}>Контактные данные</Text>
+              <Text style={styles.sectionDescription}>Укажите информацию, которая будет отображаться в карточке вашей компании, ее увидят тысячи наших пользователей</Text>
+              <TextInputTitle
+                s={'Название'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.name}
+                onChanged={(text: string) => setForm(prev => ({...prev!, name: text}))}
+                placeholder={'Введите название'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'E-mail'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.email}
+                onChanged={(text: string) => setForm(prev => ({...prev!, email: text}))}
+                placeholder={'Введите e-mail'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Номер телефона'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.phoneNumber}
+                onChanged={(text: string) => setForm(prev => ({...prev!, phoneNumber: text}))}
+                placeholder={'Введите номер телефона'}
+                isError={false}
+                isBig={false}
+                keyboard={'phone-pad'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Город'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.city}
+                onChanged={(text: string) => setForm(prev => ({...prev!, city: text}))}
+                placeholder={'Город'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Улица'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.street}
+                onChanged={(text: string) => setForm(prev => ({...prev!, street: text}))}
+                placeholder={'Улица'}
+                isError={false}
+                isBig={false}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <View style={styles.splitterContainer}>
+                <View style={styles.splitter}/>
+              </View>
+              <Text style={styles.sectionTitle}>Социальные сети</Text>
+              <FlatList
+                data={socialMedias}
+                style={styles.flatList}
+                renderItem={item => (
+                  <SocialMediaItem item={item.item}/>
+                )}/>
+              <Text style={styles.sectionTitle}>О работе</Text>
+              <TextInputTitle
+                s={'Описание'}
+                top={20}
+                bottom={5}/>
+              <GestureBorderedTextInput
+                value={form?.description}
+                onChanged={(text: string) => setForm(prev => ({...prev!, description: text}))}
+                placeholder={'Введите описание компании'}
+                isError={false}
+                isBig={true}
+                keyboard={'default'}
+                isReadonly={readonly}/>
+              <TextInputTitle
+                s={'Виды деятельности'}
+                top={20}
+                bottom={5}/>
+              <View style={styles.borderedInput}>
+                <TextInput
+                  style={Styles.borderedTextInput}
+                  value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
+                  readOnly/>
+                {!readonly && (
+                  <View style={styles.chevronDown}>
+                    <Pressable
+                      onPress={() => ref.current?.expand()}>
+                      <Image
+                        style={styles.image}
+                        source={require('../assets/images/chevron-down.png')}
+                      />
+                    </Pressable>
+                  </View>
+                )}
+              </View>
+              <TextInputTitle
+                s={'Добавьте фотографии'}
+                top={20}
+                bottom={10}/>
+              <View style={styles.photoUrisContainer}>
+                {photoUris.map((u, i) => (
+                  <ImageBox
+                    key={i}
+                    object={photoUris[i]}
+                    setPhoto={setPhotoUris}
+                    index={i}
+                    readonly={readonly}/>
+                ))}
+              </View>
+              <TextInputTitle
+                s={'Опции'}
+                top={20}
+                bottom={5}/>
+              <Option
+                selected={form.isPrepaymentAvailable}
+                title={'Работа с предоплатой'}
+                onPress={onOptionPressed}
+                top={0}/>
+              <Option
+                selected={!form.isPrepaymentAvailable}
+                title={'Работа без предоплатой'}
+                onPress={onOptionPressed}
+                top={10}/>
+              <View style={{paddingTop: 20}}/>
             </View>
-            <Text style={styles.sectionTitle}>Социальные сети</Text>
-            <FlatList
-              data={socialMedias}
-              style={styles.flatList}
-              renderItem={item => (
-                <SocialMediaItem item={item.item}/>
-              )}/>
-            <Text style={styles.sectionTitle}>О работе</Text>
-            <TextInputTitle
-              s={'Описание'}
-              top={20}
-              bottom={5}/>
-            <GestureBorderedTextInput
-              value={form?.description}
-              onChanged={(text: string) => setForm(prev => ({...prev!, description: text}))}
-              placeholder={'Введите описание компании'}
-              isError={false}
-              isBig={true}
-              keyboard={'default'}
-              isReadonly={readonly}/>
-            <TextInputTitle
-              s={'Виды деятельности'}
-              top={20}
-              bottom={5}/>
-            <View style={styles.borderedInput}>
-              <TextInput
-                style={Styles.borderedTextInput}
-                value={categoriesTitle == '' ? 'Выбрать деятельность' : categoriesTitle}
-                readOnly/>
-              {!readonly && (
-                <View style={styles.chevronDown}>
-                  <Pressable
-                    onPress={() => ref.current?.expand()}>
-                    <Image
-                      style={styles.image}
-                      source={require('../assets/images/chevron-down.png')}
-                    />
-                  </Pressable>
-                </View>
-              )}
-            </View>
-            <TextInputTitle
-              s={'Добавьте фотографии'}
-              top={20}
-              bottom={10}/>
-            <View style={styles.photoUrisContainer}>
-              {photoUris.map((u, i) => (
-                <ImageBox
-                  key={i}
-                  object={photoUris[i]}
-                  setPhoto={setPhotoUris}
-                  index={i}
-                  readonly={readonly}/>
-              ))}
-            </View>
-            <TextInputTitle
-              s={'Опции'}
-              top={20}
-              bottom={5}/>
-            <Option
-              selected={form.isPrepaymentAvailable}
-              title={'Работа с предоплатой'}
-              onPress={onOptionPressed}
-              top={0}/>
-            <Option
-              selected={!form.isPrepaymentAvailable}
-              title={'Работа без предоплатой'}
-              onPress={onOptionPressed}
-              top={10}/>
-            <View style={{paddingTop: 20}}/>
-          </View>
-        </ScrollView>
-      )}
-      <SuccessfulRequestModal
-        isToggled={isSuccessfulRequestModalToggled}
-        handlePress={() => {
-          setIsSuccessfulRequestModalToggled(false);
-          navigation.goBack();
-        }}
-        title={'Изменения сохранены'}
-        text={''}/>
-      <PickCategoriesBottomSheet
-        ref={ref}
-        close={() => ref.current?.close()}
-        categories={categories}
-        select={select}/>
-      <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
-      {socialMedias.length > 0 && (
-        <SocialMediaModal
-          isToggled={isSocialMediaModalToggled}
-          handlePress={handlePress}
-          title={socialMedias[currentIndex].title}
-          onChange={(val) => setSocialMedias(prev => {
-            prev[currentIndex].uri = val;
-            return [...prev];
-          })}/>
-      )}
+          </ScrollView>
+        )}
+        <SuccessfulRequestModal
+          isToggled={isSuccessfulRequestModalToggled}
+          handlePress={() => {
+            setIsSuccessfulRequestModalToggled(false);
+            navigation.goBack();
+          }}
+          title={'Изменения сохранены'}
+          text={''}/>
+        <PickCategoriesBottomSheet
+          ref={ref}
+          close={() => ref.current?.close()}
+          categories={categories}
+          select={select}/>
+        <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
+        {socialMedias.length > 0 && (
+          <SocialMediaModal
+            isToggled={isSocialMediaModalToggled}
+            handlePress={handlePress}
+            title={socialMedias[currentIndex].title}
+            onChange={(val) => setSocialMedias(prev => {
+              prev[currentIndex].uri = val;
+              return [...prev];
+            })}/>
+        )}
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

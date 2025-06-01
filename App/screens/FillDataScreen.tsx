@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FillDataScreenProps} from '../types/NavigationTypes.ts';
 import SocialMediasScreen from './SocialMediasScreen.tsx';
 import AboutScreen from './AboutScreen.tsx';
@@ -14,14 +14,15 @@ import {State} from '../enums/AppEnums.ts';
 import {useDependency} from '../services/Hooks.ts';
 import {CompanyService} from '../services/domain/CompanyService.ts';
 import {CategoryService} from '../services/domain/CategoryService.ts';
-import {AuthContext} from '../contexts/authorized/Context.tsx';
 import {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import { AuthContext } from '../contexts/authorized/Context.tsx';
 
 const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
-  const { changeState } = React.useContext(AuthContext);
+  const { changeState, signOut } = React.useContext(AuthContext);
 
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
@@ -114,10 +115,27 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
   };
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <GestureHandlerRootView>
         <View style={styles.container}>
-          <Text style={styles.title}>Карточка компании</Text>
+          <View>
+            <Text style={styles.title}>Карточка компании</Text>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: 5,
+                right: 10,
+              }}
+              onPress={() => signOut()}>
+              <Image
+                style={{
+                  width: 25,
+                  height: 25,
+                  resizeMode: 'contain',
+                }}
+                source={require('../assets/images/signout.png')}/>
+            </TouchableOpacity>
+          </View>
           <View style={styles.screenContainer}>
             {screens.map((i, n) => (
               <View
@@ -147,7 +165,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
         close={() => ref.current?.close()}
         categories={categories}
         select={select}/>
-    </>
+    </SafeAreaView>
   );
 }
 

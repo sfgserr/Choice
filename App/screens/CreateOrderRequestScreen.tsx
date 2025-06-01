@@ -28,6 +28,7 @@ import Voice from '@react-native-voice/voice';
 import {Pressable} from 'react-native-gesture-handler';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import {useSharedValue} from 'react-native-reanimated';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const d = Dimensions.get('screen');
 
@@ -153,174 +154,175 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
 
   return (
     <GestureHandlerRootView>
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={!isToggled}>
-        <View style={styles.titleView}>
-          <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
-            <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={!isToggled}>
+          <View style={styles.titleView}>
+            <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
+              <NavigateBackButton navigation={navigation} onGoBack={undefined}/>
+            </View>
+            <Text style={styles.title}>Создание заказа</Text>
           </View>
-          <Text style={styles.title}>Создание заказа</Text>
-        </View>
-        <View style={styles.contentContainer}>
-          <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={categories[categoryIndex].title}
-              readOnly
-            />
-            <Pressable
-              style={styles.chevronDown}
-              onPress={() => ref.current?.expand()}>
-              <Image
-                style={styles.image}
-                source={require('../assets/images/chevron-down.png')}
-              />
-            </Pressable>
-          </View>
-          <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
-          <View
-            style={[
-              Styles.borderedTextInputView,
-              Styles.borderedTextInputBigHeight,
-              Styles.borderedTextInputViewColor,
-              Styles.borderedTextInputUnfocused,
-              {alignItems: 'baseline'},
-            ]}>
-            <TextInput
-              style={Styles.borderedTextInput}
-              value={description}
-              placeholder={
-                'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
-              }
-              onChangeText={setDescription}
-              multiline
-            />
-          </View>
-          <View style={{paddingTop: 10}}>
-            <Pressable
+          <View style={styles.contentContainer}>
+            <TextInputTitle s={'Категория услуг'} top={20} bottom={5} />
+            <View
               style={[
                 Styles.borderedTextInputView,
-                Styles.borderedTextInputViewColor,
                 Styles.borderedTextInputHeight,
-                {justifyContent: 'center', paddingVertical: 10},
-              ]}
-              onPress={record}>
-              <View style={[styles.voiceButton]}>
-                {recording ? (
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={categories[categoryIndex].title}
+                readOnly
+              />
+              <Pressable
+                style={styles.chevronDown}
+                onPress={() => ref.current?.expand()}>
+                <Image
+                  style={styles.image}
+                  source={require('../assets/images/chevron-down.png')}
+                />
+              </Pressable>
+            </View>
+            <TextInputTitle s={'Описание задачи'} top={20} bottom={5} />
+            <View
+              style={[
+                Styles.borderedTextInputView,
+                Styles.borderedTextInputBigHeight,
+                Styles.borderedTextInputViewColor,
+                Styles.borderedTextInputUnfocused,
+                {alignItems: 'baseline'},
+              ]}>
+              <TextInput
+                style={Styles.borderedTextInput}
+                value={description}
+                placeholder={
+                  'Введите подробности задачи, в чем вам нужна помощь и какой вы ожидаете результат'
+                }
+                onChangeText={setDescription}
+                multiline
+              />
+            </View>
+            <View style={{paddingTop: 10}}>
+              <Pressable
+                style={[
+                  Styles.borderedTextInputView,
+                  Styles.borderedTextInputViewColor,
+                  Styles.borderedTextInputHeight,
+                  {justifyContent: 'center', paddingVertical: 10},
+                ]}
+                onPress={record}>
+                <View style={[styles.voiceButton]}>
+                  {recording ? (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 5,
+                        backgroundColor: '#2688EB',
+                      }}/>
+                  ) : (
+                    <>
+                      <Image
+                        source={require('../assets/images/micro.png')}
+                        style={styles.voiceButtonImage}
+                      />
+                      <Text style={styles.voiceButtonContent}>Записать голосом</Text>
+                    </>)}
+                </View>
+              </Pressable>
+            </View>
+            <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
+            {data.map((item, index) => {
+              return (
+                <View key={index} style={styles.checkBoxContainer}>
+                  <Checkbox checked={item.checked} pressed={item.pressed} />
+                  <Text style={styles.checkBoxTitle}>{item.title}</Text>
+                </View>
+              );
+            })}
+            <TextInputTitle
+              s={'Приложите файлы или фото к заказу'}
+              top={20}
+              bottom={5}
+            />
+            <View style={styles.horizontalSpread}>
+              <ImageBox
+                object={photos[0]}
+                setPhoto={setPhotos}
+                index={0}/>
+              <ImageBox
+                object={photos[1]}
+                setPhoto={setPhotos}
+                index={1}/>
+              <ImageBox
+                object={photos[2]}
+                setPhoto={setPhotos}
+                index={2}/>
+            </View>
+            <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
+              <Text style={Styles.title}>Радиус поиска</Text>
+              <Text style={styles.radius}>
+                {`${Math.round(radius)} км`}
+              </Text>
+            </View>
+            <View style={{paddingTop: 10}}>
+              <Slider
+                minimumValue={min}
+                maximumValue={max}
+                progress={progress}
+                onSlidingComplete={n => setRadius(Math.round(n))}
+                steps={1}
+                renderBubble={() => (<></>)}
+                renderThumb={() => (
                   <View
                     style={{
                       width: 20,
                       height: 20,
-                      borderRadius: 5,
-                      backgroundColor: '#2688EB',
+                      borderRadius: 10,
+                      backgroundColor: 'white',
+                      shadowColor: 'black',
+                      elevation: 2,
                     }}/>
-                  ) : (
-                  <>
-                    <Image
-                      source={require('../assets/images/micro.png')}
-                      style={styles.voiceButtonImage}
-                    />
-                    <Text style={styles.voiceButtonContent}>Записать голосом</Text>
-                  </>)}
-              </View>
-            </Pressable>
+                )}
+                theme={{
+                  minimumTrackTintColor: '#007AFF',
+                  maximumTrackTintColor: '#e4e4e6',
+                }}/>
+            </View>
+            <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
+              <Text style={Styles.title}>от 5 км</Text>
+              <Text style={Styles.title}>до 25 км</Text>
+            </View>
           </View>
-          <TextInputTitle s={'Что узнать у продавца'} top={20} bottom={5} />
-          {data.map((item, index) => {
-            return (
-              <View key={index} style={styles.checkBoxContainer}>
-                <Checkbox checked={item.checked} pressed={item.pressed} />
-                <Text style={styles.checkBoxTitle}>{item.title}</Text>
-              </View>
-            );
-          })}
-          <TextInputTitle
-            s={'Приложите файлы или фото к заказу'}
-            top={20}
-            bottom={5}
+          <View style={styles.buttonContainer}>
+            <GestureStyledButton
+              content={'Создать заказ'}
+              top={0}
+              bottom={0}
+              isDisabled={
+                description == '' ||
+                (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate)
+              }
+              pressed={createOrderRequest}
+              type={'default'}
+            />
+          </View>
+          <CategoriesBottomSheet
+            options={{
+              categories,
+              categoryIndex,
+              onIndexChange: (val, index) => {
+                if (val) {setCategoryIndex(index);}
+              },
+            }}
+            ref={ref}
+            close={() => ref.current?.close()}
           />
-          <View style={styles.horizontalSpread}>
-            <ImageBox
-              object={photos[0]}
-              setPhoto={setPhotos}
-              index={0}/>
-            <ImageBox
-              object={photos[1]}
-              setPhoto={setPhotos}
-              index={1}/>
-            <ImageBox
-              object={photos[2]}
-              setPhoto={setPhotos}
-              index={2}/>
-          </View>
-          <View style={[styles.horizontalSpread, {paddingTop: 20}]}>
-            <Text style={Styles.title}>Радиус поиска</Text>
-            <Text style={styles.radius}>
-              {`${Math.round(radius)} км`}
-            </Text>
-          </View>
-          <View style={{paddingTop: 10}}>
-            <Slider
-              minimumValue={min}
-              maximumValue={max}
-              progress={progress}
-              onSlidingComplete={n => setRadius(Math.round(n))}
-              steps={1}
-              renderBubble={() => (<></>)}
-              renderThumb={() => (
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor: 'white',
-                    shadowColor: 'black',
-                    elevation: 2,
-                  }}/>
-              )}
-              theme={{
-                minimumTrackTintColor: '#007AFF',
-                maximumTrackTintColor: '#e4e4e6',
-              }}/>
-          </View>
-          <View style={[styles.horizontalSpread, {paddingTop: 10}]}>
-            <Text style={Styles.title}>от 5 км</Text>
-            <Text style={Styles.title}>до 25 км</Text>
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <GestureStyledButton
-            content={'Создать заказ'}
-            top={0}
-            bottom={0}
-            isDisabled={
-              description == '' ||
-              (!toKnowPrice && !toKnowDeadline && !toKnowEnrollmentDate)
-            }
-            pressed={createOrderRequest}
-            type={'default'}
-          />
-        </View>
-        <CategoriesBottomSheet
-          options={{
-            categories,
-            categoryIndex,
-            onIndexChange: (val, index) => {
-              if (val) {setCategoryIndex(index);}
-            },
-          }}
-          ref={ref}
-          close={() => ref.current?.close()}
-        />
+        </ScrollView>
         <SuccessfulRequestModal
           isToggled={isToggled}
           handlePress={toggleSuccessfulModal}
@@ -331,7 +333,7 @@ export default function CreateOrderRequestScreen({route, navigation}: CreateOrde
           handlePress={() => setIsErrorToggled(prev => !prev)}
           errorMessage={errorMessage}/>
         <LongRunningOperationIndicator isRefreshing={isRefreshing}/>
-      </ScrollView>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

@@ -1,5 +1,5 @@
 import {
-  Image, ScrollView,
+  Image, KeyboardAvoidingView, ScrollView,
   StyleSheet,
   Text,
   View,
@@ -25,6 +25,7 @@ import {OrderResponseService} from '../services/domain/OrderResponseService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {UserService} from '../services/domain/UserService.ts';
 import {TextInput, Pressable} from 'react-native-gesture-handler';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 type Form = {
   price: string
@@ -173,7 +174,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
   const formatNumber = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView style={styles.container}>
         <View style={styles.navigateBackButtonContainer}>
           <NavigateBackButton navigation={navigation} />
@@ -328,7 +329,7 @@ export default function CreateOrderResponseScreen({route, navigation}: CreateOrd
         text={'Ожидайте ответа от клиента и старайтесь отвечать оперативно'}
       />
       <LongRunningOperationIndicator isRefreshing={isRefreshing} />
-    </>
+    </SafeAreaView>
   );
 }
 

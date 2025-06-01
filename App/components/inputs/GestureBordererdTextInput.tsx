@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import {KeyboardAvoidingView, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import Styles from '../../constants/Styles.tsx';
 import {BorderedTextInputProps} from '../../types/ComponentTypes.ts';

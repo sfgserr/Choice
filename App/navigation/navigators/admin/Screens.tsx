@@ -6,8 +6,8 @@ import CreateCategoryScreen from '../../../screens/CreateCategoryScreen.tsx';
 import EditClientScreen from '../../../screens/EditClientScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import EditCompanyScreen from '../../../screens/EditCompanyScreen.tsx';
-import ClientReviewsScreen from "../../../screens/ClientReviewsScreen.tsx";
-import EditReviewScreen from "../../../screens/EditReviewScreen.tsx";
+import ClientReviewsScreen from '../../../screens/ClientReviewsScreen.tsx';
+import EditReviewScreen from '../../../screens/EditReviewScreen.tsx';
 
 export const Panel = () => (
   <AdminStack.Screen
@@ -26,7 +26,7 @@ export const EditCategory = () => (
 export const CreateCategory = () => (
   <AdminStack.Screen
     name={'CreateCategory'}
-    component={CreateCategoryScreen}
+    component={gestureHandlerRootHOC(CreateCategoryScreen)}
     options={{headerShown: false}}/>
 );
 
@@ -47,7 +47,7 @@ export const EditCompany = () => (
 export const ClientReviews = () => (
   <AdminStack.Screen
     name={'ClientReviews'}
-    component={ClientReviewsScreen}
+    component={gestureHandlerRootHOC(ClientReviewsScreen)}
     options={{headerShown: false}}/>
 );
 

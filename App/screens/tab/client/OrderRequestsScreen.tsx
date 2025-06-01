@@ -14,6 +14,7 @@ import {StyledButton} from '../../../components/buttons/StyledButton.tsx';
 import {useDependency} from '../../../services/Hooks.ts';
 import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Stub = ({navigation, categories}: {navigation: any, categories: Category[]}) => {
   return (
@@ -53,6 +54,8 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
 
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const insets = useSafeAreaInsets();
+
   const getOrderRequests = React.useCallback(async () => {
     const orderRequests = await orderRequestService.getOrderRequests();
 
@@ -83,7 +86,7 @@ export default function OrderRequestsScreen({route, navigation}: OrderRequestsSc
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Заказы</Text>
       </View>
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 21,
     color: 'black',
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 10,
     alignSelf: 'center'
   },

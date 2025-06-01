@@ -7,6 +7,7 @@ import {useDependency} from '../../../services/Hooks.ts';
 import {OrderRequestService} from '../../../services/domain/OrderRequestService.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
@@ -16,6 +17,8 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
 
   const [orderRequests, setOrderRequests] = React.useState<OrderRequestRadius[]>([]);
   const [categories, setCategories] = React.useState<Category[]>([]);
+
+  const insets = useSafeAreaInsets();
 
   const onRefresh = React.useCallback(async () => {
     async function getOrderRequests() {
@@ -75,7 +78,7 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
 
   return (
     <GestureHandlerRootView>
-      <View style={styles.container}>
+      <View style={[styles.container, {paddingTop: insets.top}]}>
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Заказы</Text>
           <FlatList
@@ -84,21 +87,25 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             ListEmptyComponent={Stub}
-            contentContainerStyle={{flex: orderRequests.length > 0 ? undefined : 1}}
-            renderItem={(item) => (
+            contentContainerStyle={{
+              flex: orderRequests.length > 0 ? undefined : 1,
+            }}
+            renderItem={item => (
               <View style={styles.itemContainer}>
                 <OrderRequestRadiusItem
                   orderRequest={item.item}
                   categories={categories}
                   navigation={navigation}
-                  preview={false}/>
+                  preview={false}
+                />
               </View>
             )}
-            style={styles.flatList}/>
+            style={styles.flatList}
+          />
         </View>
       </View>
     </GestureHandlerRootView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
