@@ -4,7 +4,7 @@ import {
   Dimensions,
   Image,
   Text,
-  StyleSheet,
+  StyleSheet, KeyboardAvoidingView,
 } from 'react-native';
 import TextButton from '../components/buttons/TextButton.tsx';
 import LoginByEmailScreen from './LoginByEmailScreen.tsx';
@@ -14,10 +14,14 @@ import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
 import LoginByPhoneScreen from './LoginByPhoneScreen.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import KeyboardAvoidingScrollView from "../components/KeyboardAvoidingScrollView.tsx";
+import {useIsFocused} from "@react-navigation/native";
 
 const {height} = Dimensions.get('screen');
 
 export default function LoginScreen({route, navigation}: LoginScreenProps) {
+  const focused = useIsFocused();
+
   const [isToggled, setIsToggled] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -31,18 +35,32 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
   return (
     <SafeAreaView
       style={styles.container}>
-      <Image
-        source={require('../assets/images/logo.png')}
-        style={styles.logo}/>
-      <Text style={styles.title}>ВЫБОР</Text>
-      <Text style={styles.subTitle}>{'Приложение для выбора\nлучших условий'}</Text>
-      <View style={styles.horizontalSpread}>
-        <Text style={styles.weightedText}>Авторизация</Text>
-        <TextButton
-          text={'Создать аккаунт'}
-          onPress={() => setIsToggled(prev => !prev)}/>
-      </View>
-      <TabBar tabs={tabs} big/>
+      <KeyboardAvoidingScrollView
+        scrollable
+        tabs={false}
+        focused={focused}>
+        <Image
+          source={require('../assets/images/logo.png')}
+          style={styles.logo}/>
+        <Text style={styles.title}>ВЫБОР</Text>
+        <Text style={styles.subTitle}>{'Приложение для выбора\nлучших условий'}</Text>
+        <View style={styles.horizontalSpread}>
+          <Text style={styles.weightedText}>Авторизация</Text>
+          <TextButton
+            text={'Создать аккаунт'}
+            onPress={() => setIsToggled(prev => !prev)}/>
+        </View>
+        <TabBar tabs={tabs} big/>
+        <View
+          style={{
+            height: 3,
+            width: 3,
+            backgroundColor: 'blue',
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+          }}/>
+      </KeyboardAvoidingScrollView>
       <CreateAccountModal
         isToggled={isToggled}
         handlePress={() => setIsToggled(prev => !prev)}

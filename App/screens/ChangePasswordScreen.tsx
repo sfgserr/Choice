@@ -1,14 +1,16 @@
-import {StyleSheet, Text, View, StatusBar, Dimensions, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 import {ChangePasswordScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
-import {useCallback, useState} from 'react';
-import BorderedTextInput from '../components/inputs/BorderedTextInput.tsx';
-import {StyledButton} from '../components/buttons/StyledButton.tsx';
+import {useCallback, useEffect, useState} from 'react';
 import {useDependency} from '../services/Hooks.ts';
 import {IdentityService} from '../services/domain/IdentityService.ts';
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import KeyboardAvoidingScrollView from '../components/KeyboardAvoidingScrollView.tsx';
+import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function ChangePasswordScreen({navigation}: ChangePasswordScreenProps) {
   const identityService = useDependency<IdentityService>('IdentityService');
@@ -18,6 +20,7 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const [isToggled, setIsToggled] = useState<boolean>(false);
+  const focused = useIsFocused();
 
   const disable = () => oldPassword == '' || newPassword == '' || confirmPassword != newPassword;
 
@@ -36,9 +39,10 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={'height'}>
+      <KeyboardAvoidingScrollView
+        tabs={false}
+        scrollable={false}
+        focused={focused}>
         <View style={{flex: 1}}>
           <View style={styles.navigateBackButtonContainer}>
             <NavigateBackButton
@@ -51,7 +55,7 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
               s={'Старый пароль'}
               top={30}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={oldPassword}
               onChanged={setOldPassword}
               placeholder={'Введите текущий пароль'}
@@ -62,7 +66,7 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
               s={'Новый пароль'}
               top={30}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={newPassword}
               onChanged={setNewPassword}
               placeholder={'Введите новый пароль'}
@@ -73,7 +77,7 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
               s={'Повторите новый пароль'}
               top={30}
               bottom={5}/>
-            <BorderedTextInput
+            <GestureBorderedTextInput
               value={confirmPassword}
               onChanged={setConfirmPassword}
               placeholder={'Введите новый пароль'}
@@ -82,7 +86,7 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
               keyboard={'default'}/>
           </View>
           <View style={styles.buttonContainer}>
-            <StyledButton
+            <GestureStyledButton
               content={'Сохранить новый пароль'}
               top={0}
               bottom={0}
@@ -90,13 +94,13 @@ export default function ChangePasswordScreen({navigation}: ChangePasswordScreenP
               pressed={changePassword}
               type={'default'}/>
           </View>
-          <SuccessfulRequestModal
-            isToggled={isToggled}
-            handlePress={handlePress}
-            title={'Пароль изменен'}
-            text={''}/>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingScrollView>
+      <SuccessfulRequestModal
+        isToggled={isToggled}
+        handlePress={handlePress}
+        title={'Пароль изменен'}
+        text={''}/>
     </SafeAreaView>
   );
 }
@@ -127,6 +131,6 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
 });

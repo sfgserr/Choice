@@ -36,6 +36,7 @@ import {PaymentService} from '../../../services/domain/PaymentService.ts';
 import PayModal from '../../../components/modals/PayModal.tsx';
 import PayoutModal from '../../../components/modals/PayoutModal.tsx';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import KeyboardAvoidingScrollView from "../../../components/KeyboardAvoidingScrollView.tsx";
 
 type Form = {
   id: string
@@ -293,9 +294,9 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
       {form == null ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'}/>
       ) : (
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={'height'}>
+        <KeyboardAvoidingScrollView
+          scrollable={false}
+          tabs={false}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh}/>}>
@@ -518,7 +519,7 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
               )}
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingScrollView>
       )}
       <ChangeIconUriModal
         isToggled={isChangeIconUriModalToggled}

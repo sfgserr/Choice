@@ -1,5 +1,5 @@
 import React from 'react';
-import {KeyboardAvoidingView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Keyboard, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {RegisterCompanyScreenProps} from '../types/NavigationTypes.ts';
 import TextInputTitle from '../components/TextInputTitle.tsx';
 import TextButton from '../components/buttons/TextButton.tsx';
@@ -15,12 +15,16 @@ import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextI
 import GesturePasswordBox from '../components/inputs/GesturePasswordBox.tsx';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import KeyboardAvoidingScrollView from '../components/KeyboardAvoidingScrollView.tsx';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
   const { signIn } = React.useContext(AuthContext);
 
   const tokenService = useDependency<TokenService>('TokenService');
   const companyService = useDependency<CompanyService>('CompanyService');
+
+  const focused = useIsFocused();
 
   const [form, setForm] = React.useState({
     name: '',
@@ -79,92 +83,90 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
 
   return (
     <SafeAreaView
-      style={styles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={'height'}>
-        <ScrollView
-          style={styles.contentContainer}>
-          <Text style={styles.title}>Регистрация компании</Text>
-          <TextInputTitle
-            s={'Название'}
-            top={20}
-            bottom={5}/>
-          <GestureBorderedTextInput
-            value={form.name}
-            onChanged={(name) => setForm(prev => ({...prev, name}))}
-            placeholder={'Введите название'}
-            isError={false}
-            isBig={false}/>
-          <TextInputTitle
-            s={'E-mail'}
-            top={20}
-            bottom={5}/>
-          <GestureBorderedTextInput
-            value={form.email}
-            onChanged={(email) => setForm(prev => ({...prev, email}))}
-            placeholder={'Введите E-mail'}
-            isError={false}
-            isBig={false}/>
-          <TextInputTitle
-            s={'Номер телефона'}
-            top={20}
-            bottom={5}/>
-          <PhoneBox
-            value={form.phoneNumber}
-            isReadonly={false}
-            onChanged={(phoneNumber) => setForm(prev => ({...prev, phoneNumber}))}
-            isError={false}/>
-          <TextInputTitle
-            s={'Город'}
-            top={20}
-            bottom={5}/>
-          <GestureBorderedTextInput
-            value={form.city}
-            onChanged={(city) => setForm(prev => ({...prev, city}))}
-            placeholder={'Введите название города'}
-            isError={false}
-            isBig={false}/>
-          <TextInputTitle
-            s={'Улица'}
-            top={20}
-            bottom={5}/>
-          <GestureBorderedTextInput
-            value={form.street}
-            onChanged={(street) => setForm(prev => ({...prev, street}))}
-            placeholder={'Введите название улицы'}
-            isError={false}
-            isBig={false}/>
-          <TextInputTitle
-            s={'Пароль'}
-            top={20}
-            bottom={5}/>
-          <GesturePasswordBox
-            value={form.password}
-            onChanged={(password) => setForm(prev => ({...prev, password}))}
-            isError={false}/>
-          <TextInputTitle
-            s={'Повторите пароль'}
-            top={20}
-            bottom={5}/>
-          <GesturePasswordBox
-            value={form.confirmPassword}
-            onChanged={(confirmPassword) => setForm(prev => ({...prev, confirmPassword}))}
-            isError={false}/>
-          <GestureStyledButton
-            content={'Создать аккаунт'}
-            top={20}
-            bottom={20}
-            isDisabled={isDisabled()}
-            pressed={createCompany}/>
-          <Text style={styles.loginText}>У меня есть аккаунт</Text>
-          <View style={styles.loginButtonContainer}>
-            <TextButton
-              text={'Войти'}
-              onPress={() => navigation.goBack()}/>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      style={[styles.container]}>
+      <KeyboardAvoidingScrollView
+        scrollable
+        tabs={false}
+        focused={focused}>
+        <Text style={styles.title}>Регистрация компании</Text>
+        <TextInputTitle
+          s={'Название'}
+          top={20}
+          bottom={5}/>
+        <GestureBorderedTextInput
+          value={form.name}
+          onChanged={(name) => setForm(prev => ({...prev, name}))}
+          placeholder={'Введите название'}
+          isError={false}
+          isBig={false}/>
+        <TextInputTitle
+          s={'E-mail'}
+          top={20}
+          bottom={5}/>
+        <GestureBorderedTextInput
+          value={form.email}
+          onChanged={(email) => setForm(prev => ({...prev, email}))}
+          placeholder={'Введите E-mail'}
+          isError={false}
+          isBig={false}/>
+        <TextInputTitle
+          s={'Номер телефона'}
+          top={20}
+          bottom={5}/>
+        <PhoneBox
+          value={form.phoneNumber}
+          isReadonly={false}
+          onChanged={(phoneNumber) => setForm(prev => ({...prev, phoneNumber}))}
+          isError={false}/>
+        <TextInputTitle
+          s={'Город'}
+          top={20}
+          bottom={5}/>
+        <GestureBorderedTextInput
+          value={form.city}
+          onChanged={(city) => setForm(prev => ({...prev, city}))}
+          placeholder={'Введите название города'}
+          isError={false}
+          isBig={false}/>
+        <TextInputTitle
+          s={'Улица'}
+          top={20}
+          bottom={5}/>
+        <GestureBorderedTextInput
+          value={form.street}
+          onChanged={(street) => setForm(prev => ({...prev, street}))}
+          placeholder={'Введите название улицы'}
+          isError={false}
+          isBig={false}/>
+        <TextInputTitle
+          s={'Пароль'}
+          top={20}
+          bottom={5}/>
+        <GesturePasswordBox
+          value={form.password}
+          onChanged={(password) => setForm(prev => ({...prev, password}))}
+          isError={false}/>
+        <TextInputTitle
+          s={'Повторите пароль'}
+          top={20}
+          bottom={5}/>
+        <GesturePasswordBox
+          value={form.confirmPassword}
+          onChanged={(confirmPassword) => setForm(prev => ({...prev, confirmPassword}))}
+          isError={false}/>
+        <GestureStyledButton
+          content={'Создать аккаунт'}
+          top={20}
+          bottom={20}
+          isDisabled={isDisabled()}
+          pressed={createCompany}/>
+        <Text style={styles.loginText}>У меня есть аккаунт</Text>
+        <View style={styles.loginButtonContainer}>
+          <TextButton
+            text={'Войти'}
+            onPress={() => navigation.goBack()}/>
+        </View>
+      </KeyboardAvoidingScrollView>
       <SuccessfulRequestModal
         isToggled={toggled}
         handlePress={login}
@@ -183,10 +185,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  contentContainer: {
     paddingHorizontal: 15,
-    flex: 1,
   },
   title: {
     color: '#313131',

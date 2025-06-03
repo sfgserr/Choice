@@ -26,6 +26,8 @@ import ReviewBottomSheet from '../components/bottomSheets/ReviewBottomSheet.tsx'
 import SuccessfulRequestModal from '../components/modals/SuccessfulRequestModal.tsx';
 import {TextInput, Pressable} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import KeyboardAvoidingScrollView from "../components/KeyboardAvoidingScrollView.tsx";
+import {useIsFocused} from "@react-navigation/native";
 
 const d = Dimensions.get('screen');
 
@@ -33,6 +35,8 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
   const chatService = useDependency<ChatService>('ChatService');
   const categoryService = useDependency<CategoryService>('CategoryService');
   const userService = useDependency<UserService>('UserService');
+
+  const focused = useIsFocused();
 
   const [chatUser, setChatUser] = React.useState<ChatUser | null>(null);
   const [messages, setMessages] = React.useState<Message[]>([]);
@@ -264,9 +268,10 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={'height'}>
+      <KeyboardAvoidingScrollView
+        scrollable={false}
+        tabs={false}
+        focused={focused}>
         {chatUser != null && categories.length > 0 && (
           <View style={{flex: 1}}>
             <View style={styles.userTab}>
@@ -338,7 +343,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
             </View>
           </View>
         )}
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingScrollView>
       <LongRunningOperationIndicator isRefreshing={chatUser == null || categories.length == 0 || isRefreshing} />
       <ReviewBottomSheet
         ref={ref}

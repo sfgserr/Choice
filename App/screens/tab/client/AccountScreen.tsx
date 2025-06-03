@@ -28,6 +28,7 @@ import {Icon} from '@rneui/base';
 import PayModal from '../../../components/modals/PayModal.tsx';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import PhoneBox from "../../../components/inputs/PhoneBox.tsx";
+import KeyboardAvoidingScrollView from "../../../components/KeyboardAvoidingScrollView.tsx";
 
 type Form = {
   id: string
@@ -134,9 +135,10 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
       {form == null || balance == '' ? (
         <ActivityIndicator size={'large'} color={'#2D81E0'} />
       ) : (
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={'height'}>
+        <KeyboardAvoidingScrollView
+          scrollable={false}
+          tabs
+          focused={isFocused}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}>
@@ -252,7 +254,7 @@ export default function AccountScreen({route, navigation}: AccountScreenProps) {
               )}
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingScrollView>
       )}
       <ChangeIconUriModal
         isToggled={isChangeIconUriModalToggled}
