@@ -51,15 +51,6 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
             onPress={() => setIsToggled(prev => !prev)}/>
         </View>
         <TabBar tabs={tabs} big/>
-        <View
-          style={{
-            height: 3,
-            width: 3,
-            backgroundColor: 'blue',
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-          }}/>
       </KeyboardAvoidingScrollView>
       <CreateAccountModal
         isToggled={isToggled}

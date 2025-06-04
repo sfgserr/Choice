@@ -18,11 +18,12 @@ import {ImageBoxObject, MinioBlob} from '../components/ImageBox.tsx';
 import {ObjectStorageService} from '../services/object/ObjectStorageService.ts';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { AuthContext } from '../contexts/authorized/Context.tsx';
+import NavigateBackButton from '../components/buttons/NavigateBackButton.tsx';
 
 const d = Dimensions.get('screen');
 
 export default function FillDataScreen({route, navigation}: FillDataScreenProps) {
-  const { changeState, signOut } = React.useContext(AuthContext);
+  const { signOut } = React.useContext(AuthContext);
 
   const companyService = useDependency<CompanyService>('CompanyService');
   const categoryService = useDependency<CategoryService>('CategoryService');
@@ -118,15 +119,18 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
     <SafeAreaView style={{flex: 1}}>
       <GestureHandlerRootView>
         <View style={styles.container}>
-          <View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+           <View style={{alignSelf: 'center'}}>
+             <NavigateBackButton
+               navigation={navigation}
+               override={() => {
+                 if (currentIndex != 0) setCurrentIndex(prev => prev - 1);
+               }}/>
+           </View>
             <Text style={styles.title}>Карточка компании</Text>
             <TouchableOpacity
-              style={{
-                position: 'absolute',
-                top: 5,
-                right: 10,
-              }}
-              onPress={() => signOut()}>
+              onPress={() => signOut()}
+              style={{alignSelf: 'center'}}>
               <Image
                 style={{
                   width: 25,
@@ -152,7 +156,7 @@ export default function FillDataScreen({route, navigation}: FillDataScreenProps)
       </GestureHandlerRootView>
       <SuccessfulRequestModal
         isToggled={isToggled}
-        handlePress={() => changeState(State.Unsubscribe)}
+        handlePress={() => signOut()}
         title={'Отлично'}
         text={'Теперь тысячи пользователей увидят вашу компанию, вы сможете отвечать на их запросы'}/>
       <UnsuccessfulRequestModal

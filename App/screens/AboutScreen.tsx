@@ -44,7 +44,7 @@ export default function AboutScreen({next, onChevronPressed, categoriesTitle}: A
   const onOptionPressed = () => setPrepaymentAvailable(prev => !prev);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}>
@@ -107,7 +107,7 @@ export default function AboutScreen({next, onChevronPressed, categoriesTitle}: A
           isDisabled={photoUris.every(s => s.getObjectName() == '') || categoriesTitle == '' || description == ''}
           pressed={() => next(description, photoUris, prepaymentAvailable)}/>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

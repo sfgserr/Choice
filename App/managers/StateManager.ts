@@ -49,7 +49,7 @@ export class StateManager {
 
       let state = this.userTypeToStateMap[user.userType];
 
-      if (state == State.Company && !user.subscribed) {
+      if (!user.subscribed) {
         return State.Unsubscribe;
       }
 

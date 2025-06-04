@@ -47,10 +47,11 @@ namespace Users.Domain.Users
             _phoneNumber = phoneNumber;
             _iconUri = iconUri;
             _role = role;
-            IsDataFilled = !role.Equals(UserRole.Company);
             _address = address;
             _role = role;
-
+            
+            IsDataFilled = !role.Equals(UserRole.User);
+            
             AddDomainEvent(new UserCreatedDomainEvent(
                 id,
                 name,
