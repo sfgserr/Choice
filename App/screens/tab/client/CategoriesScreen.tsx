@@ -6,6 +6,8 @@ import {CategoriesScreenProps} from '../../../types/NavigationTypes.ts';
 import {useDependency} from '../../../services/Hooks.ts';
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import DeviceInfo from "react-native-device-info";
+import {DeviceTokenService} from "../../../services/domain/DeviceTokenService.ts";
 
 export default function CategoriesScreen({route, navigation}: CategoriesScreenProps) {
   const categoryService = useDependency<CategoryService>('CategoryService');
@@ -33,6 +35,8 @@ export default function CategoriesScreen({route, navigation}: CategoriesScreenPr
 
      if (c.content != null)
       setCategories(c.content);
+
+     await DeviceTokenService.addDevice();
    }
    getCategories();
   }, []);

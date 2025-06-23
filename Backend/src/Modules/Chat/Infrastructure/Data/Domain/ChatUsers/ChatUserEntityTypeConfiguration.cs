@@ -15,6 +15,18 @@ namespace Chat.Infrastructure.Data.Domain.ChatUsers
             builder.Property<string>("_name").HasColumnName("Name");
             builder.Property<string>("_iconUri").HasColumnName("IconUri");
             builder.Property<bool>("_isDeleted").HasColumnName("IsDeleted");
+
+            builder.OwnsMany<Device>("_devices", y =>
+            {
+                y.ToTable("Devices", "chat");
+
+                y.HasKey(z => new { z.UserId, z.Name });
+                
+                y.Property<string>("_token").HasColumnName("Token");
+                y.Property<DateTime>("_expirationDate").HasColumnName("ExpirationDate");
+                
+                y.WithOwner().HasForeignKey("UserId");
+            });
         }
     }
 }

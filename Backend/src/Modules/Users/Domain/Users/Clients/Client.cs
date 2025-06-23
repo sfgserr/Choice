@@ -28,6 +28,8 @@ namespace Users.Domain.Users.Clients
             string email,
             string phoneNumber,
             string password,
+            string deviceName,
+            string deviceToken,
             Address address,
             IUsersCounter counter)
         {
@@ -36,6 +38,8 @@ namespace Users.Domain.Users.Clients
                 email,
                 password,
                 phoneNumber,
+                deviceName,
+                deviceToken,
                 address,
                 UserRole.Client,
                 counter);

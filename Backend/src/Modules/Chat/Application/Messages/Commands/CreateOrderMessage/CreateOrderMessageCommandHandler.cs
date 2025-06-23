@@ -5,11 +5,14 @@ using Chat.Domain.Messages;
 
 namespace Chat.Application.Messages.Commands.CreateOrderMessage
 {
-    internal class CreateOrderMessageCommandHandler : RealTimeCommandHandlerBase<CreateOrderMessageCommand, MessageDto>
+    internal class CreateOrderMessageCommandHandler : 
+        RealTimeCommandHandlerBase<CreateOrderMessageCommand, MessageDto>, INotifiableCommandHandler<CreateOrderMessageCommand>
     {
         private readonly IChatDbContext _dbContext;
         
-        internal CreateOrderMessageCommandHandler(IChatDbContext dbContext, IChatService chatService) : base(chatService, "messageSent")
+        internal CreateOrderMessageCommandHandler(
+            IChatDbContext dbContext, 
+            IChatService chatService) : base(chatService, "messageSent")
         {
             _dbContext = dbContext;
         }
@@ -30,6 +33,11 @@ namespace Chat.Application.Messages.Commands.CreateOrderMessage
         protected override Guid GetUserId(CreateOrderMessageCommand command)
         {
             return command.ToUserId;
+        }
+
+        public Notification GetNotification(CreateOrderMessageCommand command)
+        {
+            return new Notification(command.ToUserId, "Новое сообщение", "Ответ на заказ");
         }
     }
 }

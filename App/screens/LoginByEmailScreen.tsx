@@ -10,7 +10,8 @@ import {useDependency} from '../services/Hooks.ts';
 import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 import GestureBorderedTextInput from '../components/inputs/GestureBordererdTextInput.tsx';
 import GesturePasswordBox from '../components/inputs/GesturePasswordBox.tsx';
-import {SafeAreaView} from "react-native-safe-area-context";
+import messaging from '@react-native-firebase/messaging';
+import {DeviceTokenService} from "../services/domain/DeviceTokenService.ts";
 
 export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
   const { signIn } = React.useContext(AuthContext);
@@ -74,10 +75,12 @@ export default function LoginByEmailScreen({refresh}: {refresh: () => void}) {
 
             refresh();
 
-            if (result != null)
+            if (result != null) {
               signIn(result[0], result[1]);
-            else
+            }
+            else {
               setIsError(true);
+            }
           }}/>
       </ScrollView>
     </KeyboardAvoidingView>

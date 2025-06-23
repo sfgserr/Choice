@@ -1,4 +1,5 @@
 using BuildingBlocks.Application.Cqrs.Commands;
+using Chat.Application.RealTimeMessaging;
 
 namespace Chat.Application.Messages.Commands.CreateOrderMessage
 {

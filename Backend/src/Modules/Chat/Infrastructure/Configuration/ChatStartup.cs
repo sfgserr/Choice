@@ -5,6 +5,7 @@ using Chat.Infrastructure.Configuration.Authentication;
 using Chat.Infrastructure.Configuration.Data;
 using Chat.Infrastructure.Configuration.DomainEventsDispatching;
 using Chat.Infrastructure.Configuration.Events;
+using Chat.Infrastructure.Configuration.Firebase;
 using Chat.Infrastructure.Configuration.Logging;
 using Chat.Infrastructure.Configuration.Mediation;
 using Chat.Infrastructure.Configuration.Outbox;
@@ -51,6 +52,7 @@ namespace Chat.Infrastructure.Configuration
             
             containerBuilder.RegisterModule(new DomainEventsDispatchingModule([]));
             containerBuilder.RegisterModule(new EventBusModule(bus));
+            containerBuilder.RegisterModule(new FirebaseModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "Chat")));
             containerBuilder.RegisterModule(new MediationModule());
             containerBuilder.RegisterModule(new OutboxModule());

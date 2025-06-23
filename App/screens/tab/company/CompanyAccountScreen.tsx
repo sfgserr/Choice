@@ -37,6 +37,7 @@ import PayModal from '../../../components/modals/PayModal.tsx';
 import PayoutModal from '../../../components/modals/PayoutModal.tsx';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import KeyboardAvoidingScrollView from "../../../components/KeyboardAvoidingScrollView.tsx";
+import {DeviceTokenService} from "../../../services/domain/DeviceTokenService.ts";
 
 type Form = {
   id: string
@@ -507,7 +508,10 @@ export default function CompanyAccountScreen({route, navigation}: AccountScreenP
                 top={20}
                 bottom={10}
                 isDisabled={false}
-                pressed={signOut}
+                pressed={async () => {
+                  await DeviceTokenService.removeDevice();
+                  signOut();
+                }}
                 type={'warn'}/>
               {isChanged && (
                 <GestureStyledButton

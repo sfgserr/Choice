@@ -21,6 +21,8 @@ export class CompanyService {
     phoneNumber: string,
     city: string,
     street: string,
+    deviceName: string,
+    deviceToken: string,
   ) {
     return await this.httpService.request(
       'companies',
@@ -32,6 +34,8 @@ export class CompanyService {
         phoneNumber,
         city,
         street,
+        deviceName,
+        deviceToken,
       }),
     );
   }

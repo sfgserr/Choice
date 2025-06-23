@@ -21,6 +21,8 @@ import {AdminService} from './domain/AdminService.ts';
 import {PaymentService} from './domain/PaymentService';
 import {ReviewService} from './domain/ReviewService.ts';
 import {ConnectionManager} from '../managers/ConnectionManager.ts';
+import {ChatUserService} from './domain/ChatUserService.ts';
+import {DeviceTokenService} from "./domain/DeviceTokenService.ts";
 
 type Object = {
   [name: string]: object,
@@ -81,6 +83,9 @@ export class ObjectGraph {
     const adminService = new AdminService(httpService);
     const paymentService = new PaymentService(httpService);
     const reviewService = new ReviewService(httpService);
+    const chatUserService = new ChatUserService(httpService);
+
+    DeviceTokenService.initialize(chatUserService);
 
     this.objects.AuthService = authService;
     this.objects.AccountManager = accountManager;
@@ -102,6 +107,7 @@ export class ObjectGraph {
     this.objects.AdminService = adminService;
     this.objects.PaymentService = paymentService;
     this.objects.ReviewService = reviewService;
+    this.objects.ChatUserService = chatUserService;
 
     this.isInitialized = true;
   }

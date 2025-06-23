@@ -8,7 +8,9 @@ namespace WebApi.Modules.Users.Companies
             string email, 
             string phoneNumber, 
             string city, 
-            string street)
+            string street,
+            string deviceName,
+            string  deviceToken)
         {
             Name = name;
             Password = password;
@@ -16,6 +18,8 @@ namespace WebApi.Modules.Users.Companies
             PhoneNumber = phoneNumber;
             City = city;
             Street = street;
+            DeviceName = deviceName;
+            DeviceToken = deviceToken;
         }
 
         public string Name { get; }
@@ -29,5 +33,9 @@ namespace WebApi.Modules.Users.Companies
         public string City { get; }
 
         public string Street { get; }
+        
+        public string DeviceName { get; }
+        
+        public string DeviceToken { get; }
     }
 }

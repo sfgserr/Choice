@@ -19,7 +19,9 @@ namespace Chat.Infrastructure.Consumers
             await _scheduler.EnqueueAsync(new CreateChatUserCommand(
                 @event.Id, 
                 @event.UserId,
-                @event.UserName));
+                @event.UserName,
+                @event.DeviceName,
+                @event.DeviceToken));
         }
     }
 }

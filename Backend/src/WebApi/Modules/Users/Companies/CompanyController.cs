@@ -34,7 +34,9 @@ namespace WebApi.Modules.Users.Companies
                 request.Email,
                 request.PhoneNumber,
                 request.City,
-                request.Street));
+                request.Street,
+                request.DeviceName,
+                request.DeviceToken));
 
             return Ok();
         }

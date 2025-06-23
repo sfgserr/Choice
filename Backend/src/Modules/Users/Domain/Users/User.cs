@@ -34,6 +34,8 @@ namespace Users.Domain.Users
             string password,
             string phoneNumber,  
             string iconUri, 
+            string deviceName,
+            string deviceToken,
             Address address, 
             UserRole role,
             IUsersCounter counter)
@@ -59,6 +61,8 @@ namespace Users.Domain.Users
                 password,
                 phoneNumber,
                 role.Value,
+                deviceName,
+                deviceToken,
                 address));
         }
 
@@ -66,7 +70,9 @@ namespace Users.Domain.Users
             string name, 
             string email,
             string password,
-            string phoneNumber,  
+            string phoneNumber,
+            string deviceName,
+            string deviceToken,
             Address address,
             UserRole role,
             IUsersCounter counter)
@@ -78,6 +84,8 @@ namespace Users.Domain.Users
                 password,
                 phoneNumber, 
                 "default.png",
+                deviceName,
+                deviceToken,
                 address, 
                 role,
                 counter);

@@ -30,7 +30,7 @@ namespace Chat.Infrastructure.Configuration.Processing
                 .AsClosedTypesOf(typeof(IQueryHandler<,>))
                 .InstancePerDependency()
                 .FindConstructorsWith(new AllConstructorFinder());
-
+            
             builder.RegisterGenericDecorator(
                 typeof(UnitOfWorkCommandHandlerDecorator<>),
                 typeof(ICommandHandler<>));

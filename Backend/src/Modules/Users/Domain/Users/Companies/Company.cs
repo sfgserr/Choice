@@ -38,6 +38,8 @@ namespace Users.Domain.Users.Companies
             string email,
             string phoneNumber,
             string password,
+            string deviceName,
+            string deviceToken,
             Address address,
             IUsersCounter counter)
         {
@@ -46,6 +48,8 @@ namespace Users.Domain.Users.Companies
                 email,
                 password,
                 phoneNumber,
+                deviceName,
+                deviceToken,
                 address,
                 UserRole.User,
                 counter);

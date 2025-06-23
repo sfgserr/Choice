@@ -13,7 +13,9 @@ export class ClientService {
     email: string,
     phoneNumber: string,
     city: string,
-    street: string) {
+    street: string,
+    deviceName: string,
+    deviceToken: string) {
     return await this.httpService.request(
       'clients',
       'POST',
@@ -23,7 +25,9 @@ export class ClientService {
         email,
         phoneNumber,
         city,
-        street
+        street,
+        deviceName,
+        deviceToken,
       }));
   }
 

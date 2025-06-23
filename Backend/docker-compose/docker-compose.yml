@@ -19,8 +19,13 @@ services:
       dockerfile: src/WebApi/Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+
+      - GoogleApplicationCredentials=/credentials/credentials.json
     ports:
       - 127.0.0.1:8082:80
+    env_file:
+      - .env
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/credentials/credentials.json:rw
   
   minio:
     image: quay.io/minio/minio

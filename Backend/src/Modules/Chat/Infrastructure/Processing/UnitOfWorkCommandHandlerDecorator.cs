@@ -3,21 +3,25 @@ using BuildingBlocks.Infrastructure.Data;
 using Chat.Application.RealTimeMessaging;
 using Microsoft.EntityFrameworkCore;
 using Chat.Infrastructure.Data;
+using Chat.Infrastructure.Firebase;
 
 namespace Chat.Infrastructure.Processing
 {
     internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly FirebaseNotificationService _notificationService;
         private readonly ICommandHandler<T> _decorated;
         private readonly ChatContext _chatContext;
 
         public UnitOfWorkCommandHandlerDecorator(
             IUnitOfWork unitOfWork, 
+            FirebaseNotificationService notificationService,
             ICommandHandler<T> decorated, 
             ChatContext chatContext)
         {
             _unitOfWork = unitOfWork;
+            _notificationService = notificationService;
             _decorated = decorated;
             _chatContext = chatContext;
         }
@@ -38,10 +42,17 @@ namespace Chat.Infrastructure.Processing
             await ProcessInternalCommand(command);
 
             await _unitOfWork.SaveChangesAsync(transaction);
-
+            
             if (_decorated is IRealTimeMessenger messenger)
             {
                 await messenger.Send();
+            }
+            
+            if (_decorated is INotifiableCommandHandler<T> commandHandler)
+            {
+                var notification = commandHandler.GetNotification(command);
+                
+                await _notificationService.Notify(notification);
             }
         }
 

@@ -6,7 +6,8 @@ using Chat.Domain.ChatUsers;
 
 namespace Chat.Application.Messages.Commands.CreateMessage
 {
-    internal class CreateMessageCommandHandler : RealTimeCommandHandlerWithResultBase<CreateMessageCommand, MessageDto>
+    internal class CreateMessageCommandHandler : 
+        RealTimeCommandHandlerWithResultBase<CreateMessageCommand, MessageDto>, INotifiableCommandHandler<CreateMessageCommand>
     {
         private readonly IChatDbContext _dbContext;
         private readonly IUserContext _userContext;
@@ -36,6 +37,11 @@ namespace Chat.Application.Messages.Commands.CreateMessage
         protected override Guid GetUserId(CreateMessageCommand command)
         {
             return command.ToUserId;
+        }
+
+        public Notification GetNotification(CreateMessageCommand command)
+        {
+            return new Notification(command.ToUserId, "Новое сообщение", command.Content);
         }
     }
 }

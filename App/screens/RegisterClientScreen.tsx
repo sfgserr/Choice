@@ -15,6 +15,8 @@ import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx
 import {SafeAreaView} from 'react-native-safe-area-context';
 import KeyboardAvoidingScrollView from '../components/KeyboardAvoidingScrollView.tsx';
 import {useIsFocused} from '@react-navigation/native';
+import DeviceInfo from "react-native-device-info";
+import {DeviceTokenService} from "../services/domain/DeviceTokenService.ts";
 
 export default function RegisterClientScreen({route, navigation}: RegisterClientScreenProps) {
   const clientService = useDependency<ClientService>('ClientService');
@@ -54,7 +56,9 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
       form.email,
       form.phoneNumber,
       form.city,
-      form.street);
+      form.street,
+      DeviceInfo.getDeviceId(),
+      DeviceTokenService.getToken());
 
     setRefreshing(false);
 
@@ -68,110 +72,96 @@ export default function RegisterClientScreen({route, navigation}: RegisterClient
   }, [form]);
 
   return (
-    <SafeAreaView
-      style={styles.container}>
-      <KeyboardAvoidingScrollView
-        scrollable
-        tabs={false}
-        focused={focused}>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingScrollView scrollable tabs={false} focused={focused}>
         <Text style={styles.title}>Регистрация клиента</Text>
-        <TextInputTitle
-          s={'Имя'}
-          top={20}
-          bottom={5}/>
+        <TextInputTitle s={'Имя'} top={20} bottom={5} />
         <GestureBorderedTextInput
           value={form.name}
-          onChanged={(name) => setForm(prev => ({...prev, name}))}
+          onChanged={name => setForm(prev => ({...prev, name}))}
           placeholder={'Введите имя'}
           isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'Фамилия'}
-          top={20}
-          bottom={5}/>
+          isBig={false}
+        />
+        <TextInputTitle s={'Фамилия'} top={20} bottom={5} />
         <GestureBorderedTextInput
           value={form.surname}
-          onChanged={(surname) => setForm(prev => ({...prev, surname}))}
+          onChanged={surname => setForm(prev => ({...prev, surname}))}
           placeholder={'Введите фамилию'}
           isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'E-mail'}
-          top={20}
-          bottom={5}/>
+          isBig={false}
+        />
+        <TextInputTitle s={'E-mail'} top={20} bottom={5} />
         <GestureBorderedTextInput
           value={form.email}
-          onChanged={(email) => setForm(prev => ({...prev, email}))}
+          onChanged={email => setForm(prev => ({...prev, email}))}
           placeholder={'Введите E-mail'}
           isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'Номер телефона'}
-          top={20}
-          bottom={5}/>
+          isBig={false}
+        />
+        <TextInputTitle s={'Номер телефона'} top={20} bottom={5} />
         <PhoneBox
           value={form.phoneNumber}
-          onChanged={(phoneNumber) => setForm(prev => ({...prev, phoneNumber}))}
+          onChanged={phoneNumber => setForm(prev => ({...prev, phoneNumber}))}
           isError={false}
-          isReadonly={false}/>
-        <TextInputTitle
-          s={'Город'}
-          top={20}
-          bottom={5}/>
+          isReadonly={false}
+        />
+        <TextInputTitle s={'Город'} top={20} bottom={5} />
         <GestureBorderedTextInput
           value={form.city}
-          onChanged={(city) => setForm(prev => ({...prev, city}))}
+          onChanged={city => setForm(prev => ({...prev, city}))}
           placeholder={'Введите название города'}
           isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'Улица'}
-          top={20}
-          bottom={5}/>
+          isBig={false}
+        />
+        <TextInputTitle s={'Улица'} top={20} bottom={5} />
         <GestureBorderedTextInput
           value={form.street}
-          onChanged={(street) => setForm(prev => ({...prev, street}))}
+          onChanged={street => setForm(prev => ({...prev, street}))}
           placeholder={'Введите название улицы'}
           isError={false}
-          isBig={false}/>
-        <TextInputTitle
-          s={'Пароль'}
-          top={20}
-          bottom={5}/>
+          isBig={false}
+        />
+        <TextInputTitle s={'Пароль'} top={20} bottom={5} />
         <GesturePasswordBox
           value={form.password}
-          onChanged={(password) => setForm(prev => ({...prev, password}))}
-          isError={false}/>
-        <TextInputTitle
-          s={'Повторите пароль'}
-          top={20}
-          bottom={5}/>
+          onChanged={password => setForm(prev => ({...prev, password}))}
+          isError={false}
+        />
+        <TextInputTitle s={'Повторите пароль'} top={20} bottom={5} />
         <GesturePasswordBox
           value={form.confirmPassword}
-          onChanged={(confirmPassword) => setForm(prev => ({...prev, confirmPassword}))}
-          isError={false}/>
+          onChanged={confirmPassword =>
+            setForm(prev => ({...prev, confirmPassword}))
+          }
+          isError={false}
+        />
         <GestureStyledButton
           content={'Создать аккаунт'}
           top={20}
           bottom={20}
           isDisabled={isDisabled()}
-          pressed={createClient}/>
+          pressed={createClient}
+        />
         <Text style={styles.loginText}>У меня есть аккаунт</Text>
         <View style={styles.loginButtonContainer}>
-          <TextButton
-            text={'Войти'}
-            onPress={() => navigation.goBack()}/>
+          <TextButton text={'Войти'} onPress={() => navigation.goBack()} />
         </View>
         <SuccessfulRequestModal
           isToggled={toggled}
-          handlePress={() => navigation.goBack()}
+          handlePress={() => {
+
+            navigation.goBack();
+          }}
           title={'Аккаунт клиента создан'}
-          text={'Теперь вы можете создавать заказы'}/>
+          text={'Теперь вы можете создавать заказы'}
+        />
         <UnsuccessfulRequestModal
           isToggled={errorToggled}
           handlePress={() => setErrorToggled(false)}
-          errorMessage={errorMessage}/>
-        <LongRunningOperationIndicator isRefreshing={refreshing}/>
+          errorMessage={errorMessage}
+        />
+        <LongRunningOperationIndicator isRefreshing={refreshing} />
       </KeyboardAvoidingScrollView>
     </SafeAreaView>
   );

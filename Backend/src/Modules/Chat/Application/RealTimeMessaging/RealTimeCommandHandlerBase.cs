@@ -6,7 +6,9 @@ namespace Chat.Application.RealTimeMessaging
     internal abstract class RealTimeCommandHandlerBase<TCommand, TData> : 
         RealTimeMessengerBase<TCommand, TData>, ICommandHandler<TCommand> where TCommand : ICommand
     {
-        protected RealTimeCommandHandlerBase(IChatService chatService, string methodName) : base(chatService, methodName)
+        protected RealTimeCommandHandlerBase(
+            IChatService chatService, 
+            string methodName) : base(chatService, methodName)
         {
         }
 

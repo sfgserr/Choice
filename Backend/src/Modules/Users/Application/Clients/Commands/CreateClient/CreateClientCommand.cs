@@ -10,7 +10,9 @@ namespace Users.Application.Clients.Commands.CreateClient
             string email, 
             string phoneNumber, 
             string city, 
-            string street)
+            string street,
+            string deviceName,
+            string deviceToken)
         {
             Name = name;
             Password = password;
@@ -18,6 +20,8 @@ namespace Users.Application.Clients.Commands.CreateClient
             PhoneNumber = phoneNumber;
             City = city;
             Street = street;
+            DeviceName = deviceName;
+            DeviceToken = deviceToken;
         }
 
         public string Name { get; }
@@ -31,5 +35,9 @@ namespace Users.Application.Clients.Commands.CreateClient
         public string City { get; }
 
         public string Street { get; }
+        
+        public string DeviceName { get; }
+        
+        public string DeviceToken { get; }
     }
 }

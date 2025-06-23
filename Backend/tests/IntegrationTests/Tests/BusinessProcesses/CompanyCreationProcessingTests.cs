@@ -15,13 +15,14 @@ namespace IntegrationTests.Tests.BusinessProcesses
         public async Task ChangingDataNotCausesDuplicateSocialMedias()
         {
             var fillData = new TestChain(CompanyFillDataReturnsOk);
-            var buySubscriptionPayment = new TestChain(BuySubscriptionPaymentReturnsOk);
-            var paySubscription = new TestChain(PaySubscriptionReturnsOk);
+            //var buySubscriptionPayment = new TestChain(BuySubscriptionPaymentReturnsOk);
+            //var paySubscription = new TestChain(PaySubscriptionReturnsOk);
+            var addOrUpdate = new TestChain(AddOrUpdateDevice);
             var changeData = new TestChain(ChangeDataReturnsOk);
             var companyHasTwoSocialMedias = new TestChain(CompanyHasTwoSocialMedias);
             
-            fillData.SetNext(buySubscriptionPayment);
-            buySubscriptionPayment.SetNext(paySubscription);
+            fillData.SetNext(addOrUpdate);
+            addOrUpdate.SetNext(changeData);
             changeData.SetNext(companyHasTwoSocialMedias);
             
             var result = await fillData.Execute([]);
@@ -48,6 +49,31 @@ namespace IntegrationTests.Tests.BusinessProcesses
                         SocialMediaUris = new List<string> { "https://facebook.com/Company" },
                         IsPrepaymentAvailable = true
                     })
+                };
+                request.Headers.Add("Authorization", $"Bearer {token}");
+
+                var response = await client.SendAsync(request);
+ 
+                return new TestResult(response.IsSuccessStatusCode, []);
+            }, 10000, false, TokenType.Company);
+        }
+
+        private async Task<TestResult> AddOrUpdateDevice(object?[] arg)
+        {
+            return await ExecuteAuthorizedTest(async (factory, token) => 
+            {
+                using var client = factory.CreateClient("Default");
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Put,
+                    "api/chatUsers")
+                {
+                    Content = JsonContent.Create(
+                        new
+                        {
+                            Device = "Device",
+                            Token = "NewToken"
+                        })
                 };
                 request.Headers.Add("Authorization", $"Bearer {token}");
 
@@ -141,11 +167,13 @@ namespace IntegrationTests.Tests.BusinessProcesses
                     return new TestResult(false, []);
                 
                 var json = await response.Content.ReadAsStringAsync();
+
+                var result = JObject.Parse(json)
+                    .SelectToken("socialMedias")?
+                    .Value<JArray>()!.Count == 2;
                 
-                return new TestResult(
-                    JObject.Parse(json)
-                                      .SelectToken("socialMedias")?
-                                      .Value<string[]>()!.Length > 2, []);
+                return new TestResult(result
+                    , []);
             }, 0, true, TokenType.Company);
         }
     }

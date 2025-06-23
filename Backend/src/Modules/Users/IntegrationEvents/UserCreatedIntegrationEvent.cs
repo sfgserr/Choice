@@ -15,7 +15,9 @@ namespace Users.IntegrationEvents
             string city, 
             string street, 
             string latitude, 
-            string longitude) : base(id)
+            string longitude,
+            string deviceName,
+            string deviceToken) : base(id)
         {
             UserId = userId;
             UserName = userName;
@@ -27,6 +29,8 @@ namespace Users.IntegrationEvents
             Street = street;
             Latitude = latitude;
             Longitude = longitude;
+            DeviceName = deviceName;
+            DeviceToken = deviceToken;
         }
 
         public Guid UserId { get; }
@@ -48,5 +52,7 @@ namespace Users.IntegrationEvents
         public string Latitude { get; }
         
         public string Longitude { get; }
+        public string DeviceName { get; }
+        public string DeviceToken { get; }
     }
 }

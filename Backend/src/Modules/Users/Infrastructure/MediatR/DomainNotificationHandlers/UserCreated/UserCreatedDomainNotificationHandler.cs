@@ -29,7 +29,9 @@ namespace Users.Infrastructure.MediatR.DomainNotificationHandlers.UserCreated
                 domainEvent.Address.City,
                 domainEvent.Address.Street,
                 domainEvent.Address.Coords.Latitude,
-                domainEvent.Address.Coords.Longitude));
+                domainEvent.Address.Coords.Longitude,
+                domainEvent.DeviceName,
+                domainEvent.DeviceToken));
         }
     }
 }

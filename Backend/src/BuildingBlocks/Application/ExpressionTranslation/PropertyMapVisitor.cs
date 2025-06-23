@@ -42,7 +42,7 @@ namespace BuildingBlocks.Application.ExpressionTranslation
 
             foreach (var property in properties)
             {
-                var fieldName = string.Create(property.Name.Length+1, property.Name, (span, str) =>
+                var fieldName = string.Create(property.Name.Length + 1, property.Name, (span, str) =>
                 {
                     span[0] = '_';
                     str.AsSpan(0).CopyTo(span[1..]);

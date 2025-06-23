@@ -19,6 +19,8 @@ using WebApi.Modules.Users;
 using Identity.Infrastructure.Configuration;
 using Chat.Infrastructure.Configuration;
 using Chat.Infrastructure.SignalR;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Identity.Infrastructure.Authorization;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
@@ -105,6 +107,8 @@ namespace WebApi
                 
                 options.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentials)}");
             });
+
+            FirebaseApp.Create(new AppOptions { Credential = GoogleCredential.FromFile(Configuration["GoogleApplicationCredentials"]) });
             
             services.AddControllers();
             services.AddSwaggerGen();

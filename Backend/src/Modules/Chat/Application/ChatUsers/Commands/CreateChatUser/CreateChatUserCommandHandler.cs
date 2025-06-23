@@ -18,7 +18,9 @@ namespace Chat.Application.ChatUsers.Commands.CreateChatUser
             var user = ChatUser.Create(
                 new(command.UserId),
                 command.Name,
-                "default.png");
+                "default.png",
+                command.DeviceName,
+                command.DeviceToken);
 
             await _dbContext.ChatUsers.AddAsync(user);
         }

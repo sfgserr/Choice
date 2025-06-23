@@ -2,9 +2,10 @@ using Chat.Application.Contracts;
 
 namespace Chat.Application.RealTimeMessaging
 {
-    internal abstract class RealTimeMessengerBase<TCommand, TData> : IRealTimeMessenger
+    public abstract class RealTimeMessengerBase<TCommand, TData> : IRealTimeMessenger
     {
         private readonly IChatService _chatService;
+        
         private readonly string _methodName;
         
         private TCommand _command;
@@ -33,7 +34,9 @@ namespace Chat.Application.RealTimeMessaging
         {
             if (_data != null)
             {
-                await _chatService.Send(_data, GetUserId(_command), _methodName);
+                var userId = GetUserId(_command);
+                
+                await _chatService.Send(_data, userId, _methodName);
             }
         }
     }

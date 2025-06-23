@@ -6,11 +6,14 @@ using Chat.Domain.Messages.OrderMessages;
 
 namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
 {
-    internal class ChangeEnrollmentDateCommandHandler : RealTimeCommandHandlerBase<ChangeEnrollmentDateCommand, MessageDto>
+    internal class ChangeEnrollmentDateCommandHandler : 
+        RealTimeCommandHandlerBase<ChangeEnrollmentDateCommand, MessageDto>, INotifiableCommandHandler<ChangeEnrollmentDateCommand> 
     {
         private readonly IChatDbContext _dbContext;
 
-        internal ChangeEnrollmentDateCommandHandler(IChatService chatService, IChatDbContext dbContext) : base(chatService, "messageSent")
+        internal ChangeEnrollmentDateCommandHandler(
+            IChatService chatService, 
+            IChatDbContext dbContext) : base(chatService,"messageSent")
         {
             _dbContext = dbContext;
         }
@@ -33,6 +36,11 @@ namespace Chat.Application.Messages.Commands.ChangeEnrollmentDate
         protected override Guid GetUserId(ChangeEnrollmentDateCommand command)
         {
             return command.ToUserId;
+        }
+
+        public Notification GetNotification(ChangeEnrollmentDateCommand command)
+        {
+            return new Notification(command.ToUserId, "Новое сообщение", "Дата записи изменена");
         }
     }
 }

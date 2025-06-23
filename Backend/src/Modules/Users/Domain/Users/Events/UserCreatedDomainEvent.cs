@@ -10,7 +10,9 @@ namespace Users.Domain.Users.Events
             string email, 
             string password, 
             string phoneNumber, 
-            string role, 
+            string role,
+            string deviceName,
+            string deviceToken,
             Address address)
         {
             UserId = userId;
@@ -19,6 +21,8 @@ namespace Users.Domain.Users.Events
             Password = password;
             PhoneNumber = phoneNumber;
             Role = role;
+            DeviceName = deviceName;
+            DeviceToken = deviceToken;
             Address = address;
         }
 
@@ -33,6 +37,10 @@ namespace Users.Domain.Users.Events
         public string PhoneNumber { get; }
 
         public string Role { get; }
+        
+        public string DeviceName { get; }
+        
+        public string DeviceToken { get; }
 
         public Address Address { get; }
     }

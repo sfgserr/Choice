@@ -8,6 +8,7 @@ import {OrderRequestService} from '../../../services/domain/OrderRequestService.
 import {CategoryService} from '../../../services/domain/CategoryService.ts';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {DeviceTokenService} from "../../../services/domain/DeviceTokenService.ts";
 
 export default function CompanyRequestsScreen({route, navigation}: CompanyRequestsScreenProps) {
   const orderRequestService = useDependency<OrderRequestService>('OrderRequestService');
@@ -57,6 +58,8 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
       if (response.content != null) {
         setCategories(response.content);
       }
+
+      await DeviceTokenService.addDevice();
     }
     getCategories();
     getOrderRequests();

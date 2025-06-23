@@ -17,6 +17,8 @@ import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx
 import {SafeAreaView} from 'react-native-safe-area-context';
 import KeyboardAvoidingScrollView from '../components/KeyboardAvoidingScrollView.tsx';
 import {useIsFocused} from '@react-navigation/native';
+import DeviceInfo from "react-native-device-info";
+import {DeviceTokenService} from "../services/domain/DeviceTokenService.ts";
 
 export default function RegisterCompanyScreen({route, navigation}: RegisterCompanyScreenProps) {
   const { signIn } = React.useContext(AuthContext);
@@ -58,7 +60,9 @@ export default function RegisterCompanyScreen({route, navigation}: RegisterCompa
       form.email,
       form.phoneNumber,
       form.city,
-      form.street);
+      form.street,
+      DeviceInfo.getDeviceId(),
+      DeviceTokenService.getToken());
 
     setTimeout(() => {}, 5000);
 

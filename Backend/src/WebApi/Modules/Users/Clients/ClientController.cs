@@ -28,7 +28,9 @@ namespace WebApi.Modules.Users.Clients
                 createClientRequest.Email,
                 createClientRequest.PhoneNumber,
                 createClientRequest.City,
-                createClientRequest.Street));
+                createClientRequest.Street,
+                createClientRequest.DeviceName,
+                createClientRequest.DeviceToken));
 
             return Ok();
         }

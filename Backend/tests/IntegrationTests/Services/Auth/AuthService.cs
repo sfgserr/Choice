@@ -90,7 +90,9 @@ namespace IntegrationTests.Services.Auth
                     Password = "12345678",
                     PhoneNumber = "9267339972",
                     City = "Москва",
-                    Street = "Ангарская 21"
+                    Street = "Ангарская 21",
+                    DeviceName = "Device",
+                    DeviceToken = "Token",
                 }));
 
             return clientCreatedResponse.IsSuccessStatusCode;
@@ -110,7 +112,9 @@ namespace IntegrationTests.Services.Auth
                     Password = "12345678",
                     PhoneNumber = "9267339973",
                     City = "Москва",
-                    Street = "Арбат 26"
+                    Street = "Арбат 26",
+                    DeviceName = "Device",
+                    DeviceToken = "Token",
                 }));
 
             return companyCreatedResponse.IsSuccessStatusCode;

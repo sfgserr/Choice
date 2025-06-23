@@ -14,8 +14,8 @@ import CreateAccountModal from '../components/modals/CreateAccountModal.tsx';
 import LoginByPhoneScreen from './LoginByPhoneScreen.tsx';
 import LongRunningOperationIndicator from '../components/LongRunningOperationIndicator.tsx';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import KeyboardAvoidingScrollView from "../components/KeyboardAvoidingScrollView.tsx";
-import {useIsFocused} from "@react-navigation/native";
+import KeyboardAvoidingScrollView from '../components/KeyboardAvoidingScrollView.tsx';
+import {useIsFocused} from '@react-navigation/native';
 
 const {height} = Dimensions.get('screen');
 

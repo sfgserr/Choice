@@ -31,6 +31,8 @@ namespace Users.Application.Companies.Commands.CreateCompany
                 command.Email,
                 command.PhoneNumber,
                 command.Password,
+                command.DeviceName,
+                command.DeviceToken,
                 new(command.City, command.Street, new(coords[1], coords[0])),
                 _usersCounter);
 
