@@ -99,3 +99,9 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('GetAuthorReviews');
 INSERT INTO identity."Permissions" ("Code") VALUES ('AddOrUpdateDevice');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('RemoveDevice');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('AddReviewText');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('DeleteReviewText');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('GetReviewTexts');

@@ -45,10 +45,10 @@ export default function LoginScreen({route, navigation}: LoginScreenProps) {
         <Text style={styles.title}>ВЫБОР</Text>
         <Text style={styles.subTitle}>{'Приложение для выбора\nлучших условий'}</Text>
         <View style={styles.horizontalSpread}>
-          <Text style={styles.weightedText}>Авторизация</Text>
           <TextButton
             text={'Создать аккаунт'}
             onPress={() => setIsToggled(prev => !prev)}/>
+          <Text style={styles.weightedText}>Авторизация</Text>
         </View>
         <TabBar tabs={tabs} big/>
       </KeyboardAvoidingScrollView>
@@ -90,13 +90,14 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   horizontalSpread: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: 'column',
     paddingTop: 30
   },
   weightedText: {
     color: '#313131',
     fontWeight: '700',
-    fontSize: 24
+    fontSize: 24,
+    alignSelf: 'center',
+    paddingBottom: 10
   },
 });

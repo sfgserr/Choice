@@ -52,5 +52,8 @@ namespace WebApi.Modules
         public const string GetAuthorReviews = "GetAuthorReviews";
         public const string AddOrUpdateDevice = "AddOrUpdateDevice";
         public const string RemoveDevice = "RemoveDevice";
+        public const string AddReviewText = "AddReviewText";
+        public const string DeleteReviewText = "DeleteReviewText";
+        public const string GetReviewTexts = "GetReviewTexts";
     }
 }

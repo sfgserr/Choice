@@ -137,3 +137,13 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('C
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'RemoveDevice');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'RemoveDevice');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Client', 'GetReviewTexts');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetReviewTexts');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'GetReviewTexts');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'AddReviewText');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'DeleteReviewText');
