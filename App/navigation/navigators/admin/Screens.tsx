@@ -12,7 +12,7 @@ import EditReviewScreen from '../../../screens/EditReviewScreen.tsx';
 export const Panel = () => (
   <AdminStack.Screen
     name={'Panel'}
-    component={PanelScreen}
+    component={gestureHandlerRootHOC(PanelScreen)}
     options={{headerShown: false}}/>
 );
 

@@ -23,6 +23,7 @@ import {ReviewService} from './domain/ReviewService.ts';
 import {ConnectionManager} from '../managers/ConnectionManager.ts';
 import {ChatUserService} from './domain/ChatUserService.ts';
 import {DeviceTokenService} from "./domain/DeviceTokenService.ts";
+import {ReviewTextService} from './domain/ReviewTextService.ts';
 
 type Object = {
   [name: string]: object,
@@ -84,6 +85,7 @@ export class ObjectGraph {
     const paymentService = new PaymentService(httpService);
     const reviewService = new ReviewService(httpService);
     const chatUserService = new ChatUserService(httpService);
+    const reviewTextService = new ReviewTextService(httpService);
 
     DeviceTokenService.initialize(chatUserService);
 
@@ -108,6 +110,7 @@ export class ObjectGraph {
     this.objects.PaymentService = paymentService;
     this.objects.ReviewService = reviewService;
     this.objects.ChatUserService = chatUserService;
+    this.objects.ReviewTextService = reviewTextService;
 
     this.isInitialized = true;
   }

@@ -354,7 +354,7 @@ export default function ChatScreen({id, navigation, onGoBack}: {id: string, navi
       <SuccessfulRequestModal
         isToggled={isToggled}
         handlePress={toggleModal}
-        title={'Отзыва оставлен'}
+        title={'Отзыв оставлен'}
         text={''}/>
     </SafeAreaView>
   );

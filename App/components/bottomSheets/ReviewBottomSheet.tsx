@@ -10,6 +10,9 @@ import Styles from '../../constants/Styles.tsx';
 import {useDependency} from '../../services/Hooks.ts';
 import {OrderResponseService} from '../../services/domain/OrderResponseService.ts';
 import {GestureStyledButton} from '../buttons/GestureStyledButton.tsx';
+import {ReviewText, ReviewTextService} from '../../services/domain/ReviewTextService.ts';
+import {ArrayUtils, GroupCollection} from '../../utils/ArrayUtils.ts';
+import {Dropdown} from 'react-native-element-dropdown';
 
 const ReviewBottomSheet = React.forwardRef((
   {responseId, toUserId, toggleModal, close}: {
@@ -19,6 +22,7 @@ const ReviewBottomSheet = React.forwardRef((
     close: () => void},
   ref: ForwardedRef<BottomSheetMethods>) => {
   const orderResponseService = useDependency<OrderResponseService>('OrderResponseService');
+  const reviewTextService = useDependency<ReviewTextService>('ReviewTextService');
 
   const gradeNames = React.useMemo(() => ({
     [1]: 'Очень плохо',
@@ -32,6 +36,7 @@ const ReviewBottomSheet = React.forwardRef((
 
   const [grade, setGrade] = React.useState<number>(1);
   const [text, setText] = React.useState<string>('');
+  const [reviewTexts, setTexts] = React.useState<GroupCollection<number, ReviewText>>(null);
 
   const review = React.useCallback(async () => {
     const response = await orderResponseService.review(responseId, toUserId, text, grade);
@@ -42,11 +47,24 @@ const ReviewBottomSheet = React.forwardRef((
     }
   }, [grade, text]);
 
+  React.useEffect(() => {
+    const getTexts = async () => {
+      const response = await reviewTextService.getReviewTexts();
+
+      if (response.content) {
+        setTexts(ArrayUtils.groupByKey(response.content, t => t.grade));
+      }
+    }
+
+    getTexts();
+  }, []);
+
+  React.useEffect(() => {
+    console.log(`Text is ${text}`);
+  }, [text]);
+
   return (
-    <CustomBottomSheet
-      ref={ref}
-      title={'Оставить заказ'}
-      close={close}>
+    <CustomBottomSheet ref={ref} title={'Оставить заказ'} close={close}>
       <BottomSheetView>
         <Text
           style={{
@@ -64,45 +82,50 @@ const ReviewBottomSheet = React.forwardRef((
             flexDirection: 'row',
             justifyContent: 'space-evenly',
             alignItems: 'center',
+            paddingBottom: 20
           }}>
           {grades.map((_, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => setGrade(_)}>
+            <TouchableOpacity key={index} onPress={() => {
+              setText('');
+              setGrade(_);
+            }}>
               <Icon
                 name={'star'}
                 type={'material'}
                 color={grade >= _ ? '#E4E839' : '#CFCFCF'}
-                size={50}/>
+                size={50}
+              />
             </TouchableOpacity>
           ))}
         </View>
-        <TextInputTitle s={'Отзыв'} top={20} bottom={5} />
-        <View
-          style={[
-            Styles.borderedTextInputView,
-            Styles.borderedTextInputBigHeight,
-            Styles.borderedTextInputViewColor,
-            Styles.borderedTextInputUnfocused,
-            {alignItems: 'baseline'},
-          ]}>
-          <TextInput
-            style={Styles.borderedTextInput}
+        {reviewTexts && (
+          <Dropdown
+            style={[
+              Styles.borderedTextInputView,
+              Styles.borderedTextInputViewColor,
+              Styles.borderedTextInputUnfocused,
+              {flexDirection: 'column', paddingVertical: 10, paddingHorizontal: 5}
+            ]}
+            selectedTextStyle={Styles.borderedTextInput}
+            inputSearchStyle={Styles.borderedTextInput}
+            placeholder={'Отзыв'}
+            valueField={'text'}
+            labelField={'text'}
             value={text}
-            placeholder={
-              'Введите текст вашего отзыва'
-            }
-            onChangeText={setText}
-            multiline
-          />
-        </View>
+            placeholderStyle={[Styles.borderedTextInput, {color: '#6D7885'}]}
+            data={reviewTexts.getGroup(grade)}
+            onChange={v => {
+              setText(v.text);
+            }}/>
+        )}
         <GestureStyledButton
           content={'Оставить отзыв'}
           top={40}
           bottom={5}
           isDisabled={text == ''}
           pressed={review}
-          type={'default'}/>
+          type={'default'}
+        />
       </BottomSheetView>
     </CustomBottomSheet>
   );

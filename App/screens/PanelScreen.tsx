@@ -7,6 +7,7 @@ import AdminCategoriesScreen from './AdminCategoriesScreen.tsx';
 import TabBar from '../components/TabBar.tsx';
 import {AuthContext} from '../contexts/authorized/Context.tsx';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import ReviewTextScreen from './ReviewTextScreen.tsx';
 
 export default function PanelScreen({route, navigation}: PanelScreenProps) {
   const { signOut } = useContext(AuthContext);
@@ -23,6 +24,10 @@ export default function PanelScreen({route, navigation}: PanelScreenProps) {
     {
       element: <AdminCategoriesScreen navigation={navigation}/>,
       title: 'Категории',
+    },
+    {
+      element: <ReviewTextScreen navigation={navigation}/>,
+      title: 'Отзывы',
     },
   ], []);
 

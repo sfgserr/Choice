@@ -63,7 +63,6 @@ export class RefreshTokenHttpServiceDecorator {
     method: string,
     body: BodyInit_ | undefined): Promise<HttpResponseWithContent<T>> {
     const response = await HttpService.getInstance().request(endPoint, method, body);
-
     if (response.status == 200) {
       return {
         result: 'successful',

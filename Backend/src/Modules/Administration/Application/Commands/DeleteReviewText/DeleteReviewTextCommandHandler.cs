@@ -20,7 +20,7 @@ namespace Administration.Application.Commands.DeleteReviewText
             const string sql = 
                 $"""
                 DELETE FROM administration."ReviewTexts"
-                WHERE Id = @Id;
+                WHERE "Id" = @Id;
                 """;
 
             await connection.ExecuteAsync(sql, command);

@@ -21,9 +21,9 @@ namespace Administration.Application.Queries.GetReviewTexts
             const string sql = 
                 $"""
                 SELECT 
-                    administration."ReviewTexts"."Id" as ${nameof(ReviewTextDto.Id)},
-                    administration."ReviewTexts"."Grade" as ${nameof(ReviewTextDto.Grade)},
-                    administration."ReviewTexts"."Text" as ${nameof(ReviewTextDto.Text)}
+                    administration."ReviewTexts"."Id" as {nameof(ReviewTextDto.Id)},
+                    administration."ReviewTexts"."Grade" as {nameof(ReviewTextDto.Grade)},
+                    administration."ReviewTexts"."Text" as {nameof(ReviewTextDto.Text)}
                 FROM administration."ReviewTexts";
                 """;
 
