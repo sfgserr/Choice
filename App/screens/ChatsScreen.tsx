@@ -12,10 +12,17 @@ import {ChatService} from '../services/domain/ChatService.ts';
 import {UserService} from '../services/domain/UserService.ts';
 import ChatItem from '../components/listItems/ChatItem.tsx';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
-export default function ChatsScreen({navigation}: {navigation: any}) {
+type UnreadMessage = {
+  [id: string]: number
+}
+
+export default function ChatsScreen() {
   const chatService = useDependency<ChatService>('ChatService');
   const userService = useDependency<UserService>('UserService');
+
+  const navigation = useNavigation();
 
   const [chats, setChats] = React.useState<Chat[]>([]);
   const [userId, setUserId] = React.useState('');
@@ -25,6 +32,40 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const insets = useSafeAreaInsets();
+
+  const [unreadMessages, setUnreadMessages] = React.useState<UnreadMessage>({});
+  const [unreadMessagesCount, setUnreadMessagesCount] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const getUnreadMessages = async () => {
+      var count = 0;
+
+      if (userId != '') {
+        for (let i = 0; i < chats.length; i++) {
+          const chat = await chatService.getChat(chats[i].userId);
+
+          if (chat.content) {
+            let chatCount = chat.content.messages.filter(m => !m.isRead && m.fromUserId != userId).length;
+
+            count += chatCount;
+            setUnreadMessages(prev => {
+              prev[chats[i].userId] = chatCount;
+              return prev;
+            });
+          }
+        }
+      }
+
+      if (count != 0) {
+        navigation.setOptions({tabBarBadge: count});
+      } else {
+        navigation.setOptions({tabBarBadge: undefined});
+      }
+      setUnreadMessagesCount(count);
+    };
+
+    getUnreadMessages();
+  }, [count, chats, userId]);
 
   React.useEffect(() => {
     DeviceEventEmitter.addListener('messageSent', (message: Message) => {
@@ -47,6 +88,9 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
 
         return prev;
       });
+
+      navigation.setOptions({tabBarBadge: unreadMessagesCount + 1});
+      setUnreadMessagesCount(prev => ++prev);
     });
 
     DeviceEventEmitter.addListener('read', (messageId: string) => {
@@ -122,7 +166,8 @@ export default function ChatsScreen({navigation}: {navigation: any}) {
           <ChatItem
             userId={userId}
             navigateToChat={navigateToChat}
-            item={item}/>
+            item={item}
+            unreadMessagesCount={unreadMessages[item.item.userId]}/>
         )}
         style={{paddingTop: 10}}/>
     </View>

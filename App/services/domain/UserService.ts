@@ -46,4 +46,9 @@ export class UserService {
 
     return this.user;
   }
+
+  signOut() {
+    this.user = null;
+    this.tokenService.signOut();
+  }
 }

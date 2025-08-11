@@ -38,8 +38,8 @@ export default function CompanyRequestsScreen({route, navigation}: CompanyReques
     }
     setRefreshing(true);
 
-    await getOrderRequests();
     await getCategories();
+    await getOrderRequests();
 
     setRefreshing(false);
   }, []);

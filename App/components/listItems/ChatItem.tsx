@@ -15,9 +15,10 @@ import * as React from 'react';
 
 const d = Dimensions.get('screen');
 
-const ChatItem = ({item, userId, navigateToChat}: {
+const ChatItem = ({item, userId, unreadMessagesCount, navigateToChat}: {
   item: ListRenderItemInfo<Chat>
   userId: string
+  unreadMessagesCount: number
   navigateToChat: (id: string) => void}) => {
   const isSender = item.item.lastMessageUserSenderId == userId;
 
@@ -50,7 +51,32 @@ const ChatItem = ({item, userId, navigateToChat}: {
             ).getMinutes()}`}</Text>
           </View>
         </View>
-        <Text style={styles.lastMessage}>{item.item.lastMessage ?? 'Заказ'}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}>
+          <Text style={styles.lastMessage}>{item.item.lastMessage ?? 'Заказ'}</Text>
+          {unreadMessagesCount && unreadMessagesCount != 0 && (
+            <View
+              style={{
+                borderRadius: 10,
+                height: 20,
+                width: 20,
+                justifyContent: 'center',
+                backgroundColor: '#2D81E0',
+              }}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: 'white',
+                  alignSelf: 'center',
+                }}>
+                {unreadMessagesCount}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );

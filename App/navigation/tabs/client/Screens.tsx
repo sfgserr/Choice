@@ -6,6 +6,11 @@ import OrderRequestsScreen from '../../../screens/tab/client/OrderRequestsScreen
 import ChatsScreen from '../../../screens/ChatsScreen.tsx';
 import AccountScreen from '../../../screens/tab/client/AccountScreen.tsx';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import {useEffect, useState} from 'react';
+import {DeviceEventEmitter} from 'react-native';
+import {useDependency} from "../../../services/Hooks.ts";
+import {ChatService} from "../../../services/domain/ChatService.ts";
+import {UserService} from "../../../services/domain/UserService.ts";
 
 export const Categories = () => (
   <ClientTab.Screen
@@ -23,13 +28,50 @@ export const OrderRequests = () => (
   />
 )
 
-export const Chats = () => (
-  <ClientTab.Screen
-    name={'Chats'}
-    component={ChatsScreen}
-    options={getOptions({title: 'Чат', source: require('../../../assets/images/chat.png')})}
-  />
-)
+export const Chats = () => {
+  const chatService = useDependency<ChatService>('ChatService');
+  const userService = useDependency<UserService>('UserService');
+
+  const [options, setOptions] = useState(getOptions({title: 'Чат', source: require('../../../assets/images/chat.png')}));
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener('messageSentNotification', () => {
+      setOptions(prev => {
+        if (!prev.tabBarBadge) {
+          prev.tabBarBadge = 1;
+        } else {
+          prev.tabBarBadge = +prev.tabBarBadge + 1;
+        }
+
+        return prev;
+      });
+    });
+
+    DeviceEventEmitter.addListener('userReadMessage', () => {
+      setOptions(prev => {
+        if (prev.tabBarBadge) {
+          prev.tabBarBadge = +prev.tabBarBadge - 1;
+          prev.tabBarBadge = prev.tabBarBadge == 0 ? undefined : prev.tabBarBadge;
+        }
+        return prev;
+      });
+    })
+
+
+
+    //getUnreadMessages();
+  }, []);
+
+
+
+  return (
+    <ClientTab.Screen
+      name={'Chats'}
+      component={ChatsScreen}
+      options={options}
+    />
+  )
+}
 
 export const Account = () => (
   <ClientTab.Screen

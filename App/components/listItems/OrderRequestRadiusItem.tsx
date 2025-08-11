@@ -1,7 +1,7 @@
 import {Category, OrderRequestRadius} from '../../types/DomainTypes.ts';
 import {Dimensions, Image, Text, View} from 'react-native';
 import {Icon} from '@rneui/themed';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyledButton} from '../buttons/StyledButton.tsx';
 import {Pressable} from 'react-native-gesture-handler';
 
@@ -12,6 +12,17 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
   categories: Category[]
   navigation: any
   preview: boolean}) {
+
+  const [categoryName, setCategoryName] = useState('Категория');
+
+  useEffect(() => {
+    const index = categories.findIndex(c => c.categoryId == orderRequest.categoryId);
+
+    if (index != -1) {
+      setCategoryName(categories[index].title);
+    }
+  }, []);
+
   return (
     <View
       style={{
@@ -33,11 +44,7 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
           color: 'black',
           paddingTop: 10,
         }}>
-        {
-          categories[
-            categories.findIndex(c => c.categoryId == orderRequest.categoryId)
-          ].title
-        }
+        {categoryName}
       </Text>
       <Text
         style={{

@@ -52,7 +52,7 @@ export const Chat = () => (
 export const ImageView = () => (
   <ClientStack.Screen
     name={'ImageView'}
-    component={ClientImageViewScreen}
+    component={gestureHandlerRootHOC(ClientImageViewScreen)}
     options={{headerShown: false}}
   />
 );

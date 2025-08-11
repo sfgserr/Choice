@@ -17,7 +17,7 @@ export const Tab = () => (
 export const ImageView = () => (
   <CompanyStack.Screen
     name={'ImageView'}
-    component={CompanyImageViewScreen}
+    component={gestureHandlerRootHOC(CompanyImageViewScreen)}
     options={{headerShown: false}}/>
 );
 
