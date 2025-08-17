@@ -62,6 +62,7 @@ export type ImageBoxProps = {
   object: ImageBoxObject
   setPhoto: React.Dispatch<React.SetStateAction<ImageBoxObject[]>>
   index: number
+  navigation: any
   readonly: boolean
 };
 

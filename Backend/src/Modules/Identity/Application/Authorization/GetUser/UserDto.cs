@@ -8,7 +8,7 @@ namespace Identity.Application.Authorization.GetUser
             string street, 
             string latitude, 
             string longitude, 
-            bool isSubscribed)
+            bool isSubscribed, bool banned)
         {
             RoleCode = roleCode;
             City = city;
@@ -16,6 +16,7 @@ namespace Identity.Application.Authorization.GetUser
             Latitude = latitude;
             Longitude = longitude;
             IsSubscribed = isSubscribed;
+            Banned = banned;
         }
 
         public string RoleCode { get; }
@@ -29,6 +30,8 @@ namespace Identity.Application.Authorization.GetUser
         public string Longitude { get; }
         
         public bool IsSubscribed { get; }
+        
+        public bool Banned { get; }
 
         public List<string> Permissions { get; } = [];
     }

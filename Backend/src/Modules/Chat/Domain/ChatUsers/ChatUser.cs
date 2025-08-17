@@ -8,8 +8,6 @@ namespace Chat.Domain.ChatUsers
 
         private string _iconUri;
 
-        private bool _isDeleted;
-
         private readonly List<Device> _devices = [];
         
         private ChatUser()
@@ -21,14 +19,12 @@ namespace Chat.Domain.ChatUsers
             ChatUserId id,
             string name,
             string iconUri,
-            bool isDeleted,
             List<Device> devices)
         {
             Id = id;
             
             _name = name;
             _iconUri = iconUri;
-            _isDeleted = isDeleted;
             _devices = devices;
         }
 
@@ -39,7 +35,7 @@ namespace Chat.Domain.ChatUsers
             string deviceName,
             string deviceToken)
         {
-            return new ChatUser(id, name, iconUri, false, [Device.Create(id, deviceName, deviceToken)]);
+            return new ChatUser(id, name, iconUri, [Device.Create(id, deviceName, deviceToken)]);
         }
 
         public ChatUserId Id { get; }
@@ -74,14 +70,6 @@ namespace Chat.Domain.ChatUsers
             var device = _devices.FirstOrDefault(d => d.Name == deviceName);
             
             if (device != null) _devices.Remove(device);
-        }
-        
-        public void Delete()
-        {
-            _name = "Deleted user";
-            _iconUri = "deleted";
-            
-            _isDeleted = true;
         }
     }
 }

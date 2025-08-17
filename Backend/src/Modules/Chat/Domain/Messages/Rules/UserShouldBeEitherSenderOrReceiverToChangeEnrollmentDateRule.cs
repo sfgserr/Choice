@@ -16,7 +16,7 @@ namespace Chat.Domain.Messages.Rules
             _userId = userId;
         }
 
-        public bool IsBroken => !_userId.Equals(_toUserId) && !_toUserId.Equals(_fromUserId);
+        public bool IsBroken => !_userId.Equals(_toUserId) && !_userId.Equals(_fromUserId);
 
         public string Message => "Вы не можете отправить сообщение этому пользователю";
     }

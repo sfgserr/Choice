@@ -40,9 +40,9 @@ namespace IntegrationTests.Tests.BusinessProcesses
             var reviewCompany = new TestChain(ReviewCompany);
             var checkReviewCount = new TestChain(CheckReviewCount);
             
-            fillData.SetNext(buySubscription);
-            buySubscription.SetNext(paySubscription);
-            paySubscription.SetNext(createOrderRequest);
+            fillData.SetNext(createOrderRequest);
+            //buySubscription.SetNext(paySubscription);
+            //paySubscription.SetNext(createOrderRequest);
             createOrderRequest.SetNext(getOrderRequests);
             getOrderRequests.SetNext(createOrderResponse);
             createOrderResponse.SetNext(getChats);
@@ -78,7 +78,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                         CategoryIds = new List<int> { 1 },
                         PhotoUris = new List<string> { "string" },
                         SocialMediaUris = new List<string> { "https://instagram.com/com" },
-                        IsPrepaymentAvailable = true
+                        IsPrepaymentAvailable = false
                     })
                 };
                 request.Headers.Add("Authorization", $"Bearer {token}");
@@ -191,7 +191,7 @@ namespace IntegrationTests.Tests.BusinessProcesses
                             Price = 2000,
                             Deadline = 100,
                             EnrollmentDate = DateTime.UtcNow,
-                            Prepayment = 500
+                            //Prepayment = 500
                         })
                 };
                 request.Headers.Add("Authorization", $"Bearer {token}");

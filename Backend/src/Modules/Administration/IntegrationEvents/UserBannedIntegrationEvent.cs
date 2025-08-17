@@ -2,9 +2,9 @@
 
 namespace Administration.IntegrationEvents
 {
-    public class ClientDeletedIntegrationEvent : IntegrationEventBase
+    public class UserBannedIntegrationEvent : IntegrationEventBase
     {
-        public ClientDeletedIntegrationEvent(Guid id, Guid clientId) : base(id)
+        public UserBannedIntegrationEvent(Guid id, Guid clientId) : base(id)
         {
             ClientId = clientId;
         }

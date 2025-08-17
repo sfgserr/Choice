@@ -1,14 +1,25 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Identity.Infrastructure.Authorization.Rules;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Identity.Infrastructure.Authorization
 {
     public class HasPermissionAuthorizationHandler : AuthorizationHandler<HasPermissionRequirement>
     {
+        private readonly AuthorizationRuleService _authorizationRuleService;
+
+        public HasPermissionAuthorizationHandler(
+            AuthorizationRuleService authorizationRuleService)
+        {
+            _authorizationRuleService = authorizationRuleService;
+        }
+
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionRequirement requirement)
         {
             var permissions = context.User.GetPermissions();
-
-            if (Authorize(permissions, requirement.Code))
+            
+            var allRulesFollowed = _authorizationRuleService.EnsureAllRulesFollowed();
+            
+            if (Authorize(permissions, requirement.Code) && allRulesFollowed)
                 context.Succeed(requirement);
             
             return Task.CompletedTask;

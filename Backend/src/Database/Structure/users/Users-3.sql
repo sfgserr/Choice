@@ -11,5 +11,6 @@ CREATE TABLE users."Users" (
     "Latitude" text NOT NULL,
     "Longitude" text NOT NULL,
     "ReviewsCount" integer NOT NULL,
-    "AverageGrade" double precision NOT NULL
+    "AverageGrade" double precision NOT NULL,
+    "Banned" boolean NOT NULL DEFAULT FALSE
 );

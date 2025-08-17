@@ -63,7 +63,7 @@ export class UploadedBlob implements ImageBoxObject {
 
 const d = Dimensions.get('screen');
 
-export default function ImageBox({object, setPhoto, index, readonly = false}: ImageBoxProps) {
+export default function ImageBox({object, setPhoto, index, navigation, readonly = false}: ImageBoxProps) {
   const fileValidationService = useDependency<FileValidationService>('FileValidationService');
 
   const set = React.useCallback(async ()=> {
@@ -89,13 +89,19 @@ export default function ImageBox({object, setPhoto, index, readonly = false}: Im
     });
   }, []);
 
+  const onPress = React.useCallback(() => {
+    if (navigation) {
+      navigation.navigate('ImageView', {uri: object.getObjectName()});
+    }
+  }, []);
+
   return (
     <View
       style={{
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <View
+      <TouchableOpacity
         style={{
           width: d.width * 0.274,
           height: d.width * 0.274,
@@ -106,7 +112,9 @@ export default function ImageBox({object, setPhoto, index, readonly = false}: Im
           backgroundColor: '#F9F9F9',
           borderColor: object.getObjectName() != '' ? '#4D4D4D' : '#C8C8C8',
           justifyContent: 'center',
-        }}>
+        }}
+        disabled={!readonly}
+        onPress={onPress}>
         {object.getObjectName() == '' ? (
           <>
             <TouchableOpacity
@@ -162,7 +170,7 @@ export default function ImageBox({object, setPhoto, index, readonly = false}: Im
             )}
           </>
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

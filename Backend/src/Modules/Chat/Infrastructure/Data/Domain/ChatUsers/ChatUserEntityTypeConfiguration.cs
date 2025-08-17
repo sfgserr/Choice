@@ -14,7 +14,6 @@ namespace Chat.Infrastructure.Data.Domain.ChatUsers
 
             builder.Property<string>("_name").HasColumnName("Name");
             builder.Property<string>("_iconUri").HasColumnName("IconUri");
-            builder.Property<bool>("_isDeleted").HasColumnName("IsDeleted");
 
             builder.OwnsMany<Device>("_devices", y =>
             {

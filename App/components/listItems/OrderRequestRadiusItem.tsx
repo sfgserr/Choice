@@ -4,6 +4,7 @@ import {Icon} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import {StyledButton} from '../buttons/StyledButton.tsx';
 import {Pressable} from 'react-native-gesture-handler';
+import ImageBox, {MinioBlob, UploadedBlob} from "../ImageBox.tsx";
 
 const d = Dimensions.get('screen');
 
@@ -55,34 +56,23 @@ export default function OrderRequestRadiusItem({orderRequest, categories, naviga
         }}>
         {orderRequest.description}
       </Text>
-      {orderRequest.photoUris
-        .filter(u => u != '')
-        .map((v, i) => (
-          <Pressable
-            style={{
-              flexDirection: 'row',
-              paddingTop: 10,
-            }}
-            onPress={() => {navigation.navigate('ImageView', {uri: v})}}
-            key={i}>
-            <Icon
-              type={'material'}
-              name={'image'}
-              size={17}
-              color={'#2D81E0'}
-              style={{alignSelf: 'center'}}
-            />
-            <Text
-              style={{
-                paddingLeft: 5,
-                alignSelf: 'center',
-                color: '#2D81E0',
-                textDecorationLine: 'underline'
-              }}>
-              {v.length > 15 ? `${v.substring(0, 14)}...` : v}
-            </Text>
-          </Pressable>
-        ))}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingTop: 10,
+        }}>
+        {orderRequest.photoUris
+          .filter(u => u != '')
+          .map((v, i) => (
+            <ImageBox
+                object={new UploadedBlob(v)}
+                setPhoto={() => {}}
+                index={i}
+                readonly={true}
+                navigation={navigation}/>
+          ))}
+      </View>
       <View
         style={{paddingTop: 10, paddingBottom: 10}}>
         <View

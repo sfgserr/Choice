@@ -25,7 +25,8 @@ namespace Identity.Application.Authorization.GetUser
                       identity."Users"."Street" as {nameof(UserDto.Street)},
                       identity."Users"."Latitude" as {nameof(UserDto.Latitude)},
                       identity."Users"."Longitude" as {nameof(UserDto.Longitude)},
-                      identity."Users"."IsSubscribed" as {nameof(UserDto.IsSubscribed)}
+                      identity."Users"."IsSubscribed" as {nameof(UserDto.IsSubscribed)},
+                      identity."Users"."Banned" as {nameof(UserDto.Banned)}
                   FROM identity."Users"
                   WHERE identity."Users"."Id" = @Id;
 

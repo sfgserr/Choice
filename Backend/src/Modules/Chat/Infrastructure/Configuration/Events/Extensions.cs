@@ -19,7 +19,7 @@ namespace Chat.Infrastructure.Configuration.Events
                 .AddHandler<UserCreatedIntegrationEvent>()
                 .AddHandler<UserDataChangedIntegrationEvent>()
                 .AddHandler<UserIconUriChangedIntegrationEvent>()
-                .AddHandler<ClientDeletedIntegrationEvent>();
+                .AddHandler<UserBannedIntegrationEvent>();
         }
 
         private static IReceiveEndpointConfigurator AddHandler<T>(this IReceiveEndpointConfigurator cfg)

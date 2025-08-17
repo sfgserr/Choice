@@ -8,5 +8,6 @@ CREATE TABLE identity."Users" (
     "City" text NOT NULL,
     "Latitude" text NOT NULL,
     "Longitude" text NOT NULL,
-    "IsSubscribed" boolean NOT NULL
+    "IsSubscribed" boolean NOT NULL,
+    "Banned" boolean NOT NULL DEFAULT FALSE
 );

@@ -22,9 +22,9 @@ using Chat.Infrastructure.SignalR;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Identity.Infrastructure.Authorization;
+using Identity.Infrastructure.Authorization.Rules;
 using Identity.Infrastructure.Configuration.Data;
 using Identity.Infrastructure.Configuration.Identity;
-using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using MassTransit;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SignalR;
@@ -130,6 +130,7 @@ namespace WebApi
             
             services.AddSingleton<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, HasPermissionAuthorizationPolicyProvider>();
+            services.AddSingleton<AuthorizationRuleService>();
             services.AddSingleton<IClaimsTransformation, CustomClaimsTransformation>();
             services.AddSingleton<IUserService, UserService>();
             services.Configure<ClientsOption>(Configuration);
@@ -215,7 +216,6 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSubscriptionCheck();
             
             app.UseProblemDetails();
             app.UseEndpoints(endpoints =>

@@ -35,6 +35,7 @@ namespace WebApi.Configuration.Authorization
 
             principal.AddIdentity(identity);
             principal.SetClaim("subscribed", user.IsSubscribed);
+            principal.SetClaim("banned", user.Banned);
             
             return principal;
         }

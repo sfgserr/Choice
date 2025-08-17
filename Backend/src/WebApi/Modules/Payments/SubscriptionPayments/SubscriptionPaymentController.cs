@@ -1,5 +1,4 @@
 ﻿using Identity.Infrastructure.Authorization;
-using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.SubscriptionPayments.Commands.Buy;
@@ -21,7 +20,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.BuySubscriptionPayment)]
         [HttpPost("{period}")]
-        [AllowUnsubscribe]
+        [SkipAuthorizationRule("SubscriptionForCompanyRequired")]
         public async Task<IActionResult> Buy(string period)
         {
             await _module.ExecuteCommand(new BuyCommand(period));
@@ -31,7 +30,7 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.PaySubscriptionPayment)]
         [HttpPut]
-        [AllowUnsubscribe]
+        [SkipAuthorizationRule("SubscriptionForCompanyRequired")]
         public async Task<IActionResult> Pay()
         {
             await _module.ExecuteCommand(new PayCommand());
@@ -41,11 +40,11 @@ namespace WebApi.Modules.Payments.SubscriptionPayments
 
         [HasPermission(Permissions.GetSubscriptionPayment)]
         [HttpGet]
-        [AllowUnsubscribe]
+        [SkipAuthorizationRule("SubscriptionForCompanyRequired")]
         public async Task<IActionResult> GetPayment()
         {
             var payment = await _module.Query<GetPaymentQuery, PaymentDto>(new GetPaymentQuery());
-
+            List<string> s = new() { "s" };
             return Ok(payment);
         }
     }

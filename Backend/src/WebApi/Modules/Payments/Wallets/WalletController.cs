@@ -1,5 +1,4 @@
 using Identity.Infrastructure.Authorization;
-using Identity.Infrastructure.Middlewares.SubscriptionCheck;
 using Microsoft.AspNetCore.Mvc;
 using Payments.Application.Contracts;
 using Payments.Application.Payments.CreatePayment;
@@ -20,7 +19,6 @@ namespace WebApi.Modules.Payments.Wallets
         }
 
         [HasPermission(Permissions.CreatePayment)]
-        [AllowUnsubscribe]
         [HttpPost("payment")]
         public async Task<IActionResult> CreatePayment([FromBody] CreatePaymentRequest request)
         {
@@ -46,7 +44,6 @@ namespace WebApi.Modules.Payments.Wallets
         }
         
         [HasPermission(Permissions.CreatePayout)]
-        [AllowUnsubscribe]
         [HttpPost("payout")]
         public async Task<IActionResult> CreatePayout([FromBody] CreatePayoutRequest request)
         {
@@ -56,7 +53,6 @@ namespace WebApi.Modules.Payments.Wallets
         }
         
         [HasPermission(Permissions.GetWallet)]
-        [AllowUnsubscribe]
         [HttpGet]
         public async Task<IActionResult> GetWallet()
         {

@@ -1,4 +1,4 @@
-using Administration.Application.Commands.DeleteClient;
+using Administration.Application.Commands.BanUser;
 using Administration.Application.Commands.EditClient;
 using Administration.Application.Commands.EditCompany;
 using Administration.Application.Contracts;
@@ -30,7 +30,7 @@ namespace WebApi.Modules.Admin.Users
         [HasPermission(Permissions.DeleteClient)]
         public async Task<IActionResult> DeleteClient(Guid id)
         {
-            await _adminModule.ExecuteCommand(new DeleteClientCommand(id));
+            await _adminModule.ExecuteCommand(new BanUserCommand(id));
 
             return Ok();
         }
