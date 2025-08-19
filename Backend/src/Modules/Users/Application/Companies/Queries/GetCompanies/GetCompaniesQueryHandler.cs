@@ -30,7 +30,7 @@ namespace Users.Application.Companies.Queries.GetCompanies
                     users."Users"."Longitude" as {nameof(CompanyDto.Longitude)}
                 FROM users."Companies"
                 JOIN users."Users" ON users."Users"."Id" = users."Companies"."Id"
-                WHERE @CategoryId = ANY(users."Companies"."CategoriesId")
+                WHERE @CategoryId = ANY(users."Companies"."CategoriesId") AND users."Users"."Banned" = FALSE
                 
                 UNION
                 

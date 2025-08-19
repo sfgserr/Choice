@@ -27,5 +27,7 @@ namespace Administration.Application.Queries.GetCompany
         public string[] PhotoUris { get; }
 
         public bool IsPrepaymentAvailable { get; }
+        
+        public bool Banned { get; }
     }
 }

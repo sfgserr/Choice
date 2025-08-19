@@ -10,7 +10,8 @@ namespace Administration.Application.Queries.GetClient
             string phoneNumber, 
             string email, 
             string city, 
-            string street)
+            string street, 
+            bool banned)
         {
             Id = id;
             IconUri = iconUri;
@@ -20,6 +21,7 @@ namespace Administration.Application.Queries.GetClient
             Email = email;
             City = city;
             Street = street;
+            Banned = banned;
         }
         
         public Guid Id { get; }
@@ -37,5 +39,7 @@ namespace Administration.Application.Queries.GetClient
         public string City { get; }
 
         public string Street { get; }
+        
+        public bool Banned { get; }
     }
 }

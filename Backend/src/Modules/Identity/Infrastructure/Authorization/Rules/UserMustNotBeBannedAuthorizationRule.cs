@@ -10,7 +10,7 @@ namespace Identity.Infrastructure.Authorization.Rules
         {
             var banned = user.FindFirst("banned");
 
-            return banned is { Value: "false" };
+            return banned is { Value: "False" };
         }
     }
 }

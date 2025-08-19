@@ -32,7 +32,7 @@ namespace WebApi.Modules
         public const string CreateCategory = "CreateCategory";
         public const string EditCategory = "EditCategory";
         public const string GetCategories = "GetCategories";
-        public const string DeleteClient = "DeleteClient";
+        public const string BanUser = "BanUser";
         public const string EditClient = "EditClient";
         public const string EditCompany = "EditCompany";
         public const string GetClientAdmin = "GetClientAdmin";
@@ -55,5 +55,6 @@ namespace WebApi.Modules
         public const string AddReviewText = "AddReviewText";
         public const string DeleteReviewText = "DeleteReviewText";
         public const string GetReviewTexts = "GetReviewTexts";
+        public const string UnbanUser = "UnbanUser";
     }
 }

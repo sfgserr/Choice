@@ -94,7 +94,9 @@ INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('U
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Company', 'GetCategories');
 
-INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'DeleteClient');
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'BanUser');
+
+INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'UnbanUser');
 
 INSERT INTO identity."RolePermissions" ("RoleCode", "PermissionCode") VALUES ('Admin', 'EditClient');
 

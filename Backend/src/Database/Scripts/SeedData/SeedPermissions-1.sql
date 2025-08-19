@@ -66,7 +66,9 @@ INSERT INTO identity."Permissions" ("Code") VALUES ('EditCategory');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('GetCategories');
 
-INSERT INTO identity."Permissions" ("Code") VALUES ('DeleteClient');
+INSERT INTO identity."Permissions" ("Code") VALUES ('BanUser');
+
+INSERT INTO identity."Permissions" ("Code") VALUES ('UnbanUser');
 
 INSERT INTO identity."Permissions" ("Code") VALUES ('EditClient');
 

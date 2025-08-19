@@ -31,7 +31,8 @@ namespace Administration.Application.Queries.GetCompany
                     users."Users"."Street" as {nameof(CompanyDto.Street)},
                     users."Companies"."CategoriesId" as {nameof(CompanyDto.CategoryIds)},
                     users."Companies"."PhotoUris" as {nameof(CompanyDto.PhotoUris)},
-                    users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)}
+                    users."Companies"."IsPrepaymentAvailable" as {nameof(CompanyDto.IsPrepaymentAvailable)},
+                    users."Users"."Banned" as {nameof(CompanyDto.Banned)}
                 FROM users."Companies"
                 JOIN users."Users" ON users."Users"."Id" = users."Companies"."Id"
                 WHERE users."Companies"."Id" = @Id;

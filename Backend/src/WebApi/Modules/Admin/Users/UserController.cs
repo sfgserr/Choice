@@ -1,6 +1,7 @@
 using Administration.Application.Commands.BanUser;
 using Administration.Application.Commands.EditClient;
 using Administration.Application.Commands.EditCompany;
+using Administration.Application.Commands.UnbanUser;
 using Administration.Application.Contracts;
 using Administration.Application.Queries.GetClient;
 using Administration.Application.Queries.GetClients;
@@ -26,11 +27,20 @@ namespace WebApi.Modules.Admin.Users
             _adminModule = adminModule;
         }
         
-        [HttpDelete("{id:guid}")]
-        [HasPermission(Permissions.DeleteClient)]
-        public async Task<IActionResult> DeleteClient(Guid id)
+        [HttpPut("ban/{id:guid}")]
+        [HasPermission(Permissions.BanUser)]
+        public async Task<IActionResult> BanUser(Guid id)
         {
             await _adminModule.ExecuteCommand(new BanUserCommand(id));
+
+            return Ok();
+        }
+        
+        [HttpPut("unban/{id:guid}")]
+        [HasPermission(Permissions.UnbanUser)]
+        public async Task<IActionResult> UnbanUser(Guid id)
+        {
+            await _adminModule.ExecuteCommand(new UnbanUserCommand(id));
 
             return Ok();
         }

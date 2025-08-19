@@ -14,9 +14,9 @@ INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "R
 
 INSERT INTO identity."Users" ("Id", "Email", "PhoneNumber", "HashedPassword", "Role", "Street", "City", "Latitude", "Longitude", "IsSubscribed") VALUES ('92a69085-320f-4dbd-9dcc-bb48ffbe40ae', 'aleshkin@gmail.com', '1111111111', 'AE8ZXJlUbO+mw/xjWJ/UQxTyCSuDs6WjTUJpMHs03a2ewBoe1AG7hCrYvZW+j+1Tng==', 'Admin', 'Омск', 'Омск', '0', '0', true);
 
-INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Автодом', 'default.png', false);
+INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri") VALUES ('954dba19-f9bd-488a-9f45-dee4f184e906', 'Автодом', 'default.png');
 
-INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri", "IsDeleted") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'default.png', false);
+INSERT INTO chat."ChatUsers" ("Id", "Name", "IconUri") VALUES ('ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 'Макар Чебан', 'default.png');
 
 INSERT INTO payments."Wallets" ("Id", "PayerId", "Copecks") VALUES ('84b92f6d-a254-4b4d-a115-d5a38e44e58d', 'ecc1d96a-dfd3-4a5c-8885-6914ff716ce2', 15000);
 

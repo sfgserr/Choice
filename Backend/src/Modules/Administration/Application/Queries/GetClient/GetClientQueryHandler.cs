@@ -27,7 +27,8 @@ namespace Administration.Application.Queries.GetClient
                      users."Users"."PhoneNumber" as {nameof(ClientDto.PhoneNumber)},
                      users."Users"."Email" as {nameof(ClientDto.Email)},
                      users."Users"."City" as {nameof(ClientDto.City)},
-                     users."Users"."Street" as {nameof(ClientDto.Street)}
+                     users."Users"."Street" as {nameof(ClientDto.Street)},
+                     users."Users"."Banned" as {nameof(ClientDto.Banned)}
                  FROM users."Users"
                  WHERE users."Users"."Id" = @Id 
                  """;
