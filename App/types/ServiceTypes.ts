@@ -4,6 +4,7 @@ export type UserClaims = {
   sub: string
   type: string
   subscribed: boolean | undefined
+  banned: boolean | undefined
 };
 
 export type TokenResponse = {
@@ -26,5 +27,6 @@ export type Token = {
   id: string
   userType: UserType
   subscribed: boolean | undefined
+  banned: boolean | undefined
 }
 

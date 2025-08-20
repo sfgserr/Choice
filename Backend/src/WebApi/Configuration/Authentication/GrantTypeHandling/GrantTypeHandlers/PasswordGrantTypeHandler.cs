@@ -36,6 +36,7 @@ namespace WebApi.Configuration.Authentication.GrantTypeHandling.GrantTypeHandler
             identity.SetClaim("type", result.User.UserType);
 
             identity.SetClaim("subscribed", result.User.IsSubscribed);
+            identity.SetClaim("banned", result.User.Banned);
             identity.SetDestinations(c => [OpenIddictConstants.Destinations.AccessToken]);
             identity.SetScopes(request.GetScopes());
                 

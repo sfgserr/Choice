@@ -26,7 +26,8 @@ namespace Identity.Application.Authentication.Authenticate
                      identity."Users"."Id" as {nameof(UserDto.UserId)},
                      identity."Users"."Role" as {nameof(UserDto.UserType)},
                      identity."Users"."IsSubscribed" as {nameof(UserDto.IsSubscribed)},
-                     identity."Users"."HashedPassword" as {nameof(UserDto.Password)}
+                     identity."Users"."HashedPassword" as {nameof(UserDto.Password)},
+                     identity."Users"."Banned" as {nameof(UserDto.Banned)}
                  FROM identity."Users"
                  WHERE identity."Users"."Email" = @Email 
                  """;

@@ -44,7 +44,7 @@ export default function ClientReviewsScreen({navigation, route}: ClientReviewsSc
               alignSelf: 'center',
               position: 'absolute',
             }}>
-            Отзывы клиента
+            Отзывы
           </Text>
         </View>
         {reviews == null ? (

@@ -22,17 +22,21 @@ namespace Administration.Application.Commands.BanUser
 
             const string sql = 
                 $"""
+                BEGIN;
+                
                 UPDATE identity."Users"
-                SET identity."Users"."Banned" = true
+                SET "Banned" = true
                 WHERE identity."Users"."Id" = @Id;
 
                 UPDATE users."Users"
-                SET users."Users"."Banned" = true
+                SET "Banned" = true
                 WHERE users."Users"."Id" = @Id;
 
                 UPDATE chat."ChatUsers"
-                SET chat."ChatUsers"."Banned" = true
+                SET "Banned" = true
                 WHERE chat."ChatUsers"."Id" = @Id;
+                
+                COMMIT;
                 """;
 
             int affections = await connection.ExecuteAsync(sql, command);

@@ -5,7 +5,6 @@ import {TokenStorageService} from '../services/object/TokenStorageService.ts';
 import {AccountManager} from './AccountManager.ts';
 import {TokenService} from '../services/auth/TokenService.ts';
 import {ConnectionManager} from './ConnectionManager.ts';
-import {AuthService} from '../services/auth/AuthService.ts';
 
 export class StateManager {
   private readonly tokenStorageService: TokenStorageService;
@@ -44,14 +43,18 @@ export class StateManager {
         result.tokens[1],
       );
 
+      if (!user.subscribed) {
+        return State.Unsubscribe;
+      }
+
+      if (user.banned) {
+        return State.Banned;
+      }
+
       if (user.userType == UserType.Client || user.userType == UserType.Company)
         await ConnectionManager.init();
 
       let state = this.userTypeToStateMap[user.userType];
-
-      if (!user.subscribed) {
-        return State.Unsubscribe;
-      }
 
       return state;
     } else {
@@ -66,6 +69,14 @@ export class StateManager {
     );
 
     let user = this.tokenService.getUser();
+
+    if (!user.subscribed) {
+      return State.Unsubscribe;
+    }
+
+    if (user.banned) {
+      return State.Banned;
+    }
 
     if (user.userType == UserType.Client || user.userType == UserType.Company)
       await ConnectionManager.init(accessToken);

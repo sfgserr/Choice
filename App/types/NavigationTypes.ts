@@ -71,6 +71,10 @@ export type AdminStackProps = {
   EditReview: {review: Review};
 };
 
+export type BannedStackProps = {
+  Banned: undefined
+}
+
 export type ClientTabProps = {
   Categories: undefined;
   OrderRequests: undefined;

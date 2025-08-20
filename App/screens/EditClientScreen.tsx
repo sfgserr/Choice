@@ -26,6 +26,7 @@ type Form = {
   city: string
   street: string
   averageGrade: number
+  banned: boolean
 }
 
 export default function EditClientScreen({route, navigation}: EditClientScreenProps) {
@@ -80,7 +81,7 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
 
   const deleteClient = React.useCallback(async () => {
     if (form != null) {
-      const response = await userService.deleteClient(form.id);
+      const response = form.banned ? await userService.unban(form.id) : await userService.ban(form.id);
 
       if (response.result == 'successful') {
         navigation.goBack();
@@ -230,7 +231,7 @@ export default function EditClientScreen({route, navigation}: EditClientScreenPr
                 pressed={() => navigation.navigate('ClientReviews', {clientId: route.params.clientId})}
                 type={'reversed'}/>
               <GestureStyledButton
-                content={'Заблокировать клиента'}
+                content={form.banned ? 'Разблокировать' :  'Заблокировать'}
                 top={10}
                 bottom={10}
                 isDisabled={false}

@@ -6,6 +6,8 @@ import CloseButton from '../buttons/CloseButton.tsx';
 import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
 import Styles from '../../constants/Styles.tsx';
 import GestureBorderedTextInput from '../inputs/GestureBordererdTextInput.tsx';
+import KeyboardAvoidingScrollView from '../KeyboardAvoidingScrollView.tsx';
+import {useIsFocused} from '@react-navigation/native';
 
 const d = Dimensions.get('screen');
 
@@ -15,6 +17,8 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
   title: string
   onChange: (s: string) => void
 }) {
+  const focused = useIsFocused();
+
   const [value, setValue] = React.useState('');
 
   const duration = 1800;
@@ -47,7 +51,10 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
         />
       </Animated.View>
       <Animated.View style={[styles.popup, animatedStyles]}>
-        <View>
+        <KeyboardAvoidingScrollView
+          scrollable={false}
+          tabs={false}
+          focused={focused}>
           <View
             style={{
               flexDirection: 'row',
@@ -81,7 +88,7 @@ export default function SocialMediaModal({isToggled, handlePress, title, onChang
               ]}>Сохранить</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </KeyboardAvoidingScrollView>
       </Animated.View>
     </>
   );

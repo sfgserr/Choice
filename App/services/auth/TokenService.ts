@@ -10,7 +10,7 @@ export class TokenService {
 
   constructor(authService: AuthService) {
     this.authService = authService;
-    this.token = {id: '0', userType: UserType.User, subscribed: undefined};
+    this.token = {id: '0', userType: UserType.User, subscribed: undefined, banned: undefined};
   }
 
   getUser(): Token {
@@ -49,6 +49,7 @@ export class TokenService {
         id: token.sub,
         userType: this.convertStringToUserType(token.type),
         subscribed: token.subscribed,
+        banned: token.banned,
       };
     }
   }

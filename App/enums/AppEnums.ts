@@ -5,5 +5,6 @@ export enum State {
   Company,
   Admin,
   User,
-  Unsubscribe
+  Unsubscribe,
+  Banned
 }

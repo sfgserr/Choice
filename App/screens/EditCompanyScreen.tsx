@@ -24,6 +24,7 @@ import SocialMediaModal from '../components/modals/SocialMediaModal.tsx';
 import {CategoryService} from '../services/domain/CategoryService.ts';
 import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView} from "react-native-safe-area-context";
+import {GestureStyledButton} from '../components/buttons/GestureStyledButton.tsx';
 
 type Form = {
   id: string
@@ -37,6 +38,7 @@ type Form = {
   photoUris: string[]
   categories: number[]
   isPrepaymentAvailable: boolean
+  banned: boolean
 }
 
 type SocialMedia = {
@@ -223,6 +225,16 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
       return [...prev];
     });
   };
+
+  const ban = React.useCallback(async () => {
+    if (form != null) {
+      const response = form.banned ? await adminService.unban(form.id) : await adminService.ban(form.id);
+
+      if (response.result == 'successful') {
+        navigation.goBack();
+      }
+    }
+  }, [form]);
 
   React.useEffect(() => {
     const getUser = async () => {
@@ -421,6 +433,20 @@ export default function EditCompanyScreen({route, navigation}: EditCompanyScreen
                 title={'Работа без предоплатой'}
                 onPress={onOptionPressed}
                 top={10}/>
+              <GestureStyledButton
+                content={'Отзывы'}
+                top={15}
+                bottom={10}
+                isDisabled={false}
+                pressed={() => navigation.navigate('ClientReviews', {clientId: route.params.companyId})}
+                type={'reversed'}/>
+              <GestureStyledButton
+                content={form.banned ? 'Разблокировать' :  'Заблокировать'}
+                top={10}
+                bottom={10}
+                isDisabled={false}
+                pressed={ban}
+                type={'warn'}/>
               <View style={{paddingTop: 20}}/>
             </View>
           </ScrollView>

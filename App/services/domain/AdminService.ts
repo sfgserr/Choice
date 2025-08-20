@@ -84,8 +84,12 @@ export class AdminService {
       undefined);
   }
 
-  public async deleteClient(id: string) {
-    return await this.httpService.requestWithContent(`admin/users/${id}`, 'DELETE', undefined);
+  public async ban(id: string) {
+    return await this.httpService.request(`admin/users/ban/${id}`, 'PUT', undefined);
+  }
+
+  public async unban(id: string) {
+    return await this.httpService.request(`admin/users/unban/${id}`, 'PUT', undefined);
   }
 
   public async getReviews(clientId: string) {

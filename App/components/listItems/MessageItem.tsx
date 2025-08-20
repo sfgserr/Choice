@@ -368,7 +368,7 @@ const OrderMessage = ({message, isSender, userId, index, onEnrollmentDateChanged
           )}
           {displayEnroll && (
             <StyledButton
-              content={'Записаться и внести предоплату'}
+              content={order?.prepayment > 0 ? 'Записаться и внести предоплату' : 'Записаться'}
               top={10}
               bottom={0}
               isDisabled={!order?.isActive || !message.isActive}

@@ -9,5 +9,7 @@ namespace Identity.Application.Authentication
         public bool IsSubscribed { get; }
 
         public string Password { get; }
+        
+        public bool Banned { get; }
     }
 }

@@ -8,6 +8,7 @@ import UserNavigator from './navigators/user/UserNavigator.tsx';
 import UnsubscribeNavigator from './navigators/unsubscribe/UnsubscribeNavigator.tsx';
 import LoadingNavigator from './navigators/loading/LoadingNavigator.tsx';
 import AdminNavigator from './navigators/admin/AdminNavigator.tsx';
+import BannedNavigator from './navigators/banned/BannedNavigator.tsx';
 
 export default function StateContainer({state}: {state: State}) {
   return (
@@ -19,6 +20,7 @@ export default function StateContainer({state}: {state: State}) {
       <UnsubscribeNavigator state={state}/>
       <LoadingNavigator state={state}/>
       <AdminNavigator state={state}/>
+      <BannedNavigator state={state}/>
     </NavigationContainer>
   );
 }
