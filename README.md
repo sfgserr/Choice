@@ -197,16 +197,7 @@ choice/
 
    This starts: `webapi`, `minio`, and `nginx` containers.
 
-3. **Run database migrations:**
-
-   ```bash
-   cd Backend/src/Database
-   ./migrate.development.sh   # Linux/macOS
-   # or
-   ./migrate.development.ps1  # Windows
-   ```
-
-4. The API will be available at `https://localhost` (via Nginx) or `http://localhost:8082` directly.
+3. The API will be available at `https://localhost` (via Nginx) or `http://localhost:8082` directly.
 
 ### Production First-Time Setup
 
