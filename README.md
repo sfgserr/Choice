@@ -195,9 +195,32 @@ choice/
    ./setup.development.sh
    ```
 
-   This starts: `webapi`, `minio`, and `nginx` containers.
+   This starts: `webapi`, `minio`, `nginx`, `db` (PostgreSQL), and `pihole` containers. Nginx listens on `8080` (HTTP) and `8443` (HTTPS) in development. The dev hostnames are `choice.ru` and `minio.choice.ru`.
 
-3. The API will be available at `https://localhost` (via Nginx) or `http://localhost:8082` directly.
+3. **Configure Pi-hole DNS for mobile device debugging**
+
+   The stack includes a Pi-hole container running a local DNS server on port 53. To make `choice.ru` and `minio.choice.ru` resolve to your dev machine on any device on the same network:
+
+   - Open the Pi-hole admin UI at `http://<your-machine-ip>:8084`
+   - Go to **Local DNS → DNS Records** and add two entries pointing both hostnames at your machine's local IP:
+     ```
+     choice.ru       →  <your-machine-ip>
+     minio.choice.ru →  <your-machine-ip>
+     ```
+   - In your router's settings, set the primary DNS server to `<your-machine-ip>`.
+
+   All devices on the network will now resolve both hostnames through Pi-hole and reach the local Nginx instance directly.
+
+4. **Run database migrations:**
+
+   ```bash
+   cd Backend/src/Database
+   ./migrate.development.sh   # Linux/macOS
+   # or
+   ./migrate.development.ps1  # Windows
+   ```
+
+4. The API will be available at `https://localhost` (via Nginx) or `http://localhost:8082` directly.
 
 ### Production First-Time Setup
 
@@ -233,7 +256,7 @@ sudo docker compose -f docker-compose.yml -f docker-compose.production.yml up -d
 
 **Step 3 — Run the production setup script**
 
-The script generates the signing certificate, runs DB migrations, and calls Certbot to issue the Let's Encrypt certificate via the webroot method:
+The script generates the signing certificate, runs DB migrations, and issues the Let's Encrypt certificate via the Certbot webroot method:
 
 ```bash
 cd Backend/docker-compose
