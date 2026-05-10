@@ -6,10 +6,12 @@ services:
     depends_on:
       - webapi
       - minio
+    env-file:
+      - .env
     volumes:
       - ../nginx/templates:/etc/nginx/templates
-      - ../nginx/certificate.pem:/certs/certificate.pem
-      - ../nginx/private_key.pem:/private/private_key.pem
+      - ${NGINX_CERTIFICATE_FOLDER}/certificate.pem:/certs/certificate.pem
+      - ${NGINX_CERTIFICATE_FOLDER}/nginx/private_key.pem:/private/private_key.pem
   
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
